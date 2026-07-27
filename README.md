@@ -1,5 +1,7 @@
 # Shenron City
 
+[![CI](https://github.com/xxvovalamaxx-ops/shenron-city/actions/workflows/ci.yml/badge.svg)](https://github.com/xxvovalamaxx-ops/shenron-city/actions/workflows/ci.yml)
+
 Shenron City is a standalone browser-based 3D city built with Three.js and
 React Three Fiber.
 
@@ -95,6 +97,10 @@ npm test
 npm run build
 npm run verify:standalone
 ```
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for branch, conflict, review, and
+verification conventions. Report sensitive problems through
+[SECURITY.md](SECURITY.md), not a public issue.
 
 The future Mission Control and multiplayer work should arrive through explicit
 versioned adapters, after the standalone game loop is fun and stable. Do not

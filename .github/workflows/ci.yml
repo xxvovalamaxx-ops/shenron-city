@@ -5,9 +5,17 @@ on:
     branches: [main]
   pull_request:
 
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   build:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v7
       - uses: actions/setup-node@v7
@@ -15,7 +23,8 @@ jobs:
           # Vite 8 requires Node 20.19+; 22 is the current LTS.
           node-version: "22"
           cache: npm
-      - run: npm ci
+      - name: Install locked dependencies
+        run: npm ci
       - name: Type check
         run: npm run typecheck
       # The simulation — lift, doors, collision, shaft interlocks, contract
@@ -28,3 +37,5 @@ jobs:
         run: npm run build
       - name: Verify standalone boundary
         run: npm run verify:standalone
+      - name: Audit production dependencies
+        run: npm audit --omit=dev --audit-level=high

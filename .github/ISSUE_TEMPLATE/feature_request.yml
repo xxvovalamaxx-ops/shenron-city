@@ -1,0 +1,46 @@
+name: Feature request
+description: Propose a focused improvement to the standalone web game.
+title: "[Feature] "
+labels:
+  - enhancement
+body:
+  - type: textarea
+    id: player_problem
+    attributes:
+      label: Player problem
+      description: What player need or experience gap should this solve?
+    validations:
+      required: true
+  - type: textarea
+    id: outcome
+    attributes:
+      label: Proposed outcome
+      description: Describe the smallest playable result, not only the implementation.
+    validations:
+      required: true
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Acceptance checks
+      description: How will another contributor know the feature is complete?
+      placeholder: |
+        - The player can…
+        - Low and high quality…
+        - A focused test proves…
+    validations:
+      required: true
+  - type: dropdown
+    id: boundary
+    attributes:
+      label: Does this change the standalone boundary?
+      options:
+        - No
+        - Yes — requires separate owner approval and security review
+        - Unsure
+    validations:
+      required: true
+  - type: textarea
+    id: notes
+    attributes:
+      label: References or constraints
+      description: Link relevant issues or describe affected systems and likely shared files.

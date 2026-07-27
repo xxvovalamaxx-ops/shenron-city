@@ -1,0 +1,29 @@
+* text=auto
+
+# Keep reviews and merges stable across Windows and GitHub runners.
+.gitattributes text eol=lf
+.gitignore text eol=lf
+*.css text eol=lf
+*.html text eol=lf
+*.json text eol=lf
+*.md text eol=lf
+*.mjs text eol=lf
+*.ts text eol=lf
+*.tsx text eol=lf
+*.yml text eol=lf
+*.yaml text eol=lf
+
+# Windows launchers should open naturally in cmd.exe.
+*.bat text eol=crlf
+
+# Future game and documentation assets are never line-normalized.
+*.bin binary
+*.glb binary
+*.gltf binary
+*.jpg binary
+*.jpeg binary
+*.ktx2 binary
+*.mp3 binary
+*.ogg binary
+*.png binary
+*.webp binary
