@@ -7,6 +7,7 @@
  */
 import { create } from 'zustand'
 import type { InteractKind } from '../gameplay/interact'
+import type { CharacterId } from '../agents/dialogue'
 
 export type Screen = 'loading' | 'title' | 'playing' | 'paused' | 'dialogue' | 'office'
 
@@ -23,6 +24,8 @@ export interface HudState {
   showPerf: boolean
   /** Which agent's office panel is open. */
   openAgentId: string | null
+  /** Which local scripted character owns the dialogue panel. */
+  openCharacterId: CharacterId
 
   set<K extends keyof HudState>(key: K, value: HudState[K]): void
   setScreen(s: Screen): void
@@ -40,6 +43,7 @@ export const useHud = create<HudState>((set) => ({
   frameMs: 0,
   showPerf: false,
   openAgentId: null,
+  openCharacterId: 'iris',
 
   set: (key, value) => set({ [key]: value } as Pick<HudState, typeof key>),
   setScreen: (screen) => set({ screen }),

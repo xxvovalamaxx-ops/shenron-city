@@ -14,6 +14,20 @@ import { initialDoor, type DoorState } from './doors'
 import type { Interactable } from './interact'
 import type { Vec3 } from './collision'
 import { SPAWN } from '../world/layout'
+import { MARKET_KEEPER } from '../world/city-data'
+
+function initialPlayerPosition(): Vec3 {
+  const defaultSpawn = { x: SPAWN.x, y: SPAWN.y, z: SPAWN.z }
+  if (!import.meta.env.DEV || typeof location === 'undefined') return defaultSpawn
+
+  // A bounded developer shortcut for browser verification. This is compiled
+  // out of production and accepts named in-world anchors, never coordinates.
+  const debugSpawn = new URLSearchParams(location.search).get('spawn')
+  if (debugSpawn === 'market') {
+    return { x: MARKET_KEEPER.x, y: SPAWN.y, z: MARKET_KEEPER.z + 2.7 }
+  }
+  return defaultSpawn
+}
 
 export interface Runtime {
   elevator: ElevatorState
@@ -63,7 +77,7 @@ export const rt: Runtime = {
   elevator: initialElevator('lobby'),
   entranceDoor: initialDoor(),
   player: {
-    pos: { x: SPAWN.x, y: SPAWN.y, z: SPAWN.z },
+    pos: initialPlayerPosition(),
     velocityY: 0,
     grounded: false,
     forward: { x: 0, z: -1 },
@@ -91,7 +105,7 @@ export const rt: Runtime = {
 }
 
 export function resetPlayer(): void {
-  rt.player.pos = { x: SPAWN.x, y: SPAWN.y, z: SPAWN.z }
+  rt.player.pos = initialPlayerPosition()
   rt.player.velocityY = 0
 }
 

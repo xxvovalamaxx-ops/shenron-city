@@ -2,10 +2,9 @@
  * Assembly: canvas, scene graph, overlays, and the screen state machine that
  * decides who owns the mouse.
  */
-import { Suspense, useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { lazy, Suspense, useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { Canvas, useThree } from '@react-three/fiber'
 import { PointerLockControls, useProgress } from '@react-three/drei'
-import { EffectComposer, Bloom, Vignette, SMAA } from '@react-three/postprocessing'
 import * as THREE from 'three'
 
 import { useGame } from './adapter/store'
@@ -21,12 +20,18 @@ import { Elevator } from './world/Elevator'
 import { Floor45 } from './world/Floor45'
 import { DoorPair } from './world/Doors'
 import { Secretary, SECRETARY_NAME } from './agents/Secretary'
-import { ENTRANCE, HQ, OFFICE_SLOTS, PANEL, SECRETARY as SEC_POS } from './world/layout'
+import { AmbientCrowd } from './agents/AmbientCrowd'
+import { MarketKeeper } from './agents/MarketKeeper'
+import type { CharacterId } from './agents/dialogue'
+import { ENTRANCE, HQ, OFFICE_SLOTS, PANEL, SECRETARY as SEC_POS, SPAWN } from './world/layout'
+import { MARKET_KEEPER } from './world/city-data'
 import { PALETTE, QUALITY } from './world/palette'
 import { Hud } from './ui/Hud'
 import { Dialogue } from './ui/Dialogue'
 import { OfficePanel } from './ui/OfficePanel'
 import { DEFAULT_SETTINGS, LoadingScreen, PauseMenu, TitleScreen, type Settings } from './ui/Screens'
+
+const PostProcessing = lazy(() => import('./world/PostProcessing'))
 
 /** Hands the renderer to the perf overlay and applies quality settings. */
 function RendererBridge({ maxDpr, shadows }: { maxDpr: number; shadows: boolean }) {
@@ -70,11 +75,11 @@ function Lighting({ shadows, shadowMapSize }: { shadows: boolean; shadowMapSize:
         castShadow={shadows}
         shadow-mapSize={[shadowMapSize, shadowMapSize]}
         shadow-camera-near={1}
-        shadow-camera-far={190}
-        shadow-camera-left={-70}
-        shadow-camera-right={70}
-        shadow-camera-top={70}
-        shadow-camera-bottom={-70}
+        shadow-camera-far={320}
+        shadow-camera-left={-180}
+        shadow-camera-right={180}
+        shadow-camera-top={180}
+        shadow-camera-bottom={-180}
         shadow-bias={-0.0006}
       />
 
@@ -137,6 +142,16 @@ function Scene({
         payload: 'car',
         movingY: PANEL.y,
       },
+      {
+        id: 'city-character-mira',
+        kind: 'city-character',
+        x: MARKET_KEEPER.x,
+        y: 1.45,
+        z: MARKET_KEEPER.z,
+        label: `Talk to ${MARKET_KEEPER.name}`,
+        range: 3.4,
+        payload: MARKET_KEEPER.id,
+      },
     ]
 
     for (const slot of OFFICE_SLOTS) {
@@ -160,9 +175,9 @@ function Scene({
   return (
     <>
       <color attach="background" args={[PALETTE.night]} />
-      {/* Fog starts well beyond the lobby's 30 m depth — at 40 m it was
-          washing the interior the moment you stepped inside. */}
-      <fog attach="fog" args={[PALETTE.horizon, 95, 420]} />
+      {/* The hero boulevard stays readable from spawn while the far skyline
+          still dissolves into the night horizon. */}
+      <fog attach="fog" args={[PALETTE.horizon, 145, 480]} />
 
       <RendererBridge maxDpr={quality.maxDpr} shadows={quality.shadows} />
       <Lighting shadows={quality.shadows} shadowMapSize={quality.shadowMapSize} />
@@ -172,6 +187,8 @@ function Scene({
       <Elevator />
       <Floor45 agents={agents} quality={quality} source={snapshot?.source ?? 'standalone'} />
       <Secretary link={link} />
+      <MarketKeeper />
+      <AmbientCrowd count={quality.ambientPedestrians} />
 
       {/* Entrance doors live outside the car group — they do not travel */}
       <DoorPair
@@ -189,11 +206,9 @@ function Scene({
       <GameLoop interactables={interactables} onInteract={onInteract} />
 
       {quality.postprocessing && (
-        <EffectComposer>
-          <Bloom intensity={0.62} luminanceThreshold={0.62} luminanceSmoothing={0.28} mipmapBlur />
-          <Vignette offset={0.28} darkness={0.72} />
-          <SMAA />
-        </EffectComposer>
+        <Suspense fallback={null}>
+          <PostProcessing />
+        </Suspense>
       )}
     </>
   )
@@ -238,6 +253,7 @@ export default function App() {
   const screen = useHud((s) => s.screen)
   const setScreen = useHud((s) => s.setScreen)
   const openAgentId = useHud((s) => s.openAgentId)
+  const openCharacterId = useHud((s) => s.openCharacterId)
   const start = useGame((s) => s.start)
   const dispose = useGame((s) => s.dispose)
 
@@ -276,6 +292,13 @@ export default function App() {
       switch (target.kind) {
         case 'secretary':
           controls.current?.unlock()
+          useHud.setState({ openCharacterId: 'iris' })
+          setScreen('dialogue')
+          break
+        case 'city-character':
+          if (target.payload !== 'mira') break
+          controls.current?.unlock()
+          useHud.setState({ openCharacterId: target.payload as CharacterId })
           setScreen('dialogue')
           break
         case 'elevator-panel': {
@@ -303,7 +326,12 @@ export default function App() {
         shadows={{ type: THREE.PCFShadowMap }}
         dpr={[1, 2]}
         gl={{ antialias: false, powerPreference: 'high-performance' }}
-        camera={{ fov: settings.fov, near: 0.1, far: 900, position: [0, 1.7, 36] }}
+        camera={{
+          fov: settings.fov,
+          near: 0.1,
+          far: 900,
+          position: [SPAWN.x, SPAWN.y + 1.65, SPAWN.z],
+        }}
         // See lib/resize.ts — without this the canvas never gets measured on
         // hosts whose ResizeObserver never fires, and the game hangs on the
         // loading screen with no error.
@@ -333,7 +361,9 @@ export default function App() {
       {screen === 'paused' && (
         <PauseMenu settings={settings} onChange={setSettings} onResume={enterWorld} />
       )}
-      {screen === 'dialogue' && <Dialogue onClose={enterWorld} />}
+      {screen === 'dialogue' && (
+        <Dialogue key={openCharacterId} characterId={openCharacterId} onClose={enterWorld} />
+      )}
       {screen === 'office' && openAgentId && (
         <OfficePanel agentId={openAgentId} onClose={enterWorld} />
       )}

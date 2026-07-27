@@ -1,0 +1,323 @@
+/**
+ * Shenron City's first walkable exterior district.
+ *
+ * The forms are intentionally procedural while the visual language is still
+ * being proved. Repeated windows, trees, lights and lane markings are
+ * instanced so the street adds density without adding hundreds of draw calls.
+ */
+import { useLayoutEffect, useMemo, useRef } from 'react'
+import * as THREE from 'three'
+import { WorldText as Text } from '../ui/WorldText'
+import {
+  BOULEVARD,
+  MARKET_STALLS,
+  STOREFRONTS,
+  STREET_LIGHTS,
+  STREET_TREES,
+  type Storefront,
+} from './city-data'
+import { PALETTE, type QualitySettings } from './palette'
+
+function StorefrontBuilding({
+  store,
+  shadows,
+}: {
+  store: Storefront
+  shadows: boolean
+}) {
+  const facesEast = store.x < 0
+  const frontX = (facesEast ? 1 : -1) * (store.width / 2 + 0.03)
+  const frontRotation: [number, number, number] = [0, facesEast ? Math.PI / 2 : -Math.PI / 2, 0]
+
+  return (
+    <group position={[store.x, 0, store.z]}>
+      <mesh position={[0, store.height / 2, 0]} castShadow={shadows} receiveShadow={shadows}>
+        <boxGeometry args={[store.width, store.height, store.depth]} />
+        <meshStandardMaterial color={store.color} roughness={0.72} metalness={0.22} />
+      </mesh>
+
+      {/* A bright ground-floor shopfront faces the boulevard. */}
+      <mesh position={[frontX, 1.65, 0]} rotation={frontRotation}>
+        <boxGeometry args={[store.depth - 2.4, 2.8, 0.1]} />
+        <meshStandardMaterial
+          color="#b9d7e9"
+          emissive={store.accent}
+          emissiveIntensity={0.28}
+          roughness={0.12}
+          metalness={0.15}
+        />
+      </mesh>
+      <mesh position={[frontX * 1.015, 3.25, 0]} rotation={frontRotation}>
+        <boxGeometry args={[store.depth - 1.6, 0.2, 0.36]} />
+        <meshBasicMaterial color={store.accent} toneMapped={false} />
+      </mesh>
+      <Text
+        position={[frontX * 1.025, 3.75, 0]}
+        rotation={frontRotation}
+        fontSize={0.34}
+        color={store.accent}
+      >
+        {store.name.toUpperCase()}
+      </Text>
+    </group>
+  )
+}
+
+function DistrictWindows() {
+  const ref = useRef<THREE.InstancedMesh>(null)
+  const count = useMemo(
+    () => STOREFRONTS.reduce((total, store) => total + store.floors * 4, 0),
+    [],
+  )
+
+  useLayoutEffect(() => {
+    const mesh = ref.current
+    if (!mesh) return
+
+    const matrix = new THREE.Matrix4()
+    const position = new THREE.Vector3()
+    const rotation = new THREE.Quaternion()
+    const scale = new THREE.Vector3(1.35, 1.05, 1)
+    const color = new THREE.Color()
+    let index = 0
+
+    for (const store of STOREFRONTS) {
+      const facesEast = store.x < 0
+      const frontX = store.x + (facesEast ? 1 : -1) * (store.width / 2 + 0.08)
+      rotation.setFromEuler(new THREE.Euler(0, facesEast ? Math.PI / 2 : -Math.PI / 2, 0))
+
+      for (let floor = 0; floor < store.floors; floor++) {
+        const y = 5.1 + floor * 2.45
+        if (y > store.height - 0.8) continue
+        for (let column = 0; column < 4; column++) {
+          const z = store.z - store.depth / 2 + 2.7 + (column / 3) * (store.depth - 5.4)
+          position.set(frontX, y, z)
+          matrix.compose(position, rotation, scale)
+          mesh.setMatrixAt(index, matrix)
+          color.setStyle((index + floor) % 3 === 0 ? store.accent : PALETTE.warmLight)
+          color.multiplyScalar((index + column) % 4 === 0 ? 0.28 : 0.65)
+          mesh.setColorAt(index, color)
+          index++
+        }
+      }
+    }
+
+    // Hide unused capacity when a short building has fewer valid upper rows.
+    for (; index < count; index++) {
+      matrix.makeScale(0, 0, 0)
+      mesh.setMatrixAt(index, matrix)
+    }
+    mesh.instanceMatrix.needsUpdate = true
+    if (mesh.instanceColor) mesh.instanceColor.needsUpdate = true
+  }, [count])
+
+  return (
+    <instancedMesh ref={ref} args={[undefined, undefined, count]}>
+      <planeGeometry args={[1, 1]} />
+      <meshBasicMaterial toneMapped={false} />
+    </instancedMesh>
+  )
+}
+
+function Market({ shadows }: { shadows: boolean }) {
+  return (
+    <group>
+      <Text position={[13.7, 3.65, 70]} rotation={[0, -Math.PI / 2, 0]} fontSize={0.48} color="#fbbf24">
+        NIGHT MARKET
+      </Text>
+      {MARKET_STALLS.map((stall) => (
+        <group key={stall.id} position={[stall.x, 0, stall.z]}>
+          <mesh position={[0, 0.52, 0]} castShadow={shadows} receiveShadow={shadows}>
+            <boxGeometry args={[stall.width, 1.04, stall.depth]} />
+            <meshStandardMaterial color="#302a25" roughness={0.82} />
+          </mesh>
+          <mesh position={[0, stall.height, 0]} castShadow={shadows}>
+            <boxGeometry args={[stall.width + 0.35, 0.12, stall.depth + 0.4]} />
+            <meshStandardMaterial
+              color={stall.awning}
+              emissive={stall.awning}
+              emissiveIntensity={0.18}
+              roughness={0.65}
+            />
+          </mesh>
+          {[-1, 1].map((x) =>
+            [-1, 1].map((z) => (
+              <mesh
+                key={`${x}:${z}`}
+                position={[x * (stall.width / 2 - 0.12), stall.height / 2, z * (stall.depth / 2 - 0.12)]}
+              >
+                <cylinderGeometry args={[0.035, 0.045, stall.height, 6]} />
+                <meshStandardMaterial color="#6b5542" roughness={0.9} />
+              </mesh>
+            )),
+          )}
+          <Text
+            position={[-stall.width / 2 - 0.05, 1.45, 0]}
+            rotation={[0, -Math.PI / 2, 0]}
+            fontSize={0.22}
+            color="#fff7df"
+          >
+            {stall.name.toUpperCase()}
+          </Text>
+        </group>
+      ))}
+    </group>
+  )
+}
+
+function Trees() {
+  const trunks = useRef<THREE.InstancedMesh>(null)
+  const crowns = useRef<THREE.InstancedMesh>(null)
+
+  useLayoutEffect(() => {
+    const trunkMesh = trunks.current
+    const crownMesh = crowns.current
+    if (!trunkMesh || !crownMesh) return
+
+    const matrix = new THREE.Matrix4()
+    const rotation = new THREE.Quaternion()
+    for (let i = 0; i < STREET_TREES.length; i++) {
+      const tree = STREET_TREES[i]
+      matrix.compose(
+        new THREE.Vector3(tree.x, 1.25 * tree.scale, tree.z),
+        rotation,
+        new THREE.Vector3(0.28 * tree.scale, 2.5 * tree.scale, 0.28 * tree.scale),
+      )
+      trunkMesh.setMatrixAt(i, matrix)
+
+      matrix.compose(
+        new THREE.Vector3(tree.x, 3.1 * tree.scale, tree.z),
+        rotation,
+        new THREE.Vector3(1.25 * tree.scale, 1.7 * tree.scale, 1.25 * tree.scale),
+      )
+      crownMesh.setMatrixAt(i, matrix)
+    }
+    trunkMesh.instanceMatrix.needsUpdate = true
+    crownMesh.instanceMatrix.needsUpdate = true
+  }, [])
+
+  return (
+    <>
+      <instancedMesh ref={trunks} args={[undefined, undefined, STREET_TREES.length]}>
+        <cylinderGeometry args={[1, 1, 1, 7]} />
+        <meshStandardMaterial color="#4a3427" roughness={1} />
+      </instancedMesh>
+      <instancedMesh ref={crowns} args={[undefined, undefined, STREET_TREES.length]}>
+        <icosahedronGeometry args={[1, 1]} />
+        <meshStandardMaterial color="#173c2c" roughness={0.95} />
+      </instancedMesh>
+    </>
+  )
+}
+
+function StreetLights() {
+  const poles = useRef<THREE.InstancedMesh>(null)
+  const lamps = useRef<THREE.InstancedMesh>(null)
+
+  useLayoutEffect(() => {
+    const poleMesh = poles.current
+    const lampMesh = lamps.current
+    if (!poleMesh || !lampMesh) return
+    const matrix = new THREE.Matrix4()
+
+    for (let i = 0; i < STREET_LIGHTS.length; i++) {
+      const light = STREET_LIGHTS[i]
+      matrix.makeTranslation(light.x, 2.3, light.z)
+      poleMesh.setMatrixAt(i, matrix)
+      matrix.makeTranslation(light.x, 4.62, light.z)
+      lampMesh.setMatrixAt(i, matrix)
+    }
+    poleMesh.instanceMatrix.needsUpdate = true
+    lampMesh.instanceMatrix.needsUpdate = true
+  }, [])
+
+  return (
+    <>
+      <instancedMesh ref={poles} args={[undefined, undefined, STREET_LIGHTS.length]}>
+        <cylinderGeometry args={[0.08, 0.12, 4.6, 8]} />
+        <meshStandardMaterial color="#343b47" metalness={0.8} roughness={0.35} />
+      </instancedMesh>
+      <instancedMesh ref={lamps} args={[undefined, undefined, STREET_LIGHTS.length]}>
+        <sphereGeometry args={[0.18, 8, 6]} />
+        <meshBasicMaterial color={PALETTE.warmLight} toneMapped={false} />
+      </instancedMesh>
+    </>
+  )
+}
+
+function RoadMarkings() {
+  const ref = useRef<THREE.InstancedMesh>(null)
+  const count = 14
+
+  useLayoutEffect(() => {
+    const mesh = ref.current
+    if (!mesh) return
+    const matrix = new THREE.Matrix4()
+    for (let i = 0; i < count; i++) {
+      matrix.makeTranslation(0, 0.024, 48 + i * 8)
+      mesh.setMatrixAt(i, matrix)
+    }
+    mesh.instanceMatrix.needsUpdate = true
+  }, [])
+
+  return (
+    <instancedMesh ref={ref} args={[undefined, undefined, count]}>
+      <boxGeometry args={[0.16, 0.025, 3.8]} />
+      <meshBasicMaterial color="#c7b875" transparent opacity={0.75} />
+    </instancedMesh>
+  )
+}
+
+export function CityDistrict({ quality }: { quality: QualitySettings }) {
+  const sidewalkX = BOULEVARD.width / 2 + BOULEVARD.sidewalkWidth / 2
+
+  return (
+    <group>
+      {/* Boulevard and raised pedestrian edges begin after the HQ plaza. */}
+      <mesh rotation={[-Math.PI / 2, 0, 0]} position={[BOULEVARD.x, 0.012, BOULEVARD.z]}>
+        <planeGeometry args={[BOULEVARD.width, BOULEVARD.depth]} />
+        <meshStandardMaterial color="#11151c" roughness={0.96} />
+      </mesh>
+      {[-1, 1].map((side) => (
+        <mesh
+          key={side}
+          position={[side * sidewalkX, 0.09, BOULEVARD.z]}
+          receiveShadow={quality.shadows}
+        >
+          <boxGeometry args={[BOULEVARD.sidewalkWidth, 0.18, BOULEVARD.depth]} />
+          <meshStandardMaterial color="#343841" roughness={0.9} />
+        </mesh>
+      ))}
+      <RoadMarkings />
+
+      {/* Crosswalk makes the end of the boulevard read as a real junction. */}
+      {Array.from({ length: 9 }, (_, index) => (
+        <mesh key={index} position={[-6.2 + index * 1.55, 0.035, 39.5]}>
+          <boxGeometry args={[0.82, 0.025, 4.8]} />
+          <meshBasicMaterial color="#d7d8d5" transparent opacity={0.72} />
+        </mesh>
+      ))}
+
+      {/* Small green pocket between the HQ plaza and the west storefronts. */}
+      <mesh position={[-20, 0.055, 49]} receiveShadow={quality.shadows}>
+        <boxGeometry args={[15.5, 0.1, 20]} />
+        <meshStandardMaterial color="#14291f" roughness={1} />
+      </mesh>
+      <mesh position={[-20, 0.12, 49]} rotation={[-Math.PI / 2, 0, 0]}>
+        <ringGeometry args={[4.4, 5.1, 32]} />
+        <meshStandardMaterial color="#8b8172" roughness={0.95} />
+      </mesh>
+      <Text position={[-20, 0.2, 59.2]} rotation={[-Math.PI / 2, 0, 0]} fontSize={0.5} color="#75a98c">
+        DRAGON POCKET PARK
+      </Text>
+
+      {STOREFRONTS.map((store) => (
+        <StorefrontBuilding key={store.id} store={store} shadows={quality.shadows} />
+      ))}
+      <DistrictWindows />
+      <Market shadows={quality.shadows} />
+      <Trees />
+      <StreetLights />
+    </group>
+  )
+}
