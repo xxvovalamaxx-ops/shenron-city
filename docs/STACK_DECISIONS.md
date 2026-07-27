@@ -31,7 +31,7 @@ betting a new build's whole toolchain on a rewritten compiler buys nothing here.
 | `react` / `react-dom` | ~19.2.8 | Pinned below 19.3 per R3F's peer range. |
 | `zustand` | 5.0.14 | Standalone scenario state and the HUD mirror. Chosen over context to keep frame-rate updates out of React's render path. |
 | `zod` | 4.4.3 | Retained for quarantined, pure future adapter schemas and their tests; it is tree-shaken from the active standalone path. |
-| `vitest` | 4.1.10 | 55 tests over simulation, contracts, and the standalone boundary. |
+| `vitest` | 4.1.10 | 64 tests over simulation, contracts, HUD mirroring, and the standalone boundary. |
 | `typescript` | ~5.9.3 | Strict, `noUnusedLocals`, `noUncheckedSideEffectImports`. |
 
 ## Deferred
@@ -42,13 +42,13 @@ betting a new build's whole toolchain on a rewritten compiler buys nothing here.
 | `ecctrl` | Character controller built on rapier. Inherits that decision. | With rapier. |
 | `three-mesh-bvh` | Accelerates raycasts against dense meshes. The scene is ~120 boxes; a linear sweep is faster than building a BVH. | Loaded GLB environments with real triangle counts. |
 | `recast-navigation-js` | Navmesh + crowd pathfinding. Nothing in the slice walks — the secretary is stationary and agents are represented as fixed presences. | NPCs that move between rooms. |
-| `xstate` | One state machine does not pay for a statechart runtime. `gameplay/elevator.ts` is a 5-phase total reducer with 8 tests asserting the impossible states cannot occur. | Three or more interacting machines. |
+| `xstate` | One state machine does not pay for a statechart runtime. `gameplay/elevator.ts` is a 5-phase total reducer with 10 tests asserting the impossible states cannot occur. | Three or more interacting machines. |
 | `theatre` | Authored cinematic sequencing. Nothing is authored yet. | Cutscenes, scripted camera moves. |
 | `uikit` | In-world React UI in WebGL. The local `WorldText` canvas component covers current monitors and signage. | Interactive in-world panels — lift buttons you actually click in 3D, resident screens with controls. |
 | `gltfjsx`, `glTF-Transform` | Asset pipeline tooling. **There are no assets** — the entire building is procedural geometry. Installing a pipeline before any art exists is ceremony. | The first real GLB. That is also when Git LFS starts mattering. |
 | `git-lfs` | See above. Repo has no binaries. | With the first GLB/texture/audio. |
 | `turborepo`, `pnpm` | One app. A monorepo toolchain solves cross-package task orchestration, and there is nothing to orchestrate. The layered boundaries the plan actually cares about are enforced by directory + import discipline today. | A second deployable (desktop shell, adapter service) lands. |
-| `playwright` | E2E against WebGL. Headless GPU is unreliable in CI, and the deterministic logic — the part worth regression-testing — is already covered by 46 unit tests. Adding a flaky browser job would make CI less trustworthy, not more. | A stable GPU-enabled runner, or when there is DOM-level UI worth driving. |
+| `playwright` | E2E against WebGL. Headless GPU is unreliable in CI, and the deterministic logic is already covered by 64 automated tests. Adding a flaky browser job would make CI less trustworthy, not more. | A stable GPU-enabled runner, or when there is DOM-level UI worth driving. |
 | `opentelemetry-js`, `sentry` | Nothing is deployed. Local-only, one user. | First non-local deployment. |
 | `modelcontextprotocol/typescript-sdk` | The standalone game has no tool or backend connection. Browser-side MCP would violate the current boundary. | Only behind a separately reviewed server adapter; probably never in the browser. |
 | `tauri` | The current build intentionally has no desktop or native bridge. | A separately approved, allowlisted desktop phase after the game is stable. |

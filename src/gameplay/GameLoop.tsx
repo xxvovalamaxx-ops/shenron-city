@@ -17,6 +17,7 @@ import { carHeight, currentFloor, doorOpenness, step, FLOORS } from './elevator'
 import { leafOffset, stepDoor } from './doors'
 import { shaftGuards } from './shaft'
 import { pickTarget, placeMovingTargets, type Interactable } from './interact'
+import { hudMirrorChanged } from './hud-mirror'
 import {
   ENTRANCE,
   SHAFT,
@@ -255,14 +256,7 @@ export function GameLoop({ interactables, onInteract }: GameLoopProps) {
 
       // Only write when something actually changed — zustand notifies on every
       // set, and at 10 Hz an unconditional write re-renders the HUD forever.
-      if (
-        next.promptLabel !== hud.promptLabel ||
-        next.promptKind !== hud.promptKind ||
-        next.promptPayload !== hud.promptPayload ||
-        next.floorLabel !== hud.floorLabel ||
-        next.elevatorPhase !== hud.elevatorPhase ||
-        next.fps !== hud.fps
-      ) {
+      if (hudMirrorChanged(next, hud)) {
         useHud.setState(next)
       }
     }

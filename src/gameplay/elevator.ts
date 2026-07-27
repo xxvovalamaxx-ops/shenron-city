@@ -46,7 +46,7 @@ export type ElevatorEvent =
 export const initialElevator = (floor: FloorId = 'lobby'): ElevatorState => ({
   phase: 'open',
   floor,
-  hold: Infinity,
+  hold: 3,
 })
 
 /** The floor the car is physically at, or null while in the shaft. */
@@ -104,10 +104,9 @@ export function step(s: ElevatorState, e: ElevatorEvent): ElevatorState {
       }
       if (e.type === 'OBSTRUCT' || e.type === 'OPEN') return { ...s, hold: 4 }
       if (e.type === 'TICK') {
-        const next = { ...s, hold: Math.max(0, s.hold - e.dt) }
-        return next.hold <= 0
-          ? { phase: 'closing', floor: s.floor, target: s.floor, t: 0 }
-          : next
+        // There is no external call button yet, so closing here could lock a
+        // player out on floor 45. Stay open until a destination is selected.
+        return { ...s, hold: Math.max(0, s.hold - e.dt) }
       }
       return s
 

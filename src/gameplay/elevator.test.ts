@@ -76,6 +76,13 @@ describe('elevator invariants', () => {
 })
 
 describe('door safety', () => {
+  it('does not lock the player out while there is no external call button', () => {
+    let s: ElevatorState = { phase: 'open', floor: 'hq', hold: 0.05 }
+    s = step(s, tick(60))
+    expect(s).toEqual({ phase: 'open', floor: 'hq', hold: 0 })
+    expect(doorOpenness(s)).toBe(1)
+  })
+
   it('reopens when obstructed while closing', () => {
     let s = initialElevator('lobby')
     s = step(s, { type: 'CALL', floor: 'hq' })

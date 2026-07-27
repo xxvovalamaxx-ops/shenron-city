@@ -41,6 +41,20 @@ if (/\bproxy\s*:/.test(viteConfig)) findings.push('vite.config.ts: proxy')
 if (/MISSION_CONTROL_URL/.test(viteConfig)) findings.push('vite.config.ts: Mission Control URL')
 if (!/\bhmr:\s*false\b/.test(viteConfig)) findings.push('vite.config.ts: HMR must remain disabled')
 
+const launcher = readFileSync(join(root, 'start.bat'), 'utf8')
+const forbiddenLauncherPatterns = [
+  [/\bcall\s+npm\s+install\b/i, 'unlocked npm install'],
+  [/\.env(?:\.example)?/i, 'environment-file setup'],
+  [/\bmode=demo\b/i, 'obsolete demo mode'],
+  [/\bMission Control\b/i, 'obsolete Mission Control guidance'],
+]
+for (const [pattern, label] of forbiddenLauncherPatterns) {
+  if (pattern.test(launcher)) findings.push(`start.bat: ${label}`)
+}
+if (!/if\s+not\s+exist\s+node_modules[\s\S]*\bcall\s+npm\s+ci\b/i.test(launcher)) {
+  findings.push('start.bat: missing locked first-run install')
+}
+
 const html = readFileSync(join(root, 'index.html'), 'utf8')
 if (!/connect-src 'none'/.test(html)) findings.push('index.html: connect-src must remain none')
 
