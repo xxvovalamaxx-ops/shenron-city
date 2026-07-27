@@ -28,7 +28,9 @@ The boundary is enforced in several layers:
 4. In-world labels use `ui/WorldText.tsx`, which creates canvas textures from a
    built-in generic font.
 5. `scripts/verify-standalone-build.mjs` scans executable source and production
-   output for network/native integration paths.
+   output for network/native integration paths. It also rejects launcher
+   regressions such as environment-file setup, unlocked `npm install`, and
+   obsolete connected/demo-mode guidance.
 6. `src/adapter/store.test.ts` proves startup and profile refresh never call
    `fetch` or construct a WebSocket.
 

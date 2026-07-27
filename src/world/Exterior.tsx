@@ -56,7 +56,7 @@ function CityBlocks({ count }: { count: number }) {
     }
     mesh.instanceMatrix.needsUpdate = true
     if (mesh.instanceColor) mesh.instanceColor.needsUpdate = true
-  }, [])
+  }, [count])
 
   return (
     <instancedMesh ref={ref} args={[undefined, undefined, count]} frustumCulled>
