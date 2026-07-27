@@ -49,7 +49,11 @@ export const TOWER = { halfWidth: 26, depth: 40, height: 120 } as const
 
 export const RECEPTION_DESK = { x: -6.5, z: -13, w: 6.4, d: 1.5, h: 1.12 } as const
 export const SECRETARY = { x: -6.5, z: -14.6 } as const
-export const PANEL = { x: SHAFT.halfWidth - 0.22, z: -31.4 } as const
+export const PANEL = {
+  x: SHAFT.halfWidth - 0.14,
+  y: 1.25,
+  z: SHAFT.doorZ - SHAFT.carDepth / 2 + 0.9,
+} as const
 
 /** Where the six agent offices sit on floor 45. Index order is stable. */
 export interface OfficeSlot {

@@ -1,16 +1,8 @@
 /**
  * The secretary's answers.
  *
- * Grounded by construction: every fact she states is read out of the validated
- * snapshot, never generated. That is a deliberate choice, not a placeholder —
- * asking a language model "how many agents are running" when the number is
- * sitting in a struct is how a control surface starts confidently lying.
- *
- * A model seam exists (`Reply.source === 'model'`) for open-ended conversation
- * that genuinely needs one. It is NOT wired to a provider from the browser:
- * that would require a key in the client bundle, which the security boundary
- * forbids. Turning it on means routing through the backend — see
- * docs/architecture/SECURITY_BOUNDARY.md.
+ * Every reply is derived locally from the standalone scenario. No model,
+ * backend, browser API, or computer integration is called.
  *
  * SECURITY: text produced here is display data. It is never interpreted, never
  * eval'd, and can never reach the desktop bridge. No dialogue path can invoke
@@ -18,7 +10,6 @@
  */
 import type { WorldSnapshot } from '../contracts/mission-control'
 import { STATE_LABEL } from '../world/palette'
-import type { LinkState } from '../adapter/store'
 
 export interface Reply {
   text: string
@@ -32,6 +23,7 @@ type Intent =
   | 'failures'
   | 'blocked'
   | 'cost'
+  | 'connection'
   | 'model'
   | 'tasks'
   | 'navigate'
@@ -43,6 +35,7 @@ const PATTERNS: [Intent, RegExp][] = [
   ['failures', /\b(fail|failed|failure|error|broke|broken|wrong|incident)\b/i],
   ['blocked', /\b(block|blocked|stuck|waiting|approval|approve|pending)\b/i],
   ['cost', /\b(cost|spend|spent|budget|token|money|price|usd|\$)\b/i],
+  ['connection', /\b(connect|connected|computer|mission control|network|internet|online|offline)\b/i],
   ['model', /\b(model|provider|which model|running on|llm)\b/i],
   ['agents', /\b(agent|agents|team|who|worker|subagent)\b/i],
   ['tasks', /\b(task|tasks|job|jobs|work|working|queue|busy)\b/i],
@@ -64,98 +57,88 @@ function plural(n: number, one: string, many = `${one}s`): string {
   return `${n} ${n === 1 ? one : many}`
 }
 
-function linkCaveat(link: LinkState, source: 'live' | 'demo'): string {
-  if (source === 'demo') return ' Everything I just said is fixture data — this is demo mode, not your real system.'
-  if (link === 'degraded') return " I should say: I've lost contact with Mission Control, so this is the last reading I got, not live."
-  if (link === 'unreachable') return " Careful with that — Mission Control is unreachable and this reading is stale."
-  return ''
-}
-
 export function answer(
   question: string,
   snapshot: WorldSnapshot | null,
-  link: LinkState,
 ): Reply {
   if (!snapshot) {
     return {
       source: 'fallback',
-      text: "I can't reach Mission Control at all right now, so I have nothing accurate to tell you. I'd rather say that than guess.",
+      text: 'The local scenario is not ready yet. Give the headquarters a moment to finish loading.',
     }
   }
 
-  const { status, agents, metrics, source } = snapshot
-  const caveat = linkCaveat(link, source)
+  const { status, agents } = snapshot
   const intent = classify(question)
 
   const byState = (s: string) => agents.filter((a) => a.state === s)
-  const grounded = (text: string): Reply => ({ source: 'grounded', text: text + caveat })
+  const grounded = (text: string): Reply => ({ source: 'grounded', text })
 
   switch (intent) {
     case 'greeting':
       return grounded(
-        `Welcome back. ${status.identity} is ${STATE_LABEL[status.overall].toLowerCase()}, ${plural(status.runningTasks, 'task')} running and ${plural(agents.length, 'agent')} on the register. Ask me for a status summary, or take the lift to 45 and see them yourself.`,
+        `Welcome to ${status.identity}. ${plural(agents.length, 'resident')} are staged in this standalone prototype. Ask me about the headquarters, or take the lift to 45 and meet them.`,
       )
 
     case 'overview':
       return grounded(
-        `${status.identity} is ${STATE_LABEL[status.overall].toLowerCase()} on ${status.model}. ` +
-          `${plural(status.runningTasks, 'task')} running, ${status.queued} queued, ` +
-          `${status.completedToday} completed today and ${status.failedToday} failed. ` +
-          `${plural(status.toolCallsToday, 'tool call')} so far, costing $${status.costTodayUsd.toFixed(4)}. ` +
-          (status.alertCount > 0
-            ? `There ${status.alertCount === 1 ? 'is' : 'are'} ${plural(status.alertCount, 'open alert')}.`
-            : 'No open alerts.'),
+        `${status.identity} is a fully standalone game scene. The plaza, lobby, automatic doors, secretary, elevator, and floor 45 route are available. ${plural(agents.length, 'fictional resident')} currently occupy the headquarters.`,
       )
 
     case 'agents': {
-      if (agents.length === 0) return grounded('The register is empty — no agents are registered right now.')
+      if (agents.length === 0) return grounded('The headquarters is empty right now.')
       const active = byState('active')
       const parts = agents
         .slice(0, 6)
         .map((a) => `${a.name} (${STATE_LABEL[a.state].toLowerCase()})`)
         .join(', ')
       return grounded(
-        `${plural(agents.length, 'agent')} registered, ${active.length} working. ${parts}${agents.length > 6 ? ', and more' : ''}. Floor 45 has the offices — you can look in on any of them.`,
+        `${plural(agents.length, 'fictional resident')} staged, ${active.length} active. ${parts}${agents.length > 6 ? ', and more' : ''}. Their offices are on floor 45.`,
       )
     }
 
     case 'failures': {
       const failed = byState('failed')
       if (failed.length === 0 && status.failedToday === 0) {
-        return grounded('Nothing has failed today, and no agent is in a failed state. Quiet day.')
+        return grounded('The standalone scenario has no active incident. Quiet shift.')
       }
       const names = failed.map((a) => `${a.name}${a.currentTask ? ` — ${a.currentTask}` : ''}`)
       return grounded(
-        `${plural(status.failedToday, 'failure')} today. ` +
+        `${plural(status.failedToday, 'simulated incident')} in this scenario. ` +
           (names.length
-            ? `Currently failed: ${names.join('; ')}. Their offices on 45 are the red ones.`
-            : 'No agent is sitting in a failed state right now, so those were transient.'),
+            ? `Current incident: ${names.join('; ')}. The affected office on 45 is red.`
+            : 'No resident is currently in a failed state.'),
       )
     }
 
     case 'blocked': {
       const blocked = byState('blocked')
       if (blocked.length === 0) {
-        return grounded('Nothing is blocked and nothing is waiting on your approval.')
+        return grounded('Nobody in the local scenario is waiting right now.')
       }
       return grounded(
-        `${plural(blocked.length, 'agent')} blocked: ${blocked.map((a) => `${a.name}${a.currentTask ? ` (${a.currentTask})` : ''}`).join('; ')}. Approvals are yours to give — I can't grant them for you.`,
+        `${plural(blocked.length, 'resident')} waiting: ${blocked.map((a) => `${a.name}${a.currentTask ? ` (${a.currentTask})` : ''}`).join('; ')}. This prototype cannot approve or execute anything on your computer.`,
       )
     }
 
     case 'cost':
       return grounded(
-        `$${status.costTodayUsd.toFixed(4)} today across ${plural(status.toolCallsToday, 'tool call')}. That's on ${status.model} via ${status.provider}.`,
+        'This standalone build spends nothing. It does not call a model provider or any paid service.',
+      )
+
+    case 'connection':
+      return grounded(
+        'No. This build is deliberately disconnected from your computer, Mission Control, model providers, telemetry, and external hosts. It uses only the game scenario bundled in the repository.',
       )
 
     case 'model':
       return grounded(
-        `${status.identity} is running ${status.model} through ${status.provider}. Reasoning load today: ${status.toolCallsToday} tool calls.`,
+        'No AI model is connected in this build. My replies are local scripted dialogue from the game repository.',
       )
 
     case 'tasks':
       return grounded(
-        `${plural(status.runningTasks, 'task')} running, ${status.queued} queued. ${status.completedToday} done today, ${status.failedToday} failed. The host is at ${Math.round(metrics.cpu)}% CPU and ${Math.round(metrics.memory)}% memory.`,
+        `${plural(status.runningTasks, 'fictional activity')} running and ${status.queued} staged. These values belong only to the local game scenario, not your computer.`,
       )
 
     case 'navigate':
@@ -166,13 +149,13 @@ export function answer(
     case 'help':
       return {
         source: 'grounded',
-        text: 'Ask me about status, agents, failures, blocked work, tasks, cost, or which model is running. I read those straight from Mission Control, so they are accurate or I tell you they are stale.',
+        text: 'Ask me about the headquarters, residents, incidents, waiting work, the elevator, or whether this build is connected. Everything I say comes from the local game scenario.',
       }
 
     case 'unknown':
       return {
         source: 'fallback',
-        text: "That's outside what I can answer accurately. I only speak from what Mission Control actually reports — status, agents, failures, blocked work, tasks and cost. I'd rather say I don't know than invent it.",
+        text: "That is outside this prototype's scripted dialogue. I can explain the headquarters, its residents, current scenario activity, and how to reach floor 45.",
       }
   }
 }

@@ -26,3 +26,5 @@ jobs:
         run: npm test
       - name: Build
         run: npm run build
+      - name: Verify standalone boundary
+        run: npm run verify:standalone

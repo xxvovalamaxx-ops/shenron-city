@@ -1,19 +1,18 @@
 /**
- * Demo-mode fixtures.
+ * Standalone game scenario.
  *
- * Every value here is obviously synthetic on inspection. Agent names are
- * prefixed `demo-`, the identity says DEMO, and the UI renders an amber
- * FIXTURE DATA badge whenever `source === 'demo'`. Requirement from the build
- * plan: demo data must never be mistakable for live production data.
+ * Every value here is fictional and ships with the repository. Nothing is
+ * read from Mission Control, the host computer, a model provider, or a remote
+ * service. The UI labels this as a standalone prototype.
  *
  * Nothing in here is read from disk or the network.
  */
 import type { Agent, HostMetrics, SystemStatus, WorldSnapshot } from '../contracts/mission-control'
 
-const DEMO_STATUS: SystemStatus = {
-  identity: 'DEMO — not a live agent',
-  model: 'demo-model',
-  provider: 'demo-provider',
+const STANDALONE_STATUS: SystemStatus = {
+  identity: 'Shenron City prototype',
+  model: 'offline-scenario',
+  provider: 'in-repository fixture',
   overall: 'active',
   runningTasks: 3,
   queued: 2,
@@ -25,65 +24,65 @@ const DEMO_STATUS: SystemStatus = {
   homeConfigured: true,
 }
 
-const DEMO_AGENTS: Agent[] = [
+const STANDALONE_AGENTS: Agent[] = [
   {
-    id: 'demo-orchestrator',
-    name: 'demo-orchestrator',
-    role: 'orchestrator',
-    model: 'demo-model',
-    provider: 'demo-provider',
+    id: 'prototype-director',
+    name: 'Nova',
+    role: 'headquarters director',
+    model: 'offline-scenario',
+    provider: 'in-repository fixture',
     state: 'active',
     riskTier: 'high',
-    currentTask: 'Coordinating three subagents',
+    currentTask: 'Planning the floor 45 expansion',
     completedTasks: 128,
     failedActions: 2,
     toolCount: 5,
   },
   {
-    id: 'demo-researcher',
-    name: 'demo-researcher',
-    role: 'specialist',
-    model: 'demo-model',
-    provider: 'demo-provider',
+    id: 'prototype-engineer',
+    name: 'Atlas',
+    role: 'world engineer',
+    model: 'offline-scenario',
+    provider: 'in-repository fixture',
     state: 'active',
     riskTier: 'low',
-    currentTask: 'Reading source documents',
+    currentTask: 'Testing the elevator route',
     completedTasks: 54,
     failedActions: 0,
     toolCount: 3,
   },
   {
-    id: 'demo-reviewer',
-    name: 'demo-reviewer',
-    role: 'specialist',
-    model: 'demo-model',
-    provider: 'demo-provider',
+    id: 'prototype-artist',
+    name: 'Lyra',
+    role: 'environment artist',
+    model: 'offline-scenario',
+    provider: 'in-repository fixture',
     state: 'blocked',
     riskTier: 'medium',
-    currentTask: 'Waiting for approval',
+    currentTask: 'Waiting for the first art brief',
     completedTasks: 33,
     failedActions: 1,
     toolCount: 2,
   },
   {
-    id: 'demo-builder',
-    name: 'demo-builder',
-    role: 'worker',
-    model: 'demo-model',
-    provider: 'demo-provider',
+    id: 'prototype-qa',
+    name: 'Aegis',
+    role: 'quality specialist',
+    model: 'offline-scenario',
+    provider: 'in-repository fixture',
     state: 'failed',
     riskTier: 'medium',
-    currentTask: 'Build step exited non-zero',
+    currentTask: 'Investigating a simulated door fault',
     completedTasks: 71,
     failedActions: 4,
     toolCount: 4,
   },
   {
-    id: 'demo-archivist',
-    name: 'demo-archivist',
-    role: 'worker',
-    model: 'demo-model',
-    provider: 'demo-provider',
+    id: 'prototype-archivist',
+    name: 'Echo',
+    role: 'lore archivist',
+    model: 'offline-scenario',
+    provider: 'in-repository fixture',
     state: 'idle',
     riskTier: 'low',
     currentTask: null,
@@ -92,11 +91,11 @@ const DEMO_AGENTS: Agent[] = [
     toolCount: 2,
   },
   {
-    id: 'demo-sentry',
-    name: 'demo-sentry',
-    role: 'specialist',
-    model: 'demo-model',
-    provider: 'demo-provider',
+    id: 'prototype-sentry',
+    name: 'Sentry',
+    role: 'lobby security',
+    model: 'offline-scenario',
+    provider: 'in-repository fixture',
     state: 'idle',
     riskTier: 'critical',
     currentTask: null,
@@ -106,7 +105,7 @@ const DEMO_AGENTS: Agent[] = [
   },
 ]
 
-const DEMO_METRICS: HostMetrics = {
+const STANDALONE_METRICS: HostMetrics = {
   cpu: 34,
   memory: 61,
   memoryUsedGb: 19.5,
@@ -115,26 +114,26 @@ const DEMO_METRICS: HostMetrics = {
   processes: 284,
 }
 
-export function demoSnapshot(): WorldSnapshot {
+export function standaloneSnapshot(): WorldSnapshot {
   return {
-    status: { ...DEMO_STATUS },
-    agents: DEMO_AGENTS.map((a) => ({ ...a })),
-    metrics: { ...DEMO_METRICS },
-    source: 'demo',
+    status: { ...STANDALONE_STATUS },
+    agents: STANDALONE_AGENTS.map((a) => ({ ...a })),
+    metrics: { ...STANDALONE_METRICS },
+    source: 'standalone',
     fetchedAt: 0,
   }
 }
 
 /** Gentle drift so the demo world is not visibly frozen. Deterministic. */
-export function driftDemo(base: WorldSnapshot, tick: number): WorldSnapshot {
+export function driftStandalone(base: WorldSnapshot, tick: number): WorldSnapshot {
   const wave = (phase: number, amp: number) => Math.sin((tick + phase) / 9) * amp
   return {
     ...base,
     metrics: {
       ...base.metrics,
-      cpu: Math.min(100, Math.max(4, DEMO_METRICS.cpu + wave(0, 22))),
-      memory: Math.min(100, Math.max(10, DEMO_METRICS.memory + wave(4, 7))),
-      disk: DEMO_METRICS.disk,
+      cpu: Math.min(100, Math.max(4, STANDALONE_METRICS.cpu + wave(0, 22))),
+      memory: Math.min(100, Math.max(10, STANDALONE_METRICS.memory + wave(4, 7))),
+      disk: STANDALONE_METRICS.disk,
     },
   }
 }

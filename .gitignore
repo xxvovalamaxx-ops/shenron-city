@@ -3,10 +3,10 @@ dist/
 .vite/
 *.local
 
-# Environment. .env.example is committed; .env is yours and never travels.
+# The standalone game reads no environment variables. Keep any future local
+# configuration private until an explicit integration boundary is designed.
 .env
 .env.*
-!.env.example
 
 # Editor / OS
 .DS_Store

@@ -21,6 +21,8 @@ export interface Interactable {
   range: number
   /** Extra payload the UI needs — an agent id, a floor, etc. */
   payload?: string
+  /** Local Y offset when the target rides the elevator car. */
+  movingY?: number
 }
 
 export interface AimInput {
@@ -34,6 +36,16 @@ export interface AimInput {
 
 /** Minimum cos(angle) between look direction and target. ~60° cone. */
 const FACING_THRESHOLD = 0.5
+
+/** Keep car-mounted interaction points aligned with the moving mesh. */
+export function placeMovingTargets(
+  candidates: readonly Interactable[],
+  elevatorY: number,
+): void {
+  for (const candidate of candidates) {
+    if (candidate.movingY !== undefined) candidate.y = elevatorY + candidate.movingY
+  }
+}
 
 export function pickTarget(
   candidates: readonly Interactable[],

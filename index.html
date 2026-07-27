@@ -5,15 +5,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="color-scheme" content="dark" />
     <meta
-      name="description"
-      content="Shenron AI Headquarters — a 3D spatial interface to Mission Control."
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; connect-src 'none'; img-src 'self' data: blob:; media-src 'self'; font-src 'self' data:; style-src 'self' 'unsafe-inline'; script-src 'self'; worker-src 'self' blob:; object-src 'none'; base-uri 'none'; form-action 'none'"
     />
-    <title>Shenron AI Headquarters</title>
+    <meta
+      name="description"
+      content="Shenron City — a standalone walkable 3D headquarters prototype."
+    />
+    <title>Shenron City</title>
   </head>
   <body>
     <div id="root"></div>
     <noscript>
-      This is a WebGL application and needs JavaScript enabled.
+      Shenron City is a WebGL game and needs JavaScript enabled.
     </noscript>
     <script type="module" src="/src/main.tsx"></script>
   </body>
