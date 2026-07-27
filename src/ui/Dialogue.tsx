@@ -8,7 +8,6 @@
  */
 import { useEffect, useRef, useState } from 'react'
 import { useGame } from '../adapter/store'
-import { useHud } from './hud-store'
 import { answer, type Reply } from '../agents/dialogue'
 import { SECRETARY_NAME } from '../agents/Secretary'
 
@@ -20,17 +19,15 @@ interface Turn {
 
 const SUGGESTIONS = [
   'What is happening right now?',
-  'How are my agents doing?',
-  'Has anything failed today?',
-  'Is anything blocked?',
-  'What has this cost me?',
-  'Where do I go?',
+  'Who is on floor 45?',
+  'Are there any incidents?',
+  'Is anyone waiting?',
+  'Is this connected to my computer?',
+  'How do I reach floor 45?',
 ]
 
-export function Dialogue() {
-  const setScreen = useHud((s) => s.setScreen)
+export function Dialogue({ onClose }: { onClose(): void }) {
   const snapshot = useGame((s) => s.snapshot)
-  const link = useGame((s) => s.link)
 
   const [turns, setTurns] = useState<Turn[]>([])
   const [draft, setDraft] = useState('')
@@ -39,7 +36,7 @@ export function Dialogue() {
 
   // Open with a greeting so the player is never staring at an empty box.
   useEffect(() => {
-    const reply = answer('hello', snapshot, link)
+    const reply = answer('hello', snapshot)
     setTurns([{ who: 'her', text: reply.text, source: reply.source }])
     inputRef.current?.focus()
     // Intentionally once, on open — the greeting should not re-fire as data
@@ -55,7 +52,7 @@ export function Dialogue() {
   const ask = (question: string) => {
     const q = question.trim()
     if (!q) return
-    const reply = answer(q, snapshot, link)
+    const reply = answer(q, snapshot)
     setTurns((t) => [
       ...t,
       { who: 'you', text: q },
@@ -64,7 +61,7 @@ export function Dialogue() {
     setDraft('')
   }
 
-  const close = () => setScreen('playing')
+  const close = onClose
 
   return (
     <div
@@ -77,7 +74,7 @@ export function Dialogue() {
         <header>
           <div>
             <h3>{SECRETARY_NAME}</h3>
-            <small>RECEPTION · SPEAKS ONLY FROM MISSION CONTROL DATA</small>
+            <small>RECEPTION · STANDALONE SCRIPTED GAME CHARACTER</small>
           </div>
           <button className="ghost small" onClick={close}>
             Close · Esc
@@ -117,7 +114,7 @@ export function Dialogue() {
             ref={inputRef}
             value={draft}
             onChange={(e) => setDraft(e.target.value)}
-            placeholder={`Ask ${SECRETARY_NAME} about your system…`}
+            placeholder={`Ask ${SECRETARY_NAME} about the headquarters…`}
             aria-label="Ask the secretary a question"
           />
           <button className="primary" type="submit" disabled={!draft.trim()}>

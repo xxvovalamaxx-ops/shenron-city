@@ -12,10 +12,15 @@ if %errorlevel% neq 0 (
   exit /b %errorlevel%
 )
 echo.
+if not exist node_modules (
+  echo Installing locked dependencies...
+  call npm ci
+  if errorlevel 1 exit /b %errorlevel%
+)
 echo Starting Shenron City...
 echo Open http://127.0.0.1:9122 in your browser.
 echo (Add ?mode=demo to use fixture data without Mission Control)
 echo.
 start http://127.0.0.1:9122
-npm run dev
+call npm run dev
 pause

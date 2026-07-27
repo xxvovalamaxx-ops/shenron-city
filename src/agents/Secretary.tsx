@@ -8,8 +8,8 @@
  */
 import { useRef } from 'react'
 import { useFrame } from '@react-three/fiber'
-import { Text } from '@react-three/drei'
 import type { Group } from 'three'
+import { WorldText as Text } from '../ui/WorldText'
 import { SECRETARY } from '../world/layout'
 import { PALETTE } from '../world/palette'
 import type { LinkState } from '../adapter/store'
@@ -30,10 +30,8 @@ export function Secretary({ link }: { link: LinkState }) {
     if (halo.current) halo.current.rotation.y = t * 0.35
   })
 
-  // The halo colour is the honest link indicator: teal when she is speaking
-  // from live data, amber when she is not.
-  const linkColor =
-    link === 'live' ? PALETTE.accent : link === 'demo' ? '#f59e0b' : '#f59e0b'
+  // Teal marks this intentionally local, standalone scenario.
+  const linkColor = link === 'standalone' ? PALETTE.accent : '#f59e0b'
 
   return (
     <group position={[SECRETARY.x, 0, SECRETARY.z]}>

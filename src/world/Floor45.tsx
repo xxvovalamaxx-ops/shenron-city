@@ -5,9 +5,9 @@
  * index. Slots beyond the agent count render as vacant; agents beyond six are
  * not shown, and the corridor sign says so rather than silently truncating.
  */
-import { Text } from '@react-three/drei'
 import type { Agent } from '../contracts/mission-control'
 import { AgentOffice } from '../agents/AgentOffice'
+import { WorldText as Text } from '../ui/WorldText'
 import { HQ, OFFICE_SLOTS, SHAFT } from './layout'
 import { PALETTE, type QualitySettings } from './palette'
 
@@ -22,7 +22,7 @@ export function Floor45({
 }: {
   agents: Agent[]
   quality: QualitySettings
-  source: 'live' | 'demo'
+  source: 'standalone'
 }) {
   const hidden = Math.max(0, agents.length - OFFICE_SLOTS.length)
 
@@ -139,14 +139,14 @@ export function Floor45({
         </Text>
       )}
 
-      {source === 'demo' && (
+      {source === 'standalone' && (
         <Text
           position={[0, Y + 4.0, B + 1.2]}
           fontSize={0.26}
           color="#f59e0b"
           anchorX="center"
         >
-          FIXTURE DATA — NOT LIVE
+          STANDALONE PROTOTYPE — OFFLINE GAME DATA
         </Text>
       )}
     </group>

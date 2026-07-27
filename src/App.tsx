@@ -36,7 +36,7 @@ function RendererBridge({ maxDpr, shadows }: { maxDpr: number; shadows: boolean 
   useEffect(() => {
     ;(window as { __gameRenderer?: THREE.WebGLRenderer }).__gameRenderer = gl
     gl.shadowMap.enabled = shadows
-    gl.shadowMap.type = THREE.PCFSoftShadowMap
+    gl.shadowMap.type = THREE.PCFShadowMap
     setDpr(Math.min(window.devicePixelRatio, maxDpr))
     return () => {
       delete (window as { __gameRenderer?: THREE.WebGLRenderer }).__gameRenderer
@@ -130,11 +130,12 @@ function Scene({
         id: 'panel',
         kind: 'elevator-panel',
         x: PANEL.x,
-        y: 1.25,
+        y: PANEL.y,
         z: PANEL.z,
         label: 'Use the elevator',
         range: 2.4,
         payload: 'car',
+        movingY: PANEL.y,
       },
     ]
 
@@ -169,7 +170,7 @@ function Scene({
       <Exterior quality={quality} />
       <Lobby quality={quality} />
       <Elevator />
-      <Floor45 agents={agents} quality={quality} source={snapshot?.source ?? 'demo'} />
+      <Floor45 agents={agents} quality={quality} source={snapshot?.source ?? 'standalone'} />
       <Secretary link={link} />
 
       {/* Entrance doors live outside the car group — they do not travel */}
@@ -299,7 +300,7 @@ export default function App() {
   return (
     <>
       <Canvas
-        shadows
+        shadows={{ type: THREE.PCFShadowMap }}
         dpr={[1, 2]}
         gl={{ antialias: false, powerPreference: 'high-performance' }}
         camera={{ fov: settings.fov, near: 0.1, far: 900, position: [0, 1.7, 36] }}
@@ -332,8 +333,10 @@ export default function App() {
       {screen === 'paused' && (
         <PauseMenu settings={settings} onChange={setSettings} onResume={enterWorld} />
       )}
-      {screen === 'dialogue' && <Dialogue />}
-      {screen === 'office' && openAgentId && <OfficePanel agentId={openAgentId} />}
+      {screen === 'dialogue' && <Dialogue onClose={enterWorld} />}
+      {screen === 'office' && openAgentId && (
+        <OfficePanel agentId={openAgentId} onClose={enterWorld} />
+      )}
     </>
   )
 }

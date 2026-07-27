@@ -1,15 +1,15 @@
 /**
  * One agent's office on floor 45.
  *
- * Everything visible here is driven by a validated `Agent` from the adapter.
+ * Everything visible here is driven by the standalone scenario.
  * An empty slot renders as a dark, unlit, explicitly vacant room rather than
  * as a plausible-looking agent — a control surface must not invent occupancy.
  */
 import { useRef } from 'react'
 import { useFrame } from '@react-three/fiber'
-import { Text } from '@react-three/drei'
 import type { Mesh, MeshStandardMaterial } from 'three'
 import type { Agent } from '../contracts/mission-control'
+import { WorldText as Text } from '../ui/WorldText'
 import { OFFICE, type OfficeSlot } from '../world/layout'
 import { PALETTE, STATE_COLOR, STATE_GLOW, STATE_LABEL } from '../world/palette'
 
@@ -122,7 +122,7 @@ export function AgentOffice({ slot, agent, y }: Props) {
         <meshStandardMaterial color="#1b1f26" roughness={0.4} metalness={0.5} />
       </mesh>
 
-      {/* Wall monitor — the office's live readout */}
+      {/* Wall monitor — the office's local scenario readout */}
       <group
         position={[slot.side * (OFFICE.w / 2 - 0.22), 1.85, 0]}
         rotation={[0, slot.side === 1 ? -Math.PI / 2 : Math.PI / 2, 0]}
@@ -149,20 +149,20 @@ export function AgentOffice({ slot, agent, y }: Props) {
             </mesh>
 
             <Text position={[-1.35, -0.04, 0.05]} fontSize={0.1} color="#4d5a6d" anchorX="left">
-              TASK
+              ACTIVITY
             </Text>
             <Text position={[-1.35, -0.24, 0.05]} fontSize={0.125} color="#b9c6d6" anchorX="left">
               {clip(agent.currentTask, 34)}
             </Text>
 
             <Text position={[-1.35, -0.56, 0.05]} fontSize={0.1} color="#4d5a6d" anchorX="left">
-              MODEL
+              ROLE
             </Text>
             <Text position={[-0.55, -0.56, 0.05]} fontSize={0.1} color="#8b9aad" anchorX="left">
-              {clip(agent.model, 20)}
+              {clip(agent.role, 20)}
             </Text>
             <Text position={[1.35, -0.56, 0.05]} fontSize={0.1} color="#4d5a6d" anchorX="right">
-              {`RISK ${agent.riskTier.toUpperCase()}  ·  ${agent.completedTasks} DONE  ·  ${agent.failedActions} FAIL`}
+              {`${STATE_LABEL[agent.state]}  ·  ${agent.completedTasks} BEATS  ·  ${agent.failedActions} INCIDENTS`}
             </Text>
           </>
         ) : (

@@ -3,7 +3,7 @@
  * first-impression budget. Polished floor, warm cove lighting, a real reception
  * desk, and signage that tells you where you are.
  */
-import { Text } from '@react-three/drei'
+import { WorldText as Text } from '../ui/WorldText'
 import { LOBBY, RECEPTION_DESK, SHAFT } from './layout'
 import { PALETTE, type QualitySettings } from './palette'
 
@@ -199,7 +199,7 @@ export function Lobby({ quality }: { quality: QualitySettings }) {
         anchorX="center"
         anchorY="middle"
       >
-        MISSION CONTROL
+        STANDALONE PROTOTYPE
       </Text>
 
       {/* Directory board */}

@@ -44,7 +44,7 @@ export const RawAgent = z.object({
   model: str('unknown'),
   provider: str('unknown'),
   status: str('idle'),
-  risk_tier: str('low'),
+  risk_tier: str('unknown'),
   permissions: z.array(z.string()).catch([]),
   tools: z.array(z.string()).catch([]),
   current_task: z.string().nullish().catch(null),
@@ -83,7 +83,7 @@ export const RawMetrics = z.object({
  */
 export type AgentState = 'active' | 'idle' | 'blocked' | 'failed' | 'offline' | 'unknown'
 
-export type RiskTier = 'low' | 'medium' | 'high' | 'critical'
+export type RiskTier = 'low' | 'medium' | 'high' | 'critical' | 'unknown'
 
 export interface Agent {
   id: string
@@ -128,9 +128,9 @@ export interface WorldSnapshot {
   status: SystemStatus
   agents: Agent[]
   metrics: HostMetrics
-  /** Source of this data. The world must never present demo as live. */
-  source: 'live' | 'demo'
-  /** Wall-clock ms of the last successful fetch. 0 if never. */
+  /** This phase uses only the in-repository standalone scenario. */
+  source: 'standalone'
+  /** Reserved for future versioned adapters. Zero while standalone. */
   fetchedAt: number
 }
 
@@ -164,7 +164,7 @@ const RISK_TIERS: RiskTier[] = ['low', 'medium', 'high', 'critical']
 
 export function toRiskTier(raw: string): RiskTier {
   const v = raw.trim().toLowerCase() as RiskTier
-  return RISK_TIERS.includes(v) ? v : 'low'
+  return RISK_TIERS.includes(v) ? v : 'unknown'
 }
 
 export function normaliseStatus(input: unknown): SystemStatus | null {
