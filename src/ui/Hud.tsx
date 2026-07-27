@@ -1,31 +1,19 @@
 /**
  * The always-on readout.
  *
- * Driven by the 10 Hz HUD store and the adapter, never by the render loop —
- * requestAnimationFrame stops when the window is hidden or minimised, and a
- * monitoring display that silently freezes at stale values is worse than one
- * that admits it is offline.
+ * Driven by the HUD store and the local standalone scenario, never by a host
+ * telemetry or Mission Control connection.
  */
 import { useEffect, useRef, useState } from 'react'
 import { useHud } from './hud-store'
-import { useGame, type LinkState } from '../adapter/store'
+import { useGame } from '../adapter/store'
 import { rt } from '../gameplay/runtime'
 
-const LINK_TEXT: Record<LinkState, string> = {
-  connecting: 'CONNECTING',
-  live: 'LIVE',
-  degraded: 'DEGRADED — LAST KNOWN',
-  unreachable: 'UNREACHABLE — STALE',
-  demo: 'DEMO — FIXTURE DATA',
-}
-
 function LinkChip() {
-  const link = useGame((s) => s.link)
-  const cls = link === 'demo' ? 'chip demo' : link === 'unreachable' ? 'chip unreachable' : 'chip'
   return (
-    <div className={cls} title="Where the numbers on screen come from">
-      <i className={`dot ${link}`} />
-      {LINK_TEXT[link]}
+    <div className="chip" title="This build uses only local game scenario data">
+      <i className="dot standalone" />
+      STANDALONE GAME
     </div>
   )
 }
@@ -33,43 +21,29 @@ function LinkChip() {
 function Telemetry() {
   const snapshot = useGame((s) => s.snapshot)
   if (!snapshot) return null
-  const { status, metrics } = snapshot
+  const { status, agents } = snapshot
+  const active = agents.filter((agent) => agent.state === 'active').length
+  const blocked = agents.filter((agent) => agent.state === 'blocked').length
+  const incidents = agents.filter((agent) => agent.state === 'failed').length
 
   return (
     <aside className="telemetry">
       <h2>{status.identity.toUpperCase()}</h2>
       <div className="row">
-        <span>MODEL</span>
-        <b>{status.model}</b>
+        <span>RESIDENTS</span>
+        <b>{agents.length}</b>
       </div>
       <div className="row">
-        <span>RUNNING</span>
-        <b>{status.runningTasks}</b>
+        <span>ACTIVE</span>
+        <b>{active}</b>
       </div>
       <div className="row">
-        <span>DONE / FAIL</span>
-        <b>
-          {status.completedToday} / {status.failedToday}
-        </b>
+        <span>WAITING</span>
+        <b>{blocked}</b>
       </div>
       <div className="row">
-        <span>COST TODAY</span>
-        <b>${status.costTodayUsd.toFixed(4)}</b>
-      </div>
-
-      <div className="row" style={{ marginTop: 8 }}>
-        <span>CPU</span>
-        <b>{Math.round(metrics.cpu)}%</b>
-      </div>
-      <div className="bar">
-        <i style={{ width: `${metrics.cpu}%` }} />
-      </div>
-      <div className="row">
-        <span>MEMORY</span>
-        <b>{Math.round(metrics.memory)}%</b>
-      </div>
-      <div className="bar">
-        <i style={{ width: `${metrics.memory}%` }} />
+        <span>INCIDENTS</span>
+        <b>{incidents}</b>
       </div>
     </aside>
   )

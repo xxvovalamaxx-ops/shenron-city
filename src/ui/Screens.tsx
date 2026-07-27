@@ -1,10 +1,5 @@
 /**
- * Title, connection choice, and the pause/settings menu.
- *
- * The connection choice is a real decision the player makes, not a silent
- * fallback: if Mission Control is unreachable the game says so and offers demo
- * mode explicitly. A world that quietly starts showing fiction when the backend
- * dies is the failure this whole design is built to avoid.
+ * Title and pause/settings menus for the standalone prototype.
  */
 import { useEffect } from 'react'
 import { useGame } from '../adapter/store'
@@ -44,21 +39,15 @@ const CONTROLS: [string, string][] = [
 ]
 
 export function TitleScreen({ onStart }: { onStart(): void }) {
-  const link = useGame((s) => s.link)
-  const enterDemo = useGame((s) => s.enterDemoMode)
-  const retry = useGame((s) => s.retryLive)
   const snapshot = useGame((s) => s.snapshot)
-
-  const connected = link === 'live' || link === 'degraded'
-  const unreachable = link === 'unreachable'
 
   return (
     <div className="modal">
       <div className="card title-card">
-        <h1>Shenron AI Headquarters</h1>
+        <h1>Shenron City</h1>
         <p className="sub">
-          A spatial interface to Mission Control. Walk in, ask reception what your system
-          is doing, take the lift to 45, and look your agents in the eye.
+          A standalone playable prototype. Cross the plaza, meet reception, take the
+          lift to 45, and explore the first headquarters floor.
         </p>
 
         <div
@@ -66,20 +55,14 @@ export function TitleScreen({ onStart }: { onStart(): void }) {
           style={{ display: 'inline-flex', marginBottom: 4 }}
           role="status"
         >
-          <i className={`dot ${link}`} />
-          {link === 'connecting' && 'Connecting to Mission Control…'}
-          {connected && `Connected · ${snapshot?.agents.length ?? 0} agents`}
-          {link === 'demo' && 'Demo mode · fixture data'}
-          {unreachable && 'Mission Control unreachable'}
+          <i className="dot standalone" />
+          Standalone game · {snapshot.agents.length} fictional residents · no PC connection
         </div>
 
-        {unreachable && (
-          <p className="notice" style={{ textAlign: 'left' }}>
-            Nothing is listening on <code>127.0.0.1:9120</code>. Start the backend with{' '}
-            <code>python backend/server.py</code>, or continue in demo mode — everything
-            you see will then be clearly-labelled fixture data, not your system.
-          </p>
-        )}
+        <p className="notice safe" style={{ textAlign: 'left' }}>
+          This build does not contact Mission Control, your filesystem, local services,
+          model providers, telemetry, or any external host.
+        </p>
 
         <div className="controls">
           {CONTROLS.map(([key, what]) => (
@@ -90,17 +73,9 @@ export function TitleScreen({ onStart }: { onStart(): void }) {
         </div>
 
         <div className="actions">
-          <button className="primary" onClick={onStart} disabled={link === 'connecting'}>
-            {connected ? 'Enter — live data' : link === 'demo' ? 'Enter — demo' : 'Enter'}
+          <button className="primary" onClick={onStart}>
+            Enter the prototype
           </button>
-          {unreachable && (
-            <>
-              <button onClick={retry}>Retry connection</button>
-              <button className="ghost" onClick={enterDemo}>
-                Use demo data
-              </button>
-            </>
-          )}
         </div>
       </div>
     </div>
@@ -192,7 +167,7 @@ export function LoadingScreen({ progress }: { progress: number }) {
   return (
     <div className="modal">
       <div className="card title-card">
-        <h1>Shenron AI Headquarters</h1>
+        <h1>Shenron City</h1>
         <p className="sub">Building the world…</p>
         <div className="bar" style={{ height: 4 }}>
           <i style={{ width: `${Math.round(progress * 100)}%` }} />

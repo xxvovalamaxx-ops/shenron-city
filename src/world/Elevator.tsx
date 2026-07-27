@@ -5,13 +5,13 @@
  * the same value that carries the player — so the floor under your feet and
  * the floor you are drawn standing on can never disagree.
  */
-import { useRef } from 'react'
+import { useRef, useState } from 'react'
 import { useFrame } from '@react-three/fiber'
-import { Text } from '@react-three/drei'
-import type { Group, Mesh } from 'three'
+import type { Group } from 'three'
 import { FLOORS, currentFloor, type ElevatorState } from '../gameplay/elevator'
 import { rt } from '../gameplay/runtime'
-import { SHAFT } from './layout'
+import { WorldText as Text } from '../ui/WorldText'
+import { PANEL, SHAFT } from './layout'
 import { PALETTE } from './palette'
 import { DoorPair } from './Doors'
 
@@ -54,8 +54,8 @@ function ShaftLights() {
 }
 
 function FloorIndicator() {
-  const ref = useRef<Mesh>(null)
   const shown = useRef('L')
+  const [label, setLabel] = useState('L')
 
   useFrame(() => {
     const s = rt.elevator
@@ -72,27 +72,25 @@ function FloorIndicator() {
       label = shown.current
     }
     shown.current = label
-    const mesh = ref.current as unknown as { text?: string } | null
-    if (mesh && mesh.text !== label) mesh.text = label
+    setLabel((current) => (current === label ? current : label))
   })
 
   return (
     <Text
-      ref={ref as never}
       position={[0, CAR_H - 0.45, CAR_Z - SHAFT.carDepth / 2 + 0.12]}
       fontSize={0.32}
       color={PALETTE.accent}
       anchorX="center"
       anchorY="middle"
     >
-      L
+      {label}
     </Text>
   )
 }
 
 function Panel() {
   return (
-    <group position={[SH - 0.14, 1.25, CAR_Z + 0.9]} rotation={[0, -Math.PI / 2, 0]}>
+    <group position={[PANEL.x, PANEL.y, PANEL.z]} rotation={[0, -Math.PI / 2, 0]}>
       <mesh>
         <boxGeometry args={[0.44, 1.0, 0.06]} />
         <meshStandardMaterial color="#12161c" roughness={0.3} metalness={0.7} />

@@ -77,10 +77,11 @@ describe('agent normalisation', () => {
     expect(toAgentState(' Running ')).toBe('active')
   })
 
-  it('falls back to the lowest risk tier only for unrecognised values', () => {
+  it('does not mislabel unrecognised risk as low', () => {
     expect(toRiskTier('critical')).toBe('critical')
     expect(toRiskTier('HIGH')).toBe('high')
-    expect(toRiskTier('spicy')).toBe('low')
+    expect(toRiskTier('spicy')).toBe('unknown')
+    expect(toRiskTier('')).toBe('unknown')
   })
 
   it('handles a non-array response', () => {

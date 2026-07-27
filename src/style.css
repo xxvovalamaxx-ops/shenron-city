@@ -154,7 +154,8 @@ canvas {
   background: var(--dim);
 }
 
-.dot.live {
+.dot.live,
+.dot.standalone {
   background: var(--accent);
   box-shadow: 0 0 8px var(--accent);
 }

@@ -16,7 +16,7 @@ import { EYE_HEIGHT, moveWithCollisions, type AABB } from './collision'
 import { carHeight, currentFloor, doorOpenness, step, FLOORS } from './elevator'
 import { leafOffset, stepDoor } from './doors'
 import { shaftGuards } from './shaft'
-import { pickTarget, type Interactable } from './interact'
+import { pickTarget, placeMovingTargets, type Interactable } from './interact'
 import {
   ENTRANCE,
   SHAFT,
@@ -189,6 +189,7 @@ export function GameLoop({ interactables, onInteract }: GameLoopProps) {
     p.forward.x = fx / flen
     p.forward.z = fz / flen
 
+    placeMovingTargets(rt.interactables, carY)
     rt.target = locked
       ? null
       : pickTarget(rt.interactables, {
