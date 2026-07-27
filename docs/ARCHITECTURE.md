@@ -44,11 +44,12 @@ flow.
 4. collider assembly
 5. input
 6. swept movement and collision
-7. player carry with the elevator
-8. camera
-9. interaction targeting
-10. scene transforms
-11. performance/HUD mirror
+7. City Tour location events
+8. player carry with the elevator
+9. camera
+10. interaction targeting
+11. scene transforms
+12. performance/HUD mirror
 
 This ordering is load-bearing. Splitting these operations among components
 would make behavior depend on React render order.
@@ -62,6 +63,8 @@ would make behavior depend on React render order.
 - Scenario residents have stable IDs so office assignment cannot jump.
 - District geometry and collision consume the same renderer-free city data.
 - Ambient pedestrians use deterministic fixed routes and never call a model.
+- The six-step City Tour is an ordered pure reducer; later objectives cannot
+  be completed early and progress exists only for the current browser session.
 - In-world text is generated from browser canvas textures and never resolves a
   remote font.
 

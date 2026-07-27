@@ -13,6 +13,10 @@ Everything remains procedural and ships inside the web build.
 5. Cross into the headquarters plaza.
 6. Enter the lobby, talk to Iris, and take the lift to floor 45.
 
+The City Tour HUD guides those actions as six ordered objectives and ends when
+the player inspects a floor 45 office. The reducer ignores skipped and repeated
+events, has no persistence, and is fully covered without a browser or GPU.
+
 ## Shared world data
 
 `src/world/city-data.ts` is the source of truth for storefronts, market stalls,
@@ -26,6 +30,7 @@ route segments crossing solid obstacles.
 - Store windows, trees, lamps, lane marks, and ambient people are instanced.
 - Ambient population scales from 5 to 18 with the quality preset.
 - Pedestrians sample constant-speed authored loops with no navigation runtime.
+- The objective system updates only when a location or interaction advances it.
 - Medium/high postprocessing is lazy-loaded in a separate chunk.
 - No external models, textures, fonts, audio, network calls, or desktop bridge.
 
