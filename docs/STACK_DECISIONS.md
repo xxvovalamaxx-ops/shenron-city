@@ -31,7 +31,7 @@ betting a new build's whole toolchain on a rewritten compiler buys nothing here.
 | `react` / `react-dom` | ~19.2.8 | Pinned below 19.3 per R3F's peer range. |
 | `zustand` | 5.0.14 | Standalone scenario state and the HUD mirror. Chosen over context to keep frame-rate updates out of React's render path. |
 | `zod` | 4.4.3 | Retained for quarantined, pure future adapter schemas and their tests; it is tree-shaken from the active standalone path. |
-| `vitest` | 4.1.10 | 73 tests over simulation, city data, ambient routes, dialogue, contracts, HUD mirroring, and the standalone boundary. |
+| `vitest` | 4.1.10 | 76 tests over the City Tour, simulation, city data, ambient routes, dialogue, contracts, HUD mirroring, and the standalone boundary. |
 | `typescript` | ~5.9.3 | Strict, `noUnusedLocals`, `noUncheckedSideEffectImports`. |
 
 ## Deferred

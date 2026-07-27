@@ -293,12 +293,14 @@ export default function App() {
         case 'secretary':
           controls.current?.unlock()
           useHud.setState({ openCharacterId: 'iris' })
+          useHud.getState().advanceCityTour('TALK_IRIS')
           setScreen('dialogue')
           break
         case 'city-character':
           if (target.payload !== 'mira') break
           controls.current?.unlock()
           useHud.setState({ openCharacterId: target.payload as CharacterId })
+          useHud.getState().advanceCityTour('TALK_MIRA')
           setScreen('dialogue')
           break
         case 'elevator-panel': {
@@ -313,6 +315,7 @@ export default function App() {
           if (!target.payload) break
           controls.current?.unlock()
           useHud.setState({ openAgentId: target.payload })
+          useHud.getState().advanceCityTour('INSPECT_OFFICE')
           setScreen('office')
           break
       }

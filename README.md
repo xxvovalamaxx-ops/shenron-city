@@ -38,6 +38,10 @@ Click **Enter Shenron City** to capture the mouse.
 Dragon Boulevard → night market / Pocket Park → headquarters plaza →
 automatic doors → lobby → secretary → elevator → floor 45 → resident office.
 
+The session-only **City Tour** HUD turns that route into six ordered
+objectives. Progress is deterministic game state and is deliberately not
+written to browser storage or any host service.
+
 The current world is procedural: there are no downloaded models, textures,
 fonts, audio files, or live services. The district layout, collision solids,
 and ambient walking loops share `src/world/city-data.ts`. Fictional residents
@@ -74,8 +78,8 @@ src/
 └── lib/          small utilities
 ```
 
-`gameplay/` owns the deterministic doors, elevator, collision, shaft
-interlocks, and player carry logic. `world/` renders that state. Host
+`gameplay/` owns the deterministic City Tour, doors, elevator, collision,
+shaft interlocks, and player carry logic. `world/` renders that state. Host
 integration is not part of the current runtime.
 
 ## Working together

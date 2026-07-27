@@ -18,6 +18,7 @@ import { leafOffset, stepDoor } from './doors'
 import { shaftGuards } from './shaft'
 import { pickTarget, placeMovingTargets, type Interactable } from './interact'
 import { hudMirrorChanged } from './hud-mirror'
+import { cityTourLocationEvents } from './city-tour'
 import {
   ENTRANCE,
   SHAFT,
@@ -157,6 +158,11 @@ export function GameLoop({ interactables, onInteract }: GameLoopProps) {
     p.pos = result.position
     p.velocityY = result.velocityY
     p.grounded = result.grounded
+
+    // Location objectives are pure and idempotent. Once a step advances,
+    // repeated frames in the same zone return the exact same tour object.
+    const hud = useHud.getState()
+    for (const event of cityTourLocationEvents(p.pos)) hud.advanceCityTour(event)
 
     // ── 6. Carry the player with the car ─────────────────────────────────────
     // Explicit rather than relying on the floor collider to push: at 25 m/s the
