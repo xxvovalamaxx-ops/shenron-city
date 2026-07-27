@@ -31,7 +31,7 @@ betting a new build's whole toolchain on a rewritten compiler buys nothing here.
 | `react` / `react-dom` | ~19.2.8 | Pinned below 19.3 per R3F's peer range. |
 | `zustand` | 5.0.14 | Standalone scenario state and the HUD mirror. Chosen over context to keep frame-rate updates out of React's render path. |
 | `zod` | 4.4.3 | Retained for quarantined, pure future adapter schemas and their tests; it is tree-shaken from the active standalone path. |
-| `vitest` | 4.1.10 | 64 tests over simulation, contracts, HUD mirroring, and the standalone boundary. |
+| `vitest` | 4.1.10 | 73 tests over simulation, city data, ambient routes, dialogue, contracts, HUD mirroring, and the standalone boundary. |
 | `typescript` | ~5.9.3 | Strict, `noUnusedLocals`, `noUncheckedSideEffectImports`. |
 
 ## Deferred
@@ -40,12 +40,12 @@ betting a new build's whole toolchain on a rewritten compiler buys nothing here.
 |---|---|---|
 | `@react-three/rapier` | The slice has **no dynamic bodies**. Every collider is a static box and the one moving platform is the lift, which a physics solver makes *harder* (carrying a character on a kinematic platform is fiddly; explicit carry is four lines). A deterministic sweep is also unit-testable without a renderer — 17 collision tests exist because there is no WASM solver in the way. | Props, ragdolls, thrown objects, or anything that needs real dynamics. |
 | `ecctrl` | Character controller built on rapier. Inherits that decision. | With rapier. |
-| `three-mesh-bvh` | Accelerates raycasts against dense meshes. The scene is ~120 boxes; a linear sweep is faster than building a BVH. | Loaded GLB environments with real triangle counts. |
-| `recast-navigation-js` | Navmesh + crowd pathfinding. Nothing in the slice walks — the secretary is stationary and agents are represented as fixed presences. | NPCs that move between rooms. |
+| [`three-mesh-bvh`](https://github.com/gkjohnson/three-mesh-bvh) | Accelerates spatial queries against dense triangle meshes. The current district is authored boxes with simple AABBs, so building a BVH adds work without removing a bottleneck. | Loaded GLB environments with real triangle counts. |
+| [`recast-navigation-js`](https://github.com/isaac-mason/recast-navigation-js) | Provides navmeshes and crowd pathfinding. Current ambient people use four validated, obstacle-free loops; a WASM navigation runtime would not improve those routes yet. | Characters choose destinations or must avoid changing obstacles. |
 | `xstate` | One state machine does not pay for a statechart runtime. `gameplay/elevator.ts` is a 5-phase total reducer with 10 tests asserting the impossible states cannot occur. | Three or more interacting machines. |
 | `theatre` | Authored cinematic sequencing. Nothing is authored yet. | Cutscenes, scripted camera moves. |
 | `uikit` | In-world React UI in WebGL. The local `WorldText` canvas component covers current monitors and signage. | Interactive in-world panels — lift buttons you actually click in 3D, resident screens with controls. |
-| `gltfjsx`, `glTF-Transform` | Asset pipeline tooling. **There are no assets** — the entire building is procedural geometry. Installing a pipeline before any art exists is ceremony. | The first real GLB. That is also when Git LFS starts mattering. |
+| `gltfjsx`, [`glTF-Transform`](https://github.com/donmccurdy/glTF-Transform) | Asset pipeline tooling. **There are no assets** — the city and building are procedural geometry. Installing a pipeline before any art exists is ceremony. | The first real GLB. That is also when Git LFS starts mattering. |
 | `git-lfs` | See above. Repo has no binaries. | With the first GLB/texture/audio. |
 | `turborepo`, `pnpm` | One app. A monorepo toolchain solves cross-package task orchestration, and there is nothing to orchestrate. The layered boundaries the plan actually cares about are enforced by directory + import discipline today. | A second deployable (desktop shell, adapter service) lands. |
 | `playwright` | E2E against WebGL. Headless GPU is unreliable in CI, and the deterministic logic is already covered by 64 automated tests. Adding a flaky browser job would make CI less trustworthy, not more. | A stable GPU-enabled runner, or when there is DOM-level UI worth driving. |
@@ -64,6 +64,6 @@ betting a new build's whole toolchain on a rewritten compiler buys nothing here.
 ## What this leaves
 
 Nine runtime dependencies and six dev dependencies. The current production
-JavaScript is approximately **1.30 MB raw / 388 kB gzipped**. It is primarily
-Three.js, React, and rendering helpers. Code-splitting is deferred until the
-first gameplay/art direction is fixed.
+entry is approximately **1.15 MB raw / 318 kB gzipped**. Medium/high-only
+postprocessing lives in a separate **162 kB raw / 76 kB gzipped** chunk, so
+the low preset does not download or initialize it.

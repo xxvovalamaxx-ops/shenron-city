@@ -6,7 +6,11 @@
  * facing test is what makes "press E" land on the thing you meant.
  */
 
-export type InteractKind = 'secretary' | 'elevator-panel' | 'agent-office'
+export type InteractKind =
+  | 'secretary'
+  | 'city-character'
+  | 'elevator-panel'
+  | 'agent-office'
 
 export interface Interactable {
   id: string

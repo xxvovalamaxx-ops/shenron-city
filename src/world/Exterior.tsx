@@ -8,6 +8,8 @@ import { useLayoutEffect, useMemo, useRef } from 'react'
 import * as THREE from 'three'
 import { ENTRANCE, LOBBY, TOWER } from './layout'
 import { PALETTE, type QualitySettings } from './palette'
+import { CITY_GROUND } from './city-data'
+import { CityDistrict } from './CityDistrict'
 
 /** Deterministic PRNG — the skyline must be identical every run. */
 function mulberry32(seed: number) {
@@ -32,11 +34,12 @@ function CityBlocks({ count }: { count: number }) {
     const color = new THREE.Color()
 
     for (let i = 0; i < count; i++) {
-      // Ring layout: keep the near plaza clear, fill the middle distance.
+      // Ring layout: keep the full playable district clear, then fill the
+      // middle distance beyond its authored ground.
       const angle = rand() * Math.PI * 2
-      const radius = 90 + rand() * 420
+      const radius = 220 + rand() * 360
       const x = Math.cos(angle) * radius
-      const z = Math.sin(angle) * radius - 40
+      const z = Math.sin(angle) * radius - 20
       const h = 20 + rand() * rand() * 190
       const w = 14 + rand() * 26
       const d = 14 + rand() * 26
@@ -145,12 +148,14 @@ export function Exterior({ quality }: { quality: QualitySettings }) {
       {/* Plaza and street */}
       <mesh
         rotation={[-Math.PI / 2, 0, 0]}
-        position={[0, 0, 20]}
+        position={[CITY_GROUND.x, 0, CITY_GROUND.z]}
         receiveShadow={quality.shadows}
         material={groundMat}
       >
-        <planeGeometry args={[400, 400]} />
+        <planeGeometry args={[CITY_GROUND.width, CITY_GROUND.depth]} />
       </mesh>
+
+      <CityDistrict quality={quality} />
 
       {/* Tower mass — the building continues far above the lobby ceiling */}
       <mesh position={[0, TOWER.height / 2, -TOWER.depth / 2]} castShadow={quality.shadows}>

@@ -46,8 +46,8 @@ export function TitleScreen({ onStart }: { onStart(): void }) {
       <div className="card title-card">
         <h1>Shenron City</h1>
         <p className="sub">
-          A standalone playable prototype. Cross the plaza, meet reception, take the
-          lift to 45, and explore the first headquarters floor.
+          A standalone Three.js city prototype. Walk Dragon Boulevard, explore the
+          night market and Pocket Park, meet the locals, then enter headquarters.
         </p>
 
         <div
@@ -74,7 +74,7 @@ export function TitleScreen({ onStart }: { onStart(): void }) {
 
         <div className="actions">
           <button className="primary" onClick={onStart}>
-            Enter the prototype
+            Enter Shenron City
           </button>
         </div>
       </div>
@@ -168,7 +168,7 @@ export function LoadingScreen({ progress }: { progress: number }) {
     <div className="modal">
       <div className="card title-card">
         <h1>Shenron City</h1>
-        <p className="sub">Building the world…</p>
+        <p className="sub">Lighting the city…</p>
         <div className="bar" style={{ height: 4 }}>
           <i style={{ width: `${Math.round(progress * 100)}%` }} />
         </div>

@@ -16,6 +16,43 @@ export interface Reply {
   source: 'grounded' | 'model' | 'fallback'
 }
 
+export type CharacterId = 'iris' | 'mira'
+
+export interface CharacterDialogueProfile {
+  name: string
+  role: string
+  suggestions: readonly string[]
+  placeholder: string
+}
+
+export const CHARACTER_DIALOGUE: Record<CharacterId, CharacterDialogueProfile> = {
+  iris: {
+    name: 'Iris',
+    role: 'Reception',
+    suggestions: [
+      'What is happening right now?',
+      'Who is on floor 45?',
+      'Are there any incidents?',
+      'Is anyone waiting?',
+      'Is this connected to my computer?',
+      'How do I reach floor 45?',
+    ],
+    placeholder: 'Ask Iris about the headquarters…',
+  },
+  mira: {
+    name: 'Mira',
+    role: 'Night Market Keeper',
+    suggestions: [
+      'What is this district?',
+      'What do you sell?',
+      'Where is headquarters?',
+      'Who comes to the market?',
+      'Is this connected to my computer?',
+    ],
+    placeholder: 'Ask Mira about the night market…',
+  },
+}
+
 type Intent =
   | 'greeting'
   | 'overview'
@@ -158,4 +195,70 @@ export function answer(
         text: "That is outside this prototype's scripted dialogue. I can explain the headquarters, its residents, current scenario activity, and how to reach floor 45.",
       }
   }
+}
+
+function answerMira(question: string): Reply {
+  const intent = classify(question)
+  const grounded = (text: string): Reply => ({ source: 'grounded', text })
+  const normalized = question.toLowerCase()
+
+  if (/\b(district|boulevard|neighbou?rhood|city|market)\b/.test(normalized)) {
+    return grounded(
+      'This is Shenron City’s first playable neighborhood: Dragon Boulevard, the night market, Pocket Park, and the headquarters plaza.',
+    )
+  }
+
+  if (/\b(sell|shop|stall|food|tea|ramen|flower|book)\b/.test(normalized)) {
+    return grounded(
+      'This lane is the night market: ramen, tea, flowers, and old books. My stall keeps the lamps on and the stories moving.',
+    )
+  }
+
+  switch (intent) {
+    case 'greeting':
+      return grounded(
+        'Welcome to Dragon Boulevard. I am Mira. The night market is open, and headquarters is the teal-lit tower at the end of the street.',
+      )
+    case 'overview':
+      return grounded(
+        'This is Shenron City’s first playable neighborhood: Dragon Boulevard, the night market, Pocket Park, and the headquarters plaza.',
+      )
+    case 'agents':
+    case 'tasks':
+      return grounded(
+        'The people walking these blocks are local game characters following scripted routes. The fictional headquarters residents work on floor 45.',
+      )
+    case 'navigate':
+      return grounded(
+        'Follow the boulevard toward the tall teal-lit tower. Cross the plaza, enter the automatic doors, then take the lift to floor 45.',
+      )
+    case 'connection':
+    case 'model':
+    case 'cost':
+      return grounded(
+        'Nothing here connects to your computer or a model provider. I am a local scripted game character, and this district is bundled with the web game.',
+      )
+    case 'help':
+      return grounded(
+        'Ask me about the market, this district, the people walking around, or how to reach headquarters.',
+      )
+    case 'failures':
+    case 'blocked':
+      return grounded(
+        'The street is calm tonight. For the fictional headquarters scenario, Iris at reception keeps the detailed status.',
+      )
+    case 'unknown':
+      return {
+        source: 'fallback',
+        text: 'I only know this neighborhood and its local story for now. Ask me about the market, Dragon Boulevard, or headquarters.',
+      }
+  }
+}
+
+export function answerCharacter(
+  characterId: CharacterId,
+  question: string,
+  snapshot: WorldSnapshot | null,
+): Reply {
+  return characterId === 'mira' ? answerMira(question) : answer(question, snapshot)
 }

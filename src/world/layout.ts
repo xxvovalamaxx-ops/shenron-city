@@ -8,6 +8,7 @@
  * Units are metres. +Y is up. The player enters facing -Z.
  */
 import { aabb, type AABB } from '../gameplay/collision'
+import { CITY_GROUND, CITY_OBSTACLES } from './city-data'
 
 // ── Key dimensions ───────────────────────────────────────────────────────────
 
@@ -41,7 +42,7 @@ export const SHAFT = {
   carHeight: 3.4,
 } as const
 
-export const SPAWN = { x: 0, y: 0.05, z: 36 } as const
+export const SPAWN = { x: -10.7, y: 0.05, z: 145 } as const
 
 export const TOWER = { halfWidth: 26, depth: 40, height: 120 } as const
 
@@ -91,7 +92,21 @@ export function staticColliders(): AABB[] {
   const { halfWidth: LW, backZ, ceiling } = LOBBY
 
   // ── Plaza and lobby floor (one continuous slab) ───────────────────────────
-  c.push(aabb(0, -0.5, 20, 160, 1, 160))
+  c.push(
+    aabb(
+      CITY_GROUND.x,
+      -0.5,
+      CITY_GROUND.z,
+      CITY_GROUND.width,
+      1,
+      CITY_GROUND.depth,
+    ),
+  )
+
+  // City solids share their exact authored bounds with the renderer.
+  for (const box of CITY_OBSTACLES) {
+    c.push(aabb(box.x, box.height / 2, box.z, box.width, box.height, box.depth))
+  }
 
   // ── Facade, split around the entrance opening ─────────────────────────────
   const eh = ENTRANCE.halfWidth

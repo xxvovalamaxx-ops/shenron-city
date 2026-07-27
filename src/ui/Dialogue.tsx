@@ -8,8 +8,12 @@
  */
 import { useEffect, useRef, useState } from 'react'
 import { useGame } from '../adapter/store'
-import { answer, type Reply } from '../agents/dialogue'
-import { SECRETARY_NAME } from '../agents/Secretary'
+import {
+  answerCharacter,
+  CHARACTER_DIALOGUE,
+  type CharacterId,
+  type Reply,
+} from '../agents/dialogue'
 
 interface Turn {
   who: 'you' | 'her'
@@ -17,17 +21,15 @@ interface Turn {
   source?: Reply['source']
 }
 
-const SUGGESTIONS = [
-  'What is happening right now?',
-  'Who is on floor 45?',
-  'Are there any incidents?',
-  'Is anyone waiting?',
-  'Is this connected to my computer?',
-  'How do I reach floor 45?',
-]
-
-export function Dialogue({ onClose }: { onClose(): void }) {
+export function Dialogue({
+  characterId,
+  onClose,
+}: {
+  characterId: CharacterId
+  onClose(): void
+}) {
   const snapshot = useGame((s) => s.snapshot)
+  const profile = CHARACTER_DIALOGUE[characterId]
 
   const [turns, setTurns] = useState<Turn[]>([])
   const [draft, setDraft] = useState('')
@@ -36,7 +38,7 @@ export function Dialogue({ onClose }: { onClose(): void }) {
 
   // Open with a greeting so the player is never staring at an empty box.
   useEffect(() => {
-    const reply = answer('hello', snapshot)
+    const reply = answerCharacter(characterId, 'hello', snapshot)
     setTurns([{ who: 'her', text: reply.text, source: reply.source }])
     inputRef.current?.focus()
     // Intentionally once, on open — the greeting should not re-fire as data
@@ -52,7 +54,7 @@ export function Dialogue({ onClose }: { onClose(): void }) {
   const ask = (question: string) => {
     const q = question.trim()
     if (!q) return
-    const reply = answer(q, snapshot)
+    const reply = answerCharacter(characterId, q, snapshot)
     setTurns((t) => [
       ...t,
       { who: 'you', text: q },
@@ -73,8 +75,8 @@ export function Dialogue({ onClose }: { onClose(): void }) {
       <div className="dialogue">
         <header>
           <div>
-            <h3>{SECRETARY_NAME}</h3>
-            <small>RECEPTION · STANDALONE SCRIPTED GAME CHARACTER</small>
+            <h3>{profile.name}</h3>
+            <small>{profile.role.toUpperCase()} · STANDALONE SCRIPTED GAME CHARACTER</small>
           </div>
           <button className="ghost small" onClick={close}>
             Close · Esc
@@ -89,14 +91,14 @@ export function Dialogue({ onClose }: { onClose(): void }) {
                 t.source === 'fallback' ? 'fallback' : ''
               }`}
             >
-              <label>{t.who === 'you' ? 'YOU' : SECRETARY_NAME.toUpperCase()}</label>
+              <label>{t.who === 'you' ? 'YOU' : profile.name.toUpperCase()}</label>
               <p>{t.text}</p>
             </div>
           ))}
         </div>
 
         <div className="suggestions">
-          {SUGGESTIONS.map((s) => (
+          {profile.suggestions.map((s) => (
             <button key={s} className="small ghost" onClick={() => ask(s)}>
               {s}
             </button>
@@ -114,8 +116,8 @@ export function Dialogue({ onClose }: { onClose(): void }) {
             ref={inputRef}
             value={draft}
             onChange={(e) => setDraft(e.target.value)}
-            placeholder={`Ask ${SECRETARY_NAME} about the headquarters…`}
-            aria-label="Ask the secretary a question"
+            placeholder={profile.placeholder}
+            aria-label={`Ask ${profile.name} a question`}
           />
           <button className="primary" type="submit" disabled={!draft.trim()}>
             Ask

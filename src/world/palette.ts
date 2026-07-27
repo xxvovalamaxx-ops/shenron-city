@@ -77,6 +77,7 @@ export interface QualitySettings {
   /** Renderer pixel-ratio ceiling. */
   maxDpr: number
   cityWindows: number
+  ambientPedestrians: number
 }
 
 export const QUALITY: Record<QualityPreset, QualitySettings> = {
@@ -87,6 +88,7 @@ export const QUALITY: Record<QualityPreset, QualitySettings> = {
     reflections: false,
     maxDpr: 1,
     cityWindows: 400,
+    ambientPedestrians: 5,
   },
   medium: {
     shadows: true,
@@ -95,6 +97,7 @@ export const QUALITY: Record<QualityPreset, QualitySettings> = {
     reflections: false,
     maxDpr: 1.25,
     cityWindows: 1200,
+    ambientPedestrians: 11,
   },
   high: {
     shadows: true,
@@ -103,5 +106,6 @@ export const QUALITY: Record<QualityPreset, QualitySettings> = {
     reflections: true,
     maxDpr: 1.75,
     cityWindows: 2600,
+    ambientPedestrians: 18,
   },
 }
