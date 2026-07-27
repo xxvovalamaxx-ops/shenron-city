@@ -8,6 +8,11 @@ import { useEffect, useRef, useState } from 'react'
 import { useHud } from './hud-store'
 import { useGame } from '../adapter/store'
 import { rt } from '../gameplay/runtime'
+import {
+  CITY_TOUR_STEPS,
+  cityTourProgress,
+  currentCityTourStep,
+} from '../gameplay/city-tour'
 
 function LinkChip() {
   return (
@@ -45,6 +50,38 @@ function Telemetry() {
         <span>INCIDENTS</span>
         <b>{incidents}</b>
       </div>
+    </aside>
+  )
+}
+
+function CityTour() {
+  const state = useHud((s) => s.cityTour)
+  const step = currentCityTourStep(state)
+  const complete = step === null
+  const progress = Math.round(cityTourProgress(state) * 100)
+
+  return (
+    <aside className={`city-tour${complete ? ' complete' : ''}`} aria-live="polite">
+      <div className="city-tour-heading">
+        <span>CITY TOUR</span>
+        <b>
+          {state.completed}/{CITY_TOUR_STEPS.length}
+        </b>
+      </div>
+      <div className="bar">
+        <i style={{ width: `${progress}%` }} />
+      </div>
+      {step ? (
+        <>
+          <strong>{step.title}</strong>
+          <p>{step.hint}</p>
+        </>
+      ) : (
+        <>
+          <strong>Route complete</strong>
+          <p>You met the city and reached the headquarters team.</p>
+        </>
+      )}
     </aside>
   )
 }
@@ -102,6 +139,7 @@ export function Hud() {
       </div>
 
       <Telemetry />
+      <CityTour />
 
       <div className={`crosshair${prompt ? ' hot' : ''}`} />
 

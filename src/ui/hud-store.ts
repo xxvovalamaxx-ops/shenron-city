@@ -8,6 +8,12 @@
 import { create } from 'zustand'
 import type { InteractKind } from '../gameplay/interact'
 import type { CharacterId } from '../agents/dialogue'
+import {
+  advanceCityTour,
+  INITIAL_CITY_TOUR,
+  type CityTourEvent,
+  type CityTourState,
+} from '../gameplay/city-tour'
 
 export type Screen = 'loading' | 'title' | 'playing' | 'paused' | 'dialogue' | 'office'
 
@@ -26,10 +32,13 @@ export interface HudState {
   openAgentId: string | null
   /** Which local scripted character owns the dialogue panel. */
   openCharacterId: CharacterId
+  /** Session-only progress through the first complete playable route. */
+  cityTour: CityTourState
 
   set<K extends keyof HudState>(key: K, value: HudState[K]): void
   setScreen(s: Screen): void
   togglePerf(): void
+  advanceCityTour(event: CityTourEvent): void
 }
 
 export const useHud = create<HudState>((set) => ({
@@ -44,10 +53,16 @@ export const useHud = create<HudState>((set) => ({
   showPerf: false,
   openAgentId: null,
   openCharacterId: 'iris',
+  cityTour: INITIAL_CITY_TOUR,
 
   set: (key, value) => set({ [key]: value } as Pick<HudState, typeof key>),
   setScreen: (screen) => set({ screen }),
   togglePerf: () => set((s) => ({ showPerf: !s.showPerf })),
+  advanceCityTour: (event) =>
+    set((state) => {
+      const next = advanceCityTour(state.cityTour, event)
+      return next === state.cityTour ? state : { cityTour: next }
+    }),
 }))
 
 /** Screens during which the world must not accept movement input. */
