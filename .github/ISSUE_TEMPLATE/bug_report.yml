@@ -1,0 +1,64 @@
+name: Bug report
+description: Report a reproducible gameplay, rendering, or repository defect.
+title: "[Bug] "
+labels:
+  - bug
+body:
+  - type: markdown
+    attributes:
+      value: Thank you for helping make Shenron City more reliable.
+  - type: textarea
+    id: behavior
+    attributes:
+      label: What happened?
+      description: Describe the observed behavior and what you expected instead.
+      placeholder: The elevator doors remained closed after…
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Reproduction route
+      description: List the smallest sequence of actions that reproduces the problem.
+      placeholder: |
+        1. Start on high quality
+        2. Enter headquarters
+        3. …
+    validations:
+      required: true
+  - type: dropdown
+    id: quality
+    attributes:
+      label: Quality preset
+      options:
+        - Low
+        - Medium
+        - High
+        - All presets
+        - Not applicable
+    validations:
+      required: true
+  - type: input
+    id: browser
+    attributes:
+      label: Browser and operating system
+      placeholder: Chrome 140 on Windows 11
+    validations:
+      required: true
+  - type: input
+    id: commit
+    attributes:
+      label: Commit
+      description: Paste the short or full commit hash when possible.
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Evidence
+      description: Add screenshots, console output, or other non-sensitive evidence.
+  - type: checkboxes
+    id: safety
+    attributes:
+      label: Safety check
+      options:
+        - label: I removed secrets, tokens, private paths, and personal data from this report.
+          required: true

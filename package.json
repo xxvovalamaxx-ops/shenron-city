@@ -13,6 +13,7 @@
     "typecheck": "tsc --noEmit",
     "build": "tsc --noEmit && vite build",
     "verify:standalone": "node scripts/verify-standalone-build.mjs",
+    "check": "npm run typecheck && npm test && npm run build && npm run verify:standalone",
     "preview": "vite preview",
     "test": "vitest run",
     "test:watch": "vitest"
