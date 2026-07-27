@@ -46,7 +46,7 @@ export function Secretary({ link }: { link: LinkState }) {
         {/* Head */}
         <mesh position={[0, 1.62, 0]} castShadow>
           <sphereGeometry args={[0.185, 20, 16]} />
-          <meshStandardMaterial color="#39445466" roughness={0.4} metalness={0.4} />
+          <meshStandardMaterial color="#394454" roughness={0.4} metalness={0.4} />
         </mesh>
         {/* Visor band — where a face would be, doing the work a face would do */}
         <mesh position={[0, 1.64, 0.15]}>

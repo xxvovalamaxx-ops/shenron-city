@@ -45,12 +45,21 @@ const Leaf = forwardRef<Group, LeafProps>(function Leaf({ width, height, glass =
       </mesh>
       {/* Frame edge so the leaf reads as an object, not a floating pane */}
       <mesh position={[0, height / 2, 0]}>
-        <boxGeometry args={[width, 0.06, 0.11]} />
-        <meshStandardMaterial color={PALETTE.metal} roughness={0.3} metalness={0.9} />
+        <boxGeometry args={[width, 0.05, 0.1]} />
+        <meshStandardMaterial color={PALETTE.metal} roughness={0.25} metalness={0.95} />
       </mesh>
-      <mesh position={[0, height - 0.03, 0]}>
-        <boxGeometry args={[width, 0.06, 0.11]} />
-        <meshStandardMaterial color={PALETTE.metal} roughness={0.3} metalness={0.9} />
+      <mesh position={[0, height - 0.025, 0]}>
+        <boxGeometry args={[width, 0.05, 0.1]} />
+        <meshStandardMaterial color={PALETTE.metal} roughness={0.25} metalness={0.95} />
+      </mesh>
+      {/* Vertical frame edge on the leading side so the parting line is crisp */}
+      <mesh position={[width / 2 - 0.025, height / 2, 0]}>
+        <boxGeometry args={[0.05, height, 0.1]} />
+        <meshStandardMaterial color={PALETTE.metal} roughness={0.25} metalness={0.95} />
+      </mesh>
+      <mesh position={[-width / 2 + 0.025, height / 2, 0]}>
+        <boxGeometry args={[0.05, height, 0.1]} />
+        <meshStandardMaterial color={PALETTE.metal} roughness={0.25} metalness={0.95} />
       </mesh>
     </group>
   )

@@ -56,7 +56,7 @@ function CityBlocks({ count }: { count: number }) {
     }
     mesh.instanceMatrix.needsUpdate = true
     if (mesh.instanceColor) mesh.instanceColor.needsUpdate = true
-  }, [count])
+  }, [])
 
   return (
     <instancedMesh ref={ref} args={[undefined, undefined, count]} frustumCulled>
@@ -195,6 +195,13 @@ export function Exterior({ quality }: { quality: QualitySettings }) {
         <boxGeometry args={[eh * 2, 0.12, 0.08]} />
         <meshBasicMaterial color={PALETTE.accent} toneMapped={false} />
       </mesh>
+      {/* Door frame glow — guides the eye to the entrance from across the plaza */}
+      {[-1, 1].map((s) => (
+        <mesh key={s} position={[s * (eh + 0.15), ENTRANCE.height / 2, 0.15]}>
+          <boxGeometry args={[0.08, ENTRANCE.height, 0.08]} />
+          <meshBasicMaterial color={PALETTE.accent} transparent opacity={0.25} toneMapped={false} />
+        </mesh>
+      ))}
 
       {/* Planters framing the approach */}
       {[-9, 9].map((x) =>

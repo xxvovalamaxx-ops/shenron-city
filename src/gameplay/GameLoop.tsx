@@ -256,6 +256,8 @@ export function GameLoop({ interactables, onInteract }: GameLoopProps) {
       // set, and at 10 Hz an unconditional write re-renders the HUD forever.
       if (
         next.promptLabel !== hud.promptLabel ||
+        next.promptKind !== hud.promptKind ||
+        next.promptPayload !== hud.promptPayload ||
         next.floorLabel !== hud.floorLabel ||
         next.elevatorPhase !== hud.elevatorPhase ||
         next.fps !== hud.fps
