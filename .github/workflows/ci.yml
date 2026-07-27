@@ -1,0 +1,28 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          # Vite 8 requires Node 20.19+; 22 is the current LTS.
+          node-version: "22"
+          cache: npm
+      - run: npm ci
+      - name: Type check
+        run: npm run typecheck
+      # The simulation — lift, doors, collision, shaft interlocks, contract
+      # validation — is pure and renderer-free, so it runs in CI without a GPU.
+      # These are the regressions that actually hurt: a player tunnelling
+      # through a wall, or the lift opening its doors mid-shaft.
+      - name: Test
+        run: npm test
+      - name: Build
+        run: npm run build

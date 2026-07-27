@@ -1,0 +1,25 @@
+node_modules/
+dist/
+.vite/
+*.local
+
+# Environment. .env.example is committed; .env is yours and never travels.
+.env
+.env.*
+!.env.example
+
+# Editor / OS
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/*
+!.vscode/extensions.json
+
+# Local launcher config — hardcodes absolute machine paths
+.claude/launch.json
+
+# Large source assets belong in Git LFS, not here. See docs/ASSETS.md before
+# committing the first .blend / .psd / raw texture.
+*.blend
+*.blend1
+*.psd
