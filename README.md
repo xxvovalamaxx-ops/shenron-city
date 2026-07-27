@@ -1,12 +1,14 @@
 # Shenron City
 
-Shenron City is a standalone browser-based 3D headquarters prototype.
+Shenron City is a standalone browser-based 3D city built with Three.js and
+React Three Fiber.
 
-Walk across the plaza, enter through automatic doors, meet the secretary, take
-the elevator to floor 45, and inspect the first fictional headquarters team.
-This phase is intentionally a game only: it does not connect to Mission
-Control, the filesystem, local services, model providers, telemetry, or any
-external host.
+Walk Dragon Boulevard past shops and ambient pedestrians, visit the night
+market and Pocket Park, talk with local scripted characters, enter through
+headquarters' automatic doors, meet reception, take the elevator to floor 45,
+and inspect the first fictional headquarters team. This phase is intentionally
+a game only: it does not connect to Mission Control, the filesystem, local
+services, model providers, telemetry, or any external host.
 
 ## Run it
 
@@ -29,16 +31,17 @@ Open <http://127.0.0.1:9122>.
 | `Esc` | Release pointer / pause |
 | `F3` | Performance overlay |
 
-Click **Enter the prototype** to capture the mouse.
+Click **Enter Shenron City** to capture the mouse.
 
 ## Current playable route
 
-Plaza → automatic doors → lobby → secretary → elevator → floor 45 → resident
-office.
+Dragon Boulevard → night market / Pocket Park → headquarters plaza →
+automatic doors → lobby → secretary → elevator → floor 45 → resident office.
 
 The current world is procedural: there are no downloaded models, textures,
-fonts, audio files, or live services. Fictional residents and activities come
-from `src/adapter/fixtures.ts`.
+fonts, audio files, or live services. The district layout, collision solids,
+and ambient walking loops share `src/world/city-data.ts`. Fictional residents
+and activities come from `src/adapter/fixtures.ts`.
 
 ## Standalone boundary
 
@@ -63,10 +66,10 @@ npm run verify:standalone
 ```text
 src/
 ├── adapter/      local standalone scenario state
-├── agents/       fictional residents and scripted dialogue
+├── agents/       local characters, ambient crowds, and scripted dialogue
 ├── contracts/    stable world types and quarantined future adapter schemas
 ├── gameplay/     renderer-independent simulation and tests
-├── world/        geometry, lighting, offices, doors, and elevator
+├── world/        city data, geometry, lighting, offices, doors, and elevator
 ├── ui/           HUD, menus, panels, and local in-world text
 └── lib/          small utilities
 ```
@@ -96,5 +99,6 @@ reintroduce PC access through UI or NPC code.
 ## Documentation
 
 - [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md)
+- [`docs/CITY_VERTICAL_SLICE.md`](docs/CITY_VERTICAL_SLICE.md)
 - [`docs/STACK_DECISIONS.md`](docs/STACK_DECISIONS.md)
 - [`docs/SECURITY_BOUNDARY.md`](docs/SECURITY_BOUNDARY.md)
