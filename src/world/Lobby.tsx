@@ -6,6 +6,7 @@
 import { WorldText as Text } from '../ui/WorldText'
 import { LOBBY, RECEPTION_DESK, SHAFT } from './layout'
 import { PALETTE, type QualitySettings } from './palette'
+import { useLobbyFloorMaterial, useLobbyWallMaterial } from './PBRMaterials'
 
 const W = LOBBY.halfWidth
 const BACK = LOBBY.backZ
@@ -68,20 +69,16 @@ function WallWash({ z }: { z: number }) {
 }
 
 export function Lobby({ quality }: { quality: QualitySettings }) {
+  const floorMat = useLobbyFloorMaterial(quality.reflections ? 0.26 : 0.42)
+  const wallMat = useLobbyWallMaterial()
+
   return (
     <group>
       {/* Floor. Dark, near-mirror — the single biggest perceived-quality win
           in the whole scene, so it gets the reflective material at high. */}
       <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0.01, BACK / 2]} receiveShadow>
         <planeGeometry args={[W * 2, DEPTH]} />
-        {/* Roughness 0.12 gave a near-mirror that turned every point light into
-            a hot specular blob. 0.26 still reads as polished stone without the
-            floor becoming the brightest thing in the room. */}
-        <meshStandardMaterial
-          color={PALETTE.lobbyFloor}
-          roughness={quality.reflections ? 0.26 : 0.42}
-          metalness={0.7}
-        />
+        <primitive object={floorMat} attach="material" />
       </mesh>
 
       {/*
@@ -114,7 +111,7 @@ export function Lobby({ quality }: { quality: QualitySettings }) {
       {[-1, 1].map((s) => (
         <mesh key={s} position={[s * W, CEIL / 2, BACK / 2]} receiveShadow>
           <boxGeometry args={[0.5, CEIL, DEPTH]} />
-          <meshStandardMaterial color={PALETTE.concrete} roughness={0.8} />
+          <primitive object={wallMat} attach="material" />
         </mesh>
       ))}
 

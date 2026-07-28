@@ -61,6 +61,26 @@ function StorefrontBuilding({
       >
         {store.name.toUpperCase()}
       </Text>
+
+      {/* Interior visible through glass — counter, shelves, warm glow */}
+      <mesh position={[frontX * 0.6, 0.5, 0]} rotation={frontRotation}>
+        <boxGeometry args={[store.depth - 3, 1.0, 0.6]} />
+        <meshStandardMaterial color="#1c2028" roughness={0.5} metalness={0.4} />
+      </mesh>
+      {[0, 1, 2].map((i) => (
+        <mesh key={i} position={[frontX * 0.4, 1.8 + i * 0.8, -store.depth / 4 + (i % 2) * store.depth / 2]}>
+          <boxGeometry args={[0.3, 0.6, store.depth - 4]} />
+          <meshStandardMaterial color="#2a2520" roughness={0.7} />
+        </mesh>
+      ))}
+      {/* Warm interior glow through shopfront */}
+      <pointLight
+        position={[frontX * 0.3, 2, 0]}
+        color={store.accent}
+        intensity={60}
+        distance={12}
+        decay={2}
+      />
     </group>
   )
 }

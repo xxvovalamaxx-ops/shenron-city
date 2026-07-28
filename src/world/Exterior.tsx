@@ -4,7 +4,7 @@
  * Everything repeated is instanced. A night skyline made of individual meshes
  * is the fastest way to lose the frame budget before the interior even loads.
  */
-import { lazy, Suspense, useLayoutEffect, useMemo, useRef } from 'react'
+import { lazy, Suspense, useLayoutEffect, useRef } from 'react'
 import * as THREE from 'three'
 import { ENTRANCE, LOBBY, TOWER } from './layout'
 import { PALETTE, type QualitySettings } from './palette'
@@ -12,6 +12,8 @@ import { CITY_GROUND } from './city-data'
 import { CityDistrict } from './CityDistrict'
 import { Traffic } from './Traffic'
 import { PlanterTree, type TreeProps } from './PlanterTree'
+import { usePlazaMaterial, useTowerFacadeMaterial, usePlanterMaterial } from './PBRMaterials'
+import { StreetProps } from './StreetProps'
 
 /**
  * Detailed trees are a separate chunk. See the note in Tree.tsx — a static
@@ -157,15 +159,9 @@ export function Exterior({ quality }: { quality: QualitySettings }) {
   const eh = ENTRANCE.halfWidth
   const sideW = LOBBY.halfWidth - eh
 
-  const groundMat = useMemo(
-    () =>
-      new THREE.MeshStandardMaterial({
-        color: PALETTE.concreteDark,
-        roughness: 0.75,
-        metalness: 0.15,
-      }),
-    [],
-  )
+  const groundMat = usePlazaMaterial()
+  const towerMat = useTowerFacadeMaterial()
+  const planterMat = usePlanterMaterial()
 
   return (
     <group>
@@ -180,12 +176,13 @@ export function Exterior({ quality }: { quality: QualitySettings }) {
       </mesh>
 
       <CityDistrict quality={quality} />
+      <StreetProps />
       <Traffic quality={quality} />
 
       {/* Tower mass — the building continues far above the lobby ceiling */}
       <mesh position={[0, TOWER.height / 2, -TOWER.depth / 2]} castShadow={quality.shadows}>
         <boxGeometry args={[TOWER.halfWidth * 2, TOWER.height, TOWER.depth]} />
-        <meshStandardMaterial color={PALETTE.concrete} roughness={0.55} metalness={0.45} />
+        <primitive object={towerMat} attach="material" />
       </mesh>
 
       <FacadeWindows />
@@ -239,7 +236,7 @@ export function Exterior({ quality }: { quality: QualitySettings }) {
           <group key={`${x}:${z}`} position={[x, 0, z]}>
             <mesh position={[0, 0.35, 0]} castShadow={quality.shadows} receiveShadow={quality.shadows}>
               <boxGeometry args={[2.4, 0.7, 2.4]} />
-              <meshStandardMaterial color={PALETTE.stone} roughness={0.85} />
+              <primitive object={planterMat} attach="material" />
             </mesh>
             <PlanterTreeSlot
               detailed={quality.detailTrees}

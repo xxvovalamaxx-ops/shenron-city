@@ -10,6 +10,7 @@ import { AgentOffice } from '../agents/AgentOffice'
 import { WorldText as Text } from '../ui/WorldText'
 import { HQ, OFFICE_SLOTS, SHAFT } from './layout'
 import { PALETTE, type QualitySettings } from './palette'
+import { useHQFloorMaterial } from './PBRMaterials'
 
 const { y: Y, halfWidth: W, frontZ: F, backZ: B, ceiling: C } = HQ
 const DEPTH = Math.abs(B - F)
@@ -26,17 +27,14 @@ export function Floor45({
   source: WorldSnapshot['source']
 }) {
   const hidden = Math.max(0, agents.length - OFFICE_SLOTS.length)
+  const floorMat = useHQFloorMaterial(quality.reflections ? 0.18 : 0.4)
 
   return (
     <group>
       {/* Floor */}
       <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, Y + 0.01, MID]} receiveShadow>
         <planeGeometry args={[W * 2, DEPTH]} />
-        <meshStandardMaterial
-          color="#0c0f14"
-          roughness={quality.reflections ? 0.18 : 0.4}
-          metalness={0.8}
-        />
+        <primitive object={floorMat} attach="material" />
       </mesh>
 
       {/* Corridor guide lines — thin, for the same reason as the lobby's */}
