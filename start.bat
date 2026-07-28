@@ -17,7 +17,7 @@ if errorlevel 1 (
   exit /b 1
 )
 
-if not exist node_modules (
+if not exist node_modules\@dgreenheck (
   echo Installing dependencies...
   call npm ci
   if errorlevel 1 (
