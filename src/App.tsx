@@ -5,6 +5,7 @@
 import { lazy, Suspense, useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { Canvas, useThree } from '@react-three/fiber'
 import { PointerLockControls, useProgress } from '@react-three/drei'
+import { Physics } from '@react-three/rapier'
 import * as THREE from 'three'
 
 import { useGame } from './adapter/store'
@@ -20,7 +21,7 @@ import { Elevator } from './world/Elevator'
 import { Floor45 } from './world/Floor45'
 import { DoorPair } from './world/Doors'
 import { Secretary, SECRETARY_NAME } from './agents/Secretary'
-import { AmbientCrowd } from './agents/AmbientCrowd'
+import { YukaCrowd } from './agents/YukaCrowd'
 import { MarketKeeper } from './agents/MarketKeeper'
 import { PlazaWarden } from './agents/PlazaWarden'
 import type { CharacterId } from './agents/dialogue'
@@ -28,6 +29,7 @@ import { ENTRANCE, HQ, OFFICE_SLOTS, PANEL, SECRETARY as SEC_POS, SPAWN } from '
 import { MARKET_KEEPER, PLAZA_WARDEN } from './world/city-data'
 import { PALETTE, QUALITY } from './world/palette'
 import { Hud } from './ui/Hud'
+import { StaticWorldColliders } from './gameplay/PhysicsWorld'
 import { Dialogue } from './ui/Dialogue'
 import { OfficePanel } from './ui/OfficePanel'
 import { DEFAULT_SETTINGS, LoadingScreen, PauseMenu, TitleScreen, type Settings } from './ui/Screens'
@@ -231,7 +233,7 @@ function Scene({
       <Secretary link={link} />
       <MarketKeeper />
       <PlazaWarden />
-      <AmbientCrowd count={quality.ambientPedestrians} />
+      <YukaCrowd />
 
       {/* Entrance doors live outside the car group — they do not travel */}
       <DoorPair
@@ -425,7 +427,10 @@ export default function App() {
         }}
       >
         <Suspense fallback={null}>
-          <Scene settings={settings} onInteract={onInteract} />
+          <Physics gravity={[0, -22, 0]} timeStep="vary" colliders={false}>
+            <StaticWorldColliders />
+            <Scene settings={settings} onInteract={onInteract} />
+          </Physics>
           <LoadGate onReady={() => setReady(true)} />
         </Suspense>
         <PointerLockControls

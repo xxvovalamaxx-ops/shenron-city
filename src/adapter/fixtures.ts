@@ -130,7 +130,10 @@ export function driftStandalone(base: WorldSnapshot, tick: number): WorldSnapsho
   return {
     ...base,
     metrics: {
-      ...base.metrics,
+      // STANDALONE_METRICS, not base.metrics: metrics are nullable now that a
+      // live snapshot can arrive without them, and the standalone world always
+      // has a full set.
+      ...STANDALONE_METRICS,
       cpu: Math.min(100, Math.max(4, STANDALONE_METRICS.cpu + wave(0, 22))),
       memory: Math.min(100, Math.max(10, STANDALONE_METRICS.memory + wave(4, 7))),
       disk: STANDALONE_METRICS.disk,

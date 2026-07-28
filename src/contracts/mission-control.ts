@@ -127,10 +127,20 @@ export interface HostMetrics {
 export interface WorldSnapshot {
   status: SystemStatus
   agents: Agent[]
-  metrics: HostMetrics
-  /** This phase uses only the in-repository standalone scenario. */
-  source: 'standalone'
-  /** Reserved for future versioned adapters. Zero while standalone. */
+  /**
+   * Null when Mission Control served a snapshot but its metrics endpoint did
+   * not — the roster is still real and worth rendering, so host metrics
+   * degrade on their own rather than failing the whole poll. The HUD shows a
+   * dash, never a fabricated zero.
+   */
+  metrics: HostMetrics | null
+  /**
+   * Where this data came from. Load-bearing, not decorative: the HUD chip, the
+   * floor-45 signage and the secretary's answers all branch on it, so fiction
+   * can never be mistaken for the player's real system.
+   */
+  source: 'standalone' | 'live'
+  /** Epoch ms the snapshot was taken. Zero while standalone. */
   fetchedAt: number
 }
 

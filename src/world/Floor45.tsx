@@ -5,7 +5,7 @@
  * index. Slots beyond the agent count render as vacant; agents beyond six are
  * not shown, and the corridor sign says so rather than silently truncating.
  */
-import type { Agent } from '../contracts/mission-control'
+import type { Agent, WorldSnapshot } from '../contracts/mission-control'
 import { AgentOffice } from '../agents/AgentOffice'
 import { WorldText as Text } from '../ui/WorldText'
 import { HQ, OFFICE_SLOTS, SHAFT } from './layout'
@@ -22,7 +22,8 @@ export function Floor45({
 }: {
   agents: Agent[]
   quality: QualitySettings
-  source: 'standalone'
+  /** Drives the in-world sign. Only 'standalone' carries the fiction warning. */
+  source: WorldSnapshot['source']
 }) {
   const hidden = Math.max(0, agents.length - OFFICE_SLOTS.length)
 
