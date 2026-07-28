@@ -12,6 +12,11 @@ export default defineConfig({
     port: 9122,
     host: '127.0.0.1',
     hmr: false,
+    clearScreen: false,
+    watch: {
+      usePolling: true,
+      interval: 1000,
+    },
   },
   build: {
     outDir: 'dist',
