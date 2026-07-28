@@ -32,3 +32,7 @@
 *.png binary
 *.webp binary
 *.vrm binary
+
+# Preserve the reviewed high-resolution reconstruction without inflating every
+# normal Git clone. Exported GLBs and review PNGs remain directly browsable.
+SourceAssets/Models/Characters/Source/Capybara/*.obj filter=lfs diff=lfs merge=lfs -text

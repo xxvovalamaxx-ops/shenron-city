@@ -1,8 +1,7 @@
-"""Build and present the Shenron City capybara character asset.
+"""Build the Shenron City capybara from the reviewed reconstruction source.
 
-Designed for execution through Blender Foundation's official MCP connector.
-The script is deterministic and idempotent: it replaces only collections whose
-names start with ``CAPYBARA_`` and preserves every unrelated scene object.
+Run this file inside Blender 5.1 through the official Blender Foundation MCP
+connector.  The script deliberately touches only CAPYBARA_* datablocks.
 """
 
 from __future__ import annotations
@@ -11,857 +10,585 @@ import bisect
 import math
 import random
 from pathlib import Path
-from typing import Iterable
 
 import bpy
 from mathutils import Vector
 
 
 SEED = 20260728
-ASSET_COLLECTION = "CAPYBARA_ASSET"
-PRESENTATION_COLLECTION = "CAPYBARA_PRESENTATION"
-BODY_COLLECTION = "10_Body"
-DETAIL_COLLECTION = "20_Face_and_Paws"
-FUR_COLLECTION = "30_Fur_and_Whiskers"
-HAIR_COUNT = 28_000
+TARGET_LENGTH = 1.24
+TARGET_WIDTH = 0.46
+TARGET_HEIGHT = 0.58
+PREVIEW_HAIR_COUNT = 0
 
 SCRIPT_PATH = Path(__file__).resolve()
-REPO_ROOT = SCRIPT_PATH.parents[3]
-WORKING_DIR = (
-    REPO_ROOT
+REPOSITORY_ROOT = SCRIPT_PATH.parents[3]
+SOURCE_DIR = (
+    REPOSITORY_ROOT
     / "SourceAssets"
     / "Models"
     / "Characters"
-    / "Working"
+    / "Source"
     / "Capybara"
 )
 EXPORT_DIR = (
-    REPO_ROOT
+    REPOSITORY_ROOT
     / "SourceAssets"
     / "Models"
     / "Characters"
     / "Exports"
     / "Capybara"
 )
-ASSET_BLEND_PATH = WORKING_DIR / "Capybara.blend"
-PREVIEW_PATH = EXPORT_DIR / "capybara_preview.png"
-PORTABLE_GLB_PATH = EXPORT_DIR / "capybara.glb"
+WORKING_DIR = (
+    REPOSITORY_ROOT
+    / "SourceAssets"
+    / "Models"
+    / "Characters"
+    / "Working"
+    / "Capybara"
+)
+
+SOURCE_MESH = SOURCE_DIR / "capybara_reconstruction.obj"
+SOURCE_TEXTURE = SOURCE_DIR / "capybara_reconstruction_texture.png"
+REFERENCE_IMAGE = SOURCE_DIR / "capybara_reconstruction_reference.png"
+PROJECTION_IMAGE = SOURCE_DIR / "capybara_reconstruction_input.png"
+FINAL_ALBEDO = SOURCE_DIR / "capybara_final_albedo.png"
+WORKING_BLEND = WORKING_DIR / "Capybara.blend"
+EXPORT_GLB = EXPORT_DIR / "capybara.glb"
+PREVIEW_RENDER = EXPORT_DIR / "capybara_preview.png"
+SIDE_RENDER = EXPORT_DIR / "capybara_side.png"
+FACE_RENDER = EXPORT_DIR / "capybara_face.png"
 
 
-def remove_collection(name: str) -> None:
-    collection = bpy.data.collections.get(name)
-    if collection is None:
-        return
-    for child in list(collection.children):
-        remove_collection(child.name)
-    for obj in list(collection.objects):
-        bpy.data.objects.remove(obj, do_unlink=True)
-    bpy.data.collections.remove(collection)
+def ensure_inputs() -> None:
+    missing = [
+        path
+        for path in (
+            SOURCE_MESH,
+            SOURCE_TEXTURE,
+            REFERENCE_IMAGE,
+            PROJECTION_IMAGE,
+        )
+        if not path.is_file()
+    ]
+    if missing:
+        raise FileNotFoundError(
+            "Missing capybara reconstruction source:\n"
+            + "\n".join(str(path) for path in missing)
+        )
+    EXPORT_DIR.mkdir(parents=True, exist_ok=True)
+    WORKING_DIR.mkdir(parents=True, exist_ok=True)
 
 
-def remove_generated_datablocks() -> None:
-    for datablocks in (
-        bpy.data.materials,
-        bpy.data.meshes,
-        bpy.data.curves,
-        bpy.data.cameras,
-        bpy.data.lights,
-        bpy.data.textures,
-    ):
-        for datablock in list(datablocks):
-            if datablock.name.startswith("CAPY_") and datablock.users == 0:
-                datablocks.remove(datablock)
+def remove_previous_asset() -> None:
+    for obj in list(bpy.data.objects):
+        if obj.name.startswith("CAPYBARA_"):
+            bpy.data.objects.remove(obj, do_unlink=True)
+    for collection in list(bpy.data.collections):
+        if collection.name.startswith("CAPYBARA_"):
+            bpy.data.collections.remove(collection)
+    for material in list(bpy.data.materials):
+        if material.name.startswith("CAPYBARA_"):
+            bpy.data.materials.remove(material)
+    for curve in list(bpy.data.curves):
+        if curve.name.startswith("CAPYBARA_"):
+            bpy.data.curves.remove(curve)
+    for camera in list(bpy.data.cameras):
+        if camera.name.startswith("CAPYBARA_"):
+            bpy.data.cameras.remove(camera)
+    for light in list(bpy.data.lights):
+        if light.name.startswith("CAPYBARA_"):
+            bpy.data.lights.remove(light)
 
 
-def new_collection(name: str, parent: bpy.types.Collection) -> bpy.types.Collection:
-    collection = bpy.data.collections.new(name)
-    parent.children.link(collection)
-    return collection
+def bounds_world(obj: bpy.types.Object) -> tuple[Vector, Vector]:
+    corners = [obj.matrix_world @ Vector(corner) for corner in obj.bound_box]
+    return (
+        Vector(tuple(min(point[i] for point in corners) for i in range(3))),
+        Vector(tuple(max(point[i] for point in corners) for i in range(3))),
+    )
 
 
-def move_to_collection(
-    obj: bpy.types.Object,
-    collection: bpy.types.Collection,
-) -> bpy.types.Object:
-    for current in list(obj.users_collection):
-        current.objects.unlink(obj)
-    collection.objects.link(obj)
-    return obj
-
-
-def set_principled_input(
-    shader: bpy.types.ShaderNodeBsdfPrincipled,
-    name: str,
-    value: object,
-) -> None:
-    socket = shader.inputs.get(name)
-    if socket is not None:
-        socket.default_value = value
-
-
-def material_body() -> bpy.types.Material:
-    material = bpy.data.materials.new("CAPY_MAT_Fur_Base")
+def create_reconstruction_material() -> bpy.types.Material:
+    material = bpy.data.materials.new("CAPYBARA_ReconstructedCoat")
     material.use_nodes = True
+    material.diffuse_color = (0.29, 0.13, 0.055, 1.0)
+    material.roughness = 0.72
+
     nodes = material.node_tree.nodes
     links = material.node_tree.links
     nodes.clear()
 
     output = nodes.new("ShaderNodeOutputMaterial")
-    shader = nodes.new("ShaderNodeBsdfPrincipled")
+    principled = nodes.new("ShaderNodeBsdfPrincipled")
+    texture = nodes.new("ShaderNodeTexImage")
+    projection = nodes.new("ShaderNodeTexImage")
+    coordinates = nodes.new("ShaderNodeTexCoord")
+    separate_position = nodes.new("ShaderNodeSeparateXYZ")
+    horizontal_map = nodes.new("ShaderNodeMapRange")
+    vertical_map = nodes.new("ShaderNodeMapRange")
+    projected_coordinates = nodes.new("ShaderNodeCombineXYZ")
+    geometry = nodes.new("ShaderNodeNewGeometry")
+    separate_normal = nodes.new("ShaderNodeSeparateXYZ")
+    absolute_side_normal = nodes.new("ShaderNodeMath")
+    side_blend = nodes.new("ShaderNodeValToRGB")
+    coat_mix = nodes.new("ShaderNodeMixRGB")
     noise = nodes.new("ShaderNodeTexNoise")
-    ramp = nodes.new("ShaderNodeValToRGB")
     bump = nodes.new("ShaderNodeBump")
 
-    noise.inputs["Scale"].default_value = 6.5
-    noise.inputs["Detail"].default_value = 7.0
-    noise.inputs["Roughness"].default_value = 0.72
-    ramp.color_ramp.elements[0].position = 0.20
-    ramp.color_ramp.elements[0].color = (0.014, 0.007, 0.003, 1.0)
-    ramp.color_ramp.elements[1].position = 0.82
-    ramp.color_ramp.elements[1].color = (0.145, 0.062, 0.019, 1.0)
-    middle = ramp.color_ramp.elements.new(0.52)
-    middle.color = (0.056, 0.023, 0.007, 1.0)
-    bump.inputs["Strength"].default_value = 0.18
-    bump.inputs["Distance"].default_value = 0.025
-
-    set_principled_input(shader, "Roughness", 0.58)
-    set_principled_input(shader, "Specular IOR Level", 0.28)
-    set_principled_input(shader, "Coat Weight", 0.05)
-    links.new(noise.outputs["Fac"], ramp.inputs["Fac"])
-    links.new(noise.outputs["Fac"], bump.inputs["Height"])
-    links.new(ramp.outputs["Color"], shader.inputs["Base Color"])
-    links.new(bump.outputs["Normal"], shader.inputs["Normal"])
-    links.new(shader.outputs["BSDF"], output.inputs["Surface"])
-    return material
-
-
-def material_fur() -> bpy.types.Material:
-    material = bpy.data.materials.new("CAPY_MAT_Dense_Fur")
-    material.use_nodes = True
-    nodes = material.node_tree.nodes
-    links = material.node_tree.links
-    nodes.clear()
-
-    output = nodes.new("ShaderNodeOutputMaterial")
-    shader = nodes.new("ShaderNodeBsdfPrincipled")
-    hair_info = nodes.new("ShaderNodeHairInfo")
-    ramp = nodes.new("ShaderNodeValToRGB")
-    ramp.color_ramp.elements[0].color = (0.006, 0.0025, 0.001, 1.0)
-    ramp.color_ramp.elements[0].position = 0.10
-    ramp.color_ramp.elements[1].color = (0.18, 0.072, 0.018, 1.0)
-    ramp.color_ramp.elements[1].position = 0.90
-    middle = ramp.color_ramp.elements.new(0.56)
-    middle.color = (0.045, 0.016, 0.004, 1.0)
-    set_principled_input(shader, "Roughness", 0.72)
-    set_principled_input(shader, "Specular IOR Level", 0.18)
-    links.new(hair_info.outputs["Random"], ramp.inputs["Fac"])
-    links.new(ramp.outputs["Color"], shader.inputs["Base Color"])
-    links.new(shader.outputs["BSDF"], output.inputs["Surface"])
-    return material
-
-
-def material_simple(
-    name: str,
-    color: tuple[float, float, float, float],
-    roughness: float,
-    metallic: float = 0.0,
-    transmission: float = 0.0,
-    ior: float = 1.45,
-) -> bpy.types.Material:
-    material = bpy.data.materials.new(name)
-    material.use_nodes = True
-    shader = material.node_tree.nodes.get("Principled BSDF")
-    assert isinstance(shader, bpy.types.ShaderNodeBsdfPrincipled)
-    set_principled_input(shader, "Base Color", color)
-    set_principled_input(shader, "Roughness", roughness)
-    set_principled_input(shader, "Metallic", metallic)
-    set_principled_input(shader, "Transmission Weight", transmission)
-    set_principled_input(shader, "IOR", ior)
-    return material
-
-
-def add_uv_ellipsoid(
-    name: str,
-    location: tuple[float, float, float],
-    scale: tuple[float, float, float],
-    collection: bpy.types.Collection,
-    material: bpy.types.Material | None = None,
-    rotation: tuple[float, float, float] = (0.0, 0.0, 0.0),
-    segments: int = 32,
-    rings: int = 20,
-) -> bpy.types.Object:
-    bpy.ops.mesh.primitive_uv_sphere_add(
-        segments=segments,
-        ring_count=rings,
-        location=location,
-        rotation=rotation,
+    texture.image = bpy.data.images.load(str(SOURCE_TEXTURE), check_existing=True)
+    texture.image.colorspace_settings.name = "sRGB"
+    texture.interpolation = "Linear"
+    texture.extension = "EXTEND"
+    projection.image = bpy.data.images.load(
+        str(PROJECTION_IMAGE), check_existing=True
     )
-    obj = bpy.context.active_object
-    assert obj is not None
-    obj.name = name
-    obj.scale = scale
-    bpy.ops.object.transform_apply(location=False, rotation=False, scale=True)
-    move_to_collection(obj, collection)
-    if material is not None:
-        obj.data.materials.append(material)
-    for polygon in obj.data.polygons:
-        polygon.use_smooth = True
-    return obj
+    projection.image.colorspace_settings.name = "sRGB"
+    projection.interpolation = "Linear"
+    projection.extension = "EXTEND"
+
+    # The background-removal plate places the animal inside this measured UV
+    # rectangle.  The reconstruction faces +X, while the plate faces left, so
+    # the horizontal mapping is intentionally reversed.
+    horizontal_map.inputs["From Min"].default_value = 0.0
+    horizontal_map.inputs["From Max"].default_value = 1.0
+    horizontal_map.inputs["To Min"].default_value = 0.933507
+    horizontal_map.inputs["To Max"].default_value = 0.066493
+    horizontal_map.clamp = True
+    vertical_map.inputs["From Min"].default_value = 0.0
+    vertical_map.inputs["From Max"].default_value = 1.0
+    vertical_map.inputs["To Min"].default_value = 0.241851
+    vertical_map.inputs["To Max"].default_value = 0.758149
+    vertical_map.clamp = True
+
+    absolute_side_normal.operation = "ABSOLUTE"
+    side_blend.color_ramp.elements[0].position = 0.28
+    side_blend.color_ramp.elements[1].position = 0.72
+    side_blend.color_ramp.elements[0].color = (0.0, 0.0, 0.0, 1.0)
+    side_blend.color_ramp.elements[1].color = (1.0, 1.0, 1.0, 1.0)
+    coat_mix.blend_type = "MIX"
+
+    principled.inputs["Roughness"].default_value = 0.74
+    principled.inputs["IOR"].default_value = 1.46
+    principled.inputs["Specular IOR Level"].default_value = 0.28
+    principled.inputs["Subsurface Weight"].default_value = 0.018
+
+    noise.inputs["Scale"].default_value = 235.0
+    noise.inputs["Detail"].default_value = 3.8
+    noise.inputs["Roughness"].default_value = 0.78
+    noise.inputs["Distortion"].default_value = 0.12
+    bump.inputs["Strength"].default_value = 0.19
+    bump.inputs["Distance"].default_value = 0.0018
+
+    links.new(coordinates.outputs["Generated"], separate_position.inputs["Vector"])
+    links.new(separate_position.outputs["X"], horizontal_map.inputs["Value"])
+    links.new(separate_position.outputs["Z"], vertical_map.inputs["Value"])
+    links.new(horizontal_map.outputs["Result"], projected_coordinates.inputs["X"])
+    links.new(vertical_map.outputs["Result"], projected_coordinates.inputs["Y"])
+    links.new(projected_coordinates.outputs["Vector"], projection.inputs["Vector"])
+    links.new(geometry.outputs["Normal"], separate_normal.inputs["Vector"])
+    links.new(separate_normal.outputs["Y"], absolute_side_normal.inputs[0])
+    links.new(absolute_side_normal.outputs[0], side_blend.inputs["Fac"])
+    links.new(side_blend.outputs["Color"], coat_mix.inputs["Fac"])
+    links.new(texture.outputs["Color"], coat_mix.inputs[1])
+    links.new(projection.outputs["Color"], coat_mix.inputs[2])
+    links.new(coat_mix.outputs["Color"], principled.inputs["Base Color"])
+    links.new(noise.outputs["Fac"], bump.inputs["Height"])
+    links.new(bump.outputs["Normal"], principled.inputs["Normal"])
+    links.new(principled.outputs["BSDF"], output.inputs["Surface"])
+    return material
 
 
-def add_body(
+def import_and_prepare_mesh(
     collection: bpy.types.Collection,
-    material: bpy.types.Material,
 ) -> bpy.types.Object:
-    pieces = [
-        add_uv_ellipsoid(
-            "CAPY_Body_Core",
-            (-0.20, 0.0, 1.02),
-            (1.28, 0.58, 0.62),
-            collection,
-            material,
-        ),
-        add_uv_ellipsoid(
-            "CAPY_Haunches",
-            (-0.92, 0.0, 0.92),
-            (0.62, 0.55, 0.57),
-            collection,
-            material,
-        ),
-        add_uv_ellipsoid(
-            "CAPY_Chest",
-            (0.65, 0.0, 1.10),
-            (0.62, 0.53, 0.62),
-            collection,
-            material,
-        ),
-        add_uv_ellipsoid(
-            "CAPY_Neck",
-            (0.88, 0.0, 1.27),
-            (0.48, 0.46, 0.54),
-            collection,
-            material,
-        ),
-        add_uv_ellipsoid(
-            "CAPY_Head",
-            (1.28, 0.0, 1.42),
-            (0.60, 0.45, 0.48),
-            collection,
-            material,
-            rotation=(0.0, -0.10, 0.0),
-        ),
-        add_uv_ellipsoid(
-            "CAPY_Muzzle",
-            (1.70, 0.0, 1.29),
-            (0.48, 0.38, 0.31),
-            collection,
-            material,
-            rotation=(0.0, -0.05, 0.0),
-        ),
-        add_uv_ellipsoid(
-            "CAPY_Jaw",
-            (1.55, 0.0, 1.17),
-            (0.38, 0.34, 0.26),
-            collection,
-            material,
-        ),
-    ]
-
-    for index, (x_value, y_value) in enumerate(
-        ((-0.80, -0.36), (-0.80, 0.36), (0.57, -0.36), (0.57, 0.36))
-    ):
-        pieces.append(
-            add_uv_ellipsoid(
-                f"CAPY_Leg_{index + 1:02d}",
-                (x_value, y_value, 0.48),
-                (0.20, 0.18, 0.48),
-                collection,
-                material,
-                rotation=(0.0, (-0.08 if x_value < 0 else 0.10), 0.0),
-            )
-        )
-        pieces.append(
-            add_uv_ellipsoid(
-                f"CAPY_Paw_{index + 1:02d}",
-                (x_value + 0.09, y_value, 0.16),
-                (0.25, 0.19, 0.14),
-                collection,
-                material,
-            )
-        )
+    before = set(bpy.data.objects)
+    bpy.ops.wm.obj_import(
+        filepath=str(SOURCE_MESH),
+        forward_axis="Y",
+        up_axis="Z",
+        use_split_objects=False,
+        use_split_groups=False,
+        validate_meshes=True,
+    )
+    imported = [obj for obj in bpy.data.objects if obj not in before]
+    mesh_objects = [obj for obj in imported if obj.type == "MESH"]
+    if not mesh_objects:
+        raise RuntimeError("The reconstruction OBJ produced no Blender mesh")
 
     bpy.ops.object.select_all(action="DESELECT")
-    for piece in pieces:
-        piece.select_set(True)
-    bpy.context.view_layer.objects.active = pieces[0]
-    bpy.ops.object.join()
-    body = bpy.context.active_object
-    assert body is not None
-    body.name = "CAPY_Body"
+    for obj in mesh_objects:
+        obj.select_set(True)
+        if obj.name not in collection.objects:
+            for owner in list(obj.users_collection):
+                owner.objects.unlink(obj)
+            collection.objects.link(obj)
+    bpy.context.view_layer.objects.active = mesh_objects[0]
+    if len(mesh_objects) > 1:
+        bpy.ops.object.join()
 
-    remesh = body.modifiers.new("CAPY_Organic_Fusion", "REMESH")
-    remesh.mode = "VOXEL"
-    remesh.voxel_size = 0.045
-    remesh.use_smooth_shade = True
-    bpy.context.view_layer.objects.active = body
-    bpy.ops.object.modifier_apply(modifier=remesh.name)
+    animal = bpy.context.view_layer.objects.active
+    animal.name = "CAPYBARA_RenderMesh"
+    animal.data.name = "CAPYBARA_ReconstructedMesh"
 
-    smooth = body.modifiers.new("CAPY_Organic_Smoothing", "SMOOTH")
-    smooth.factor = 0.72
-    smooth.iterations = 5
-    bpy.ops.object.modifier_apply(modifier=smooth.name)
+    minimum, maximum = bounds_world(animal)
+    dimensions = maximum - minimum
+    if min(dimensions) <= 0:
+        raise RuntimeError(f"Invalid source bounds: {tuple(dimensions)}")
 
-    texture = bpy.data.textures.new("CAPY_Skin_Microvariation", type="CLOUDS")
-    texture.noise_scale = 0.14
-    texture.noise_depth = 2
-    displacement = body.modifiers.new("CAPY_Skin_Microvariation", "DISPLACE")
-    displacement.texture = texture
-    displacement.strength = 0.018
-    displacement.mid_level = 0.50
-    bpy.ops.object.modifier_apply(modifier=displacement.name)
-
-    subdivision = body.modifiers.new("CAPY_Subdivision", "SUBSURF")
-    subdivision.subdivision_type = "CATMULL_CLARK"
-    subdivision.levels = 1
-    subdivision.render_levels = 2
-    for polygon in body.data.polygons:
-        polygon.use_smooth = True
-    return body
-
-
-def add_torus(
-    name: str,
-    location: tuple[float, float, float],
-    collection: bpy.types.Collection,
-    material: bpy.types.Material,
-    major_radius: float,
-    minor_radius: float,
-    rotation: tuple[float, float, float],
-    scale: tuple[float, float, float],
-) -> bpy.types.Object:
-    bpy.ops.mesh.primitive_torus_add(
-        major_radius=major_radius,
-        minor_radius=minor_radius,
-        major_segments=32,
-        minor_segments=8,
-        location=location,
-        rotation=rotation,
+    # TripoSR source axes are X=width, Y=length, Z=height.  Rotate the
+    # left-facing source so the capybara's anatomical forward direction is +X.
+    animal.scale = (
+        TARGET_WIDTH / dimensions.x,
+        TARGET_LENGTH / dimensions.y,
+        TARGET_HEIGHT / dimensions.z,
     )
-    obj = bpy.context.active_object
-    assert obj is not None
-    obj.name = name
-    obj.scale = scale
     bpy.ops.object.transform_apply(location=False, rotation=False, scale=True)
-    move_to_collection(obj, collection)
-    obj.data.materials.append(material)
-    for polygon in obj.data.polygons:
+    animal.rotation_euler.z = math.radians(90.0)
+    bpy.ops.object.transform_apply(location=False, rotation=True, scale=False)
+
+    minimum, maximum = bounds_world(animal)
+    animal.location -= Vector(
+        ((minimum.x + maximum.x) * 0.5, (minimum.y + maximum.y) * 0.5, minimum.z)
+    )
+    bpy.ops.object.transform_apply(location=True, rotation=False, scale=False)
+
+    for polygon in animal.data.polygons:
         polygon.use_smooth = True
-    return obj
+
+    material = create_reconstruction_material()
+    animal.data.materials.clear()
+    animal.data.materials.append(material)
+    animal["asset_role"] = "high-detail render mesh"
+    animal["source_model"] = "TripoSR"
+    animal["source_model_commit"] = "107cefdc244c39106fa830359024f6a2f1c78871"
+    animal["source_reference"] = REFERENCE_IMAGE.relative_to(
+        REPOSITORY_ROOT
+    ).as_posix()
+    animal["real_world_length_m"] = TARGET_LENGTH
+    animal["real_world_width_m"] = TARGET_WIDTH
+    animal["real_world_height_m"] = TARGET_HEIGHT
+    return animal
 
 
-def add_face_and_paws(
-    collection: bpy.types.Collection,
-    materials: dict[str, bpy.types.Material],
-) -> list[bpy.types.Object]:
-    objects: list[bpy.types.Object] = []
-
-    for side, sign in (("L", -1.0), ("R", 1.0)):
-        ear = add_uv_ellipsoid(
-            f"CAPY_Ear_{side}",
-            (1.10, sign * 0.405, 1.73),
-            (0.115, 0.048, 0.125),
-            collection,
-            materials["body"],
-            rotation=(0.04, sign * -0.20, sign * 0.10),
-        )
-        inner = add_uv_ellipsoid(
-            f"CAPY_Ear_Inner_{side}",
-            (1.115, sign * 0.438, 1.735),
-            (0.072, 0.018, 0.078),
-            collection,
-            materials["inner_ear"],
-            rotation=(0.04, sign * -0.20, sign * 0.10),
-            segments=24,
-            rings=16,
-        )
-        brow = add_uv_ellipsoid(
-            f"CAPY_Brow_{side}",
-            (1.42, sign * 0.390, 1.61),
-            (0.16, 0.045, 0.060),
-            collection,
-            materials["body"],
-            rotation=(sign * 0.12, 0.0, 0.0),
-            segments=24,
-            rings=16,
-        )
-        eye = add_uv_ellipsoid(
-            f"CAPY_Eye_{side}",
-            (1.49, sign * 0.424, 1.535),
-            (0.047, 0.025, 0.047),
-            collection,
-            materials["eye"],
-            segments=32,
-            rings=20,
-        )
-        cornea = add_uv_ellipsoid(
-            f"CAPY_Cornea_{side}",
-            (1.49, sign * 0.443, 1.535),
-            (0.050, 0.016, 0.050),
-            collection,
-            materials["cornea"],
-            segments=32,
-            rings=20,
-        )
-        lid = add_torus(
-            f"CAPY_Eyelid_{side}",
-            (1.49, sign * 0.442, 1.535),
-            collection,
-            materials["body"],
-            major_radius=0.052,
-            minor_radius=0.004,
-            rotation=(math.pi / 2.0, 0.0, 0.0),
-            scale=(1.0, 1.0, 0.86),
-        )
-        objects.extend((ear, inner, brow, eye, cornea, lid))
-
-        nostril = add_uv_ellipsoid(
-            f"CAPY_Nostril_{side}",
-            (2.085, sign * 0.160, 1.335),
-            (0.020, 0.045, 0.029),
-            collection,
-            materials["nose"],
-            rotation=(0.0, 0.0, sign * 0.10),
-            segments=24,
-            rings=16,
-        )
-        objects.append(nostril)
-
-    for foot_index, (x_value, y_value) in enumerate(
-        ((-0.71, -0.36), (-0.71, 0.36), (0.66, -0.36), (0.66, 0.36))
-    ):
-        for toe_index, lateral in enumerate((-0.11, 0.0, 0.11)):
-            bpy.ops.mesh.primitive_cone_add(
-                vertices=20,
-                radius1=0.034,
-                radius2=0.006,
-                depth=0.13,
-                location=(x_value + 0.28, y_value + lateral, 0.145),
-                rotation=(0.0, math.pi / 2.0, 0.0),
-            )
-            claw = bpy.context.active_object
-            assert claw is not None
-            claw.name = f"CAPY_Claw_{foot_index + 1:02d}_{toe_index + 1:02d}"
-            move_to_collection(claw, collection)
-            claw.data.materials.append(materials["claw"])
-            for polygon in claw.data.polygons:
-                polygon.use_smooth = True
-            objects.append(claw)
-
-    return objects
-
-
-def add_poly_curve(
-    name: str,
-    splines: Iterable[list[tuple[Vector, float]]],
-    collection: bpy.types.Collection,
+def bake_final_albedo(
+    animal: bpy.types.Object,
     material: bpy.types.Material,
-    bevel_depth: float,
-) -> bpy.types.Object:
-    curve = bpy.data.curves.new(name=f"{name}_Data", type="CURVE")
-    curve.dimensions = "3D"
-    curve.resolution_u = 1
-    curve.resolution_v = 0
-    curve.bevel_depth = bevel_depth
-    curve.bevel_resolution = 0
-    curve.use_fill_caps = True
-    curve.materials.append(material)
+) -> None:
+    """Bake the side projection and reconstructed fallback into portable UVs."""
 
-    for points in splines:
-        spline = curve.splines.new("POLY")
-        spline.points.add(len(points) - 1)
-        for point, (position, radius) in zip(spline.points, points):
-            point.co = (*position, 1.0)
-            point.radius = radius
+    scene = bpy.context.scene
+    nodes = material.node_tree.nodes
+    target = nodes.new("ShaderNodeTexImage")
+    target.name = "CAPYBARA_FinalAlbedoBakeTarget"
+    target.image = bpy.data.images.new(
+        "CAPYBARA_FinalAlbedo",
+        width=2048,
+        height=2048,
+        alpha=False,
+        float_buffer=False,
+    )
+    target.image.generated_color = (0.12, 0.055, 0.02, 1.0)
+    for node in nodes:
+        node.select = False
+    target.select = True
+    nodes.active = target
 
-    obj = bpy.data.objects.new(name, curve)
-    collection.objects.link(obj)
-    return obj
+    bpy.ops.object.select_all(action="DESELECT")
+    animal.select_set(True)
+    bpy.context.view_layer.objects.active = animal
+    previous_engine = scene.render.engine
+    scene.render.engine = "CYCLES"
+    scene.cycles.samples = 1
+    scene.render.bake.margin = 8
+    bpy.ops.object.bake(
+        type="DIFFUSE",
+        pass_filter={"COLOR"},
+        use_clear=True,
+        margin=8,
+    )
+    target.image.filepath_raw = str(FINAL_ALBEDO)
+    target.image.file_format = "PNG"
+    target.image.save()
+    scene.render.engine = previous_engine
 
-
-def triangle_samples(
-    body: bpy.types.Object,
-    count: int,
-    rng: random.Random,
-) -> list[tuple[Vector, Vector]]:
-    depsgraph = bpy.context.evaluated_depsgraph_get()
-    evaluated = body.evaluated_get(depsgraph)
-    mesh = evaluated.to_mesh(preserve_all_data_layers=True, depsgraph=depsgraph)
-    try:
-        mesh.calc_loop_triangles()
-        triangles = list(mesh.loop_triangles)
-        areas = [triangle.area for triangle in triangles]
-        cumulative: list[float] = []
-        total = 0.0
-        for area in areas:
-            total += area
-            cumulative.append(total)
-
-        samples: list[tuple[Vector, Vector]] = []
-        attempts = 0
-        while len(samples) < count and attempts < count * 3:
-            attempts += 1
-            triangle = triangles[
-                min(bisect.bisect_left(cumulative, rng.random() * total), len(triangles) - 1)
-            ]
-            vertices = [mesh.vertices[index] for index in triangle.vertices]
-            root = math.sqrt(rng.random())
-            second = rng.random()
-            weights = (1.0 - root, root * (1.0 - second), root * second)
-            position = sum(
-                (vertex.co * weight for vertex, weight in zip(vertices, weights)),
-                Vector(),
-            )
-            normal = sum(
-                (vertex.normal * weight for vertex, weight in zip(vertices, weights)),
-                Vector(),
-            ).normalized()
-            if normal.z < -0.55:
-                continue
-            samples.append(
-                (
-                    evaluated.matrix_world @ position,
-                    (evaluated.matrix_world.to_3x3() @ normal).normalized(),
-                )
-            )
-        return samples
-    finally:
-        evaluated.to_mesh_clear()
+    baked_image = target.image
+    nodes.clear()
+    output = nodes.new("ShaderNodeOutputMaterial")
+    principled = nodes.new("ShaderNodeBsdfPrincipled")
+    albedo = nodes.new("ShaderNodeTexImage")
+    noise = nodes.new("ShaderNodeTexNoise")
+    bump = nodes.new("ShaderNodeBump")
+    albedo.image = baked_image
+    albedo.image.colorspace_settings.name = "sRGB"
+    albedo.interpolation = "Linear"
+    albedo.extension = "EXTEND"
+    principled.inputs["Roughness"].default_value = 0.76
+    principled.inputs["IOR"].default_value = 1.46
+    principled.inputs["Specular IOR Level"].default_value = 0.25
+    principled.inputs["Subsurface Weight"].default_value = 0.012
+    noise.inputs["Scale"].default_value = 260.0
+    noise.inputs["Detail"].default_value = 3.4
+    noise.inputs["Roughness"].default_value = 0.8
+    bump.inputs["Strength"].default_value = 0.16
+    bump.inputs["Distance"].default_value = 0.0014
+    links = material.node_tree.links
+    links.new(albedo.outputs["Color"], principled.inputs["Base Color"])
+    links.new(noise.outputs["Fac"], bump.inputs["Height"])
+    links.new(bump.outputs["Normal"], principled.inputs["Normal"])
+    links.new(principled.outputs["BSDF"], output.inputs["Surface"])
 
 
-def add_fur(
-    body: bpy.types.Object,
+def create_preview_hair(
+    animal: bpy.types.Object,
     collection: bpy.types.Collection,
-    material: bpy.types.Material,
-    rng: random.Random,
 ) -> bpy.types.Object:
-    strands: list[list[tuple[Vector, float]]] = []
-    for position, normal in triangle_samples(body, HAIR_COUNT, rng):
-        random_vector = Vector(
-            (rng.uniform(-1.0, 1.0), rng.uniform(-1.0, 1.0), rng.uniform(-0.5, 0.8))
-        )
-        coat_flow = Vector((-1.0, rng.uniform(-0.16, 0.16), -0.08))
-        flow_strength = 0.30 if position.x > 1.0 else 0.50
-        direction = (
-            normal * 0.88 + coat_flow * flow_strength + random_vector * 0.075
+    """Create coarse guard hairs for Blender portraits only.
+
+    glTF receives the baked coat texture; the curve object stays in the
+    editable .blend so the portable asset remains reasonably sized.
+    """
+
+    mesh = animal.data
+    mesh.calc_loop_triangles()
+    candidates = []
+    cumulative_area = []
+    total_area = 0.0
+    for triangle in mesh.loop_triangles:
+        center = sum((mesh.vertices[i].co for i in triangle.vertices), Vector()) / 3
+        if center.z < 0.105:
+            continue
+        total_area += triangle.area
+        candidates.append(triangle)
+        cumulative_area.append(total_area)
+
+    if not candidates:
+        raise RuntimeError("No surface triangles available for preview guard hair")
+
+    rng = random.Random(SEED)
+    curve_data = bpy.data.curves.new("CAPYBARA_PreviewGuardHair", "CURVE")
+    curve_data.dimensions = "3D"
+    curve_data.resolution_u = 1
+    curve_data.bevel_depth = 0.00032
+    curve_data.bevel_resolution = 0
+    curve_data.resolution_u = 1
+
+    for _ in range(PREVIEW_HAIR_COUNT):
+        triangle = candidates[
+            bisect.bisect_left(cumulative_area, rng.random() * total_area)
+        ]
+        v0, v1, v2 = (mesh.vertices[i] for i in triangle.vertices)
+        r1 = math.sqrt(rng.random())
+        r2 = rng.random()
+        weights = (1.0 - r1, r1 * (1.0 - r2), r1 * r2)
+        root = v0.co * weights[0] + v1.co * weights[1] + v2.co * weights[2]
+        normal = (
+            v0.normal * weights[0]
+            + v1.normal * weights[1]
+            + v2.normal * weights[2]
         ).normalized()
-        head_factor = 0.74 if position.x > 0.85 else 1.0
-        length = rng.uniform(0.032, 0.058) * head_factor
-        root = position + normal * 0.002
-        bend = Vector((0.0, rng.uniform(-0.010, 0.010), rng.uniform(-0.006, 0.010)))
-        strands.append(
-            [
-                (root, 1.0),
-                (root + direction * (length * 0.55) + bend, 0.65),
-                (root + direction * length + bend * 1.6, 0.06),
-            ]
-        )
-    return add_poly_curve(
-        "CAPY_Dense_Tapered_Fur",
-        strands,
-        collection,
-        material,
-        bevel_depth=0.0018,
-    )
+        flow = (normal * 0.88 + Vector((-0.22, 0.0, -0.035))).normalized()
+        length = rng.uniform(0.009, 0.021)
+
+        strand = curve_data.splines.new("POLY")
+        strand.points.add(1)
+        strand.points[0].co = (*((root + normal * 0.0004)), 1.0)
+        strand.points[1].co = (*((root + flow * length)), 1.0)
+
+    hair = bpy.data.objects.new("CAPYBARA_PreviewGuardHair", curve_data)
+    collection.objects.link(hair)
+    hair_material = bpy.data.materials.new("CAPYBARA_GuardHairMaterial")
+    hair_material.diffuse_color = (0.13, 0.052, 0.018, 1.0)
+    hair_material.use_nodes = True
+    hair_principled = hair_material.node_tree.nodes.get("Principled BSDF")
+    hair_principled.inputs["Base Color"].default_value = (0.10, 0.035, 0.012, 1)
+    hair_principled.inputs["Roughness"].default_value = 0.8
+    curve_data.materials.append(hair_material)
+    hair["asset_role"] = "Blender portrait guard hair; excluded from glTF"
+    return hair
 
 
-def add_whiskers(
-    collection: bpy.types.Collection,
-    material: bpy.types.Material,
-    rng: random.Random,
-) -> bpy.types.Object:
-    whiskers: list[list[tuple[Vector, float]]] = []
-    for sign in (-1.0, 1.0):
-        for index in range(13):
-            root = Vector(
-                (
-                    rng.uniform(1.72, 1.98),
-                    sign * rng.uniform(0.29, 0.35),
-                    rng.uniform(1.20, 1.40),
-                )
-            )
-            length = rng.uniform(0.25, 0.47)
-            direction = Vector(
-                (
-                    rng.uniform(-0.15, 0.45),
-                    sign * rng.uniform(0.80, 1.0),
-                    rng.uniform(-0.20, 0.26),
-                )
-            ).normalized()
-            whiskers.append(
-                [
-                    (root, 1.0),
-                    (root + direction * (length * 0.55) + Vector((0, 0, -0.012)), 0.52),
-                    (root + direction * length + Vector((0, 0, -0.035)), 0.04),
-                ]
-            )
-    return add_poly_curve(
-        "CAPY_Whiskers",
-        whiskers,
-        collection,
-        material,
-        bevel_depth=0.0015,
-    )
-
-
-def add_mouth(
-    collection: bpy.types.Collection,
-    material: bpy.types.Material,
-) -> bpy.types.Object:
-    points = [
-        (Vector((1.94, -0.22, 1.185)), 0.70),
-        (Vector((2.075, -0.08, 1.175)), 0.90),
-        (Vector((2.105, 0.00, 1.172)), 1.00),
-        (Vector((2.075, 0.08, 1.175)), 0.90),
-        (Vector((1.94, 0.22, 1.185)), 0.70),
-    ]
-    return add_poly_curve(
-        "CAPY_Mouth_Line",
-        [points],
-        collection,
-        material,
-        bevel_depth=0.006,
-    )
-
-
-def aim_at(obj: bpy.types.Object, target: Vector) -> None:
+def look_at(obj: bpy.types.Object, target: Vector) -> None:
     obj.rotation_euler = (target - obj.location).to_track_quat("-Z", "Y").to_euler()
 
 
 def add_area_light(
+    collection: bpy.types.Collection,
     name: str,
     location: tuple[float, float, float],
     energy: float,
-    color: tuple[float, float, float],
     size: float,
-    collection: bpy.types.Collection,
-    target: Vector,
+    color: tuple[float, float, float],
 ) -> bpy.types.Object:
-    data = bpy.data.lights.new(name=f"{name}_Data", type="AREA")
+    data = bpy.data.lights.new(name, "AREA")
     data.energy = energy
-    data.color = color
     data.shape = "DISK"
     data.size = size
+    data.color = color
     obj = bpy.data.objects.new(name, data)
     collection.objects.link(obj)
     obj.location = location
-    aim_at(obj, target)
+    look_at(obj, Vector((0.0, 0.0, 0.3)))
     return obj
 
 
-def add_presentation(
-    collection: bpy.types.Collection,
-    materials: dict[str, bpy.types.Material],
-) -> bpy.types.Camera:
-    bpy.ops.mesh.primitive_plane_add(size=14.0, location=(0.0, 0.0, 0.0))
-    floor = bpy.context.active_object
-    assert floor is not None
-    floor.name = "CAPY_Studio_Ground"
-    move_to_collection(floor, collection)
-    floor.data.materials.append(materials["ground"])
+def create_studio() -> tuple[bpy.types.Collection, bpy.types.Object]:
+    studio = bpy.data.collections.new("CAPYBARA_STUDIO")
+    bpy.context.scene.collection.children.link(studio)
 
-    target = Vector((0.35, 0.0, 1.03))
+    bpy.ops.mesh.primitive_plane_add(size=20.0, location=(0.0, 0.0, -0.004))
+    ground = bpy.context.object
+    ground.name = "CAPYBARA_StudioGround"
+    for owner in list(ground.users_collection):
+        owner.objects.unlink(ground)
+    studio.objects.link(ground)
+    ground_material = bpy.data.materials.new("CAPYBARA_StudioGroundMaterial")
+    ground_material.diffuse_color = (0.055, 0.062, 0.055, 1.0)
+    ground_material.roughness = 0.91
+    ground.data.materials.append(ground_material)
+
+    camera_data = bpy.data.cameras.new("CAPYBARA_Camera")
+    camera = bpy.data.objects.new("CAPYBARA_Camera", camera_data)
+    studio.objects.link(camera)
+    camera.data.lens = 68
+    camera.data.sensor_width = 36
+    bpy.context.scene.camera = camera
+
     add_area_light(
-        "CAPY_Key_Light",
-        (4.6, -4.2, 5.8),
-        930.0,
-        (1.0, 0.88, 0.76),
-        4.0,
-        collection,
-        target,
+        studio,
+        "CAPYBARA_Key",
+        (2.4, 2.6, 3.3),
+        260,
+        2.8,
+        (1.0, 0.82, 0.67),
     )
     add_area_light(
-        "CAPY_Fill_Light",
-        (1.2, 4.5, 3.3),
-        680.0,
-        (0.62, 0.74, 1.0),
-        3.5,
-        collection,
-        target,
+        studio,
+        "CAPYBARA_Fill",
+        (-2.1, 1.5, 1.8),
+        150,
+        2.4,
+        (0.64, 0.77, 1.0),
     )
     add_area_light(
-        "CAPY_Rim_Light",
-        (-4.2, -1.2, 4.3),
-        760.0,
-        (1.0, 0.68, 0.48),
-        3.0,
-        collection,
-        target,
+        studio,
+        "CAPYBARA_Rim",
+        (-1.4, -2.4, 2.7),
+        220,
+        2.0,
+        (1.0, 0.55, 0.29),
     )
-
-    camera_data = bpy.data.cameras.new("CAPY_Preview_Camera_Data")
-    camera = bpy.data.objects.new("CAPY_Preview_Camera", camera_data)
-    collection.objects.link(camera)
-    camera.location = (5.0, -6.4, 2.85)
-    camera.data.lens = 62.0
-    camera.data.sensor_width = 36.0
-    camera.data.dof.use_dof = True
-    camera.data.dof.aperture_fstop = 3.4
-    focus = bpy.data.objects.new("CAPY_Focus", None)
-    focus.empty_display_type = "SPHERE"
-    focus.empty_display_size = 0.08
-    focus.location = target
-    collection.objects.link(focus)
-    camera.data.dof.focus_object = focus
-    aim_at(camera, target)
-    return camera.data
+    return studio, camera
 
 
-def hide_unrelated_scene_objects(
-    asset: bpy.types.Collection,
-    presentation: bpy.types.Collection,
-) -> None:
-    allowed = set(asset.all_objects) | set(presentation.all_objects)
-    for obj in bpy.context.scene.objects:
-        if obj not in allowed and not obj.name.startswith("CAPY_"):
-            obj.hide_render = True
-
-
-def configure_render(camera_data: bpy.types.Camera) -> None:
+def configure_scene() -> None:
     scene = bpy.context.scene
-    camera_object = next(
-        obj for obj in bpy.data.objects if obj.type == "CAMERA" and obj.data == camera_data
-    )
-    scene.camera = camera_object
-    scene.render.engine = "CYCLES"
-    scene.cycles.samples = 64
-    scene.cycles.use_denoising = True
-    scene.cycles.max_bounces = 6
-    scene.cycles.diffuse_bounces = 3
-    scene.cycles.glossy_bounces = 3
-    scene.cycles.transmission_bounces = 4
-    scene.render.resolution_x = 1200
-    scene.render.resolution_y = 900
-    scene.render.resolution_percentage = 100
+    scene.render.engine = "BLENDER_EEVEE"
     scene.render.image_settings.file_format = "PNG"
-    scene.render.film_transparent = False
-    scene.render.filepath = str(PREVIEW_PATH)
     scene.render.image_settings.color_mode = "RGBA"
-    scene.world.color = (0.008, 0.010, 0.014)
-    try:
-        scene.view_settings.look = "AgX - Medium High Contrast"
-    except TypeError:
-        pass
+    scene.render.film_transparent = False
+    scene.render.resolution_percentage = 100
+    scene.render.image_settings.color_depth = "8"
+    scene.render.image_settings.compression = 20
+    scene.render.film_transparent = False
+    scene.view_settings.look = "AgX - Medium High Contrast"
+    scene.world.use_nodes = True
+    background = scene.world.node_tree.nodes.get("Background")
+    background.inputs["Color"].default_value = (0.028, 0.023, 0.019, 1.0)
+    background.inputs["Strength"].default_value = 0.28
+    scene.unit_settings.system = "METRIC"
+    scene.unit_settings.length_unit = "METERS"
 
 
-def main() -> dict[str, object]:
-    rng = random.Random(SEED)
-    WORKING_DIR.mkdir(parents=True, exist_ok=True)
-    EXPORT_DIR.mkdir(parents=True, exist_ok=True)
+def render_view(
+    camera: bpy.types.Object,
+    path: Path,
+    location: tuple[float, float, float],
+    target: tuple[float, float, float],
+    lens: float,
+    resolution: tuple[int, int],
+) -> None:
+    scene = bpy.context.scene
+    camera.location = location
+    camera.data.lens = lens
+    look_at(camera, Vector(target))
+    scene.render.resolution_x, scene.render.resolution_y = resolution
+    scene.render.filepath = str(path)
+    bpy.ops.render.render(write_still=True)
 
-    remove_collection(ASSET_COLLECTION)
-    remove_collection(PRESENTATION_COLLECTION)
-    remove_generated_datablocks()
 
-    scene_root = bpy.context.scene.collection
-    city_root = bpy.data.collections.get("SHENRON_CITY")
-    character_parent = bpy.data.collections.get("40_Characters")
-    asset_parent = character_parent or city_root or scene_root
-    reference_parent = bpy.data.collections.get("00_References") or city_root or scene_root
-
-    asset = new_collection(ASSET_COLLECTION, asset_parent)
-    body_collection = new_collection(BODY_COLLECTION, asset)
-    detail_collection = new_collection(DETAIL_COLLECTION, asset)
-    fur_collection = new_collection(FUR_COLLECTION, asset)
-    presentation = new_collection(PRESENTATION_COLLECTION, reference_parent)
-
-    materials = {
-        "body": material_body(),
-        "fur": material_fur(),
-        "eye": material_simple("CAPY_MAT_Eye", (0.004, 0.002, 0.001, 1.0), 0.12),
-        "cornea": material_simple(
-            "CAPY_MAT_Cornea",
-            (0.012, 0.018, 0.020, 1.0),
-            0.035,
-            transmission=0.72,
-            ior=1.40,
-        ),
-        "lid": material_simple("CAPY_MAT_Eyelid", (0.030, 0.009, 0.004, 1.0), 0.48),
-        "inner_ear": material_simple(
-            "CAPY_MAT_Inner_Ear",
-            (0.048, 0.012, 0.009, 1.0),
-            0.62,
-        ),
-        "nose": material_simple("CAPY_MAT_Nostrils", (0.006, 0.003, 0.002, 1.0), 0.66),
-        "claw": material_simple("CAPY_MAT_Claws", (0.045, 0.032, 0.020, 1.0), 0.38),
-        "whisker": material_simple("CAPY_MAT_Whiskers", (0.020, 0.015, 0.010, 1.0), 0.30),
-        "ground": material_simple("CAPY_MAT_Ground", (0.055, 0.060, 0.068, 1.0), 0.74),
-    }
-
-    body = add_body(body_collection, materials["body"])
-    details = add_face_and_paws(detail_collection, materials)
-    fur = add_fur(body, fur_collection, materials["fur"], rng)
-    whiskers = add_whiskers(fur_collection, materials["whisker"], rng)
-    mouth = add_mouth(detail_collection, materials["lid"])
-
-    asset["asset_name"] = "Capybara"
-    asset["asset_type"] = "character"
-    asset["authoring_units"] = "metres"
-    asset["forward_axis"] = "+X"
-    asset["license"] = "Original procedural asset for Shenron City"
-    asset["generator"] = str(SCRIPT_PATH)
-    asset["seed"] = SEED
-    asset["fur_strands"] = HAIR_COUNT
-
-    camera_data = add_presentation(presentation, materials)
-    hide_unrelated_scene_objects(asset, presentation)
-    configure_render(camera_data)
-
-    bpy.context.scene["shenron_capybara_asset"] = str(ASSET_BLEND_PATH)
-    bpy.context.scene["shenron_capybara_preview"] = str(PREVIEW_PATH)
-    bpy.context.scene["shenron_capybara_glb"] = str(PORTABLE_GLB_PATH)
-
-    bpy.data.libraries.write(
-        str(ASSET_BLEND_PATH),
-        {asset},
-        path_remap="RELATIVE",
-        fake_user=True,
-        compress=True,
-    )
-
+def export_asset(animal: bpy.types.Object) -> None:
     bpy.ops.object.select_all(action="DESELECT")
-    for obj in asset.all_objects:
-        obj.select_set(True)
-    bpy.context.view_layer.objects.active = body
+    animal.select_set(True)
+    bpy.context.view_layer.objects.active = animal
     bpy.ops.export_scene.gltf(
-        filepath=str(PORTABLE_GLB_PATH),
+        filepath=str(EXPORT_GLB),
         export_format="GLB",
         use_selection=True,
         export_apply=True,
-        export_animations=False,
-        export_cameras=False,
-        export_lights=False,
         export_yup=True,
+        export_texcoords=True,
+        export_normals=True,
+        export_materials="EXPORT",
+        export_image_format="AUTO",
         export_draco_mesh_compression_enable=True,
         export_draco_mesh_compression_level=6,
-        export_draco_position_quantization=14,
-        export_draco_normal_quantization=10,
     )
 
-    bpy.ops.render.render(write_still=True)
-    bpy.ops.wm.save_mainfile()
 
-    return {
-        "asset_collection": asset.name,
-        "body_vertices": len(body.data.vertices),
-        "detail_objects": len(details) + 1,
-        "fur_strands": len(fur.data.splines),
-        "whiskers": len(whiskers.data.splines),
-        "mouth_splines": len(mouth.data.splines),
-        "asset_blend": str(ASSET_BLEND_PATH),
-        "portable_glb": str(PORTABLE_GLB_PATH),
-        "preview": str(PREVIEW_PATH),
-    }
+def main() -> None:
+    ensure_inputs()
+    remove_previous_asset()
+    configure_scene()
+
+    asset_collection = bpy.data.collections.new("CAPYBARA_ASSET")
+    bpy.context.scene.collection.children.link(asset_collection)
+    animal = import_and_prepare_mesh(asset_collection)
+    bake_final_albedo(animal, animal.data.materials[0])
+    if PREVIEW_HAIR_COUNT:
+        create_preview_hair(animal, asset_collection)
+    _, camera = create_studio()
+
+    render_view(
+        camera,
+        PREVIEW_RENDER,
+        (2.0, 2.45, 1.18),
+        (0.05, 0.0, 0.30),
+        72,
+        (1400, 1000),
+    )
+    render_view(
+        camera,
+        SIDE_RENDER,
+        (0.0, 2.9, 0.62),
+        (0.0, 0.0, 0.29),
+        76,
+        (1400, 850),
+    )
+    render_view(
+        camera,
+        FACE_RENDER,
+        (2.45, 0.0, 0.66),
+        (0.50, 0.0, 0.32),
+        88,
+        (1000, 1000),
+    )
+
+    export_asset(animal)
+    bpy.ops.wm.save_as_mainfile(filepath=str(WORKING_BLEND))
+    print(
+        {
+            "blend": str(WORKING_BLEND),
+            "glb": str(EXPORT_GLB),
+            "preview": str(PREVIEW_RENDER),
+            "side": str(SIDE_RENDER),
+            "face": str(FACE_RENDER),
+            "render_mesh_vertices": len(animal.data.vertices),
+            "render_mesh_triangles": len(animal.data.loop_triangles),
+            "preview_hairs": PREVIEW_HAIR_COUNT,
+            "dimensions_m": tuple(round(value, 4) for value in animal.dimensions),
+        }
+    )
 
 
-if __name__ == "__main__":
-    print(main())
+main()
