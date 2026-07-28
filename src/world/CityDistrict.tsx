@@ -1,5 +1,5 @@
 /**
- * Shenron City's first walkable exterior district.
+ * Shenzhen City's first walkable exterior district.
  *
  * Authored CC0 shells now establish the commercial blocks and vegetation.
  * Repeated windows, lights and lane markings remain instanced so the street

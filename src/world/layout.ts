@@ -48,7 +48,7 @@ export const SHAFT = {
   carHeight: 3.4,
 } as const
 
-export const SPAWN = { x: -10.7, y: 0.05, z: 145 } as const
+export const SPAWN = { x: 0, y: 0.05, z: 145 } as const
 
 export const TOWER = { halfWidth: 26, depth: 40, height: 120 } as const
 

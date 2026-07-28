@@ -2,7 +2,7 @@
 
 ## Purpose
 
-This folder preserves the exact, reviewable source chain for Shenron City's
+This folder preserves the exact, reviewable source chain for Shenzhen City's
 animated capybara. The final asset is a project reconstruction; it is not a
 downloaded wildlife mesh.
 
@@ -29,7 +29,7 @@ downloaded wildlife mesh.
    exports both authoring and runtime GLBs.
 
 TripoSR's official code and pretrained model are released under the MIT
-license. No TripoSR source code or model weights are vendored in Shenron City.
+license. No TripoSR source code or model weights are vendored in Shenzhen City.
 Rejected experimental reconstruction outputs are not included in the
 repository.
 

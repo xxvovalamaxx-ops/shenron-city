@@ -1,4 +1,4 @@
-# Shenron City — Three.js stack
+# Shenzhen City — Three.js stack
 
 The package lock is the authority. A package is documented as installed only
 when it is actually present in `package.json`.

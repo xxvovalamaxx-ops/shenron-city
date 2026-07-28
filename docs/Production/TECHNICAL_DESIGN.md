@@ -1,4 +1,4 @@
-# Shenron City — Technical Design
+# Shenzhen City — Technical Design
 
 ## Architecture
 - **Renderer**: Three.js via React Three Fiber

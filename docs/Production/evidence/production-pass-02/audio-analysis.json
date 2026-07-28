@@ -1,0 +1,24 @@
+{
+  "capturedAtUtc": "2026-07-28T23:52:25Z",
+  "build": "vite-production-preview",
+  "browser": "Chromium",
+  "audioContextState": "running",
+  "sampleRateHz": 48000,
+  "masterVolume": 0.7,
+  "sampleCount": 20,
+  "sampleIntervalMs": 100,
+  "nonZeroSamples": 20,
+  "identicalStereoSamples": 0,
+  "maximumLeftRms": 0.010815,
+  "maximumRightRms": 0.010741,
+  "maximumStereoDifference": 0.013368,
+  "digitalSilence": false,
+  "independentStereoChannels": true,
+  "integratedLufs": null,
+  "truePeakDbfs": null,
+  "recordingPath": null,
+  "limitations": [
+    "This is live Web Audio analyser evidence, not analysis of a recorded gameplay file.",
+    "Integrated loudness and true peak remain unmeasured because no complete gameplay recording was produced."
+  ]
+}

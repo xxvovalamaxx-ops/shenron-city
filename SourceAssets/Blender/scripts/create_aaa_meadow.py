@@ -1,4 +1,4 @@
-"""Build Shenron City's photoreal layered meadow authoring scene.
+"""Build Shenzhen City's photoreal layered meadow authoring scene.
 
 The scene follows the three realism layers demonstrated in the reference:
 

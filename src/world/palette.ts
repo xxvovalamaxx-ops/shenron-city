@@ -109,9 +109,9 @@ export const QUALITY: Record<QualityPreset, QualitySettings> = {
     reflections: false,
     maxDpr: 1.25,
     cityWindows: 1200,
-    ambientPedestrians: 11,
+    ambientPedestrians: 8,
     detailTrees: true,
-    vehicles: 11,
+    vehicles: 8,
     groundCover: 800,
   },
   high: {
@@ -121,9 +121,9 @@ export const QUALITY: Record<QualityPreset, QualitySettings> = {
     reflections: true,
     maxDpr: 1.75,
     cityWindows: 2600,
-    ambientPedestrians: 18,
+    ambientPedestrians: 12,
     detailTrees: true,
-    vehicles: 16,
+    vehicles: 8,
     groundCover: 1600,
   },
 }

@@ -6,7 +6,7 @@ The historical FBX archive is a private authoring input, not a publishable
 asset pack. None of its 2,393 files may be added to the public GitHub tree
 until the source and acquisition rights of the individual file are proven.
 
-This does not prevent Shenron City from using properly licensed animation.
+This does not prevent Shenzhen City from using properly licensed animation.
 The shipped service android carries 14 CC0 motion clips. The Kenney citizen
 pipeline now adds three verified CC0 motions (`Idle`, `Jump`, and `Run`) and
 six skins through a reproducible Blender export. Source URLs, archive hashes,

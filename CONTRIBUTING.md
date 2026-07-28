@@ -1,6 +1,6 @@
-# Contributing to Shenron City
+# Contributing to Shenzhen City
 
-Shenron City is being built as a standalone Three.js web game. Keep changes
+Shenzhen City is being built as a standalone Three.js web game. Keep changes
 small, playable, and easy for another contributor to review.
 
 ## Before you edit

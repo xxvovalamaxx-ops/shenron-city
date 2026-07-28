@@ -1,5 +1,5 @@
 /**
- * Boulevard traffic using audited CC0 vehicle shells.
+ * Boulevard traffic using audited project-authored vehicle shells.
  *
  * This component owns appearance only. Every vehicle root is written by the
  * simulation in GameLoop, because the colliders are derived from the same poses
@@ -110,8 +110,10 @@ export function Traffic({ quality }: { quality: QualitySettings }) {
 
     const colour = new THREE.Color()
     rt.vehicles.forEach((_, i) => {
-      lampMesh.setColorAt(i * 2, colour.set(HEADLIGHT))
-      lampMesh.setColorAt(i * 2 + 1, colour.set(TAILLIGHT))
+      lampMesh.setColorAt(i * 4, colour.set(HEADLIGHT))
+      lampMesh.setColorAt(i * 4 + 1, colour.set(HEADLIGHT))
+      lampMesh.setColorAt(i * 4 + 2, colour.set(TAILLIGHT))
+      lampMesh.setColorAt(i * 4 + 3, colour.set(TAILLIGHT))
     })
     if (lampMesh.instanceColor) lampMesh.instanceColor.needsUpdate = true
   }, [count])
@@ -129,8 +131,8 @@ export function Traffic({ quality }: { quality: QualitySettings }) {
         />
       ))}
 
-      <instancedMesh ref={lamps} args={[undefined, undefined, count * 2]} frustumCulled={false}>
-        <boxGeometry args={[VEHICLE.width * 0.78, 0.19, 0.09]} />
+      <instancedMesh ref={lamps} args={[undefined, undefined, count * 4]} frustumCulled={false}>
+        <boxGeometry args={[VEHICLE.width * 0.16, 0.1, 0.045]} />
         {/* Unlit so the lamps stay bright at night and feed the bloom pass. */}
         <meshBasicMaterial toneMapped={false} />
       </instancedMesh>

@@ -58,11 +58,15 @@ const SCANNED_STYLE: Record<GroundCoverKind, ScannedStyle> = {
 }
 
 const textureCache = new Map<string, THREE.Texture>()
+// Keep these lazily loaded optional meadow cards off Drei's global loading
+// manager. Updating useProgress while React is rendering ScannedLayer causes a
+// cross-component state update and makes the title gate report a console error.
+const plantTextureLoader = new THREE.TextureLoader(new THREE.LoadingManager())
 
 function plantTexture(url: string, colorSpace: boolean): THREE.Texture {
   const cached = textureCache.get(url)
   if (cached) return cached
-  const texture = new THREE.TextureLoader().load(url)
+  const texture = plantTextureLoader.load(url)
   texture.colorSpace = colorSpace ? THREE.SRGBColorSpace : THREE.NoColorSpace
   texture.wrapS = texture.wrapT = THREE.ClampToEdgeWrapping
   texture.anisotropy = 4

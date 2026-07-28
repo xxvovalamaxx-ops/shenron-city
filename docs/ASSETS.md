@@ -1,27 +1,25 @@
-# Shenron City — asset policy
+# Shenzhen City — asset policy
 
-Shenron City is a browser game. Every shipped asset must be useful to the
+Shenzhen City is a browser game. Every shipped asset must be useful to the
 current Three.js build, have recorded provenance, and fit the web performance
 budget.
 
 ## Current shipped assets
 
-Most structural geometry, small props, and audio remain procedural. The
-imported runtime files in `public/` include curated 1K Poly Haven material
-maps, the optimized Shenron City capybara GLB, a pinned CC0 service-android
-GLB for headquarters agents, and a compact CC0 Kenney citizen GLB with six
-local skins for pedestrians and named city characters. Kai uses a clothed
-Quaternius Male Ranger with 29 city-relevant clips selected from two reviewed
-CC0 Universal Animation Library Standard archives.
+Production Pass 02 ships original Blender GLBs for the hero district,
+headquarters lobby, elevator structure and car, Floor 45, automatic-door leaf,
+and four unbranded vehicle families. The browser also uses curated 1K Poly
+Haven material maps, the optimized Shenzhen City capybara GLB, a pinned CC0
+service-android GLB, detailed tree assets, and Quaternius CC0 humanoids and
+animations. Legacy Kenney buildings, cars, and citizens remain verified in the
+repository for compatibility, but their cartoon citizens and toy vehicle
+shells are no longer rendered on the production route.
 
-The commercial-block shells, boulevard trees and park features, and four
-traffic shells are curated CC0 Kenney GLBs. Runtime normalization binds each
-model to the same authored dimensions used by collision; imported decoration
-does not create a second source of spatial truth.
-
-Every imported asset is recorded in
-[`Assets/ASSET_MANIFEST.csv`](Assets/ASSET_MANIFEST.csv), including its source,
-creator, license, acquisition date, destination, and modifications. CI rejects
+The authoritative Production Pass 02 manifest is
+[`Assets/ASSET_MANIFEST.json`](Assets/ASSET_MANIFEST.json). The historical
+acquisition ledger remains
+[`Assets/ASSET_MANIFEST.csv`](Assets/ASSET_MANIFEST.csv). Together they record
+source, creator, license, destination, and modifications. CI rejects
 unreferenced binary files in `public/`, so an unused download cannot silently
 inflate the production build.
 

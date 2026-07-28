@@ -126,7 +126,7 @@ export function answer(
   switch (intent) {
     case 'greeting':
       return grounded(
-        `Welcome to ${status.identity}. ${plural(agents.length, 'resident')} are staged in this standalone prototype. Ask me about the headquarters, or take the lift to 45 and meet them.`,
+        `Welcome to ${status.identity}. ${plural(agents.length, 'resident')} are active in this offline city build. Ask me about the headquarters, or take the lift to 45 and meet them.`,
       )
 
     case 'overview':
@@ -166,7 +166,7 @@ export function answer(
         return grounded('Nobody in the local scenario is waiting right now.')
       }
       return grounded(
-        `${plural(blocked.length, 'resident')} waiting: ${blocked.map((a) => `${a.name}${a.currentTask ? ` (${a.currentTask})` : ''}`).join('; ')}. This prototype cannot approve or execute anything on your computer.`,
+        `${plural(blocked.length, 'resident')} waiting: ${blocked.map((a) => `${a.name}${a.currentTask ? ` (${a.currentTask})` : ''}`).join('; ')}. This offline build cannot approve or execute anything on your computer.`,
       )
     }
 
@@ -204,7 +204,7 @@ export function answer(
     case 'unknown':
       return {
         source: 'fallback',
-        text: "That is outside this prototype's scripted dialogue. I can explain the headquarters, its residents, current scenario activity, and how to reach floor 45.",
+        text: "That is outside this character's local dialogue. I can explain the headquarters, its residents, current scenario activity, and how to reach floor 45.",
       }
   }
 }
@@ -283,7 +283,7 @@ function answerMira(question: string): Reply {
 
   if (/\b(district|boulevard|neighbou?rhood|city|market)\b/.test(normalized)) {
     return grounded(
-      'This is Shenron City’s first playable neighborhood: Dragon Boulevard, the night market, Pocket Park, and the headquarters plaza.',
+      'This is Shenzhen City’s Dragon Boulevard district: the night market, Pocket Park, and the Shenron headquarters plaza.',
     )
   }
 
@@ -300,7 +300,7 @@ function answerMira(question: string): Reply {
       )
     case 'overview':
       return grounded(
-        'This is Shenron City’s first playable neighborhood: Dragon Boulevard, the night market, Pocket Park, and the headquarters plaza.',
+        'This is Shenzhen City’s Dragon Boulevard district: the night market, Pocket Park, and the Shenron headquarters plaza.',
       )
     case 'agents':
     case 'tasks':

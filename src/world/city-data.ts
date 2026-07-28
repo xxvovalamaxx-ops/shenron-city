@@ -1,8 +1,8 @@
 /**
- * The first Shenron City street, as renderer-free data.
+ * The first Shenzhen City street, as renderer-free data.
  *
  * Rendering, collision and ambient movement all consume this module. Keeping
- * the district in one coordinate system prevents the classic prototype bug
+ * the district in one coordinate system prevents the classic alignment bug
  * where a visible shop and its invisible collision box drift apart.
  *
  * Units are metres. +Y is up. The headquarters entrance is at z=0.
@@ -197,13 +197,11 @@ export const STREET_TREES: readonly StreetTree[] = [
   { id: 'park-3', x: -24, z: 43, scale: 1.05 },
   { id: 'park-4', x: -19, z: 54, scale: 1.2 },
   { id: 'park-5', x: -24, z: 55, scale: 0.95 },
-  { id: 'street-west-1', x: -8.4, z: 66, scale: 0.75 },
-  { id: 'street-west-2', x: -8.4, z: 92, scale: 0.75 },
-  { id: 'street-west-3', x: -8.4, z: 118, scale: 0.75 },
-  { id: 'street-west-4', x: -8.4, z: 144, scale: 0.75 },
-  { id: 'street-east-1', x: 8.4, z: 66, scale: 0.75 },
-  { id: 'street-east-2', x: 8.4, z: 112, scale: 0.75 },
-  { id: 'street-east-3', x: 8.4, z: 138, scale: 0.75 },
+  { id: 'street-west-1', x: -14.2, z: 66, scale: 0.75 },
+  { id: 'street-west-2', x: -14.2, z: 92, scale: 0.75 },
+  { id: 'street-west-3', x: -14.2, z: 118, scale: 0.75 },
+  { id: 'street-east-1', x: 14.2, z: 66, scale: 0.75 },
+  { id: 'street-east-2', x: 14.2, z: 112, scale: 0.75 },
 ] as const
 
 export const PARK_NATURE: readonly ParkNature[] = [
@@ -290,10 +288,10 @@ export const AMBIENT_ROUTES: readonly AmbientRoute[] = [
   {
     id: 'west-sidewalk',
     points: [
-      { x: -10.7, z: 48 },
-      { x: -10.7, z: 148 },
-      { x: -14, z: 152 },
-      { x: -14, z: 48 },
+      { x: -9.4, z: 48 },
+      { x: -9.4, z: 148 },
+      { x: -10.2, z: 152 },
+      { x: -10.2, z: 48 },
     ],
   },
   {

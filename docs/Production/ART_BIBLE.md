@@ -1,4 +1,4 @@
-# Shenron City — Art Bible
+# Shenzhen City — Art Bible
 
 ## Palette
 - **Sky**: Deep navy (#05070d) to dark blue-black

@@ -17,6 +17,18 @@ export const CITY_NATURE_ASSETS = {
 } as const
 
 export const CITY_VEHICLE_ASSETS = [
+  '/assets/production/vehicles/premium-sedan.glb',
+  '/assets/production/vehicles/suv-crossover.glb',
+  '/assets/production/vehicles/compact-city.glb',
+  '/assets/production/vehicles/delivery-van.glb',
+] as const
+
+/**
+ * Audited CC0 source-pack files retained for provenance and reproducibility.
+ * They are deliberately excluded from CITY_VEHICLE_ASSETS and never rendered
+ * on the production route.
+ */
+export const LEGACY_CITY_VEHICLE_SOURCES = [
   '/models/city/vehicles/race-future.glb',
   '/models/city/vehicles/sedan.glb',
   '/models/city/vehicles/taxi.glb',

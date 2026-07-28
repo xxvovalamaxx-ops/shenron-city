@@ -73,6 +73,9 @@ interface Motor {
 interface Graph {
   ctx: AudioContext
   master: GainNode
+  limiter: DynamicsCompressorNode
+  leftAnalyser: AnalyserNode
+  rightAnalyser: AnalyserNode
   bedTone: BiquadFilterNode
   shotBus: GainNode
   send: GainNode
@@ -98,6 +101,15 @@ export interface CityAudio {
   /** 0 to 1, on a perceptual taper. */
   setMasterVolume(volume: number): void
   getMasterVolume(): number
+  /** Current browser-audio evidence without exposing mutable graph nodes. */
+  diagnostics(): {
+    state: AudioContextState | 'uninitialized'
+    sampleRate: number
+    currentTime: number
+    leftRms: number
+    rightRms: number
+    stereoDifference: number
+  }
   /** Tear the whole thing down. The instance is unusable afterwards. */
   dispose(): void
 }
@@ -326,6 +338,40 @@ export function createCityAudio(): CityAudio {
       return volume
     },
 
+    diagnostics() {
+      if (!graph) {
+        return {
+          state: 'uninitialized',
+          sampleRate: 0,
+          currentTime: 0,
+          leftRms: 0,
+          rightRms: 0,
+          stereoDifference: 0,
+        }
+      }
+      const left = new Float32Array(graph.leftAnalyser.fftSize)
+      const right = new Float32Array(graph.rightAnalyser.fftSize)
+      graph.leftAnalyser.getFloatTimeDomainData(left)
+      graph.rightAnalyser.getFloatTimeDomainData(right)
+      let leftPower = 0
+      let rightPower = 0
+      let differencePower = 0
+      for (let index = 0; index < left.length; index += 1) {
+        leftPower += left[index] * left[index]
+        rightPower += right[index] * right[index]
+        const difference = left[index] - right[index]
+        differencePower += difference * difference
+      }
+      return {
+        state: graph.ctx.state,
+        sampleRate: graph.ctx.sampleRate,
+        currentTime: graph.ctx.currentTime,
+        leftRms: Math.sqrt(leftPower / left.length),
+        rightRms: Math.sqrt(rightPower / right.length),
+        stereoDifference: Math.sqrt(differencePower / left.length),
+      }
+    },
+
     dispose() {
       if (!graph) return
       for (const id of ZONE_IDS) {
@@ -352,7 +398,27 @@ function buildGraph(ctx: AudioContext, volume: number): Graph {
 
   const master = ctx.createGain()
   master.gain.value = masterGain(volume)
-  master.connect(ctx.destination)
+  const limiter = ctx.createDynamicsCompressor()
+  limiter.threshold.value = -1
+  limiter.knee.value = 0
+  limiter.ratio.value = 20
+  limiter.attack.value = 0.003
+  limiter.release.value = 0.1
+  master.connect(limiter).connect(ctx.destination)
+
+  const splitter = ctx.createChannelSplitter(2)
+  const leftAnalyser = ctx.createAnalyser()
+  const rightAnalyser = ctx.createAnalyser()
+  leftAnalyser.fftSize = 2048
+  rightAnalyser.fftSize = 2048
+  const silentTap = ctx.createGain()
+  silentTap.gain.value = 0
+  limiter.connect(splitter)
+  splitter.connect(leftAnalyser, 0)
+  splitter.connect(rightAnalyser, 1)
+  leftAnalyser.connect(silentTap)
+  rightAnalyser.connect(silentTap)
+  silentTap.connect(ctx.destination)
 
   // Beds run through their own tone control so walking indoors muffles the
   // street continuously, rather than swapping one bed for another at a line.
@@ -397,6 +463,9 @@ function buildGraph(ctx: AudioContext, volume: number): Graph {
   return {
     ctx,
     master,
+    limiter,
+    leftAnalyser,
+    rightAnalyser,
     bedTone,
     shotBus,
     send,

@@ -29,7 +29,6 @@ import { MARKET_KEEPER, PLAZA_WARDEN } from './world/city-data'
 import { PALETTE, QUALITY } from './world/palette'
 import { Hud } from './ui/Hud'
 import { Dialogue } from './ui/Dialogue'
-import { PlayerBody } from './character/PlayerBody'
 import { PlayerAvatar } from './character/PlayerAvatar'
 import { LaserBeam } from './weapons/LaserBeam'
 import { DestructionSystem } from './destruction/DestructionSystem'
@@ -259,7 +258,6 @@ function Scene({
         <Capybara shadows={quality.shadows} />
       </Suspense>
 
-      <PlayerBody />
       <PlayerAvatar />
       <LaserBeam />
       <DestructionSystem />
@@ -331,6 +329,9 @@ function LoadGate({ onReady }: { onReady(): void }) {
 export default function App() {
   const visualInspection =
     typeof location !== 'undefined' && isDevInspection(location.search, import.meta.env.DEV)
+  const pointerLockEnabled =
+    typeof location === 'undefined' ||
+    new URLSearchParams(location.search).get('no-pointer-lock') !== '1'
   const screen = useHud((s) => s.screen)
   const setScreen = useHud((s) => s.setScreen)
   const openAgentId = useHud((s) => s.openAgentId)
@@ -351,6 +352,44 @@ export default function App() {
   const [ready, setReady] = useState(false)
   const [progress, setProgress] = useState(0)
   const controls = useRef<{ lock(): void; unlock(): void } | null>(null)
+  const bootStartedAt = useRef(window.performance.now()).current
+  const markSceneReady = useCallback(() => {
+    document.documentElement.dataset.initialLoadMs = (
+      window.performance.now() - bootStartedAt
+    ).toFixed(1)
+    setReady(true)
+  }, [bootStartedAt])
+
+  useEffect(() => {
+    const target = window as Window & {
+      __cityAudioDiagnostics?: typeof cityAudio.diagnostics
+    }
+    target.__cityAudioDiagnostics = () => cityAudio.diagnostics()
+    const publish = () => {
+      const diagnostics = cityAudio.diagnostics()
+      const root = document.documentElement
+      root.dataset.audioState = diagnostics.state
+      root.dataset.audioSampleRate = String(diagnostics.sampleRate)
+      root.dataset.audioLeftRms = diagnostics.leftRms.toFixed(6)
+      root.dataset.audioRightRms = diagnostics.rightRms.toFixed(6)
+      root.dataset.audioStereoDifference = diagnostics.stereoDifference.toFixed(6)
+    }
+    publish()
+    const interval = window.setInterval(publish, 250)
+    return () => {
+      window.clearInterval(interval)
+      delete target.__cityAudioDiagnostics
+      for (const key of [
+        'audioState',
+        'audioSampleRate',
+        'audioLeftRms',
+        'audioRightRms',
+        'audioStereoDifference',
+      ] as const) {
+        delete document.documentElement.dataset[key]
+      }
+    }
+  }, [])
 
   useEffect(() => {
     start()
@@ -361,6 +400,13 @@ export default function App() {
   useEffect(() => {
     cityAudio.setMasterVolume(settings.volume)
   }, [settings.volume])
+
+  useEffect(() => {
+    document.documentElement.dataset.qualityPreset = settings.quality
+    return () => {
+      delete document.documentElement.dataset.qualityPreset
+    }
+  }, [settings.quality])
 
   // Apply the restored world state once. The elevator floor is derived from
   // the position rather than stored, so the two can never contradict.
@@ -407,9 +453,13 @@ export default function App() {
     setScreen('playing')
     // Both of these need the user gesture we are currently inside: browsers
     // refuse pointer lock without one, and refuse to start an AudioContext.
-    controls.current?.lock()
+    // A remote/non-focused validation tab can deliver the click while its
+    // document is not eligible for pointer lock. In that case keep the world
+    // running and avoid turning an expected host limitation into a console
+    // error; a real focused gameplay click still locks normally.
+    if (pointerLockEnabled && document.hasFocus()) controls.current?.lock()
     void cityAudio.start()
-  }, [setScreen])
+  }, [pointerLockEnabled, setScreen])
 
   const onInteract = useCallback(
     (target: Interactable) => {
@@ -480,16 +530,18 @@ export default function App() {
       >
         <Suspense fallback={null}>
           <Scene settings={settings} onInteract={onInteract} />
-          <LoadGate onReady={() => setReady(true)} />
+          <LoadGate onReady={markSceneReady} />
         </Suspense>
-        <PointerLockControls
-          ref={controls as never}
-          pointerSpeed={settings.sensitivity}
-          onUnlock={() => {
-            // Esc during play means "pause", not "silently lose control".
-            if (useHud.getState().screen === 'playing') setScreen('paused')
-          }}
-        />
+        {pointerLockEnabled && (
+          <PointerLockControls
+            ref={controls as never}
+            pointerSpeed={settings.sensitivity}
+            onUnlock={() => {
+              // Esc during play means "pause", not "silently lose control".
+              if (useHud.getState().screen === 'playing') setScreen('paused')
+            }}
+          />
+        )}
       </Canvas>
 
       {(screen === 'playing' || screen === 'paused') && <Hud />}

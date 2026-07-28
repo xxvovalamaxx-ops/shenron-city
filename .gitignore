@@ -2,6 +2,7 @@ node_modules/
 dist/
 .vite/
 /.vite-dev.*.log
+/.vite-preview.*.log
 *.local
 __pycache__/
 
@@ -41,6 +42,9 @@ Thumbs.db
 /SourceAssets/Animations/Raw/
 /SourceAssets/Models/**/Raw/
 /SourceAssets/Models/**/Working/
+!/SourceAssets/Models/Environment/Working/
+/SourceAssets/Models/Environment/Working/*
+!/SourceAssets/Models/Environment/Working/Shenzhen_City_Production_Pass_02.blend
 /SourceAssets/Textures/Raw/
 /SourceAssets/Audio/Raw/
 /.asset-restore-*/

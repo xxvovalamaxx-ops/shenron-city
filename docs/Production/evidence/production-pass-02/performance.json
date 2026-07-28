@@ -1,0 +1,89 @@
+{
+  "capturedAtUtc": "2026-07-28T23:52:22Z",
+  "build": "vite-production-preview",
+  "browser": "Chromium controlled through the Chrome extension",
+  "viewportCssPixels": {
+    "width": 2560,
+    "height": 889,
+    "devicePixelRatio": 1
+  },
+  "qualityPreset": "high",
+  "initialLoadMs": 1620.1,
+  "sceneAssets": {
+    "files": 10,
+    "bytes": 26053432,
+    "uniqueTriangles": 355516,
+    "submittedTrianglesObserved": {
+      "minimum": 6513090,
+      "maximum": 6553038
+    },
+    "drawCallsObserved": {
+      "minimum": 1292,
+      "maximum": 1385
+    },
+    "rendererGeometries": 212,
+    "rendererTexturesObserved": {
+      "minimum": 274,
+      "maximum": 280
+    }
+  },
+  "sixTwoSecondSamples": [
+    {
+      "averageFps": 5.0,
+      "onePercentLowFps": 1.0,
+      "drawCalls": 1292,
+      "triangles": 6513090
+    },
+    {
+      "averageFps": 29.4,
+      "onePercentLowFps": 1.72,
+      "drawCalls": 1385,
+      "triangles": 6553038
+    },
+    {
+      "averageFps": 45.99,
+      "onePercentLowFps": 1.59,
+      "drawCalls": 1340,
+      "triangles": 6543818
+    },
+    {
+      "averageFps": 23.51,
+      "onePercentLowFps": 1.2,
+      "drawCalls": 1340,
+      "triangles": 6543818
+    },
+    {
+      "averageFps": 4.54,
+      "onePercentLowFps": 1.18,
+      "drawCalls": 1329,
+      "triangles": 6539566
+    },
+    {
+      "averageFps": 9.8,
+      "onePercentLowFps": 1.0,
+      "drawCalls": 1385,
+      "triangles": 6553038
+    }
+  ],
+  "target": {
+    "averageFps": 60,
+    "onePercentLowFps": 45,
+    "passed": false
+  },
+  "baseline": {
+    "averageFps": null,
+    "onePercentLowFps": null,
+    "drawCalls": null,
+    "triangles": null,
+    "textureMemoryBytes": null,
+    "reason": "The supplied baseline recording was not present in the repository and exposed no renderer telemetry."
+  },
+  "textureMemoryBytes": null,
+  "zoneTransitionMs": null,
+  "limitations": [
+    "The extension-controlled Chrome tab was heavily and inconsistently throttled, so the FPS samples are not a stable hardware benchmark.",
+    "The 1% low window includes loading and automation stalls.",
+    "WebGL exposes texture object count here, not reliable texture-memory bytes.",
+    "The requested 60 FPS average and 45 FPS 1% low gate is not proven and is recorded as failed."
+  ]
+}

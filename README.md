@@ -1,8 +1,8 @@
-# Shenron City
+# Shenzhen City
 
 [![CI](https://github.com/xxvovalamaxx-ops/shenron-city/actions/workflows/ci.yml/badge.svg)](https://github.com/xxvovalamaxx-ops/shenron-city/actions/workflows/ci.yml)
 
-Shenron City is a standalone browser-based 3D city built with Three.js and
+Shenzhen City is a standalone browser-based 3D city built with Three.js and
 React Three Fiber.
 
 Walk Dragon Boulevard past shops and ambient pedestrians, visit the night
@@ -33,7 +33,7 @@ Open <http://127.0.0.1:9122>.
 | `Esc` | Release pointer / pause |
 | `F3` | Performance overlay |
 
-Click **Enter Shenron City** to capture the mouse.
+Click **Enter Shenzhen City** to capture the mouse.
 
 ## Current playable route
 
@@ -45,16 +45,26 @@ deterministic game state and is saved only in the game's validated browser
 save; it is never sent to a host service. A local compass, distance readout,
 and north-up minimap guide the player to the active objective.
 
-The current world combines authored procedural geometry with a deliberately
-small, audited CC0 asset set: Poly Haven PBR materials, Kenney commercial
-buildings, vegetation, vehicles, and six animated citizen skins, plus the
-service android, project-authored capybara, and a clothed Quaternius hero with
-29 implemented skeletal motions. Every imported runtime file is recorded in
-[`docs/Assets/ASSET_MANIFEST.csv`](docs/Assets/ASSET_MANIFEST.csv) and pinned
-by an asset verifier. District layout, collision solids, traffic transforms,
-and ambient walking loops still share `src/world/city-data.ts`, so imported
-decoration cannot drift from gameplay collision. Fictional residents and
-activities come from `src/adapter/fixtures.ts`.
+The current world uses original Blender exports for the hero district,
+headquarters lobby, elevator, Floor 45, automatic doors, and four unbranded
+vehicle families. Curated CC0 Poly Haven surfaces, vegetation, animated
+Quaternius humanoids, the Service Android, and the project-authored capybara
+support those assets. Legacy Kenney files remain verified for compatibility,
+but their cartoon citizens and toy vehicles are not rendered on the production
+route. Every Production Pass 02 runtime GLB is recorded in
+[`docs/Assets/ASSET_MANIFEST.json`](docs/Assets/ASSET_MANIFEST.json); historical
+downloads remain in
+[`docs/Assets/ASSET_MANIFEST.csv`](docs/Assets/ASSET_MANIFEST.csv).
+
+The current pass is an audited intermediate build, not a claim of photoreal or
+AAA completion. The exact visible-replacement status is in
+[`docs/Production/PLACEHOLDER_REPLACEMENT_LEDGER.csv`](docs/Production/PLACEHOLDER_REPLACEMENT_LEDGER.csv),
+and measured evidence is under
+[`docs/Production/evidence/production-pass-02`](docs/Production/evidence/production-pass-02).
+District layout, invisible collision solids, traffic transforms, and ambient
+walking loops still share `src/world/city-data.ts`, so imported presentation
+cannot drift from gameplay collision. Fictional residents and activities come
+from `src/adapter/fixtures.ts`.
 
 ## Standalone boundary
 
@@ -128,5 +138,8 @@ reintroduce PC access through UI or NPC code.
 
 - [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md)
 - [`docs/CITY_VERTICAL_SLICE.md`](docs/CITY_VERTICAL_SLICE.md)
+- [`docs/Production/VERTICAL_SLICE_STATUS.md`](docs/Production/VERTICAL_SLICE_STATUS.md)
+- [`docs/Production/KNOWN_ISSUES.md`](docs/Production/KNOWN_ISSUES.md)
+- [`docs/Assets/BLENDER_WORK_LOG.md`](docs/Assets/BLENDER_WORK_LOG.md)
 - [`docs/STACK_DECISIONS.md`](docs/STACK_DECISIONS.md)
 - [`docs/SECURITY_BOUNDARY.md`](docs/SECURITY_BOUNDARY.md)

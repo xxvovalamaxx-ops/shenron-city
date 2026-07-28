@@ -98,10 +98,10 @@ for (const url of [
   '/models/city/nature/tree_thin.glb',
   '/models/city/nature/plant_bushDetailed.glb',
   '/models/city/nature/rock_largeB.glb',
-  '/models/city/vehicles/race-future.glb',
-  '/models/city/vehicles/sedan.glb',
-  '/models/city/vehicles/taxi.glb',
-  '/models/city/vehicles/van.glb',
+  '/assets/production/vehicles/premium-sedan.glb',
+  '/assets/production/vehicles/suv-crossover.glb',
+  '/assets/production/vehicles/compact-city.glb',
+  '/assets/production/vehicles/delivery-van.glb',
 ]) {
   useGLTF.preload(url)
 }

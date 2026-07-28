@@ -1,5 +1,5 @@
 /**
- * The first complete Shenron City gameplay loop.
+ * The first complete Shenzhen City gameplay loop.
  *
  * This is a pure ordered reducer. It does not know about React, Three.js,
  * storage or a host service, so route progression is deterministic and cheap

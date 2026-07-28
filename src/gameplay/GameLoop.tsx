@@ -117,6 +117,7 @@ export function GameLoop({ interactables, ambientPedestrians, onInteract }: Game
 
   // Last frame's continuous values, so audio can fire on transitions.
   const audioEdges = useRef({ entrance: 0, carDoor: 0, travelling: false })
+  const rendererInfoReady = useRef(false)
 
   /** Current boom length, eased between frames. Zero in first person. */
   const boom = useRef(0)
@@ -130,7 +131,7 @@ export function GameLoop({ interactables, ambientPedestrians, onInteract }: Game
    * Body geometry is authored facing +z, which is also sampleLoop's zero
    * heading, so the yaw is the heading with no correction.
    */
-  function writeTrafficInstances(): void {
+  function writeTrafficInstances(dt: number): void {
     const { trafficModels, trafficLamps, trafficSpill } = rt.refs
     if (!trafficLamps || !trafficSpill) return
 
@@ -141,25 +142,59 @@ export function GameLoop({ interactables, ambientPedestrians, onInteract }: Game
       const pose = vehiclePose(cars[i])
       const fx = Math.sin(pose.heading)
       const fz = Math.cos(pose.heading)
+      const rx = Math.cos(pose.heading)
+      const rz = -Math.sin(pose.heading)
 
       const model = trafficModels[i]
       if (model) {
         model.position.set(pose.x, 0.025, pose.z)
         model.rotation.set(0, pose.heading, 0)
         model.updateMatrix()
+
+        // Blender exports stable wheel node names. Discover them once per
+        // vehicle instance, then advance rotation from real travelled speed so
+        // wheel contact stays synchronized with the simulation.
+        let wheels = model.userData.productionWheelNodes as Object3D[] | undefined
+        if (!wheels) {
+          wheels = []
+          model.traverse((object) => {
+            if (object.name.startsWith('wheel_')) wheels?.push(object)
+          })
+          model.userData.productionWheelNodes = wheels
+        }
+        const wheelTurn = (cars[i].speed * dt) / 0.36
+        for (const wheel of wheels) wheel.rotateZ(-wheelTurn)
       }
 
       node.rotation.set(0, pose.heading, 0)
 
-      // Two lamp bars per car: headlights forward, tail lights aft.
+      // Four compact practical lamps per car. The old full-width bars read as
+      // toy bumpers; paired fixtures align with the authored housings.
       const nose = VEHICLE.length * 0.48
-      node.position.set(pose.x + fx * nose, VEHICLE.height * 0.42, pose.z + fz * nose)
-      node.updateMatrix()
-      trafficLamps.setMatrixAt(i * 2, node.matrix)
+      const lampOffset = VEHICLE.width * 0.29
+      node.scale.set(1, 1, 1)
+      for (const side of [-1, 1]) {
+        node.position.set(
+          pose.x + fx * nose + rx * lampOffset * side,
+          VEHICLE.height * 0.42,
+          pose.z + fz * nose + rz * lampOffset * side,
+        )
+        node.updateMatrix()
+        trafficLamps.setMatrixAt(i * 4 + (side < 0 ? 0 : 1), node.matrix)
+      }
 
-      node.position.set(pose.x - fx * nose, VEHICLE.height * 0.46, pose.z - fz * nose)
-      node.updateMatrix()
-      trafficLamps.setMatrixAt(i * 2 + 1, node.matrix)
+      const braking = cars[i].speed < cars[i].cruise - 0.2
+      node.scale.set(braking ? 1.28 : 1, braking ? 1.4 : 1, 1)
+      for (const side of [-1, 1]) {
+        node.position.set(
+          pose.x - fx * nose + rx * lampOffset * side,
+          VEHICLE.height * 0.46,
+          pose.z - fz * nose + rz * lampOffset * side,
+        )
+        node.updateMatrix()
+        trafficLamps.setMatrixAt(i * 4 + (side < 0 ? 2 : 3), node.matrix)
+      }
+      node.scale.set(1, 1, 1)
 
       // Headlight spill, laid flat on the tarmac just ahead of the car.
       // YXZ so the plane is tipped flat first and then yawed about world up.
@@ -239,7 +274,7 @@ export function GameLoop({ interactables, ambientPedestrians, onInteract }: Game
 
     // ── 3. Traffic, before collision so the boxes match the visible cars ─────
     advanceTraffic(rt.vehicles, dt, p.pos)
-    writeTrafficInstances()
+    writeTrafficInstances(dt)
 
     // Sample once so the visible animal and its moving collision box share the
     // exact same route state.
@@ -397,20 +432,39 @@ export function GameLoop({ interactables, ambientPedestrians, onInteract }: Game
 
     // ── 12. Perf sampling + throttled HUD mirror ─────────────────────────────
     const perf = rt.perf
+    const rendererInfo = state.gl.info
+    let frameCalls = 0
+    let frameTriangles = 0
+    if (!rendererInfoReady.current) {
+      rendererInfo.autoReset = false
+      rendererInfo.reset()
+      rendererInfoReady.current = true
+    } else {
+      frameCalls = rendererInfo.render.calls
+      frameTriangles = rendererInfo.render.triangles
+      rendererInfo.reset()
+    }
     perf.frames += 1
     perf.accum += rawDt
+    perf.frameTimes.push(rawDt * 1000)
+    if (perf.frameTimes.length > 600) perf.frameTimes.splice(0, perf.frameTimes.length - 600)
     if (perf.accum >= 0.5) {
       perf.fps = perf.frames / perf.accum
       perf.frameMs = (perf.accum / perf.frames) * 1000
+      const sortedFrameTimes = [...perf.frameTimes].sort((left, right) => left - right)
+      const percentile99 = sortedFrameTimes[
+        Math.min(sortedFrameTimes.length - 1, Math.floor(sortedFrameTimes.length * 0.99))
+      ] ?? 0
+      perf.low1Fps = percentile99 > 0 ? 1000 / percentile99 : 0
       perf.frames = 0
       perf.accum = 0
 
       // Read the renderer that is actually drawing this frame.
-      const info = state.gl.info
-      perf.calls = info.render.calls
-      perf.triangles = info.render.triangles
-      perf.geometries = info.memory.geometries
-      perf.programs = info.programs?.length ?? 0
+      perf.calls = frameCalls
+      perf.triangles = frameTriangles
+      perf.geometries = rendererInfo.memory.geometries
+      perf.programs = rendererInfo.programs?.length ?? 0
+      perf.textures = rendererInfo.memory.textures
     }
 
     hudTimer.current += dt
@@ -425,6 +479,14 @@ export function GameLoop({ interactables, ambientPedestrians, onInteract }: Game
           : hud.floorLabel
       const tourGuidance = cityTourWayfinding(hud.cityTour, p.pos, p.forward)
       const tourTarget = cityTourTarget(hud.cityTour, p.pos)
+      const documentRoot = document.documentElement
+      documentRoot.dataset.perfFps = perf.fps.toFixed(2)
+      documentRoot.dataset.perfLow1Fps = perf.low1Fps.toFixed(2)
+      documentRoot.dataset.perfDrawCalls = String(perf.calls)
+      documentRoot.dataset.perfTriangles = String(perf.triangles)
+      documentRoot.dataset.perfGeometries = String(perf.geometries)
+      documentRoot.dataset.perfTextures = String(perf.textures)
+      documentRoot.dataset.perfPrograms = String(perf.programs)
 
       const next = {
         promptLabel: rt.target?.label ?? null,

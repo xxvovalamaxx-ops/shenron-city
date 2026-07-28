@@ -2,7 +2,7 @@
 
 ## Current capability surface
 
-The current Shenron City build is a browser game backed only by files in this
+The current Shenzhen City build is a browser game backed only by files in this
 repository.
 
 | Capability | Current state |

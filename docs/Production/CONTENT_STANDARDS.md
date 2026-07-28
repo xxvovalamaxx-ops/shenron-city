@@ -1,4 +1,4 @@
-# Shenron City — Content Standards
+# Shenzhen City — Content Standards
 
 ## Naming Conventions
 - `SM_` — Static Mesh (Three.js Group/Mesh)

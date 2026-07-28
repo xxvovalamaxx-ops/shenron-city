@@ -12,7 +12,7 @@ interface Props {
 /**
  * A narrow, focus-only ground cue.
  *
- * The permanent prototype halos are gone. This appears only while the HUD
+ * The permanent development halos are gone. This appears only while the HUD
  * confirms that the same target is in range and in the player's view.
  */
 export function InteractionFocusMarker({

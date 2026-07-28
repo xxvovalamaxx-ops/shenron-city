@@ -1,19 +1,30 @@
-# Shenron City — Known Issues
+# Shenzhen City — Known Issues
 
 ## Current
-- Storefront interiors are shallow procedural shells, not full enterable shops
-- Citizen art remains deliberately stylized; the current Kenney cast is skinned and animated but not photorealistic
-- Citizen locomotion currently re-times the authored Run clip; a separately authored walk clip is still needed
-- Kai has 29 reviewed Quaternius motions, but most are pipeline-ready rather than connected to gameplay state
-- Browser build only by design; no native wrapper is planned for this phase
-- Entry bundle remains large due to the renderer and detailed world
-- Tree chunk 4MB (ez-tree library, lazy-loaded)
-- No weather system
-- Only 2 elevator floors (Lobby + Floor 45)
+- The Quaternius hero and pedestrian foundation is adult-proportioned and animated but
+  remains stylized; it does not satisfy the realistic-human or conversation-closeup gate.
+- The project has no production facial rig, viseme playback, eye moisture, hair-card, or
+  four-level character LOD pipeline.
+- The authored skyline is still dominated by one headquarters tower; a complete optimized
+  distant skyline cluster remains missing.
+- Vehicle families have animated wheels and responsive lamps, but no steering pivots,
+  suspension rigs, texture-baked wear sets, or explicit LOD meshes.
+- Static production GLBs are material-batched but have no embedded `MSFT_lod` hierarchy.
+- Headquarters lobby and Floor 45 need more close-range prop and material detail.
+- The six market stalls have authored structure and merchandise, but the current goods are
+  modular forms rather than scanned or high-detail hero products.
+- The 4 MB tree code chunk remains large even though it is lazy-loaded.
+- High-preset Chromium telemetry did not prove the 60 FPS / 45 FPS 1%-low target.
+- No complete gameplay recording, LUFS result, true-peak result, or stable GPU-memory
+  capture exists for Production Pass 02.
+- Automated Chromium cannot exercise normal pointer lock; the validation query disables
+  PointerLockControls while preserving normal focused-browser behavior.
+- Only two elevator destinations are implemented: Lobby and Floor 45.
 
 ## Deferred
-- Bespoke hero models beyond the reviewed CC0 GLB set
-- Applying the reviewed Quaternius motion set to more named characters and activities
-- Enterable building interiors
-- Optional weather effects such as rain
-- Additional audio mixing controls beyond the existing master-volume slider
+- Legally distributable realistic hero and pedestrian character production
+- Embedded model LODs, KTX2/Basis textures, and measured zone streaming
+- Enterable storefront interiors
+- Additional named-character motion-state integration
+- Optional coherent weather states
+- Per-bus audio controls beyond the existing master-volume slider

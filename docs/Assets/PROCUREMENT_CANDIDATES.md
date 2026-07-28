@@ -1,4 +1,4 @@
-# Shenron City — future asset candidates
+# Shenzhen City — future asset candidates
 
 This is a browser/Three.js project. The current vertical slice needs no paid
 asset purchase, and nothing listed here is approved for import until its exact

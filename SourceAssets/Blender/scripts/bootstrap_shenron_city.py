@@ -1,8 +1,8 @@
-"""Create the Shenron City Blender authoring project.
+"""Create the Shenzhen City Blender authoring project.
 
 Designed to be run through the official Blender MCP connector. The operation is
 non-destructive: existing objects and collections are preserved, and only the
-missing Shenron City hierarchy is added.
+missing Shenzhen City hierarchy is added.
 """
 
 from pathlib import Path
@@ -67,4 +67,4 @@ def main() -> Path:
 
 
 if __name__ == "__main__":
-    print(f"Saved Shenron City project: {main()}")
+    print(f"Saved Shenzhen City project: {main()}")

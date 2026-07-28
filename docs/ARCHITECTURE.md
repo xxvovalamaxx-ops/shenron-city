@@ -1,4 +1,4 @@
-# Shenron City architecture
+# Shenzhen City architecture
 
 ## Current phase
 

@@ -13,23 +13,28 @@ describe('development visual inspection', () => {
     expect(debugSpawnPosition('?spawn=12,34', true)).toBeNull()
   })
 
-  it('provides all seven production review viewpoints with explicit look targets', () => {
+  it('provides every fixed production regression camera with an explicit look target', () => {
     for (const name of [
-      'city-boulevard',
-      'night-market',
+      'city-entry',
+      'hero-boulevard',
+      'night-market-wide',
+      'night-market-close',
+      'kai-conversation',
       'hq-exterior',
+      'hq-entrance',
       'hq-lobby',
-      'elevator',
-      'floor-45',
-      'aegis-office',
+      'secretary-close',
+      'elevator-interior',
+      'floor45-arrival',
+      'agent-workstation',
     ]) {
       const view = debugInspectionView(`?spawn=${name}`, true)
       expect(view, name).not.toBeNull()
       expect(view?.position).not.toEqual(view?.target)
     }
 
-    const floor = debugInspectionView('?spawn=floor-45', true)
-    const aegis = debugInspectionView('?spawn=aegis-office', true)
+    const floor = debugInspectionView('?spawn=floor45-arrival', true)
+    const aegis = debugInspectionView('?spawn=agent-workstation', true)
     expect(floor?.position.y).toBeGreaterThan(HQ.y)
     expect(aegis?.target.x).toBeGreaterThan(aegis?.position.x ?? 0)
   })

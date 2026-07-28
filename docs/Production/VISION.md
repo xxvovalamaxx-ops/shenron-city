@@ -1,4 +1,4 @@
-# Shenron City — Vision
+# Shenzhen City — Vision
 
 ## Product Vision
 A living, explorable 3D night city inspired by Los Angeles and West Coast urbanism. The player walks through distinct districts, meets local scripted characters, and visits a fictional headquarters tower.

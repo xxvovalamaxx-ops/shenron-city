@@ -1,7 +1,7 @@
 # Service android provenance
 
 The runtime service android is the Three.js `RobotExpressive.glb` example
-asset, renamed to describe its role in Shenron City.
+asset, renamed to describe its role in Shenzhen City.
 
 - Original model: Tomás Laulhé (Quaternius)
 - Three.js modifications: Don McCurdy
@@ -26,5 +26,5 @@ facial-morph and material modifications:
 CC0 1.0 legal code:
 <https://creativecommons.org/publicdomain/zero/1.0/legalcode>
 
-Shenron City clones the skeleton at runtime, assigns role palettes, and uses
+Shenzhen City clones the skeleton at runtime, assigns role palettes, and uses
 the included motion and facial-expression tracks. The source GLB is not edited.

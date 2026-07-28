@@ -1,4 +1,4 @@
-"""Build the animated, browser-ready Shenron City capybara.
+"""Build the animated, browser-ready Shenzhen City capybara.
 
 Run inside Blender 5.1 through Blender Foundation's official MCP connector.
 The production geometry is reconstructed locally with the MIT-licensed

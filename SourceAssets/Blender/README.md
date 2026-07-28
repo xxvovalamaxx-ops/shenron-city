@@ -1,6 +1,6 @@
 # Blender project
 
-`scripts/bootstrap_shenron_city.py` creates a non-destructive Shenron City
+`scripts/bootstrap_shenron_city.py` creates a non-destructive Shenzhen City
 collection hierarchy, sets metre units, records catalog paths, and saves
 `ShenronCity.blend` beside this file.
 

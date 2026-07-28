@@ -1,0 +1,106 @@
+{
+  "schemaVersion": 1,
+  "generatedFor": "Shenzhen City Production Pass 02",
+  "assets": [
+    {
+      "id": "architecture.hero-district.v1",
+      "name": "Hero district architectural and street kit",
+      "source": "Original Blender production in SourceAssets/Models/Environment/Working/Shenzhen_City_Production_Pass_02.blend",
+      "creator": "xxvovalamaxx-ops with OpenAI Codex production tooling",
+      "license": "Project-owned",
+      "redistribution": "Permitted only as part of the Shenzhen City repository/build under project terms",
+      "runtimePath": "public/assets/production/architecture/hero-district.glb",
+      "modifications": "Original modular architecture, market, headquarters exterior, roadway and street props; runtime PBR overrides use separately manifested CC0 textures"
+    },
+    {
+      "id": "interior.hq-lobby.v1",
+      "name": "Headquarters lobby",
+      "source": "Original Blender production in SourceAssets/Models/Environment/Working/Shenzhen_City_Production_Pass_02.blend",
+      "creator": "xxvovalamaxx-ops with OpenAI Codex production tooling",
+      "license": "Project-owned",
+      "redistribution": "Permitted only as part of the Shenzhen City repository/build under project terms",
+      "runtimePath": "public/assets/production/interiors/hq-lobby.glb",
+      "modifications": "Original envelope, reception, seating, security gates, elevator bank, ceiling grid, planters and office props"
+    },
+    {
+      "id": "interior.floor45.v1",
+      "name": "Floor 45 Mission Control interior",
+      "source": "Original Blender production in SourceAssets/Models/Environment/Working/Shenzhen_City_Production_Pass_02.blend",
+      "creator": "xxvovalamaxx-ops with OpenAI Codex production tooling",
+      "license": "Project-owned",
+      "redistribution": "Permitted only as part of the Shenzhen City repository/build under project terms",
+      "runtimePath": "public/assets/production/interiors/floor45.glb",
+      "modifications": "Original floor, ceiling, curtain wall, offices, desks, monitors, partitions and lighting fixtures"
+    },
+    {
+      "id": "prop.automatic-door-leaf.v1",
+      "name": "Automatic door leaf",
+      "source": "Original Blender production in SourceAssets/Models/Environment/Working/Shenzhen_City_Production_Pass_02.blend",
+      "creator": "xxvovalamaxx-ops with OpenAI Codex production tooling",
+      "license": "Project-owned",
+      "redistribution": "Permitted only as part of the Shenzhen City repository/build under project terms",
+      "runtimePath": "public/assets/production/props/automatic-door-leaf.glb",
+      "modifications": "Original glass, stiles, rails and handle with gameplay-owned motion"
+    },
+    {
+      "id": "vehicle.premium-sedan.v1",
+      "name": "Unbranded premium sedan",
+      "source": "Original Blender production in SourceAssets/Models/Environment/Working/Shenzhen_City_Production_Pass_02.blend",
+      "creator": "xxvovalamaxx-ops with OpenAI Codex production tooling",
+      "license": "Project-owned",
+      "redistribution": "Permitted only as part of the Shenzhen City repository/build under project terms",
+      "runtimePath": "public/assets/production/vehicles/premium-sedan.glb",
+      "modifications": "Original unbranded design with separate wheels, paired lights, roof, beltlines, A/C pillars, windshield headers, mirrors, handles, glazing and basic interior"
+    },
+    {
+      "id": "vehicle.suv-crossover.v1",
+      "name": "Unbranded SUV crossover",
+      "source": "Original Blender production in SourceAssets/Models/Environment/Working/Shenzhen_City_Production_Pass_02.blend",
+      "creator": "xxvovalamaxx-ops with OpenAI Codex production tooling",
+      "license": "Project-owned",
+      "redistribution": "Permitted only as part of the Shenzhen City repository/build under project terms",
+      "runtimePath": "public/assets/production/vehicles/suv-crossover.glb",
+      "modifications": "Original unbranded design with separate wheels, paired lights, roof, beltlines, A/C pillars, windshield headers, mirrors, handles, glazing and basic interior"
+    },
+    {
+      "id": "vehicle.compact-city.v1",
+      "name": "Unbranded compact city car",
+      "source": "Original Blender production in SourceAssets/Models/Environment/Working/Shenzhen_City_Production_Pass_02.blend",
+      "creator": "xxvovalamaxx-ops with OpenAI Codex production tooling",
+      "license": "Project-owned",
+      "redistribution": "Permitted only as part of the Shenzhen City repository/build under project terms",
+      "runtimePath": "public/assets/production/vehicles/compact-city.glb",
+      "modifications": "Original unbranded design with separate wheels, paired lights, roof, beltlines, A/C pillars, windshield headers, mirrors, handles, glazing and basic interior"
+    },
+    {
+      "id": "vehicle.delivery-van.v1",
+      "name": "Unbranded delivery van",
+      "source": "Original Blender production in SourceAssets/Models/Environment/Working/Shenzhen_City_Production_Pass_02.blend",
+      "creator": "xxvovalamaxx-ops with OpenAI Codex production tooling",
+      "license": "Project-owned",
+      "redistribution": "Permitted only as part of the Shenzhen City repository/build under project terms",
+      "runtimePath": "public/assets/production/vehicles/delivery-van.glb",
+      "modifications": "Original unbranded utility design with separate wheels, paired lights, roof, beltlines, A/C pillars, windshield headers, mirrors, handles, glazing and basic interior"
+    },
+    {
+      "id": "interior.elevator-static.v1",
+      "name": "Elevator shaft and lobby portal",
+      "source": "Original Blender production in SourceAssets/Models/Environment/Working/Shenzhen_City_Production_Pass_02.blend",
+      "creator": "xxvovalamaxx-ops with OpenAI Codex production tooling",
+      "license": "Project-owned",
+      "redistribution": "Permitted only as part of the Shenzhen City repository/build under project terms",
+      "runtimePath": "public/assets/production/interiors/elevator-static.glb",
+      "modifications": "Original fire-rated shaft, guide rails, structural ribs, portal cladding, reveal, transom and call station"
+    },
+    {
+      "id": "interior.elevator-car.v1",
+      "name": "Elevator cabin",
+      "source": "Original Blender production in SourceAssets/Models/Environment/Working/Shenzhen_City_Production_Pass_02.blend",
+      "creator": "xxvovalamaxx-ops with OpenAI Codex production tooling",
+      "license": "Project-owned",
+      "redistribution": "Permitted only as part of the Shenzhen City repository/build under project terms",
+      "runtimePath": "public/assets/production/interiors/elevator-car.glb",
+      "modifications": "Original layered cabin, segmented wall panels, mirror band, handrails, physical control panel and practical lighting surfaces"
+    }
+  ]
+}

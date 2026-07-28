@@ -1,5 +1,5 @@
 /**
- * Title and pause/settings menus for the standalone prototype.
+ * Title and pause/settings menus for the standalone game.
  */
 import { useEffect } from 'react'
 import { useGame } from '../adapter/store'
@@ -46,10 +46,10 @@ export function TitleScreen({ onStart }: { onStart(): void }) {
   return (
     <div className="modal">
       <div className="card title-card">
-        <h1>Shenron City</h1>
+        <h1>Shenzhen City</h1>
         <p className="sub">
-          A standalone Three.js city prototype. Walk Dragon Boulevard, explore the
-          night market and Pocket Park, meet the locals, then enter headquarters.
+          A living Los Angeles-inspired district after dark. Walk Dragon Boulevard,
+          visit the night market, meet the locals, then enter Shenron headquarters.
         </p>
 
         <div
@@ -58,7 +58,7 @@ export function TitleScreen({ onStart }: { onStart(): void }) {
           role="status"
         >
           <i className="dot standalone" />
-          Standalone game · {snapshot.agents.length} fictional residents · no PC connection
+          Offline city · {snapshot.agents.length} local characters · no PC connection
         </div>
 
         <p className="notice safe" style={{ textAlign: 'left' }}>
@@ -76,7 +76,7 @@ export function TitleScreen({ onStart }: { onStart(): void }) {
 
         <div className="actions">
           <button className="primary" onClick={onStart}>
-            Enter Shenron City
+            Enter Shenzhen City
           </button>
         </div>
       </div>
@@ -181,7 +181,7 @@ export function LoadingScreen({ progress }: { progress: number }) {
   return (
     <div className="modal">
       <div className="card title-card">
-        <h1>Shenron City</h1>
+        <h1>Shenzhen City</h1>
         <p className="sub">Lighting the city…</p>
         <div className="bar" style={{ height: 4 }}>
           <i style={{ width: `${Math.round(progress * 100)}%` }} />

@@ -6,7 +6,6 @@
  */
 import { useEffect, useRef, useState, type CSSProperties } from 'react'
 import { useHud } from './hud-store'
-import { useGame } from '../adapter/store'
 import { rt } from '../gameplay/runtime'
 import {
   CITY_TOUR_STEPS,
@@ -21,39 +20,8 @@ function LinkChip() {
   return (
     <div className="chip" title="This build uses only local game scenario data">
       <i className="dot standalone" />
-      STANDALONE GAME
+      SHENZHEN · NIGHT DISTRICT
     </div>
-  )
-}
-
-function Telemetry() {
-  const snapshot = useGame((s) => s.snapshot)
-  if (!snapshot) return null
-  const { status, agents } = snapshot
-  const active = agents.filter((agent) => agent.state === 'active').length
-  const blocked = agents.filter((agent) => agent.state === 'blocked').length
-  const incidents = agents.filter((agent) => agent.state === 'failed').length
-
-  return (
-    <aside className="telemetry">
-      <h2>{status.identity.toUpperCase()}</h2>
-      <div className="row">
-        <span>RESIDENTS</span>
-        <b>{agents.length}</b>
-      </div>
-      <div className="row">
-        <span>ACTIVE</span>
-        <b>{active}</b>
-      </div>
-      <div className="row">
-        <span>WAITING</span>
-        <b>{blocked}</b>
-      </div>
-      <div className="row">
-        <span>INCIDENTS</span>
-        <b>{incidents}</b>
-      </div>
-    </aside>
   )
 }
 
@@ -136,7 +104,7 @@ function Minimap() {
         <span>CITY MAP</span>
         <b>N ↑</b>
       </header>
-      <div className="minimap-field" role="img" aria-label="Shenron City district minimap">
+      <div className="minimap-field" role="img" aria-label="Shenzhen City district minimap">
         <i className="minimap-road" style={mapRectStyle(BOULEVARD)} />
         <i className="minimap-hq" style={mapRectStyle(HQ_MAP_BOX)} title="Shenron headquarters" />
         {STOREFRONTS.map((store) => (
@@ -262,7 +230,6 @@ export function Hud() {
         <LinkChip />
       </div>
 
-      <Telemetry />
       <CityTour />
       <Minimap />
 

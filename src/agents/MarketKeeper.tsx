@@ -1,39 +1,26 @@
+import { Suspense } from 'react'
 import { MARKET_KEEPER } from '../world/city-data'
 import { WorldText as Text } from '../ui/WorldText'
 import { InteractionFocusMarker } from './InteractionFocusMarker'
-import { KenneyCitizen } from './KenneyCitizen'
+import { QuaterniusHero } from './QuaterniusHero'
 
 export function MarketKeeper() {
   return (
-    <group position={[MARKET_KEEPER.x, 0, MARKET_KEEPER.z]}>
-      <group>
-        <KenneyCitizen motion="Idle" skin="humanFemale" animationSpeed={0.86} />
-        {/* Market apron and utility pouch distinguish Mira's vendor role. */}
-        <mesh position={[0, 0.92, 0.23]} castShadow>
-          <boxGeometry args={[0.64, 0.72, 0.035]} />
-          <meshStandardMaterial color="#d7b06c" roughness={0.86} />
-        </mesh>
-        <mesh position={[0.38, 0.82, 0.2]} castShadow>
-          <boxGeometry args={[0.22, 0.3, 0.12]} />
-          <meshStandardMaterial color="#4b3027" roughness={0.78} />
-        </mesh>
-      </group>
-
-      <InteractionFocusMarker kind="city-character" payload="mira" color="#f59e0b" />
-      <Text
-        position={[-0.02, 2.08, 0]}
-        rotation={[0, 0, 0]}
-        fontSize={0.22}
-        color="#fbbf24"
-      >
+    <group position={[MARKET_KEEPER.x, 0, MARKET_KEEPER.z]} name="hero-character-mira">
+      <Suspense fallback={null}>
+        <QuaterniusHero
+          motion="Idle_TalkingPhone_Loop"
+          animationSpeed={0.78}
+          appearance={5}
+          phase={0.62}
+          height={1.7}
+        />
+      </Suspense>
+      <InteractionFocusMarker kind="city-character" payload="mira" color="#d8a862" />
+      <Text position={[0, 2.08, 0.08]} fontSize={0.15} color="#efd6a7" anchorX="center">
         MIRA
       </Text>
-      <Text
-        position={[-0.02, 1.88, 0]}
-        rotation={[0, 0, 0]}
-        fontSize={0.1}
-        color="#d3b989"
-      >
+      <Text position={[0, 1.9, 0.08]} fontSize={0.07} color="#a98d6d" anchorX="center">
         NIGHT MARKET
       </Text>
     </group>

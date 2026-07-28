@@ -22,6 +22,12 @@ describe('audited city asset selection', () => {
       ...CITY_VEHICLE_ASSETS,
       ...CITY_VEHICLE_ASSETS,
     ])
+    expect(new Set(CITY_VEHICLE_ASSETS).size).toBe(4)
+    expect(
+      CITY_VEHICLE_ASSETS.every((path) =>
+        path.startsWith('/assets/production/vehicles/'),
+      ),
+    ).toBe(true)
   })
 
   it('keeps approved nature roles distinct', () => {

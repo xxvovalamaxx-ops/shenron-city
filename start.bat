@@ -29,7 +29,7 @@ if not exist node_modules\@dgreenheck (
   )
 )
 
-echo Starting Shenron City...
+echo Starting Shenzhen City...
 echo Open http://127.0.0.1:9122 in your browser.
 start http://127.0.0.1:9122
 call npm run dev

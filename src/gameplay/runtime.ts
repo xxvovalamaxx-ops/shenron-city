@@ -93,11 +93,14 @@ export interface Runtime {
     frames: number
     accum: number
     fps: number
+    low1Fps: number
     frameMs: number
     calls: number
     triangles: number
     geometries: number
     programs: number
+    textures: number
+    frameTimes: number[]
   }
 }
 
@@ -137,11 +140,14 @@ export const rt: Runtime = {
     frames: 0,
     accum: 0,
     fps: 0,
+    low1Fps: 0,
     frameMs: 0,
     calls: 0,
     triangles: 0,
     geometries: 0,
     programs: 0,
+    textures: 0,
+    frameTimes: [],
   },
 }
 

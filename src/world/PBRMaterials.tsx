@@ -1,5 +1,5 @@
 /**
- * PBR texture hooks for Shenron City.
+ * PBR texture hooks for Shenzhen City.
  *
  * Loads downloaded Poly Haven textures and returns materials
  * that can be applied to existing geometry.

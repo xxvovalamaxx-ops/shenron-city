@@ -3,14 +3,14 @@
  *
  * Every value here is fictional and ships with the repository. Nothing is
  * read from Mission Control, the host computer, a model provider, or a remote
- * service. The UI labels this as a standalone prototype.
+ * service. The UI identifies this honestly as an offline city scenario.
  *
  * Nothing in here is read from disk or the network.
  */
 import type { Agent, HostMetrics, SystemStatus, WorldSnapshot } from '../contracts/mission-control'
 
 const STANDALONE_STATUS: SystemStatus = {
-  identity: 'Shenron City prototype',
+  identity: 'Shenzhen City',
   model: 'offline-scenario',
   provider: 'in-repository fixture',
   overall: 'active',

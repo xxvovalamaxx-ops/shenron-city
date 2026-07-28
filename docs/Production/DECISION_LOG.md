@@ -1,4 +1,4 @@
-# Shenron City — Decision Log
+# Shenzhen City — Decision Log
 
 ## 2026-07-28: Stack Decision
 **Decision**: Three.js + React Three Fiber (not Unreal Engine)

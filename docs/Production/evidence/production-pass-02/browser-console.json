@@ -1,0 +1,21 @@
+{
+  "capturedAtUtc": "2026-07-28T23:49:28Z",
+  "url": "http://127.0.0.1:9123/?no-pointer-lock=1",
+  "build": "vite-production-preview",
+  "browser": "Chromium",
+  "automationMode": "PointerLockControls intentionally omitted with no-pointer-lock=1 because the Chrome automation host is not an eligible pointer-lock document.",
+  "applicationErrors": [],
+  "failedSameOriginRequests": [],
+  "applicationWarnings": [
+    {
+      "message": "THREE.Clock: This module has been deprecated. Please use THREE.Timer instead.",
+      "source": "React Three Fiber dependency bundle",
+      "actionability": "Upstream dependency warning; no project-owned THREE.Clock construction was found."
+    }
+  ],
+  "extensionMessagesExcluded": true,
+  "limitations": [
+    "Normal focused pointer-lock input was not exercised by the automation host.",
+    "Request success is corroborated by the production asset validators and absence of application network errors; the Chrome bridge did not expose response-status telemetry."
+  ]
+}

@@ -1,4 +1,4 @@
-# Shenron City — stack decisions
+# Shenzhen City — stack decisions
 
 ## Rule
 

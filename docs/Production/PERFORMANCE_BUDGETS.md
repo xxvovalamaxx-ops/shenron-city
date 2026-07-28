@@ -1,4 +1,4 @@
-# Shenron City — Performance Budgets
+# Shenzhen City — Performance Budgets
 
 ## Target Hardware
 - Windows 11, NVIDIA RTX 5070, 32GB RAM, 2560x1080

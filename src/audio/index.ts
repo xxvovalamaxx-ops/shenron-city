@@ -1,5 +1,5 @@
 /**
- * Procedural spatial audio for Shenron City.
+ * Procedural spatial audio for Shenzhen City.
  *
  * Self-contained: no audio files, no fetches, no CDN. Every sound is
  * synthesised at runtime from oscillators, a generated noise buffer, biquad

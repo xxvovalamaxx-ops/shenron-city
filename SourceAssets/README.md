@@ -1,4 +1,4 @@
-# Shenron City source assets
+# Shenzhen City source assets
 
 This is the authoring workspace for the Three.js game. It is deliberately
 separate from `public/`, which contains only optimized files loaded by the web

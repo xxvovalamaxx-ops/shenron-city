@@ -1,6 +1,6 @@
 # Capybara character
 
-The Shenron City capybara is a browser-ready, anatomically reconstructed adult
+The Shenzhen City capybara is a browser-ready, anatomically reconstructed adult
 animal authored in Blender 5.1 through Blender Foundation's official MCP
 connector.
 

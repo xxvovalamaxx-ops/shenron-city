@@ -1,4 +1,4 @@
-"""Build the Shenron City capybara from the reviewed reconstruction source.
+"""Build the Shenzhen City capybara from the reviewed reconstruction source.
 
 Run this file inside Blender 5.1 through the official Blender Foundation MCP
 connector.  The script deliberately touches only CAPYBARA_* datablocks.

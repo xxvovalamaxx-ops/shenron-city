@@ -3,10 +3,22 @@ import { MARKET_KEEPER, PLAZA_WARDEN } from '../world/city-data'
 import { HQ, SPAWN } from '../world/layout'
 
 export type DevViewpoint =
+  | 'city-entry'
+  | 'hero-boulevard'
+  | 'night-market-wide'
+  | 'night-market-close'
+  | 'kai-conversation'
   | 'city-boulevard'
   | 'night-market'
   | 'hq-exterior'
+  | 'hq-entrance'
   | 'hq-lobby'
+  | 'secretary-close'
+  | 'elevator-interior'
+  | 'floor45-arrival'
+  | 'agent-workstation'
+  // Earlier inspection links remain valid while evidence migrates to the
+  // canonical production-camera names above.
   | 'elevator'
   | 'floor-45'
   | 'aegis-office'
@@ -25,8 +37,28 @@ export interface DevInspectionView {
 const EYE = SPAWN.y + 1.66
 
 const VIEWS: Readonly<Record<DevViewpoint, DevInspectionView>> = {
+  'city-entry': {
+    position: { x: SPAWN.x, y: SPAWN.y, z: SPAWN.z },
+    target: { x: -2, y: EYE, z: 104 },
+  },
+  'hero-boulevard': {
+    position: { x: -5.8, y: SPAWN.y, z: 123 },
+    target: { x: 0, y: 2.2, z: 68 },
+  },
+  'night-market-wide': {
+    position: { x: 5.4, y: SPAWN.y, z: 113 },
+    target: { x: 15.4, y: 2.0, z: 88 },
+  },
+  'night-market-close': {
+    position: { x: 13.85, y: SPAWN.y, z: 91.2 },
+    target: { x: 13.85, y: 1.42, z: 86 },
+  },
+  'kai-conversation': {
+    position: { x: PLAZA_WARDEN.x + 0.25, y: SPAWN.y, z: PLAZA_WARDEN.z + 2.35 },
+    target: { x: PLAZA_WARDEN.x, y: 1.57, z: PLAZA_WARDEN.z },
+  },
   'city-boulevard': {
-    position: { x: -10.7, y: SPAWN.y, z: 145 },
+    position: { x: SPAWN.x, y: SPAWN.y, z: SPAWN.z },
     target: { x: 0, y: EYE, z: 88 },
   },
   'night-market': {
@@ -37,9 +69,29 @@ const VIEWS: Readonly<Record<DevViewpoint, DevInspectionView>> = {
     position: { x: 11.5, y: SPAWN.y, z: 36 },
     target: { x: 0, y: 8.5, z: 0 },
   },
+  'hq-entrance': {
+    position: { x: -3.7, y: SPAWN.y, z: 12.8 },
+    target: { x: 0, y: 2.3, z: 0.4 },
+  },
   'hq-lobby': {
     position: { x: 6.4, y: SPAWN.y, z: -4 },
     target: { x: -6.5, y: 1.35, z: -13.8 },
+  },
+  'secretary-close': {
+    position: { x: -6.4, y: SPAWN.y, z: -10.6 },
+    target: { x: -6.5, y: 1.48, z: -13.8 },
+  },
+  'elevator-interior': {
+    position: { x: 0, y: SPAWN.y, z: -28.9 },
+    target: { x: 1.25, y: 1.48, z: -31.2 },
+  },
+  'floor45-arrival': {
+    position: { x: 0, y: HQ.y + SPAWN.y, z: -1.5 },
+    target: { x: 0, y: HQ.y + 1.58, z: -22 },
+  },
+  'agent-workstation': {
+    position: { x: 3.7, y: HQ.y + SPAWN.y, z: -6 },
+    target: { x: 9.2, y: HQ.y + 1.35, z: -6 },
   },
   elevator: {
     position: { x: 5.2, y: SPAWN.y, z: -24.2 },

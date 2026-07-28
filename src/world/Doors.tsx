@@ -1,13 +1,13 @@
 /**
- * Sliding door pairs — the entrance and the elevator car.
- *
- * These meshes are positioned by the game loop, not by React state, so their
- * transform is exact on the frame the physics used. The components only
- * register refs.
+ * Sliding doors whose transforms remain owned by the deterministic game loop.
+ * Visible leaves come from the Blender-authored production asset; collision
+ * continues to use the tested invisible swept boxes in gameplay/layout.
  */
-import { forwardRef } from 'react'
+import { forwardRef, useMemo } from 'react'
+import { useGLTF } from '@react-three/drei'
+import * as THREE from 'three'
 import type { Group } from 'three'
-import { PALETTE } from './palette'
+import { PRODUCTION_ASSETS } from './ProductionScene'
 
 interface LeafProps {
   width: number
@@ -15,52 +15,36 @@ interface LeafProps {
   glass?: boolean
 }
 
-const Leaf = forwardRef<Group, LeafProps>(function Leaf({ width, height, glass = true }, ref) {
+const Leaf = forwardRef<Group, LeafProps>(function Leaf(
+  { width, height, glass = true },
+  ref,
+) {
+  const source = useGLTF(PRODUCTION_ASSETS.automaticDoor)
+  const model = useMemo(() => {
+    const instance = source.scene.clone(true)
+    instance.traverse((object) => {
+      if (!(object instanceof THREE.Mesh)) return
+      object.castShadow = true
+      object.receiveShadow = true
+      if (!glass && object.material.name.includes('Glass')) {
+        object.material = new THREE.MeshStandardMaterial({
+          name: 'MAT_ElevatorDoor',
+          color: '#303740',
+          roughness: 0.24,
+          metalness: 0.9,
+        })
+      }
+    })
+    return instance
+  }, [glass, source.scene])
+
   return (
     <group ref={ref}>
-      <mesh position={[0, height / 2, 0]}>
-        <boxGeometry args={[width, height, 0.08]} />
-        {glass ? (
-          /*
-            Plain alpha blending, not `transmission`.
-
-            Transmission refracts through a backbuffer copy: expensive, and at
-            these thicknesses it turned the entrance into a milky slab you
-            could not see the lobby through — the opposite of what a glass
-            front door is for. Low-opacity glass reads as glass and you can see
-            what is inside, which is the whole point of the entrance.
-          */
-          <meshPhysicalMaterial
-            color="#a8cbe8"
-            roughness={0.04}
-            metalness={0}
-            transparent
-            opacity={0.16}
-            ior={1.5}
-            depthWrite={false}
-          />
-        ) : (
-          <meshStandardMaterial color="#3a424e" roughness={0.18} metalness={0.95} />
-        )}
-      </mesh>
-      {/* Frame edge so the leaf reads as an object, not a floating pane */}
-      <mesh position={[0, height / 2, 0]}>
-        <boxGeometry args={[width, 0.05, 0.1]} />
-        <meshStandardMaterial color={PALETTE.metal} roughness={0.25} metalness={0.95} />
-      </mesh>
-      <mesh position={[0, height - 0.025, 0]}>
-        <boxGeometry args={[width, 0.05, 0.1]} />
-        <meshStandardMaterial color={PALETTE.metal} roughness={0.25} metalness={0.95} />
-      </mesh>
-      {/* Vertical frame edge on the leading side so the parting line is crisp */}
-      <mesh position={[width / 2 - 0.025, height / 2, 0]}>
-        <boxGeometry args={[0.05, height, 0.1]} />
-        <meshStandardMaterial color={PALETTE.metal} roughness={0.25} metalness={0.95} />
-      </mesh>
-      <mesh position={[-width / 2 + 0.025, height / 2, 0]}>
-        <boxGeometry args={[0.05, height, 0.1]} />
-        <meshStandardMaterial color={PALETTE.metal} roughness={0.25} metalness={0.95} />
-      </mesh>
+      <primitive
+        object={model}
+        scale={[width / 3.35, height / 4.1, 1]}
+        dispose={null}
+      />
     </group>
   )
 })
@@ -70,15 +54,10 @@ interface DoorPairProps {
   height: number
   z: number
   glass?: boolean
-  leftRef: (g: Group | null) => void
-  rightRef: (g: Group | null) => void
+  leftRef: (group: Group | null) => void
+  rightRef: (group: Group | null) => void
 }
 
-/**
- * Two leaves that part from the centre. Each leaf's x is written every frame
- * by the loop as `∓halfWidth * (1 - openness) / 2`, so at openness 0 they meet
- * in the middle and at 1 they are tucked into the reveal.
- */
 export function DoorPair({
   halfWidth,
   height,
@@ -88,22 +67,13 @@ export function DoorPair({
   rightRef,
 }: DoorPairProps) {
   return (
-    <group position={[0, 0, z]}>
+    <group position={[0, 0, z]} name="automatic-door-pair">
       <group ref={leftRef}>
         <Leaf width={halfWidth} height={height} glass={glass} />
       </group>
       <group ref={rightRef}>
         <Leaf width={halfWidth} height={height} glass={glass} />
       </group>
-      {/* Reveal / threshold */}
-      <mesh position={[0, height + 0.09, 0]}>
-        <boxGeometry args={[halfWidth * 2 + 0.6, 0.18, 0.3]} />
-        <meshStandardMaterial color={PALETTE.metal} roughness={0.4} metalness={0.85} />
-      </mesh>
-      <mesh position={[0, 0.012, 0]} rotation={[-Math.PI / 2, 0, 0]}>
-        <planeGeometry args={[halfWidth * 2 + 0.6, 0.3]} />
-        <meshStandardMaterial color={PALETTE.metal} roughness={0.5} metalness={0.8} />
-      </mesh>
     </group>
   )
 }
