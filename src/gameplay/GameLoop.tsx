@@ -37,6 +37,7 @@ import { AUDIO_ANCHORS, cityAudio } from '../audio'
 import { useLaser } from '../weapons/useLaser'
 import { capybaraCollider, capybaraPose } from '../animals/capybara'
 import { residentColliders } from './residents'
+import { breakableColliders } from '../destruction/collision'
 
 const WALK_SPEED = 4.3
 const SPRINT_SPEED = 7.1
@@ -236,6 +237,7 @@ export function GameLoop({ interactables, ambientPedestrians, onInteract }: Game
     const colliders: AABB[] = [
       ...staticWorld,
       ...stationaryResidents,
+      ...breakableColliders(rt.destroyed),
       ...vehicleColliders(rt.vehicles),
       ...npcColliders(state.clock.elapsedTime, ambientPedestrians),
       capybaraCollider(rt.capybara),
