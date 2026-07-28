@@ -30,6 +30,11 @@
 **Rationale**: Rapier duplicated fixed geometry but owned no player, NPC, vehicle, or prop body. Shared renderer-free solid records now keep visible props and collision exact.
 **Trade-off**: Dynamic rigid bodies remain deferred until a concrete gameplay feature needs them.
 
+## 2026-07-28: Destructible props
+**Decision**: Destructible objects are unique authored props with collision generated from the same registry
+**Rationale**: The first destruction pass duplicated lobby, market, and office geometry at unrelated coordinates; it placed a desk in the critical lobby route while every breakable remained walk-through. One small registry now owns rendering, damage, and active solid bounds, and destroyed props leave collision immediately.
+**Trade-off**: Only a reviewed set of supply crates and one side-bay desk are destructible until existing architectural meshes can opt into the same authority without duplicate rendering.
+
 ## 2026-07-28: Mission Control
 **Decision**: Removed entirely — standalone game only
 **Rationale**: User requested no external connections
