@@ -35,6 +35,8 @@ export interface HudState {
   mapTargetX: number | null
   mapTargetZ: number | null
   showPerf: boolean
+  /** Camera mode. Lives here, not on rt, so components re-render on toggle. */
+  thirdPerson: boolean
   /** Which agent's office panel is open. */
   openAgentId: string | null
   /** Which local scripted character owns the dialogue panel. */
@@ -49,6 +51,7 @@ export interface HudState {
   set<K extends keyof HudState>(key: K, value: HudState[K]): void
   setScreen(s: Screen): void
   togglePerf(): void
+  toggleThirdPerson(): void
   advanceCityTour(event: CityTourEvent): void
 }
 
@@ -69,6 +72,7 @@ export const useHud = create<HudState>((set) => ({
   mapTargetX: null,
   mapTargetZ: null,
   showPerf: false,
+  thirdPerson: false,
   openAgentId: null,
   openCharacterId: 'iris',
   cityTour: INITIAL_CITY_TOUR,
@@ -79,6 +83,7 @@ export const useHud = create<HudState>((set) => ({
   set: (key, value) => set({ [key]: value } as Pick<HudState, typeof key>),
   setScreen: (screen) => set({ screen }),
   togglePerf: () => set((s) => ({ showPerf: !s.showPerf })),
+  toggleThirdPerson: () => set((s) => ({ thirdPerson: !s.thirdPerson })),
   advanceCityTour: (event) =>
     set((state) => {
       const next = advanceCityTour(state.cityTour, event)

@@ -1,6 +1,7 @@
-import { useMemo } from 'react'
+import { useEffect, useMemo } from 'react'
 import { useGLTF } from '@react-three/drei'
 import * as THREE from 'three'
+import { gradeToNight } from './night-grade'
 
 interface Props {
   url: string
@@ -8,6 +9,11 @@ interface Props {
   position?: readonly [x: number, y: number, z: number]
   rotationY?: number
   shadows?: boolean
+  /**
+   * Grade the model's albedo for night. Off for anything already authored
+   * dark, or anything whose colour carries meaning (signage, vehicles).
+   */
+  nightGrade?: boolean
 }
 
 /**
@@ -23,15 +29,35 @@ export function StaticCityModel({
   position = [0, 0, 0],
   rotationY = 0,
   shadows = true,
+  nightGrade = false,
 }: Props) {
   const source = useGLTF(url)
-  const { model, offset, scale } = useMemo(() => {
+  const { model, offset, scale, graded } = useMemo(() => {
     const instance = source.scene.clone(true)
+    // clone(true) shares materials with the cached GLTF, so grading in place
+    // would mutate drei's cache for every other user of this asset. Clone the
+    // materials we grade, and only those.
+    const owned = new Set<THREE.Material>()
+
     instance.traverse((object) => {
       if (!(object instanceof THREE.Mesh)) return
       object.castShadow = shadows
       object.receiveShadow = shadows
       object.frustumCulled = true
+      if (!nightGrade) return
+
+      const originals = Array.isArray(object.material) ? object.material : [object.material]
+      const replacements = originals.map((original) => {
+        const material = original.clone()
+        owned.add(material)
+        if ('color' in material && material.color instanceof THREE.Color) {
+          const { r, g, b } = gradeToNight(material.color)
+          material.color.setRGB(r, g, b)
+          material.needsUpdate = true
+        }
+        return material
+      })
+      object.material = Array.isArray(object.material) ? replacements : replacements[0]
     })
 
     const bounds = new THREE.Box3().setFromObject(instance)
@@ -41,6 +67,7 @@ export function StaticCityModel({
 
     return {
       model: instance,
+      graded: [...owned],
       offset: new THREE.Vector3(-center.x, -bounds.min.y, -center.z),
       scale: new THREE.Vector3(
         dimensions[0] / safe(size.x),
@@ -48,7 +75,10 @@ export function StaticCityModel({
         dimensions[2] / safe(size.z),
       ),
     }
-  }, [dimensions, shadows, source.scene])
+  }, [dimensions, shadows, nightGrade, source.scene])
+
+  // Materials cloned here are ours to free.
+  useEffect(() => () => { for (const m of graded) m.dispose() }, [graded])
 
   return (
     <group position={position} rotation={[0, rotationY, 0]} scale={scale}>

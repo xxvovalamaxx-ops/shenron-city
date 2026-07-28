@@ -22,6 +22,7 @@ import { PALETTE, type QualitySettings } from './palette'
 import { useRoadMaterial, useSidewalkMaterial, useWoodMaterial } from './PBRMaterials'
 import { marketDisplayFor, type MarketDisplay } from './market-display'
 import { buildingAssetFor, CITY_NATURE_ASSETS } from './city-assets'
+import { GroundCover } from './GroundCover'
 import { StaticCityModel } from './StaticCityModel'
 
 function StorefrontBuilding({
@@ -42,6 +43,10 @@ function StorefrontBuilding({
         dimensions={[store.width, store.height, store.depth]}
         rotationY={facesEast ? Math.PI / 2 : -Math.PI / 2}
         shadows={shadows}
+        // The kit is authored for daylight. Ungraded, these façades stayed the
+        // brightest thing on a night street. The shopfront below is emissive
+        // and unaffected, so grading the shell makes the lit storefronts read.
+        nightGrade
       />
 
       {/* A bright ground-floor shopfront faces the boulevard. */}
@@ -366,6 +371,7 @@ function Trees({ shadows }: { shadows: boolean }) {
             dimensions={[2.5 * tree.scale, 4.8 * tree.scale, 2.5 * tree.scale]}
             rotationY={(index * 1.73) % (Math.PI * 2)}
             shadows={shadows}
+            nightGrade
           />
         )
       })}
@@ -378,6 +384,7 @@ function Trees({ shadows }: { shadows: boolean }) {
           dimensions={[feature.width, feature.height, feature.depth]}
           rotationY={index * 1.9}
           shadows={shadows}
+          nightGrade
         />
       ))}
     </group>
@@ -492,6 +499,7 @@ export function CityDistrict({ quality }: { quality: QualitySettings }) {
       ))}
       <DistrictWindows />
       <Market shadows={quality.shadows} />
+      <GroundCover count={quality.groundCover} />
       <Trees shadows={quality.shadows} />
       <StreetLights />
     </group>

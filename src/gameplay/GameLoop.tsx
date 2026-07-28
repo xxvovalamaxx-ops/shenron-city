@@ -95,7 +95,7 @@ export function GameLoop({ interactables, ambientPedestrians, onInteract }: Game
     const onKey = (e: KeyboardEvent) => {
       if (e.code === 'KeyV') {
         e.preventDefault()
-        if (!inputLocked(useHud.getState().screen)) rt.thirdPerson = !rt.thirdPerson
+        if (!inputLocked(useHud.getState().screen)) useHud.getState().toggleThirdPerson()
         return
       }
       if (e.code === 'F3') {
@@ -179,7 +179,10 @@ export function GameLoop({ interactables, ambientPedestrians, onInteract }: Game
   useFrame((state, rawDt) => {
     const dt = Math.min(rawDt, MAX_DT)
     const p = rt.player
-    const locked = inputLocked(useHud.getState().screen)
+    const hudNow = useHud.getState()
+    const locked = inputLocked(hudNow.screen)
+    // Mirrored each frame so the camera step reads it without a store lookup.
+    rt.thirdPerson = hudNow.thirdPerson
 
     // Sync key state so other components can read it from rt.keys.
     Object.assign(rt.keys, keys.current)
