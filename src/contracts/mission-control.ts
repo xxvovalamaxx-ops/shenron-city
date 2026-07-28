@@ -139,7 +139,7 @@ export interface WorldSnapshot {
    * floor-45 signage and the secretary's answers all branch on it, so fiction
    * can never be mistaken for the player's real system.
    */
-  source: 'standalone' | 'live'
+  source: 'standalone'
   /** Epoch ms the snapshot was taken. Zero while standalone. */
   fetchedAt: number
 }

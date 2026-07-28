@@ -12,11 +12,10 @@ import type { Group } from 'three'
 import { WorldText as Text } from '../ui/WorldText'
 import { SECRETARY } from '../world/layout'
 import { PALETTE } from '../world/palette'
-import type { LinkState } from '../adapter/store'
 
 export const SECRETARY_NAME = 'Iris'
 
-export function Secretary({ link }: { link: LinkState }) {
+export function Secretary() {
   const body = useRef<Group>(null)
   const halo = useRef<Group>(null)
 
@@ -31,7 +30,7 @@ export function Secretary({ link }: { link: LinkState }) {
   })
 
   // Teal marks this intentionally local, standalone scenario.
-  const linkColor = link === 'standalone' ? PALETTE.accent : '#f59e0b'
+  const linkColor = PALETTE.accent
 
   return (
     <group position={[SECRETARY.x, 0, SECRETARY.z]}>

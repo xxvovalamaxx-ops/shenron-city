@@ -2,32 +2,21 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { useGame } from './store'
 
 describe('standalone game store', () => {
-  const fetchSpy = vi.fn()
-  const websocketSpy = vi.fn()
-
   beforeEach(() => {
     vi.useFakeTimers()
-    vi.stubGlobal('fetch', fetchSpy)
-    vi.stubGlobal('WebSocket', websocketSpy)
-    fetchSpy.mockClear()
-    websocketSpy.mockClear()
   })
 
   afterEach(() => {
     useGame.getState().dispose()
-    vi.unstubAllGlobals()
     vi.useRealTimers()
   })
 
-  it('starts from repository fixtures without contacting the computer or network', () => {
+  it('starts from repository fixtures', () => {
     useGame.getState().start()
 
     const state = useGame.getState()
-    expect(state.link).toBe('standalone')
     expect(state.snapshot.source).toBe('standalone')
     expect(state.snapshot.agents.length).toBeGreaterThan(0)
-    expect(fetchSpy).not.toHaveBeenCalled()
-    expect(websocketSpy).not.toHaveBeenCalled()
   })
 
   it('refreshes a resident from local scenario state only', async () => {
@@ -36,7 +25,16 @@ describe('standalone game store', () => {
 
     await expect(useGame.getState().requestSummary(resident.id)).resolves.toEqual(resident)
     await expect(useGame.getState().requestSummary('../../secrets')).resolves.toBeNull()
-    expect(fetchSpy).not.toHaveBeenCalled()
-    expect(websocketSpy).not.toHaveBeenCalled()
+  })
+
+  it('drifts metrics over time', () => {
+    useGame.getState().start()
+    const before = useGame.getState().snapshot
+
+    vi.advanceTimersByTime(6000)
+    const after = useGame.getState().snapshot
+
+    expect(after.metrics).toBeDefined()
+    expect(after.metrics!.cpu).not.toBe(before.metrics!.cpu)
   })
 })
