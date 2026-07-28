@@ -78,6 +78,11 @@ export interface QualitySettings {
   maxDpr: number
   cityWindows: number
   ambientPedestrians: number
+  /**
+   * Download the detailed ez-tree chunk (~3.9 MB, base64 textures inlined).
+   * Off on low, where PlanterTree is the final tree rather than a stand-in.
+   */
+  detailTrees: boolean
 }
 
 export const QUALITY: Record<QualityPreset, QualitySettings> = {
@@ -89,6 +94,7 @@ export const QUALITY: Record<QualityPreset, QualitySettings> = {
     maxDpr: 1,
     cityWindows: 400,
     ambientPedestrians: 5,
+    detailTrees: false,
   },
   medium: {
     shadows: true,
@@ -98,6 +104,7 @@ export const QUALITY: Record<QualityPreset, QualitySettings> = {
     maxDpr: 1.25,
     cityWindows: 1200,
     ambientPedestrians: 11,
+    detailTrees: true,
   },
   high: {
     shadows: true,
@@ -107,5 +114,6 @@ export const QUALITY: Record<QualityPreset, QualitySettings> = {
     maxDpr: 1.75,
     cityWindows: 2600,
     ambientPedestrians: 18,
+    detailTrees: true,
   },
 }
