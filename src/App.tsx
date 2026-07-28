@@ -33,6 +33,7 @@ import { PlayerBody } from './character/PlayerBody'
 import { LaserBeam } from './weapons/LaserBeam'
 import { DestructionSystem } from './destruction/DestructionSystem'
 import { NightEnvironment } from './world/NightEnvironment'
+import { ShadowBudget } from './world/ShadowBudget'
 import { AtmosphericDust } from './world/AtmosphericDust'
 import { Capybara } from './animals/CapybaraActor'
 
@@ -232,6 +233,7 @@ function Scene({
 
       <RendererBridge maxDpr={quality.maxDpr} shadows={quality.shadows} />
       <Lighting shadows={quality.shadows} shadowMapSize={quality.shadowMapSize} />
+      <ShadowBudget enabled={quality.shadows} mapSize={quality.shadowMapSize} />
 
       <Exterior quality={quality} />
       <Lobby quality={quality} />
