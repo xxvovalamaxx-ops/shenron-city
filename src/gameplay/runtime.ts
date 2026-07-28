@@ -46,6 +46,8 @@ export interface Runtime {
   interactables: Interactable[]
   /** True while a modal (dialogue, menu) owns input. */
   paused: boolean
+  /** Camera mode. Toggled with V; first person is the default. */
+  thirdPerson: boolean
   /** Keyboard state, populated by useKeys. */
   keys: {
     forward: boolean
@@ -115,6 +117,7 @@ export const rt: Runtime = {
   target: null,
   interactables: [],
   paused: false,
+  thirdPerson: false,
   keys: { forward: false, back: false, left: false, right: false, sprint: false, jump: false },
   vehicles: [],
   capybara: { ...CAPYBARA_INITIAL_POSE },

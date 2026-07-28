@@ -12,6 +12,7 @@ import { useFrame, useThree } from '@react-three/fiber'
 import { Matrix4, Object3D, Quaternion, Vector3 } from 'three'
 import { rt } from './runtime'
 import { advanceTraffic, vehicleColliders, vehiclePose } from './traffic'
+import { boomDistance, smoothBoom } from './camera-boom'
 import { VEHICLE } from '../world/city-data'
 import { useKeys } from './input'
 import { EYE_HEIGHT, moveWithCollisions, type AABB } from './collision'
@@ -92,6 +93,11 @@ export function GameLoop({ interactables, ambientPedestrians, onInteract }: Game
   // ── Interact key ───────────────────────────────────────────────────────────
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
+      if (e.code === 'KeyV') {
+        e.preventDefault()
+        if (!inputLocked(useHud.getState().screen)) rt.thirdPerson = !rt.thirdPerson
+        return
+      }
       if (e.code === 'F3') {
         e.preventDefault()
         useHud.getState().togglePerf()
@@ -111,6 +117,9 @@ export function GameLoop({ interactables, ambientPedestrians, onInteract }: Game
 
   // Last frame's continuous values, so audio can fire on transitions.
   const audioEdges = useRef({ entrance: 0, carDoor: 0, travelling: false })
+
+  /** Current boom length, eased between frames. Zero in first person. */
+  const boom = useRef(0)
 
   // Laser weapon — raycasts against breakable meshes via Raycaster.intersectObjects().
   const { update: updateLaser } = useLaser()
@@ -322,6 +331,21 @@ export function GameLoop({ interactables, ambientPedestrians, onInteract }: Game
 
     // ── 8. Camera follows the body ───────────────────────────────────────────
     camera.position.set(p.pos.x, p.pos.y + EYE_HEIGHT, p.pos.z)
+
+    if (rt.thirdPerson) {
+      // PointerLockControls owns rotation; the boom only moves the camera back
+      // along the direction it is already looking, so both modes share one
+      // aiming model and switching does not change where you are pointing.
+      camera.getWorldDirection(forwardVec.current)
+      const eye = { x: p.pos.x, y: p.pos.y + EYE_HEIGHT, z: p.pos.z }
+      // Swept against the same colliders that stop the player — a boom tested
+      // against a different set will eventually disagree with the world.
+      const wanted = boomDistance(eye, forwardVec.current, colliders)
+      boom.current = smoothBoom(boom.current, wanted, dt)
+      camera.position.addScaledVector(forwardVec.current, -boom.current)
+    } else if (boom.current !== 0) {
+      boom.current = 0
+    }
 
     // ── 8b. Laser weapon raycasting + heat ───────────────────────────────────
     updateLaser(camera, dt)
