@@ -23,16 +23,20 @@ repository.
 The boundary is enforced in several layers:
 
 1. `src/adapter/client.ts` was removed.
-2. `vite.config.ts` has no proxy and disables HMR WebSockets.
+2. `vite.config.ts` has no environment loading or proxy and disables HMR
+   WebSockets.
 3. `index.html` sets `connect-src 'none'`.
 4. In-world labels use `ui/WorldText.tsx`, which creates canvas textures from a
    built-in generic font.
 5. `scripts/verify-standalone-build.mjs` scans executable source and production
-   output for network/native integration paths. It also rejects launcher
-   regressions such as environment-file setup, unlocked `npm install`, and
-   obsolete connected/demo-mode guidance.
+   output for network/native integration paths. It also rejects executable
+   pages inside `public/`, unreferenced shipped assets, environment loading,
+   proxy routes, and launcher regressions.
 6. `src/adapter/store.test.ts` proves startup and profile refresh never call
    `fetch` or construct a WebSocket.
+
+Validated saves use browser `localStorage`. They cannot resolve paths or read
+arbitrary host files and are not a desktop/native bridge.
 
 ## NPC and office behavior
 

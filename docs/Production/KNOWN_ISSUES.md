@@ -1,10 +1,10 @@
 # Shenron City — Known Issues
 
 ## Current
-- Storefronts are solid boxes (not enterable interiors)
-- No character locomotion animations (procedural sway only)
+- Storefront interiors are shallow procedural shells, not full enterable shops
+- Ambient characters are stylized primitives without locomotion animation
 - No packaged executable (build works, no wrapper)
-- Entry bundle 3.5MB gzipped (large due to Three.js + R3F)
+- Entry bundle remains large due to the renderer, physics, and AI runtimes
 - Tree chunk 4MB (ez-tree library, lazy-loaded)
 - No minimap or compass
 - No weather system
@@ -12,7 +12,6 @@
 
 ## Deferred
 - GLB models from external sources (currently all procedural)
-- PBR textures (currently flat colors)
 - Skeletal character animations
 - Enterable building interiors
 - Particle effects (rain, fog, neon glow)

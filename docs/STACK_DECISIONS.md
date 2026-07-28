@@ -1,103 +1,47 @@
 # Shenron City — stack decisions
 
-Every candidate from the build plan, with a verdict and the reason. Versions
-were read from the npm registry on 2026-07-27 and checked against each
-package's declared peer ranges, not guessed.
+## Rule
 
-**Rule applied throughout:** a dependency earns its place by solving a problem
-this build actually has. "We will need it later" is a reason to defer, not to
-install.
+A dependency earns its place by solving a problem in the playable build.
+Future usefulness is a reason to document a candidate, not to install it.
 
-## Verified compatibility
+## Compatibility
 
-`@react-three/fiber@9.6.1` declares `react: ">=19 <19.3"`. A `^19.2.8` range
-would allow 19.3 and silently break that contract, so React is pinned
-`~19.2.8`. `drei@10.7.7` and `@react-three/postprocessing@3.0.4` both require
-`@react-three/fiber@^9`, satisfied. `three@0.185.1` clears every declared floor
-(`>=0.156`).
-
-TypeScript is pinned to `~5.9.3`. 7.0.2 (the native port) is published, but
-betting a new build's whole toolchain on a rewritten compiler buys nothing here.
+`@react-three/fiber@9.6.1` supports React `>=19 <19.3`, so React stays on the
+`~19.2.8` line. TypeScript stays on `~5.9.3` while the rewritten 7.x compiler
+is unnecessary risk.
 
 ## Adopted
 
-| Package | Version | Why |
-|---|---|---|
-| `vite` | 8.1.5 | Build + dev server. Already the tool the rest of the repo uses. |
-| `three` | 0.185.1 | The renderer. |
-| `@react-three/fiber` | 9.6.1 | React reconciler for three. Lets the world be composed the way the rest of the codebase is. |
-| `@react-three/drei` | 10.7.7 | `PointerLockControls` and `useProgress`. In-world text moved to local canvas textures so no font CDN is needed. |
-| `@react-three/postprocessing` | 3.0.4 | Bloom, vignette, SMAA. 34 more effects available (AO, DOF, GodRays, etc). Off at the `low` preset. |
-| `@dgreenheck/ez-tree` | 1.1.0 | Procedural trees with real bark/leaf textures. Used for plaza landscaping. |
-| `@react-three/rapier` | 2.2.0 | Physics: rigid bodies, colliders, character controller, joints, sensors, collision events. Replaces custom AABB collision. |
-| `recast-navigation` | 0.43.1 | NavMesh generation + Detour pathfinding for NPCs. |
-| `@recast-navigation/three` | 0.43.1 | Three.js integration for recast: mesh-to-navmesh, debug visualization. |
-| `yuka` | 0.7.8 | Game AI: FSM, steering behaviors, goal management, perception, trigger zones. |
-| `three-mesh-bvh` | 0.9.13 | Fast raycasting and spatial queries (3.4M weekly downloads). |
-| `three.quarks` | 0.17.1 | Particle system: fire, smoke, sparks, explosions. |
-| `quarks.r3f` | 0.17.1 | React Three Fiber wrapper for three.quarks. |
-| `@gltf-transform/core` | 4.4.2 | GLB/GLTF optimization, compression, Draco/Meshopt encoding. |
-| `@gltf-transform/cli` | 4.4.2 | CLI: `gltf-transform optimize input.glb output.glb`. |
-| `koota` | 0.6.6 | ECS: entities, traits, relations, queries. Framework-agnostic. |
-| `react` / `react-dom` | ~19.2.8 | Pinned below 19.3 per R3F's peer range. |
-| `zustand` | 5.0.14 | Standalone scenario state and the HUD mirror. Chosen over context to keep frame-rate updates out of React's render path. |
-| `zod` | 4.4.3 | Retained for quarantined, pure future adapter schemas and their tests; it is tree-shaken from the active standalone path. |
-| `vitest` | 4.1.10 | 76 tests over the City Tour, simulation, city data, ambient routes, dialogue, contracts, HUD mirroring, and the standalone boundary. |
-| `typescript` | ~5.9.3 | Strict, `noUnusedLocals`, `noUncheckedSideEffectImports`. |
-
-## Previously deferred — now installed
-
-These were originally deferred because the vertical slice didn't need them yet.
-They are now installed and ready for integration as the game grows.
-
-| Package | Was deferred because | Now installed because |
-|---|---|---|
-| `@react-three/rapier` | No dynamic bodies; static AABBs were sufficient. | Adding NPCs, vehicles, props, ragdolls. Real physics needed. |
-| `recast-navigation` + `@recast-navigation/three` | Four validated walking loops didn't need navmesh. | NPCs will choose destinations and avoid dynamic obstacles. |
-| `yuka` | One state machine didn't justify a runtime. | Multiple NPC AI behaviors, steering, perception needed. |
-| `three-mesh-bvh` | Simple AABB boxes didn't need BVH. | GLB environments with real triangle counts coming. |
-| `three.quarks` + `quarks.r3f` | No particle effects in the slice. | Neon glow, steam vents, sparks, rain effects planned. |
-| `@gltf-transform/core` + `cli` | No assets to optimize. | First real GLB assets arriving; compression needed. |
-| `koota` | One app, no ECS complexity needed. | Game state growing; ECS pattern needed at scale. |
-
-## Still deferred
-
-| Package | Why not yet | Adopt when |
-|---|---|---|
-| `ecctrl` | Character controller built on rapier. Inherits that decision. | With rapier integration. |
-| `xstate` | One state machine does not pay for a statechart runtime. | Three or more interacting machines. |
-| `theatre` | Authored cinematic sequencing. Nothing is authored yet. | Cutscenes, scripted camera moves. |
-| `uikit` | In-world React UI in WebGL. `WorldText` covers current needs. | Interactive in-world panels — lift buttons in 3D, screens with controls. |
-| `gltfjsx` | Asset pipeline tooling. Will use when importing models. | When importing real GLB models. |
-| `git-lfs` | Repo has no binaries yet. | With the first GLB/texture/audio. |
-| `turborepo`, `pnpm` | One app. No cross-package orchestration needed. | A second deployable lands. |
-| `playwright` | E2E against WebGL is flaky in CI. | GPU-enabled CI runner or DOM-level UI. |
-| `opentelemetry-js`, `sentry` | Nothing is deployed. Local-only. | First non-local deployment. |
-| `modelcontextprotocol/typescript-sdk` | No tool or backend connection in standalone game. | Behind a separately reviewed server adapter. |
-| `tauri` | No desktop or native bridge by design. | Approved desktop phase after game is stable. |
-
-## Rejected
-
-| Package | Why |
+| Package | Decision |
 |---|---|
-| `socket.io` | No network transport. Future multiplayer evaluated separately. |
-| `vercel/ai` | No model connection. Provider access belongs on server, not browser. |
-| `react-three-next` | Next.js starter. Wrong framework. |
+| `vite` | Existing fast build and local server; HMR is disabled for the standalone boundary. |
+| `three`, `@react-three/fiber` | Core renderer and scene composition. |
+| `@react-three/drei` | Pointer lock and loading progress. Remote font helpers are not used. |
+| `@react-three/postprocessing` | Lazy visual effects; disabled on low quality. |
+| `@dgreenheck/ez-tree` | Lazy detailed landscaping with a procedural fallback. |
+| `@react-three/rapier` | Fixed collider foundation for future physical props; player movement remains on the verified swept controller. |
+| `yuka` | Local steering for ambient pedestrians; no model or network calls. |
+| `zustand` | Keeps high-frequency simulation outside React while exposing a throttled HUD mirror. |
+| `zod` | Validates schema and save boundaries; tree-shaken when unused. |
+| `vitest`, `typescript` | Fast deterministic tests and strict type checking. |
 
-## What this leaves
+## Removed in the repository-hygiene pass
 
-Twenty runtime dependencies and six dev dependencies. Packages are installed
-and ready but integration is incremental — each is wired in when the feature
-that needs it is built, not all at once.
+| Package | Reason |
+|---|---|
+| `@pixiv/three-vrm` | The game is first-person and the 15 MB avatar plus animation set were not rendered. Reintroduce only with a third-person feature and verified license/provenance. |
+| `@gltf-transform/core`, `@gltf-transform/cli` | No GLB is imported, and their unused toolchain introduced eight high-severity development advisories. |
+| `playwright` | No repository test invoked it. Browser acceptance uses the external verification harness until a real in-repo E2E suite exists. |
 
-## Integration roadmap
+## Deferred
 
-1. ✅ Trees (`@dgreenheck/ez-tree`) — plaza landscaping done
-2. 🔲 `@react-three/rapier` — replace custom collision with real physics
-3. 🔲 `@react-three/postprocessing` extras — N8AO, GodRays, ChromaticAberration
-4. 🔲 `recast-navigation` — NPC navmesh generation and pathfinding
-5. 🔲 `yuka` — NPC AI state machines, steering, perception
-6. 🔲 `three.quarks` + `quarks.r3f` — particle effects (neon, steam, sparks)
-7. 🔲 `three-mesh-bvh` — fast raycasting for interaction and line-of-sight
-8. 🔲 `@gltf-transform` — compress imported GLB assets
-9. 🔲 `koota` — ECS for game state at scale
+`recast-navigation`, `three-mesh-bvh`, `three.quarks`, `koota`, `ecctrl`,
+`xstate`, `theatre`, and native/online integrations remain uninstalled. Their
+adoption gates are listed in [`STACK.md`](STACK.md).
+
+## Boundary
+
+Mission Control, multiplayer, telemetry, provider SDKs, Electron, and Tauri are
+not part of this phase. Any future connection must arrive behind a separately
+reviewed, disabled-by-default adapter.

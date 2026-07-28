@@ -23,3 +23,11 @@ Thumbs.db
 *.blend
 *.blend1
 *.psd
+
+# Never commit raw bulk-download folders or duplicate public assets. Curate
+# only the exact runtime files under public/ and record each source in the
+# asset manifest.
+/Animations/
+/avatar.vrm
+/SourceAssets/**/*.html
+/public/models/*.html

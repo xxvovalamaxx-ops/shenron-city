@@ -326,11 +326,6 @@ export default function App() {
     cityAudio.setMasterVolume(settings.volume)
   }, [settings.volume])
 
-  // Apply volume changes to the audio engine.
-  useEffect(() => {
-    cityAudio.setMasterVolume(settings.volume)
-  }, [settings.volume])
-
   // Apply the restored world state once. The elevator floor is derived from
   // the position rather than stored, so the two can never contradict.
   useEffect(() => {

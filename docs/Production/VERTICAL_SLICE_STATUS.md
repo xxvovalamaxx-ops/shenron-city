@@ -33,11 +33,12 @@
 - [x] Spatial audio (5 zones)
 - [x] Save/reload
 - [x] Postprocessing (Bloom, AO, CA, SMAA)
+- [x] Curated CC0 PBR texture pass
+- [x] Procedural street props and storefront interiors
 
 ## Remaining Work
 - [ ] Packaged executable
 - [ ] GLB models for buildings
-- [ ] PBR textures
 - [ ] Character models and animations
 - [ ] Vehicle models
 - [ ] Street props

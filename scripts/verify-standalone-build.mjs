@@ -30,14 +30,7 @@ const bannedEverywhere = [
   [/\bnew\s+EventSource\b/, 'EventSource'],
 ]
 
-/**
- * I/O is allowed, but only here.
- *
- * The game talks to Mission Control now, so a blanket ban on fetch would be a
- * lie. The invariant that actually matters is that network access stays in one
- * reviewable file: no component, no world geometry, and above all no NPC
- * dialogue path can perform I/O. Widening this list is a security decision.
- */
+/** Runtime network I/O is not part of the standalone game. */
 const networkPatterns = [
   [/\bfetch\s*\(/, 'fetch'],
   [/\bnew\s+WebSocket\b/, 'WebSocket'],
@@ -71,6 +64,8 @@ for (const path of sourceFiles) {
 
 const viteConfig = readFileSync(join(root, 'vite.config.ts'), 'utf8')
 if (!/\bhmr:\s*false\b/.test(viteConfig)) findings.push('vite.config.ts: HMR must remain disabled')
+if (/\bloadEnv\s*\(/.test(viteConfig)) findings.push('vite.config.ts: environment loading is not allowed')
+if (/\bproxy\s*:/.test(viteConfig)) findings.push('vite.config.ts: proxy routes are not allowed')
 
 const launcher = readFileSync(join(root, 'start.bat'), 'utf8')
 const forbiddenLauncherPatterns = [
@@ -87,12 +82,28 @@ if (!/if\s+not\s+exist\s+node_modules[\s\S]*\bcall\s+npm\s+ci\b/i.test(launcher)
 }
 
 const html = readFileSync(join(root, 'index.html'), 'utf8')
-// 'self', never '*' and never a host: the game may talk to its own origin,
-// which the dev proxy forwards to Mission Control, and to nothing else.
-if (!/connect-src 'self'/.test(html)) {
-  findings.push("index.html: connect-src must be 'self'")
+if (!/connect-src 'none'/.test(html)) {
+  findings.push("index.html: connect-src must be 'none'")
 }
 if (/connect-src[^;]*\*/.test(html)) findings.push('index.html: connect-src must not be a wildcard')
+
+const publicRoot = join(root, 'public')
+const publicFiles = filesUnder(publicRoot)
+for (const path of publicFiles.filter((candidate) => candidate.endsWith('.html'))) {
+  findings.push(`${relative(root, path)}: executable public HTML is not an asset`)
+}
+
+// Vite copies public/ byte-for-byte. Every shipped binary must be referenced
+// from executable source; otherwise a forgotten download silently bloats every
+// build even when tree-shaking removes the code that once used it.
+const sourceText = sourceFiles.map((path) => readFileSync(path, 'utf8')).join('\n')
+const assetExtensions = /\.(?:fbx|glb|gltf|hdr|jpeg|jpg|ktx2|mp3|ogg|png|vrm|webp)$/i
+for (const path of publicFiles.filter((candidate) => assetExtensions.test(candidate))) {
+  const webPath = `/${relative(publicRoot, path).replace(/\\/g, '/')}`
+  if (!sourceText.includes(webPath)) {
+    findings.push(`${relative(root, path)}: unreferenced public asset`)
+  }
+}
 
 const buildFiles = filesUnder(join(root, 'dist')).filter((path) => /\.(html|js|css)$/.test(path))
 /**

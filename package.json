@@ -13,14 +13,13 @@
     "typecheck": "tsc --noEmit",
     "build": "tsc --noEmit && vite build",
     "verify:standalone": "node scripts/verify-standalone-build.mjs",
-    "check": "npm run typecheck && npm test && npm run build && npm run verify:standalone",
+    "check": "npm run typecheck && npm test && npm run build && npm run verify:standalone && npm audit --audit-level=high",
     "preview": "vite preview",
     "test": "vitest run",
     "test:watch": "vitest"
   },
   "dependencies": {
     "@dgreenheck/ez-tree": "^1.1.0",
-    "@pixiv/three-vrm": "^3.5.5",
     "@react-three/drei": "^10.7.7",
     "@react-three/fiber": "^9.6.1",
     "@react-three/postprocessing": "^3.0.4",
@@ -33,13 +32,10 @@
     "zustand": "^5.0.14"
   },
   "devDependencies": {
-    "@gltf-transform/cli": "^4.4.2",
-    "@gltf-transform/core": "^4.4.2",
     "@types/react": "^19.2.17",
     "@types/react-dom": "^19.2.3",
     "@types/three": "^0.185.1",
     "@vitejs/plugin-react": "^6.0.4",
-    "playwright": "^1.62.0",
     "typescript": "~5.9.3",
     "vite": "^8.1.5",
     "vitest": "^4.1.10"

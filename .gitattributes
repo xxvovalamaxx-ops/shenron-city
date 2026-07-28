@@ -18,6 +18,7 @@
 
 # Future game and documentation assets are never line-normalized.
 *.bin binary
+*.fbx binary
 *.glb binary
 *.gltf binary
 *.jpg binary
@@ -27,3 +28,4 @@
 *.ogg binary
 *.png binary
 *.webp binary
+*.vrm binary

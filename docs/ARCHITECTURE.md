@@ -62,11 +62,12 @@ would make behavior depend on React render order.
 - The player is carried explicitly by the moving elevator.
 - Scenario residents have stable IDs so office assignment cannot jump.
 - District geometry and collision consume the same renderer-free city data.
-- Ambient pedestrians use deterministic fixed routes and never call a model.
+- Ambient pedestrians use local Yuka steering and never call a model.
 - The six-step City Tour is an ordered pure reducer; later objectives cannot
   be completed early and progress exists only for the current browser session.
 - In-world text is generated from browser canvas textures and never resolves a
   remote font.
+- Save data is validated browser `localStorage`, not filesystem access.
 
 ## Reintroducing integrations later
 
@@ -86,10 +87,10 @@ A future connection should live behind an adapter that:
 ## Known limitations
 
 - One city district, one headquarters route, and one detailed floor.
-- Procedural geometry only; no production asset pipeline yet.
-- Fictional residents are stylized forms with deterministic dialogue and
-  authored ambient routes.
-- No audio, multiplayer, persistence, live AI, Mission Control, or desktop
-  bridge.
+- Procedural geometry with a curated CC0 PBR texture pass; no production model
+  import pipeline yet.
+- Fictional residents are stylized forms with deterministic dialogue and local
+  steering.
+- No multiplayer, live AI, Mission Control, or desktop bridge.
 - The production JavaScript bundle is still large and should be code-split
   after the first art/gameplay direction is fixed.

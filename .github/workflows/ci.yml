@@ -49,5 +49,5 @@ jobs:
         run: npm run build
       - name: Verify standalone boundary
         run: npm run verify:standalone
-      - name: Audit production dependencies
-        run: npm audit --omit=dev --audit-level=high
+      - name: Audit locked dependencies
+        run: npm audit --audit-level=high

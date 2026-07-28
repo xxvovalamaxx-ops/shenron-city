@@ -1,52 +1,35 @@
-// defineConfig comes from vitest/config so the `test` block typechecks;
-// loadEnv is vite's and is not re-exported there.
+// defineConfig comes from vitest/config so the `test` block typechecks.
 import { defineConfig } from 'vitest/config'
-import { loadEnv } from 'vite'
 import react from '@vitejs/plugin-react'
 
 /**
- * Port 9122, out of the way of the Mission Control API (9120) and its web
- * frontend (9121).
- *
- * /api and /ws are proxied rather than called cross-origin. Mission Control's
- * CORS allowlist is deliberately narrow and does not include this port;
- * proxying keeps requests same-origin so the game needs no loosening of the
- * backend's security posture. See docs/SECURITY_BOUNDARY.md.
- *
- * The proxy is a route, not a connection: nothing is contacted unless the game
- * is started in live mode (?mode=live, or VITE_MISSION_CONTROL=on). The
- * default run is standalone and touches no host service.
- *
- * MISSION_CONTROL_URL points at your own Mission Control. Nothing here should
- * ever hold a credential — the backend owns those.
+ * Port 9122 is fixed deliberately. This standalone phase reads no environment
+ * variables and exposes no proxy, so starting the game cannot opt into host
+ * services accidentally.
  */
-export default defineConfig(({ mode }) => {
-  const env = loadEnv(mode, '.', '')
-
-  return {
-    plugins: [react()],
-    // Root-level, not a server option — nesting it under `server` type-errors
-    // and silently does nothing, so the console kept being cleared anyway.
-    clearScreen: false,
-    server: {
-      port: Number(env.GAME_PORT) || 9122,
-      host: '127.0.0.1',
-      hmr: false,
-      watch: {
-        usePolling: true,
-        interval: 1000,
-      },
+export default defineConfig({
+  plugins: [react()],
+  clearScreen: false,
+  server: {
+    port: 9122,
+    host: '127.0.0.1',
+    hmr: false,
+    watch: {
+      usePolling: true,
+      interval: 1000,
     },
-    build: {
-      outDir: 'dist',
-      sourcemap: true,
-      // three + R3F is inherently a large bundle; the default 500 kB warning
-      // fires on every build and trains you to ignore it.
-      chunkSizeWarningLimit: 1200,
-    },
-    test: {
-      environment: 'node',
-      include: ['src/**/*.test.ts'],
-    },
-  }
+  },
+  build: {
+    outDir: 'dist',
+    // Public builds do not need multi-megabyte source maps. Local debugging
+    // uses Vite's original modules.
+    sourcemap: false,
+    // Three + R3F is inherently a large bundle; keep the warning focused on
+    // regressions materially larger than the current renderer entry.
+    chunkSizeWarningLimit: 1200,
+  },
+  test: {
+    environment: 'node',
+    include: ['src/**/*.test.ts'],
+  },
 })

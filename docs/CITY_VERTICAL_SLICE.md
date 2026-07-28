@@ -28,8 +28,8 @@ route segments crossing solid obstacles.
 ## Runtime budget
 
 - Store windows, trees, lamps, lane marks, and ambient people are instanced.
-- Ambient population scales from 5 to 18 with the quality preset.
-- Pedestrians sample constant-speed authored loops with no navigation runtime.
+- Ambient pedestrians use local Yuka steering; their authored paths stay
+  renderer-free.
 - The objective system updates only when a location or interaction advances it.
 - Medium/high postprocessing is lazy-loaded in a separate chunk.
 - Detailed planter trees (ez-tree, ~3.9 MB) are a separate chunk too, so the
@@ -37,7 +37,8 @@ route segments crossing solid obstacles.
 - Trees are sized in **metres of height**, not by a scale factor: ez-tree
   generates a ~98 m tree at scale 1, so both implementations normalise to the
   requested height. A shared `scale` prop once produced 34 m planter trees.
-- No external models, textures, fonts, audio, network calls, or desktop bridge.
+- No external models, fonts, recorded audio, network calls, or desktop bridge.
+  The checked-in PBR textures are CC0 and provenance-recorded.
 
 ## Next art milestone
 

@@ -44,10 +44,12 @@ The session-only **City Tour** HUD turns that route into six ordered
 objectives. Progress is deterministic game state and is deliberately not
 written to browser storage or any host service.
 
-The current world is procedural: there are no downloaded models, textures,
-fonts, audio files, or live services. The district layout, collision solids,
-and ambient walking loops share `src/world/city-data.ts`. Fictional residents
-and activities come from `src/adapter/fixtures.ts`.
+The current geometry and audio are procedural. The art pass uses a curated set
+of CC0 Poly Haven PBR textures recorded in
+[`docs/Assets/ASSET_MANIFEST.csv`](docs/Assets/ASSET_MANIFEST.csv); it ships no
+downloaded character, vehicle, or building models. District layout, collision
+solids, and ambient walking loops share `src/world/city-data.ts`. Fictional
+residents and activities come from `src/adapter/fixtures.ts`.
 
 ## Standalone boundary
 
@@ -56,8 +58,10 @@ and activities come from `src/adapter/fixtures.ts`.
 - The browser policy uses `connect-src 'none'`.
 - Runtime HMR is disabled so the development page does not open a WebSocket.
 - In-world text uses local canvas textures rather than a font CDN.
+- Save data stays inside browser `localStorage`; the game has no filesystem
+  or native-computer access.
 - A CI verifier rejects fetch/WebSocket/native-bridge paths and known
-  integration markers in the production build.
+  integration markers, executable public HTML, and unreferenced shipped assets.
 
 Verify the boundary:
 
@@ -72,12 +76,11 @@ npm run verify:standalone
 | Category | Packages |
 |----------|----------|
 | **Renderer** | `three`, `@react-three/fiber`, `@react-three/drei` |
-| **Visuals** | `@react-three/postprocessing` (Bloom, SMAA, Vignette + 30 more effects), `three.quarks` + `quarks.r3f` (particles) |
+| **Visuals** | `@react-three/postprocessing` (Bloom, SMAA, Vignette), `@dgreenheck/ez-tree` (lazy detailed trees) |
 | **Physics** | `@react-three/rapier` (rigid bodies, colliders, character controller) |
-| **AI / Navigation** | `yuka` (FSM, steering, perception), `recast-navigation` + `@recast-navigation/three` (navmesh, pathfinding) |
+| **AI / Navigation** | `yuka` (local pedestrian steering) |
 | **Procedural** | `@dgreenheck/ez-tree` (trees with real bark/leaf textures) |
-| **Optimization** | `three-mesh-bvh` (fast raycasting), `@gltf-transform/core` + `cli` (GLB compression) |
-| **Architecture** | `koota` (ECS), `zustand` (state), `zod` (schemas) |
+| **Architecture** | `zustand` (state), `zod` (schemas) |
 | **Tooling** | `vite`, `typescript`, `vitest` |
 
 See [`docs/STACK_DECISIONS.md`](docs/STACK_DECISIONS.md) for why each package was adopted.
@@ -111,6 +114,7 @@ npm run typecheck
 npm test
 npm run build
 npm run verify:standalone
+npm audit --audit-level=high
 ```
 
 See [CONTRIBUTING.md](CONTRIBUTING.md) for branch, conflict, review, and
