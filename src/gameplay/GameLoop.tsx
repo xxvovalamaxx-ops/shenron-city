@@ -7,7 +7,7 @@
  * render order, and the first symptom would be the player sinking through the
  * lift floor on the frame the car moved first.
  */
-import { useCallback, useEffect, useMemo, useRef } from 'react'
+import { useEffect, useMemo, useRef } from 'react'
 import { useFrame, useThree } from '@react-three/fiber'
 import { Matrix4, Object3D, Quaternion, Vector3 } from 'three'
 import { rt } from './runtime'
@@ -104,17 +104,8 @@ export function GameLoop({ interactables, ambientPedestrians, onInteract }: Game
   // Last frame's continuous values, so audio can fire on transitions.
   const audioEdges = useRef({ entrance: 0, carDoor: 0, travelling: false })
 
-  // Laser weapon — raycasts against static + breakable colliders.
-  const getBreakableAABBs = useCallback(() => {
-    const getter = (globalThis as unknown as { __breakableAABBs?: () => { min: readonly [number, number, number]; max: readonly [number, number, number] }[] }).__breakableAABBs
-    return getter ? getter() : []
-  }, [])
-
-  const allColliders = useCallback(() => {
-    return [...staticWorld, ...getBreakableAABBs()]
-  }, [staticWorld, getBreakableAABBs])
-
-  const { update: updateLaser } = useLaser(allColliders)
+  // Laser weapon — raycasts against breakable meshes via Raycaster.intersectObjects().
+  const { update: updateLaser } = useLaser()
 
   /**
    * Push vehicle poses into the instance buffers.
