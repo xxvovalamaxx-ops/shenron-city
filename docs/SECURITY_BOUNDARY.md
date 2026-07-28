@@ -25,7 +25,8 @@ The boundary is enforced in several layers:
 1. `src/adapter/client.ts` was removed.
 2. `vite.config.ts` has no environment loading or proxy and disables HMR
    WebSockets.
-3. `index.html` sets `connect-src 'none'`.
+3. `index.html` sets `connect-src 'self'` so packaged GLB/HDR assets can load,
+   while external hosts, WebSockets, telemetry, and APIs remain blocked.
 4. In-world labels use `ui/WorldText.tsx`, which creates canvas textures from a
    built-in generic font.
 5. `scripts/verify-standalone-build.mjs` scans executable source and production

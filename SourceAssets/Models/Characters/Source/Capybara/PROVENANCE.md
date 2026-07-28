@@ -3,33 +3,35 @@
 ## Purpose
 
 This folder preserves the exact, reviewable source chain for Shenron City's
-high-detail capybara. The final asset is a new reconstruction; it is not a
-downloaded wildlife model.
+animated capybara. The final asset is a project reconstruction; it is not a
+downloaded wildlife mesh.
 
 ## Source chain
 
-1. The owner supplied two low-resolution capybara photographs as anatomical
+1. The owner supplied low-resolution capybara photographs as anatomical
    targets. Those photographs are not redistributed in this repository.
-2. OpenAI image generation produced
-   `capybara_reconstruction_reference.png`, a clean zoological side-profile
-   plate. The supplied photographs were used as anatomical references.
-3. U²-Net background removal created
-   `capybara_reconstruction_input.png`, the square neutral-background input
-   used for reconstruction.
+2. OpenAI image generation produced the clean zoological profile
+   `capybara_reconstruction_reference.png` and the consistent four-view
+   `capybara_turnaround_reference_v2.png`. The supplied photographs were used
+   only as anatomical targets.
+3. The transparent left profile was normalized into
+   `capybara_triposr_input.png`, the exact square input used by the accepted
+   reconstruction.
 4. The official TripoSR implementation at commit
    `107cefdc244c39106fa830359024f6a2f1c78871` reconstructed
-   `capybara_reconstruction.obj` and
-   `capybara_reconstruction_texture.png` with the public
-   `stabilityai/TripoSR` checkpoint.
+   `capybara_triposr_source.obj` and `capybara_triposr_texture.png` with the
+   public `stabilityai/TripoSR` checkpoint.
 5. Blender Foundation MCP ran
-   `SourceAssets/Blender/scripts/create_capybara.py`. The script sets verified
-   adult scale, projects the high-detail reference onto the visible anatomy,
-   blends the reconstruction texture onto non-side-facing surfaces, bakes
-   `capybara_final_albedo.png`, and exports the reviewed GLB.
+   `SourceAssets/Blender/scripts/rig_capybara.py`. The script applies real-world
+   scale and axes, closes extraction boundaries with a fine voxel pass,
+   reduces the game topology, projects the four views, bakes portable PBR
+   textures, creates a 43-bone rig and 21 actions, renders review poses, and
+   exports both authoring and runtime GLBs.
 
-TripoSR's official repository states that its code and pretrained model are
-released under the MIT license. No TripoSR source code or model weights are
-vendored in Shenron City.
+TripoSR's official code and pretrained model are released under the MIT
+license. No TripoSR source code or model weights are vendored in Shenron City.
+Rejected experimental reconstruction outputs are not included in the
+repository.
 
 ## Reconstruction plate prompt
 
@@ -38,8 +40,7 @@ Use case: photorealistic-natural
 Asset type: clean image-to-3D reconstruction reference plate for a realistic
 game animal
 
-Input images: both uploaded capybara photos are anatomical reference targets
-only.
+Input images: uploaded capybara photos are anatomical reference targets only.
 
 Primary request: Create one anatomically accurate adult capybara
 (Hydrochoerus hydrochaeris), full body, standing naturally in a neutral
@@ -49,14 +50,13 @@ Scene/backdrop: seamless flat light gray studio background, no horizon line,
 no props, no plants, no water, no ground texture.
 
 Subject: real capybara anatomy: heavy but not cubic barrel torso, gently arched
-rump, distinct shoulders, short sturdy but slender lower legs, correct four
-front toes and three rear toes, no visible tail, blunt rectangular muzzle,
-straight forehead-to-rostrum transition, small rounded ears, small high-set
-dark eyes and nostrils, coarse reddish-brown guard hair with darker
-wet-looking lower legs.
+rump, distinct shoulders, short sturdy lower legs, correct four front toes and
+three rear toes, no visible tail, blunt rectangular muzzle, straight
+forehead-to-rostrum transition, small rounded ears, small high-set dark eyes
+and nostrils, coarse reddish-brown guard hair with darker lower legs.
 
 Style/medium: high-resolution zoological wildlife photograph, natural
-proportions and real fur, not a 3D render.
+proportions and real fur, not a stylized render.
 
 Composition/framing: entire animal visible from ears to every toe, centered,
 generous padding, orthographic-like side view with minimal perspective
@@ -77,7 +77,8 @@ limbs, missing toes, background scenery.
 ## Rebuild notes
 
 The reconstruction runtime is intentionally not vendored. Reproducing the raw
-mesh requires the pinned TripoSR commit and checkpoint; rebuilding the Blender
-asset from the committed raw mesh requires only Blender 5.1 and the repository
-script. The local `.blend` remains ignored because repository policy reserves
-large editable authoring files for a future reviewed LFS workflow.
+mesh requires the pinned TripoSR commit and checkpoint. Rebuilding from the
+committed raw mesh requires Blender 5.1 and the repository script. The editable
+`capybara_rigged.blend` and source OBJ are tracked with Git LFS; the runtime
+GLB remains normal Git content so a fresh web checkout can build without an
+asset conversion step.

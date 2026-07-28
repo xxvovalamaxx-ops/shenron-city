@@ -1,30 +1,34 @@
 # Capybara character
 
-An anatomically reconstructed adult capybara for Shenron City, authored in
-Blender 5.1 through Blender Foundation's official MCP connector.
+The Shenron City capybara is a browser-ready, anatomically reconstructed adult
+animal authored in Blender 5.1 through Blender Foundation's official MCP
+connector.
 
-## Files
+## Reviewed outputs
 
-- `capybara.glb` is the Draco-compressed, textured portable asset.
-- `capybara_preview.png`, `capybara_side.png`, and `capybara_face.png` are
-  inspection renders from the editable Blender scene.
-- `../../Source/Capybara/` contains the reviewed reconstruction inputs, the
-  generated source mesh, and the final baked albedo.
-- `../../Working/Capybara/Capybara.blend` is the editable local master. It
-  remains ignored by Git under the repository's large-binary policy.
-- `../../../../Blender/scripts/create_capybara.py` rebuilds the scale,
-  materials, final UV bake, inspection renders, and GLB.
+- `capybara_animated.glb` is the textured authoring export.
+- `capybara_animated_side.png`, `capybara_animated_three_quarter.png`, and
+  `capybara_animated_front.png` are neutral-pose inspection renders.
+- `capybara_pose_walk.png`, `capybara_pose_graze.png`, and
+  `capybara_pose_sit.png` inspect representative deformation poses.
+- `../../Source/Capybara/capybara_rigged.blend` is the editable, LFS-tracked
+  artist master.
+- `../../../../Blender/scripts/rig_capybara.py` deterministically rebuilds the
+  textures, rig, actions, previews, authoring GLB, and runtime GLB.
 
-## Asset facts
+The production runtime file is
+`public/models/animals/capybara/capybara.glb`.
 
-- real-world dimensions: 1.24 m long, 0.46 m wide, and 0.58 m high
-- 76,939 render vertices and 97,800 triangles
-- one portable PBR material with a 2,048 px baked albedo
-- metric authoring scale, +X anatomical forward, glTF 2.0 export
-- no procedural sphere/box anatomy and no copied third-party wildlife mesh
+## Verified asset facts
 
-The reconstruction and image-generation provenance is recorded in
+- 1.24 m long, 0.46 m wide, and 0.58 m high
+- 37,374 vertices and 74,744 triangles
+- one portable PBR material with a 2K albedo and 1K normal/roughness maps
+- 43 deform bones, at most four influences per vertex, and no unweighted
+  vertices
+- 21 named animation actions, including locomotion, idle, grazing, drinking,
+  sitting, sleeping, startle, vocalization, and swimming
+- glTF 2.0 without Draco, remote textures, or runtime decoder dependencies
+
+The exact reconstruction and image provenance is recorded in
 `../../Source/Capybara/PROVENANCE.md`.
-
-This is a high-detail authoring/review asset. Create reviewed LODs, a rig, and
-simple collision geometry before loading it in the browser game.

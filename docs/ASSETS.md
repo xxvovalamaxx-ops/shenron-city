@@ -6,9 +6,9 @@ budget.
 
 ## Current shipped assets
 
-The city geometry, props, characters, vehicles, and audio are procedural. The
-only imported files in `public/` are the curated 1K Poly Haven texture maps
-used by the current material pass.
+The city geometry, props, residents, vehicles, and audio are procedural. The
+imported runtime files in `public/` are the curated 1K Poly Haven material maps
+and the optimized Shenron City capybara GLB.
 
 Every imported asset is recorded in
 [`Assets/ASSET_MANIFEST.csv`](Assets/ASSET_MANIFEST.csv), including its source,
@@ -49,13 +49,18 @@ provenance, skeleton, duplicate status, and game use are verified.
 
 ## Model pipeline
 
-No external GLB model currently ships with the game. When the first approved
-model is needed, introduce the smallest audited optimization toolchain in a
-focused change. Do not install a global converter or restore the removed
-glTF-Transform dependencies until the dependency audit is clean.
+The capybara is the reference implementation for browser-ready character
+assets. Its project-authored input, MIT-licensed TripoSR reconstruction,
+Blender source, provenance record, inspection renders, and authoring export
+live under `SourceAssets/`; only the verified runtime GLB lives under
+`public/models/`.
 
-Keep authoring sources outside `public/`; only the optimized runtime result
-belongs in the shipped asset tree. Model scale, axes, materials, animations,
+`npm run verify:assets` rejects a missing or oversized capybara, an unexpected
+clip or skeleton contract, Draco-only geometry, extra skin influences, remote
+texture references, and embedded textures above the 2K budget.
+
+Keep future authoring sources outside `public/`; only optimized runtime results
+belong in the shipped asset tree. Model scale, axes, materials, animations,
 and license must be verified before merging.
 
 ## Approved source categories

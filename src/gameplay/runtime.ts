@@ -16,6 +16,7 @@ import type { Interactable } from './interact'
 import type { Vec3 } from './collision'
 import { SPAWN } from '../world/layout'
 import { MARKET_KEEPER } from '../world/city-data'
+import { CAPYBARA_INITIAL_POSE, type CapybaraPose } from '../animals/capybara'
 
 function initialPlayerPosition(): Vec3 {
   const defaultSpawn = { x: SPAWN.x, y: SPAWN.y, z: SPAWN.z }
@@ -26,6 +27,9 @@ function initialPlayerPosition(): Vec3 {
   const debugSpawn = new URLSearchParams(location.search).get('spawn')
   if (debugSpawn === 'market') {
     return { x: MARKET_KEEPER.x, y: SPAWN.y, z: MARKET_KEEPER.z + 2.7 }
+  }
+  if (debugSpawn === 'park') {
+    return { x: -14.2, y: SPAWN.y, z: 50.0 }
   }
   return defaultSpawn
 }
@@ -62,6 +66,8 @@ export interface Runtime {
   }
   /** Boulevard traffic. Length is set from the quality preset. */
   vehicles: Vehicle[]
+  /** Shared hero-animal pose consumed by its mesh and moving collider. */
+  capybara: CapybaraPose
   /** Destroyed breakable object IDs. */
   destroyed: Set<string>
   /** Objects the simulation moves directly, to keep visuals frame-exact. */
@@ -81,6 +87,7 @@ export interface Runtime {
     trafficCabin: InstancedMesh | null
     trafficLamps: InstancedMesh | null
     trafficSpill: InstancedMesh | null
+    capybara: Object3D | null
   }
   /**
    * Rolling perf samples.
@@ -120,6 +127,7 @@ export const rt: Runtime = {
   paused: false,
   keys: { forward: false, back: false, left: false, right: false, sprint: false, jump: false },
   vehicles: [],
+  capybara: { ...CAPYBARA_INITIAL_POSE },
   destroyed: new Set<string>(),
   refs: {
     car: null,
@@ -131,6 +139,7 @@ export const rt: Runtime = {
     trafficCabin: null,
     trafficLamps: null,
     trafficSpill: null,
+    capybara: null,
   },
   perf: {
     frames: 0,

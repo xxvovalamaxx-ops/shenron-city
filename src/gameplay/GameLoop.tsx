@@ -36,6 +36,7 @@ import {
 import { useHud, inputLocked } from '../ui/hud-store'
 import { AUDIO_ANCHORS, cityAudio } from '../audio'
 import { useLaser } from '../weapons/useLaser'
+import { capybaraCollider, capybaraPose } from '../animals/capybara'
 
 const WALK_SPEED = 4.3
 const SPRINT_SPEED = 7.1
@@ -230,12 +231,17 @@ export function GameLoop({ interactables, ambientPedestrians, onInteract }: Game
     advanceTraffic(rt.vehicles, dt, p.pos)
     writeTrafficInstances()
 
+    // Sample once so the visible animal and its moving collision box share the
+    // exact same route state.
+    rt.capybara = capybaraPose(state.clock.elapsedTime)
+
     // ── 4. Dynamic collision ─────────────────────────────────────────────────
     const colliders: AABB[] = [
       ...staticWorld,
       ...stationaryResidents,
       ...vehicleColliders(rt.vehicles),
       ...npcColliders(state.clock.elapsedTime, ambientPedestrians),
+      capybaraCollider(rt.capybara),
       ...carColliders(carY),
       ...shaftGuards(carY, carOpen),
       ...slidingDoorColliders(
@@ -343,6 +349,10 @@ export function GameLoop({ interactables, ambientPedestrians, onInteract }: Game
     // ── 10. Drive the meshes the simulation owns ──────────────────────────────
     const refs = rt.refs
     if (refs.car) refs.car.position.y = carY
+    if (refs.capybara) {
+      refs.capybara.position.set(rt.capybara.x, 0, rt.capybara.z)
+      refs.capybara.rotation.y = rt.capybara.heading
+    }
 
     // leafOffset is the shared source of truth with slidingDoorColliders, so
     // what you see and what blocks you cannot disagree.

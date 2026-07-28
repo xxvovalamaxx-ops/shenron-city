@@ -23,6 +23,7 @@ Thumbs.db
 *.blend
 *.blend1
 *.psd
+!SourceAssets/Models/Characters/Source/Capybara/capybara_rigged.blend
 
 # Never commit raw bulk-download folders or duplicate public assets. Curate
 # only the exact runtime files under public/ and record each source in the
