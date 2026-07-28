@@ -14,7 +14,7 @@ import { HDRLoader } from 'three/examples/jsm/loaders/HDRLoader.js'
 import { PMREMGenerator } from 'three'
 
 const HDR_PATH = '/hdr/modern_buildings_night_1k.hdr'
-const ENVIRONMENT_INTENSITY = 0.32
+const ENVIRONMENT_INTENSITY = 0.2
 
 export function NightEnvironment() {
   const gl = useThree((s) => s.gl)

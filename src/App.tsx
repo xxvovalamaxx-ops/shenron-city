@@ -104,14 +104,23 @@ function RendererBridge({ maxDpr, shadows }: { maxDpr: number; shadows: boolean 
 function Lighting({ shadows, shadowMapSize }: { shadows: boolean; shadowMapSize: number }) {
   return (
     <>
-      {/* Night sky above, city bounce below. Never let anything go to zero. */}
-      <hemisphereLight args={[PALETTE.horizon, '#0d1420', 0.55]} />
-      <ambientLight intensity={0.18} color={PALETTE.coolLight} />
+      {/*
+        Key-to-fill is what makes this read as night rather than as daylight
+        with a black sky. It was hemisphere 0.55 + ambient 0.18 + environment
+        0.32 against a 0.9 key — roughly 1:1, so every façade of every building
+        received the same light and the geometry lost all form.
+
+        Now about 5:1. Total illumination is close to what it was, but it
+        arrives from one direction, so surfaces facing the moon are bright and
+        the rest fall away to the city's own practicals.
+      */}
+      <hemisphereLight args={[PALETTE.horizon, '#0d1420', 0.2]} />
+      <ambientLight intensity={0.07} color={PALETTE.coolLight} />
 
       {/* Moon key, casting the plaza's long shadows */}
       <directionalLight
         position={[38, 60, 34]}
-        intensity={0.9}
+        intensity={1.12}
         color="#c3d6f5"
         castShadow={shadows}
         shadow-mapSize={[shadowMapSize, shadowMapSize]}
@@ -125,7 +134,7 @@ function Lighting({ shadows, shadowMapSize }: { shadows: boolean; shadowMapSize:
       />
 
       {/* Cool fill from the opposite side so shadowed faces keep their form */}
-      <directionalLight position={[-30, 26, 28]} intensity={0.24} color="#7f9dd0" />
+      <directionalLight position={[-30, 26, 28]} intensity={0.16} color="#7f9dd0" />
 
       {/* Warm spill from the lobby, out through the glass onto the plaza —
           this is what makes the entrance read as somewhere worth walking in. */}
@@ -458,6 +467,12 @@ export default function App() {
         resize={{ polyfill: ResilientResizeObserver as unknown as typeof ResizeObserver }}
         onCreated={({ gl }) => {
           gl.toneMapping = THREE.ACESFilmicToneMapping
+          // Applies on the low preset only. From medium up, EffectComposer
+          // takes tone mapping off the renderer (gl.toneMapping reads back as
+          // NoToneMapping) and world/PostProcessing.tsx runs ACES itself, so
+          // this value is inert there. Grading therefore lives in the light
+          // rig, which every preset shares — changing it here would only make
+          // low darker than high.
           gl.toneMappingExposure = 0.72
         }}
       >
