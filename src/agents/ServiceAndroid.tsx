@@ -9,6 +9,7 @@ import {
   type ServiceAndroidMotion,
   type ServiceAndroidStyle,
 } from './service-android'
+import { DEFAULT_CHARACTER_HEIGHT, heightScaleFor } from './character-scale'
 
 interface Props {
   motion: ServiceAndroidMotion
@@ -16,6 +17,8 @@ interface Props {
   animationSpeed?: number
   castShadow?: boolean
   expression?: 'neutral' | 'alert' | 'concerned'
+  /** Final standing height in metres. See agents/character-scale.ts. */
+  height?: number
 }
 
 /**
@@ -32,6 +35,7 @@ export function ServiceAndroid({
   animationSpeed = 1,
   castShadow = true,
   expression = 'neutral',
+  height = DEFAULT_CHARACTER_HEIGHT,
 }: Props) {
   const source = useGLTF(SERVICE_ANDROID_URL)
   const palette = SERVICE_ANDROID_STYLES[style]
@@ -81,6 +85,12 @@ export function ServiceAndroid({
     return { model: instance, materials: [...ownedMaterials], face: head as THREE.Mesh | null }
   }, [castShadow, palette.accent, palette.body, palette.trim, source.scene])
 
+  // Measured in the bind pose, before the mixer runs.
+  const scale = useMemo(
+    () => heightScaleFor(new THREE.Box3().setFromObject(model).getSize(new THREE.Vector3()).y, height),
+    [model, height],
+  )
+
   const mixer = useMemo(() => new THREE.AnimationMixer(model), [model])
 
   useEffect(() => {
@@ -115,7 +125,11 @@ export function ServiceAndroid({
     }
   })
 
-  return <primitive object={model} />
+  return (
+    <group scale={scale}>
+      <primitive object={model} />
+    </group>
+  )
 }
 
 useGLTF.preload(SERVICE_ANDROID_URL)

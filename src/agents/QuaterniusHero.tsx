@@ -7,11 +7,14 @@ import {
   QUATERNIUS_HERO_URL,
   type QuaterniusHeroMotion,
 } from './quaternius-hero'
+import { DEFAULT_CHARACTER_HEIGHT, heightScaleFor } from './character-scale'
 
 interface Props {
   motion: QuaterniusHeroMotion
   animationSpeed?: number
   castShadow?: boolean
+  /** Final standing height in metres. See agents/character-scale.ts. */
+  height?: number
 }
 
 /** Higher-detail CC0 hero using Quaternius' matching 65-joint motion library. */
@@ -19,6 +22,7 @@ export function QuaterniusHero({
   motion,
   animationSpeed = 1,
   castShadow = true,
+  height = DEFAULT_CHARACTER_HEIGHT,
 }: Props) {
   const source = useLoader(GLTFLoader, QUATERNIUS_HERO_URL, (loader) => {
     // Match the capybara's browser-safe path for embedded GLB textures.
@@ -42,6 +46,13 @@ export function QuaterniusHero({
     })
     return instance
   }, [castShadow, source.scene])
+
+  // Measured in the bind pose, before the mixer runs: the reference is the
+  // model, not whichever animation frame happened to be up.
+  const scale = useMemo(
+    () => heightScaleFor(new THREE.Box3().setFromObject(model).getSize(new THREE.Vector3()).y, height),
+    [model, height],
+  )
   const mixer = useMemo(() => new THREE.AnimationMixer(model), [model])
 
   useEffect(() => {
@@ -70,5 +81,9 @@ export function QuaterniusHero({
     mixer.update(Math.min(delta, 0.05))
   })
 
-  return <primitive object={model} />
+  return (
+    <group scale={scale}>
+      <primitive object={model} />
+    </group>
+  )
 }

@@ -10,12 +10,15 @@ import {
   type KenneyCitizenMotion,
   type KenneyCitizenSkin,
 } from './kenney-citizen'
+import { DEFAULT_CHARACTER_HEIGHT, heightScaleFor } from './character-scale'
 
 interface Props {
   motion: KenneyCitizenMotion
   skin: KenneyCitizenSkin
   animationSpeed?: number
   castShadow?: boolean
+  /** Final standing height in metres. See agents/character-scale.ts. */
+  height?: number
 }
 
 /** One independently animated CC0 Kenney citizen with a swappable audited skin. */
@@ -24,11 +27,12 @@ export function KenneyCitizen({
   skin,
   animationSpeed = 1,
   castShadow = true,
+  height = DEFAULT_CHARACTER_HEIGHT,
 }: Props) {
   const source = useGLTF(KENNEY_CITIZEN_URL)
   const texture = useTexture(KENNEY_CITIZEN_SKINS[skin])
 
-  const { model, materials } = useMemo(() => {
+  const { model, materials, naturalHeight } = useMemo(() => {
     texture.colorSpace = THREE.SRGBColorSpace
     texture.flipY = false
     texture.needsUpdate = true
@@ -56,8 +60,14 @@ export function KenneyCitizen({
       })
       object.material = Array.isArray(object.material) ? replacements : replacements[0]
     })
-    return { model: instance, materials: [...owned] }
+
+    // Measured in the bind pose, before the mixer runs, so the reference is the
+    // model itself rather than whichever animation frame happened to be up.
+    const measured = new THREE.Box3().setFromObject(instance).getSize(new THREE.Vector3()).y
+    return { model: instance, materials: [...owned], naturalHeight: measured }
   }, [castShadow, source.scene, texture])
+
+  const scale = heightScaleFor(naturalHeight, height)
 
   const mixer = useMemo(() => new THREE.AnimationMixer(model), [model])
 
@@ -88,7 +98,11 @@ export function KenneyCitizen({
     mixer.update(Math.min(delta, 0.05))
   })
 
-  return <primitive object={model} />
+  return (
+    <group scale={scale}>
+      <primitive object={model} />
+    </group>
+  )
 }
 
 useGLTF.preload(KENNEY_CITIZEN_URL)
