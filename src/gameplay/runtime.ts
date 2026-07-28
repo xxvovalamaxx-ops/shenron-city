@@ -39,6 +39,11 @@ export interface Runtime {
     grounded: boolean
     /** Camera forward, horizontal plane, normalised. */
     forward: { x: number; z: number }
+    /** Laser weapon state. */
+    heat: number
+    firing: boolean
+    overheated: boolean
+    aimPoint: Vec3 | null
   }
   /** What the player is currently looking at within range, if anything. */
   target: Interactable | null
@@ -57,6 +62,8 @@ export interface Runtime {
   }
   /** Boulevard traffic. Length is set from the quality preset. */
   vehicles: Vehicle[]
+  /** Destroyed breakable object IDs. */
+  destroyed: Set<string>
   /** Objects the simulation moves directly, to keep visuals frame-exact. */
   refs: {
     car: Object3D | null
@@ -103,12 +110,17 @@ export const rt: Runtime = {
     velocityY: 0,
     grounded: false,
     forward: { x: 0, z: -1 },
+    heat: 0,
+    firing: false,
+    overheated: false,
+    aimPoint: null,
   },
   target: null,
   interactables: [],
   paused: false,
   keys: { forward: false, back: false, left: false, right: false, sprint: false, jump: false },
   vehicles: [],
+  destroyed: new Set<string>(),
   refs: {
     car: null,
     carDoorLeft: null,

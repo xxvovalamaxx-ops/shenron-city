@@ -732,11 +732,74 @@ button.small {
   color: var(--accent);
 }
 
+/* ── Weapon HUD ──────────────────────────────────────────────────────── */
+
+.crosshair.weapon {
+  width: 12px;
+  height: 12px;
+  margin: -6px 0 0 -6px;
+  border: 1.5px solid rgba(226, 238, 250, 0.4);
+  background: transparent;
+  box-shadow: none;
+  transition: transform 90ms ease, border-color 90ms ease, background 90ms ease;
+}
+
+.crosshair.weapon.firing {
+  background: rgba(45, 212, 191, 0.25);
+  transform: scale(1.15);
+}
+
+.crosshair.weapon.overheat {
+  border-color: var(--bad);
+  background: rgba(239, 68, 68, 0.2);
+  animation: pulse-overheat 0.4s ease infinite;
+}
+
+@keyframes pulse-overheat {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.3); }
+}
+
+.weapon-heat {
+  position: absolute;
+  bottom: 60px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.weapon-heat-bar {
+  width: 180px;
+  height: 4px;
+  border-radius: 2px;
+  background: rgba(120, 150, 190, 0.14);
+  overflow: hidden;
+}
+
+.weapon-heat-fill {
+  height: 100%;
+  border-radius: 2px;
+  transition: width 60ms linear, background-color 120ms ease;
+}
+
+.weapon-heat-label {
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 1.2px;
+  color: var(--dimmer);
+}
+
 @media (prefers-reduced-motion: reduce) {
   .crosshair,
   .bar > i,
   .minimap-player b {
     transition: none;
+  }
+  .crosshair.weapon.overheat {
+    animation: none;
   }
 }
 

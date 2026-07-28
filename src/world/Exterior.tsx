@@ -15,7 +15,7 @@ import {
   TOWER,
 } from './layout'
 import { PALETTE, type QualitySettings } from './palette'
-import { CITY_GROUND } from './city-data'
+import { CITY_GROUND, STREET_LIGHTS } from './city-data'
 import { CityDistrict } from './CityDistrict'
 import { Traffic } from './Traffic'
 import { PlanterTree, type TreeProps } from './PlanterTree'
@@ -162,6 +162,32 @@ function FacadeWindows() {
   )
 }
 
+/**
+ * Real point lights at the existing lamp meshes.
+ *
+ * The lamp heads are already rendered as emissive spheres in CityDistrict, but
+ * emissive alone doesn't illuminate the ground. A warm point light under each
+ * lamp head turns the boulevard from a dark corridor into a lit walkway.
+ */
+function BoulevardLights() {
+  const lampY = 4.5
+
+  return (
+    <group>
+      {STREET_LIGHTS.map((lamp) => (
+        <pointLight
+          key={`${lamp.x}:${lamp.z}`}
+          position={[lamp.x, lampY, lamp.z]}
+          color={PALETTE.warmLight}
+          intensity={180}
+          distance={22}
+          decay={2}
+        />
+      ))}
+    </group>
+  )
+}
+
 export function Exterior({ quality }: { quality: QualitySettings }) {
   const eh = ENTRANCE.halfWidth
   const sideW = LOBBY.halfWidth - eh
@@ -185,6 +211,7 @@ export function Exterior({ quality }: { quality: QualitySettings }) {
       <CityDistrict quality={quality} />
       <StreetProps />
       <Traffic quality={quality} />
+      <BoulevardLights />
 
       {/* Tower mass — the building continues far above the lobby ceiling */}
       <mesh position={[0, TOWER.height / 2, -TOWER.depth / 2]} castShadow={quality.shadows}>

@@ -56,7 +56,7 @@ export function Floor45({
       </mesh>
 
       {/* Corridor light run */}
-      {[-4, -12, -20, -28].map((z) => (
+      {[-4, -12, -20, -28].map((z, i) => (
         <group key={z}>
           <mesh position={[0, Y + C - 0.06, z]}>
             <boxGeometry args={[2.4, 0.04, 0.3]} />
@@ -68,6 +68,11 @@ export function Floor45({
             intensity={340}
             distance={26}
             decay={2}
+            castShadow={quality.shadows && i < 2}
+            shadow-mapSize={[512, 512]}
+            shadow-bias={-0.001}
+            shadow-camera-near={0.5}
+            shadow-camera-far={26}
           />
         </group>
       ))}

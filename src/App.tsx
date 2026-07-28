@@ -29,6 +29,11 @@ import { MARKET_KEEPER, PLAZA_WARDEN } from './world/city-data'
 import { PALETTE, QUALITY } from './world/palette'
 import { Hud } from './ui/Hud'
 import { Dialogue } from './ui/Dialogue'
+import { PlayerBody } from './character/PlayerBody'
+import { LaserBeam } from './weapons/LaserBeam'
+import { DestructionSystem } from './destruction/DestructionSystem'
+import { NightEnvironment } from './world/NightEnvironment'
+import { AtmosphericDust } from './world/AtmosphericDust'
 
 import { OfficePanel } from './ui/OfficePanel'
 import { DEFAULT_SETTINGS, LoadingScreen, PauseMenu, TitleScreen, type Settings } from './ui/Screens'
@@ -221,6 +226,8 @@ function Scene({
           still dissolves into the night horizon. */}
       <fog attach="fog" args={[PALETTE.horizon, 145, 480]} />
 
+      <NightEnvironment />
+
       <RendererBridge maxDpr={quality.maxDpr} shadows={quality.shadows} />
       <Lighting shadows={quality.shadows} shadowMapSize={quality.shadowMapSize} />
 
@@ -232,6 +239,11 @@ function Scene({
       <MarketKeeper />
       <PlazaWarden />
       <AmbientCrowd count={quality.ambientPedestrians} />
+
+      <PlayerBody />
+      <LaserBeam />
+      <DestructionSystem />
+      <AtmosphericDust />
 
       {/* Entrance doors live outside the car group — they do not travel */}
       <DoorPair

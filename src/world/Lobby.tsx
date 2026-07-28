@@ -22,7 +22,7 @@ const DEPTH = Math.abs(BACK)
  * offset on X, so the light does not collapse to a single hot spot down the
  * middle.
  */
-function CoveLight({ z }: { z: number }) {
+function CoveLight({ z, shadows }: { z: number; shadows?: boolean }) {
   return (
     <>
       <mesh position={[0, CEIL - 0.3, z]}>
@@ -37,6 +37,11 @@ function CoveLight({ z }: { z: number }) {
           intensity={430}
           distance={38}
           decay={2}
+          castShadow={shadows}
+          shadow-mapSize={[512, 512]}
+          shadow-bias={-0.001}
+          shadow-camera-near={0.5}
+          shadow-camera-far={38}
         />
       ))}
     </>
@@ -144,7 +149,7 @@ export function Lobby({ quality }: { quality: QualitySettings }) {
         )),
       )}
 
-      <CoveLight z={-4} />
+      <CoveLight z={-4} shadows={quality.shadows} />
       <CoveLight z={-11} />
       <CoveLight z={-18} />
       <CoveLight z={-25} />

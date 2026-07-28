@@ -15,6 +15,9 @@ export interface HudMirror {
   mapHeading: number
   mapTargetX: number | null
   mapTargetZ: number | null
+  weaponHeat: number
+  weaponOverheated: boolean
+  weaponFiring: boolean
 }
 
 /** Keep the throttled React mirror truthful without writing at frame rate. */
@@ -33,6 +36,9 @@ export function hudMirrorChanged(next: HudMirror, current: HudMirror): boolean {
     next.mapPlayerZ !== current.mapPlayerZ ||
     next.mapHeading !== current.mapHeading ||
     next.mapTargetX !== current.mapTargetX ||
-    next.mapTargetZ !== current.mapTargetZ
+    next.mapTargetZ !== current.mapTargetZ ||
+    next.weaponHeat !== current.weaponHeat ||
+    next.weaponOverheated !== current.weaponOverheated ||
+    next.weaponFiring !== current.weaponFiring
   )
 }

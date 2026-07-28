@@ -174,6 +174,42 @@ function Minimap() {
   )
 }
 
+function WeaponHUD() {
+  const heat = useHud((s) => s.weaponHeat)
+  const overheated = useHud((s) => s.weaponOverheated)
+  const firing = useHud((s) => s.weaponFiring)
+  const t = heat / 100
+
+  const barColor = t < 0.4 ? '#2dd4bf' : t < 0.7 ? '#f59e0b' : '#ef4444'
+
+  return (
+    <>
+      {/* Crosshair */}
+      <div
+        className={`crosshair weapon${firing ? ' firing' : ''}${overheated ? ' overheat' : ''}`}
+        style={overheated ? { borderColor: '#ef4444' } : firing ? { borderColor: barColor } : undefined}
+      />
+
+      {/* Heat gauge */}
+      <div className="weapon-heat">
+        <div className="weapon-heat-bar">
+          <div
+            className="weapon-heat-fill"
+            style={{
+              width: `${heat}%`,
+              backgroundColor: barColor,
+              boxShadow: heat > 50 ? `0 0 8px ${barColor}` : undefined,
+            }}
+          />
+        </div>
+        <span className="weapon-heat-label">
+          {overheated ? 'COOLING' : heat > 0 ? `HEAT ${Math.round(heat)}%` : ''}
+        </span>
+      </div>
+    </>
+  )
+}
+
 function PerfOverlay() {
   const show = useHud((s) => s.showPerf)
   const [info, setInfo] = useState({ fps: 0, ms: 0, calls: 0, tris: 0, geos: 0 })
@@ -230,7 +266,7 @@ export function Hud() {
       <CityTour />
       <Minimap />
 
-      <div className={`crosshair${prompt ? ' hot' : ''}`} />
+      <WeaponHUD />
 
       {prompt && (
         <div className="prompt">

@@ -16,6 +16,9 @@ const BASE: HudMirror = {
   mapHeading: 0,
   mapTargetX: 13.85,
   mapTargetZ: 86,
+  weaponHeat: 0,
+  weaponOverheated: false,
+  weaponFiring: false,
 }
 
 describe('HUD mirror updates', () => {
@@ -38,6 +41,9 @@ describe('HUD mirror updates', () => {
     'mapHeading',
     'mapTargetX',
     'mapTargetZ',
+    'weaponHeat',
+    'weaponOverheated',
+    'weaponFiring',
   ])('detects a change to %s', (key) => {
     const next: HudMirror = { ...BASE }
     const replacements: HudMirror = {
@@ -55,6 +61,9 @@ describe('HUD mirror updates', () => {
       mapHeading: 5,
       mapTargetX: 0,
       mapTargetZ: -2,
+      weaponHeat: 50,
+      weaponOverheated: true,
+      weaponFiring: true,
     }
     Object.assign(next, { [key]: replacements[key] })
 

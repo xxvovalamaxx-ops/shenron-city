@@ -41,6 +41,10 @@ export interface HudState {
   openCharacterId: CharacterId
   /** Progress through the first complete playable route. */
   cityTour: CityTourState
+  /** Laser weapon HUD state. */
+  weaponHeat: number
+  weaponOverheated: boolean
+  weaponFiring: boolean
 
   set<K extends keyof HudState>(key: K, value: HudState[K]): void
   setScreen(s: Screen): void
@@ -68,6 +72,9 @@ export const useHud = create<HudState>((set) => ({
   openAgentId: null,
   openCharacterId: 'iris',
   cityTour: INITIAL_CITY_TOUR,
+  weaponHeat: 0,
+  weaponOverheated: false,
+  weaponFiring: false,
 
   set: (key, value) => set({ [key]: value } as Pick<HudState, typeof key>),
   setScreen: (screen) => set({ screen }),

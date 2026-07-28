@@ -7,7 +7,7 @@
  * render order, and the first symptom would be the player sinking through the
  * lift floor on the frame the car moved first.
  */
-import { useEffect, useMemo, useRef } from 'react'
+import { useCallback, useEffect, useMemo, useRef } from 'react'
 import { useFrame, useThree } from '@react-three/fiber'
 import { Matrix4, Object3D, Quaternion, Vector3 } from 'three'
 import { rt } from './runtime'
@@ -35,6 +35,7 @@ import {
 } from '../world/layout'
 import { useHud, inputLocked } from '../ui/hud-store'
 import { AUDIO_ANCHORS, cityAudio } from '../audio'
+import { useLaser } from '../weapons/useLaser'
 
 const WALK_SPEED = 4.3
 const SPRINT_SPEED = 7.1
@@ -102,6 +103,18 @@ export function GameLoop({ interactables, ambientPedestrians, onInteract }: Game
 
   // Last frame's continuous values, so audio can fire on transitions.
   const audioEdges = useRef({ entrance: 0, carDoor: 0, travelling: false })
+
+  // Laser weapon — raycasts against static + breakable colliders.
+  const getBreakableAABBs = useCallback(() => {
+    const getter = (globalThis as unknown as { __breakableAABBs?: () => { min: readonly [number, number, number]; max: readonly [number, number, number] }[] }).__breakableAABBs
+    return getter ? getter() : []
+  }, [])
+
+  const allColliders = useCallback(() => {
+    return [...staticWorld, ...getBreakableAABBs()]
+  }, [staticWorld, getBreakableAABBs])
+
+  const { update: updateLaser } = useLaser(allColliders)
 
   /**
    * Push vehicle poses into the instance buffers.
@@ -314,6 +327,9 @@ export function GameLoop({ interactables, ambientPedestrians, onInteract }: Game
     // ── 8. Camera follows the body ───────────────────────────────────────────
     camera.position.set(p.pos.x, p.pos.y + EYE_HEIGHT, p.pos.z)
 
+    // ── 8b. Laser weapon raycasting + heat ───────────────────────────────────
+    updateLaser(camera, dt)
+
     // ── 9. Interaction targeting ─────────────────────────────────────────────
     camera.getWorldDirection(forwardVec.current)
     const fx = forwardVec.current.x
@@ -398,6 +414,9 @@ export function GameLoop({ interactables, ambientPedestrians, onInteract }: Game
         mapHeading: Math.round(minimapHeading(p.forward) / 5) * 5,
         mapTargetX: tourTarget?.x ?? null,
         mapTargetZ: tourTarget?.z ?? null,
+        weaponHeat: Math.round(p.heat * 10) / 10,
+        weaponOverheated: p.overheated,
+        weaponFiring: p.firing,
       }
 
       // Only write when something actually changed — zustand notifies on every
