@@ -11,6 +11,7 @@ import {
   type KenneyCitizenSkin,
 } from './kenney-citizen'
 import { DEFAULT_CHARACTER_HEIGHT, heightScaleFor } from './character-scale'
+import { dropArms, LEFT_ARM_BONE, RIGHT_ARM_BONE } from './arm-pose'
 
 interface Props {
   motion: KenneyCitizenMotion
@@ -94,8 +95,21 @@ export function KenneyCitizen({
     [materials, mixer, model],
   )
 
+  // Looked up once: a name search per bone per frame across a whole crowd is
+  // not free, and the rig never changes after the clone.
+  const arms = useMemo(
+    () => ({
+      left: model.getObjectByName(LEFT_ARM_BONE) ?? null,
+      right: model.getObjectByName(RIGHT_ARM_BONE) ?? null,
+    }),
+    [model],
+  )
+
   useFrame((_, delta) => {
     mixer.update(Math.min(delta, 0.05))
+    // After the mixer, never before: it overwrites bone rotation wholesale
+    // each frame, which is what keeps this additive rather than accumulating.
+    dropArms(arms.left, arms.right)
   })
 
   return (
