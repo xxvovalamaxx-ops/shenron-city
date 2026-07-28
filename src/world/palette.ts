@@ -83,6 +83,8 @@ export interface QualitySettings {
    * Off on low, where PlanterTree is the final tree rather than a stand-in.
    */
   detailTrees: boolean
+  /** Vehicles circulating the boulevard loop. */
+  vehicles: number
 }
 
 export const QUALITY: Record<QualityPreset, QualitySettings> = {
@@ -95,6 +97,7 @@ export const QUALITY: Record<QualityPreset, QualitySettings> = {
     cityWindows: 400,
     ambientPedestrians: 5,
     detailTrees: false,
+    vehicles: 5,
   },
   medium: {
     shadows: true,
@@ -105,6 +108,7 @@ export const QUALITY: Record<QualityPreset, QualitySettings> = {
     cityWindows: 1200,
     ambientPedestrians: 11,
     detailTrees: true,
+    vehicles: 11,
   },
   high: {
     shadows: true,
@@ -115,5 +119,6 @@ export const QUALITY: Record<QualityPreset, QualitySettings> = {
     cityWindows: 2600,
     ambientPedestrians: 18,
     detailTrees: true,
+    vehicles: 16,
   },
 }

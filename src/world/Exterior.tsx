@@ -10,6 +10,7 @@ import { ENTRANCE, LOBBY, TOWER } from './layout'
 import { PALETTE, type QualitySettings } from './palette'
 import { CITY_GROUND } from './city-data'
 import { CityDistrict } from './CityDistrict'
+import { Traffic } from './Traffic'
 import { PlanterTree, type TreeProps } from './PlanterTree'
 
 /**
@@ -179,6 +180,7 @@ export function Exterior({ quality }: { quality: QualitySettings }) {
       </mesh>
 
       <CityDistrict quality={quality} />
+      <Traffic quality={quality} />
 
       {/* Tower mass — the building continues far above the lobby ceiling */}
       <mesh position={[0, TOWER.height / 2, -TOWER.depth / 2]} castShadow={quality.shadows}>

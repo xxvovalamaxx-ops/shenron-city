@@ -45,6 +45,9 @@ const HUD_INTERVAL = 0.1
 
 const CAR_DOOR_HEIGHT = SHAFT.carHeight - 0.2
 
+/** Openness above which a door counts as "moving", for audio edge detection. */
+const DOOR_EVENT_EPS = 0.02
+
 export interface GameLoopProps {
   interactables: Interactable[]
   onInteract(target: Interactable): void
@@ -84,6 +87,9 @@ export function GameLoop({ interactables, onInteract }: GameLoopProps) {
 
   // Scratch transforms, reused so the frame loop allocates nothing.
   const scratch = useRef({ node: new Object3D(), matrix: new Matrix4(), spin: new Quaternion() })
+
+  // Last frame's continuous values, so audio can fire on transitions.
+  const audioEdges = useRef({ entrance: 0, carDoor: 0, travelling: false })
 
   /**
    * Push vehicle poses into the instance buffers.
@@ -170,6 +176,36 @@ export function GameLoop({ interactables, onInteract }: GameLoopProps) {
 
     const carY = carHeight(rt.elevator)
     const carOpen = doorOpenness(rt.elevator)
+
+    // ── 2b. Audio events, fired on edges rather than on state ────────────────
+    // The doors and the lift expose continuous values, so a level test would
+    // retrigger every frame the door is ajar. Compare against last frame.
+    const audio = audioEdges.current
+    const entranceOpen = rt.entranceDoor.openness
+    if (entranceOpen > DOOR_EVENT_EPS && audio.entrance <= DOOR_EVENT_EPS) {
+      cityAudio.play('doorOpen', AUDIO_ANCHORS.entranceDoor)
+    } else if (entranceOpen <= DOOR_EVENT_EPS && audio.entrance > DOOR_EVENT_EPS) {
+      cityAudio.play('doorClose', AUDIO_ANCHORS.entranceDoor)
+    }
+    audio.entrance = entranceOpen
+
+    if (carOpen > DOOR_EVENT_EPS && audio.carDoor <= DOOR_EVENT_EPS) {
+      cityAudio.play('doorOpen', AUDIO_ANCHORS.elevatorDoor(carY))
+    } else if (carOpen <= DOOR_EVENT_EPS && audio.carDoor > DOOR_EVENT_EPS) {
+      cityAudio.play('doorClose', AUDIO_ANCHORS.elevatorDoor(carY))
+    }
+    audio.carDoor = carOpen
+
+    const travelling = rt.elevator.phase === 'travelling'
+    if (travelling) {
+      // Re-issued while moving so the motor source tracks the rising car; the
+      // engine treats a repeat as a move, not as a restart.
+      cityAudio.play('elevatorStart', AUDIO_ANCHORS.elevatorDoor(carY))
+    } else if (audio.travelling) {
+      cityAudio.play('elevatorStop', AUDIO_ANCHORS.elevatorDoor(carY))
+      cityAudio.play('elevatorArrive', AUDIO_ANCHORS.elevatorDoor(carY))
+    }
+    audio.travelling = travelling
 
     // ── 3. Traffic, before collision so the boxes match the visible cars ─────
     advanceTraffic(rt.vehicles, dt, p.pos)
@@ -295,7 +331,12 @@ export function GameLoop({ interactables, onInteract }: GameLoopProps) {
     if (refs.entranceLeft) refs.entranceLeft.position.x = -entLeaf
     if (refs.entranceRight) refs.entranceRight.position.x = entLeaf
 
-    // ── 11. Perf sampling + throttled HUD mirror ─────────────────────────────
+    // ── 11. Audio listener ───────────────────────────────────────────────────
+    // Must run after the move resolves: footstep cadence is derived from the
+    // position delta, so an earlier call would step to last frame's position.
+    cityAudio.update(p, dt)
+
+    // ── 12. Perf sampling + throttled HUD mirror ─────────────────────────────
     const perf = rt.perf
     perf.frames += 1
     perf.accum += rawDt

@@ -8,9 +8,10 @@
  *
  * A single module-level instance is correct here — there is one game.
  */
-import type { Object3D } from 'three'
+import type { InstancedMesh, Object3D } from 'three'
 import { initialElevator, type ElevatorState } from './elevator'
 import { initialDoor, type DoorState } from './doors'
+import { createTraffic, type Vehicle } from './traffic'
 import type { Interactable } from './interact'
 import type { Vec3 } from './collision'
 import { SPAWN } from '../world/layout'
@@ -45,6 +46,8 @@ export interface Runtime {
   interactables: Interactable[]
   /** True while a modal (dialogue, menu) owns input. */
   paused: boolean
+  /** Boulevard traffic. Length is set from the quality preset. */
+  vehicles: Vehicle[]
   /** Objects the simulation moves directly, to keep visuals frame-exact. */
   refs: {
     car: Object3D | null
@@ -52,6 +55,16 @@ export interface Runtime {
     carDoorRight: Object3D | null
     entranceLeft: Object3D | null
     entranceRight: Object3D | null
+    /**
+     * Traffic instance buffers. Written from the simulation loop rather than
+     * from the component's own useFrame — with both at R3F's default
+     * priority, ordering would otherwise fall out of React's mount order, and
+     * the colliders would trail the visible cars by a frame.
+     */
+    trafficBody: InstancedMesh | null
+    trafficCabin: InstancedMesh | null
+    trafficLamps: InstancedMesh | null
+    trafficSpill: InstancedMesh | null
   }
   /**
    * Rolling perf samples.
@@ -85,12 +98,17 @@ export const rt: Runtime = {
   target: null,
   interactables: [],
   paused: false,
+  vehicles: [],
   refs: {
     car: null,
     carDoorLeft: null,
     carDoorRight: null,
     entranceLeft: null,
     entranceRight: null,
+    trafficBody: null,
+    trafficCabin: null,
+    trafficLamps: null,
+    trafficSpill: null,
   },
   perf: {
     frames: 0,
@@ -107,6 +125,17 @@ export const rt: Runtime = {
 export function resetPlayer(): void {
   rt.player.pos = initialPlayerPosition()
   rt.player.velocityY = 0
+}
+
+/**
+ * Resize the fleet when the quality preset changes.
+ *
+ * Rebuilt rather than trimmed so spacing stays even — a trimmed fleet leaves
+ * a conspicuous empty stretch of road where the removed cars used to be.
+ */
+export function setTrafficCount(count: number): void {
+  if (rt.vehicles.length === count) return
+  rt.vehicles = createTraffic(count)
 }
 
 // Dev-only handle so the world can be driven and inspected from the console

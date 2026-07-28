@@ -69,6 +69,23 @@ export const MARKET_KEEPER = {
   z: 86,
 } as const
 
+/**
+ * Plaza security, stationed short of the entrance canopy.
+ *
+ * Off to the side of the doorway rather than in front of it — a guard standing
+ * on the route would be an obstacle the player has to walk around on the way
+ * to the one door that matters.
+ */
+export const PLAZA_WARDEN = {
+  id: 'kai',
+  name: 'Kai',
+  role: 'Plaza Security',
+  // Clear of the bollard columns at x=±5 and of their rows at z=6/14/22/30 —
+  // standing in line with one puts a post through his name plate.
+  x: -6.9,
+  z: 9.6,
+} as const
+
 export const STOREFRONTS: readonly Storefront[] = [
   {
     id: 'west-arcade',
@@ -234,6 +251,34 @@ export const AMBIENT_ROUTES: readonly AmbientRoute[] = [
  * Solid city objects generated from the same data the renderer consumes.
  * Awning roofs stay non-solid so the player can walk underneath them.
  */
+/**
+ * The traffic loop: north up the east lane, south down the west lane.
+ *
+ * A single closed loop rather than two one-way lanes, so vehicles circulate
+ * forever without needing spawn and despawn logic. The two turning segments sit
+ * at z=30 and z=156 — beyond both ends of the walkable stretch of Dragon
+ * Boulevard (z 34..150), so the player never watches a car make an
+ * unexplained U-turn in the middle of the road.
+ *
+ * Right-hand traffic: +x is east, so northbound belongs on the +x side.
+ */
+export const TRAFFIC_LOOP: readonly RoutePoint[] = [
+  { x: 3.6, z: 30 },
+  { x: 3.6, z: 156 },
+  { x: -3.6, z: 156 },
+  { x: -3.6, z: 30 },
+] as const
+
+/** A saloon, roughly. Used for rendering and for the collider alike. */
+export const VEHICLE = {
+  length: 4.35,
+  width: 1.86,
+  height: 1.44,
+  /** Roof box, as a fraction of the body. */
+  cabinLength: 0.52,
+  cabinHeight: 0.62,
+} as const
+
 export const CITY_OBSTACLES: readonly CityBox[] = [
   ...STOREFRONTS,
   ...MARKET_STALLS.map((stall) => ({
@@ -241,6 +286,7 @@ export const CITY_OBSTACLES: readonly CityBox[] = [
     height: 1.05,
   })),
   { id: 'market-keeper', x: MARKET_KEEPER.x, z: MARKET_KEEPER.z, width: 0.7, depth: 0.7, height: 1.8 },
+  { id: 'plaza-warden', x: PLAZA_WARDEN.x, z: PLAZA_WARDEN.z, width: 0.7, depth: 0.7, height: 1.8 },
 ] as const
 
 function boxContains(box: CityBox, point: RoutePoint, margin = 0): boolean {

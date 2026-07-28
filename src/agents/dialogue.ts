@@ -16,7 +16,7 @@ export interface Reply {
   source: 'grounded' | 'model' | 'fallback'
 }
 
-export type CharacterId = 'iris' | 'mira'
+export type CharacterId = 'iris' | 'mira' | 'kai'
 
 export interface CharacterDialogueProfile {
   name: string
@@ -50,6 +50,18 @@ export const CHARACTER_DIALOGUE: Record<CharacterId, CharacterDialogueProfile> =
       'Is this connected to my computer?',
     ],
     placeholder: 'Ask Mira about the night market…',
+  },
+  kai: {
+    name: 'Kai',
+    role: 'Plaza Security',
+    suggestions: [
+      'What is this building?',
+      'Can I go inside?',
+      'What is on floor 45?',
+      'Who are you keeping out?',
+      'Can anything in here touch my computer?',
+    ],
+    placeholder: 'Ask Kai about the headquarters plaza…',
   },
 }
 
@@ -197,6 +209,73 @@ export function answer(
   }
 }
 
+/**
+ * Plaza security.
+ *
+ * Kai is the one character whose job is the boundary itself, so the questions
+ * about access get a straight answer rather than a deflection: this build has
+ * no path to the machine it runs on, and saying so in the fiction is better
+ * than leaving the player to wonder.
+ */
+function answerKai(question: string): Reply {
+  const intent = classify(question)
+  const grounded = (text: string): Reply => ({ source: 'grounded', text })
+  const normalized = question.toLowerCase()
+
+  // The boundary answer is checked before anything else on purpose. The
+  // access phrasings below are broad, and "can anything in here touch my
+  // computer" contains "in" — the security question must never lose a race to
+  // a keyword match and come back as cheerful directions to the lift.
+  if (intent === 'connection' || intent === 'model' || intent === 'cost') {
+    return grounded(
+      'Not a thing. This build has no route to your filesystem, your shell, or a model provider. I am scripted text in a web page, and so is everyone else here.',
+    )
+  }
+
+  // Deliberately phrase-level, not word-level: bare "in" and "out" appear in
+  // most English sentences and would swallow every other branch.
+  if (/(go inside|come in|get in|let me in|can i enter|\benter\b|\baccess\b|\ballowed\b|\bbadge\b|\bpermission\b)/.test(normalized)) {
+    return grounded(
+      'Go right in. The doors open on approach, reception is Iris, and the lift at the back runs to floor 45. Nothing here is locked to you.',
+    )
+  }
+
+  if (/(keeping out|keep out|\bguard(ing)?\b|\bsecurity\b|\bdanger\b|\bthreat\b|\bpatrol\b)/.test(normalized)) {
+    return grounded(
+      'Nothing dangerous, honestly. I watch the plaza, keep the lane clear of the traffic, and point people at the door. It is a quiet post.',
+    )
+  }
+
+  if (/\b(building|tower|headquarters|hq|floor|45)\b/.test(normalized)) {
+    return grounded(
+      'That is headquarters — the teal-lit tower. Lobby at the bottom, operations on floor 45. The floors between are not built yet, and I will not pretend otherwise.',
+    )
+  }
+
+  switch (intent) {
+    case 'greeting':
+      return grounded(
+        'Evening. Kai, plaza security. Headquarters is straight through the doors behind me — mind the boulevard traffic on your way across.',
+      )
+    case 'overview':
+    case 'navigate':
+      return grounded(
+        'Cross the plaza, the doors open by themselves, then talk to Iris at reception. The lift is at the back of the lobby; floor 45 is the one worth seeing.',
+      )
+    case 'agents':
+    case 'tasks':
+      return grounded(
+        'The residents work upstairs on 45. Out here it is me, Mira down at the market, and people walking scripted routes.',
+      )
+    // 'connection', 'model' and 'cost' returned above, before the keyword
+    // guards, so the boundary answer cannot lose a race to a phrase match.
+    default:
+      return grounded(
+        'I mostly know this plaza. Ask me about getting inside, what is upstairs, or whether any of this touches your computer.',
+      )
+  }
+}
+
 function answerMira(question: string): Reply {
   const intent = classify(question)
   const grounded = (text: string): Reply => ({ source: 'grounded', text })
@@ -260,5 +339,7 @@ export function answerCharacter(
   question: string,
   snapshot: WorldSnapshot | null,
 ): Reply {
-  return characterId === 'mira' ? answerMira(question) : answer(question, snapshot)
+  if (characterId === 'mira') return answerMira(question)
+  if (characterId === 'kai') return answerKai(question)
+  return answer(question, snapshot)
 }

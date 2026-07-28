@@ -22,14 +22,46 @@ import { DoorPair } from './world/Doors'
 import { Secretary, SECRETARY_NAME } from './agents/Secretary'
 import { AmbientCrowd } from './agents/AmbientCrowd'
 import { MarketKeeper } from './agents/MarketKeeper'
+import { PlazaWarden } from './agents/PlazaWarden'
 import type { CharacterId } from './agents/dialogue'
 import { ENTRANCE, HQ, OFFICE_SLOTS, PANEL, SECRETARY as SEC_POS, SPAWN } from './world/layout'
-import { MARKET_KEEPER } from './world/city-data'
+import { MARKET_KEEPER, PLAZA_WARDEN } from './world/city-data'
 import { PALETTE, QUALITY } from './world/palette'
 import { Hud } from './ui/Hud'
 import { Dialogue } from './ui/Dialogue'
 import { OfficePanel } from './ui/OfficePanel'
 import { DEFAULT_SETTINGS, LoadingScreen, PauseMenu, TitleScreen, type Settings } from './ui/Screens'
+import { floorAtPosition, loadGame, saveGame, type SaveData } from './gameplay/save'
+import { initialElevator } from './gameplay/elevator'
+import { cityAudio } from './audio'
+
+/** Slow enough to be free, often enough that a crash costs little progress. */
+const SAVE_INTERVAL_MS = 5000
+
+/**
+ * Bridge between the save file and live state.
+ *
+ * Lives here rather than in gameplay/save.ts because it needs the HUD store,
+ * and gameplay/ deliberately depends on nothing from the UI layer.
+ */
+function currentSaveData(settings: Settings): SaveData {
+  return {
+    pos: { ...rt.player.pos },
+    forward: { ...rt.player.forward },
+    tour: useHud.getState().cityTour,
+    settings: { quality: settings.quality, sensitivity: settings.sensitivity, fov: settings.fov },
+  }
+}
+
+function applySave(data: SaveData): void {
+  rt.player.pos = { ...data.pos }
+  rt.player.forward = { ...data.forward }
+  rt.player.velocityY = 0
+  // Derived, never stored: a persisted floor could contradict the position and
+  // drop the player down the shaft.
+  rt.elevator = initialElevator(floorAtPosition(data.pos))
+  useHud.setState({ cityTour: data.tour })
+}
 
 const PostProcessing = lazy(() => import('./world/PostProcessing'))
 
@@ -152,6 +184,16 @@ function Scene({
         range: 3.4,
         payload: MARKET_KEEPER.id,
       },
+      {
+        id: 'city-character-kai',
+        kind: 'city-character',
+        x: PLAZA_WARDEN.x,
+        y: 1.45,
+        z: PLAZA_WARDEN.z,
+        label: `Talk to ${PLAZA_WARDEN.name}`,
+        range: 3.4,
+        payload: PLAZA_WARDEN.id,
+      },
     ]
 
     for (const slot of OFFICE_SLOTS) {
@@ -188,6 +230,7 @@ function Scene({
       <Floor45 agents={agents} quality={quality} source={snapshot?.source ?? 'standalone'} />
       <Secretary link={link} />
       <MarketKeeper />
+      <PlazaWarden />
       <AmbientCrowd count={quality.ambientPedestrians} />
 
       {/* Entrance doors live outside the car group — they do not travel */}
@@ -257,7 +300,16 @@ export default function App() {
   const start = useGame((s) => s.start)
   const dispose = useGame((s) => s.dispose)
 
-  const [settings, setSettings] = useState<Settings>(DEFAULT_SETTINGS)
+  // Read the save once, before first paint, so the world is never built at the
+  // spawn and then visibly snapped to the restored position a frame later.
+  const restored = useRef(loadGame()).current
+
+  const [settings, setSettings] = useState<Settings>(() => ({
+    ...restored.data.settings,
+    // A ?quality= in the URL is an explicit instruction for this run and
+    // outranks whatever the last session happened to be playing at.
+    quality: DEFAULT_SETTINGS.quality,
+  }))
   const [ready, setReady] = useState(false)
   const [progress, setProgress] = useState(0)
   const controls = useRef<{ lock(): void; unlock(): void } | null>(null)
@@ -266,6 +318,29 @@ export default function App() {
     start()
     return () => dispose()
   }, [start, dispose])
+
+  // Apply the restored world state once. The elevator floor is derived from
+  // the position rather than stored, so the two can never contradict.
+  useEffect(() => {
+    applySave(restored.data)
+    if (restored.fault) {
+      console.warn(`[save] ${restored.fault} — starting a fresh run`)
+    } else if (restored.repaired.length > 0) {
+      console.warn(`[save] repaired: ${restored.repaired.join(', ')}`)
+    }
+  }, [restored])
+
+  // Persist on a slow timer and on the way out. One small JSON.stringify.
+  useEffect(() => {
+    const snapshot = () => saveGame(currentSaveData(settings))
+    const id = setInterval(snapshot, SAVE_INTERVAL_MS)
+    window.addEventListener('pagehide', snapshot)
+    return () => {
+      clearInterval(id)
+      window.removeEventListener('pagehide', snapshot)
+      snapshot()
+    }
+  }, [settings])
 
 
   // Fake a little progress so the loading card is not a frozen empty bar on a
@@ -282,9 +357,10 @@ export default function App() {
 
   const enterWorld = useCallback(() => {
     setScreen('playing')
-    // The browser only grants pointer lock from a user gesture; this call is
-    // still inside the click handler's task, so it is allowed.
+    // Both of these need the user gesture we are currently inside: browsers
+    // refuse pointer lock without one, and refuse to start an AudioContext.
     controls.current?.lock()
+    void cityAudio.start()
   }, [setScreen])
 
   const onInteract = useCallback(
@@ -296,13 +372,17 @@ export default function App() {
           useHud.getState().advanceCityTour('TALK_IRIS')
           setScreen('dialogue')
           break
-        case 'city-character':
-          if (target.payload !== 'mira') break
+        case 'city-character': {
+          // Only characters with a dialogue profile are talkable.
+          const who = target.payload
+          if (who !== 'mira' && who !== 'kai') break
           controls.current?.unlock()
-          useHud.setState({ openCharacterId: target.payload as CharacterId })
-          useHud.getState().advanceCityTour('TALK_MIRA')
+          useHud.setState({ openCharacterId: who as CharacterId })
+          // Kai is optional colour on the route; only Mira advances the tour.
+          if (who === 'mira') useHud.getState().advanceCityTour('TALK_MIRA')
           setScreen('dialogue')
           break
+        }
         case 'elevator-panel': {
           // Pressing the panel calls the floor you are not on. The machine
           // itself decides whether that is legal right now.
