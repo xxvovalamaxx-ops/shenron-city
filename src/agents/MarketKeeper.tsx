@@ -1,5 +1,6 @@
 import { MARKET_KEEPER } from '../world/city-data'
 import { WorldText as Text } from '../ui/WorldText'
+import { InteractionFocusMarker } from './InteractionFocusMarker'
 import { KenneyCitizen } from './KenneyCitizen'
 
 export function MarketKeeper() {
@@ -18,10 +19,7 @@ export function MarketKeeper() {
         </mesh>
       </group>
 
-      <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0.025, 0]}>
-        <ringGeometry args={[0.32, 0.46, 24]} />
-        <meshBasicMaterial color="#f59e0b" transparent opacity={0.4} toneMapped={false} />
-      </mesh>
+      <InteractionFocusMarker kind="city-character" payload="mira" color="#f59e0b" />
       <Text
         position={[-0.02, 2.08, 0]}
         rotation={[0, 0, 0]}

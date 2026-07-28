@@ -6,6 +6,7 @@
 import { PLAZA_WARDEN } from '../world/city-data'
 import { WorldText as Text } from '../ui/WorldText'
 import { useHud } from '../ui/hud-store'
+import { InteractionFocusMarker } from './InteractionFocusMarker'
 import { QuaterniusHero } from './QuaterniusHero'
 
 export function PlazaWarden() {
@@ -38,10 +39,7 @@ export function PlazaWarden() {
         </mesh>
       </group>
 
-      <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0.025, 0]}>
-        <ringGeometry args={[0.32, 0.46, 24]} />
-        <meshBasicMaterial color="#2dd4bf" transparent opacity={0.38} toneMapped={false} />
-      </mesh>
+      <InteractionFocusMarker kind="city-character" payload="kai" color="#2dd4bf" />
       <Text position={[0, 2.08, 0.02]} fontSize={0.22} color="#7dd3c8">
         KAI
       </Text>

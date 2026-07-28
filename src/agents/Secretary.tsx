@@ -9,6 +9,7 @@ import { useHud } from '../ui/hud-store'
 import { WorldText as Text } from '../ui/WorldText'
 import { SECRETARY } from '../world/layout'
 import { PALETTE } from '../world/palette'
+import { InteractionFocusMarker } from './InteractionFocusMarker'
 import { KenneyCitizen } from './KenneyCitizen'
 
 export const SECRETARY_NAME = 'Iris'
@@ -60,10 +61,7 @@ export function Secretary() {
         penumbra={0.72}
         decay={2}
       />
-      <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0.025, 0]}>
-        <ringGeometry args={[0.34, 0.5, 32]} />
-        <meshBasicMaterial color={PALETTE.accent} transparent opacity={0.16} toneMapped={false} />
-      </mesh>
+      <InteractionFocusMarker kind="secretary" color={PALETTE.accent} />
 
       <group position={[0, 1.2, 1.55]}>
         <Text fontSize={0.14} color="#dbe9ef" anchorX="center" anchorY="middle">

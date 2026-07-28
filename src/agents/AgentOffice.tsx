@@ -10,6 +10,7 @@ import { WorldText as Text } from '../ui/WorldText'
 import { OFFICE, type OfficeSlot } from '../world/layout'
 import { PALETTE, STATE_COLOR, STATE_LABEL } from '../world/palette'
 import { ServiceAndroid } from './ServiceAndroid'
+import { InteractionFocusMarker } from './InteractionFocusMarker'
 import { motionForAgentState, styleForAgentName } from './service-android'
 
 interface Props {
@@ -91,10 +92,6 @@ function Presence({ agent }: { agent: Agent }) {
         expression={agent.state === 'failed' ? 'concerned' : agent.state === 'blocked' ? 'alert' : 'neutral'}
       />
       <RoleHardware agent={agent} color={color} />
-      <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0.03, 0]}>
-        <ringGeometry args={[0.48, 0.58, 28]} />
-        <meshBasicMaterial color={color} transparent opacity={0.16} toneMapped={false} />
-      </mesh>
       <pointLight position={[0, 1.6, 0.45]} color={color} intensity={9} distance={5} decay={2} />
     </group>
   )
@@ -211,7 +208,17 @@ export function AgentOffice({ slot, agent, y }: Props) {
         </Text>
       </group>
 
-      {agent && <Presence agent={agent} />}
+      {agent && (
+        <>
+          <Presence agent={agent} />
+          <InteractionFocusMarker
+            kind="agent-office"
+            payload={agent.id}
+            color={color}
+            radius={0.29}
+          />
+        </>
+      )}
 
       {/* Ceiling light — vacant offices stay dark, which is the honest signal */}
       {agent && (
