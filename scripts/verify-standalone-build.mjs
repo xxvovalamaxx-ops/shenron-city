@@ -38,7 +38,6 @@ const bannedEverywhere = [
  * reviewable file: no component, no world geometry, and above all no NPC
  * dialogue path can perform I/O. Widening this list is a security decision.
  */
-const NETWORK_ALLOWED = ['src/adapter/client.ts']
 const networkPatterns = [
   [/\bfetch\s*\(/, 'fetch'],
   [/\bnew\s+WebSocket\b/, 'WebSocket'],
@@ -52,10 +51,8 @@ for (const path of sourceFiles) {
   for (const [pattern, label] of bannedEverywhere) {
     if (pattern.test(text)) findings.push(`${rel}: ${label}`)
   }
-  if (!NETWORK_ALLOWED.includes(rel)) {
-    for (const [pattern, label] of networkPatterns) {
-      if (pattern.test(text)) findings.push(`${rel}: ${label} outside the adapter`)
-    }
+  for (const [pattern, label] of networkPatterns) {
+    if (pattern.test(text)) findings.push(`${rel}: ${label}`)
   }
 }
 
@@ -73,11 +70,6 @@ for (const path of sourceFiles) {
 }
 
 const viteConfig = readFileSync(join(root, 'vite.config.ts'), 'utf8')
-// The proxy must stay same-origin and must never be a wildcard: the game's
-// requests are relative, so a proxy pointed anywhere else redirects them all.
-if (/proxy/.test(viteConfig) && !/'\/api'/.test(viteConfig)) {
-  findings.push('vite.config.ts: proxy must be scoped to /api and /ws')
-}
 if (!/\bhmr:\s*false\b/.test(viteConfig)) findings.push('vite.config.ts: HMR must remain disabled')
 
 const launcher = readFileSync(join(root, 'start.bat'), 'utf8')

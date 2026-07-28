@@ -51,7 +51,7 @@ function currentSaveData(settings: Settings): SaveData {
     pos: { ...rt.player.pos },
     forward: { ...rt.player.forward },
     tour: useHud.getState().cityTour,
-    settings: { quality: settings.quality, sensitivity: settings.sensitivity, fov: settings.fov },
+    settings: { quality: settings.quality, sensitivity: settings.sensitivity, fov: settings.fov, volume: settings.volume },
   }
 }
 
@@ -148,7 +148,6 @@ function Scene({
   onInteract(t: Interactable): void
 }) {
   const snapshot = useGame((s) => s.snapshot)
-  const link = useGame((s) => s.link)
   const quality = QUALITY[settings.quality]
   const agents = snapshot?.agents ?? []
 
@@ -230,7 +229,7 @@ function Scene({
       <Lobby quality={quality} />
       <Elevator />
       <Floor45 agents={agents} quality={quality} source={snapshot?.source ?? 'standalone'} />
-      <Secretary link={link} />
+      <Secretary />
       <MarketKeeper />
       <PlazaWarden />
       <YukaCrowd />
@@ -320,6 +319,16 @@ export default function App() {
     start()
     return () => dispose()
   }, [start, dispose])
+
+  // Apply volume changes to the audio engine.
+  useEffect(() => {
+    cityAudio.setMasterVolume(settings.volume)
+  }, [settings.volume])
+
+  // Apply volume changes to the audio engine.
+  useEffect(() => {
+    cityAudio.setMasterVolume(settings.volume)
+  }, [settings.volume])
 
   // Apply the restored world state once. The elevator floor is derived from
   // the position rather than stored, so the two can never contradict.

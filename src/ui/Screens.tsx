@@ -10,6 +10,7 @@ export interface Settings {
   quality: QualityPreset
   sensitivity: number
   fov: number
+  volume: number
 }
 
 /**
@@ -26,6 +27,7 @@ export const DEFAULT_SETTINGS: Settings = {
   quality: initialQuality(),
   sensitivity: 1,
   fov: 72,
+  volume: 0.7,
 }
 
 const CONTROLS: [string, string][] = [
@@ -143,6 +145,18 @@ export function PauseMenu({
             step={1}
             value={settings.fov}
             onChange={(e) => onChange({ ...settings, fov: Number(e.target.value) })}
+          />
+        </div>
+
+        <div className="setting">
+          <span>Volume</span>
+          <input
+            type="range"
+            min={0}
+            max={1}
+            step={0.05}
+            value={settings.volume}
+            onChange={(e) => onChange({ ...settings, volume: Number(e.target.value) })}
           />
         </div>
 

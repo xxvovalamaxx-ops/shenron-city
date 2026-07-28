@@ -39,6 +39,7 @@ export interface SavedSettings {
   quality: QualityPreset
   sensitivity: number
   fov: number
+  volume: number
 }
 
 export interface SaveData {
@@ -88,7 +89,7 @@ export const SAVE_VERSION = 1
 /** Version lives in the payload, not the key, or migration could never find it. */
 export const SAVE_KEY = 'shenron-city:save'
 
-const FALLBACK_SETTINGS: SavedSettings = { quality: 'high', sensitivity: 1, fov: 72 }
+const FALLBACK_SETTINGS: SavedSettings = { quality: 'high', sensitivity: 1, fov: 72, volume: 0.7 }
 
 /** Spawn faces -Z, matching `rt.player.forward` in runtime.ts. */
 const FALLBACK_FORWARD = { x: 0, z: -1 } as const
@@ -209,11 +210,13 @@ const StoredSettings = z.object({
   quality: z.string().catch(''),
   sensitivity: z.number().catch(Number.NaN),
   fov: z.number().catch(Number.NaN),
+  volume: z.number().catch(Number.NaN),
 })
 
 /** Slider bounds from ui/Screens.tsx. Anything outside did not come from the menu. */
 const SENSITIVITY_RANGE = { min: 0.3, max: 2.5 } as const
 const FOV_RANGE = { min: 60, max: 100 } as const
+const VOLUME_RANGE = { min: 0, max: 1 } as const
 
 const QUALITY_PRESETS: readonly string[] = ['low', 'medium', 'high']
 
@@ -278,6 +281,7 @@ export function encodeSave(data: SaveData): string {
       quality: data.settings.quality,
       sensitivity: data.settings.sensitivity,
       fov: data.settings.fov,
+      volume: data.settings.volume,
     },
   })
 }
@@ -370,6 +374,9 @@ function readSettings(input: unknown, repaired: string[]): SavedSettings {
 
   if (inRange(stored.fov, FOV_RANGE)) settings.fov = stored.fov
   else repaired.push('settings.fov')
+
+  if (inRange(stored.volume, VOLUME_RANGE)) settings.volume = stored.volume
+  else repaired.push('settings.volume')
 
   return settings
 }

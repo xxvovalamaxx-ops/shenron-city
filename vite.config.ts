@@ -21,11 +21,7 @@ import react from '@vitejs/plugin-react'
  * ever hold a credential — the backend owns those.
  */
 export default defineConfig(({ mode }) => {
-  // '.' rather than process.cwd() — vite resolves it against the config's own
-  // directory, and it keeps @types/node out of the dependency list.
   const env = loadEnv(mode, '.', '')
-  const api = env.MISSION_CONTROL_URL || 'http://127.0.0.1:9120'
-  const ws = api.replace(/^http/, 'ws')
 
   return {
     plugins: [react()],
@@ -39,10 +35,6 @@ export default defineConfig(({ mode }) => {
       watch: {
         usePolling: true,
         interval: 1000,
-      },
-      proxy: {
-        '/api': { target: api, changeOrigin: true },
-        '/ws': { target: ws, ws: true },
       },
     },
     build: {
