@@ -19,6 +19,7 @@
 - [x] One polished exterior district
 - [x] One hero boulevard
 - [x] One market lane
+- [x] Four distinct market inventories (ramen, tea, flowers, books) with practical lanterns
 - [x] One green space
 - [x] Headquarters exterior
 - [x] Headquarters lobby

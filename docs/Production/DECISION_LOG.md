@@ -15,6 +15,11 @@
 **Rationale**: Distinct silhouettes, opposing arm/leg gait, role clothing, and full-height collision improve the recorded vertical slice without adding downloads or breaking the standalone boundary
 **Trade-off**: The cast is intentionally stylized until a reviewed, licensed skinned-character pipeline is ready
 
+## 2026-07-28: Night Market identity
+**Decision**: Give each existing stall a validated, distinct procedural inventory rather than adding more stalls or downloading prop packs
+**Rationale**: Ramen bowls, tea tins, flower pots, book stacks, cloth valances, and lantern practicals make the recorded route legible as a market while preserving the standalone boundary and collision footprint
+**Trade-off**: The stalls remain non-enterable set pieces; full interiors stay deferred
+
 ## 2026-07-28: Night exposure
 **Decision**: Calibrate one subdued ACES night pipeline with a reduced HDR contribution and restrained bloom
 **Rationale**: The previous HDR, practicals, and postprocessing stacked into clipped white facades and floors; the new balance preserves material color in the market, lobby, and Floor 45
