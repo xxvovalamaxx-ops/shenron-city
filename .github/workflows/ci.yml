@@ -39,6 +39,8 @@ jobs:
           "
       - name: Type check
         run: npm run typecheck
+      - name: Lint
+        run: npm run lint
       # The simulation — lift, doors, collision, shaft interlocks, contract
       # validation — is pure and renderer-free, so it runs in CI without a GPU.
       # These are the regressions that actually hurt: a player tunnelling

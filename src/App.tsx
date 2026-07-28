@@ -155,7 +155,7 @@ function Scene({
 }) {
   const snapshot = useGame((s) => s.snapshot)
   const quality = QUALITY[settings.quality]
-  const agents = snapshot?.agents ?? []
+  const agents = useMemo(() => snapshot?.agents ?? [], [snapshot?.agents])
 
   // Interaction points. Rebuilt only when the agent roster changes — this is
   // not per-frame data.

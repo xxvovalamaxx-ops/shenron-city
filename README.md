@@ -71,9 +71,7 @@ activities come from `src/adapter/fixtures.ts`.
 Verify the boundary:
 
 ```bash
-npm test
-npm run build
-npm run verify:standalone
+npm run check
 ```
 
 ## Stack
@@ -86,7 +84,7 @@ npm run verify:standalone
 | **Crowd** | Deterministic authored routes shared by rendering and collision |
 | **Procedural** | `@dgreenheck/ez-tree` (trees with real bark/leaf textures) |
 | **Architecture** | `zustand` (state), `zod` (schemas) |
-| **Tooling** | `vite`, `typescript`, `vitest` |
+| **Tooling** | `vite`, `typescript`, `eslint`, `vitest` |
 
 See [`docs/STACK_DECISIONS.md`](docs/STACK_DECISIONS.md) for why each package was adopted.
 
@@ -115,11 +113,7 @@ in one commit. Before requesting review, run:
 
 ```bash
 npm ci
-npm run typecheck
-npm test
-npm run build
-npm run verify:standalone
-npm audit --audit-level=high
+npm run check
 ```
 
 See [CONTRIBUTING.md](CONTRIBUTING.md) for branch, conflict, review, and

@@ -92,7 +92,7 @@ export function PlayerBody() {
 
     if (hSpeed > 0.05) {
       const targetAngle = Math.atan2(dx, dz)
-      let currentAngle = group.rotation.y
+      const currentAngle = group.rotation.y
       let diff = targetAngle - currentAngle
       while (diff > Math.PI) diff -= Math.PI * 2
       while (diff < -Math.PI) diff += Math.PI * 2

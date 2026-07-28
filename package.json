@@ -10,11 +10,12 @@
   "description": "Shenron City — a standalone walkable 3D headquarters prototype",
   "scripts": {
     "dev": "vite",
+    "lint": "eslint . --max-warnings=0",
     "typecheck": "tsc --noEmit",
     "build": "tsc --noEmit && vite build",
     "verify:standalone": "node scripts/verify-standalone-build.mjs",
     "verify:assets": "node scripts/verify-capybara-asset.mjs && node scripts/verify-service-android-asset.mjs && node scripts/verify-kenney-citizen-asset.mjs && node scripts/verify-quaternius-hero-asset.mjs && node scripts/verify-city-assets.mjs",
-    "check": "npm run typecheck && npm test && npm run verify:assets && npm run build && npm run verify:standalone && npm audit --audit-level=high",
+    "check": "npm run lint && npm run typecheck && npm test && npm run verify:assets && npm run build && npm run verify:standalone && npm audit --audit-level=high",
     "preview": "vite preview",
     "test": "vitest run",
     "test:watch": "vitest"
@@ -31,11 +32,16 @@
     "zustand": "^5.0.14"
   },
   "devDependencies": {
+    "@eslint/js": "^10.0.1",
     "@types/react": "^19.2.17",
     "@types/react-dom": "^19.2.3",
     "@types/three": "^0.185.1",
     "@vitejs/plugin-react": "^6.0.4",
+    "eslint": "^10.8.0",
+    "eslint-plugin-react-hooks": "^7.1.1",
+    "globals": "^17.8.0",
     "typescript": "~5.9.3",
+    "typescript-eslint": "^8.65.0",
     "vite": "^8.1.5",
     "vitest": "^4.1.10"
   },
