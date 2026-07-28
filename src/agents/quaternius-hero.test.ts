@@ -15,7 +15,7 @@ describe('Quaternius hero asset contract', () => {
 
   it('uses the pinned local browser asset', () => {
     expect(QUATERNIUS_HERO_URL).toBe(
-      '/models/characters/quaternius-hero/quaternius-hero.glb?v=90d5de9a',
+      '/models/characters/quaternius-hero/quaternius-hero.glb?v=b542c36d',
     )
   })
 })

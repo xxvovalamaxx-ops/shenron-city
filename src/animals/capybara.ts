@@ -1,6 +1,6 @@
 import { aabb, type AABB } from '../gameplay/collision'
 
-export const CAPYBARA_MODEL_URL = '/models/animals/capybara/capybara.glb'
+export const CAPYBARA_MODEL_URL = '/models/animals/capybara/capybara.glb?v=67d2e94e'
 
 export const CAPYBARA_ROUTE = [
   { x: -17.6, z: 49.2 },

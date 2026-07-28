@@ -5,7 +5,21 @@ import { fileURLToPath } from 'node:url'
 
 const root = dirname(dirname(fileURLToPath(import.meta.url)))
 const runtimePath = 'public/models/characters/quaternius-hero/quaternius-hero.glb'
-const expectedHash = '90d5de9a91bbad659fa5a771baa505a82702e39f5db536a60496216bf49562ae'
+const expectedFiles = {
+  [runtimePath]: 'b542c36df94d4fefd38385f99d2e9b0be68bc51a29fe3c22e3b9d9e2f752ab15',
+  'public/models/characters/quaternius-hero/textures/t_ranger_basecolor.jpg':
+    'a3fc28f1ffec6adf4dd50efa61eb30f16829a7cad5f7de80cf1cf3ba2c155967',
+  'public/models/characters/quaternius-hero/textures/t_ranger_normal.jpg':
+    'bfb8f4f96dde0cce70bcd3aa64c19ab6dc4d6722ba32ee376809c93fbd180fd1',
+  'public/models/characters/quaternius-hero/textures/t_ranger_orm.jpg':
+    '465cf673e5c4a79cf96722f45c601169f5300a82648066d8aa5f8df4acf44130',
+  'public/models/characters/quaternius-hero/textures/t_regular_male_dark_basecolor.jpg':
+    'b10de2ce5f7aefe49bf510fb6fabd034b0b73806b27449ead52ab14595325c6f',
+  'public/models/characters/quaternius-hero/textures/t_regular_male_normal.jpg':
+    '3a524d2c3e1ee38b6523c4790fa79aeb9dbd0b621b6b624e9e5edb6ae8915c2e',
+  'public/models/characters/quaternius-hero/textures/t_regular_male_roughness.jpg':
+    '131d11467fc505a44a31eb2a4c5e98a0293bb3b55d96cc29b8baf8cc01609f53',
+}
 const expectedClips = [
   'Chest_Open',
   'Consume',
@@ -44,6 +58,7 @@ const requiredRecords = [
   'SourceAssets/Animations/Reviewed/QuaterniusUniversal/README.md',
   'SourceAssets/Catalogs/QUATERNIUS_ANIMATION_CATALOG.csv',
   'scripts/convert-quaternius-hero.py',
+  'scripts/externalize-glb-images.mjs',
 ]
 const findings = []
 const componentTypes = {
@@ -69,9 +84,16 @@ for (const relativePath of requiredRecords) {
 }
 
 const file = readFileSync(join(root, runtimePath))
-const actualHash = createHash('sha256').update(file).digest('hex')
-if (actualHash !== expectedHash) findings.push(`SHA-256 changed: ${actualHash}`)
-if (file.length > 4.5 * 1024 * 1024) {
+for (const [relativePath, expectedHash] of Object.entries(expectedFiles)) {
+  const absolutePath = join(root, relativePath)
+  if (!existsSync(absolutePath)) {
+    findings.push(`missing pinned runtime file: ${relativePath}`)
+    continue
+  }
+  const actualHash = createHash('sha256').update(readFileSync(absolutePath)).digest('hex')
+  if (actualHash !== expectedHash) findings.push(`${relativePath}: SHA-256 changed to ${actualHash}`)
+}
+if (file.length > 4 * 1024 * 1024) {
   findings.push(`runtime GLB is ${(file.length / 1024 / 1024).toFixed(2)} MB`)
 }
 if (file.toString('ascii', 0, 4) !== 'glTF') findings.push('invalid GLB magic')
@@ -156,9 +178,21 @@ if (!json || !binary) {
       findings.push('runtime primitive must not require a remote Draco decoder')
     }
   }
+  const expectedImageUris = new Set(
+    Object.keys(expectedFiles)
+      .filter((relativePath) => relativePath.endsWith('.jpg'))
+      .map((relativePath) => relativePath.split('quaternius-hero/')[1]),
+  )
   for (const image of json.images ?? []) {
-    if (image.uri && !image.uri.startsWith('data:')) findings.push(`external image URI: ${image.uri}`)
-    if (image.mimeType !== 'image/jpeg') findings.push(`unexpected embedded image type: ${image.mimeType}`)
+    if (!expectedImageUris.delete(image.uri)) {
+      findings.push(`unexpected image URI: ${image.uri ?? 'embedded image'}`)
+    }
+    if (image.bufferView !== undefined || image.mimeType !== undefined) {
+      findings.push(`${image.name ?? 'image'} must use a direct same-origin JPEG`)
+    }
+  }
+  if (expectedImageUris.size > 0) {
+    findings.push(`GLB is missing texture URIs: ${[...expectedImageUris].join(', ')}`)
   }
   for (const buffer of json.buffers ?? []) {
     if (buffer.uri && !buffer.uri.startsWith('data:')) findings.push(`external buffer URI: ${buffer.uri}`)
@@ -177,5 +211,5 @@ if (findings.length > 0) {
 
 console.log(
   `Quaternius hero verified: ${(file.length / 1024 / 1024).toFixed(2)} MB, ` +
-    `${json.animations.length} moving clips, 65 bones, ten skinned primitives, CC0 records present.`,
+    `${json.animations.length} moving clips, 65 bones, six pinned textures, CC0 records present.`,
 )

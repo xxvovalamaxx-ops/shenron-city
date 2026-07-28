@@ -80,5 +80,7 @@ The reconstruction runtime is intentionally not vendored. Reproducing the raw
 mesh requires the pinned TripoSR commit and checkpoint. Rebuilding from the
 committed raw mesh requires Blender 5.1 and the repository script. The editable
 `capybara_rigged.blend` and source OBJ are tracked with Git LFS; the runtime
-GLB remains normal Git content so a fresh web checkout can build without an
-asset conversion step.
+GLB and three compact same-origin PBR textures remain normal Git content so a
+fresh web checkout can build without an asset conversion step. After a Blender
+re-export, run `node scripts/externalize-glb-images.mjs
+public/models/animals/capybara/capybara.glb` before the asset verifier.

@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest'
 import {
   CAPYBARA_CYCLE_SECONDS,
   CAPYBARA_EXPECTED_CLIPS,
+  CAPYBARA_MODEL_URL,
   CAPYBARA_ROUTE,
   capybaraCollider,
   capybaraPose,
@@ -9,6 +10,10 @@ import {
 import { hqColliders, staticColliders } from '../world/layout'
 
 describe('capybara route contract', () => {
+  it('cache-busts the pinned browser-safe runtime asset', () => {
+    expect(CAPYBARA_MODEL_URL).toBe('/models/animals/capybara/capybara.glb?v=67d2e94e')
+  })
+
   it('loops without a position or heading discontinuity', () => {
     const beforeWrap = capybaraPose(CAPYBARA_CYCLE_SECONDS - 0.001)
     const afterWrap = capybaraPose(CAPYBARA_CYCLE_SECONDS + 0.001)

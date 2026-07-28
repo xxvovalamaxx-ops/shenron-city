@@ -19,7 +19,7 @@ describe('Kenney citizen asset contract', () => {
 
   it('loads the reviewed local GLB instead of a remote model', () => {
     expect(KENNEY_CITIZEN_URL).toBe(
-      '/models/characters/kenney-citizen/kenney-citizen.glb',
+      '/models/characters/kenney-citizen/kenney-citizen.glb?v=fd4140f7',
     )
   })
 })

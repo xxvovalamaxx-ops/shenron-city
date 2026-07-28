@@ -6,7 +6,9 @@ import { fileURLToPath } from 'node:url'
 const root = dirname(dirname(fileURLToPath(import.meta.url)))
 const runtimePath = 'public/models/characters/kenney-citizen/kenney-citizen.glb'
 const expectedFiles = {
-  [runtimePath]: '539b309ecb5ca11b0db5436069b88e0783f9438315dfdd18af9b4b57d0590a38',
+  [runtimePath]: 'fd4140f779612aa48235dcafe07de320b22cf2decb6ffd43642142fc888dfe70',
+  'public/models/characters/kenney-citizen/textures/skaterfemalea.png':
+    'de575f5075a8991907a4807fea3ef291b8e57778c6c4f4ada990abe7582026df',
   'public/models/characters/kenney-citizen/skins/criminal-male.png':
     'e2f66e682c95253fbb45206ab44bdb4fe61b03af3481abbd0e4344a6958a0530',
   'public/models/characters/kenney-citizen/skins/cyborg-female.png':
@@ -25,6 +27,7 @@ const requiredRecords = [
   'SourceAssets/Models/Characters/KenneyAnimatedCharacters/LICENSE-protagonists.txt',
   'SourceAssets/Models/Characters/KenneyAnimatedCharacters/README.md',
   'scripts/convert-kenney-character.py',
+  'scripts/externalize-glb-images.mjs',
 ]
 const findings = []
 
@@ -96,8 +99,9 @@ if (!json) {
 
   const extensions = new Set([...(json.extensionsUsed ?? []), ...(json.extensionsRequired ?? [])])
   if (extensions.has('KHR_draco_mesh_compression')) findings.push('GLB declares Draco compression')
-  for (const image of json.images ?? []) {
-    if (image.uri && !image.uri.startsWith('data:')) findings.push(`external image URI: ${image.uri}`)
+  const imageUris = (json.images ?? []).map((image) => image.uri)
+  if (JSON.stringify(imageUris) !== JSON.stringify(['textures/skaterfemalea.png'])) {
+    findings.push(`unexpected image URIs: ${JSON.stringify(imageUris)}`)
   }
   for (const buffer of json.buffers ?? []) {
     if (buffer.uri && !buffer.uri.startsWith('data:')) findings.push(`external buffer URI: ${buffer.uri}`)

@@ -1,5 +1,5 @@
 import { readFileSync, readdirSync, statSync } from 'node:fs'
-import { dirname, join, relative } from 'node:path'
+import { dirname, isAbsolute, join, relative } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
 const root = dirname(dirname(fileURLToPath(import.meta.url)))
@@ -101,9 +101,49 @@ for (const path of publicFiles.filter((candidate) => candidate.endsWith('.html')
 // build even when tree-shaking removes the code that once used it.
 const sourceText = sourceFiles.map((path) => readFileSync(path, 'utf8')).join('\n')
 const assetExtensions = /\.(?:fbx|glb|gltf|hdr|jpeg|jpg|ktx2|mp3|ogg|png|vrm|webp)$/i
+const glbDependencies = new Set()
+for (const path of publicFiles.filter((candidate) => candidate.endsWith('.glb'))) {
+  const file = readFileSync(path)
+  if (file.toString('ascii', 0, 4) !== 'glTF') continue
+
+  let offset = 12
+  let document
+  while (offset < file.length) {
+    const length = file.readUInt32LE(offset)
+    const type = file.readUInt32LE(offset + 4)
+    const chunk = file.subarray(offset + 8, offset + 8 + length)
+    if (type === 0x4e4f534a) {
+      document = JSON.parse(chunk.toString('utf8').replace(/\0+$/, '').trimEnd())
+      break
+    }
+    offset += 8 + length
+  }
+  if (!document) continue
+
+  const dependencyUris = [
+    ...(document.images ?? []).map((image) => image.uri),
+    ...(document.buffers ?? []).map((buffer) => buffer.uri),
+  ].filter(Boolean)
+  for (const uri of dependencyUris) {
+    if (/^(?:[a-z]+:)?\/\//i.test(uri) || uri.startsWith('data:')) {
+      if (!uri.startsWith('data:')) {
+        findings.push(`${relative(root, path)}: external GLB dependency ${uri}`)
+      }
+      continue
+    }
+    const dependencyPath = join(dirname(path), ...uri.split('/'))
+    const dependencyRelative = relative(publicRoot, dependencyPath)
+    if (isAbsolute(dependencyRelative) || dependencyRelative.split(/[\\/]/)[0] === '..') {
+      findings.push(`${relative(root, path)}: escaping GLB dependency ${uri}`)
+      continue
+    }
+    glbDependencies.add(`/${dependencyRelative.replace(/\\/g, '/')}`)
+  }
+}
+
 for (const path of publicFiles.filter((candidate) => assetExtensions.test(candidate))) {
   const webPath = `/${relative(publicRoot, path).replace(/\\/g, '/')}`
-  if (!sourceText.includes(webPath)) {
+  if (!sourceText.includes(webPath) && !glbDependencies.has(webPath)) {
     findings.push(`${relative(root, path)}: unreferenced public asset`)
   }
 }

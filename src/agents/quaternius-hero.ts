@@ -1,5 +1,5 @@
 export const QUATERNIUS_HERO_URL =
-  '/models/characters/quaternius-hero/quaternius-hero.glb?v=90d5de9a'
+  '/models/characters/quaternius-hero/quaternius-hero.glb?v=b542c36d'
 
 export const QUATERNIUS_HERO_CLIPS = [
   'Chest_Open',

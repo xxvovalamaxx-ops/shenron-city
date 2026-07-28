@@ -1,5 +1,5 @@
 export const KENNEY_CITIZEN_URL =
-  '/models/characters/kenney-citizen/kenney-citizen.glb'
+  '/models/characters/kenney-citizen/kenney-citizen.glb?v=fd4140f7'
 
 export const KENNEY_CITIZEN_CLIPS = ['Idle', 'Jump', 'Run'] as const
 export type KenneyCitizenMotion = (typeof KENNEY_CITIZEN_CLIPS)[number]

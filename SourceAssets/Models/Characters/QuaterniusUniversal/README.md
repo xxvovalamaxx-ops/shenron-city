@@ -14,7 +14,7 @@
 - `Male_Ranger.bin` SHA-256:
   `5bbb0d42cb324c6c27ce00417e68a876d92978f07d161f83590f0d7c0570eff6`
 - Runtime GLB SHA-256:
-  `90d5de9a91bbad659fa5a771baa505a82702e39f5db536a60496216bf49562ae`
+  `b542c36df94d4fefd38385f99d2e9b0be68bc51a29fe3c22e3b9d9e2f752ab15`
 
 The free Standard package supplies complete male and female Ranger and Peasant
 outfits. The runtime hero uses the clothed Male Ranger and the source package's
@@ -24,5 +24,8 @@ skeletons by joint count, name, and order.
 `scripts/convert-quaternius-hero.py` repairs two incorrect duplicated-suffix
 texture paths in the published glTF without changing the source archive,
 resizes source textures to at most 1K, embeds them as JPEG, normalizes height to
-1.82 m, adds 29 implemented CC0 motions, and exports one 4.29 MiB browser GLB.
-The original archives remain in ignored `Raw/Verified/` authoring storage.
+1.82 m, adds 29 implemented CC0 motions, and exports the animation-ready GLB.
+`scripts/externalize-glb-images.mjs` then compacts the GLB to 3.68 MiB and
+writes its six pinned JPEGs as same-origin runtime files, avoiding browser
+buffer-view blob decoding. The original archives remain in ignored
+`Raw/Verified/` authoring storage.
