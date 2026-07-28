@@ -46,6 +46,15 @@ export interface Runtime {
   interactables: Interactable[]
   /** True while a modal (dialogue, menu) owns input. */
   paused: boolean
+  /** Keyboard state, populated by useKeys. */
+  keys: {
+    forward: boolean
+    back: boolean
+    left: boolean
+    right: boolean
+    sprint: boolean
+    jump: boolean
+  }
   /** Boulevard traffic. Length is set from the quality preset. */
   vehicles: Vehicle[]
   /** Objects the simulation moves directly, to keep visuals frame-exact. */
@@ -98,6 +107,7 @@ export const rt: Runtime = {
   target: null,
   interactables: [],
   paused: false,
+  keys: { forward: false, back: false, left: false, right: false, sprint: false, jump: false },
   vehicles: [],
   refs: {
     car: null,

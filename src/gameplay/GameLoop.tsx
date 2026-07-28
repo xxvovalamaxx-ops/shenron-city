@@ -157,6 +157,9 @@ export function GameLoop({ interactables, onInteract }: GameLoopProps) {
     const p = rt.player
     const locked = inputLocked(useHud.getState().screen)
 
+    // Sync key state so other components can read it from rt.keys.
+    Object.assign(rt.keys, keys.current)
+
     // ── 1. Entrance doors ────────────────────────────────────────────────────
     rt.entranceDoor = stepDoor(rt.entranceDoor, {
       dx: p.pos.x,

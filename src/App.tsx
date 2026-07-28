@@ -31,6 +31,7 @@ import { PALETTE, QUALITY } from './world/palette'
 import { Hud } from './ui/Hud'
 import { StaticWorldColliders } from './gameplay/PhysicsWorld'
 import { Dialogue } from './ui/Dialogue'
+import { Character } from './character/Character'
 import { OfficePanel } from './ui/OfficePanel'
 import { DEFAULT_SETTINGS, LoadingScreen, PauseMenu, TitleScreen, type Settings } from './ui/Screens'
 import { floorAtPosition, loadGame, saveGame, type SaveData } from './gameplay/save'
@@ -248,6 +249,7 @@ function Scene({
         }}
       />
 
+      <Character />
       <GameLoop interactables={interactables} onInteract={onInteract} />
 
       {quality.postprocessing && (
