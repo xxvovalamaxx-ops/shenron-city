@@ -108,8 +108,12 @@ HDRI in
 Its renderer follows the same production constraints as the browser:
 compatible biome layers, deterministic clustered scatter, exclusions around
 paths and structural props, shared mesh instances, and subtle shared wind. The
-web Pocket Park implements those rules in four draw calls with 240/800/1,600
-quality-scaled instances and no micro-vegetation collision.
+web Pocket Park implements those rules with eleven pinned 1K WebP maps and four
+geometry-only LOD1 templates. Medium/high quality uses the scanned PBR ground,
+path, grass, fern, and weed layers; low keeps a zero-download procedural
+fallback. Both modes retain four vegetation draw calls, 240/800/1,600
+quality-scaled instances, deterministic exclusions, and no micro-vegetation
+collision.
 
 ## Approved source categories
 
@@ -122,3 +126,7 @@ quality-scaled instances and no micro-vegetation collision.
 
 Free does not automatically mean redistributable. The manifest, source link,
 and license are mandatory even when attribution is not.
+
+The exact public-repository allow/deny rules, including Fab, Mixamo, and
+marketplace boundaries, are recorded in
+[`Assets/PUBLIC_ASSET_SOURCE_POLICY.md`](Assets/PUBLIC_ASSET_SOURCE_POLICY.md).

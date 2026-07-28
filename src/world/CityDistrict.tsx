@@ -22,7 +22,7 @@ import { PALETTE, type QualitySettings } from './palette'
 import { useRoadMaterial, useSidewalkMaterial, useWoodMaterial } from './PBRMaterials'
 import { marketDisplayFor, type MarketDisplay } from './market-display'
 import { buildingAssetFor, CITY_NATURE_ASSETS } from './city-assets'
-import { GroundCover } from './GroundCover'
+import { MeadowPark } from './MeadowPark'
 import { StaticCityModel } from './StaticCityModel'
 
 function StorefrontBuilding({
@@ -481,25 +481,13 @@ export function CityDistrict({ quality }: { quality: QualitySettings }) {
         </mesh>
       ))}
 
-      {/* Small green pocket between the HQ plaza and the west storefronts. */}
-      <mesh position={[-20, 0.055, 49]} receiveShadow={quality.shadows}>
-        <boxGeometry args={[15.5, 0.1, 20]} />
-        <meshStandardMaterial color="#14291f" roughness={1} />
-      </mesh>
-      <mesh position={[-20, 0.12, 49]} rotation={[-Math.PI / 2, 0, 0]}>
-        <ringGeometry args={[4.4, 5.1, 32]} />
-        <meshStandardMaterial color="#8b8172" roughness={0.95} />
-      </mesh>
-      <Text position={[-20, 0.2, 59.2]} rotation={[-Math.PI / 2, 0, 0]} fontSize={0.5} color="#75a98c">
-        DRAGON POCKET PARK
-      </Text>
+      <MeadowPark quality={quality} />
 
       {STOREFRONTS.map((store) => (
         <StorefrontBuilding key={store.id} store={store} shadows={quality.shadows} />
       ))}
       <DistrictWindows />
       <Market shadows={quality.shadows} />
-      <GroundCover count={quality.groundCover} />
       <Trees shadows={quality.shadows} />
       <StreetLights />
     </group>

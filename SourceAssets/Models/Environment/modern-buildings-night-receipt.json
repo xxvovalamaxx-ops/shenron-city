@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 1,
+  "source": "Poly Haven public API",
+  "assetId": "modern_buildings_night",
+  "name": "Modern Buildings Night",
+  "authors": [
+    "Greg Zaal"
+  ],
+  "license": "CC0-1.0",
+  "licenseUrl": "https://polyhaven.com/license",
+  "page": "https://polyhaven.com/a/modern_buildings_night",
+  "variant": "1k-hdr",
+  "downloadUrl": "https://dl.polyhaven.org/file/ph-assets/HDRIs/hdr/1k/modern_buildings_night_1k.hdr",
+  "sourceMd5": "3067e8d9e8e961e6a11ff45c055a5fbd",
+  "runtimePath": "public/hdr/modern_buildings_night_1k.hdr",
+  "runtimeSha256": "a690048dcecabf5ed1ad773f7abdec7cce7b1fea4d89b17f054a18f3e0fa2919",
+  "bytes": 1655510
+}

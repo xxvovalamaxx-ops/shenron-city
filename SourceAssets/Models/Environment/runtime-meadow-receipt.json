@@ -1,0 +1,140 @@
+{
+  "schemaVersion": 1,
+  "sourceReceipt": "SourceAssets/Models/Environment/polyhaven-meadow-receipt.json",
+  "license": "CC0-1.0",
+  "generator": "SourceAssets/Blender/scripts/build_runtime_meadow_assets.py",
+  "outputs": [
+    {
+      "assetId": "forest_ground_04",
+      "role": "albedo",
+      "source": "textures/forest_ground_04_diff_1k.jpg",
+      "sourceMd5": "6ad9df4d731a238299806f739a26af83",
+      "runtimePath": "public/textures/nature/meadow/forest-ground-04-albedo.webp",
+      "runtimeSha256": "f0e8778f4c58e4ab641bc646219e8feef0ac77e217cdc508e284a9f98e771b68",
+      "bytes": 404490,
+      "width": 1024,
+      "height": 1024,
+      "format": "webp"
+    },
+    {
+      "assetId": "forest_ground_04",
+      "role": "normal",
+      "source": "textures/forest_ground_04_nor_gl_1k.exr",
+      "sourceMd5": "b670ed5e33c011d5ef289be72c070139",
+      "runtimePath": "public/textures/nature/meadow/forest-ground-04-normal.webp",
+      "runtimeSha256": "0835d9c9278d09de721a6167cb83184c8df5e08c6321ee8fd77db6e4c536a2d0",
+      "bytes": 551868,
+      "width": 1024,
+      "height": 1024,
+      "format": "webp"
+    },
+    {
+      "assetId": "forest_ground_04",
+      "role": "roughness",
+      "source": "textures/forest_ground_04_rough_1k.exr",
+      "sourceMd5": "55ddd8ccf5fd3750f7f6836cd886dd71",
+      "runtimePath": "public/textures/nature/meadow/forest-ground-04-roughness.webp",
+      "runtimeSha256": "34184b1c79c6d3b334b65c520b6fbe1c3d0595c1bf313f4740b1a14e9cfdb00e",
+      "bytes": 170120,
+      "width": 1024,
+      "height": 1024,
+      "format": "webp"
+    },
+    {
+      "assetId": "brown_mud_leaves_01",
+      "role": "albedo",
+      "source": "textures/brown_mud_leaves_01_diff_1k.jpg",
+      "sourceMd5": "5340848384f9bb19bfa6e7ac459683d7",
+      "runtimePath": "public/textures/nature/meadow/brown-mud-leaves-01-albedo.webp",
+      "runtimeSha256": "b26774b39da81a748d69900bb93a0b9597ba06e105e5205c47cb38b8c171fdc9",
+      "bytes": 432376,
+      "width": 1024,
+      "height": 1024,
+      "format": "webp"
+    },
+    {
+      "assetId": "brown_mud_leaves_01",
+      "role": "normal",
+      "source": "textures/brown_mud_leaves_01_nor_gl_1k.exr",
+      "sourceMd5": "d8e709577ce1bbb1a6a2a6d60f9ac295",
+      "runtimePath": "public/textures/nature/meadow/brown-mud-leaves-01-normal.webp",
+      "runtimeSha256": "b462d5a8377d3c53839e1f2248f02145d4a1fd7de3ce50185382cf89d22796d7",
+      "bytes": 664474,
+      "width": 1024,
+      "height": 1024,
+      "format": "webp"
+    },
+    {
+      "assetId": "grass_medium_01",
+      "role": "albedo",
+      "source": "textures/grass_medium_01_diff_1k.jpg",
+      "sourceMd5": "6b18ed50d776fd20c1304d9994bd764e",
+      "runtimePath": "public/textures/nature/meadow/grass-medium-01-albedo.webp",
+      "runtimeSha256": "842b997b8d852948ac7343f30bffe10073ad7b84eefb8c211e3c378e45b64f47",
+      "bytes": 97020,
+      "width": 1024,
+      "height": 1024,
+      "format": "webp"
+    },
+    {
+      "assetId": "grass_medium_01",
+      "role": "alpha",
+      "source": "textures/grass_medium_01_alpha_1k.png",
+      "sourceMd5": "6b5b251ef1ca9a69ab9f49def66d758a",
+      "runtimePath": "public/textures/nature/meadow/grass-medium-01-alpha.webp",
+      "runtimeSha256": "bdb5203eb04c4a9cd28041ea739fdd7cfd6b6f87b1763708d8b009c69cd853de",
+      "bytes": 152944,
+      "width": 1024,
+      "height": 1024,
+      "format": "webp"
+    },
+    {
+      "assetId": "fern_02",
+      "role": "albedo",
+      "source": "textures/fern_02_diff_1k.jpg",
+      "sourceMd5": "82c18a6cfd5ae91c37c0e078f591181c",
+      "runtimePath": "public/textures/nature/meadow/fern-02-albedo.webp",
+      "runtimeSha256": "50a288dcbebba42871e47daa7ee8f02a045c3691e980883f6d4658032671bd5b",
+      "bytes": 52346,
+      "width": 1024,
+      "height": 1024,
+      "format": "webp"
+    },
+    {
+      "assetId": "fern_02",
+      "role": "alpha",
+      "source": "textures/fern_02_alpha_1k.png",
+      "sourceMd5": "1421e5e36946c23a7ddcc907de89025c",
+      "runtimePath": "public/textures/nature/meadow/fern-02-alpha.webp",
+      "runtimeSha256": "966e07c9ebb4be16580edc1ceacc3b50abe8fadd97b3d97a155c40905110b7b1",
+      "bytes": 71502,
+      "width": 1024,
+      "height": 1024,
+      "format": "webp"
+    },
+    {
+      "assetId": "weed_plant_02",
+      "role": "albedo",
+      "source": "textures/weed_plant_02_diff_1k.jpg",
+      "sourceMd5": "147c346358cf123ca50473cf05df7b86",
+      "runtimePath": "public/textures/nature/meadow/weed-plant-02-albedo.webp",
+      "runtimeSha256": "850ce2033ee3bf2758c373141c07a3642c8aa11b8410b2fb4be2e29f73ad23bd",
+      "bytes": 89818,
+      "width": 1024,
+      "height": 1024,
+      "format": "webp"
+    },
+    {
+      "assetId": "weed_plant_02",
+      "role": "alpha",
+      "source": "textures/weed_plant_02_alpha_1k.png",
+      "sourceMd5": "2fbec8fdd3904e8709718562aa6d37d9",
+      "runtimePath": "public/textures/nature/meadow/weed-plant-02-alpha.webp",
+      "runtimeSha256": "8ef736985de035ac3a290a86ef139269a51615e64d8ca20563904334c39b97d1",
+      "bytes": 47126,
+      "width": 1024,
+      "height": 1024,
+      "format": "webp"
+    }
+  ]
+}

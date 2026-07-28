@@ -34,3 +34,20 @@ Use `-- --skip-render` for a lower-load authoring rebuild. The ignored local
 output is `Working/Shenron_AAA_Meadow.blend`; the tracked API receipt and proof
 render make the source set reproducible and reviewable without committing an
 approximately 1 GB raw library.
+
+Build the 1K WebP runtime subset and the geometry-only LOD1 template pack:
+
+```powershell
+python SourceAssets\Blender\scripts\build_runtime_meadow_assets.py
+
+& "C:\Program Files\Blender Foundation\Blender 5.1\blender.exe" `
+  --background --factory-startup `
+  --python SourceAssets\Blender\scripts\export_web_meadow_templates.py `
+  -- --output-path public\models\environment\meadow-templates.glb
+```
+
+The output is deliberately small: eleven 1K maps plus four normalized plant
+templates. Medium/high quality reuses the deterministic web scatter with real
+LOD1 silhouettes; low quality keeps the zero-download procedural fallback.
+`verify-runtime-meadow-assets.mjs` pins every output, validates WebP dimensions,
+parses the GLB contract, and enforces triangle and total-byte budgets.

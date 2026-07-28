@@ -6,6 +6,8 @@
  */
 import { useMemo } from 'react'
 import * as THREE from 'three'
+import { MEADOW_TEXTURES } from './meadow-assets'
+import type { QualitySettings } from './palette'
 
 const textureCache = new Map<string, THREE.Texture>()
 
@@ -16,6 +18,12 @@ function getCachedTexture(url: string, colorSpace = true): THREE.Texture {
   if (colorSpace) tex.colorSpace = THREE.SRGBColorSpace
   textureCache.set(url, tex)
   return tex
+}
+
+function configureTiling(texture: THREE.Texture, x: number, y: number): THREE.Texture {
+  texture.repeat.set(x, y)
+  texture.anisotropy = 8
+  return texture
 }
 
 /** Road surface material — dark asphalt with PBR detail */
@@ -237,4 +245,47 @@ export function useBarkMaterial() {
     } catch {}
     return mat
   }, [])
+}
+
+/** Scanned forest-floor macro layer transferred from the Blender meadow. */
+export function useParkGroundMaterial(quality: QualitySettings) {
+  return useMemo(() => {
+    const texture = MEADOW_TEXTURES.forestGround
+    const normalStrength = quality.reflections ? 0.42 : 0.32
+    const material = new THREE.MeshStandardMaterial({
+      color: '#91aa91',
+      roughness: 0.94,
+      metalness: 0,
+      emissive: '#111b13',
+      emissiveIntensity: 0.12,
+      normalScale: new THREE.Vector2(normalStrength, normalStrength),
+    })
+    material.map = configureTiling(getCachedTexture(texture.albedo), 4, 5)
+    material.normalMap = configureTiling(getCachedTexture(texture.normal, false), 4, 5)
+    material.roughnessMap = configureTiling(
+      getCachedTexture(texture.roughness, false),
+      4,
+      5,
+    )
+    return material
+  }, [quality.reflections])
+}
+
+/** Mud-and-leaf path material from the same coherent temperate biome. */
+export function useParkPathMaterial(quality: QualitySettings) {
+  return useMemo(() => {
+    const texture = MEADOW_TEXTURES.brownMudLeaves
+    const normalStrength = quality.reflections ? 0.36 : 0.25
+    const material = new THREE.MeshStandardMaterial({
+      color: '#c7bcaa',
+      roughness: 0.97,
+      metalness: 0,
+      polygonOffset: true,
+      polygonOffsetFactor: -1,
+      normalScale: new THREE.Vector2(normalStrength, normalStrength),
+    })
+    material.map = configureTiling(getCachedTexture(texture.albedo), 3, 4)
+    material.normalMap = configureTiling(getCachedTexture(texture.normal, false), 3, 4)
+    return material
+  }, [quality.reflections])
 }

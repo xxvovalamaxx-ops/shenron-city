@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "license": "CC0-1.0",
+  "generator": "SourceAssets/Blender/scripts/export_web_meadow_templates.py",
+  "runtimePath": "public/models/environment/meadow-templates.glb",
+  "runtimeSha256": "1342e73c59793511f4ae8e32bb9ae6429a763498904a27226592b594abcd25ab",
+  "bytes": 84612,
+  "nodes": [
+    "MeadowGrassFine",
+    "MeadowGrassTall",
+    "MeadowFern",
+    "MeadowWeed"
+  ],
+  "sourceAssets": [
+    "grass_c",
+    "grass_b",
+    "fern",
+    "weed"
+  ],
+  "triangles": 2541,
+  "materials": 0,
+  "textures": 0
+}
