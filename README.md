@@ -67,6 +67,21 @@ npm run build
 npm run verify:standalone
 ```
 
+## Stack
+
+| Category | Packages |
+|----------|----------|
+| **Renderer** | `three`, `@react-three/fiber`, `@react-three/drei` |
+| **Visuals** | `@react-three/postprocessing` (Bloom, SMAA, Vignette + 30 more effects), `three.quarks` + `quarks.r3f` (particles) |
+| **Physics** | `@react-three/rapier` (rigid bodies, colliders, character controller) |
+| **AI / Navigation** | `yuka` (FSM, steering, perception), `recast-navigation` + `@recast-navigation/three` (navmesh, pathfinding) |
+| **Procedural** | `@dgreenheck/ez-tree` (trees with real bark/leaf textures) |
+| **Optimization** | `three-mesh-bvh` (fast raycasting), `@gltf-transform/core` + `cli` (GLB compression) |
+| **Architecture** | `koota` (ECS), `zustand` (state), `zod` (schemas) |
+| **Tooling** | `vite`, `typescript`, `vitest` |
+
+See [`docs/STACK_DECISIONS.md`](docs/STACK_DECISIONS.md) for why each package was adopted.
+
 ## Structure
 
 ```text

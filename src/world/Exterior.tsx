@@ -10,6 +10,7 @@ import { ENTRANCE, LOBBY, TOWER } from './layout'
 import { PALETTE, type QualitySettings } from './palette'
 import { CITY_GROUND } from './city-data'
 import { CityDistrict } from './CityDistrict'
+import { Tree } from './Tree'
 
 /** Deterministic PRNG — the skyline must be identical every run. */
 function mulberry32(seed: number) {
@@ -208,7 +209,7 @@ export function Exterior({ quality }: { quality: QualitySettings }) {
         </mesh>
       ))}
 
-      {/* Planters framing the approach */}
+      {/* Planters framing the approach — stone box with a real tree */}
       {[-9, 9].map((x) =>
         [10, 18, 26].map((z) => (
           <group key={`${x}:${z}`} position={[x, 0, z]}>
@@ -216,10 +217,12 @@ export function Exterior({ quality }: { quality: QualitySettings }) {
               <boxGeometry args={[2.4, 0.7, 2.4]} />
               <meshStandardMaterial color={PALETTE.stone} roughness={0.85} />
             </mesh>
-            <mesh position={[0, 1.15, 0]}>
-              <sphereGeometry args={[0.95, 10, 8]} />
-              <meshStandardMaterial color="#16301f" roughness={1} />
-            </mesh>
+            <Tree
+              position={[0, 0.7, 0]}
+              seed={x * 100 + z}
+              scale={0.35}
+              variant={z === 18 ? 'birch' : 'oak'}
+            />
           </group>
         )),
       )}

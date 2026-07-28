@@ -7,7 +7,7 @@
     "node": "^20.19.0 || >=22.12.0"
   },
   "type": "module",
-  "description": "Shenron City \u2014 a standalone walkable 3D headquarters prototype",
+  "description": "Shenron City — a standalone walkable 3D headquarters prototype",
   "scripts": {
     "dev": "vite",
     "typecheck": "tsc --noEmit",
@@ -19,12 +19,23 @@
     "test:watch": "vitest"
   },
   "dependencies": {
+    "@dgreenheck/ez-tree": "^1.1.0",
+    "@gltf-transform/cli": "^4.4.2",
+    "@gltf-transform/core": "^4.4.2",
     "@react-three/drei": "^10.7.7",
     "@react-three/fiber": "^9.6.1",
     "@react-three/postprocessing": "^3.0.4",
+    "@react-three/rapier": "^2.2.0",
+    "@recast-navigation/three": "^0.43.1",
+    "koota": "^0.6.6",
+    "quarks.r3f": "^0.17.1",
     "react": "~19.2.8",
     "react-dom": "~19.2.8",
+    "recast-navigation": "^0.43.1",
     "three": "^0.185.1",
+    "three-mesh-bvh": "^0.9.13",
+    "three.quarks": "^0.17.1",
+    "yuka": "^0.7.8",
     "zod": "^4.4.3",
     "zustand": "^5.0.14"
   },
