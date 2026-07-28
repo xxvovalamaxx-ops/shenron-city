@@ -45,12 +45,16 @@ deterministic game state and is saved only in the game's validated browser
 save; it is never sent to a host service. A local compass, distance readout,
 and north-up minimap guide the player to the active objective.
 
-The current geometry and audio are procedural. The art pass uses a curated set
-of CC0 Poly Haven PBR textures recorded in
-[`docs/Assets/ASSET_MANIFEST.csv`](docs/Assets/ASSET_MANIFEST.csv); it ships no
-downloaded character, vehicle, or building models. District layout, collision
-solids, and ambient walking loops share `src/world/city-data.ts`. Fictional
-residents and activities come from `src/adapter/fixtures.ts`.
+The current world combines authored procedural geometry with a deliberately
+small, audited CC0 asset set: Poly Haven PBR materials, Kenney commercial
+buildings, vegetation, vehicles, and six animated citizen skins, plus the
+service android, project-authored capybara, and a clothed Quaternius hero with
+29 implemented skeletal motions. Every imported runtime file is recorded in
+[`docs/Assets/ASSET_MANIFEST.csv`](docs/Assets/ASSET_MANIFEST.csv) and pinned
+by an asset verifier. District layout, collision solids, traffic transforms,
+and ambient walking loops still share `src/world/city-data.ts`, so imported
+decoration cannot drift from gameplay collision. Fictional residents and
+activities come from `src/adapter/fixtures.ts`.
 
 ## Standalone boundary
 
@@ -67,9 +71,7 @@ residents and activities come from `src/adapter/fixtures.ts`.
 Verify the boundary:
 
 ```bash
-npm test
-npm run build
-npm run verify:standalone
+npm run check
 ```
 
 ## Stack
@@ -82,7 +84,7 @@ npm run verify:standalone
 | **Crowd** | Deterministic authored routes shared by rendering and collision |
 | **Procedural** | `@dgreenheck/ez-tree` (trees with real bark/leaf textures) |
 | **Architecture** | `zustand` (state), `zod` (schemas) |
-| **Tooling** | `vite`, `typescript`, `vitest` |
+| **Tooling** | `vite`, `typescript`, `eslint`, `vitest` |
 
 See [`docs/STACK_DECISIONS.md`](docs/STACK_DECISIONS.md) for why each package was adopted.
 
@@ -111,11 +113,7 @@ in one commit. Before requesting review, run:
 
 ```bash
 npm ci
-npm run typecheck
-npm test
-npm run build
-npm run verify:standalone
-npm audit --audit-level=high
+npm run check
 ```
 
 See [CONTRIBUTING.md](CONTRIBUTING.md) for branch, conflict, review, and

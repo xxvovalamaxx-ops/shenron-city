@@ -36,6 +36,10 @@ export interface StreetTree {
   scale: number
 }
 
+export interface ParkNature extends CityBox {
+  kind: 'bush' | 'rock'
+}
+
 export type StreetPropKind = 'bench' | 'trash' | 'sign'
 
 export interface StreetProp extends CityBox {
@@ -202,6 +206,12 @@ export const STREET_TREES: readonly StreetTree[] = [
   { id: 'street-east-3', x: 8.4, z: 138, scale: 0.75 },
 ] as const
 
+export const PARK_NATURE: readonly ParkNature[] = [
+  { id: 'park-bush-1', kind: 'bush', x: -18.2, z: 43.2, width: 1.6, depth: 1.6, height: 1.15 },
+  { id: 'park-bush-2', kind: 'bush', x: -21.9, z: 42.8, width: 1.8, depth: 1.8, height: 1.25 },
+  { id: 'park-rock-1', kind: 'rock', x: -21.4, z: 45.8, width: 1.35, depth: 1.2, height: 0.85 },
+] as const
+
 export const STREET_LIGHTS: readonly RoutePoint[] = [
   { x: -8.8, z: 52 },
   { x: 8.8, z: 52 },
@@ -349,6 +359,7 @@ export const VEHICLE = {
 
 export const CITY_OBSTACLES: readonly CityBox[] = [
   ...STOREFRONTS,
+  ...PARK_NATURE,
   ...MARKET_STALLS.map((stall) => ({
     ...stall,
     height: 1.05,
@@ -406,6 +417,7 @@ export function validateCityData(): string[] {
     ...MARKET_STALLS,
     ...STREET_PROPS,
     ...STREET_TREES,
+    ...PARK_NATURE,
     ...AMBIENT_ROUTES,
   ]
 
@@ -414,7 +426,7 @@ export function validateCityData(): string[] {
     ids.add(item.id)
   }
 
-  for (const box of [...STOREFRONTS, ...MARKET_STALLS, ...STREET_PROPS]) {
+  for (const box of [...STOREFRONTS, ...MARKET_STALLS, ...STREET_PROPS, ...PARK_NATURE]) {
     if (box.width <= 0 || box.depth <= 0 || box.height <= 0) {
       issues.push(`${box.id} has a non-positive dimension`)
     }

@@ -15,6 +15,16 @@
 **Rationale**: Distinct silhouettes, opposing arm/leg gait, role clothing, and full-height collision improve the recorded vertical slice without adding downloads or breaking the standalone boundary
 **Trade-off**: The cast is intentionally stylized until a reviewed, licensed skinned-character pipeline is ready
 
+## 2026-07-28: Audited CC0 character and city imports
+**Decision**: Replace the procedural pedestrian cast and selected city blockouts with a small, hash-pinned CC0 Kenney set while retaining authored gameplay bounds as collision authority
+**Rationale**: Six skinned citizen variants, three real skeletal clips, selected commercial buildings, vegetation, and traffic shells improve the playable route without publishing the unproven 2,393-file historical animation archive
+**Trade-off**: The current citizen Run clip is slowed for locomotion and the cast remains stylized; broader motion coverage requires separately reviewed CC0 or project-authored clips
+
+## 2026-07-28: Quaternius motion library
+**Decision**: Ship one clothed Quaternius hero with 29 implemented motions selected from the 86 clips in two free CC0 Standard archives
+**Rationale**: The Male Ranger and both animation packs share an exact 65-joint hierarchy, so the Blender build can preserve authored motion without unsafe retargeting or publishing the unproven historical FBX archive
+**Trade-off**: The free Standard downloads do not contain every motion advertised in the larger packs, and only Kai currently consumes the library; additional roles require explicit gameplay bindings and performance review
+
 ## 2026-07-28: Night Market identity
 **Decision**: Give each existing stall a validated, distinct procedural inventory rather than adding more stalls or downloading prop packs
 **Rationale**: Ramen bowls, tea tins, flower pots, book stacks, cloth valances, and lantern practicals make the recorded route legible as a market while preserving the standalone boundary and collision footprint

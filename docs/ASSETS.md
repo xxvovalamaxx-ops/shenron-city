@@ -6,9 +6,18 @@ budget.
 
 ## Current shipped assets
 
-The city geometry, props, residents, vehicles, and audio are procedural. The
-imported runtime files in `public/` are the curated 1K Poly Haven material maps
-and the optimized Shenron City capybara GLB.
+Most structural geometry, small props, and audio remain procedural. The
+imported runtime files in `public/` include curated 1K Poly Haven material
+maps, the optimized Shenron City capybara GLB, a pinned CC0 service-android
+GLB for headquarters agents, and a compact CC0 Kenney citizen GLB with six
+local skins for pedestrians and named city characters. Kai uses a clothed
+Quaternius Male Ranger with 29 city-relevant clips selected from two reviewed
+CC0 Universal Animation Library Standard archives.
+
+The commercial-block shells, boulevard trees and park features, and four
+traffic shells are curated CC0 Kenney GLBs. Runtime normalization binds each
+model to the same authored dimensions used by collision; imported decoration
+does not create a second source of spatial truth.
 
 Every imported asset is recorded in
 [`Assets/ASSET_MANIFEST.csv`](Assets/ASSET_MANIFEST.csv), including its source,
@@ -47,6 +56,12 @@ The resulting 2,393 files remain under ignored
 marks them for license review; no clip may enter a runtime export until its
 provenance, skeleton, duplicate status, and game use are verified.
 
+The current rights decision and the exact evidence needed to promote a clip
+are recorded in
+[`Assets/ANIMATION_RIGHTS_AUDIT.md`](Assets/ANIMATION_RIGHTS_AUDIT.md).
+Provider terms cannot be inferred from filenames, and downloading a generic
+license does not retroactively establish the origin of an unknown archive.
+
 ## Model pipeline
 
 The capybara is the reference implementation for browser-ready character
@@ -58,6 +73,24 @@ live under `SourceAssets/`; only the verified runtime GLB lives under
 `npm run verify:assets` rejects a missing or oversized capybara, an unexpected
 clip or skeleton contract, Draco-only geometry, extra skin influences, remote
 texture references, and embedded textures above the 2K budget.
+
+The same gate pins the service android to its reviewed SHA-256 and checks its
+14-clip, two-skin, facial-morph, and no-remote-dependency contract.
+
+The Kenney citizen gate pins the Blender-converted GLB and all six runtime
+skins, requires three non-empty skeletal clips and exactly 45 joints, rejects
+remote dependencies and Draco, and requires the preserved CC0 source records.
+
+The Quaternius hero gate pins a 4.29 MiB Blender export, requires the exact 29
+implemented clip names, proves at least ten transform channels change in every
+clip, checks the shared 65-joint skin and all ten skinned primitives, rejects
+remote dependencies and Draco, and requires the preserved CC0 source records.
+The tracked catalog records all 86 clips in the two free Standard archives;
+the unmodified archives stay in ignored verified-source storage.
+
+The curated city gate pins every imported building, nature, vehicle, and local
+atlas file, rejects remote texture or Draco dependencies, and keeps the full
+selected set below 2.5 MB.
 
 Keep future authoring sources outside `public/`; only optimized runtime results
 belong in the shipped asset tree. Model scale, axes, materials, animations,

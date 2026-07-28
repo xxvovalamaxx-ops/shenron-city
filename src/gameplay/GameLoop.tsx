@@ -38,6 +38,7 @@ import { useLaser } from '../weapons/useLaser'
 import { capybaraCollider, capybaraPose } from '../animals/capybara'
 import { residentColliders } from './residents'
 import { breakableColliders } from '../destruction/collision'
+import { debugInspectionView } from './dev-view'
 
 const WALK_SPEED = 4.3
 const SPRINT_SPEED = 7.1
@@ -80,6 +81,14 @@ export function GameLoop({ interactables, ambientPedestrians, onInteract }: Game
     rt.interactables = interactables
   }, [interactables])
 
+  useEffect(() => {
+    if (typeof location === 'undefined') return
+    const view = debugInspectionView(location.search, import.meta.env.DEV)
+    if (!view) return
+    camera.position.set(view.position.x, view.position.y + EYE_HEIGHT, view.position.z)
+    camera.lookAt(view.target.x, view.target.y, view.target.z)
+  }, [camera])
+
   // ── Interact key ───────────────────────────────────────────────────────────
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
@@ -113,8 +122,8 @@ export function GameLoop({ interactables, ambientPedestrians, onInteract }: Game
    * heading, so the yaw is the heading with no correction.
    */
   function writeTrafficInstances(): void {
-    const { trafficBody, trafficCabin, trafficLamps, trafficSpill } = rt.refs
-    if (!trafficBody || !trafficCabin || !trafficLamps || !trafficSpill) return
+    const { trafficModels, trafficLamps, trafficSpill } = rt.refs
+    if (!trafficLamps || !trafficSpill) return
 
     const node = scratch.current.node
     const cars = rt.vehicles
@@ -124,21 +133,14 @@ export function GameLoop({ interactables, ambientPedestrians, onInteract }: Game
       const fx = Math.sin(pose.heading)
       const fz = Math.cos(pose.heading)
 
+      const model = trafficModels[i]
+      if (model) {
+        model.position.set(pose.x, 0.025, pose.z)
+        model.rotation.set(0, pose.heading, 0)
+        model.updateMatrix()
+      }
+
       node.rotation.set(0, pose.heading, 0)
-
-      node.position.set(pose.x, VEHICLE.height * 0.31, pose.z)
-      node.updateMatrix()
-      trafficBody.setMatrixAt(i, node.matrix)
-
-      // Cabin sits back from centre, the way a saloon's greenhouse does.
-      const cabinBack = VEHICLE.length * 0.08
-      node.position.set(
-        pose.x - fx * cabinBack,
-        VEHICLE.height * 0.84,
-        pose.z - fz * cabinBack,
-      )
-      node.updateMatrix()
-      trafficCabin.setMatrixAt(i, node.matrix)
 
       // Two lamp bars per car: headlights forward, tail lights aft.
       const nose = VEHICLE.length * 0.48
@@ -161,8 +163,6 @@ export function GameLoop({ interactables, ambientPedestrians, onInteract }: Game
       node.rotation.order = 'XYZ'
     }
 
-    trafficBody.instanceMatrix.needsUpdate = true
-    trafficCabin.instanceMatrix.needsUpdate = true
     trafficLamps.instanceMatrix.needsUpdate = true
     trafficSpill.instanceMatrix.needsUpdate = true
   }

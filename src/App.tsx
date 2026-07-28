@@ -131,15 +131,15 @@ function Lighting({ shadows, shadowMapSize }: { shadows: boolean; shadowMapSize:
       <pointLight
         position={[0, 4.2, -4]}
         color={PALETTE.warmLight}
-        intensity={420}
-        distance={46}
+        intensity={185}
+        distance={34}
         decay={2}
       />
       <pointLight
         position={[0, 3.4, 7]}
         color={PALETTE.warmLight}
-        intensity={120}
-        distance={26}
+        intensity={80}
+        distance={22}
         decay={2}
       />
     </>
@@ -155,7 +155,7 @@ function Scene({
 }) {
   const snapshot = useGame((s) => s.snapshot)
   const quality = QUALITY[settings.quality]
-  const agents = snapshot?.agents ?? []
+  const agents = useMemo(() => snapshot?.agents ?? [], [snapshot?.agents])
 
   // Interaction points. Rebuilt only when the agent roster changes — this is
   // not per-frame data.
@@ -241,7 +241,11 @@ function Scene({
       <MarketKeeper />
       <PlazaWarden />
       <AmbientCrowd count={quality.ambientPedestrians} />
-      <Capybara shadows={quality.shadows} />
+      {/* The high-detail animal starts loading with the scene but does not
+          hold the title screen hostage on a cold cache. */}
+      <Suspense fallback={null}>
+        <Capybara shadows={quality.shadows} />
+      </Suspense>
 
       <PlayerBody />
       <LaserBeam />
@@ -279,14 +283,15 @@ function Scene({
 /**
  * Decides when the world is ready to enter.
  *
- * `useProgress` only knows about things routed through THREE's loading
- * manager. This scene is entirely procedural — the geometry is code, not
- * assets — so progress can legitimately sit at 0 with nothing ever loading,
- * and gating on `progress >= 100` alone hangs on the loading card forever.
+ * `useProgress` tracks both route-critical files and optional models behind
+ * nested Suspense boundaries. Waiting for every optional high-detail model
+ * would make a 4–6 MB character hold the title screen hostage even though its
+ * reviewed fallback can already render.
  *
- * So: ready when real loading finishes, OR when a short settle passes with
- * nothing in flight. The timeout is the normal path today and the safety net
- * once GLB assets arrive.
+ * The outer Suspense boundary guarantees this component does not mount until
+ * route-critical files are ready. Once mounted, finish immediately if the
+ * loader is idle or after a short settlement window while optional assets
+ * continue in their local boundaries.
  */
 function LoadGate({ onReady }: { onReady(): void }) {
   const { progress, active } = useProgress()
@@ -303,7 +308,6 @@ function LoadGate({ onReady }: { onReady(): void }) {
       fire()
       return
     }
-    if (active) return
     const id = setTimeout(fire, 700)
     return () => clearTimeout(id)
   }, [active, progress, fire])

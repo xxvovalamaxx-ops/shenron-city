@@ -74,8 +74,7 @@ export interface Runtime {
      * priority, ordering would otherwise fall out of React's mount order, and
      * the colliders would trail the visible cars by a frame.
      */
-    trafficBody: InstancedMesh | null
-    trafficCabin: InstancedMesh | null
+    trafficModels: Array<Object3D | null>
     trafficLamps: InstancedMesh | null
     trafficSpill: InstancedMesh | null
     capybara: Object3D | null
@@ -126,8 +125,7 @@ export const rt: Runtime = {
     carDoorRight: null,
     entranceLeft: null,
     entranceRight: null,
-    trafficBody: null,
-    trafficCabin: null,
+    trafficModels: [],
     trafficLamps: null,
     trafficSpill: null,
     capybara: null,

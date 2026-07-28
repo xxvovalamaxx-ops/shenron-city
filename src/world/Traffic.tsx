@@ -1,25 +1,17 @@
 /**
- * Boulevard traffic, instanced.
+ * Boulevard traffic using audited CC0 vehicle shells.
  *
- * Three draw calls for the whole fleet regardless of size: bodies, cabins, and
- * lamp bars. This component owns appearance only — every matrix is written by
- * the simulation in GameLoop, because the colliders are derived from the same
- * poses and the two must not disagree by a frame.
- *
- * Colours are applied once per fleet rather than per frame. A car that changes
- * paint while you watch it is worse than no traffic at all.
+ * This component owns appearance only. Every vehicle root is written by the
+ * simulation in GameLoop, because the colliders are derived from the same poses
+ * and the two must not disagree by a frame.
  */
-import { useEffect, useLayoutEffect, useMemo, useRef } from 'react'
+import { useCallback, useEffect, useLayoutEffect, useMemo, useRef } from 'react'
 import * as THREE from 'three'
 import { VEHICLE } from './city-data'
 import { rt, setTrafficCount } from '../gameplay/runtime'
 import type { QualitySettings } from './palette'
-
-/**
- * Night-city paintwork: dark and desaturated so headlights and shopfronts stay
- * the brightest things on the street. Bright cars would out-read the signage.
- */
-const PAINT = ['#3f5068', '#5a6172', '#6d5f56', '#40655e', '#5b4f66', '#736450'] as const
+import { StaticCityModel } from './StaticCityModel'
+import { vehicleAssetFor } from './city-assets'
 
 const HEADLIGHT = '#fff0cf'
 const TAILLIGHT = '#ff2e2e'
@@ -56,13 +48,42 @@ function useSpillTexture(): THREE.CanvasTexture {
   }, [])
 }
 
+function VehicleShell({
+  index,
+  shadows,
+  roots,
+}: {
+  index: number
+  shadows: boolean
+  roots: Array<THREE.Object3D | null>
+}) {
+  const bindRoot = useCallback(
+    (root: THREE.Group | null) => {
+      roots[index] = root
+    },
+    [index, roots],
+  )
+
+  return (
+    <group ref={bindRoot}>
+      <StaticCityModel
+        url={vehicleAssetFor(index)}
+        dimensions={[VEHICLE.width, VEHICLE.height, VEHICLE.length]}
+        shadows={shadows}
+      />
+    </group>
+  )
+}
+
 export function Traffic({ quality }: { quality: QualitySettings }) {
-  const body = useRef<THREE.InstancedMesh>(null)
-  const cabin = useRef<THREE.InstancedMesh>(null)
   const lamps = useRef<THREE.InstancedMesh>(null)
   const spill = useRef<THREE.InstancedMesh>(null)
   const spillTexture = useSpillTexture()
   const count = quality.vehicles
+  const modelRoots = useMemo<Array<THREE.Object3D | null>>(
+    () => Array.from({ length: count }, () => null),
+    [count],
+  )
 
   // Build the fleet before the first frame, so GameLoop never writes into
   // instance buffers sized for a fleet that no longer exists.
@@ -71,32 +92,27 @@ export function Traffic({ quality }: { quality: QualitySettings }) {
   }, [count])
 
   useLayoutEffect(() => {
-    rt.refs.trafficBody = body.current
-    rt.refs.trafficCabin = cabin.current
+    rt.refs.trafficModels = modelRoots
     rt.refs.trafficLamps = lamps.current
     rt.refs.trafficSpill = spill.current
     return () => {
-      rt.refs.trafficBody = null
-      rt.refs.trafficCabin = null
+      rt.refs.trafficModels = []
       rt.refs.trafficLamps = null
       rt.refs.trafficSpill = null
     }
-  }, [count])
+  }, [modelRoots])
 
   useEffect(() => () => spillTexture.dispose(), [spillTexture])
 
   useEffect(() => {
-    const bodyMesh = body.current
     const lampMesh = lamps.current
-    if (!bodyMesh || !lampMesh) return
+    if (!lampMesh) return
 
     const colour = new THREE.Color()
-    rt.vehicles.forEach((vehicle, i) => {
-      bodyMesh.setColorAt(i, colour.set(PAINT[vehicle.tint % PAINT.length]))
+    rt.vehicles.forEach((_, i) => {
       lampMesh.setColorAt(i * 2, colour.set(HEADLIGHT))
       lampMesh.setColorAt(i * 2 + 1, colour.set(TAILLIGHT))
     })
-    if (bodyMesh.instanceColor) bodyMesh.instanceColor.needsUpdate = true
     if (lampMesh.instanceColor) lampMesh.instanceColor.needsUpdate = true
   }, [count])
 
@@ -104,36 +120,14 @@ export function Traffic({ quality }: { quality: QualitySettings }) {
 
   return (
     <group>
-      <instancedMesh
-        ref={body}
-        args={[undefined, undefined, count]}
-        castShadow={quality.shadows}
-        receiveShadow={quality.shadows}
-        // The fleet is always somewhere on the boulevard; culling per-instance
-        // bounds that the simulation rewrites every frame costs more than it saves.
-        frustumCulled={false}
-      >
-        <boxGeometry args={[VEHICLE.width, VEHICLE.height * 0.62, VEHICLE.length]} />
-        {/*
-          Car paint is a dielectric with a clearcoat, not a metal. At metalness
-          0.55 with no environment map to reflect, these rendered as black
-          cut-outs on a night street — a metal surface with nothing to mirror
-          has almost no diffuse response left.
-        */}
-        <meshStandardMaterial roughness={0.42} metalness={0.12} />
-      </instancedMesh>
-
-      <instancedMesh
-        ref={cabin}
-        args={[undefined, undefined, count]}
-        castShadow={quality.shadows}
-        frustumCulled={false}
-      >
-        <boxGeometry
-          args={[VEHICLE.width * 0.88, VEHICLE.height * 0.44, VEHICLE.length * 0.52]}
+      {Array.from({ length: count }, (_, index) => (
+        <VehicleShell
+          key={index}
+          index={index}
+          shadows={quality.shadows}
+          roots={modelRoots}
         />
-        <meshStandardMaterial color="#0b1017" roughness={0.12} metalness={0.1} />
-      </instancedMesh>
+      ))}
 
       <instancedMesh ref={lamps} args={[undefined, undefined, count * 2]} frustumCulled={false}>
         <boxGeometry args={[VEHICLE.width * 0.78, 0.19, 0.09]} />

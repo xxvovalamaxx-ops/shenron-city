@@ -1,0 +1,87 @@
+Pack,Clip,License,Runtime Selected,Intended Use
+UAL1 Standard,A_TPose,CC0 1.0,No,Source bind pose
+UAL1 Standard,Crouch_Fwd_Loop,CC0 1.0,No,Deferred crouch traversal
+UAL1 Standard,Crouch_Idle_Loop,CC0 1.0,No,Deferred crouch traversal
+UAL1 Standard,Dance_Loop,CC0 1.0,Yes,Market and social activity
+UAL1 Standard,Death01,CC0 1.0,No,No current death gameplay
+UAL1 Standard,Driving_Loop,CC0 1.0,Yes,Future occupied traffic
+UAL1 Standard,Fixing_Kneeling,CC0 1.0,Yes,Maintenance activity
+UAL1 Standard,Hit_Chest,CC0 1.0,No,No current combat reaction
+UAL1 Standard,Hit_Head,CC0 1.0,No,No current combat reaction
+UAL1 Standard,Idle_Loop,CC0 1.0,Yes,Neutral character idle
+UAL1 Standard,Idle_Talking_Loop,CC0 1.0,Yes,Dialogue presentation
+UAL1 Standard,Idle_Torch_Loop,CC0 1.0,No,No torch prop
+UAL1 Standard,Interact,CC0 1.0,Yes,World interaction
+UAL1 Standard,Jog_Fwd_Loop,CC0 1.0,Yes,Hero locomotion
+UAL1 Standard,Jump_Land,CC0 1.0,Yes,Jump landing
+UAL1 Standard,Jump_Loop,CC0 1.0,Yes,Jump airborne phase
+UAL1 Standard,Jump_Start,CC0 1.0,Yes,Jump takeoff
+UAL1 Standard,PickUp_Table,CC0 1.0,Yes,Countertop interaction
+UAL1 Standard,Pistol_Aim_Down,CC0 1.0,No,No pistol gameplay
+UAL1 Standard,Pistol_Aim_Neutral,CC0 1.0,No,No pistol gameplay
+UAL1 Standard,Pistol_Aim_Up,CC0 1.0,No,No pistol gameplay
+UAL1 Standard,Pistol_Idle_Loop,CC0 1.0,No,No pistol gameplay
+UAL1 Standard,Pistol_Reload,CC0 1.0,No,No pistol gameplay
+UAL1 Standard,Pistol_Shoot,CC0 1.0,No,No pistol gameplay
+UAL1 Standard,Punch_Cross,CC0 1.0,No,No melee gameplay
+UAL1 Standard,Punch_Jab,CC0 1.0,No,No melee gameplay
+UAL1 Standard,Push_Loop,CC0 1.0,No,No pushing gameplay
+UAL1 Standard,Roll,CC0 1.0,No,No dodge-roll gameplay
+UAL1 Standard,Sitting_Enter,CC0 1.0,Yes,Seated state transition
+UAL1 Standard,Sitting_Exit,CC0 1.0,Yes,Seated state transition
+UAL1 Standard,Sitting_Idle_Loop,CC0 1.0,Yes,Seated ambient activity
+UAL1 Standard,Sitting_Talking_Loop,CC0 1.0,Yes,Seated dialogue
+UAL1 Standard,Spell_Simple_Enter,CC0 1.0,No,No magic gameplay
+UAL1 Standard,Spell_Simple_Exit,CC0 1.0,No,No magic gameplay
+UAL1 Standard,Spell_Simple_Idle_Loop,CC0 1.0,No,No magic gameplay
+UAL1 Standard,Spell_Simple_Shoot,CC0 1.0,No,No magic gameplay
+UAL1 Standard,Sprint_Loop,CC0 1.0,Yes,Fast hero locomotion
+UAL1 Standard,Swim_Fwd_Loop,CC0 1.0,No,No swimming gameplay
+UAL1 Standard,Swim_Idle_Loop,CC0 1.0,No,No swimming gameplay
+UAL1 Standard,Sword_Attack,CC0 1.0,No,No sword gameplay
+UAL1 Standard,Sword_Idle,CC0 1.0,No,No sword gameplay
+UAL1 Standard,Walk_Formal_Loop,CC0 1.0,Yes,Formal indoor locomotion
+UAL1 Standard,Walk_Loop,CC0 1.0,Yes,Standard locomotion
+UAL2 Standard,A_TPose,CC0 1.0,No,Duplicate source bind pose
+UAL2 Standard,Chest_Open,CC0 1.0,Yes,Container interaction
+UAL2 Standard,ClimbUp_1m,CC0 1.0,No,No climbing gameplay
+UAL2 Standard,Consume,CC0 1.0,Yes,Food and drink activity
+UAL2 Standard,Farm_Harvest,CC0 1.0,Yes,Park gardening activity
+UAL2 Standard,Farm_PlantSeed,CC0 1.0,Yes,Park gardening activity
+UAL2 Standard,Farm_Watering,CC0 1.0,Yes,Park gardening activity
+UAL2 Standard,Hit_Knockback,CC0 1.0,No,No current combat reaction
+UAL2 Standard,Idle_FoldArms_Loop,CC0 1.0,Yes,Security idle
+UAL2 Standard,Idle_Lantern_Loop,CC0 1.0,No,No carried lantern
+UAL2 Standard,Idle_No_Loop,CC0 1.0,No,Deferred dialogue gesture
+UAL2 Standard,Idle_Rail_Call,CC0 1.0,No,No rail-call sequence
+UAL2 Standard,Idle_Rail_Loop,CC0 1.0,No,No rail-call sequence
+UAL2 Standard,Idle_Shield_Break,CC0 1.0,No,No shield gameplay
+UAL2 Standard,Idle_Shield_Loop,CC0 1.0,No,No shield gameplay
+UAL2 Standard,Idle_TalkingPhone_Loop,CC0 1.0,Yes,Ambient phone activity
+UAL2 Standard,LayToIdle,CC0 1.0,No,No lying state
+UAL2 Standard,Melee_Hook,CC0 1.0,No,No melee gameplay
+UAL2 Standard,Melee_Hook_Rec,CC0 1.0,No,No melee gameplay
+UAL2 Standard,NinjaJump_Idle_Loop,CC0 1.0,No,No parkour gameplay
+UAL2 Standard,NinjaJump_Land,CC0 1.0,No,No parkour gameplay
+UAL2 Standard,NinjaJump_Start,CC0 1.0,No,No parkour gameplay
+UAL2 Standard,OverhandThrow,CC0 1.0,Yes,Throw interaction
+UAL2 Standard,Shield_Dash,CC0 1.0,No,No shield gameplay
+UAL2 Standard,Shield_OneShot,CC0 1.0,No,No shield gameplay
+UAL2 Standard,Slide_Exit,CC0 1.0,No,No slide gameplay
+UAL2 Standard,Slide_Loop,CC0 1.0,No,No slide gameplay
+UAL2 Standard,Slide_Start,CC0 1.0,No,No slide gameplay
+UAL2 Standard,Sword_Block,CC0 1.0,No,No sword gameplay
+UAL2 Standard,Sword_Dash,CC0 1.0,No,No sword gameplay
+UAL2 Standard,Sword_Heavy_Combo,CC0 1.0,No,No sword gameplay
+UAL2 Standard,Sword_Regular_A,CC0 1.0,No,No sword gameplay
+UAL2 Standard,Sword_Regular_A_Rec,CC0 1.0,No,No sword gameplay
+UAL2 Standard,Sword_Regular_B,CC0 1.0,No,No sword gameplay
+UAL2 Standard,Sword_Regular_B_Rec,CC0 1.0,No,No sword gameplay
+UAL2 Standard,Sword_Regular_C,CC0 1.0,No,No sword gameplay
+UAL2 Standard,Sword_Regular_Combo,CC0 1.0,No,No sword gameplay
+UAL2 Standard,TreeChopping_Loop,CC0 1.0,Yes,Maintenance activity
+UAL2 Standard,Walk_Carry_Loop,CC0 1.0,Yes,Carrying locomotion
+UAL2 Standard,Yes,CC0 1.0,Yes,Dialogue acknowledgement
+UAL2 Standard,Zombie_Idle_Loop,CC0 1.0,No,No zombie gameplay
+UAL2 Standard,Zombie_Scratch,CC0 1.0,No,No zombie gameplay
+UAL2 Standard,Zombie_Walk_Fwd_Loop,CC0 1.0,No,No zombie gameplay

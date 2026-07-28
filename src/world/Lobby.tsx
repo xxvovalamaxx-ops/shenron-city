@@ -34,14 +34,14 @@ function CoveLight({ z, shadows }: { z: number; shadows?: boolean }) {
           key={x}
           position={[x, CEIL - 1.1, z]}
           color={PALETTE.warmLight}
-          intensity={260}
-          distance={38}
+          intensity={115}
+          distance={28}
           decay={2}
           castShadow={shadows}
           shadow-mapSize={[512, 512]}
           shadow-bias={-0.001}
           shadow-camera-near={0.5}
-          shadow-camera-far={38}
+          shadow-camera-far={28}
         />
       ))}
     </>
@@ -64,7 +64,7 @@ function WallWash({ z }: { z: number }) {
           key={s}
           position={[s * (W - 1.6), 4.4, z]}
           color={PALETTE.coolLight}
-          intensity={50}
+          intensity={32}
           distance={24}
           decay={2}
         />
@@ -74,7 +74,7 @@ function WallWash({ z }: { z: number }) {
 }
 
 export function Lobby({ quality }: { quality: QualitySettings }) {
-  const floorMat = useLobbyFloorMaterial(quality.reflections ? 0.26 : 0.42)
+  const floorMat = useLobbyFloorMaterial(quality.reflections ? 0.36 : 0.48)
   const wallMat = useLobbyWallMaterial()
 
   return (

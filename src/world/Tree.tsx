@@ -12,9 +12,22 @@
  * PlanterTree covers the gap. Do not add a static import of this module.
  */
 import { useEffect, useRef } from 'react'
-import { Box3, Vector3, type Group } from 'three'
+import { Box3, Mesh, Vector3, type Group, type Material } from 'three'
 import { Tree as EzTree } from '@dgreenheck/ez-tree'
 import { DEFAULT_TREE_HEIGHT, type TreeProps } from './PlanterTree'
+
+type EzTreeOptions = NonNullable<ConstructorParameters<typeof EzTree>[0]>
+
+function disposeTree(tree: EzTree): void {
+  tree.traverse((object) => {
+    if (!(object instanceof Mesh)) return
+    object.geometry.dispose()
+    const materials: Material[] = Array.isArray(object.material)
+      ? object.material
+      : [object.material]
+    for (const material of materials) material.dispose()
+  })
+}
 
 const PRESETS: Record<string, object> = {
   oak: {
@@ -110,15 +123,17 @@ export default function Tree({
   const treeRef = useRef<EzTree | null>(null)
 
   useEffect(() => {
-    if (!groupRef.current) return
+    const group = groupRef.current
+    if (!group) return
 
     if (treeRef.current) {
-      groupRef.current.remove(treeRef.current)
+      group.remove(treeRef.current)
+      disposeTree(treeRef.current)
       treeRef.current = null
     }
 
     const preset = JSON.parse(JSON.stringify(PRESETS[variant]))
-    const tree = new EzTree({ ...preset, seed } as any)
+    const tree = new EzTree({ ...preset, seed } as EzTreeOptions)
     tree.generate()
 
     tree.traverse((child) => {
@@ -133,12 +148,13 @@ export default function Tree({
     const natural = new Box3().setFromObject(tree).getSize(new Vector3()).y
     if (natural > 0) tree.scale.setScalar(height / natural)
 
-    groupRef.current.add(tree)
+    group.add(tree)
     treeRef.current = tree
 
     return () => {
-      if (treeRef.current && groupRef.current) {
-        groupRef.current.remove(treeRef.current)
+      group.remove(tree)
+      disposeTree(tree)
+      if (treeRef.current === tree) {
         treeRef.current = null
       }
     }
