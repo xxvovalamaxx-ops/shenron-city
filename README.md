@@ -40,9 +40,9 @@ Click **Enter Shenron City** to capture the mouse.
 Dragon Boulevard → night market / Pocket Park → headquarters plaza →
 automatic doors → lobby → secretary → elevator → floor 45 → resident office.
 
-The session-only **City Tour** HUD turns that route into six ordered
-objectives. Progress is deterministic game state and is deliberately not
-written to browser storage or any host service.
+The **City Tour** HUD turns that route into six ordered objectives. Progress is
+deterministic game state and is saved only in the game's validated browser
+save; it is never sent to a host service.
 
 The current geometry and audio are procedural. The art pass uses a curated set
 of CC0 Poly Haven PBR textures recorded in
@@ -76,7 +76,7 @@ npm run verify:standalone
 | Category | Packages |
 |----------|----------|
 | **Renderer** | `three`, `@react-three/fiber`, `@react-three/drei` |
-| **Visuals** | `@react-three/postprocessing` (Bloom, SMAA, Vignette), `@dgreenheck/ez-tree` (lazy detailed trees) |
+| **Visuals** | `@react-three/postprocessing` (Bloom, SMAA, Vignette) |
 | **Physics** | `@react-three/rapier` (rigid bodies, colliders, character controller) |
 | **AI / Navigation** | `yuka` (local pedestrian steering) |
 | **Procedural** | `@dgreenheck/ez-tree` (trees with real bark/leaf textures) |

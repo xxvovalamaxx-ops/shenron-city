@@ -64,7 +64,8 @@ would make behavior depend on React render order.
 - District geometry and collision consume the same renderer-free city data.
 - Ambient pedestrians use local Yuka steering and never call a model.
 - The six-step City Tour is an ordered pure reducer; later objectives cannot
-  be completed early and progress exists only for the current browser session.
+  be completed early and validated progress can be restored from the local
+  browser save.
 - In-world text is generated from browser canvas textures and never resolves a
   remote font.
 - Save data is validated browser `localStorage`, not filesystem access.

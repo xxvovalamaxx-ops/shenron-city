@@ -15,7 +15,8 @@ Everything remains procedural and ships inside the web build.
 
 The City Tour HUD guides those actions as six ordered objectives and ends when
 the player inspects a floor 45 office. The reducer ignores skipped and repeated
-events, has no persistence, and is fully covered without a browser or GPU.
+events, is restored only through the validated browser save, and is fully
+covered without a browser or GPU.
 
 ## Shared world data
 

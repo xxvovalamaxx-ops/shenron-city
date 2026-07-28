@@ -1,38 +1,21 @@
-# Shenron City — Procurement Candidates
+# Shenron City — future asset candidates
 
-## Paid Assets Worth Evaluating
+This is a browser/Three.js project. The current vertical slice needs no paid
+asset purchase, and nothing listed here is approved for import until its exact
+license, web format, performance cost, and in-game use are reviewed.
 
-### Character Models
-| Asset | Source | Cost | Why |
-|-------|--------|------|-----|
-| MetaHuman Creator | Epic Games | Free | Production-quality human characters |
-| Character Creator 4 | Reallusion | $199 | Professional character pipeline |
-| MakeHuman | Open source | Free | Parametric human generation |
+| Need | Candidate source | Evaluation gate |
+|---|---|---|
+| Modular city pieces | Quaternius or Kenney | Exact item is browser-ready or converts cleanly to GLB, has compatible redistribution terms, and improves the hero route |
+| Hero props | Poly Haven, ambientCG, Kenney | Provenance is recorded and texture/model cost fits the production budget |
+| Characters | Web-compatible GLB supplier | Character license covers game redistribution; geometry, textures, and rig fit the browser budget |
+| Locomotion | Licensed animation supplier | License is recorded, animation retargeting is reproducible, and only used clips are committed |
+| Sound effects | CC0 or explicitly licensed library | Exact recording and creator are recorded; files are compressed and spatial playback is tested |
+| Music | Original or explicitly licensed source | License covers distribution with the game and looping/volume behavior is verified |
 
-### Animation Packs
-| Asset | Source | Cost | Why |
-|-------|--------|------|-----|
-|Mixamo | Adobe | Free | Large animation library |
-| Unity Animation Pack | Unity Asset Store | $50-200 | Pre-made locomotion sets |
-| Rokoko Motion Library | Rokoko | Free tier | Motion capture data |
+## Procurement rule
 
-### Environment
-| Asset | Source | Cost | Why |
-|-------|--------|------|-----|
-| Quaternius Downtown City | Quaternius | Free (CC0) | 300+ modular city pieces |
-| Kenney City Kit | Kenney | Free (CC0) | Suburban buildings |
-| Synty Polygon City | Unity Asset Store | $80 | Stylized city assets |
-
-### Audio
-| Asset | Source | Cost | Why |
-|-------|--------|------|-----|
-| FMOD | FMOD | Free tier | Professional audio middleware |
-| Wwise | Audiokinetic | Free tier | Game audio integration |
-
-## Current Approach
-All assets are either:
-- Procedurally generated (zero cost)
-- Downloaded from CC0 sources (Poly Haven, Kenney, Quaternius)
-- Created with Three.js primitives
-
-No paid assets are required for the vertical slice.
+Prefer improving the procedural vertical slice over collecting speculative
+assets. A candidate becomes repository content only in the same focused change
+that renders it, records it in `ASSET_MANIFEST.csv`, tests its fallback, and
+passes `npm run check`.

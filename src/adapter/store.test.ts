@@ -8,6 +8,7 @@ describe('standalone game store', () => {
 
   afterEach(() => {
     useGame.getState().dispose()
+    vi.unstubAllGlobals()
     vi.useRealTimers()
   })
 
@@ -25,6 +26,20 @@ describe('standalone game store', () => {
 
     await expect(useGame.getState().requestSummary(resident.id)).resolves.toEqual(resident)
     await expect(useGame.getState().requestSummary('../../secrets')).resolves.toBeNull()
+  })
+
+  it('never opens a network path during startup or local refresh', async () => {
+    const fetchSpy = vi.fn()
+    const webSocketSpy = vi.fn()
+    vi.stubGlobal('fetch', fetchSpy)
+    vi.stubGlobal('WebSocket', webSocketSpy)
+
+    useGame.getState().start()
+    vi.advanceTimersByTime(6000)
+    await useGame.getState().requestSummary('iris')
+
+    expect(fetchSpy).not.toHaveBeenCalled()
+    expect(webSocketSpy).not.toHaveBeenCalled()
   })
 
   it('drifts metrics over time', () => {

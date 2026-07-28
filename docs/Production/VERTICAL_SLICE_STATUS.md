@@ -28,7 +28,7 @@
 - [x] Ambient pedestrians (12)
 - [x] Light traffic (5-16 vehicles)
 - [x] Three named NPCs (Iris, Mira, Kai)
-- [x] AI-capable NPC (dialogue system)
+- [x] Deterministic named-NPC dialogue
 - [x] Doors (automatic sliding)
 - [x] Spatial audio (5 zones)
 - [x] Save/reload
@@ -37,9 +37,8 @@
 - [x] Procedural street props and storefront interiors
 
 ## Remaining Work
-- [ ] Packaged executable
-- [ ] GLB models for buildings
-- [ ] Character models and animations
-- [ ] Vehicle models
-- [ ] Street props
-- [ ] Storefront interiors
+- [ ] Authored GLB hero models, only where they improve the procedural scene
+- [ ] Licensed character models and locomotion animation
+- [ ] Authored vehicle models
+- [ ] Fully enterable shop interiors
+- [ ] Minimap or compass wayfinding
