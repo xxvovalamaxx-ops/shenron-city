@@ -34,7 +34,7 @@ function CoveLight({ z, shadows }: { z: number; shadows?: boolean }) {
           key={x}
           position={[x, CEIL - 1.1, z]}
           color={PALETTE.warmLight}
-          intensity={430}
+          intensity={260}
           distance={38}
           decay={2}
           castShadow={shadows}
@@ -64,7 +64,7 @@ function WallWash({ z }: { z: number }) {
           key={s}
           position={[s * (W - 1.6), 4.4, z]}
           color={PALETTE.coolLight}
-          intensity={95}
+          intensity={50}
           distance={24}
           decay={2}
         />

@@ -45,6 +45,8 @@ jobs:
       # through a wall, or the lift opening its doors mid-shaft.
       - name: Test
         run: npm test
+      - name: Verify authored game assets
+        run: npm run verify:assets
       - name: Build
         run: npm run build
       - name: Verify standalone boundary

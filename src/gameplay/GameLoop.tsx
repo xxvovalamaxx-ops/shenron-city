@@ -14,7 +14,7 @@ import { rt } from './runtime'
 import { advanceTraffic, vehicleColliders, vehiclePose } from './traffic'
 import { VEHICLE } from '../world/city-data'
 import { useKeys } from './input'
-import { EYE_HEIGHT, aabb, moveWithCollisions, type AABB } from './collision'
+import { EYE_HEIGHT, moveWithCollisions, type AABB } from './collision'
 import { npcColliders } from '../agents/ambient-routes'
 import { carHeight, currentFloor, doorOpenness, step, FLOORS } from './elevator'
 import { leafOffset, stepDoor } from './doors'
@@ -26,7 +26,6 @@ import { cityTourTarget, cityTourWayfinding } from './wayfinding'
 import { minimapHeading } from './minimap'
 import {
   ENTRANCE,
-  HQ,
   SHAFT,
   carColliders,
   hqColliders,
@@ -37,6 +36,7 @@ import { useHud, inputLocked } from '../ui/hud-store'
 import { AUDIO_ANCHORS, cityAudio } from '../audio'
 import { useLaser } from '../weapons/useLaser'
 import { capybaraCollider, capybaraPose } from '../animals/capybara'
+import { residentColliders } from './residents'
 
 const WALK_SPEED = 4.3
 const SPRINT_SPEED = 7.1
@@ -71,10 +71,7 @@ export function GameLoop({ interactables, ambientPedestrians, onInteract }: Game
   // frame budget for no reason.
   const staticWorld = useMemo<AABB[]>(() => [...staticColliders(), ...hqColliders()], [])
   const stationaryResidents = useMemo<AABB[]>(
-    () =>
-      interactables
-        .filter((target) => target.kind === 'agent-office')
-        .map((target) => aabb(target.x, HQ.y + 0.9, target.z, 0.7, 1.8, 0.7)),
+    () => residentColliders(interactables),
     [interactables],
   )
 

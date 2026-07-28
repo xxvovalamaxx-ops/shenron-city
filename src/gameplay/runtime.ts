@@ -15,23 +15,14 @@ import { createTraffic, type Vehicle } from './traffic'
 import type { Interactable } from './interact'
 import type { Vec3 } from './collision'
 import { SPAWN } from '../world/layout'
-import { MARKET_KEEPER } from '../world/city-data'
 import { CAPYBARA_INITIAL_POSE, type CapybaraPose } from '../animals/capybara'
+import { debugSpawnPosition } from './dev-view'
 
 function initialPlayerPosition(): Vec3 {
   const defaultSpawn = { x: SPAWN.x, y: SPAWN.y, z: SPAWN.z }
   if (!import.meta.env.DEV || typeof location === 'undefined') return defaultSpawn
 
-  // A bounded developer shortcut for browser verification. This is compiled
-  // out of production and accepts named in-world anchors, never coordinates.
-  const debugSpawn = new URLSearchParams(location.search).get('spawn')
-  if (debugSpawn === 'market') {
-    return { x: MARKET_KEEPER.x, y: SPAWN.y, z: MARKET_KEEPER.z + 2.7 }
-  }
-  if (debugSpawn === 'park') {
-    return { x: -14.2, y: SPAWN.y, z: 50.0 }
-  }
-  return defaultSpawn
+  return debugSpawnPosition(location.search, import.meta.env.DEV) ?? defaultSpawn
 }
 
 export interface Runtime {

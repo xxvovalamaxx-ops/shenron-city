@@ -25,7 +25,7 @@
 - [x] Working elevator (2 floors)
 - [x] One polished HQ floor
 - [x] Player character and camera
-- [x] Quality-scaled ambient pedestrians (5 / 11 / 18)
+- [x] Quality-scaled articulated pedestrians with deterministic walk cycles (5 / 11 / 18)
 - [x] Light traffic (5-16 vehicles)
 - [x] Three named NPCs (Iris, Mira, Kai)
 - [x] Deterministic named-NPC dialogue
@@ -33,13 +33,14 @@
 - [x] Spatial audio (5 zones)
 - [x] Save/reload
 - [x] City Tour objective compass and distance
-- [x] Postprocessing (Bloom, AO, CA, SMAA)
+- [x] Postprocessing (restrained Bloom, AO, vignette, SMAA)
 - [x] Curated CC0 PBR texture pass
 - [x] Procedural street props and storefront interiors
+- [x] District minimap with player heading and objective marker
+- [x] Calibrated night exposure across exterior, lobby, and Floor 45
 
 ## Remaining Work
 - [ ] Authored GLB hero models, only where they improve the procedural scene
-- [ ] Licensed character models and locomotion animation
+- [ ] Authored skinned character models where they materially exceed the procedural articulated cast
 - [ ] Authored vehicle models
 - [ ] Fully enterable shop interiors
-- [ ] Optional district minimap beyond the objective compass

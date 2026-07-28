@@ -6,6 +6,25 @@ export interface RouteSample extends RoutePoint {
   heading: number
 }
 
+export interface PedestrianGait {
+  bob: number
+  stride: number
+  sway: number
+}
+
+/**
+ * Deterministic walk-cycle values shared by the articulated crowd renderer.
+ * Keeping this pure makes the opposing limb phase and stride limits testable.
+ */
+export function pedestrianGait(index: number, elapsed: number): PedestrianGait {
+  const phase = elapsed * (6.2 + (index % 4) * 0.22) + index * 1.73
+  return {
+    bob: Math.abs(Math.sin(phase)) * 0.025,
+    stride: Math.sin(phase) * 0.48,
+    sway: Math.sin(phase * 0.5) * 0.035,
+  }
+}
+
 function segmentLength(a: RoutePoint, b: RoutePoint): number {
   return Math.hypot(b.x - a.x, b.z - a.z)
 }
@@ -60,9 +79,9 @@ export function ambientPedestrianPose(index: number, elapsed: number): RouteSamp
   return sampleLoop(route.points, elapsed * speed + phase)
 }
 
-/** NPC body half-extents matching AmbientCrowd's capsule scale (0.26 x 0.38). */
-const NPC_HALF_W = 0.26
-const NPC_HALF_H = 0.38
+/** Full articulated pedestrian bounds. */
+export const NPC_HALF_W = 0.28
+export const NPC_HALF_H = 0.92
 
 /**
  * Generate collision boxes for all ambient NPCs at a given elapsed time.

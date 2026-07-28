@@ -1,5 +1,13 @@
 import { describe, expect, it } from 'vitest'
-import { ambientPedestrianPose, loopLength, npcColliders, sampleLoop } from './ambient-routes'
+import {
+  ambientPedestrianPose,
+  loopLength,
+  NPC_HALF_H,
+  NPC_HALF_W,
+  npcColliders,
+  pedestrianGait,
+  sampleLoop,
+} from './ambient-routes'
 
 const SQUARE = [
   { x: 0, z: 0 },
@@ -37,6 +45,9 @@ describe('ambient pedestrian routes', () => {
 
       expect((box.min[0] + box.max[0]) / 2).toBeCloseTo(visible.x)
       expect((box.min[2] + box.max[2]) / 2).toBeCloseTo(visible.z)
+      expect(box.min[1]).toBe(0)
+      expect(box.max[1]).toBe(NPC_HALF_H * 2)
+      expect(box.max[0] - box.min[0]).toBeCloseTo(NPC_HALF_W * 2)
     })
   })
 
@@ -44,5 +55,15 @@ describe('ambient pedestrian routes', () => {
     expect(npcColliders(0, 5)).toHaveLength(5)
     expect(npcColliders(0, 18)).toHaveLength(18)
     expect(npcColliders(0, 0)).toEqual([])
+  })
+
+  it('produces a bounded articulated walk cycle', () => {
+    for (let i = 0; i < 18; i++) {
+      const gait = pedestrianGait(i, 12.5)
+      expect(Math.abs(gait.stride)).toBeLessThanOrEqual(0.48)
+      expect(gait.bob).toBeGreaterThanOrEqual(0)
+      expect(gait.bob).toBeLessThanOrEqual(0.025)
+      expect(Math.abs(gait.sway)).toBeLessThanOrEqual(0.035)
+    }
   })
 })

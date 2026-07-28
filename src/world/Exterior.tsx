@@ -179,7 +179,7 @@ function BoulevardLights() {
           key={`${lamp.x}:${lamp.z}`}
           position={[lamp.x, lampY, lamp.z]}
           color={PALETTE.warmLight}
-          intensity={180}
+          intensity={65}
           distance={22}
           decay={2}
         />

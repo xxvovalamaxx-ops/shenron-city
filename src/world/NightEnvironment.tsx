@@ -10,10 +10,11 @@
  */
 import { useEffect } from 'react'
 import { useThree } from '@react-three/fiber'
-import { RGBELoader } from 'three/examples/jsm/loaders/RGBELoader.js'
+import { HDRLoader } from 'three/examples/jsm/loaders/HDRLoader.js'
 import { PMREMGenerator } from 'three'
 
 const HDR_PATH = '/hdr/modern_buildings_night_1k.hdr'
+const ENVIRONMENT_INTENSITY = 0.32
 
 export function NightEnvironment() {
   const gl = useThree((s) => s.gl)
@@ -23,7 +24,7 @@ export function NightEnvironment() {
     const pmrem = new PMREMGenerator(gl)
     pmrem.compileEquirectangularShader()
 
-    const loader = new RGBELoader()
+    const loader = new HDRLoader()
     let disposed = false
 
     loader.load(
@@ -35,6 +36,7 @@ export function NightEnvironment() {
         }
         const envMap = pmrem.fromEquirectangular(texture).texture
         scene.environment = envMap
+        scene.environmentIntensity = ENVIRONMENT_INTENSITY
         texture.dispose()
         pmrem.dispose()
       },
@@ -50,6 +52,7 @@ export function NightEnvironment() {
         scene.environment.dispose()
         scene.environment = null
       }
+      scene.environmentIntensity = 1
       pmrem.dispose()
     }
   }, [gl, scene])

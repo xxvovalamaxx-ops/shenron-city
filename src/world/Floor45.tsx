@@ -65,7 +65,7 @@ export function Floor45({
           <pointLight
             position={[0, Y + C - 0.5, z]}
             color={PALETTE.coolLight}
-            intensity={340}
+            intensity={210}
             distance={26}
             decay={2}
             castShadow={quality.shadows && i < 2}
