@@ -1,10 +1,10 @@
 /**
  * Manages all breakable objects in the scene.
  *
- * Each breakable is rendered as a box mesh stored in a ref map exposed via
- * globalThis.__breakableMeshes. The laser raycasts against these meshes
- * using Three.js's built-in Raycaster.intersectObjects() — no manual
- * AABB math. Damage is applied on the intersection frame.
+ * Each breakable is a box mesh. Mesh refs are registered synchronously via
+ * React ref callbacks into the module-level breakableMeshRegistry — no
+ * globalThis, no useFrame timing dependency. Damage is applied by the
+ * laser hook which reads the registry directly.
  */
 import { useCallback, useRef, useState } from 'react'
 import { useFrame } from '@react-three/fiber'
@@ -14,6 +14,7 @@ import { BREAKABLES, type BreakableDef } from './BreakableRegistry'
 import { LASER_CONFIG } from '../weapons/laser'
 import { Fragment } from './Fragment'
 import { ScorchMark } from '../weapons/ScorchMark'
+import { registerBreakableMesh } from './breakableMeshRegistry'
 
 interface BreakableHealth {
   id: string
@@ -45,12 +46,6 @@ export function DestructionSystem() {
   const [fragments, setFragments] = useState<ActiveFragment[]>([])
   const [scorchMarks, setScorchMarks] = useState<Scorch[]>([])
   const idCounter = useRef(0)
-  const meshMap = useRef(new Map<string, Mesh>())
-
-  const registerMesh = useCallback((id: string, mesh: Mesh | null) => {
-    if (mesh) meshMap.current.set(id, mesh)
-    else meshMap.current.delete(id)
-  }, [])
 
   const removeFragment = useCallback((id: string) => {
     setFragments((prev) => prev.filter((f) => f.id !== id))
@@ -60,39 +55,27 @@ export function DestructionSystem() {
     setScorchMarks((prev) => prev.filter((s) => s.id !== id))
   }, [])
 
+  // Expose damage handler for the laser hook to call.
+  // Returns the aimPoint if damage was applied, for beam targeting.
   useFrame(() => {
-    const meshes = Array.from(meshMap.current.values())
-    if (meshes.length === 0) return
-
-    // Expose the mesh list for the laser hook.
-    ;(globalThis as unknown as { __breakableMeshes?: Mesh[] }).__breakableMeshes = meshes
-  })
-
-  useFrame((_, rawDt) => {
-    const dt = Math.min(rawDt, 1 / 20)
     if (!rt.player.firing || rt.player.overheated || !rt.player.aimPoint) return
-
-    const meshes = Array.from(meshMap.current.values())
-    if (meshes.length === 0) return
 
     const aim = rt.player.aimPoint
 
     for (const def of BREAKABLES) {
       if (rt.destroyed.has(def.id)) continue
 
-      const mesh = meshMap.current.get(def.id)
-      if (!mesh) continue
-
       // Fast AABB pre-check: is the aim point within tolerance of this breakable?
-      const hx = def.size[0] / 2 + 0.3
-      const hy = def.size[1] / 2 + 0.3
-      const hz = def.size[2] / 2 + 0.3
+      const hx = def.size[0] / 2 + 0.5
+      const hy = def.size[1] / 2 + 0.5
+      const hz = def.size[2] / 2 + 0.5
       if (
         Math.abs(aim.x - def.pos.x) > hx ||
         Math.abs(aim.y - def.pos.y) > hy ||
         Math.abs(aim.z - def.pos.z) > hz
       ) continue
 
+      const dt = 1 / 60
       const damage = LASER_CONFIG.dps * dt
       setHealths((prev) => {
         const next = new Map(prev)
@@ -147,7 +130,6 @@ export function DestructionSystem() {
             def={def}
             destroyed={destroyed}
             healthPct={healthPct}
-            onRef={registerMesh}
           />
         )
       })}
@@ -174,24 +156,22 @@ export function DestructionSystem() {
   )
 }
 
-/**
- * Individual breakable mesh with ref registration.
- * Separated to avoid re-mounting all meshes when health changes.
- */
 function BreakableMesh({
   def,
   destroyed,
   healthPct,
-  onRef,
 }: {
   def: BreakableDef
   destroyed: boolean
   healthPct: number
-  onRef: (id: string, mesh: Mesh | null) => void
 }) {
   const ref = useCallback(
-    (mesh: Mesh | null) => onRef(def.id, mesh),
-    [def.id, onRef],
+    (mesh: Mesh | null) => {
+      registerBreakableMesh(def.id, mesh)
+      // Force matrixWorld so the raycaster works on the very first frame.
+      if (mesh) mesh.updateMatrixWorld(true)
+    },
+    [def.id],
   )
 
   return (

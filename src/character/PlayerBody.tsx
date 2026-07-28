@@ -27,9 +27,9 @@ import { useFrame } from '@react-three/fiber'
 import { Group, Mesh } from 'three'
 import { rt } from '../gameplay/runtime'
 
-const BODY_COLOR = '#1a1f2e'
+const BODY_COLOR = '#3a4558'
 const SKIN_COLOR = '#d4a574'
-const SHOE_COLOR = '#0f1218'
+const SHOE_COLOR = '#1a2030'
 const ACCENT_COLOR = '#2dd4bf'
 
 const HEAD_RADIUS = 0.16
@@ -150,22 +150,32 @@ export function PlayerBody() {
         <meshStandardMaterial color={SKIN_COLOR} roughness={0.65} />
       </mesh>
 
-      {/* Visor / eye strip */}
+      {/* Visor / eye strip — emissive so it's always visible */}
       <mesh position={[0, EYE_Y, HEAD_RADIUS * 0.85]}>
         <boxGeometry args={[HEAD_RADIUS * 1.4, HEAD_RADIUS * 0.35, 0.03]} />
-        <meshStandardMaterial color={ACCENT_COLOR} emissive={ACCENT_COLOR} emissiveIntensity={0.8} toneMapped={false} />
+        <meshStandardMaterial
+          color={ACCENT_COLOR}
+          emissive={ACCENT_COLOR}
+          emissiveIntensity={2}
+          toneMapped={false}
+        />
       </mesh>
 
       {/* Torso */}
       <group ref={torsoRef} position={[0, torsoMid, 0]}>
         <mesh castShadow>
           <boxGeometry args={[0.36, TORSO_HEIGHT, 0.22]} />
-          <meshStandardMaterial color={BODY_COLOR} roughness={0.65} />
+          <meshStandardMaterial color={BODY_COLOR} roughness={0.55} metalness={0.2} />
         </mesh>
-        {/* Accent strip */}
+        {/* Accent strip — emissive */}
         <mesh position={[0, 0, 0.111]}>
           <boxGeometry args={[0.04, TORSO_HEIGHT * 0.6, 0.01]} />
-          <meshStandardMaterial color={ACCENT_COLOR} emissive={ACCENT_COLOR} emissiveIntensity={0.5} toneMapped={false} />
+          <meshStandardMaterial
+            color={ACCENT_COLOR}
+            emissive={ACCENT_COLOR}
+            emissiveIntensity={1.5}
+            toneMapped={false}
+          />
         </mesh>
       </group>
 
@@ -181,11 +191,11 @@ export function PlayerBody() {
 
       {/* Left leg — upper */}
       <group ref={leftLegRef} position={[-0.1, HIP_Y, 0]}>
-        {limb(0, -UPPER_LEG / 2, 0, 0.1, UPPER_LEG, 0.1, '#111622', { current: null })}
+        {limb(0, -UPPER_LEG / 2, 0, 0.1, UPPER_LEG, 0.1, '#2a3548', { current: null })}
         {/* Lower leg */}
         <mesh position={[0, -UPPER_LEG - LOWER_LEG / 2, 0]}>
           <boxGeometry args={[0.09, LOWER_LEG, 0.09]} />
-          <meshStandardMaterial color="#111622" roughness={0.7} />
+          <meshStandardMaterial color="#2a3548" roughness={0.6} metalness={0.15} />
         </mesh>
         {/* Foot */}
         <mesh position={[0, -UPPER_LEG - LOWER_LEG - FOOT_H / 2, 0.02]} castShadow>
@@ -196,11 +206,11 @@ export function PlayerBody() {
 
       {/* Right leg — upper */}
       <group ref={rightLegRef} position={[0.1, HIP_Y, 0]}>
-        {limb(0, -UPPER_LEG / 2, 0, 0.1, UPPER_LEG, 0.1, '#111622', { current: null })}
+        {limb(0, -UPPER_LEG / 2, 0, 0.1, UPPER_LEG, 0.1, '#2a3548', { current: null })}
         {/* Lower leg */}
         <mesh position={[0, -UPPER_LEG - LOWER_LEG / 2, 0]}>
           <boxGeometry args={[0.09, LOWER_LEG, 0.09]} />
-          <meshStandardMaterial color="#111622" roughness={0.7} />
+          <meshStandardMaterial color="#2a3548" roughness={0.6} metalness={0.15} />
         </mesh>
         {/* Foot */}
         <mesh position={[0, -UPPER_LEG - LOWER_LEG - FOOT_H / 2, 0.02]} castShadow>

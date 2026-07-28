@@ -1,16 +1,16 @@
 /**
- * React hook that manages laser firing state, raycasting, and heat.
+ * Laser firing hook — raycasts using Three.js Raycaster.intersectObjects()
+ * against breakable meshes from the module-level registry.
  *
- * Uses Three.js's built-in Raycaster.intersectObjects() for hit detection
- * — no manual AABB math. Zero per-frame allocation: all vectors and the
- * raycaster are module-level and reused.
- *
- * Runs in the GameLoop's useFrame via direct rt mutation.
+ * Zero timing dependencies: the registry is written synchronously in React
+ * ref callbacks, not in useFrame. matrixWorld is forced before raycasting.
+ * No per-frame vector allocation.
  */
 import { useEffect, useRef, useCallback } from 'react'
-import { Mesh, Raycaster, Vector3 } from 'three'
+import { Raycaster, Vector3 } from 'three'
 import { rt } from '../gameplay/runtime'
 import { stepLaser, LASER_CONFIG, type LaserState } from './laser'
+import { getBreakableMeshes } from '../destruction/breakableMeshRegistry'
 
 const _raycaster = new Raycaster()
 _raycaster.far = LASER_CONFIG.maxRange
@@ -56,21 +56,26 @@ export function useLaser() {
         camera.getWorldDirection(_dir)
         _raycaster.set(_origin, _dir)
 
-        // Get breakable meshes exposed by DestructionSystem.
-        const breakableMeshes: Mesh[] =
-          (globalThis as unknown as { __breakableMeshes?: Mesh[] }).__breakableMeshes ?? []
+        const meshes = getBreakableMeshes()
 
-        // Raycast against breakable meshes.
-        const hits = breakableMeshes.length > 0
-          ? _raycaster.intersectObjects(breakableMeshes, false)
+        // Force matrixWorld on all breakable meshes so the raycaster
+        // works correctly even on the first frame after mount.
+        for (let i = 0; i < meshes.length; i++) {
+          meshes[i].updateMatrixWorld(false)
+        }
+
+        const hits = meshes.length > 0
+          ? _raycaster.intersectObjects(meshes, false)
           : []
 
         if (hits.length > 0) {
           const hit = hits[0]
           rt.player.aimPoint = { x: hit.point.x, y: hit.point.y, z: hit.point.z }
         } else {
-          // No breakable hit — extend beam to max range.
-          _origin.addScaledVector(_dir, LASER_CONFIG.maxRange)
+          // No breakable in sight — beam extends to a short distance ahead
+          // so the visual doesn't stretch 120m across the scene.
+          const fallbackDist = 40
+          _origin.addScaledVector(_dir, fallbackDist)
           rt.player.aimPoint = { x: _origin.x, y: _origin.y, z: _origin.z }
         }
       } else {
