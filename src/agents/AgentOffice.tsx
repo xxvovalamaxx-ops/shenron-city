@@ -5,13 +5,12 @@
  * An empty slot renders as a dark, unlit, explicitly vacant room rather than
  * as a plausible-looking agent — a control surface must not invent occupancy.
  */
-import { useRef } from 'react'
-import { useFrame } from '@react-three/fiber'
-import type { Mesh, MeshStandardMaterial } from 'three'
 import type { Agent } from '../contracts/mission-control'
 import { WorldText as Text } from '../ui/WorldText'
 import { OFFICE, type OfficeSlot } from '../world/layout'
-import { PALETTE, STATE_COLOR, STATE_GLOW, STATE_LABEL } from '../world/palette'
+import { PALETTE, STATE_COLOR, STATE_LABEL } from '../world/palette'
+import { ServiceAndroid } from './ServiceAndroid'
+import { motionForAgentState, styleForAgentName } from './service-android'
 
 interface Props {
   slot: OfficeSlot
@@ -25,55 +24,78 @@ function clip(s: string | null, n: number): string {
   return s.length > n ? `${s.slice(0, n - 1)}…` : s
 }
 
-/**
- * The agent's physical presence.
- *
- * Not a humanoid — a rigged character needs an asset pipeline the slice does
- * not have yet, and a bad human model reads far worse than an honest abstract
- * form. A slowly rotating core whose pulse rate tracks activity communicates
- * the same information without pretending to be something it is not.
- */
+function RoleHardware({ agent, color }: { agent: Agent; color: string }) {
+  const name = agent.name.toLowerCase()
+  if (name === 'aegis') {
+    return (
+      <>
+        <mesh position={[0, 1.05, -0.42]} rotation={[Math.PI / 2, 0, 0]} castShadow>
+          <cylinderGeometry args={[0.5, 0.5, 0.08, 6]} />
+          <meshStandardMaterial color="#20323a" metalness={0.7} roughness={0.34} />
+        </mesh>
+        <mesh position={[0, 1.05, -0.47]} rotation={[Math.PI / 2, 0, 0]}>
+          <ringGeometry args={[0.31, 0.43, 6]} />
+          <meshBasicMaterial color={color} toneMapped={false} />
+        </mesh>
+      </>
+    )
+  }
+  if (name === 'echo') {
+    return (
+      <>
+        {[-1, 1].map((side) => (
+          <mesh key={side} position={[side * 0.47, 1.72, 0]} rotation={[0, Math.PI / 2, 0]}>
+            <torusGeometry args={[0.16, 0.035, 8, 24]} />
+            <meshStandardMaterial color={color} emissive={color} emissiveIntensity={0.34} />
+          </mesh>
+        ))}
+      </>
+    )
+  }
+  if (name === 'sentry') {
+    return (
+      <>
+        {[-1, 1].map((side) => (
+          <group key={side} position={[side * 0.47, 1.95, 0.02]}>
+            <mesh castShadow>
+              <boxGeometry args={[0.2, 0.32, 0.28]} />
+              <meshStandardMaterial color="#2e281d" metalness={0.72} roughness={0.36} />
+            </mesh>
+            <mesh position={[0, 0.06, 0.16]}>
+              <sphereGeometry args={[0.045, 10, 8]} />
+              <meshBasicMaterial color={color} toneMapped={false} />
+            </mesh>
+          </group>
+        ))}
+      </>
+    )
+  }
+  return (
+    <mesh position={[0, 2.28, 0]} rotation={[Math.PI / 2, 0, 0]}>
+      <torusGeometry args={[0.25, 0.025, 8, 30]} />
+      <meshStandardMaterial color={color} emissive={color} emissiveIntensity={0.22} />
+    </mesh>
+  )
+}
+
+/** A skinned, role-specific workstation embodiment rather than a glowing ball. */
 function Presence({ agent }: { agent: Agent }) {
-  const core = useRef<Mesh>(null)
-  const glow = useRef<MeshStandardMaterial>(null)
-
-  useFrame((state) => {
-    const t = state.clock.elapsedTime
-    const m = core.current
-    if (m) {
-      m.rotation.y = t * (agent.state === 'active' ? 0.55 : 0.09)
-      m.rotation.x = Math.sin(t * 0.3) * 0.12
-      m.position.y = 1.35 + Math.sin(t * (agent.state === 'active' ? 2.2 : 0.7)) * 0.045
-    }
-    if (glow.current) {
-      const base = STATE_GLOW[agent.state]
-      const pulse = agent.state === 'active' ? 0.35 * Math.sin(t * 3.1) : 0
-      glow.current.emissiveIntensity = Math.max(0, base + pulse)
-    }
-  })
-
   const color = STATE_COLOR[agent.state]
 
   return (
-    <group>
-      <mesh ref={core} position={[0, 1.35, 0]} castShadow>
-        <icosahedronGeometry args={[0.34, 1]} />
-        <meshStandardMaterial
-          ref={glow}
-          color={color}
-          emissive={color}
-          emissiveIntensity={STATE_GLOW[agent.state]}
-          roughness={0.25}
-          metalness={0.6}
-          flatShading
-        />
-      </mesh>
-      {/* Grounding shadow-catcher ring so the core does not look weightless */}
+    <group scale={0.56}>
+      <ServiceAndroid
+        motion={motionForAgentState(agent.state)}
+        style={styleForAgentName(agent.name)}
+        animationSpeed={agent.state === 'active' ? 0.92 : 0.72}
+        expression={agent.state === 'failed' ? 'concerned' : agent.state === 'blocked' ? 'alert' : 'neutral'}
+      />
+      <RoleHardware agent={agent} color={color} />
       <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0.03, 0]}>
-        <ringGeometry args={[0.28, 0.42, 24]} />
-        <meshBasicMaterial color={color} transparent opacity={0.25} toneMapped={false} />
+        <ringGeometry args={[0.48, 0.58, 28]} />
+        <meshBasicMaterial color={color} transparent opacity={0.16} toneMapped={false} />
       </mesh>
-      <pointLight position={[0, 1.5, 0]} color={color} intensity={26} distance={7} decay={2} />
+      <pointLight position={[0, 1.6, 0.45]} color={color} intensity={9} distance={5} decay={2} />
     </group>
   )
 }

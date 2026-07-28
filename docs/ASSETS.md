@@ -6,9 +6,10 @@ budget.
 
 ## Current shipped assets
 
-The city geometry, props, residents, vehicles, and audio are procedural. The
-imported runtime files in `public/` are the curated 1K Poly Haven material maps
-and the optimized Shenron City capybara GLB.
+Most city geometry, props, vehicles, and audio remain procedural. The imported
+runtime files in `public/` are the curated 1K Poly Haven material maps, the
+optimized Shenron City capybara GLB, and the pinned CC0 service-android GLB
+used for residents, named city characters, and headquarters agents.
 
 Every imported asset is recorded in
 [`Assets/ASSET_MANIFEST.csv`](Assets/ASSET_MANIFEST.csv), including its source,
@@ -47,6 +48,12 @@ The resulting 2,393 files remain under ignored
 marks them for license review; no clip may enter a runtime export until its
 provenance, skeleton, duplicate status, and game use are verified.
 
+The current rights decision and the exact evidence needed to promote a clip
+are recorded in
+[`Assets/ANIMATION_RIGHTS_AUDIT.md`](Assets/ANIMATION_RIGHTS_AUDIT.md).
+Provider terms cannot be inferred from filenames, and downloading a generic
+license does not retroactively establish the origin of an unknown archive.
+
 ## Model pipeline
 
 The capybara is the reference implementation for browser-ready character
@@ -58,6 +65,9 @@ live under `SourceAssets/`; only the verified runtime GLB lives under
 `npm run verify:assets` rejects a missing or oversized capybara, an unexpected
 clip or skeleton contract, Draco-only geometry, extra skin influences, remote
 texture references, and embedded textures above the 2K budget.
+
+The same gate pins the service android to its reviewed SHA-256 and checks its
+14-clip, two-skin, facial-morph, and no-remote-dependency contract.
 
 Keep future authoring sources outside `public/`; only optimized runtime results
 belong in the shipped asset tree. Model scale, axes, materials, animations,
