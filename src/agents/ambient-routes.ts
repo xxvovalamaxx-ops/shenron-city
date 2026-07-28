@@ -72,11 +72,21 @@ export function sampleLoop(points: readonly RoutePoint[], distance: number): Rou
 }
 
 /** Exact deterministic pose consumed by both rendering and collision. */
+/**
+ * Ground speed for one pedestrian, in metres per second.
+ *
+ * Exported so the animation rate can be derived from the same number that
+ * moves the character. These were two copies of one formula, and the drift
+ * between them was visible as sliding feet.
+ */
+export function ambientPedestrianSpeed(index: number): number {
+  return 0.82 + (index % 5) * 0.11
+}
+
 export function ambientPedestrianPose(index: number, elapsed: number): RouteSample {
   const route = AMBIENT_ROUTES[index % AMBIENT_ROUTES.length]
-  const speed = 0.82 + (index % 5) * 0.11
   const phase = index * 19.7
-  return sampleLoop(route.points, elapsed * speed + phase)
+  return sampleLoop(route.points, elapsed * ambientPedestrianSpeed(index) + phase)
 }
 
 /** Full articulated pedestrian bounds. */

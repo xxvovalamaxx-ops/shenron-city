@@ -8,8 +8,10 @@
 import { useRef } from 'react'
 import { useFrame } from '@react-three/fiber'
 import type { Group } from 'three'
-import { ambientPedestrianPose } from './ambient-routes'
+import { ambientPedestrianPose, ambientPedestrianSpeed } from './ambient-routes'
 import { KenneyCitizen } from './KenneyCitizen'
+import { DEFAULT_CHARACTER_HEIGHT } from './character-scale'
+import { locomotionTimeScale } from './locomotion'
 import type { KenneyCitizenSkin } from './kenney-citizen'
 
 const SKINS: KenneyCitizenSkin[] = [
@@ -32,15 +34,23 @@ function Pedestrian({ index }: { index: number }) {
     group.rotation.y = sample.heading
   })
 
-  const heightScale = 0.94 + (index % 5) * 0.025
-  const widthScale = 0.94 + ((index * 3) % 5) * 0.025
+  // Build variation around a real height, now that KenneyCitizen normalises to
+  // metres. These used to be the only scale applied, on a 3.76 m model.
+  const heightVariation = 0.94 + (index % 5) * 0.025
+  const widthVariation = 0.94 + ((index * 3) % 5) * 0.025
+  const height = DEFAULT_CHARACTER_HEIGHT * heightVariation
+
+  // Derived from the speed that actually moves this pedestrian, so the planted
+  // foot stays put. A hardcoded rate slid by up to 40%.
+  const animationSpeed = locomotionTimeScale(ambientPedestrianSpeed(index), height)
 
   return (
-    <group ref={root} scale={[heightScale * widthScale, heightScale, heightScale]}>
+    <group ref={root} scale={[widthVariation, 1, 1]}>
       <KenneyCitizen
         motion="Run"
         skin={SKINS[index % SKINS.length]}
-        animationSpeed={0.44 + (index % 4) * 0.025}
+        height={height}
+        animationSpeed={animationSpeed}
         castShadow={index < 10}
       />
     </group>
