@@ -32,13 +32,16 @@ export class AnimationController {
   private loadingPromises: Promise<void>[] = []
   private ready = false
 
+  private animManager: THREE.LoadingManager
+
   constructor(vrmScene: THREE.Group, vrmBoneNames: Map<string, string>) {
     this.mixer = new THREE.AnimationMixer(vrmScene)
+    this.animManager = new THREE.LoadingManager()
     this.loadAll(vrmBoneNames)
   }
 
   private async loadAll(vrmBoneNames: Map<string, string>): Promise<void> {
-    const loader = new FBXLoader()
+    const loader = new FBXLoader(this.animManager)
     const entries = Object.entries(ANIM_FILES) as [AnimName, string][]
 
     this.loadingPromises = entries.map(async ([name, url]) => {

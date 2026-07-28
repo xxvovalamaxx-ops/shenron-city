@@ -43,7 +43,10 @@ export function Character() {
   const prevPos = useRef({ x: 0, z: 0 })
 
   useEffect(() => {
-    const loader = new GLTFLoader()
+    // Standalone manager so this 15 MB load does not pollute
+    // THREE.DefaultLoadingManager and block the loading gate.
+    const vrmManager = new THREE.LoadingManager()
+    const loader = new GLTFLoader(vrmManager)
     loader.register((parser) => new VRMLoaderPlugin(parser))
 
     let disposed = false
@@ -62,9 +65,9 @@ export function Character() {
         const boneMap = new Map<string, string>()
         const bones = vrm.humanoid?.humanBones
         if (bones) {
-          for (const hb of Object.values(bones)) {
-            if (hb?.node) {
-              boneMap.set(hb.node.name, hb.node.name)
+          for (const [humanBoneName, humanBone] of Object.entries(bones)) {
+            if (humanBone?.node) {
+              boneMap.set(humanBoneName, humanBone.node.name)
             }
           }
         }
@@ -144,7 +147,9 @@ export function Character() {
 
   return (
     <group ref={groupRef} position={[0, 0, 0]}>
-      {ready && vrmSceneRef.current && <primitive object={vrmSceneRef.current} />}
+      {ready && vrmSceneRef.current && (
+        <primitive object={vrmSceneRef.current} castShadow receiveShadow />
+      )}
     </group>
   )
 }
