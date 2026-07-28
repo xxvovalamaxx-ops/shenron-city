@@ -263,6 +263,29 @@ canvas {
   line-height: 1.45;
 }
 
+.city-tour-nav {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin-top: 8px;
+  color: var(--accent);
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.city-tour-arrow {
+  display: inline-grid;
+  width: 19px;
+  height: 19px;
+  place-items: center;
+  border: 1px solid color-mix(in srgb, var(--accent) 50%, transparent);
+  border-radius: 50%;
+  font-size: 15px;
+  line-height: 1;
+  transition: transform 100ms linear;
+}
+
 .city-tour.complete {
   border-left-color: #fbbf24;
 }

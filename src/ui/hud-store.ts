@@ -27,12 +27,14 @@ export interface HudState {
   elevatorPhase: string
   fps: number
   frameMs: number
+  tourBearing: number | null
+  tourDistance: number | null
   showPerf: boolean
   /** Which agent's office panel is open. */
   openAgentId: string | null
   /** Which local scripted character owns the dialogue panel. */
   openCharacterId: CharacterId
-  /** Session-only progress through the first complete playable route. */
+  /** Progress through the first complete playable route. */
   cityTour: CityTourState
 
   set<K extends keyof HudState>(key: K, value: HudState[K]): void
@@ -50,6 +52,8 @@ export const useHud = create<HudState>((set) => ({
   elevatorPhase: 'open',
   fps: 0,
   frameMs: 0,
+  tourBearing: null,
+  tourDistance: null,
   showPerf: false,
   openAgentId: null,
   openCharacterId: 'iris',

@@ -9,6 +9,8 @@ const BASE: HudMirror = {
   elevatorPhase: 'open',
   fps: 60,
   frameMs: 16.7,
+  tourBearing: 15,
+  tourDistance: 42,
 }
 
 describe('HUD mirror updates', () => {
@@ -24,6 +26,8 @@ describe('HUD mirror updates', () => {
     'elevatorPhase',
     'fps',
     'frameMs',
+    'tourBearing',
+    'tourDistance',
   ])('detects a change to %s', (key) => {
     const next: HudMirror = { ...BASE }
     const replacements: HudMirror = {
@@ -34,6 +38,8 @@ describe('HUD mirror updates', () => {
       elevatorPhase: 'travelling',
       fps: 59,
       frameMs: 17,
+      tourBearing: 20,
+      tourDistance: 41,
     }
     Object.assign(next, { [key]: replacements[key] })
 

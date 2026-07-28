@@ -8,6 +8,8 @@ export interface HudMirror {
   elevatorPhase: string
   fps: number
   frameMs: number
+  tourBearing: number | null
+  tourDistance: number | null
 }
 
 /** Keep the throttled React mirror truthful without writing at frame rate. */
@@ -19,6 +21,8 @@ export function hudMirrorChanged(next: HudMirror, current: HudMirror): boolean {
     next.floorLabel !== current.floorLabel ||
     next.elevatorPhase !== current.elevatorPhase ||
     next.fps !== current.fps ||
-    next.frameMs !== current.frameMs
+    next.frameMs !== current.frameMs ||
+    next.tourBearing !== current.tourBearing ||
+    next.tourDistance !== current.tourDistance
   )
 }

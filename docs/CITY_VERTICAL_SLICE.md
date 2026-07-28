@@ -16,7 +16,8 @@ Everything remains procedural and ships inside the web build.
 The City Tour HUD guides those actions as six ordered objectives and ends when
 the player inspects a floor 45 office. The reducer ignores skipped and repeated
 events, is restored only through the validated browser save, and is fully
-covered without a browser or GPU.
+covered without a browser or GPU. Its compass arrow and distance point to the
+active objective; the final step selects the nearest office.
 
 ## Shared world data
 

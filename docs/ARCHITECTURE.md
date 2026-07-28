@@ -67,6 +67,8 @@ would make behavior depend on React render order.
 - The six-step City Tour is an ordered pure reducer; later objectives cannot
   be completed early and validated progress can be restored from the local
   browser save.
+- City Tour direction and distance come from renderer-free target and bearing
+  math, quantized into the same 10 Hz HUD mirror as other readouts.
 - In-world text is generated from browser canvas textures and never resolves a
   remote font.
 - Save data is validated browser `localStorage`, not filesystem access.

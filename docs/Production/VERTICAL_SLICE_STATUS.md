@@ -32,6 +32,7 @@
 - [x] Doors (automatic sliding)
 - [x] Spatial audio (5 zones)
 - [x] Save/reload
+- [x] City Tour objective compass and distance
 - [x] Postprocessing (Bloom, AO, CA, SMAA)
 - [x] Curated CC0 PBR texture pass
 - [x] Procedural street props and storefront interiors
@@ -41,4 +42,4 @@
 - [ ] Licensed character models and locomotion animation
 - [ ] Authored vehicle models
 - [ ] Fully enterable shop interiors
-- [ ] Minimap or compass wayfinding
+- [ ] Optional district minimap beyond the objective compass

@@ -22,6 +22,7 @@ import { shaftGuards } from './shaft'
 import { pickTarget, placeMovingTargets, type Interactable } from './interact'
 import { hudMirrorChanged } from './hud-mirror'
 import { cityTourLocationEvents } from './city-tour'
+import { cityTourWayfinding } from './wayfinding'
 import {
   ENTRANCE,
   SHAFT,
@@ -369,6 +370,7 @@ export function GameLoop({ interactables, ambientPedestrians, onInteract }: Game
         : rt.elevator.phase === 'travelling'
           ? '··'
           : hud.floorLabel
+      const tourGuidance = cityTourWayfinding(hud.cityTour, p.pos, p.forward)
 
       const next = {
         promptLabel: rt.target?.label ?? null,
@@ -378,6 +380,8 @@ export function GameLoop({ interactables, ambientPedestrians, onInteract }: Game
         elevatorPhase: rt.elevator.phase,
         fps: Math.round(perf.fps),
         frameMs: Math.round(perf.frameMs * 10) / 10,
+        tourBearing: tourGuidance?.bearing ?? null,
+        tourDistance: tourGuidance?.distance ?? null,
       }
 
       // Only write when something actually changed — zustand notifies on every

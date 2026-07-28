@@ -15,6 +15,7 @@ Building layout, city district, collision boxes, routes, and audio zones all der
 - Instanced meshes for repeated geometry (traffic, trees, lights, windows, NPCs)
 - Lazy-loaded postprocessing and detail trees
 - Throttled HUD updates (10Hz)
+- Renderer-free City Tour bearing and distance, quantized into the HUD mirror
 - Quality presets (low/medium/high) control shadows, postprocessing, DPR
 - Single-scene (no world streaming needed for vertical slice)
 

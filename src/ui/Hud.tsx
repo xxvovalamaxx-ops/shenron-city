@@ -56,6 +56,8 @@ function Telemetry() {
 
 function CityTour() {
   const state = useHud((s) => s.cityTour)
+  const bearing = useHud((s) => s.tourBearing)
+  const distance = useHud((s) => s.tourDistance)
   const step = currentCityTourStep(state)
   const complete = step === null
   const progress = Math.round(cityTourProgress(state) * 100)
@@ -75,6 +77,18 @@ function CityTour() {
         <>
           <strong>{step.title}</strong>
           <p>{step.hint}</p>
+          {bearing !== null && distance !== null && (
+            <div className="city-tour-nav" aria-label={`Objective ${distance} metres away`}>
+              <i
+                className="city-tour-arrow"
+                aria-hidden="true"
+                style={{ transform: `rotate(${bearing}deg)` }}
+              >
+                ↑
+              </i>
+              <span>{distance} m</span>
+            </div>
+          )}
         </>
       ) : (
         <>
