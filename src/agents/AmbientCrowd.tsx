@@ -8,8 +8,7 @@
 import { useLayoutEffect, useMemo, useRef } from 'react'
 import { useFrame } from '@react-three/fiber'
 import * as THREE from 'three'
-import { AMBIENT_ROUTES } from '../world/city-data'
-import { sampleLoop } from './ambient-routes'
+import { ambientPedestrianPose } from './ambient-routes'
 
 const CLOTHING = ['#4f6f8f', '#934f65', '#3c7668', '#8b6a42', '#69568f', '#556270']
 
@@ -41,10 +40,7 @@ export function AmbientCrowd({ count }: { count: number }) {
 
     const elapsed = state.clock.elapsedTime
     for (let i = 0; i < count; i++) {
-      const route = AMBIENT_ROUTES[i % AMBIENT_ROUTES.length]
-      const speed = 0.82 + (i % 5) * 0.11
-      const phase = i * 19.7
-      const sample = sampleLoop(route.points, elapsed * speed + phase)
+      const sample = ambientPedestrianPose(i, elapsed)
       const bob = Math.sin(elapsed * 7 + i) * 0.025
 
       transform.position.set(sample.x, 0.92 + bob, sample.z)

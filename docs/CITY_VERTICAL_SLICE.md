@@ -29,12 +29,12 @@ route segments crossing solid obstacles.
 ## Runtime budget
 
 - Store windows, trees, lamps, lane marks, and ambient people are instanced.
-- Ambient pedestrians use local Yuka steering; their authored paths stay
-  renderer-free.
+- Ambient pedestrian meshes and collision boxes sample the same renderer-free
+  authored route function.
 - The objective system updates only when a location or interaction advances it.
 - Medium/high postprocessing is lazy-loaded in a separate chunk.
-- Detailed planter trees (ez-tree, ~3.9 MB) are a separate chunk too, so the
-  entry bundle is 309 kB rather than 3.3 MB gzipped. Low never fetches it.
+- Detailed planter trees remain a separate ~2.99 MB gzip chunk, so low quality
+  never fetches them. The current entry bundle is ~1.20 MB gzip.
 - Trees are sized in **metres of height**, not by a scale factor: ez-tree
   generates a ~98 m tree at scale 1, so both implementations normalise to the
   requested height. A shared `scale` prop once produced 34 m planter trees.

@@ -21,7 +21,7 @@ import { Elevator } from './world/Elevator'
 import { Floor45 } from './world/Floor45'
 import { DoorPair } from './world/Doors'
 import { Secretary, SECRETARY_NAME } from './agents/Secretary'
-import { YukaCrowd } from './agents/YukaCrowd'
+import { AmbientCrowd } from './agents/AmbientCrowd'
 import { MarketKeeper } from './agents/MarketKeeper'
 import { PlazaWarden } from './agents/PlazaWarden'
 import type { CharacterId } from './agents/dialogue'
@@ -233,7 +233,7 @@ function Scene({
       <Secretary />
       <MarketKeeper />
       <PlazaWarden />
-      <YukaCrowd />
+      <AmbientCrowd count={quality.ambientPedestrians} />
 
       {/* Entrance doors live outside the car group — they do not travel */}
       <DoorPair
@@ -248,7 +248,11 @@ function Scene({
         }}
       />
 
-      <GameLoop interactables={interactables} onInteract={onInteract} />
+      <GameLoop
+        interactables={interactables}
+        ambientPedestrians={quality.ambientPedestrians}
+        onInteract={onInteract}
+      />
 
       {quality.postprocessing && (
         <Suspense fallback={null}>

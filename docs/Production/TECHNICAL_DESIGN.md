@@ -4,7 +4,7 @@
 - **Renderer**: Three.js via React Three Fiber
 - **State**: Zustand stores (game state, HUD, settings)
 - **Physics**: Custom AABB collision + Rapier for static world colliders
-- **AI**: Yuka steering behaviors (FollowPath, ObstacleAvoidance)
+- **Pedestrians**: deterministic authored route sampling shared by rendering and collision
 - **Audio**: Web Audio API, fully procedural (no audio files)
 - **Build**: Vite with code-splitting (postprocessing, trees lazy-loaded)
 
@@ -12,7 +12,7 @@
 Building layout, city district, collision boxes, routes, and audio zones all derive from shared data modules (`city-data.ts`, `layout.ts`, `palette.ts`). Moving a wall automatically moves its collider.
 
 ## Performance Strategy
-- Instanced meshes for重复 geometry (traffic, trees, lights, windows, NPCs)
+- Instanced meshes for repeated geometry (traffic, trees, lights, windows, NPCs)
 - Lazy-loaded postprocessing and detail trees
 - Throttled HUD updates (10Hz)
 - Quality presets (low/medium/high) control shadows, postprocessing, DPR

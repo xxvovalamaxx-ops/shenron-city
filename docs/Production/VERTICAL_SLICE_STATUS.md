@@ -25,7 +25,7 @@
 - [x] Working elevator (2 floors)
 - [x] One polished HQ floor
 - [x] Player character and camera
-- [x] Ambient pedestrians (12)
+- [x] Quality-scaled ambient pedestrians (5 / 11 / 18)
 - [x] Light traffic (5-16 vehicles)
 - [x] Three named NPCs (Iris, Mira, Kai)
 - [x] Deterministic named-NPC dialogue

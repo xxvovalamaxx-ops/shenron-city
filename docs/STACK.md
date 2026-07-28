@@ -14,7 +14,6 @@ when it is actually present in `package.json`.
 | `@react-three/postprocessing` | Lazy high/medium visual effects |
 | `@dgreenheck/ez-tree` | Lazy detailed plaza trees |
 | `@react-three/rapier` | Fixed world collider foundation |
-| `yuka` | Local pedestrian path steering |
 | `zustand` | Scenario and HUD state |
 | `zod` | Validated standalone/future adapter schemas |
 
@@ -36,6 +35,7 @@ when it is actually present in `package.json`.
 | `@gltf-transform/*` | The first provenance-approved GLB is imported and the current audit path is clean |
 | `koota` | Profiling proves the current state model no longer scales |
 | `@pixiv/three-vrm` | A third-person camera and licensed character are approved together |
+| `yuka` | Crowd behavior needs steering beyond the current deterministic authored routes |
 
 Do not install speculative foundations. Each addition needs a real feature,
 bundle-cost evidence, a focused test, and a clean dependency audit.

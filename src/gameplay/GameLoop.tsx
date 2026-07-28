@@ -50,10 +50,12 @@ const DOOR_EVENT_EPS = 0.02
 
 export interface GameLoopProps {
   interactables: Interactable[]
+  /** Same quality-scaled count rendered by AmbientCrowd. */
+  ambientPedestrians: number
   onInteract(target: Interactable): void
 }
 
-export function GameLoop({ interactables, onInteract }: GameLoopProps) {
+export function GameLoop({ interactables, ambientPedestrians, onInteract }: GameLoopProps) {
   const { camera } = useThree()
   const keys = useKeys()
   const hudTimer = useRef(0)
@@ -218,7 +220,7 @@ export function GameLoop({ interactables, onInteract }: GameLoopProps) {
     const colliders: AABB[] = [
       ...staticWorld,
       ...vehicleColliders(rt.vehicles),
-      ...npcColliders(state.clock.elapsedTime),
+      ...npcColliders(state.clock.elapsedTime, ambientPedestrians),
       ...carColliders(carY),
       ...shaftGuards(carY, carOpen),
       ...slidingDoorColliders(

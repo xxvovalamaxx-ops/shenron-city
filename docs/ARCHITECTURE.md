@@ -62,7 +62,8 @@ would make behavior depend on React render order.
 - The player is carried explicitly by the moving elevator.
 - Scenario residents have stable IDs so office assignment cannot jump.
 - District geometry and collision consume the same renderer-free city data.
-- Ambient pedestrians use local Yuka steering and never call a model.
+- Ambient pedestrian meshes and colliders sample the same deterministic
+  authored routes, phases, and quality-scaled count.
 - The six-step City Tour is an ordered pure reducer; later objectives cannot
   be completed early and validated progress can be restored from the local
   browser save.

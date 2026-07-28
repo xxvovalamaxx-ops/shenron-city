@@ -78,7 +78,7 @@ npm run verify:standalone
 | **Renderer** | `three`, `@react-three/fiber`, `@react-three/drei` |
 | **Visuals** | `@react-three/postprocessing` (Bloom, SMAA, Vignette) |
 | **Physics** | `@react-three/rapier` (rigid bodies, colliders, character controller) |
-| **AI / Navigation** | `yuka` (local pedestrian steering) |
+| **Crowd** | Deterministic authored routes shared by rendering and collision |
 | **Procedural** | `@dgreenheck/ez-tree` (trees with real bark/leaf textures) |
 | **Architecture** | `zustand` (state), `zod` (schemas) |
 | **Tooling** | `vite`, `typescript`, `vitest` |

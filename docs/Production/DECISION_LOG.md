@@ -5,10 +5,10 @@
 **Rationale**: Browser-based deployment, no installation required, rapid iteration, existing expertise
 **Trade-off**: Lower visual ceiling than Unreal, but faster time-to-playable
 
-## 2026-07-28: NPC AI
-**Decision**: Yuka steering behaviors (not behavior trees)
-**Rationale**: Lightweight, path-following + obstacle avoidance covers ambient crowd needs
-**Trade-off**: No high-level planning, but named NPCs use scripted dialogue instead
+## 2026-07-28: Ambient crowd
+**Decision**: Deterministic authored routes shared by meshes and collision
+**Rationale**: One pure route sampler keeps every visible pedestrian and solid body frame-exact across quality presets
+**Trade-off**: No local obstacle avoidance yet; named NPCs remain scripted and deterministic
 
 ## 2026-07-28: Audio
 **Decision**: Fully procedural Web Audio (no audio files)

@@ -21,7 +21,6 @@ is unnecessary risk.
 | `@react-three/postprocessing` | Lazy visual effects; disabled on low quality. |
 | `@dgreenheck/ez-tree` | Lazy detailed landscaping with a procedural fallback. |
 | `@react-three/rapier` | Fixed collider foundation for future physical props; player movement remains on the verified swept controller. |
-| `yuka` | Local steering for ambient pedestrians; no model or network calls. |
 | `zustand` | Keeps high-frequency simulation outside React while exposing a throttled HUD mirror. |
 | `zod` | Validates schema and save boundaries; tree-shaken when unused. |
 | `vitest`, `typescript` | Fast deterministic tests and strict type checking. |
@@ -33,6 +32,7 @@ is unnecessary risk.
 | `@pixiv/three-vrm` | The game is first-person and the 15 MB avatar plus animation set were not rendered. Reintroduce only with a third-person feature and verified license/provenance. |
 | `@gltf-transform/core`, `@gltf-transform/cli` | No GLB is imported, and their unused toolchain introduced eight high-severity development advisories. |
 | `playwright` | No repository test invoked it. Browser acceptance uses the external verification harness until a real in-repo E2E suite exists. |
+| `yuka` | Its separate mutable crowd state drifted from collision. The current authored-route sampler gives meshes and colliders one deterministic source of truth. |
 
 ## Deferred
 

@@ -1,7 +1,7 @@
 # Shenron City — Vision
 
 ## Product Vision
-A living, explorable 3D night city inspired by Los Angeles and West Coast urbanism. The player walks through distinct districts, meets AI-driven characters, and visits a headquarters tower that represents an AI organization as a physical space.
+A living, explorable 3D night city inspired by Los Angeles and West Coast urbanism. The player walks through distinct districts, meets local scripted characters, and visits a fictional headquarters tower.
 
 ## Quality Target
 GTA V as a broad quality benchmark — not copy-paste, but the standard for environmental detail, lighting, animation, and polish. Build a small area to AAA quality, then expand district by district.
@@ -25,7 +25,7 @@ GTA V as a broad quality benchmark — not copy-paste, but the standard for envi
 ## Technical Stack
 - Three.js + React Three Fiber (browser-based 3D)
 - Zustand (state management)
-- Yuka (NPC AI steering)
+- Deterministic authored pedestrian routes
 - Rapier (physics collisions)
 - Web Audio (procedural spatial audio)
 - Vite (build tooling)

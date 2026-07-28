@@ -52,6 +52,14 @@ export function sampleLoop(points: readonly RoutePoint[], distance: number): Rou
   return { ...points[0], heading: 0 }
 }
 
+/** Exact deterministic pose consumed by both rendering and collision. */
+export function ambientPedestrianPose(index: number, elapsed: number): RouteSample {
+  const route = AMBIENT_ROUTES[index % AMBIENT_ROUTES.length]
+  const speed = 0.82 + (index % 5) * 0.11
+  const phase = index * 19.7
+  return sampleLoop(route.points, elapsed * speed + phase)
+}
+
 /** NPC body half-extents matching AmbientCrowd's capsule scale (0.26 x 0.38). */
 const NPC_HALF_W = 0.26
 const NPC_HALF_H = 0.38
@@ -60,13 +68,10 @@ const NPC_HALF_H = 0.38
  * Generate collision boxes for all ambient NPCs at a given elapsed time.
  * Must match the speed/phase logic in AmbientCrowd exactly.
  */
-export function npcColliders(elapsed: number): AABB[] {
+export function npcColliders(elapsed: number, count: number): AABB[] {
   const boxes: AABB[] = []
-  for (let i = 0; i < AMBIENT_ROUTES.length; i++) {
-    const route = AMBIENT_ROUTES[i]
-    const speed = 0.82 + (i % 5) * 0.11
-    const phase = i * 19.7
-    const sample = sampleLoop(route.points, elapsed * speed + phase)
+  for (let i = 0; i < count; i++) {
+    const sample = ambientPedestrianPose(i, elapsed)
     boxes.push(aabb(sample.x, NPC_HALF_H, sample.z, NPC_HALF_W * 2, NPC_HALF_H * 2, NPC_HALF_W * 2))
   }
   return boxes
