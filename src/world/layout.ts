@@ -8,7 +8,13 @@
  * Units are metres. +Y is up. The player enters facing -Z.
  */
 import { aabb, type AABB } from '../gameplay/collision'
-import { CITY_GROUND, CITY_OBSTACLES, STREET_TREES, STREET_LIGHTS } from './city-data'
+import {
+  CITY_GROUND,
+  CITY_OBSTACLES,
+  STREET_TREES,
+  STREET_LIGHTS,
+  type CityBox,
+} from './city-data'
 
 // ── Key dimensions ───────────────────────────────────────────────────────────
 
@@ -45,6 +51,38 @@ export const SHAFT = {
 export const SPAWN = { x: -10.7, y: 0.05, z: 145 } as const
 
 export const TOWER = { halfWidth: 26, depth: 40, height: 120 } as const
+
+/** Visible plaza solids shared by the renderer and collision system. */
+export const PLAZA_PLANTERS: readonly CityBox[] = [-9, 9].flatMap((x) =>
+  [10, 18, 26].map((z) => ({
+    id: `plaza-planter-${x}-${z}`,
+    x,
+    z,
+    width: 2.4,
+    depth: 2.4,
+    height: 0.7,
+  })),
+)
+
+export const PLAZA_BOLLARDS: readonly CityBox[] = [6, 14, 22, 30].flatMap((z) =>
+  [-5, 5].map((x) => ({
+    id: `plaza-bollard-${x}-${z}`,
+    x,
+    z,
+    width: 0.22,
+    depth: 0.22,
+    height: 1.05,
+  })),
+)
+
+export const ENTRANCE_COLUMNS: readonly CityBox[] = [-1, 1].map((side) => ({
+  id: `entrance-column-${side}`,
+  x: side * (ENTRANCE.halfWidth + 2),
+  z: 5.1,
+  width: 0.28,
+  depth: 0.28,
+  height: ENTRANCE.height + 1.2,
+}))
 
 // ── Interaction anchors ──────────────────────────────────────────────────────
 
@@ -146,19 +184,42 @@ export function staticColliders(): AABB[] {
   }
 
   // ── Planters framing the approach, so the plaza reads as designed space ───
-  for (const x of [-9, 9]) {
-    for (const z of [10, 18, 26]) c.push(aabb(x, 0.35, z, 2.4, 0.7, 2.4))
+  for (const planter of PLAZA_PLANTERS) {
+    c.push(
+      aabb(
+        planter.x,
+        planter.height / 2,
+        planter.z,
+        planter.width,
+        planter.height,
+        planter.depth,
+      ),
+    )
   }
 
   // ── Street trees — trunk colliders so you can't walk through them ────────
   for (const tree of STREET_TREES) {
-    const trunkR = 0.25 * tree.scale
-    c.push(aabb(tree.x, 1.5, tree.z, trunkR * 2, 3, trunkR * 2))
+    const trunkDiameter = 0.56 * tree.scale
+    const trunkHeight = 2.5 * tree.scale
+    c.push(aabb(tree.x, trunkHeight / 2, tree.z, trunkDiameter, trunkHeight, trunkDiameter))
   }
 
   // ── Street light poles — thin but solid ──────────────────────────────────
   for (const light of STREET_LIGHTS) {
-    c.push(aabb(light.x, 2.5, light.z, 0.15, 5, 0.15))
+    c.push(aabb(light.x, 2.3, light.z, 0.24, 4.6, 0.24))
+  }
+
+  for (const solid of [...PLAZA_BOLLARDS, ...ENTRANCE_COLUMNS]) {
+    c.push(
+      aabb(
+        solid.x,
+        solid.height / 2,
+        solid.z,
+        solid.width,
+        solid.height,
+        solid.depth,
+      ),
+    )
   }
 
   // ── Secretary (Iris) — solid body like Mira ──────────────────────────────
@@ -237,6 +298,11 @@ export function hqColliders(): AABB[] {
     c.push(aabb(backX, y + OFFICE.h / 2, s.z, 0.3, OFFICE.h, OFFICE.d))
     for (const dz of [-OFFICE.d / 2, OFFICE.d / 2]) {
       c.push(aabb(s.x, y + OFFICE.h / 2, s.z + dz, OFFICE.w, OFFICE.h, 0.3))
+    }
+    const frontX = s.x - (s.side * OFFICE.w) / 2
+    for (const side of [-1, 1]) {
+      const panelZ = s.z + side * (OFFICE.d / 2 - OFFICE.d / 8)
+      c.push(aabb(frontX, y + OFFICE.h / 2, panelZ, 0.06, OFFICE.h, OFFICE.d / 4))
     }
     // Desk inside.
     c.push(aabb(s.x + s.side * 1.6, y + 0.55, s.z, 2.6, 1.1, 1.2))

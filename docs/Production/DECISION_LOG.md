@@ -16,9 +16,9 @@
 **Trade-off**: Less realistic than recorded ambience, but more dynamic
 
 ## 2026-07-28: Collision
-**Decision**: Custom AABB system + Rapier for static colliders
-**Rationale**: Custom system gives full control for player movement; Rapier handles world geometry
-**Trade-off**: Two collision systems, but each optimized for its use case
+**Decision**: One custom swept capsule-vs-AABB authority
+**Rationale**: Rapier duplicated fixed geometry but owned no player, NPC, vehicle, or prop body. Shared renderer-free solid records now keep visible props and collision exact.
+**Trade-off**: Dynamic rigid bodies remain deferred until a concrete gameplay feature needs them.
 
 ## 2026-07-28: Mission Control
 **Decision**: Removed entirely — standalone game only

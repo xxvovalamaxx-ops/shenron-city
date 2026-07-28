@@ -295,6 +295,110 @@ canvas {
   color: #fbbf24;
 }
 
+/* â”€â”€ North-up city minimap â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+
+.minimap {
+  position: absolute;
+  right: 14px;
+  bottom: 14px;
+  width: 180px;
+  padding: 9px;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  pointer-events: none;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.28);
+}
+
+.minimap header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 7px;
+  color: var(--dimmer);
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 1.1px;
+}
+
+.minimap header b {
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.minimap-field {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 104 / 195;
+  overflow: hidden;
+  border: 1px solid rgba(120, 150, 190, 0.18);
+  border-radius: 5px;
+  background:
+    linear-gradient(rgba(45, 212, 191, 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(45, 212, 191, 0.035) 1px, transparent 1px),
+    rgba(4, 9, 14, 0.9);
+  background-size: 16px 16px;
+}
+
+.minimap-field > i {
+  position: absolute;
+  display: block;
+}
+
+.minimap-road {
+  background: rgba(113, 128, 150, 0.28);
+  border-inline: 1px solid rgba(170, 185, 205, 0.18);
+}
+
+.minimap-building {
+  border: 1px solid rgba(128, 151, 187, 0.28);
+  background: rgba(39, 48, 66, 0.88);
+}
+
+.minimap-hq {
+  border: 1px solid rgba(45, 212, 191, 0.62);
+  background: rgba(45, 212, 191, 0.17);
+}
+
+.minimap-market {
+  border: 1px solid rgba(245, 158, 11, 0.58);
+  background: rgba(245, 158, 11, 0.32);
+}
+
+.minimap-target {
+  width: 9px;
+  height: 9px;
+  margin: -4.5px 0 0 -4.5px;
+  border: 2px solid #fbbf24;
+  border-radius: 50%;
+  box-shadow: 0 0 0 3px rgba(251, 191, 36, 0.18), 0 0 12px rgba(251, 191, 36, 0.75);
+}
+
+.minimap-player {
+  width: 16px;
+  height: 16px;
+  margin: -8px 0 0 -8px;
+  display: grid !important;
+  place-items: center;
+  border-radius: 50%;
+  background: rgba(4, 10, 15, 0.88);
+  box-shadow: 0 0 0 1px rgba(45, 212, 191, 0.7);
+  color: var(--accent);
+}
+
+.minimap-player b {
+  display: block;
+  font-size: 10px;
+  line-height: 1;
+  transform-origin: center;
+  transition: transform 100ms linear;
+}
+
+.minimap-player.clamped,
+.minimap-target.clamped {
+  color: var(--warn);
+  border-color: var(--warn);
+}
+
 .bar {
   height: 3px;
   border-radius: 2px;
@@ -630,7 +734,14 @@ button.small {
 
 @media (prefers-reduced-motion: reduce) {
   .crosshair,
-  .bar > i {
+  .bar > i,
+  .minimap-player b {
     transition: none;
+  }
+}
+
+@media (max-height: 700px), (max-width: 700px) {
+  .minimap {
+    width: 130px;
   }
 }

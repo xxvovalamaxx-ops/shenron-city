@@ -29,6 +29,11 @@ export interface HudState {
   frameMs: number
   tourBearing: number | null
   tourDistance: number | null
+  mapPlayerX: number
+  mapPlayerZ: number
+  mapHeading: number
+  mapTargetX: number | null
+  mapTargetZ: number | null
   showPerf: boolean
   /** Which agent's office panel is open. */
   openAgentId: string | null
@@ -54,6 +59,11 @@ export const useHud = create<HudState>((set) => ({
   frameMs: 0,
   tourBearing: null,
   tourDistance: null,
+  mapPlayerX: 0,
+  mapPlayerZ: 0,
+  mapHeading: 0,
+  mapTargetX: null,
+  mapTargetZ: null,
   showPerf: false,
   openAgentId: null,
   openCharacterId: 'iris',

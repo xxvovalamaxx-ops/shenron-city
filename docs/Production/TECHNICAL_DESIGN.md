@@ -3,7 +3,7 @@
 ## Architecture
 - **Renderer**: Three.js via React Three Fiber
 - **State**: Zustand stores (game state, HUD, settings)
-- **Physics**: Custom AABB collision + Rapier for static world colliders
+- **Collision**: Custom swept capsule-vs-AABB controller as the single authority
 - **Pedestrians**: deterministic authored route sampling shared by rendering and collision
 - **Audio**: Web Audio API, fully procedural (no audio files)
 - **Build**: Vite with code-splitting (postprocessing, trees lazy-loaded)
@@ -21,6 +21,10 @@ Building layout, city district, collision boxes, routes, and audio zones all der
 
 ## Collision System
 Custom capsule-vs-AABB with swept horizontal movement, substep prevention (0.07m), step-up for kerbs, gravity, head clearance. Runs at 60fps with zero allocations per frame.
+
+Street props, plaza fixtures, building shells, office glass, vehicles,
+pedestrians, doors, and elevator guards derive their collision from the same
+renderer-free records or frame-exact samplers as their visible geometry.
 
 ## Audio System
 5-zone ambience (boulevard, market, park, lobby, HQ) with constant-power crossfade. All procedural — noise generation, impulse reverb synthesis, no audio file downloads.

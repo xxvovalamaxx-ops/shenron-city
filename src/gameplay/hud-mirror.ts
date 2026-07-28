@@ -10,6 +10,11 @@ export interface HudMirror {
   frameMs: number
   tourBearing: number | null
   tourDistance: number | null
+  mapPlayerX: number
+  mapPlayerZ: number
+  mapHeading: number
+  mapTargetX: number | null
+  mapTargetZ: number | null
 }
 
 /** Keep the throttled React mirror truthful without writing at frame rate. */
@@ -23,6 +28,11 @@ export function hudMirrorChanged(next: HudMirror, current: HudMirror): boolean {
     next.fps !== current.fps ||
     next.frameMs !== current.frameMs ||
     next.tourBearing !== current.tourBearing ||
-    next.tourDistance !== current.tourDistance
+    next.tourDistance !== current.tourDistance ||
+    next.mapPlayerX !== current.mapPlayerX ||
+    next.mapPlayerZ !== current.mapPlayerZ ||
+    next.mapHeading !== current.mapHeading ||
+    next.mapTargetX !== current.mapTargetX ||
+    next.mapTargetZ !== current.mapTargetZ
   )
 }

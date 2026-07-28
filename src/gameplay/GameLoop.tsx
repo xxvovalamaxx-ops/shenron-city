@@ -14,7 +14,7 @@ import { rt } from './runtime'
 import { advanceTraffic, vehicleColliders, vehiclePose } from './traffic'
 import { VEHICLE } from '../world/city-data'
 import { useKeys } from './input'
-import { EYE_HEIGHT, moveWithCollisions, type AABB } from './collision'
+import { EYE_HEIGHT, aabb, moveWithCollisions, type AABB } from './collision'
 import { npcColliders } from '../agents/ambient-routes'
 import { carHeight, currentFloor, doorOpenness, step, FLOORS } from './elevator'
 import { leafOffset, stepDoor } from './doors'
@@ -22,9 +22,11 @@ import { shaftGuards } from './shaft'
 import { pickTarget, placeMovingTargets, type Interactable } from './interact'
 import { hudMirrorChanged } from './hud-mirror'
 import { cityTourLocationEvents } from './city-tour'
-import { cityTourWayfinding } from './wayfinding'
+import { cityTourTarget, cityTourWayfinding } from './wayfinding'
+import { minimapHeading } from './minimap'
 import {
   ENTRANCE,
+  HQ,
   SHAFT,
   carColliders,
   hqColliders,
@@ -66,6 +68,13 @@ export function GameLoop({ interactables, ambientPedestrians, onInteract }: Game
   // Static geometry never changes; rebuilding it per frame would dominate the
   // frame budget for no reason.
   const staticWorld = useMemo<AABB[]>(() => [...staticColliders(), ...hqColliders()], [])
+  const stationaryResidents = useMemo<AABB[]>(
+    () =>
+      interactables
+        .filter((target) => target.kind === 'agent-office')
+        .map((target) => aabb(target.x, HQ.y + 0.9, target.z, 0.7, 1.8, 0.7)),
+    [interactables],
+  )
 
   useEffect(() => {
     rt.interactables = interactables
@@ -220,6 +229,7 @@ export function GameLoop({ interactables, ambientPedestrians, onInteract }: Game
     // ── 4. Dynamic collision ─────────────────────────────────────────────────
     const colliders: AABB[] = [
       ...staticWorld,
+      ...stationaryResidents,
       ...vehicleColliders(rt.vehicles),
       ...npcColliders(state.clock.elapsedTime, ambientPedestrians),
       ...carColliders(carY),
@@ -371,6 +381,7 @@ export function GameLoop({ interactables, ambientPedestrians, onInteract }: Game
           ? '··'
           : hud.floorLabel
       const tourGuidance = cityTourWayfinding(hud.cityTour, p.pos, p.forward)
+      const tourTarget = cityTourTarget(hud.cityTour, p.pos)
 
       const next = {
         promptLabel: rt.target?.label ?? null,
@@ -382,6 +393,11 @@ export function GameLoop({ interactables, ambientPedestrians, onInteract }: Game
         frameMs: Math.round(perf.frameMs * 10) / 10,
         tourBearing: tourGuidance?.bearing ?? null,
         tourDistance: tourGuidance?.distance ?? null,
+        mapPlayerX: Math.round(p.pos.x * 4) / 4,
+        mapPlayerZ: Math.round(p.pos.z * 4) / 4,
+        mapHeading: Math.round(minimapHeading(p.forward) / 5) * 5,
+        mapTargetX: tourTarget?.x ?? null,
+        mapTargetZ: tourTarget?.z ?? null,
       }
 
       // Only write when something actually changed — zustand notifies on every

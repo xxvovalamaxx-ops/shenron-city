@@ -5,7 +5,6 @@
 import { lazy, Suspense, useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { Canvas, useThree } from '@react-three/fiber'
 import { PointerLockControls, useProgress } from '@react-three/drei'
-import { Physics } from '@react-three/rapier'
 import * as THREE from 'three'
 
 import { useGame } from './adapter/store'
@@ -29,7 +28,6 @@ import { ENTRANCE, HQ, OFFICE_SLOTS, PANEL, SECRETARY as SEC_POS, SPAWN } from '
 import { MARKET_KEEPER, PLAZA_WARDEN } from './world/city-data'
 import { PALETTE, QUALITY } from './world/palette'
 import { Hud } from './ui/Hud'
-import { StaticWorldColliders } from './gameplay/PhysicsWorld'
 import { Dialogue } from './ui/Dialogue'
 
 import { OfficePanel } from './ui/OfficePanel'
@@ -334,7 +332,7 @@ export default function App() {
   // the position rather than stored, so the two can never contradict.
   useEffect(() => {
     applySave(restored.data)
-    if (restored.fault) {
+    if (restored.fault && restored.fault !== 'empty') {
       console.warn(`[save] ${restored.fault} — starting a fresh run`)
     } else if (restored.repaired.length > 0) {
       console.warn(`[save] repaired: ${restored.repaired.join(', ')}`)
@@ -436,10 +434,7 @@ export default function App() {
         }}
       >
         <Suspense fallback={null}>
-          <Physics gravity={[0, -22, 0]} timeStep="vary" colliders={false}>
-            <StaticWorldColliders />
-            <Scene settings={settings} onInteract={onInteract} />
-          </Physics>
+          <Scene settings={settings} onInteract={onInteract} />
           <LoadGate onReady={() => setReady(true)} />
         </Suspense>
         <PointerLockControls
@@ -452,7 +447,7 @@ export default function App() {
         />
       </Canvas>
 
-      {screen === 'playing' && <Hud />}
+      {(screen === 'playing' || screen === 'paused') && <Hud />}
       {screen === 'loading' && <LoadingScreen progress={progress} />}
       {screen === 'title' && <TitleScreen onStart={enterWorld} />}
       {screen === 'paused' && (

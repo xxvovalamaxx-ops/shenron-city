@@ -21,10 +21,10 @@
  */
 import { z } from 'zod'
 import { CITY_TOUR_STEPS, INITIAL_CITY_TOUR, type CityTourState } from './city-tour'
-import { PLAYER_RADIUS, type Vec3 } from './collision'
+import { PLAYER_RADIUS, collidesAt, type Vec3 } from './collision'
 import { FLOORS, type FloorId } from './elevator'
 import { CITY_GROUND } from '../world/city-data'
-import { HQ, LOBBY, SHAFT, SPAWN } from '../world/layout'
+import { HQ, LOBBY, SHAFT, SPAWN, hqColliders, staticColliders } from '../world/layout'
 import type { QualityPreset } from '../world/palette'
 
 // ── Public shape ─────────────────────────────────────────────────────────────
@@ -161,7 +161,13 @@ export function isRestorablePosition(pos: Vec3): boolean {
   if (Math.abs(pos.x - CITY_GROUND.x) > CITY_GROUND.width / 2) return false
   if (Math.abs(pos.z - CITY_GROUND.z) > CITY_GROUND.depth / 2) return false
   if (!FLOOR_BANDS.some((band) => pos.y >= band.min && pos.y <= band.max)) return false
-  return !inElevatorShaft(pos)
+  if (inElevatorShaft(pos)) return false
+
+  // A valid coordinate is still unsafe if it restores inside authored world
+  // geometry. Reject the whole position rather than leaving the player wedged
+  // in a storefront, desk, wall, or prop on the first frame.
+  const solids = floorAtPosition(pos) === 'hq' ? hqColliders() : staticColliders()
+  return !collidesAt(pos, solids)
 }
 
 /**

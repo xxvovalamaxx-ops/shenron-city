@@ -4,9 +4,8 @@
 - Storefront interiors are shallow procedural shells, not full enterable shops
 - Ambient characters are stylized primitives without locomotion animation
 - Browser build only by design; no native wrapper is planned for this phase
-- Entry bundle remains large due to the renderer, physics, and detailed world
+- Entry bundle remains large due to the renderer and detailed world
 - Tree chunk 4MB (ez-tree library, lazy-loaded)
-- No district minimap; the City Tour provides objective-only compass guidance
 - No weather system
 - Only 2 elevator floors (Lobby + Floor 45)
 

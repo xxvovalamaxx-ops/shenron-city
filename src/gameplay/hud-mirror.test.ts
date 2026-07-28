@@ -11,6 +11,11 @@ const BASE: HudMirror = {
   frameMs: 16.7,
   tourBearing: 15,
   tourDistance: 42,
+  mapPlayerX: -10.5,
+  mapPlayerZ: 145,
+  mapHeading: 0,
+  mapTargetX: 13.85,
+  mapTargetZ: 86,
 }
 
 describe('HUD mirror updates', () => {
@@ -28,6 +33,11 @@ describe('HUD mirror updates', () => {
     'frameMs',
     'tourBearing',
     'tourDistance',
+    'mapPlayerX',
+    'mapPlayerZ',
+    'mapHeading',
+    'mapTargetX',
+    'mapTargetZ',
   ])('detects a change to %s', (key) => {
     const next: HudMirror = { ...BASE }
     const replacements: HudMirror = {
@@ -40,6 +50,11 @@ describe('HUD mirror updates', () => {
       frameMs: 17,
       tourBearing: 20,
       tourDistance: 41,
+      mapPlayerX: -10.25,
+      mapPlayerZ: 144.75,
+      mapHeading: 5,
+      mapTargetX: 0,
+      mapTargetZ: -2,
     }
     Object.assign(next, { [key]: replacements[key] })
 

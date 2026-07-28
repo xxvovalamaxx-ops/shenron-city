@@ -5,7 +5,7 @@
  * is a static box, and the one moving platform (the elevator car) carries the
  * player by parenting rather than by friction. A deterministic sweep is easier
  * to reason about here than a solver, and it makes the elevator trivial
- * instead of fiddly. See docs/architecture/STACK_DECISIONS.md (rapier: defer).
+ * instead of fiddly. See docs/STACK_DECISIONS.md.
  *
  * Pure and framework-free so it can be unit tested without a renderer.
  */

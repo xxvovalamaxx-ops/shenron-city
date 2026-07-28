@@ -6,7 +6,14 @@
  */
 import { lazy, Suspense, useLayoutEffect, useRef } from 'react'
 import * as THREE from 'three'
-import { ENTRANCE, LOBBY, TOWER } from './layout'
+import {
+  ENTRANCE,
+  ENTRANCE_COLUMNS,
+  LOBBY,
+  PLAZA_BOLLARDS,
+  PLAZA_PLANTERS,
+  TOWER,
+} from './layout'
 import { PALETTE, type QualitySettings } from './palette'
 import { CITY_GROUND } from './city-data'
 import { CityDistrict } from './CityDistrict'
@@ -210,9 +217,9 @@ export function Exterior({ quality }: { quality: QualitySettings }) {
         <boxGeometry args={[eh * 2 + 5, 0.35, 5.6]} />
         <meshStandardMaterial color={PALETTE.metal} roughness={0.35} metalness={0.85} />
       </mesh>
-      {[-1, 1].map((s) => (
-        <mesh key={s} position={[s * (eh + 2), ENTRANCE.height / 2, 5.1]}>
-          <cylinderGeometry args={[0.14, 0.14, ENTRANCE.height + 1.2, 12]} />
+      {ENTRANCE_COLUMNS.map((column) => (
+        <mesh key={column.id} position={[column.x, column.height / 2, column.z]}>
+          <cylinderGeometry args={[column.width / 2, column.width / 2, column.height, 12]} />
           <meshStandardMaterial color={PALETTE.metal} roughness={0.3} metalness={0.9} />
         </mesh>
       ))}
@@ -231,40 +238,40 @@ export function Exterior({ quality }: { quality: QualitySettings }) {
       ))}
 
       {/* Planters framing the approach — stone box with a real tree */}
-      {[-9, 9].map((x) =>
-        [10, 18, 26].map((z) => (
-          <group key={`${x}:${z}`} position={[x, 0, z]}>
-            <mesh position={[0, 0.35, 0]} castShadow={quality.shadows} receiveShadow={quality.shadows}>
-              <boxGeometry args={[2.4, 0.7, 2.4]} />
-              <primitive object={planterMat} attach="material" />
-            </mesh>
-            <PlanterTreeSlot
-              detailed={quality.detailTrees}
-              shadows={quality.shadows}
-              position={[0, 0.7, 0]}
-              seed={x * 100 + z}
-              height={7}
-              variant={z === 18 ? 'birch' : 'oak'}
-            />
-          </group>
-        )),
-      )}
+      {PLAZA_PLANTERS.map((planter) => (
+        <group key={planter.id} position={[planter.x, 0, planter.z]}>
+          <mesh
+            position={[0, planter.height / 2, 0]}
+            castShadow={quality.shadows}
+            receiveShadow={quality.shadows}
+          >
+            <boxGeometry args={[planter.width, planter.height, planter.depth]} />
+            <primitive object={planterMat} attach="material" />
+          </mesh>
+          <PlanterTreeSlot
+            detailed={quality.detailTrees}
+            shadows={quality.shadows}
+            position={[0, planter.height, 0]}
+            seed={planter.x * 100 + planter.z}
+            height={7}
+            variant={planter.z === 18 ? 'birch' : 'oak'}
+          />
+        </group>
+      ))}
 
       {/* Bollard lights walking you toward the door */}
-      {[6, 14, 22, 30].map((z) =>
-        [-5, 5].map((x) => (
-          <group key={`b${x}:${z}`} position={[x, 0, z]}>
-            <mesh position={[0, 0.5, 0]}>
-              <cylinderGeometry args={[0.09, 0.11, 1, 8]} />
-              <meshStandardMaterial color={PALETTE.metal} roughness={0.4} metalness={0.8} />
-            </mesh>
-            <mesh position={[0, 1.02, 0]}>
-              <cylinderGeometry args={[0.1, 0.1, 0.06, 8]} />
-              <meshBasicMaterial color={PALETTE.accent} toneMapped={false} />
-            </mesh>
-          </group>
-        )),
-      )}
+      {PLAZA_BOLLARDS.map((bollard) => (
+        <group key={bollard.id} position={[bollard.x, 0, bollard.z]}>
+          <mesh position={[0, 0.5, 0]}>
+            <cylinderGeometry args={[0.09, bollard.width / 2, 1, 8]} />
+            <meshStandardMaterial color={PALETTE.metal} roughness={0.4} metalness={0.8} />
+          </mesh>
+          <mesh position={[0, 1.02, 0]}>
+            <cylinderGeometry args={[0.1, 0.1, 0.06, 8]} />
+            <meshBasicMaterial color={PALETTE.accent} toneMapped={false} />
+          </mesh>
+        </group>
+      ))}
 
       <CityBlocks count={quality.cityWindows > 1000 ? 260 : 90} />
     </group>

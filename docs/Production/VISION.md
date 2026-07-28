@@ -26,6 +26,6 @@ GTA V as a broad quality benchmark — not copy-paste, but the standard for envi
 - Three.js + React Three Fiber (browser-based 3D)
 - Zustand (state management)
 - Deterministic authored pedestrian routes
-- Rapier (physics collisions)
+- Deterministic swept collision, with rigid bodies deferred until gameplay requires them
 - Web Audio (procedural spatial audio)
 - Vite (build tooling)

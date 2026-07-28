@@ -3,6 +3,7 @@ import {
   AMBIENT_ROUTES,
   CITY_OBSTACLES,
   MARKET_STALLS,
+  STREET_PROPS,
   STOREFRONTS,
   validateCityData,
 } from './city-data'
@@ -15,8 +16,16 @@ describe('city district data', () => {
   it('keeps every rendered solid represented in collision data', () => {
     const obstacleIds = new Set(CITY_OBSTACLES.map((box) => box.id))
 
-    for (const solid of [...STOREFRONTS, ...MARKET_STALLS]) {
+    for (const solid of [...STOREFRONTS, ...MARKET_STALLS, ...STREET_PROPS]) {
       expect(obstacleIds.has(solid.id)).toBe(true)
+    }
+  })
+
+  it('keeps every street prop inside a sidewalk and out of the road', () => {
+    for (const prop of STREET_PROPS) {
+      expect(Math.abs(prop.x) - prop.width / 2).toBeGreaterThan(7.5)
+      expect(prop.z - prop.depth / 2).toBeGreaterThanOrEqual(34)
+      expect(prop.z + prop.depth / 2).toBeLessThanOrEqual(150)
     }
   })
 

@@ -42,8 +42,8 @@ automatic doors → lobby → secretary → elevator → floor 45 → resident o
 
 The **City Tour** HUD turns that route into six ordered objectives. Progress is
 deterministic game state and is saved only in the game's validated browser
-save; it is never sent to a host service. A local compass arrow and distance
-guide the player to the active objective.
+save; it is never sent to a host service. A local compass, distance readout,
+and north-up minimap guide the player to the active objective.
 
 The current geometry and audio are procedural. The art pass uses a curated set
 of CC0 Poly Haven PBR textures recorded in
@@ -78,7 +78,7 @@ npm run verify:standalone
 |----------|----------|
 | **Renderer** | `three`, `@react-three/fiber`, `@react-three/drei` |
 | **Visuals** | `@react-three/postprocessing` (Bloom, SMAA, Vignette) |
-| **Physics** | `@react-three/rapier` (rigid bodies, colliders, character controller) |
+| **Collision** | Deterministic swept capsule-vs-AABB controller |
 | **Crowd** | Deterministic authored routes shared by rendering and collision |
 | **Procedural** | `@dgreenheck/ez-tree` (trees with real bark/leaf textures) |
 | **Architecture** | `zustand` (state), `zod` (schemas) |

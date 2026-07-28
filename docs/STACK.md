@@ -13,7 +13,6 @@ when it is actually present in `package.json`.
 | `@react-three/drei` | Pointer-lock controls and loading helpers |
 | `@react-three/postprocessing` | Lazy high/medium visual effects |
 | `@dgreenheck/ez-tree` | Lazy detailed plaza trees |
-| `@react-three/rapier` | Fixed world collider foundation |
 | `zustand` | Scenario and HUD state |
 | `zod` | Validated standalone/future adapter schemas |
 
@@ -36,6 +35,7 @@ when it is actually present in `package.json`.
 | `koota` | Profiling proves the current state model no longer scales |
 | `@pixiv/three-vrm` | A third-person camera and licensed character are approved together |
 | `yuka` | Crowd behavior needs steering beyond the current deterministic authored routes |
+| `@react-three/rapier` | A real dynamic rigid-body feature cannot be expressed by the verified swept controller |
 
 Do not install speculative foundations. Each addition needs a real feature,
 bundle-cost evidence, a focused test, and a clean dependency audit.

@@ -4,8 +4,7 @@
  * All geometry is code-generated — no external model files needed.
  * Props are placed along the boulevard sidewalks.
  */
-import { useMemo } from 'react'
-import { BOULEVARD } from './city-data'
+import { STREET_PROPS } from './city-data'
 import { PALETTE } from './palette'
 import { useWoodMaterial, useMetalRustMaterial } from './PBRMaterials'
 
@@ -59,41 +58,6 @@ function TrashCan({ position }: { position: [number, number, number] }) {
   )
 }
 
-function StreetLamp({ position }: { position: [number, number, number] }) {
-  return (
-    <group position={position}>
-      {/* Pole */}
-      <mesh position={[0, 2.2, 0]} castShadow>
-        <cylinderGeometry args={[0.06, 0.08, 4.4, 8]} />
-        <meshStandardMaterial color={PALETTE.metal} roughness={0.35} metalness={0.85} />
-      </mesh>
-      {/* Arm */}
-      <mesh position={[0.4, 4.1, 0]} rotation={[0, 0, -0.3]}>
-        <boxGeometry args={[0.9, 0.05, 0.05]} />
-        <meshStandardMaterial color={PALETTE.metal} roughness={0.35} metalness={0.85} />
-      </mesh>
-      {/* Lamp housing */}
-      <mesh position={[0.8, 4.0, 0]}>
-        <boxGeometry args={[0.3, 0.15, 0.2]} />
-        <meshStandardMaterial color="#1a1a1a" roughness={0.6} metalness={0.3} />
-      </mesh>
-      {/* Lamp light */}
-      <mesh position={[0.8, 3.9, 0]}>
-        <boxGeometry args={[0.22, 0.04, 0.14]} />
-        <meshBasicMaterial color={PALETTE.warmLight} toneMapped={false} />
-      </mesh>
-      <pointLight
-        position={[0.8, 3.7, 0]}
-        color={PALETTE.warmLight}
-        intensity={120}
-        distance={18}
-        decay={2}
-        castShadow={false}
-      />
-    </group>
-  )
-}
-
 function BenchSign({ position, rotation = 0 }: { position: [number, number, number]; rotation?: number }) {
   return (
     <group position={position} rotation={[0, rotation, 0]}>
@@ -117,51 +81,17 @@ function BenchSign({ position, rotation = 0 }: { position: [number, number, numb
 }
 
 export function StreetProps() {
-  const sidewalkX = BOULEVARD.width / 2 + BOULEVARD.sidewalkWidth / 2
-
-  const props = useMemo(() => {
-    const items: Array<{ type: string; x: number; z: number; side: number; rot: number }> = []
-
-    // Benches along both sidewalks
-    for (let z = 8; z < BOULEVARD.depth; z += 14) {
-      items.push({ type: 'bench', x: -sidewalkX + 1.2, z, side: -1, rot: Math.PI / 2 })
-      items.push({ type: 'bench', x: sidewalkX - 1.2, z, side: 1, rot: -Math.PI / 2 })
-    }
-
-    // Trash cans near benches
-    for (let z = 12; z < BOULEVARD.depth; z += 28) {
-      items.push({ type: 'trash', x: -sidewalkX + 0.6, z, side: -1, rot: 0 })
-      items.push({ type: 'trash', x: sidewalkX - 0.6, z, side: 1, rot: 0 })
-    }
-
-    // Street lamps along the road edges
-    for (let z = 4; z < BOULEVARD.depth; z += 20) {
-      items.push({ type: 'lamp', x: -BOULEVARD.width / 2 - 0.5, z, side: -1, rot: 0 })
-      items.push({ type: 'lamp', x: BOULEVARD.width / 2 + 0.5, z, side: 1, rot: 0 })
-    }
-
-    // Street signs at intervals
-    for (let z = 16; z < BOULEVARD.depth; z += 35) {
-      items.push({ type: 'sign', x: -sidewalkX + 0.8, z, side: -1, rot: 0 })
-      items.push({ type: 'sign', x: sidewalkX - 0.8, z, side: 1, rot: Math.PI })
-    }
-
-    return items
-  }, [sidewalkX])
-
   return (
     <group>
-      {props.map((p, i) => {
+      {STREET_PROPS.map((p) => {
         const pos: [number, number, number] = [p.x, 0, p.z]
-        switch (p.type) {
+        switch (p.kind) {
           case 'bench':
-            return <Bench key={i} position={pos} rotation={p.rot} />
+            return <Bench key={p.id} position={pos} rotation={p.rotation} />
           case 'trash':
-            return <TrashCan key={i} position={pos} />
-          case 'lamp':
-            return <StreetLamp key={i} position={pos} />
+            return <TrashCan key={p.id} position={pos} />
           case 'sign':
-            return <BenchSign key={i} position={pos} rotation={p.rot} />
+            return <BenchSign key={p.id} position={pos} rotation={p.rotation} />
           default:
             return null
         }

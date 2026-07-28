@@ -20,7 +20,6 @@ is unnecessary risk.
 | `@react-three/drei` | Pointer lock and loading progress. Remote font helpers are not used. |
 | `@react-three/postprocessing` | Lazy visual effects; disabled on low quality. |
 | `@dgreenheck/ez-tree` | Lazy detailed landscaping with a procedural fallback. |
-| `@react-three/rapier` | Fixed collider foundation for future physical props; player movement remains on the verified swept controller. |
 | `zustand` | Keeps high-frequency simulation outside React while exposing a throttled HUD mirror. |
 | `zod` | Validates schema and save boundaries; tree-shaken when unused. |
 | `vitest`, `typescript` | Fast deterministic tests and strict type checking. |
@@ -33,6 +32,7 @@ is unnecessary risk.
 | `@gltf-transform/core`, `@gltf-transform/cli` | No GLB is imported, and their unused toolchain introduced eight high-severity development advisories. |
 | `playwright` | No repository test invoked it. Browser acceptance uses the external verification harness until a real in-repo E2E suite exists. |
 | `yuka` | Its separate mutable crowd state drifted from collision. The current authored-route sampler gives meshes and colliders one deterministic source of truth. |
+| `@react-three/rapier` | It duplicated every fixed collider without owning any moving body. The swept AABB controller is now the single verified authority; reintroduce rigid bodies only with a real dynamic feature. |
 
 ## Deferred
 

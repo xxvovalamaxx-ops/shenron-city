@@ -36,6 +36,13 @@ export interface StreetTree {
   scale: number
 }
 
+export type StreetPropKind = 'bench' | 'trash' | 'sign'
+
+export interface StreetProp extends CityBox {
+  kind: StreetPropKind
+  rotation: number
+}
+
 export interface RoutePoint {
   x: number
   z: number
@@ -208,6 +215,67 @@ export const STREET_LIGHTS: readonly RoutePoint[] = [
   { x: 8.8, z: 148 },
 ] as const
 
+/**
+ * Solid sidewalk props.
+ *
+ * Positions and world-aligned bounds live here so rendering, collision, route
+ * validation, and the minimap cannot drift apart. The east-side props stay
+ * close to the kerb to leave the two pedestrian loops and market route clear.
+ */
+function streetProps(): StreetProp[] {
+  const props: StreetProp[] = []
+  const boulevardStart = BOULEVARD.z - BOULEVARD.depth / 2
+
+  for (let z = boulevardStart + 8; z < boulevardStart + BOULEVARD.depth; z += 14) {
+    for (const side of [-1, 1] as const) {
+      props.push({
+        id: `bench-${side < 0 ? 'west' : 'east'}-${z}`,
+        kind: 'bench',
+        x: side * 8.1,
+        z,
+        width: 0.46,
+        depth: 1.7,
+        height: 0.9,
+        rotation: side < 0 ? Math.PI / 2 : -Math.PI / 2,
+      })
+    }
+  }
+
+  for (let z = boulevardStart + 14; z < boulevardStart + BOULEVARD.depth; z += 28) {
+    for (const side of [-1, 1] as const) {
+      props.push({
+        id: `trash-${side < 0 ? 'west' : 'east'}-${z}`,
+        kind: 'trash',
+        x: side * 8.1,
+        z,
+        width: 0.52,
+        depth: 0.52,
+        height: 0.85,
+        rotation: 0,
+      })
+    }
+  }
+
+  for (let z = boulevardStart + 18; z < boulevardStart + BOULEVARD.depth; z += 35) {
+    for (const side of [-1, 1] as const) {
+      props.push({
+        id: `sign-${side < 0 ? 'west' : 'east'}-${z}`,
+        kind: 'sign',
+        x: side * 8.1,
+        z,
+        width: 0.84,
+        depth: 0.12,
+        height: 2.05,
+        rotation: side < 0 ? 0 : Math.PI,
+      })
+    }
+  }
+
+  return props
+}
+
+export const STREET_PROPS: readonly StreetProp[] = streetProps()
+
 export const AMBIENT_ROUTES: readonly AmbientRoute[] = [
   {
     id: 'west-sidewalk',
@@ -285,6 +353,7 @@ export const CITY_OBSTACLES: readonly CityBox[] = [
     ...stall,
     height: 1.05,
   })),
+  ...STREET_PROPS,
   { id: 'market-keeper', x: MARKET_KEEPER.x, z: MARKET_KEEPER.z, width: 0.7, depth: 0.7, height: 1.8 },
   { id: 'plaza-warden', x: PLAZA_WARDEN.x, z: PLAZA_WARDEN.z, width: 0.7, depth: 0.7, height: 1.8 },
 ] as const
@@ -332,14 +401,20 @@ function segmentIntersectsBox(
 export function validateCityData(): string[] {
   const issues: string[] = []
   const ids = new Set<string>()
-  const identified = [...STOREFRONTS, ...MARKET_STALLS, ...STREET_TREES, ...AMBIENT_ROUTES]
+  const identified = [
+    ...STOREFRONTS,
+    ...MARKET_STALLS,
+    ...STREET_PROPS,
+    ...STREET_TREES,
+    ...AMBIENT_ROUTES,
+  ]
 
   for (const item of identified) {
     if (ids.has(item.id)) issues.push(`Duplicate city id: ${item.id}`)
     ids.add(item.id)
   }
 
-  for (const box of [...STOREFRONTS, ...MARKET_STALLS]) {
+  for (const box of [...STOREFRONTS, ...MARKET_STALLS, ...STREET_PROPS]) {
     if (box.width <= 0 || box.depth <= 0 || box.height <= 0) {
       issues.push(`${box.id} has a non-positive dimension`)
     }
