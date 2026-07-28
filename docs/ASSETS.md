@@ -11,6 +11,11 @@ runtime files in `public/` are the curated 1K Poly Haven material maps, the
 optimized Shenron City capybara GLB, and the pinned CC0 service-android GLB
 used for residents, named city characters, and headquarters agents.
 
+The commercial-block shells, boulevard trees and park features, and four
+traffic shells are curated CC0 Kenney GLBs. Runtime normalization binds each
+model to the same authored dimensions used by collision; imported decoration
+does not create a second source of spatial truth.
+
 Every imported asset is recorded in
 [`Assets/ASSET_MANIFEST.csv`](Assets/ASSET_MANIFEST.csv), including its source,
 creator, license, acquisition date, destination, and modifications. CI rejects
@@ -68,6 +73,10 @@ texture references, and embedded textures above the 2K budget.
 
 The same gate pins the service android to its reviewed SHA-256 and checks its
 14-clip, two-skin, facial-morph, and no-remote-dependency contract.
+
+The curated city gate pins every imported building, nature, vehicle, and local
+atlas file, rejects remote texture or Draco dependencies, and keeps the full
+selected set below 2.5 MB.
 
 Keep future authoring sources outside `public/`; only optimized runtime results
 belong in the shipped asset tree. Model scale, axes, materials, animations,

@@ -1,9 +1,9 @@
 /**
  * Shenron City's first walkable exterior district.
  *
- * The forms are intentionally procedural while the visual language is still
- * being proved. Repeated windows, trees, lights and lane markings are
- * instanced so the street adds density without adding hundreds of draw calls.
+ * Authored CC0 shells now establish the commercial blocks and vegetation.
+ * Repeated windows, lights and lane markings remain instanced so the street
+ * adds density without adding hundreds of draw calls.
  */
 import { useLayoutEffect, useMemo, useRef } from 'react'
 import * as THREE from 'three'
@@ -11,6 +11,7 @@ import { WorldText as Text } from '../ui/WorldText'
 import {
   BOULEVARD,
   MARKET_STALLS,
+  PARK_NATURE,
   STOREFRONTS,
   STREET_LIGHTS,
   STREET_TREES,
@@ -18,8 +19,10 @@ import {
   type Storefront,
 } from './city-data'
 import { PALETTE, type QualitySettings } from './palette'
-import { useRoadMaterial, useSidewalkMaterial, useBuildingMaterial, useWoodMaterial, useBarkMaterial } from './PBRMaterials'
+import { useRoadMaterial, useSidewalkMaterial, useWoodMaterial } from './PBRMaterials'
 import { marketDisplayFor, type MarketDisplay } from './market-display'
+import { buildingAssetFor, CITY_NATURE_ASSETS } from './city-assets'
+import { StaticCityModel } from './StaticCityModel'
 
 function StorefrontBuilding({
   store,
@@ -31,14 +34,15 @@ function StorefrontBuilding({
   const facesEast = store.x < 0
   const frontX = (facesEast ? 1 : -1) * (store.width / 2 + 0.03)
   const frontRotation: [number, number, number] = [0, facesEast ? Math.PI / 2 : -Math.PI / 2, 0]
-  const buildingMat = useBuildingMaterial(store.color)
 
   return (
     <group position={[store.x, 0, store.z]}>
-      <mesh position={[0, store.height / 2, 0]} castShadow={shadows} receiveShadow={shadows}>
-        <boxGeometry args={[store.width, store.height, store.depth]} />
-        <primitive object={buildingMat} attach="material" />
-      </mesh>
+      <StaticCityModel
+        url={buildingAssetFor(store.id)}
+        dimensions={[store.width, store.height, store.depth]}
+        rotationY={facesEast ? Math.PI / 2 : -Math.PI / 2}
+        shadows={shadows}
+      />
 
       {/* A bright ground-floor shopfront faces the boulevard. */}
       <mesh position={[frontX, 1.65, 0]} rotation={frontRotation}>
@@ -344,49 +348,39 @@ function Market({ shadows }: { shadows: boolean }) {
   )
 }
 
-function Trees() {
-  const trunks = useRef<THREE.InstancedMesh>(null)
-  const crowns = useRef<THREE.InstancedMesh>(null)
-  const barkMat = useBarkMaterial()
-
-  useLayoutEffect(() => {
-    const trunkMesh = trunks.current
-    const crownMesh = crowns.current
-    if (!trunkMesh || !crownMesh) return
-
-    const matrix = new THREE.Matrix4()
-    const rotation = new THREE.Quaternion()
-    for (let i = 0; i < STREET_TREES.length; i++) {
-      const tree = STREET_TREES[i]
-      matrix.compose(
-        new THREE.Vector3(tree.x, 1.25 * tree.scale, tree.z),
-        rotation,
-        new THREE.Vector3(0.28 * tree.scale, 2.5 * tree.scale, 0.28 * tree.scale),
-      )
-      trunkMesh.setMatrixAt(i, matrix)
-
-      matrix.compose(
-        new THREE.Vector3(tree.x, 3.1 * tree.scale, tree.z),
-        rotation,
-        new THREE.Vector3(1.25 * tree.scale, 1.7 * tree.scale, 1.25 * tree.scale),
-      )
-      crownMesh.setMatrixAt(i, matrix)
-    }
-    trunkMesh.instanceMatrix.needsUpdate = true
-    crownMesh.instanceMatrix.needsUpdate = true
-  }, [])
-
+function Trees({ shadows }: { shadows: boolean }) {
   return (
-    <>
-      <instancedMesh ref={trunks} args={[undefined, undefined, STREET_TREES.length]}>
-        <cylinderGeometry args={[1, 1, 1, 7]} />
-        <primitive object={barkMat} attach="material" />
-      </instancedMesh>
-      <instancedMesh ref={crowns} args={[undefined, undefined, STREET_TREES.length]}>
-        <icosahedronGeometry args={[1, 1]} />
-        <meshStandardMaterial color="#173c2c" roughness={0.95} />
-      </instancedMesh>
-    </>
+    <group>
+      {STREET_TREES.map((tree, index) => {
+        const url =
+          index % 3 === 0
+            ? CITY_NATURE_ASSETS.detailed
+            : index % 3 === 1
+              ? CITY_NATURE_ASSETS.oak
+              : CITY_NATURE_ASSETS.thin
+        return (
+          <StaticCityModel
+            key={tree.id}
+            url={url}
+            position={[tree.x, 0, tree.z]}
+            dimensions={[2.5 * tree.scale, 4.8 * tree.scale, 2.5 * tree.scale]}
+            rotationY={(index * 1.73) % (Math.PI * 2)}
+            shadows={shadows}
+          />
+        )
+      })}
+
+      {PARK_NATURE.map((feature, index) => (
+        <StaticCityModel
+          key={feature.id}
+          url={feature.kind === 'bush' ? CITY_NATURE_ASSETS.bush : CITY_NATURE_ASSETS.rock}
+          position={[feature.x, 0, feature.z]}
+          dimensions={[feature.width, feature.height, feature.depth]}
+          rotationY={index * 1.9}
+          shadows={shadows}
+        />
+      ))}
+    </group>
   )
 }
 
@@ -498,7 +492,7 @@ export function CityDistrict({ quality }: { quality: QualitySettings }) {
       ))}
       <DistrictWindows />
       <Market shadows={quality.shadows} />
-      <Trees />
+      <Trees shadows={quality.shadows} />
       <StreetLights />
     </group>
   )
