@@ -37,6 +37,12 @@ export function KenneyCitizen({
     texture.colorSpace = THREE.SRGBColorSpace
     texture.flipY = false
     texture.needsUpdate = true
+    // SkeletonUtils.clone copies world matrices as it finds them. If the
+    // source has never been rendered its matrices are stale, and the clone
+    // inherits garbage bounds — the Quaternius rig measured 0.754 m instead of
+    // 1.187 m, so normalisation scaled it 2.32x and produced a 2.2 m player
+    // floating half a metre off the ground. Update the source first.
+    source.scene.updateMatrixWorld(true)
 
     const instance = cloneSkeleton(source.scene) as THREE.Group
     const owned = new Set<THREE.Material>()

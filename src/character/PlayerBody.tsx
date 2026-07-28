@@ -26,6 +26,7 @@ import { useRef } from 'react'
 import { useFrame } from '@react-three/fiber'
 import { Group, Mesh } from 'three'
 import { rt } from '../gameplay/runtime'
+import { useHud } from '../ui/hud-store'
 
 const BODY_COLOR = '#3a4558'
 const SKIN_COLOR = '#d4a574'
@@ -66,6 +67,7 @@ function limb(
 }
 
 export function PlayerBody() {
+  const thirdPerson = useHud((s) => s.thirdPerson)
   const groupRef = useRef<Group>(null)
   const torsoRef = useRef<Group>(null)
   const leftArmRef = useRef<Group>(null)
@@ -135,6 +137,10 @@ export function PlayerBody() {
   const upperArmLen = 0.34
   const lowerArmLen = 0.30
   const armMid = (upperArmLen + lowerArmLen) / 2
+
+  // Third person renders the rigged PlayerAvatar instead; drawing both leaves
+  // this box body standing inside the character.
+  if (thirdPerson) return null
 
   return (
     <group ref={groupRef}>

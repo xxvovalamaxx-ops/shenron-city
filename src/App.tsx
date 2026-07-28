@@ -30,6 +30,7 @@ import { PALETTE, QUALITY } from './world/palette'
 import { Hud } from './ui/Hud'
 import { Dialogue } from './ui/Dialogue'
 import { PlayerBody } from './character/PlayerBody'
+import { PlayerAvatar } from './character/PlayerAvatar'
 import { LaserBeam } from './weapons/LaserBeam'
 import { DestructionSystem } from './destruction/DestructionSystem'
 import { NightEnvironment } from './world/NightEnvironment'
@@ -259,6 +260,7 @@ function Scene({
       </Suspense>
 
       <PlayerBody />
+      <PlayerAvatar />
       <LaserBeam />
       <DestructionSystem />
       <AtmosphericDust />
