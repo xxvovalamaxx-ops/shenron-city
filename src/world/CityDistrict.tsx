@@ -14,10 +14,12 @@ import {
   STOREFRONTS,
   STREET_LIGHTS,
   STREET_TREES,
+  type MarketStall,
   type Storefront,
 } from './city-data'
 import { PALETTE, type QualitySettings } from './palette'
 import { useRoadMaterial, useSidewalkMaterial, useBuildingMaterial, useWoodMaterial, useBarkMaterial } from './PBRMaterials'
+import { marketDisplayFor, type MarketDisplay } from './market-display'
 
 function StorefrontBuilding({
   store,
@@ -141,6 +143,97 @@ function DistrictWindows() {
   )
 }
 
+function MarketInventory({
+  display,
+  stall,
+  shadows,
+}: {
+  display: MarketDisplay
+  stall: MarketStall
+  shadows: boolean
+}) {
+  const counterX = -stall.width / 2 + 0.38
+
+  return (
+    <group position={[counterX, 1.12, 0]}>
+      {display.kind === 'ramen' &&
+        [-0.72, 0, 0.72].map((z) => (
+          <group key={z} position={[0, 0, z]}>
+            <mesh castShadow={shadows}>
+              <cylinderGeometry args={[0.18, 0.12, 0.13, 16]} />
+              <meshStandardMaterial color="#eee5d2" roughness={0.55} />
+            </mesh>
+            <mesh position={[0, 0.08, 0]} rotation={[Math.PI / 2, 0, 0]}>
+              <torusGeometry args={[0.1, 0.024, 6, 16]} />
+              <meshStandardMaterial color={display.secondary} roughness={0.78} />
+            </mesh>
+          </group>
+        ))}
+
+      {display.kind === 'tea' &&
+        [-0.8, -0.4, 0, 0.4, 0.8].map((z, index) => (
+          <group key={z} position={[0, 0.14 + (index % 2) * 0.03, z]}>
+            <mesh castShadow={shadows}>
+              <cylinderGeometry args={[0.11, 0.11, 0.3, 14]} />
+              <meshStandardMaterial
+                color={index % 2 ? display.primary : display.secondary}
+                roughness={0.48}
+                metalness={0.28}
+              />
+            </mesh>
+            <mesh position={[0, 0.165, 0]}>
+              <cylinderGeometry args={[0.12, 0.12, 0.025, 14]} />
+              <meshStandardMaterial color="#b8a67e" roughness={0.38} metalness={0.4} />
+            </mesh>
+          </group>
+        ))}
+
+      {display.kind === 'flowers' &&
+        [-0.72, -0.24, 0.24, 0.72].map((z, index) => (
+          <group key={z} position={[0, 0, z]}>
+            <mesh position={[0, 0.08, 0]} castShadow={shadows}>
+              <cylinderGeometry args={[0.11, 0.14, 0.18, 12]} />
+              <meshStandardMaterial color="#75604a" roughness={0.9} />
+            </mesh>
+            <mesh position={[0, 0.36, 0]}>
+              <cylinderGeometry args={[0.018, 0.025, 0.45, 7]} />
+              <meshStandardMaterial color={display.secondary} roughness={0.82} />
+            </mesh>
+            <mesh position={[0, 0.61, 0]} castShadow={shadows}>
+              <icosahedronGeometry args={[0.13, 1]} />
+              <meshStandardMaterial
+                color={index % 2 ? display.primary : '#f2a65a'}
+                emissive={index % 2 ? display.primary : '#f2a65a'}
+                emissiveIntensity={0.08}
+                roughness={0.72}
+              />
+            </mesh>
+          </group>
+        ))}
+
+      {display.kind === 'books' &&
+        [-0.68, 0, 0.68].map((z, stack) => (
+          <group key={z} position={[0, 0, z]}>
+            {[0, 1, 2].map((level) => (
+              <mesh
+                key={level}
+                position={[0, 0.045 + level * 0.075, 0]}
+                rotation={[0, (stack + level) * 0.08 - 0.12, 0]}
+                castShadow={shadows}
+              >
+                <boxGeometry args={[0.4, 0.065, 0.34]} />
+                <meshStandardMaterial
+                  color={(stack + level) % 2 ? display.primary : display.secondary}
+                  roughness={0.82}
+                />
+              </mesh>
+            ))}
+          </group>
+        ))}
+    </group>
+  )
+}
+
 function Market({ shadows }: { shadows: boolean }) {
   const woodMat = useWoodMaterial()
   return (
@@ -148,12 +241,34 @@ function Market({ shadows }: { shadows: boolean }) {
       <Text position={[13.7, 3.65, 70]} rotation={[0, -Math.PI / 2, 0]} fontSize={0.48} color="#fbbf24">
         NIGHT MARKET
       </Text>
-      {MARKET_STALLS.map((stall) => (
+      {MARKET_STALLS.map((stall) => {
+        const display = marketDisplayFor(stall.id)
+        return (
         <group key={stall.id} position={[stall.x, 0, stall.z]}>
-          <mesh position={[0, 0.52, 0]} castShadow={shadows} receiveShadow={shadows}>
-            <boxGeometry args={[stall.width, 1.04, stall.depth]} />
+          {/* A real counter and rear cabinet leave depth under the canopy. */}
+          <mesh
+            position={[-stall.width / 2 + 0.34, 0.55, 0]}
+            castShadow={shadows}
+            receiveShadow={shadows}
+          >
+            <boxGeometry args={[0.68, 1.1, stall.depth - 0.18]} />
             <primitive object={woodMat} attach="material" />
           </mesh>
+          <mesh position={[-stall.width / 2 + 0.34, 1.1, 0]} castShadow={shadows}>
+            <boxGeometry args={[0.88, 0.1, stall.depth + 0.08]} />
+            <meshStandardMaterial color="#76583e" roughness={0.68} />
+          </mesh>
+          <mesh
+            position={[stall.width / 2 - 0.28, 0.72, 0]}
+            castShadow={shadows}
+            receiveShadow={shadows}
+          >
+            <boxGeometry args={[0.56, 1.44, stall.depth - 0.22]} />
+            <primitive object={woodMat} attach="material" />
+          </mesh>
+
+          <MarketInventory display={display} stall={stall} shadows={shadows} />
+
           <mesh position={[0, stall.height, 0]} castShadow={shadows}>
             <boxGeometry args={[stall.width + 0.35, 0.12, stall.depth + 0.4]} />
             <meshStandardMaterial
@@ -163,6 +278,21 @@ function Market({ shadows }: { shadows: boolean }) {
               roughness={0.65}
             />
           </mesh>
+          {/* Cloth valance gives the awning a readable front edge. */}
+          {[-0.82, 0, 0.82].map((z, index) => (
+            <mesh
+              key={z}
+              position={[-stall.width / 2 - 0.16, stall.height - 0.22, z]}
+            >
+              <boxGeometry args={[0.08, 0.38, 0.68]} />
+              <meshStandardMaterial
+                color={index % 2 ? '#efe3c5' : stall.awning}
+                emissive={index % 2 ? '#000000' : stall.awning}
+                emissiveIntensity={index % 2 ? 0 : 0.08}
+                roughness={0.78}
+              />
+            </mesh>
+          ))}
           {[-1, 1].map((x) =>
             [-1, 1].map((z) => (
               <mesh
@@ -174,6 +304,23 @@ function Market({ shadows }: { shadows: boolean }) {
               </mesh>
             )),
           )}
+          {[-1, 1].map((side) => (
+            <group
+              key={side}
+              position={[-stall.width / 2 - 0.18, stall.height - 0.56, side * (stall.depth / 2 - 0.2)]}
+            >
+              <mesh>
+                <cylinderGeometry args={[0.11, 0.14, 0.28, 12]} />
+                <meshStandardMaterial
+                  color={display.primary}
+                  emissive={display.primary}
+                  emissiveIntensity={0.65}
+                  roughness={0.5}
+                />
+              </mesh>
+              <pointLight color={display.primary} intensity={7} distance={4.5} decay={2} />
+            </group>
+          ))}
           <Text
             position={[-stall.width / 2 - 0.05, 1.45, 0]}
             rotation={[0, -Math.PI / 2, 0]}
@@ -182,8 +329,17 @@ function Market({ shadows }: { shadows: boolean }) {
           >
             {stall.name.toUpperCase()}
           </Text>
+          <Text
+            position={[-stall.width / 2 - 0.06, 1.2, 0]}
+            rotation={[0, -Math.PI / 2, 0]}
+            fontSize={0.085}
+            color={display.secondary}
+          >
+            {display.label}
+          </Text>
         </group>
-      ))}
+        )
+      })}
     </group>
   )
 }
