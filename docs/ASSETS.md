@@ -31,6 +31,22 @@ Before adding an asset:
 Do not commit downloaded catalogue pages, raw archive dumps, duplicate source
 files, Unreal or Unity packages, or unreviewed character/animation bundles.
 
+## Local authoring workspace
+
+`SourceAssets/` provides the Blender/model/animation/texture folder structure
+without adding working binaries to normal Git history. The historical FBX
+archive can be restored locally with:
+
+```powershell
+.\scripts\restore-animation-library.ps1
+node .\scripts\catalog-source-assets.mjs
+```
+
+The resulting 2,393 files remain under ignored
+`SourceAssets/Animations/Raw/Unverified/`. Their tracked catalog explicitly
+marks them for license review; no clip may enter a runtime export until its
+provenance, skeleton, duplicate status, and game use are verified.
+
 ## Model pipeline
 
 No external GLB model currently ships with the game. When the first approved

@@ -31,3 +31,12 @@ Thumbs.db
 /avatar.vrm
 /SourceAssets/**/*.html
 /public/models/*.html
+
+# Local authoring library. These folders can contain licensed source files and
+# gigabytes of working data; tracked catalogs and READMEs describe them without
+# republishing the binaries in normal Git history.
+/SourceAssets/Animations/Raw/
+/SourceAssets/Models/**/Raw/
+/SourceAssets/Textures/Raw/
+/SourceAssets/Audio/Raw/
+/.asset-restore-*/

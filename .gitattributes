@@ -8,6 +8,9 @@
 *.json text eol=lf
 *.md text eol=lf
 *.mjs text eol=lf
+*.csv text eol=lf
+*.ps1 text eol=lf
+*.py text eol=lf
 *.ts text eol=lf diff
 *.tsx text eol=lf diff
 *.yml text eol=lf
