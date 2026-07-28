@@ -25,6 +25,18 @@ jobs:
           cache: npm
       - name: Install locked dependencies
         run: npm ci
+      - name: Check no build-only packages in production deps
+        run: |
+          node -e "
+            const p = require('./package.json');
+            const buildOnly = ['@gltf-transform/cli', '@gltf-transform/core'];
+            const prod = Object.keys(p.dependencies || {});
+            const found = buildOnly.filter(b => prod.includes(b));
+            if (found.length) {
+              console.error('::error::Build-only packages in dependencies (move to devDependencies):', found.join(', '));
+              process.exit(1);
+            }
+          "
       - name: Type check
         run: npm run typecheck
       # The simulation — lift, doors, collision, shaft interlocks, contract
