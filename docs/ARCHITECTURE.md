@@ -13,6 +13,7 @@ experience solid before any external integration returns.
 src/
 ├── adapter/      in-repository scenario state; no network I/O
 ├── agents/       characters, ambient routes, and deterministic dialogue
+├── animals/      imported animal actors plus renderer-free route contracts
 ├── contracts/    stable domain types and dormant future adapter schemas
 ├── gameplay/     pure simulation; no renderer or host integration
 ├── world/        Three.js scene composition and art direction
@@ -64,6 +65,8 @@ would make behavior depend on React render order.
 - District geometry and collision consume the same renderer-free city data.
 - Ambient pedestrian meshes and colliders sample the same deterministic
   authored routes, phases, and quality-scaled count.
+- The capybara visual, animation selection, and moving collider sample one
+  deterministic route pose, so rendering cannot drift away from collision.
 - The six-step City Tour is an ordered pure reducer; later objectives cannot
   be completed early and validated progress can be restored from the local
   browser save.
@@ -91,8 +94,8 @@ A future connection should live behind an adapter that:
 ## Known limitations
 
 - One city district, one headquarters route, and one detailed floor.
-- Procedural geometry with a curated CC0 PBR texture pass; no production model
-  import pipeline yet.
+- Procedural city geometry with a curated CC0 PBR texture pass and one audited
+  production animal pipeline.
 - Fictional residents are stylized forms with deterministic dialogue and local
   steering.
 - No multiplayer, live AI, Mission Control, or desktop bridge.

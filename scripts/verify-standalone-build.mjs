@@ -82,10 +82,13 @@ if (!/if\s+not\s+exist\s+node_modules[\s\S]*\bcall\s+npm\s+ci\b/i.test(launcher)
 }
 
 const html = readFileSync(join(root, 'index.html'), 'utf8')
-if (!/connect-src 'none'/.test(html)) {
-  findings.push("index.html: connect-src must be 'none'")
+if (!/connect-src 'self'/.test(html)) {
+  findings.push("index.html: connect-src must be exactly 'self'")
 }
-if (/connect-src[^;]*\*/.test(html)) findings.push('index.html: connect-src must not be a wildcard')
+const connectPolicy = html.match(/connect-src\s+([^;"]+)/)?.[1]?.trim()
+if (connectPolicy !== "'self'") {
+  findings.push("index.html: connect-src may allow same-origin assets only")
+}
 
 const publicRoot = join(root, 'public')
 const publicFiles = filesUnder(publicRoot)
@@ -112,17 +115,17 @@ const buildFiles = filesUnder(join(root, 'dist')).filter((path) => /\.(html|js|c
  * is shared with.
  */
 const forbiddenBuildMarkers = [
-  'MISSION_CONTROL_URL',
-  'cdn.jsdelivr.net/gh/lojjic/unicode-font-resolver',
-  'sk-',
-  'Bearer ',
-  'api_key',
-  '__rt',
+  [/MISSION_CONTROL_URL/, 'MISSION_CONTROL_URL'],
+  [/cdn\.jsdelivr\.net\/gh\/lojjic\/unicode-font-resolver/, 'remote font resolver'],
+  [/\bsk-[A-Za-z0-9_-]{16,}\b/, 'provider API key'],
+  [/\bBearer\s+[A-Za-z0-9._~-]{12,}\b/, 'bearer credential'],
+  [/\bapi_key\b/i, 'api_key'],
+  [/\b__rt\b/, '__rt'],
 ]
 for (const path of buildFiles) {
   const text = readFileSync(path, 'utf8')
-  for (const marker of forbiddenBuildMarkers) {
-    if (text.includes(marker)) findings.push(`${relative(root, path)}: ${marker}`)
+  for (const [pattern, label] of forbiddenBuildMarkers) {
+    if (pattern.test(text)) findings.push(`${relative(root, path)}: ${label}`)
   }
 }
 

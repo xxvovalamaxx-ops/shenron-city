@@ -6,7 +6,7 @@
  * used for image-based lighting, not as a visible skybox.
  *
  * HDR: "Modern Buildings Night" by Greg Zaal — CC0
- * https://polyhaven.com/a/modern_buildings_night
+ * Exact source and attribution are recorded in docs/Assets/ASSET_MANIFEST.csv.
  */
 import { useEffect } from 'react'
 import { useThree } from '@react-three/fiber'

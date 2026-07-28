@@ -34,6 +34,7 @@ import { LaserBeam } from './weapons/LaserBeam'
 import { DestructionSystem } from './destruction/DestructionSystem'
 import { NightEnvironment } from './world/NightEnvironment'
 import { AtmosphericDust } from './world/AtmosphericDust'
+import { Capybara } from './animals/CapybaraActor'
 
 import { OfficePanel } from './ui/OfficePanel'
 import { DEFAULT_SETTINGS, LoadingScreen, PauseMenu, TitleScreen, type Settings } from './ui/Screens'
@@ -239,6 +240,7 @@ function Scene({
       <MarketKeeper />
       <PlazaWarden />
       <AmbientCrowd count={quality.ambientPedestrians} />
+      <Capybara shadows={quality.shadows} />
 
       <PlayerBody />
       <LaserBeam />
