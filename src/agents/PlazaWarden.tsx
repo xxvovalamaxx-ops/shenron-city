@@ -3,10 +3,12 @@
  *
  * Faces the boulevard and scans the street with an articulated idle pose.
  */
+import { Suspense } from 'react'
 import { PLAZA_WARDEN } from '../world/city-data'
 import { WorldText as Text } from '../ui/WorldText'
 import { useHud } from '../ui/hud-store'
 import { InteractionFocusMarker } from './InteractionFocusMarker'
+import { KenneyCitizen } from './KenneyCitizen'
 import { QuaterniusHero } from './QuaterniusHero'
 
 export function PlazaWarden() {
@@ -15,10 +17,16 @@ export function PlazaWarden() {
   return (
     <group position={[PLAZA_WARDEN.x, 0, PLAZA_WARDEN.z]}>
       <group>
-        <QuaterniusHero
-          motion={talking ? 'Idle_Talking_Loop' : 'Idle_FoldArms_Loop'}
-          animationSpeed={talking ? 0.92 : 0.82}
-        />
+        <Suspense
+          fallback={
+            <KenneyCitizen motion="Idle" skin="criminalMale" animationSpeed={0.82} />
+          }
+        >
+          <QuaterniusHero
+            motion={talking ? 'Idle_Talking_Loop' : 'Idle_FoldArms_Loop'}
+            animationSpeed={talking ? 0.92 : 0.82}
+          />
+        </Suspense>
         {/* Shoulder camera, radio, and chest shield make Kai read as security. */}
         <mesh position={[0.42, 1.48, 0.05]} castShadow>
           <boxGeometry args={[0.18, 0.24, 0.2]} />
