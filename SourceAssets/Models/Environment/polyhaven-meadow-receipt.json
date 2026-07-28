@@ -1,0 +1,880 @@
+{
+  "schemaVersion": 2,
+  "source": "Poly Haven public API",
+  "api": "https://api.polyhaven.com",
+  "license": "CC0-1.0",
+  "licenseUrl": "https://polyhaven.com/license",
+  "variants": {
+    "models": {
+      "resolution": "1k",
+      "format": "blend"
+    },
+    "lighting": {
+      "resolution": "2k",
+      "format": "hdr"
+    }
+  },
+  "assets": [
+    {
+      "id": "forest_ground_04",
+      "kind": "model",
+      "variant": "1k-blend",
+      "name": "Forest Ground 04",
+      "authors": [
+        "Rico Cilliers",
+        "Rob Tuytel"
+      ],
+      "page": "https://polyhaven.com/a/forest_ground_04",
+      "files": [
+        {
+          "filename": "forest_ground_04_1k.blend",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Textures/blend/1k/forest_ground_04/forest_ground_04_1k.blend",
+          "md5": "414cdec51845309e9de7a86d5fa0172a",
+          "size": 229888,
+          "status": "cached"
+        },
+        {
+          "filename": "textures/forest_ground_04_nor_gl_1k.exr",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Textures/exr/1k/forest_ground_04/forest_ground_04_nor_gl_1k.exr",
+          "md5": "b670ed5e33c011d5ef289be72c070139",
+          "size": 2588522,
+          "status": "cached"
+        },
+        {
+          "filename": "textures/forest_ground_04_diff_1k.jpg",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/forest_ground_04/forest_ground_04_diff_1k.jpg",
+          "md5": "6ad9df4d731a238299806f739a26af83",
+          "size": 1113899,
+          "status": "cached"
+        },
+        {
+          "filename": "textures/forest_ground_04_disp_1k.png",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Textures/png/1k/forest_ground_04/forest_ground_04_disp_1k.png",
+          "md5": "fb41f8f219e76d6a52095f12bb3c20b2",
+          "size": 1548354,
+          "status": "cached"
+        },
+        {
+          "filename": "textures/forest_ground_04_rough_1k.exr",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Textures/exr/1k/forest_ground_04/forest_ground_04_rough_1k.exr",
+          "md5": "55ddd8ccf5fd3750f7f6836cd886dd71",
+          "size": 880797,
+          "status": "cached"
+        }
+      ]
+    },
+    {
+      "id": "brown_mud_leaves_01",
+      "kind": "model",
+      "variant": "1k-blend",
+      "name": "Brown Mud Leaves 01",
+      "authors": [
+        "Rob Tuytel"
+      ],
+      "page": "https://polyhaven.com/a/brown_mud_leaves_01",
+      "files": [
+        {
+          "filename": "brown_mud_leaves_01_1k.blend",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Textures/blend/1k/brown_mud_leaves_01/brown_mud_leaves_01_1k.blend",
+          "md5": "110c04b5bd3393884d9fcbab18d525c4",
+          "size": 213132,
+          "status": "cached"
+        },
+        {
+          "filename": "textures/brown_mud_leaves_01_disp_1k.png",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Textures/png/1k/brown_mud_leaves_01/brown_mud_leaves_01_disp_1k.png",
+          "md5": "866f473aa70094dfbc4d7afd73b2d015",
+          "size": 1815216,
+          "status": "cached"
+        },
+        {
+          "filename": "textures/brown_mud_leaves_01_rough_1k.exr",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Textures/exr/1k/brown_mud_leaves_01/brown_mud_leaves_01_rough_1k.exr",
+          "md5": "a1f801ac1d731f91ba75de6aa7ce7e07",
+          "size": 645640,
+          "status": "cached"
+        },
+        {
+          "filename": "textures/brown_mud_leaves_01_diff_1k.jpg",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/brown_mud_leaves_01/brown_mud_leaves_01_diff_1k.jpg",
+          "md5": "5340848384f9bb19bfa6e7ac459683d7",
+          "size": 1206953,
+          "status": "cached"
+        },
+        {
+          "filename": "textures/brown_mud_leaves_01_nor_gl_1k.exr",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Textures/exr/1k/brown_mud_leaves_01/brown_mud_leaves_01_nor_gl_1k.exr",
+          "md5": "d8e709577ce1bbb1a6a2a6d60f9ac295",
+          "size": 2820482,
+          "status": "cached"
+        }
+      ]
+    },
+    {
+      "id": "grass_bermuda_01",
+      "kind": "model",
+      "variant": "1k-blend",
+      "name": "Grass Bermuda 01",
+      "authors": [
+        "Rico Cilliers"
+      ],
+      "page": "https://polyhaven.com/a/grass_bermuda_01",
+      "files": [
+        {
+          "filename": "grass_bermuda_01_1k.blend",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/blend/1k/grass_bermuda_01/grass_bermuda_01_1k.blend",
+          "md5": "61d700a2259ec67ba8ed6846ebc680cc",
+          "size": 185844,
+          "status": "downloaded"
+        },
+        {
+          "filename": "textures/grass_bermuda_01_alpha_1k.png",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/png/1k/grass_bermuda_01/grass_bermuda_01_alpha_1k.png",
+          "md5": "274285abb11b3b7a0fd277b9923d1074",
+          "size": 59564,
+          "status": "downloaded"
+        },
+        {
+          "filename": "textures/grass_bermuda_01_diff_1k.jpg",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/1k/grass_bermuda_01/grass_bermuda_01_diff_1k.jpg",
+          "md5": "234be9f52cfcd3380c7f782baaa841c3",
+          "size": 175425,
+          "status": "downloaded"
+        },
+        {
+          "filename": "textures/grass_bermuda_01_nor_gl_1k.exr",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/exr/1k/grass_bermuda_01/grass_bermuda_01_nor_gl_1k.exr",
+          "md5": "4b81e770a8d6a27af63f28bc27c58b68",
+          "size": 1558026,
+          "status": "downloaded"
+        },
+        {
+          "filename": "textures/grass_bermuda_01_rough_1k.exr",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/exr/1k/grass_bermuda_01/grass_bermuda_01_rough_1k.exr",
+          "md5": "52c9560c10329520735fa6ed242d4ed3",
+          "size": 704249,
+          "status": "downloaded"
+        }
+      ]
+    },
+    {
+      "id": "grass_medium_01",
+      "kind": "model",
+      "variant": "1k-blend",
+      "name": "Grass Medium 01",
+      "authors": [
+        "Rico Cilliers",
+        "Rob Tuytel"
+      ],
+      "page": "https://polyhaven.com/a/grass_medium_01",
+      "files": [
+        {
+          "filename": "grass_medium_01_1k.blend",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/blend/1k/grass_medium_01/grass_medium_01_1k.blend",
+          "md5": "e37f4fa4c90ddeb807ce6b4c09e3033d",
+          "size": 1832028,
+          "status": "cached"
+        },
+        {
+          "filename": "textures/grass_medium_01_alpha_1k.png",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/png/1k/grass_medium_01/grass_medium_01_alpha_1k.png",
+          "md5": "6b5b251ef1ca9a69ab9f49def66d758a",
+          "size": 648718,
+          "status": "cached"
+        },
+        {
+          "filename": "textures/grass_medium_01_diff_1k.jpg",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/1k/grass_medium_01/grass_medium_01_diff_1k.jpg",
+          "md5": "6b18ed50d776fd20c1304d9994bd764e",
+          "size": 395673,
+          "status": "cached"
+        },
+        {
+          "filename": "textures/grass_medium_01_dry_diff_1k.png",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/png/1k/grass_medium_01/grass_medium_01_dry_diff_1k.png",
+          "md5": "6f5ae8d4f152542de30aad6b6a3ea327",
+          "size": 2167830,
+          "status": "cached"
+        },
+        {
+          "filename": "textures/grass_medium_01_nor_gl_1k.exr",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/exr/1k/grass_medium_01/grass_medium_01_nor_gl_1k.exr",
+          "md5": "70fb385251e22ca7cf23ed4adf835ab2",
+          "size": 2021011,
+          "status": "cached"
+        },
+        {
+          "filename": "textures/grass_medium_01_rough_1k.exr",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/exr/1k/grass_medium_01/grass_medium_01_rough_1k.exr",
+          "md5": "8c72f456c9f2fae200be9d308fe91051",
+          "size": 900132,
+          "status": "cached"
+        }
+      ]
+    },
+    {
+      "id": "grass_medium_02",
+      "kind": "model",
+      "variant": "1k-blend",
+      "name": "Grass Medium 02",
+      "authors": [
+        "Rico Cilliers"
+      ],
+      "page": "https://polyhaven.com/a/grass_medium_02",
+      "files": [
+        {
+          "filename": "grass_medium_02_1k.blend",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/blend/1k/grass_medium_02/grass_medium_02_1k.blend",
+          "md5": "14cffdc414f42565302df84c4652938c",
+          "size": 318842,
+          "status": "cached"
+        },
+        {
+          "filename": "textures/grass_medium_02_alpha_1k.png",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/png/1k/grass_medium_02/grass_medium_02_alpha_1k.png",
+          "md5": "b231cd6a1b5eb7ae21e7c2e626f8318c",
+          "size": 110617,
+          "status": "cached"
+        },
+        {
+          "filename": "textures/grass_medium_02_diff_1k.jpg",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/1k/grass_medium_02/grass_medium_02_diff_1k.jpg",
+          "md5": "4bb5230e09358d60dd767331685b2d36",
+          "size": 161235,
+          "status": "cached"
+        },
+        {
+          "filename": "textures/grass_medium_02_dry_diff_1k.png",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/png/1k/grass_medium_02/grass_medium_02_dry_diff_1k.png",
+          "md5": "4710aead1b58c89749e6d199363f0f6c",
+          "size": 825429,
+          "status": "cached"
+        },
+        {
+          "filename": "textures/grass_medium_02_nor_gl_1k.exr",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/exr/1k/grass_medium_02/grass_medium_02_nor_gl_1k.exr",
+          "md5": "d6cf0459753aaa6935204cb6d3c2dc7f",
+          "size": 241121,
+          "status": "cached"
+        },
+        {
+          "filename": "textures/grass_medium_02_rough_1k.exr",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/exr/1k/grass_medium_02/grass_medium_02_rough_1k.exr",
+          "md5": "84116a519b7054c72f0aba9e306c3466",
+          "size": 374549,
+          "status": "cached"
+        }
+      ]
+    },
+    {
+      "id": "fern_02",
+      "kind": "model",
+      "variant": "1k-blend",
+      "name": "Fern 02",
+      "authors": [
+        "Rico Cilliers",
+        "Rob Tuytel"
+      ],
+      "page": "https://polyhaven.com/a/fern_02",
+      "files": [
+        {
+          "filename": "fern_02_1k.blend",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/blend/1k/fern_02/fern_02_1k.blend",
+          "md5": "6ad31e08091b148241683d48486be258",
+          "size": 261459,
+          "status": "cached"
+        },
+        {
+          "filename": "textures/fern_02_rough_1k.exr",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/exr/1k/fern_02/fern_02_rough_1k.exr",
+          "md5": "1e937f3f3db87e520601f8e94363a5dc",
+          "size": 267009,
+          "status": "cached"
+        },
+        {
+          "filename": "textures/fern_02_alpha_1k.png",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/png/1k/fern_02/fern_02_alpha_1k.png",
+          "md5": "1421e5e36946c23a7ddcc907de89025c",
+          "size": 114589,
+          "status": "cached"
+        },
+        {
+          "filename": "textures/fern_02_nor_gl_1k.exr",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/exr/1k/fern_02/fern_02_nor_gl_1k.exr",
+          "md5": "c4c2dc925e3ecdb86a6a123a21acfc5b",
+          "size": 801563,
+          "status": "cached"
+        },
+        {
+          "filename": "textures/fern_02_diff_1k.jpg",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/1k/fern_02/fern_02_diff_1k.jpg",
+          "md5": "82c18a6cfd5ae91c37c0e078f591181c",
+          "size": 315705,
+          "status": "cached"
+        }
+      ]
+    },
+    {
+      "id": "nettle_plant",
+      "kind": "model",
+      "variant": "1k-blend",
+      "name": "Nettle Plant",
+      "authors": [
+        "Rico Cilliers",
+        "Rob Tuytel"
+      ],
+      "page": "https://polyhaven.com/a/nettle_plant",
+      "files": [
+        {
+          "filename": "nettle_plant_1k.blend",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/blend/1k/nettle_plant/nettle_plant_1k.blend",
+          "md5": "109c445b3213a24f8c18b0dcb5bf7dcd",
+          "size": 1075094,
+          "status": "downloaded"
+        },
+        {
+          "filename": "textures/nettle_plant_dry_diff_1k.png",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/png/1k/nettle_plant/nettle_plant_dry_diff_1k.png",
+          "md5": "3a38c9d400836924a8816607e2e92d56",
+          "size": 3534391,
+          "status": "downloaded"
+        },
+        {
+          "filename": "textures/nettle_plant_nor_gl_1k.exr",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/exr/1k/nettle_plant/nettle_plant_nor_gl_1k.exr",
+          "md5": "68f48969712c23ad8ed07f28a3e0f422",
+          "size": 1413912,
+          "status": "downloaded"
+        },
+        {
+          "filename": "textures/nettle_plant_diff_1k.jpg",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/1k/nettle_plant/nettle_plant_diff_1k.jpg",
+          "md5": "efa546b37e9a8669b214b1fea1422892",
+          "size": 388629,
+          "status": "downloaded"
+        },
+        {
+          "filename": "textures/nettle_plant_alpha_1k.png",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/png/1k/nettle_plant/nettle_plant_alpha_1k.png",
+          "md5": "57a0ce5b6285f558786511ccff178aa1",
+          "size": 189288,
+          "status": "downloaded"
+        },
+        {
+          "filename": "textures/nettle_plant_rough_1k.exr",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/exr/1k/nettle_plant/nettle_plant_rough_1k.exr",
+          "md5": "a39338d62c23a1f9c6e3acb97d7c2eb7",
+          "size": 453489,
+          "status": "downloaded"
+        }
+      ]
+    },
+    {
+      "id": "weed_plant_02",
+      "kind": "model",
+      "variant": "1k-blend",
+      "name": "Weed Plant 02",
+      "authors": [
+        "Rico Cilliers",
+        "Rob Tuytel"
+      ],
+      "page": "https://polyhaven.com/a/weed_plant_02",
+      "files": [
+        {
+          "filename": "weed_plant_02_1k.blend",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/blend/1k/weed_plant_02/weed_plant_02_1k.blend",
+          "md5": "1b05f950d315f67d3f647f67e1872d46",
+          "size": 464832,
+          "status": "downloaded"
+        },
+        {
+          "filename": "textures/weed_plant_02_nor_gl_1k.exr",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/exr/1k/weed_plant_02/weed_plant_02_nor_gl_1k.exr",
+          "md5": "00f635878f0a35225ae59f4e37dd0935",
+          "size": 1494615,
+          "status": "downloaded"
+        },
+        {
+          "filename": "textures/weed_plant_02_alpha_1k.png",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/png/1k/weed_plant_02/weed_plant_02_alpha_1k.png",
+          "md5": "2fbec8fdd3904e8709718562aa6d37d9",
+          "size": 182453,
+          "status": "downloaded"
+        },
+        {
+          "filename": "textures/weed_plant_02_diff_1k.jpg",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/1k/weed_plant_02/weed_plant_02_diff_1k.jpg",
+          "md5": "147c346358cf123ca50473cf05df7b86",
+          "size": 457595,
+          "status": "downloaded"
+        },
+        {
+          "filename": "textures/weed_plant_02_rough_1k.exr",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/exr/1k/weed_plant_02/weed_plant_02_rough_1k.exr",
+          "md5": "9135bc1f9335b9b605bdac101ad9e341",
+          "size": 564214,
+          "status": "downloaded"
+        }
+      ]
+    },
+    {
+      "id": "moss_01",
+      "kind": "model",
+      "variant": "1k-blend",
+      "name": "Moss 01",
+      "authors": [
+        "Rob Tuytel"
+      ],
+      "page": "https://polyhaven.com/a/moss_01",
+      "files": [
+        {
+          "filename": "moss_01_1k.blend",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/blend/1k/moss_01/moss_01_1k.blend",
+          "md5": "39eb89a1c48257ec013bd8f104330bc1",
+          "size": 174449,
+          "status": "cached"
+        },
+        {
+          "filename": "textures/moss_01_alpha_1k.png",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/png/1k/moss_01/moss_01_alpha_1k.png",
+          "md5": "e55f1cca390d93f23980a5fdbe1dc705",
+          "size": 85174,
+          "status": "cached"
+        },
+        {
+          "filename": "textures/moss_01_diff_1k.jpg",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/1k/moss_01/moss_01_diff_1k.jpg",
+          "md5": "5768f973a7d6d2846a2e76a6b0669a83",
+          "size": 170297,
+          "status": "cached"
+        },
+        {
+          "filename": "textures/moss_01_nor_gl_1k.exr",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/exr/1k/moss_01/moss_01_nor_gl_1k.exr",
+          "md5": "48109c6224d76af40c8daea58e601025",
+          "size": 896965,
+          "status": "cached"
+        },
+        {
+          "filename": "textures/moss_01_rough_1k.exr",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/exr/1k/moss_01/moss_01_rough_1k.exr",
+          "md5": "994feab352789473e3e491e056fa8c63",
+          "size": 523510,
+          "status": "cached"
+        }
+      ]
+    },
+    {
+      "id": "dry_branches_medium_01",
+      "kind": "model",
+      "variant": "1k-blend",
+      "name": "Dry Branches Medium 01",
+      "authors": [
+        "Rico Cilliers"
+      ],
+      "page": "https://polyhaven.com/a/dry_branches_medium_01",
+      "files": [
+        {
+          "filename": "dry_branches_medium_01_1k.blend",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/blend/1k/dry_branches_medium_01/dry_branches_medium_01_1k.blend",
+          "md5": "17400237aca3e5931049e42471e3c560",
+          "size": 768397,
+          "status": "cached"
+        },
+        {
+          "filename": "textures/dry_branches_medium_01_rough_1k.exr",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/exr/1k/dry_branches_medium_01/dry_branches_medium_01_rough_1k.exr",
+          "md5": "bd35aa9982f1f5398f3435bd8d3bd65b",
+          "size": 1084327,
+          "status": "cached"
+        },
+        {
+          "filename": "textures/dry_branches_medium_01_nor_gl_1k.exr",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/exr/1k/dry_branches_medium_01/dry_branches_medium_01_nor_gl_1k.exr",
+          "md5": "4356ccd2588e292fe88077bf60000feb",
+          "size": 2382641,
+          "status": "cached"
+        },
+        {
+          "filename": "textures/dry_branches_medium_01_diff_1k.jpg",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/1k/dry_branches_medium_01/dry_branches_medium_01_diff_1k.jpg",
+          "md5": "2b01d9d1613c88496250f64828566f7c",
+          "size": 778799,
+          "status": "cached"
+        }
+      ]
+    },
+    {
+      "id": "rock_moss_set_01",
+      "kind": "model",
+      "variant": "1k-blend",
+      "name": "Rock Moss Set 01",
+      "authors": [
+        "Kless Gyzen"
+      ],
+      "page": "https://polyhaven.com/a/rock_moss_set_01",
+      "files": [
+        {
+          "filename": "rock_moss_set_01_1k.blend",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/blend/1k/rock_moss_set_01/rock_moss_set_01_1k.blend",
+          "md5": "8e45da22c52aa6d1f2cc685d56591065",
+          "size": 2697968,
+          "status": "cached"
+        },
+        {
+          "filename": "textures/rock_moss_set_01_nor_gl_1k.exr",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/exr/1k/rock_moss_set_01/rock_moss_set_01_nor_gl_1k.exr",
+          "md5": "6dc88738e972c3fbbaf1ccb3480b96cb",
+          "size": 1571891,
+          "status": "cached"
+        },
+        {
+          "filename": "textures/rock_moss_set_01_rough_1k.jpg",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/1k/rock_moss_set_01/rock_moss_set_01_rough_1k.jpg",
+          "md5": "ed9d8a2c863262f76f881346e8047c6a",
+          "size": 82624,
+          "status": "cached"
+        },
+        {
+          "filename": "textures/rock_moss_set_01_diff_1k.jpg",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/1k/rock_moss_set_01/rock_moss_set_01_diff_1k.jpg",
+          "md5": "b8742301e6b4bc5683d2de712e83f772",
+          "size": 168099,
+          "status": "cached"
+        }
+      ]
+    },
+    {
+      "id": "pine_sapling_small",
+      "kind": "model",
+      "variant": "1k-blend",
+      "name": "Pine Sapling Small",
+      "authors": [
+        "Rico Cilliers",
+        "Rob Tuytel"
+      ],
+      "page": "https://polyhaven.com/a/pine_sapling_small",
+      "files": [
+        {
+          "filename": "pine_sapling_small_1k.blend",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/blend/1k/pine_sapling_small/pine_sapling_small_1k.blend",
+          "md5": "6be94b5523379bf3e8c7ccdf0b7356ff",
+          "size": 11966761,
+          "status": "cached"
+        },
+        {
+          "filename": "textures/pine_sapling_small_bark_diff_1k.png",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/png/1k/pine_sapling_small/pine_sapling_small_bark_diff_1k.png",
+          "md5": "63688d7bcdd5ff5500f12bde192b197a",
+          "size": 5568559,
+          "status": "cached"
+        },
+        {
+          "filename": "textures/pine_sapling_small_twig_mask_1k.png",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/png/1k/pine_sapling_small/pine_sapling_small_twig_mask_1k.png",
+          "md5": "07f39f7450a4c5d9d812cf7cf73bceb6",
+          "size": 149491,
+          "status": "cached"
+        },
+        {
+          "filename": "textures/pine_sapling_small_bark_rough_1k.png",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/png/1k/pine_sapling_small/pine_sapling_small_bark_rough_1k.png",
+          "md5": "dca69b84d7846af93fbb31d0c1dafd2e",
+          "size": 2488380,
+          "status": "cached"
+        },
+        {
+          "filename": "textures/pine_sapling_small_twig_alpha_1k.png",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/png/1k/pine_sapling_small/pine_sapling_small_twig_alpha_1k.png",
+          "md5": "9890eccee0444fd263dad2133338583f",
+          "size": 159896,
+          "status": "cached"
+        },
+        {
+          "filename": "textures/pine_sapling_small_twig_rough_1k.png",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/png/1k/pine_sapling_small/pine_sapling_small_twig_rough_1k.png",
+          "md5": "d4f7050fd60d51360c5515a969ffdf77",
+          "size": 835523,
+          "status": "cached"
+        },
+        {
+          "filename": "textures/pine_sapling_small_bark_disp_1k.png",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/png/1k/pine_sapling_small/pine_sapling_small_bark_disp_1k.png",
+          "md5": "a085234cf5c6697b53187347dafad026",
+          "size": 1633203,
+          "status": "cached"
+        },
+        {
+          "filename": "textures/pine_sapling_small_twig_nor_gl_1k.png",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/png/1k/pine_sapling_small/pine_sapling_small_twig_nor_gl_1k.png",
+          "md5": "a2ea7fd10403a9bdde0ec78ab2dcddc7",
+          "size": 2570882,
+          "status": "cached"
+        },
+        {
+          "filename": "textures/pine_sapling_small_twig_diff_1k.png",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/png/1k/pine_sapling_small/pine_sapling_small_twig_diff_1k.png",
+          "md5": "a85d23a577e4c9aa16338a60f076e038",
+          "size": 2475084,
+          "status": "cached"
+        },
+        {
+          "filename": "textures/pine_sapling_small_bark_nor_gl_1k.png",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/png/1k/pine_sapling_small/pine_sapling_small_bark_nor_gl_1k.png",
+          "md5": "a0e2bfeda173e20c494d79c6125effa5",
+          "size": 5640903,
+          "status": "cached"
+        }
+      ]
+    },
+    {
+      "id": "pine_sapling_medium",
+      "kind": "model",
+      "variant": "1k-blend",
+      "name": "Pine Sapling Medium",
+      "authors": [
+        "Rico Cilliers",
+        "Rob Tuytel"
+      ],
+      "page": "https://polyhaven.com/a/pine_sapling_medium",
+      "files": [
+        {
+          "filename": "pine_sapling_medium_1k.blend",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/blend/1k/pine_sapling_medium/pine_sapling_medium_1k.blend",
+          "md5": "597b4b8f29bc3c0baf9a7e05399b3fa7",
+          "size": 200355596,
+          "status": "cached"
+        },
+        {
+          "filename": "textures/pine_sapling_medium_bark_diff_1k.png",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/png/1k/pine_sapling_medium/pine_sapling_medium_bark_diff_1k.png",
+          "md5": "63688d7bcdd5ff5500f12bde192b197a",
+          "size": 5568559,
+          "status": "cached"
+        },
+        {
+          "filename": "textures/pine_sapling_medium_bark_disp_1k.png",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/png/1k/pine_sapling_medium/pine_sapling_medium_bark_disp_1k.png",
+          "md5": "a085234cf5c6697b53187347dafad026",
+          "size": 1633203,
+          "status": "cached"
+        },
+        {
+          "filename": "textures/pine_sapling_medium_bark_nor_gl_1k.png",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/png/1k/pine_sapling_medium/pine_sapling_medium_bark_nor_gl_1k.png",
+          "md5": "a0e2bfeda173e20c494d79c6125effa5",
+          "size": 5640903,
+          "status": "cached"
+        },
+        {
+          "filename": "textures/pine_sapling_medium_bark_rough_1k.png",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/png/1k/pine_sapling_medium/pine_sapling_medium_bark_rough_1k.png",
+          "md5": "dca69b84d7846af93fbb31d0c1dafd2e",
+          "size": 2488380,
+          "status": "cached"
+        },
+        {
+          "filename": "textures/pine_sapling_medium_twig_alpha_1k.png",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/png/1k/pine_sapling_medium/pine_sapling_medium_twig_alpha_1k.png",
+          "md5": "641911a5a3f543911dad04ebb26e7bca",
+          "size": 351928,
+          "status": "cached"
+        },
+        {
+          "filename": "textures/pine_sapling_medium_twig_diff_1k.png",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/png/1k/pine_sapling_medium/pine_sapling_medium_twig_diff_1k.png",
+          "md5": "a4fa4a55aab9231915a4023ea9841577",
+          "size": 3208228,
+          "status": "cached"
+        },
+        {
+          "filename": "textures/pine_sapling_medium_twig_mask_1k.png",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/png/1k/pine_sapling_medium/pine_sapling_medium_twig_mask_1k.png",
+          "md5": "8a2b451afa2ef9f5c548ae9772ffbcf0",
+          "size": 226541,
+          "status": "cached"
+        },
+        {
+          "filename": "textures/pine_sapling_medium_twig_nor_gl_1k.png",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/png/1k/pine_sapling_medium/pine_sapling_medium_twig_nor_gl_1k.png",
+          "md5": "1c437201b679e4b5e6a10af8e9b9b523",
+          "size": 3021524,
+          "status": "cached"
+        },
+        {
+          "filename": "textures/pine_sapling_medium_twig_rough_1k.png",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/png/1k/pine_sapling_medium/pine_sapling_medium_twig_rough_1k.png",
+          "md5": "8ef8f0d1cbd36b1e4578eb729fa6f0b7",
+          "size": 1342516,
+          "status": "cached"
+        }
+      ]
+    },
+    {
+      "id": "pine_tree_01",
+      "kind": "model",
+      "variant": "1k-blend",
+      "name": "Pine Tree 01",
+      "authors": [
+        "Rico Cilliers",
+        "Rob Tuytel"
+      ],
+      "page": "https://polyhaven.com/a/pine_tree_01",
+      "files": [
+        {
+          "filename": "pine_tree_01_1k.blend",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/blend/1k/pine_tree_01/pine_tree_01_1k.blend",
+          "md5": "e6d9e76cc8dfb58e23813c264f7736e6",
+          "size": 570739325,
+          "status": "cached"
+        },
+        {
+          "filename": "textures/pine_tree_01_bark_diff_1k.png",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/png/1k/pine_tree_01/pine_tree_01_bark_diff_1k.png",
+          "md5": "63688d7bcdd5ff5500f12bde192b197a",
+          "size": 5568559,
+          "status": "cached"
+        },
+        {
+          "filename": "textures/pine_tree_01_bark_disp_1k.png",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/png/1k/pine_tree_01/pine_tree_01_bark_disp_1k.png",
+          "md5": "a085234cf5c6697b53187347dafad026",
+          "size": 1633203,
+          "status": "cached"
+        },
+        {
+          "filename": "textures/pine_tree_01_bark_nor_gl_1k.png",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/png/1k/pine_tree_01/pine_tree_01_bark_nor_gl_1k.png",
+          "md5": "a0e2bfeda173e20c494d79c6125effa5",
+          "size": 5640903,
+          "status": "cached"
+        },
+        {
+          "filename": "textures/pine_tree_01_bark_rough_1k.png",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/png/1k/pine_tree_01/pine_tree_01_bark_rough_1k.png",
+          "md5": "dca69b84d7846af93fbb31d0c1dafd2e",
+          "size": 2488380,
+          "status": "cached"
+        },
+        {
+          "filename": "textures/pine_tree_01_trunk_a_diff_1k.png",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/png/1k/pine_tree_01/pine_tree_01_trunk_a_diff_1k.png",
+          "md5": "8fa66dc48ee624dcfe30ad68fe0d8724",
+          "size": 5013819,
+          "status": "cached"
+        },
+        {
+          "filename": "textures/pine_tree_01_trunk_a_nor_gl_1k.png",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/png/1k/pine_tree_01/pine_tree_01_trunk_a_nor_gl_1k.png",
+          "md5": "6c6f69ce3ce2ab332e92366fbbe7b95a",
+          "size": 4338077,
+          "status": "cached"
+        },
+        {
+          "filename": "textures/pine_tree_01_trunk_a_rough_1k.png",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/png/1k/pine_tree_01/pine_tree_01_trunk_a_rough_1k.png",
+          "md5": "9228f23b16bed747765f65fe9263e767",
+          "size": 1656557,
+          "status": "cached"
+        },
+        {
+          "filename": "textures/pine_tree_01_trunk_b_diff_1k.png",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/png/1k/pine_tree_01/pine_tree_01_trunk_b_diff_1k.png",
+          "md5": "a3e4cc704875d7d8795a2b7949927952",
+          "size": 4847111,
+          "status": "cached"
+        },
+        {
+          "filename": "textures/pine_tree_01_trunk_b_nor_gl_1k.png",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/png/1k/pine_tree_01/pine_tree_01_trunk_b_nor_gl_1k.png",
+          "md5": "944aed03478cf0590469c7de834b4ec4",
+          "size": 4129931,
+          "status": "cached"
+        },
+        {
+          "filename": "textures/pine_tree_01_trunk_b_rough_1k.png",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/png/1k/pine_tree_01/pine_tree_01_trunk_b_rough_1k.png",
+          "md5": "b251b18420d550baa7a1e81a2c19d8a3",
+          "size": 1626272,
+          "status": "cached"
+        },
+        {
+          "filename": "textures/pine_tree_01_trunk_c_diff_1k.png",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/png/1k/pine_tree_01/pine_tree_01_trunk_c_diff_1k.png",
+          "md5": "bbf00b9de62c4d7c7b3d66a9f74d57d4",
+          "size": 5140137,
+          "status": "cached"
+        },
+        {
+          "filename": "textures/pine_tree_01_trunk_c_nor_gl_1k.png",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/png/1k/pine_tree_01/pine_tree_01_trunk_c_nor_gl_1k.png",
+          "md5": "023ad88ebc76989ccbe1e3476174d997",
+          "size": 4450875,
+          "status": "cached"
+        },
+        {
+          "filename": "textures/pine_tree_01_trunk_c_rough_1k.png",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/png/1k/pine_tree_01/pine_tree_01_trunk_c_rough_1k.png",
+          "md5": "bb1f564376e3863ffa0fe91564f146e9",
+          "size": 1722380,
+          "status": "cached"
+        },
+        {
+          "filename": "textures/pine_tree_01_twig_alpha_1k.png",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/png/1k/pine_tree_01/pine_tree_01_twig_alpha_1k.png",
+          "md5": "641911a5a3f543911dad04ebb26e7bca",
+          "size": 351928,
+          "status": "cached"
+        },
+        {
+          "filename": "textures/pine_tree_01_twig_diff_1k.png",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/png/1k/pine_tree_01/pine_tree_01_twig_diff_1k.png",
+          "md5": "a4fa4a55aab9231915a4023ea9841577",
+          "size": 3208228,
+          "status": "cached"
+        },
+        {
+          "filename": "textures/pine_tree_01_twig_mask_1k.png",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/png/1k/pine_tree_01/pine_tree_01_twig_mask_1k.png",
+          "md5": "8a2b451afa2ef9f5c548ae9772ffbcf0",
+          "size": 226541,
+          "status": "cached"
+        },
+        {
+          "filename": "textures/pine_tree_01_twig_nor_gl_1k.png",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/png/1k/pine_tree_01/pine_tree_01_twig_nor_gl_1k.png",
+          "md5": "1c437201b679e4b5e6a10af8e9b9b523",
+          "size": 3021524,
+          "status": "cached"
+        },
+        {
+          "filename": "textures/pine_tree_01_twig_rough_1k.png",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/png/1k/pine_tree_01/pine_tree_01_twig_rough_1k.png",
+          "md5": "8ef8f0d1cbd36b1e4578eb729fa6f0b7",
+          "size": 1342516,
+          "status": "cached"
+        }
+      ]
+    },
+    {
+      "id": "autumn_field_puresky",
+      "kind": "hdri",
+      "variant": "2k-hdr",
+      "name": "Autumn Field (Pure Sky)",
+      "authors": [
+        "Jarod Guest",
+        "Sergej Majboroda"
+      ],
+      "page": "https://polyhaven.com/a/autumn_field_puresky",
+      "files": [
+        {
+          "filename": "autumn_field_puresky_2k.hdr",
+          "url": "https://dl.polyhaven.org/file/ph-assets/HDRIs/hdr/2k/autumn_field_puresky_2k.hdr",
+          "md5": "5c402963ff2c6d1b23fd239b94b05604",
+          "size": 4374736,
+          "status": "cached"
+        }
+      ]
+    }
+  ]
+}

@@ -1,7 +1,9 @@
 node_modules/
 dist/
 .vite/
+/.vite-dev.*.log
 *.local
+__pycache__/
 
 # The standalone game reads no environment variables. Keep any future local
 # configuration private until an explicit integration boundary is designed.
@@ -38,6 +40,7 @@ Thumbs.db
 # republishing the binaries in normal Git history.
 /SourceAssets/Animations/Raw/
 /SourceAssets/Models/**/Raw/
+/SourceAssets/Models/**/Working/
 /SourceAssets/Textures/Raw/
 /SourceAssets/Audio/Raw/
 /.asset-restore-*/

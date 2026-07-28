@@ -96,6 +96,21 @@ Keep future authoring sources outside `public/`; only optimized runtime results
 belong in the shipped asset tree. Model scale, axes, materials, animations,
 and license must be verified before merging.
 
+## Layered environment reference
+
+The local Blender meadow is a quality reference and export source, not a
+city-sized runtime mesh. It restores 15 exact CC0 Poly Haven assets through
+the provider's public API, verifies every source checksum, and records authors,
+URLs, byte counts, the 1K Blender model/material variants, and the 2K pure-sky
+HDRI in
+`SourceAssets/Models/Environment/polyhaven-meadow-receipt.json`.
+
+Its renderer follows the same production constraints as the browser:
+compatible biome layers, deterministic clustered scatter, exclusions around
+paths and structural props, shared mesh instances, and subtle shared wind. The
+web Pocket Park implements those rules in four draw calls with 240/800/1,600
+quality-scaled instances and no micro-vegetation collision.
+
 ## Approved source categories
 
 - Poly Haven, ambientCG, Kenney, and Quaternius assets may be evaluated when

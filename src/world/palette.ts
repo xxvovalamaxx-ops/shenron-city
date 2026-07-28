@@ -85,6 +85,8 @@ export interface QualitySettings {
   detailTrees: boolean
   /** Vehicles circulating the boulevard loop. */
   vehicles: number
+  /** Instanced render-only vegetation in the pocket park. */
+  groundCover: number
 }
 
 export const QUALITY: Record<QualityPreset, QualitySettings> = {
@@ -98,6 +100,7 @@ export const QUALITY: Record<QualityPreset, QualitySettings> = {
     ambientPedestrians: 5,
     detailTrees: false,
     vehicles: 5,
+    groundCover: 240,
   },
   medium: {
     shadows: true,
@@ -109,6 +112,7 @@ export const QUALITY: Record<QualityPreset, QualitySettings> = {
     ambientPedestrians: 11,
     detailTrees: true,
     vehicles: 11,
+    groundCover: 800,
   },
   high: {
     shadows: true,
@@ -120,5 +124,6 @@ export const QUALITY: Record<QualityPreset, QualitySettings> = {
     ambientPedestrians: 18,
     detailTrees: true,
     vehicles: 16,
+    groundCover: 1600,
   },
 }
