@@ -1,0 +1,8 @@
+Asset Name,Source,Creator,License,Acquisition Date,Original Location,Imported Location,Modification Allowed,Redistribution Allowed,Attribution Required,Modifications Made,Responsible Project Area
+Quaternius Free Low Poly Pack,https://quaternius.com,Quaternius,CC0,2026-07-28,SourceAssets/Architecture,public/models/buildings,Yes,Yes,No,Imported as GLB,World/Exterior
+Kenney Town Kit,https://kenney.nl/assets/town-kit,Kenney,CC0,2026-07-28,SourceAssets/Props,public/models/props,Yes,Yes,No,Imported as GLB,World/CityDistrict
+Kenney Vehicle Kit,https://kenney.nl/assets/vehicle-kit,Kenney,CC0,2026-07-28,SourceAssets/Vehicles,public/models/vehicles,Yes,Yes,No,Imported as GLB,World/Traffic
+Quaternius Characters,https://quaternius.com,Quaternius,CC0,2026-07-28,SourceAssets/Characters,public/models/characters,Yes,Yes,No,Imported as GLB,Agents
+Mixamo Animations,https://www.mixamo.com,Adobe,Free for non-commercial,2026-07-28,SourceAssets/Animations,public/models/characters,Yes,Yes,No,FBX converted to GLB,Agents
+Poly Haven Textures,https://polyhaven.com,Poly Haven,CC0,2026-07-28,SourceAssets/Textures,public/textures,Yes,Yes,No,Downloaded PBR maps,World/Materials
+ambientCG Textures,https://ambientCG.com,ambientCG,CC0,2026-07-28,SourceAssets/Textures,public/textures,Yes,Yes,No,Downloaded PBR maps,World/Materials

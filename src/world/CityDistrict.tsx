@@ -17,6 +17,7 @@ import {
   type Storefront,
 } from './city-data'
 import { PALETTE, type QualitySettings } from './palette'
+import { useRoadMaterial, useSidewalkMaterial, useBuildingMaterial, useWoodMaterial, useBarkMaterial } from './PBRMaterials'
 
 function StorefrontBuilding({
   store,
@@ -28,12 +29,13 @@ function StorefrontBuilding({
   const facesEast = store.x < 0
   const frontX = (facesEast ? 1 : -1) * (store.width / 2 + 0.03)
   const frontRotation: [number, number, number] = [0, facesEast ? Math.PI / 2 : -Math.PI / 2, 0]
+  const buildingMat = useBuildingMaterial(store.color)
 
   return (
     <group position={[store.x, 0, store.z]}>
       <mesh position={[0, store.height / 2, 0]} castShadow={shadows} receiveShadow={shadows}>
         <boxGeometry args={[store.width, store.height, store.depth]} />
-        <meshStandardMaterial color={store.color} roughness={0.72} metalness={0.22} />
+        <primitive object={buildingMat} attach="material" />
       </mesh>
 
       {/* A bright ground-floor shopfront faces the boulevard. */}
@@ -120,6 +122,7 @@ function DistrictWindows() {
 }
 
 function Market({ shadows }: { shadows: boolean }) {
+  const woodMat = useWoodMaterial()
   return (
     <group>
       <Text position={[13.7, 3.65, 70]} rotation={[0, -Math.PI / 2, 0]} fontSize={0.48} color="#fbbf24">
@@ -129,7 +132,7 @@ function Market({ shadows }: { shadows: boolean }) {
         <group key={stall.id} position={[stall.x, 0, stall.z]}>
           <mesh position={[0, 0.52, 0]} castShadow={shadows} receiveShadow={shadows}>
             <boxGeometry args={[stall.width, 1.04, stall.depth]} />
-            <meshStandardMaterial color="#302a25" roughness={0.82} />
+            <primitive object={woodMat} attach="material" />
           </mesh>
           <mesh position={[0, stall.height, 0]} castShadow={shadows}>
             <boxGeometry args={[stall.width + 0.35, 0.12, stall.depth + 0.4]} />
@@ -168,6 +171,7 @@ function Market({ shadows }: { shadows: boolean }) {
 function Trees() {
   const trunks = useRef<THREE.InstancedMesh>(null)
   const crowns = useRef<THREE.InstancedMesh>(null)
+  const barkMat = useBarkMaterial()
 
   useLayoutEffect(() => {
     const trunkMesh = trunks.current
@@ -200,7 +204,7 @@ function Trees() {
     <>
       <instancedMesh ref={trunks} args={[undefined, undefined, STREET_TREES.length]}>
         <cylinderGeometry args={[1, 1, 1, 7]} />
-        <meshStandardMaterial color="#4a3427" roughness={1} />
+        <primitive object={barkMat} attach="material" />
       </instancedMesh>
       <instancedMesh ref={crowns} args={[undefined, undefined, STREET_TREES.length]}>
         <icosahedronGeometry args={[1, 1]} />
@@ -270,13 +274,15 @@ function RoadMarkings() {
 
 export function CityDistrict({ quality }: { quality: QualitySettings }) {
   const sidewalkX = BOULEVARD.width / 2 + BOULEVARD.sidewalkWidth / 2
+  const roadMat = useRoadMaterial()
+  const sidewalkMat = useSidewalkMaterial()
 
   return (
     <group>
       {/* Boulevard and raised pedestrian edges begin after the HQ plaza. */}
       <mesh rotation={[-Math.PI / 2, 0, 0]} position={[BOULEVARD.x, 0.012, BOULEVARD.z]}>
         <planeGeometry args={[BOULEVARD.width, BOULEVARD.depth]} />
-        <meshStandardMaterial color="#11151c" roughness={0.96} />
+        <primitive object={roadMat} attach="material" />
       </mesh>
       {[-1, 1].map((side) => (
         <mesh
@@ -285,7 +291,7 @@ export function CityDistrict({ quality }: { quality: QualitySettings }) {
           receiveShadow={quality.shadows}
         >
           <boxGeometry args={[BOULEVARD.sidewalkWidth, 0.18, BOULEVARD.depth]} />
-          <meshStandardMaterial color="#343841" roughness={0.9} />
+          <primitive object={sidewalkMat} attach="material" />
         </mesh>
       ))}
       <RoadMarkings />
