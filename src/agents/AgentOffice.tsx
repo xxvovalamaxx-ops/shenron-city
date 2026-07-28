@@ -101,13 +101,13 @@ function Presence({ agent }: { agent: Agent }) {
 }
 
 export function AgentOffice({ slot, agent, y }: Props) {
-  const inward = -slot.side // toward the corridor
+  const corridorSide = slot.side
   const color = agent ? STATE_COLOR[agent.state] : '#2a2f37'
 
   return (
     <group position={[slot.x, y, slot.z]}>
       {/* Back wall */}
-      <mesh position={[(slot.side * OFFICE.w) / 2, OFFICE.h / 2, 0]} receiveShadow>
+      <mesh position={[(-slot.side * OFFICE.w) / 2, OFFICE.h / 2, 0]} receiveShadow>
         <boxGeometry args={[0.3, OFFICE.h, OFFICE.d]} />
         <meshStandardMaterial color={PALETTE.concrete} roughness={0.85} />
       </mesh>
@@ -124,7 +124,7 @@ export function AgentOffice({ slot, agent, y }: Props) {
       {[-1, 1].map((s) => (
         <mesh
           key={s}
-          position={[(inward * OFFICE.w) / 2, OFFICE.h / 2, s * (OFFICE.d / 2 - OFFICE.d / 8)]}
+          position={[(corridorSide * OFFICE.w) / 2, OFFICE.h / 2, s * (OFFICE.d / 2 - OFFICE.d / 8)]}
         >
           <boxGeometry args={[0.06, OFFICE.h, OFFICE.d / 4]} />
           <meshPhysicalMaterial
@@ -146,8 +146,8 @@ export function AgentOffice({ slot, agent, y }: Props) {
 
       {/* Wall monitor — the office's local scenario readout */}
       <group
-        position={[slot.side * (OFFICE.w / 2 - 0.22), 1.85, 0]}
-        rotation={[0, slot.side === 1 ? -Math.PI / 2 : Math.PI / 2, 0]}
+        position={[-slot.side * (OFFICE.w / 2 - 0.22), 1.85, 0]}
+        rotation={[0, slot.side * Math.PI / 2, 0]}
       >
         <mesh>
           <boxGeometry args={[3.0, 1.7, 0.08]} />
@@ -195,14 +195,14 @@ export function AgentOffice({ slot, agent, y }: Props) {
       </group>
 
       {/* Name plate by the door */}
-      <group position={[inward * (OFFICE.w / 2 + 0.05), 2.1, OFFICE.d / 2 - 0.5]}>
-        <mesh rotation={[0, slot.side === 1 ? -Math.PI / 2 : Math.PI / 2, 0]}>
+      <group position={[corridorSide * (OFFICE.w / 2 + 0.05), 2.1, OFFICE.d / 2 - 0.5]}>
+        <mesh rotation={[0, slot.side * Math.PI / 2, 0]}>
           <boxGeometry args={[1.5, 0.34, 0.04]} />
           <meshStandardMaterial color="#12161b" roughness={0.5} metalness={0.4} />
         </mesh>
         <Text
-          position={[inward * 0.04, 0, 0]}
-          rotation={[0, slot.side === 1 ? -Math.PI / 2 : Math.PI / 2, 0]}
+          position={[corridorSide * 0.04, 0, 0]}
+          rotation={[0, slot.side * Math.PI / 2, 0]}
           fontSize={0.13}
           color={color}
           anchorX="center"

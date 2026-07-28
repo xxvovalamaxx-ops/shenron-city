@@ -38,6 +38,7 @@ import { useLaser } from '../weapons/useLaser'
 import { capybaraCollider, capybaraPose } from '../animals/capybara'
 import { residentColliders } from './residents'
 import { breakableColliders } from '../destruction/collision'
+import { debugInspectionView } from './dev-view'
 
 const WALK_SPEED = 4.3
 const SPRINT_SPEED = 7.1
@@ -79,6 +80,14 @@ export function GameLoop({ interactables, ambientPedestrians, onInteract }: Game
   useEffect(() => {
     rt.interactables = interactables
   }, [interactables])
+
+  useEffect(() => {
+    if (typeof location === 'undefined') return
+    const view = debugInspectionView(location.search, import.meta.env.DEV)
+    if (!view) return
+    camera.position.set(view.position.x, view.position.y + EYE_HEIGHT, view.position.z)
+    camera.lookAt(view.target.x, view.target.y, view.target.z)
+  }, [camera])
 
   // ── Interact key ───────────────────────────────────────────────────────────
   useEffect(() => {

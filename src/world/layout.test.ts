@@ -36,10 +36,15 @@ describe('visible world collision parity', () => {
     const colliders = hqColliders()
 
     for (const slot of OFFICE_SLOTS) {
-      const frontX = slot.x - (slot.side * OFFICE.w) / 2
+      const frontX = slot.x + (slot.side * OFFICE.w) / 2
+      const backX = slot.x - (slot.side * OFFICE.w) / 2
       const panelZ = slot.z + (OFFICE.d / 2 - OFFICE.d / 8)
+      expect(Math.abs(frontX), 'office entrance must face the central corridor').toBeLessThan(
+        Math.abs(backX),
+      )
       expect(collidesAt({ x: frontX, y: HQ.y, z: panelZ }, colliders)).toBe(true)
       expect(collidesAt({ x: frontX, y: HQ.y, z: slot.z }, colliders)).toBe(false)
+      expect(collidesAt({ x: backX, y: HQ.y, z: slot.z }, colliders)).toBe(true)
     }
   })
 })

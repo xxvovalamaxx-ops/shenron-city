@@ -1,15 +1,15 @@
 /**
- * Iris — the headquarters' animated service-android receptionist.
+ * Iris — the headquarters' animated cyborg receptionist.
  *
- * This replaces the capsule-and-sphere placeholder with an audited skinned
- * character. The authored Idle and Yes clips provide breathing/posture and a
- * listening acknowledgement when her dialogue is open.
+ * This replaces the capsule-and-sphere placeholder with an audited CC0
+ * skinned character. The authored Idle clip provides breathing and posture;
+ * dialogue state slightly raises its playback rate as a listening cue.
  */
 import { useHud } from '../ui/hud-store'
 import { WorldText as Text } from '../ui/WorldText'
 import { SECRETARY } from '../world/layout'
 import { PALETTE } from '../world/palette'
-import { ServiceAndroid } from './ServiceAndroid'
+import { KenneyCitizen } from './KenneyCitizen'
 
 export const SECRETARY_NAME = 'Iris'
 
@@ -18,27 +18,27 @@ export function Secretary() {
 
   return (
     <group position={[SECRETARY.x, 0, SECRETARY.z]}>
-      <group scale={0.62}>
-        <ServiceAndroid
-          motion={talking ? 'Yes' : 'Idle'}
-          style="iris"
-          animationSpeed={talking ? 0.88 : 0.76}
+      <group>
+        <KenneyCitizen
+          motion="Idle"
+          skin="cyborgFemale"
+          animationSpeed={talking ? 1.04 : 0.82}
         />
 
         {/* Tailored reception sash, identity badge, and headset. */}
-        <mesh position={[0, 1.55, 0.31]} rotation={[0, 0, -0.12]} castShadow>
-          <boxGeometry args={[0.16, 1.02, 0.055]} />
+        <mesh position={[0, 1.05, 0.23]} rotation={[0, 0, -0.12]} castShadow>
+          <boxGeometry args={[0.12, 0.7, 0.04]} />
           <meshStandardMaterial color="#2dd4bf" roughness={0.48} metalness={0.32} />
         </mesh>
-        <mesh position={[0.34, 1.5, 0.34]}>
-          <boxGeometry args={[0.34, 0.22, 0.045]} />
+        <mesh position={[0.26, 1.02, 0.25]}>
+          <boxGeometry args={[0.28, 0.18, 0.04]} />
           <meshStandardMaterial color="#e7f5f3" roughness={0.42} metalness={0.2} />
         </mesh>
-        <mesh position={[-0.45, 2.34, 0.03]} rotation={[0, 0, -0.24]}>
-          <torusGeometry args={[0.18, 0.028, 8, 22, Math.PI * 1.45]} />
+        <mesh position={[-0.28, 1.67, 0.03]} rotation={[0, 0, -0.24]}>
+          <torusGeometry args={[0.12, 0.02, 8, 22, Math.PI * 1.45]} />
           <meshStandardMaterial color="#17242b" roughness={0.42} metalness={0.66} />
         </mesh>
-        <mesh position={[-0.57, 2.22, 0.17]}>
+        <mesh position={[-0.38, 1.59, 0.13]}>
           <sphereGeometry args={[0.045, 10, 8]} />
           <meshStandardMaterial
             color="#2dd4bf"

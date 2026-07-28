@@ -13,7 +13,7 @@
     "typecheck": "tsc --noEmit",
     "build": "tsc --noEmit && vite build",
     "verify:standalone": "node scripts/verify-standalone-build.mjs",
-    "verify:assets": "node scripts/verify-capybara-asset.mjs && node scripts/verify-service-android-asset.mjs && node scripts/verify-city-assets.mjs",
+    "verify:assets": "node scripts/verify-capybara-asset.mjs && node scripts/verify-service-android-asset.mjs && node scripts/verify-kenney-citizen-asset.mjs && node scripts/verify-city-assets.mjs",
     "check": "npm run typecheck && npm test && npm run verify:assets && npm run build && npm run verify:standalone && npm audit --audit-level=high",
     "preview": "vite preview",
     "test": "vitest run",

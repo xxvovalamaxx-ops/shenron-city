@@ -6,10 +6,11 @@ budget.
 
 ## Current shipped assets
 
-Most city geometry, props, vehicles, and audio remain procedural. The imported
-runtime files in `public/` are the curated 1K Poly Haven material maps, the
-optimized Shenron City capybara GLB, and the pinned CC0 service-android GLB
-used for residents, named city characters, and headquarters agents.
+Most structural geometry, small props, and audio remain procedural. The
+imported runtime files in `public/` include curated 1K Poly Haven material
+maps, the optimized Shenron City capybara GLB, a pinned CC0 service-android
+GLB for headquarters agents, and a compact CC0 Kenney citizen GLB with six
+local skins for pedestrians and named city characters.
 
 The commercial-block shells, boulevard trees and park features, and four
 traffic shells are curated CC0 Kenney GLBs. Runtime normalization binds each
@@ -73,6 +74,10 @@ texture references, and embedded textures above the 2K budget.
 
 The same gate pins the service android to its reviewed SHA-256 and checks its
 14-clip, two-skin, facial-morph, and no-remote-dependency contract.
+
+The Kenney citizen gate pins the Blender-converted GLB and all six runtime
+skins, requires three non-empty skeletal clips and exactly 45 joints, rejects
+remote dependencies and Draco, and requires the preserved CC0 source records.
 
 The curated city gate pins every imported building, nature, vehicle, and local
 atlas file, rejects remote texture or Draco dependencies, and keeps the full

@@ -3,22 +3,22 @@
  *
  * Rendering and collision still sample the same route function. Each visible
  * character owns an animation mixer, while geometry and textures remain
- * shared by the single 454 KB CC0 GLB.
+ * shared by the single 233 KB CC0 GLB.
  */
 import { useRef } from 'react'
 import { useFrame } from '@react-three/fiber'
 import type { Group } from 'three'
 import { ambientPedestrianPose } from './ambient-routes'
-import { ServiceAndroid } from './ServiceAndroid'
-import type { ServiceAndroidStyle } from './service-android'
+import { KenneyCitizen } from './KenneyCitizen'
+import type { KenneyCitizenSkin } from './kenney-citizen'
 
-const STYLES: ServiceAndroidStyle[] = [
-  'civilianBlue',
-  'civilianCopper',
-  'civilianGreen',
-  'civilianPlum',
-  'civilianSand',
-  'civilianSlate',
+const SKINS: KenneyCitizenSkin[] = [
+  'criminalMale',
+  'cyborgFemale',
+  'humanFemale',
+  'humanMale',
+  'skaterFemale',
+  'skaterMale',
 ]
 
 function Pedestrian({ index }: { index: number }) {
@@ -32,15 +32,15 @@ function Pedestrian({ index }: { index: number }) {
     group.rotation.y = sample.heading
   })
 
-  const heightScale = 0.57 + (index % 5) * 0.012
+  const heightScale = 0.94 + (index % 5) * 0.025
   const widthScale = 0.94 + ((index * 3) % 5) * 0.025
 
   return (
     <group ref={root} scale={[heightScale * widthScale, heightScale, heightScale]}>
-      <ServiceAndroid
-        motion="Walking"
-        style={STYLES[index % STYLES.length]}
-        animationSpeed={0.84 + (index % 4) * 0.06}
+      <KenneyCitizen
+        motion="Run"
+        skin={SKINS[index % SKINS.length]}
+        animationSpeed={0.44 + (index % 4) * 0.025}
         castShadow={index < 10}
       />
     </group>

@@ -131,15 +131,15 @@ function Lighting({ shadows, shadowMapSize }: { shadows: boolean; shadowMapSize:
       <pointLight
         position={[0, 4.2, -4]}
         color={PALETTE.warmLight}
-        intensity={420}
-        distance={46}
+        intensity={185}
+        distance={34}
         decay={2}
       />
       <pointLight
         position={[0, 3.4, 7]}
         color={PALETTE.warmLight}
-        intensity={120}
-        distance={26}
+        intensity={80}
+        distance={22}
         decay={2}
       />
     </>

@@ -294,12 +294,12 @@ export function hqColliders(): AABB[] {
   // Office shells: back wall and two side fins each. The front is glass with a
   // doorway gap, so offices are enterable.
   for (const s of OFFICE_SLOTS) {
-    const backX = s.x + (s.side * OFFICE.w) / 2
+    const backX = s.x - (s.side * OFFICE.w) / 2
     c.push(aabb(backX, y + OFFICE.h / 2, s.z, 0.3, OFFICE.h, OFFICE.d))
     for (const dz of [-OFFICE.d / 2, OFFICE.d / 2]) {
       c.push(aabb(s.x, y + OFFICE.h / 2, s.z + dz, OFFICE.w, OFFICE.h, 0.3))
     }
-    const frontX = s.x - (s.side * OFFICE.w) / 2
+    const frontX = s.x + (s.side * OFFICE.w) / 2
     for (const side of [-1, 1]) {
       const panelZ = s.z + side * (OFFICE.d / 2 - OFFICE.d / 8)
       c.push(aabb(frontX, y + OFFICE.h / 2, panelZ, 0.06, OFFICE.h, OFFICE.d / 4))

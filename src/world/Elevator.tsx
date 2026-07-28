@@ -174,8 +174,8 @@ export function Elevator() {
       <pointLight
         position={[0, CAR_H - 0.2, SHAFT.doorZ + 1.6]}
         color={PALETTE.warmLight}
-        intensity={260}
-        distance={22}
+        intensity={105}
+        distance={16}
         decay={2}
       />
 

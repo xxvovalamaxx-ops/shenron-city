@@ -45,12 +45,16 @@ deterministic game state and is saved only in the game's validated browser
 save; it is never sent to a host service. A local compass, distance readout,
 and north-up minimap guide the player to the active objective.
 
-The current geometry and audio are procedural. The art pass uses a curated set
-of CC0 Poly Haven PBR textures recorded in
-[`docs/Assets/ASSET_MANIFEST.csv`](docs/Assets/ASSET_MANIFEST.csv); it ships no
-downloaded character, vehicle, or building models. District layout, collision
-solids, and ambient walking loops share `src/world/city-data.ts`. Fictional
-residents and activities come from `src/adapter/fixtures.ts`.
+The current world combines authored procedural geometry with a deliberately
+small, audited CC0 asset set: Poly Haven PBR materials, Kenney commercial
+buildings, vegetation, vehicles, and six animated citizen skins, plus the
+service android and project-authored capybara. Every imported runtime file is
+recorded in
+[`docs/Assets/ASSET_MANIFEST.csv`](docs/Assets/ASSET_MANIFEST.csv) and pinned
+by an asset verifier. District layout, collision solids, traffic transforms,
+and ambient walking loops still share `src/world/city-data.ts`, so imported
+decoration cannot drift from gameplay collision. Fictional residents and
+activities come from `src/adapter/fixtures.ts`.
 
 ## Standalone boundary
 

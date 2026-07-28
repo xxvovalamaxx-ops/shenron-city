@@ -5,19 +5,19 @@
  */
 import { PLAZA_WARDEN } from '../world/city-data'
 import { WorldText as Text } from '../ui/WorldText'
-import { ServiceAndroid } from './ServiceAndroid'
+import { KenneyCitizen } from './KenneyCitizen'
 
 export function PlazaWarden() {
   return (
     <group position={[PLAZA_WARDEN.x, 0, PLAZA_WARDEN.z]}>
-      <group scale={0.6}>
-        <ServiceAndroid motion="Idle" style="kai" animationSpeed={0.82} expression="alert" />
+      <group>
+        <KenneyCitizen motion="Idle" skin="criminalMale" animationSpeed={0.82} />
         {/* Shoulder camera, radio, and chest shield make Kai read as security. */}
-        <mesh position={[0.52, 2.05, 0.06]} castShadow>
-          <boxGeometry args={[0.22, 0.3, 0.28]} />
+        <mesh position={[0.42, 1.48, 0.05]} castShadow>
+          <boxGeometry args={[0.18, 0.24, 0.2]} />
           <meshStandardMaterial color="#111923" roughness={0.48} metalness={0.62} />
         </mesh>
-        <mesh position={[0.52, 2.16, 0.22]}>
+        <mesh position={[0.42, 1.57, 0.18]}>
           <sphereGeometry args={[0.055, 12, 8]} />
           <meshStandardMaterial
             color="#49dbc7"
@@ -26,8 +26,8 @@ export function PlazaWarden() {
             roughness={0.3}
           />
         </mesh>
-        <mesh position={[-0.33, 1.55, 0.31]} castShadow>
-          <boxGeometry args={[0.46, 0.58, 0.07]} />
+        <mesh position={[-0.26, 1.08, 0.27]} castShadow>
+          <boxGeometry args={[0.38, 0.48, 0.06]} />
           <meshStandardMaterial color="#1a2530" roughness={0.58} metalness={0.45} />
         </mesh>
       </group>
@@ -36,10 +36,10 @@ export function PlazaWarden() {
         <ringGeometry args={[0.32, 0.46, 24]} />
         <meshBasicMaterial color="#2dd4bf" transparent opacity={0.38} toneMapped={false} />
       </mesh>
-      <Text position={[0, 2.31, 0.02]} fontSize={0.22} color="#7dd3c8">
+      <Text position={[0, 2.08, 0.02]} fontSize={0.22} color="#7dd3c8">
         KAI
       </Text>
-      <Text position={[0, 2.09, 0.02]} fontSize={0.1} color="#93b4bd">
+      <Text position={[0, 1.88, 0.02]} fontSize={0.1} color="#93b4bd">
         PLAZA SECURITY
       </Text>
     </group>

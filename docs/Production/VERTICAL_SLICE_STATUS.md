@@ -26,8 +26,8 @@
 - [x] Working elevator (2 floors)
 - [x] One polished HQ floor
 - [x] Player character and camera
-- [x] Quality-scaled articulated pedestrians with deterministic walk cycles (5 / 11 / 18)
-- [x] Light traffic (5-16 vehicles)
+- [x] Quality-scaled CC0 skinned pedestrians with deterministic route motion (5 / 11 / 18)
+- [x] Light traffic (5-16 vehicles) with four audited CC0 vehicle shells
 - [x] Three named NPCs (Iris, Mira, Kai)
 - [x] Deterministic named-NPC dialogue
 - [x] Doors (automatic sliding)
@@ -36,12 +36,13 @@
 - [x] City Tour objective compass and distance
 - [x] Postprocessing (restrained Bloom, AO, vignette, SMAA)
 - [x] Curated CC0 PBR texture pass
+- [x] Audited CC0 building, vegetation, vehicle, and animated-citizen imports
+- [x] Reproducible Blender citizen conversion with pinned runtime hashes
 - [x] Procedural street props and storefront interiors
 - [x] District minimap with player heading and objective marker
 - [x] Calibrated night exposure across exterior, lobby, and Floor 45
 
 ## Remaining Work
-- [ ] Authored GLB hero models, only where they improve the procedural scene
-- [ ] Authored skinned character models where they materially exceed the procedural articulated cast
-- [ ] Authored vehicle models
+- [ ] Bespoke hero models that materially exceed the curated CC0 cast
+- [ ] Add reviewed CC0 walk and interaction clips beyond the current three citizen motions
 - [ ] Fully enterable shop interiors

@@ -7,9 +7,24 @@ asset pack. None of its 2,393 files may be added to the public GitHub tree
 until the source and acquisition rights of the individual file are proven.
 
 This does not prevent Shenron City from using properly licensed animation.
-The shipped service android already carries 14 CC0 motion clips. Future clips
-can be added from sources with explicit redistribution terms, or from the
-historical archive after its ownership evidence is recovered.
+The shipped service android carries 14 CC0 motion clips. The Kenney citizen
+pipeline now adds three verified CC0 motions (`Idle`, `Jump`, and `Run`) and
+six skins through a reproducible Blender export. Source URLs, archive hashes,
+license text, conversion code, and runtime hashes are tracked under
+`SourceAssets/Models/Characters/KenneyAnimatedCharacters/`.
+
+Additional clips can be added from sources with explicit redistribution terms,
+or from the historical archive after its ownership evidence is recovered.
+The Quaternius Universal Animation Library packs are approved for evaluation
+because their official pages declare CC0, but no clip is considered shipped
+until its exact download, conversion, runtime use, and hash pass the same gate.
+
+Reviewed replacement sources:
+
+- <https://kenney.nl/assets/animated-characters-retro>
+- <https://kenney.nl/assets/animated-characters-protagonists>
+- <https://quaternius.com/packs/universalanimationlibrary.html>
+- <https://quaternius.com/packs/universalanimationlibrary2.html>
 
 ## Evidence read
 
