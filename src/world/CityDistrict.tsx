@@ -77,7 +77,7 @@ function StorefrontBuilding({
       <pointLight
         position={[frontX * 0.3, 2, 0]}
         color={store.accent}
-        intensity={60}
+        intensity={18}
         distance={12}
         decay={2}
       />

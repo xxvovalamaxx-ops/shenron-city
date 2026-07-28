@@ -2,7 +2,7 @@
 
 ## Current
 - Storefront interiors are shallow procedural shells, not full enterable shops
-- Ambient characters are stylized primitives without locomotion animation
+- Characters remain stylized procedural rigs rather than authored skinned models
 - Browser build only by design; no native wrapper is planned for this phase
 - Entry bundle remains large due to the renderer and detailed world
 - Tree chunk 4MB (ez-tree library, lazy-loaded)
@@ -13,5 +13,5 @@
 - GLB models from external sources (currently all procedural)
 - Skeletal character animations
 - Enterable building interiors
-- Particle effects (rain, fog, neon glow)
+- Optional weather effects such as rain
 - Additional audio mixing controls beyond the existing master-volume slider

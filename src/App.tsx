@@ -41,6 +41,7 @@ import { DEFAULT_SETTINGS, LoadingScreen, PauseMenu, TitleScreen, type Settings 
 import { floorAtPosition, loadGame, saveGame, type SaveData } from './gameplay/save'
 import { initialElevator } from './gameplay/elevator'
 import { cityAudio } from './audio'
+import { isDevInspection } from './gameplay/dev-view'
 
 /** Slow enough to be free, often enough that a crash costs little progress. */
 const SAVE_INTERVAL_MS = 5000
@@ -103,13 +104,13 @@ function Lighting({ shadows, shadowMapSize }: { shadows: boolean; shadowMapSize:
   return (
     <>
       {/* Night sky above, city bounce below. Never let anything go to zero. */}
-      <hemisphereLight args={[PALETTE.horizon, '#0d1420', 1.15]} />
-      <ambientLight intensity={0.42} color={PALETTE.coolLight} />
+      <hemisphereLight args={[PALETTE.horizon, '#0d1420', 0.55]} />
+      <ambientLight intensity={0.18} color={PALETTE.coolLight} />
 
       {/* Moon key, casting the plaza's long shadows */}
       <directionalLight
         position={[38, 60, 34]}
-        intensity={1.5}
+        intensity={0.9}
         color="#c3d6f5"
         castShadow={shadows}
         shadow-mapSize={[shadowMapSize, shadowMapSize]}
@@ -123,21 +124,21 @@ function Lighting({ shadows, shadowMapSize }: { shadows: boolean; shadowMapSize:
       />
 
       {/* Cool fill from the opposite side so shadowed faces keep their form */}
-      <directionalLight position={[-30, 26, 28]} intensity={0.5} color="#7f9dd0" />
+      <directionalLight position={[-30, 26, 28]} intensity={0.24} color="#7f9dd0" />
 
       {/* Warm spill from the lobby, out through the glass onto the plaza —
           this is what makes the entrance read as somewhere worth walking in. */}
       <pointLight
         position={[0, 4.2, -4]}
         color={PALETTE.warmLight}
-        intensity={900}
+        intensity={420}
         distance={46}
         decay={2}
       />
       <pointLight
         position={[0, 3.4, 7]}
         color={PALETTE.warmLight}
-        intensity={280}
+        intensity={120}
         distance={26}
         decay={2}
       />
@@ -311,6 +312,8 @@ function LoadGate({ onReady }: { onReady(): void }) {
 }
 
 export default function App() {
+  const visualInspection =
+    typeof location !== 'undefined' && isDevInspection(location.search, import.meta.env.DEV)
   const screen = useHud((s) => s.screen)
   const setScreen = useHud((s) => s.setScreen)
   const openAgentId = useHud((s) => s.openAgentId)
@@ -345,16 +348,21 @@ export default function App() {
   // Apply the restored world state once. The elevator floor is derived from
   // the position rather than stored, so the two can never contradict.
   useEffect(() => {
-    applySave(restored.data)
+    if (visualInspection) {
+      rt.elevator = initialElevator(floorAtPosition(rt.player.pos))
+    } else {
+      applySave(restored.data)
+    }
     if (restored.fault && restored.fault !== 'empty') {
       console.warn(`[save] ${restored.fault} — starting a fresh run`)
     } else if (restored.repaired.length > 0) {
       console.warn(`[save] repaired: ${restored.repaired.join(', ')}`)
     }
-  }, [restored])
+  }, [restored, visualInspection])
 
   // Persist on a slow timer and on the way out. One small JSON.stringify.
   useEffect(() => {
+    if (visualInspection) return
     const snapshot = () => saveGame(currentSaveData(settings))
     const id = setInterval(snapshot, SAVE_INTERVAL_MS)
     window.addEventListener('pagehide', snapshot)
@@ -363,7 +371,7 @@ export default function App() {
       window.removeEventListener('pagehide', snapshot)
       snapshot()
     }
-  }, [settings])
+  }, [settings, visualInspection])
 
 
   // Fake a little progress so the loading card is not a frozen empty bar on a
@@ -375,8 +383,8 @@ export default function App() {
   }, [ready])
 
   useEffect(() => {
-    if (ready && screen === 'loading') setScreen('title')
-  }, [ready, screen, setScreen])
+    if (ready && screen === 'loading') setScreen(visualInspection ? 'playing' : 'title')
+  }, [ready, screen, setScreen, visualInspection])
 
   const enterWorld = useCallback(() => {
     setScreen('playing')
@@ -444,7 +452,7 @@ export default function App() {
         resize={{ polyfill: ResilientResizeObserver as unknown as typeof ResizeObserver }}
         onCreated={({ gl }) => {
           gl.toneMapping = THREE.ACESFilmicToneMapping
-          gl.toneMappingExposure = 1.25
+          gl.toneMappingExposure = 0.72
         }}
       >
         <Suspense fallback={null}>

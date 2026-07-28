@@ -10,6 +10,16 @@
 **Rationale**: One pure route sampler keeps every visible pedestrian and solid body frame-exact across quality presets
 **Trade-off**: No local obstacle avoidance yet; named NPCs remain scripted and deterministic
 
+## 2026-07-28: Living city character pass
+**Decision**: Replace capsule placeholders with a shared articulated procedural citizen rig and instanced limb animation
+**Rationale**: Distinct silhouettes, opposing arm/leg gait, role clothing, and full-height collision improve the recorded vertical slice without adding downloads or breaking the standalone boundary
+**Trade-off**: The cast is intentionally stylized until a reviewed, licensed skinned-character pipeline is ready
+
+## 2026-07-28: Night exposure
+**Decision**: Calibrate one subdued ACES night pipeline with a reduced HDR contribution and restrained bloom
+**Rationale**: The previous HDR, practicals, and postprocessing stacked into clipped white facades and floors; the new balance preserves material color in the market, lobby, and Floor 45
+**Trade-off**: Bright practicals carry less exaggerated cyberpunk glow in exchange for readable surfaces
+
 ## 2026-07-28: Audio
 **Decision**: Fully procedural Web Audio (no audio files)
 **Rationale**: Zero download time, infinite variation, smaller bundle
