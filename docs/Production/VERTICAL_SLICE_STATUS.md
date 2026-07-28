@@ -38,11 +38,12 @@
 - [x] Curated CC0 PBR texture pass
 - [x] Audited CC0 building, vegetation, vehicle, and animated-citizen imports
 - [x] Reproducible Blender citizen conversion with pinned runtime hashes
+- [x] CC0 65-joint Quaternius hero with 29 verified city and interaction motions
 - [x] Procedural street props and storefront interiors
 - [x] District minimap with player heading and objective marker
 - [x] Calibrated night exposure across exterior, lobby, and Floor 45
 
 ## Remaining Work
 - [ ] Bespoke hero models that materially exceed the curated CC0 cast
-- [ ] Add reviewed CC0 walk and interaction clips beyond the current three citizen motions
+- [ ] Apply the reviewed hero-motion vocabulary to additional gameplay roles
 - [ ] Fully enterable shop interiors

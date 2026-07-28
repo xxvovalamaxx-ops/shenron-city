@@ -10,7 +10,9 @@ Most structural geometry, small props, and audio remain procedural. The
 imported runtime files in `public/` include curated 1K Poly Haven material
 maps, the optimized Shenron City capybara GLB, a pinned CC0 service-android
 GLB for headquarters agents, and a compact CC0 Kenney citizen GLB with six
-local skins for pedestrians and named city characters.
+local skins for pedestrians and named city characters. Kai uses a clothed
+Quaternius Male Ranger with 29 city-relevant clips selected from two reviewed
+CC0 Universal Animation Library Standard archives.
 
 The commercial-block shells, boulevard trees and park features, and four
 traffic shells are curated CC0 Kenney GLBs. Runtime normalization binds each
@@ -78,6 +80,13 @@ The same gate pins the service android to its reviewed SHA-256 and checks its
 The Kenney citizen gate pins the Blender-converted GLB and all six runtime
 skins, requires three non-empty skeletal clips and exactly 45 joints, rejects
 remote dependencies and Draco, and requires the preserved CC0 source records.
+
+The Quaternius hero gate pins a 4.29 MiB Blender export, requires the exact 29
+implemented clip names, proves at least ten transform channels change in every
+clip, checks the shared 65-joint skin and all ten skinned primitives, rejects
+remote dependencies and Draco, and requires the preserved CC0 source records.
+The tracked catalog records all 86 clips in the two free Standard archives;
+the unmodified archives stay in ignored verified-source storage.
 
 The curated city gate pins every imported building, nature, vehicle, and local
 atlas file, rejects remote texture or Draco dependencies, and keeps the full

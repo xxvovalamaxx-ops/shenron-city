@@ -5,13 +5,19 @@
  */
 import { PLAZA_WARDEN } from '../world/city-data'
 import { WorldText as Text } from '../ui/WorldText'
-import { KenneyCitizen } from './KenneyCitizen'
+import { useHud } from '../ui/hud-store'
+import { QuaterniusHero } from './QuaterniusHero'
 
 export function PlazaWarden() {
+  const talking = useHud((state) => state.screen === 'dialogue' && state.openCharacterId === 'kai')
+
   return (
     <group position={[PLAZA_WARDEN.x, 0, PLAZA_WARDEN.z]}>
       <group>
-        <KenneyCitizen motion="Idle" skin="criminalMale" animationSpeed={0.82} />
+        <QuaterniusHero
+          motion={talking ? 'Idle_Talking_Loop' : 'Idle_FoldArms_Loop'}
+          animationSpeed={talking ? 0.92 : 0.82}
+        />
         {/* Shoulder camera, radio, and chest shield make Kai read as security. */}
         <mesh position={[0.42, 1.48, 0.05]} castShadow>
           <boxGeometry args={[0.18, 0.24, 0.2]} />

@@ -48,8 +48,8 @@ and north-up minimap guide the player to the active objective.
 The current world combines authored procedural geometry with a deliberately
 small, audited CC0 asset set: Poly Haven PBR materials, Kenney commercial
 buildings, vegetation, vehicles, and six animated citizen skins, plus the
-service android and project-authored capybara. Every imported runtime file is
-recorded in
+service android, project-authored capybara, and a clothed Quaternius hero with
+29 implemented skeletal motions. Every imported runtime file is recorded in
 [`docs/Assets/ASSET_MANIFEST.csv`](docs/Assets/ASSET_MANIFEST.csv) and pinned
 by an asset verifier. District layout, collision solids, traffic transforms,
 and ambient walking loops still share `src/world/city-data.ts`, so imported

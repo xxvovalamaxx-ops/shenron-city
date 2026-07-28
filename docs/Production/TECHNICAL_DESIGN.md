@@ -31,5 +31,12 @@ authored bounds instead of supplying an independent collision source. The
 Kenney citizen GLB is converted reproducibly in Blender and is pinned together
 with its six local skins by `npm run verify:assets`.
 
+Kai uses a reproducible Quaternius Blender export. The clothed Male Ranger and
+both reviewed Universal Animation Library Standard packs share the same
+65-joint hierarchy by count, name, and order. The runtime selects 29 useful
+motions from the tracked 86-clip CC0 catalog; the verifier reads the GLB binary
+and proves each clip contains changing transform samples rather than trusting
+animation names or channel counts.
+
 ## Audio System
 5-zone ambience (boulevard, market, park, lobby, HQ) with constant-power crossfade. All procedural — noise generation, impulse reverb synthesis, no audio file downloads.

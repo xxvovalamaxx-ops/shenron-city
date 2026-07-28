@@ -15,9 +15,12 @@ license text, conversion code, and runtime hashes are tracked under
 
 Additional clips can be added from sources with explicit redistribution terms,
 or from the historical archive after its ownership evidence is recovered.
-The Quaternius Universal Animation Library packs are approved for evaluation
-because their official pages declare CC0, but no clip is considered shipped
-until its exact download, conversion, runtime use, and hash pass the same gate.
+The two Quaternius Universal Animation Library Standard archives are now
+downloaded and hash-recorded. Their 86 source clips are cataloged, and 29
+city-relevant motions are shipped on the exact matching 65-joint CC0 Male
+Ranger outfit. The raw archives remain in ignored verified-source storage; combat,
+weapon, death, magic, swimming, zombie, and duplicate bind-pose clips are not
+promoted without implemented gameplay.
 
 Reviewed replacement sources:
 
@@ -25,6 +28,7 @@ Reviewed replacement sources:
 - <https://kenney.nl/assets/animated-characters-protagonists>
 - <https://quaternius.com/packs/universalanimationlibrary.html>
 - <https://quaternius.com/packs/universalanimationlibrary2.html>
+- <https://quaternius.com/packs/modularcharacteroutfitsfantasy.html>
 
 ## Evidence read
 
