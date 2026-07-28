@@ -1,4 +1,6 @@
 import type { RoutePoint } from '../world/city-data'
+import { AMBIENT_ROUTES } from '../world/city-data'
+import { aabb, type AABB } from '../gameplay/collision'
 
 export interface RouteSample extends RoutePoint {
   heading: number
@@ -48,4 +50,24 @@ export function sampleLoop(points: readonly RoutePoint[], distance: number): Rou
   }
 
   return { ...points[0], heading: 0 }
+}
+
+/** NPC body half-extents matching AmbientCrowd's capsule scale (0.26 x 0.38). */
+const NPC_HALF_W = 0.26
+const NPC_HALF_H = 0.38
+
+/**
+ * Generate collision boxes for all ambient NPCs at a given elapsed time.
+ * Must match the speed/phase logic in AmbientCrowd exactly.
+ */
+export function npcColliders(elapsed: number): AABB[] {
+  const boxes: AABB[] = []
+  for (let i = 0; i < AMBIENT_ROUTES.length; i++) {
+    const route = AMBIENT_ROUTES[i]
+    const speed = 0.82 + (i % 5) * 0.11
+    const phase = i * 19.7
+    const sample = sampleLoop(route.points, elapsed * speed + phase)
+    boxes.push(aabb(sample.x, NPC_HALF_H, sample.z, NPC_HALF_W * 2, NPC_HALF_H * 2, NPC_HALF_W * 2))
+  }
+  return boxes
 }

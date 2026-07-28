@@ -8,7 +8,7 @@
  * Units are metres. +Y is up. The player enters facing -Z.
  */
 import { aabb, type AABB } from '../gameplay/collision'
-import { CITY_GROUND, CITY_OBSTACLES } from './city-data'
+import { CITY_GROUND, CITY_OBSTACLES, STREET_TREES, STREET_LIGHTS } from './city-data'
 
 // ── Key dimensions ───────────────────────────────────────────────────────────
 
@@ -149,6 +149,20 @@ export function staticColliders(): AABB[] {
   for (const x of [-9, 9]) {
     for (const z of [10, 18, 26]) c.push(aabb(x, 0.35, z, 2.4, 0.7, 2.4))
   }
+
+  // ── Street trees — trunk colliders so you can't walk through them ────────
+  for (const tree of STREET_TREES) {
+    const trunkR = 0.25 * tree.scale
+    c.push(aabb(tree.x, 1.5, tree.z, trunkR * 2, 3, trunkR * 2))
+  }
+
+  // ── Street light poles — thin but solid ──────────────────────────────────
+  for (const light of STREET_LIGHTS) {
+    c.push(aabb(light.x, 2.5, light.z, 0.15, 5, 0.15))
+  }
+
+  // ── Secretary (Iris) — solid body like Mira ──────────────────────────────
+  c.push(aabb(SECRETARY.x, 0.9, SECRETARY.z, 0.7, 1.8, 0.7))
 
   return c
 }

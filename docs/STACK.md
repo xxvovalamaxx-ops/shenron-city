@@ -10,7 +10,7 @@ All packages researched, installed, and verified with `three ^0.185.1` + `@react
 | `@react-three/fiber` | ^9.6.1 | ✅ active | React renderer for Three.js |
 | `@react-three/drei` | ^10.7.7 | ✅ active | R3F helpers (controls, loaders, etc.) |
 | `@react-three/postprocessing` | ^3.0.4 | ✅ active | Bloom, Vignette, SMAA already wired |
-| `@dgreenheck/ez-tree` | ^1.1.0 | ✅ active | Procedural trees (plaza) |
+| `@dgreenheck/ez-tree` | ^1.1.0 | ⚠️ active, lazy | Detailed planter trees. **~3.9 MB** — it inlines bark and leaf textures as base64 in one line of JS, more than three.js itself. Loaded as a separate chunk on medium/high only; `PlanterTree` covers low. Never import it statically. |
 | `@react-three/rapier` | ^2.2.0 | 🔲 ready | Physics: rigid bodies, colliders, character controller, joints, sensors |
 | `recast-navigation` | ^0.43.1 | 🔲 ready | NavMesh generation + pathfinding |
 | `@recast-navigation/three` | ^0.43.1 | 🔲 ready | Three.js helpers for recast |

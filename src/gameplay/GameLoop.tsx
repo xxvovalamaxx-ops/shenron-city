@@ -9,10 +9,13 @@
  */
 import { useEffect, useMemo, useRef } from 'react'
 import { useFrame, useThree } from '@react-three/fiber'
-import { Vector3 } from 'three'
+import { Matrix4, Object3D, Quaternion, Vector3 } from 'three'
 import { rt } from './runtime'
+import { advanceTraffic, vehicleColliders, vehiclePose } from './traffic'
+import { VEHICLE } from '../world/city-data'
 import { useKeys } from './input'
 import { EYE_HEIGHT, moveWithCollisions, type AABB } from './collision'
+import { npcColliders } from '../agents/ambient-routes'
 import { carHeight, currentFloor, doorOpenness, step, FLOORS } from './elevator'
 import { leafOffset, stepDoor } from './doors'
 import { shaftGuards } from './shaft'
@@ -28,6 +31,7 @@ import {
   staticColliders,
 } from '../world/layout'
 import { useHud, inputLocked } from '../ui/hud-store'
+import { AUDIO_ANCHORS, cityAudio } from '../audio'
 
 const WALK_SPEED = 4.3
 const SPRINT_SPEED = 7.1
@@ -40,6 +44,9 @@ const MAX_DT = 1 / 20
 const HUD_INTERVAL = 0.1
 
 const CAR_DOOR_HEIGHT = SHAFT.carHeight - 0.2
+
+/** Openness above which a door counts as "moving", for audio edge detection. */
+const DOOR_EVENT_EPS = 0.02
 
 export interface GameLoopProps {
   interactables: Interactable[]
@@ -78,6 +85,73 @@ export function GameLoop({ interactables, onInteract }: GameLoopProps) {
     return () => window.removeEventListener('keydown', onKey)
   }, [onInteract])
 
+  // Scratch transforms, reused so the frame loop allocates nothing.
+  const scratch = useRef({ node: new Object3D(), matrix: new Matrix4(), spin: new Quaternion() })
+
+  // Last frame's continuous values, so audio can fire on transitions.
+  const audioEdges = useRef({ entrance: 0, carDoor: 0, travelling: false })
+
+  /**
+   * Push vehicle poses into the instance buffers.
+   *
+   * Body geometry is authored facing +z, which is also sampleLoop's zero
+   * heading, so the yaw is the heading with no correction.
+   */
+  function writeTrafficInstances(): void {
+    const { trafficBody, trafficCabin, trafficLamps, trafficSpill } = rt.refs
+    if (!trafficBody || !trafficCabin || !trafficLamps || !trafficSpill) return
+
+    const node = scratch.current.node
+    const cars = rt.vehicles
+
+    for (let i = 0; i < cars.length; i++) {
+      const pose = vehiclePose(cars[i])
+      const fx = Math.sin(pose.heading)
+      const fz = Math.cos(pose.heading)
+
+      node.rotation.set(0, pose.heading, 0)
+
+      node.position.set(pose.x, VEHICLE.height * 0.31, pose.z)
+      node.updateMatrix()
+      trafficBody.setMatrixAt(i, node.matrix)
+
+      // Cabin sits back from centre, the way a saloon's greenhouse does.
+      const cabinBack = VEHICLE.length * 0.08
+      node.position.set(
+        pose.x - fx * cabinBack,
+        VEHICLE.height * 0.84,
+        pose.z - fz * cabinBack,
+      )
+      node.updateMatrix()
+      trafficCabin.setMatrixAt(i, node.matrix)
+
+      // Two lamp bars per car: headlights forward, tail lights aft.
+      const nose = VEHICLE.length * 0.48
+      node.position.set(pose.x + fx * nose, VEHICLE.height * 0.42, pose.z + fz * nose)
+      node.updateMatrix()
+      trafficLamps.setMatrixAt(i * 2, node.matrix)
+
+      node.position.set(pose.x - fx * nose, VEHICLE.height * 0.46, pose.z - fz * nose)
+      node.updateMatrix()
+      trafficLamps.setMatrixAt(i * 2 + 1, node.matrix)
+
+      // Headlight spill, laid flat on the tarmac just ahead of the car.
+      // YXZ so the plane is tipped flat first and then yawed about world up.
+      const spillAhead = VEHICLE.length * 0.55 + 2.6
+      node.rotation.order = 'YXZ'
+      node.rotation.set(-Math.PI / 2, pose.heading, 0)
+      node.position.set(pose.x + fx * spillAhead, 0.02, pose.z + fz * spillAhead)
+      node.updateMatrix()
+      trafficSpill.setMatrixAt(i, node.matrix)
+      node.rotation.order = 'XYZ'
+    }
+
+    trafficBody.instanceMatrix.needsUpdate = true
+    trafficCabin.instanceMatrix.needsUpdate = true
+    trafficLamps.instanceMatrix.needsUpdate = true
+    trafficSpill.instanceMatrix.needsUpdate = true
+  }
+
   useFrame((state, rawDt) => {
     const dt = Math.min(rawDt, MAX_DT)
     const p = rt.player
@@ -103,9 +177,45 @@ export function GameLoop({ interactables, onInteract }: GameLoopProps) {
     const carY = carHeight(rt.elevator)
     const carOpen = doorOpenness(rt.elevator)
 
-    // ── 3. Dynamic collision ─────────────────────────────────────────────────
+    // ── 2b. Audio events, fired on edges rather than on state ────────────────
+    // The doors and the lift expose continuous values, so a level test would
+    // retrigger every frame the door is ajar. Compare against last frame.
+    const audio = audioEdges.current
+    const entranceOpen = rt.entranceDoor.openness
+    if (entranceOpen > DOOR_EVENT_EPS && audio.entrance <= DOOR_EVENT_EPS) {
+      cityAudio.play('doorOpen', AUDIO_ANCHORS.entranceDoor)
+    } else if (entranceOpen <= DOOR_EVENT_EPS && audio.entrance > DOOR_EVENT_EPS) {
+      cityAudio.play('doorClose', AUDIO_ANCHORS.entranceDoor)
+    }
+    audio.entrance = entranceOpen
+
+    if (carOpen > DOOR_EVENT_EPS && audio.carDoor <= DOOR_EVENT_EPS) {
+      cityAudio.play('doorOpen', AUDIO_ANCHORS.elevatorDoor(carY))
+    } else if (carOpen <= DOOR_EVENT_EPS && audio.carDoor > DOOR_EVENT_EPS) {
+      cityAudio.play('doorClose', AUDIO_ANCHORS.elevatorDoor(carY))
+    }
+    audio.carDoor = carOpen
+
+    const travelling = rt.elevator.phase === 'travelling'
+    if (travelling) {
+      // Re-issued while moving so the motor source tracks the rising car; the
+      // engine treats a repeat as a move, not as a restart.
+      cityAudio.play('elevatorStart', AUDIO_ANCHORS.elevatorDoor(carY))
+    } else if (audio.travelling) {
+      cityAudio.play('elevatorStop', AUDIO_ANCHORS.elevatorDoor(carY))
+      cityAudio.play('elevatorArrive', AUDIO_ANCHORS.elevatorDoor(carY))
+    }
+    audio.travelling = travelling
+
+    // ── 3. Traffic, before collision so the boxes match the visible cars ─────
+    advanceTraffic(rt.vehicles, dt, p.pos)
+    writeTrafficInstances()
+
+    // ── 4. Dynamic collision ─────────────────────────────────────────────────
     const colliders: AABB[] = [
       ...staticWorld,
+      ...vehicleColliders(rt.vehicles),
+      ...npcColliders(state.clock.elapsedTime),
       ...carColliders(carY),
       ...shaftGuards(carY, carOpen),
       ...slidingDoorColliders(
@@ -119,7 +229,7 @@ export function GameLoop({ interactables, onInteract }: GameLoopProps) {
       ...slidingDoorColliders(0, carY, SHAFT.doorZ, SHAFT.halfWidth, CAR_DOOR_HEIGHT, carOpen),
     ]
 
-    // ── 4. Input → desired horizontal motion, in camera space ────────────────
+    // ── 5. Input → desired horizontal motion, in camera space ────────────────
     let dx = 0
     let dz = 0
     if (!locked) {
@@ -153,7 +263,7 @@ export function GameLoop({ interactables, onInteract }: GameLoopProps) {
       }
     }
 
-    // ── 5. Move ──────────────────────────────────────────────────────────────
+    // ── 6. Move ──────────────────────────────────────────────────────────────
     const result = moveWithCollisions(p.pos, { x: dx, z: dz }, p.velocityY, dt, colliders)
     p.pos = result.position
     p.velocityY = result.velocityY
@@ -164,7 +274,7 @@ export function GameLoop({ interactables, onInteract }: GameLoopProps) {
     const hud = useHud.getState()
     for (const event of cityTourLocationEvents(p.pos)) hud.advanceCityTour(event)
 
-    // ── 6. Carry the player with the car ─────────────────────────────────────
+    // ── 7. Carry the player with the car ─────────────────────────────────────
     // Explicit rather than relying on the floor collider to push: at 25 m/s the
     // car rises further per frame than the step height, so support alone would
     // drop the player through the floor.
@@ -185,10 +295,10 @@ export function GameLoop({ interactables, onInteract }: GameLoopProps) {
     }
     prevCarY.current = carY
 
-    // ── 7. Camera follows the body ───────────────────────────────────────────
+    // ── 8. Camera follows the body ───────────────────────────────────────────
     camera.position.set(p.pos.x, p.pos.y + EYE_HEIGHT, p.pos.z)
 
-    // ── 8. Interaction targeting ─────────────────────────────────────────────
+    // ── 9. Interaction targeting ─────────────────────────────────────────────
     camera.getWorldDirection(forwardVec.current)
     const fx = forwardVec.current.x
     const fz = forwardVec.current.z
@@ -207,7 +317,7 @@ export function GameLoop({ interactables, onInteract }: GameLoopProps) {
           fz: p.forward.z,
         })
 
-    // ── 9. Drive the meshes the simulation owns ──────────────────────────────
+    // ── 10. Drive the meshes the simulation owns ──────────────────────────────
     const refs = rt.refs
     if (refs.car) refs.car.position.y = carY
 
@@ -221,7 +331,12 @@ export function GameLoop({ interactables, onInteract }: GameLoopProps) {
     if (refs.entranceLeft) refs.entranceLeft.position.x = -entLeaf
     if (refs.entranceRight) refs.entranceRight.position.x = entLeaf
 
-    // ── 10. Perf sampling + throttled HUD mirror ─────────────────────────────
+    // ── 11. Audio listener ───────────────────────────────────────────────────
+    // Must run after the move resolves: footstep cadence is derived from the
+    // position delta, so an earlier call would step to last frame's position.
+    cityAudio.update(p, dt)
+
+    // ── 12. Perf sampling + throttled HUD mirror ─────────────────────────────
     const perf = rt.perf
     perf.frames += 1
     perf.accum += rawDt

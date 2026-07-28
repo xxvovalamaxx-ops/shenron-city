@@ -4,13 +4,36 @@
  * Everything repeated is instanced. A night skyline made of individual meshes
  * is the fastest way to lose the frame budget before the interior even loads.
  */
-import { useLayoutEffect, useMemo, useRef } from 'react'
+import { lazy, Suspense, useLayoutEffect, useMemo, useRef } from 'react'
 import * as THREE from 'three'
 import { ENTRANCE, LOBBY, TOWER } from './layout'
 import { PALETTE, type QualitySettings } from './palette'
 import { CITY_GROUND } from './city-data'
 import { CityDistrict } from './CityDistrict'
-import { Tree } from './Tree'
+import { Traffic } from './Traffic'
+import { PlanterTree, type TreeProps } from './PlanterTree'
+
+/**
+ * Detailed trees are a separate chunk. See the note in Tree.tsx — a static
+ * import here would put ~3.9 MB of base64 bark back on the path to first frame.
+ */
+const DetailTree = lazy(() => import('./Tree'))
+
+/**
+ * A planter tree that upgrades itself.
+ *
+ * PlanterTree renders immediately and is also the Suspense fallback, so the
+ * planter is never empty and never pops from nothing — the detailed mesh
+ * replaces a tree that is already the right shape, in the right palette.
+ */
+function PlanterTreeSlot({ detailed, ...props }: TreeProps & { detailed: boolean }) {
+  if (!detailed) return <PlanterTree {...props} />
+  return (
+    <Suspense fallback={<PlanterTree {...props} />}>
+      <DetailTree {...props} />
+    </Suspense>
+  )
+}
 
 /** Deterministic PRNG — the skyline must be identical every run. */
 function mulberry32(seed: number) {
@@ -157,6 +180,7 @@ export function Exterior({ quality }: { quality: QualitySettings }) {
       </mesh>
 
       <CityDistrict quality={quality} />
+      <Traffic quality={quality} />
 
       {/* Tower mass — the building continues far above the lobby ceiling */}
       <mesh position={[0, TOWER.height / 2, -TOWER.depth / 2]} castShadow={quality.shadows}>
@@ -217,10 +241,12 @@ export function Exterior({ quality }: { quality: QualitySettings }) {
               <boxGeometry args={[2.4, 0.7, 2.4]} />
               <meshStandardMaterial color={PALETTE.stone} roughness={0.85} />
             </mesh>
-            <Tree
+            <PlanterTreeSlot
+              detailed={quality.detailTrees}
+              shadows={quality.shadows}
               position={[0, 0.7, 0]}
               seed={x * 100 + z}
-              scale={0.35}
+              height={7}
               variant={z === 18 ? 'birch' : 'oak'}
             />
           </group>

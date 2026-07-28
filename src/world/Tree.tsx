@@ -1,17 +1,20 @@
 /**
- * Tree wrapper — uses @dgreenheck/ez-tree for high-quality procedural trees
- * with real bark and leaf textures.
+ * The detailed tree — @dgreenheck/ez-tree, with real bark and leaf textures.
+ *
+ * This module is the single reason the ez-tree dependency exists, and ez-tree
+ * inlines its bark and leaf textures as base64 inside one ~3.9 MB line of
+ * JavaScript. That is more than three.js itself, for six planter trees at the
+ * headquarters entrance.
+ *
+ * So this file is a default export and nothing imports it directly: callers go
+ * through `lazy(() => import('./Tree'))` so the cost lands in its own chunk,
+ * off the path to first frame, and never downloads at all on the low preset.
+ * PlanterTree covers the gap. Do not add a static import of this module.
  */
 import { useEffect, useRef } from 'react'
-import type { Group } from 'three'
+import { Box3, Vector3, type Group } from 'three'
 import { Tree as EzTree } from '@dgreenheck/ez-tree'
-
-interface TreeProps {
-  position: [number, number, number]
-  seed?: number
-  scale?: number
-  variant?: 'oak' | 'pine' | 'birch' | 'willow'
-}
+import { DEFAULT_TREE_HEIGHT, type TreeProps } from './PlanterTree'
 
 const PRESETS: Record<string, object> = {
   oak: {
@@ -96,11 +99,12 @@ const PRESETS: Record<string, object> = {
   },
 }
 
-export function Tree({
+export default function Tree({
   position,
   seed = 42,
-  scale = 1,
+  height = DEFAULT_TREE_HEIGHT,
   variant = 'oak',
+  shadows = true,
 }: TreeProps) {
   const groupRef = useRef<Group>(null)
   const treeRef = useRef<EzTree | null>(null)
@@ -118,9 +122,16 @@ export function Tree({
     tree.generate()
 
     tree.traverse((child) => {
-      child.castShadow = true
-      child.receiveShadow = true
+      child.castShadow = shadows
+      child.receiveShadow = shadows
     })
+
+    // ez-tree's presets are authored in their own units — the stock oak comes
+    // out roughly 98 m tall — and each preset and seed differs. Measure what
+    // was actually generated and normalise to the requested height, so this
+    // never drifts from PlanterTree when a preset is tweaked.
+    const natural = new Box3().setFromObject(tree).getSize(new Vector3()).y
+    if (natural > 0) tree.scale.setScalar(height / natural)
 
     groupRef.current.add(tree)
     treeRef.current = tree
@@ -131,7 +142,8 @@ export function Tree({
         treeRef.current = null
       }
     }
-  }, [seed, variant])
+  }, [seed, variant, shadows, height])
 
-  return <group ref={groupRef} position={position} scale={scale} />
+  // No scale here — the generated tree is normalised to `height` above.
+  return <group ref={groupRef} position={position} />
 }

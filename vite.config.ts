@@ -8,10 +8,17 @@ import react from '@vitejs/plugin-react'
  */
 export default defineConfig({
   plugins: [react()],
+  // Root-level, not a server option — nesting it under `server` type-errors
+  // and silently does nothing, so the console kept being cleared anyway.
+  clearScreen: false,
   server: {
     port: 9122,
     host: '127.0.0.1',
     hmr: false,
+    watch: {
+      usePolling: true,
+      interval: 1000,
+    },
   },
   build: {
     outDir: 'dist',
