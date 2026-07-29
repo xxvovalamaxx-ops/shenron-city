@@ -13,6 +13,8 @@ import { Matrix4, Object3D, Quaternion, Vector3 } from 'three'
 import { rt } from './runtime'
 import { advanceTraffic, vehicleColliders, vehiclePose } from './traffic'
 import { boomDistance, smoothBoom } from './camera-boom'
+import { buildCityCollision } from './city-colliders'
+import { generateCityPlan } from '../world/city-plan'
 import { VEHICLE } from '../world/city-data'
 import { useKeys } from './input'
 import { EYE_HEIGHT, moveWithCollisions, type AABB } from './collision'
@@ -73,6 +75,10 @@ export function GameLoop({ interactables, ambientPedestrians, onInteract }: Game
   // Static geometry never changes; rebuilding it per frame would dominate the
   // frame budget for no reason.
   const staticWorld = useMemo<AABB[]>(() => [...staticColliders(), ...hqColliders()], [])
+
+  // 331 generated buildings, bucketed once. Feeding them all to the sweep
+  // every frame would cost more than the rest of the loop put together.
+  const city = useMemo(() => buildCityCollision(generateCityPlan().lots), [])
   const stationaryResidents = useMemo<AABB[]>(
     () => residentColliders(interactables),
     [interactables],
@@ -285,6 +291,7 @@ export function GameLoop({ interactables, ambientPedestrians, onInteract }: Game
       ...staticWorld,
       ...stationaryResidents,
       ...breakableColliders(rt.destroyed),
+      ...city.near(p.pos),
       ...vehicleColliders(rt.vehicles),
       ...npcColliders(state.clock.elapsedTime, ambientPedestrians),
       capybaraCollider(rt.capybara),

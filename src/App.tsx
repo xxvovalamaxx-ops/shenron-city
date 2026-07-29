@@ -33,6 +33,7 @@ import { PlayerAvatar } from './character/PlayerAvatar'
 import { LaserBeam } from './weapons/LaserBeam'
 import { DestructionSystem } from './destruction/DestructionSystem'
 import { NightEnvironment } from './world/NightEnvironment'
+import { GeneratedCity } from './world/GeneratedCity'
 import { ShadowBudget } from './world/ShadowBudget'
 import { AtmosphericDust } from './world/AtmosphericDust'
 import { Capybara } from './animals/CapybaraActor'
@@ -244,6 +245,8 @@ function Scene({
       <Lighting shadows={quality.shadows} shadowMapSize={quality.shadowMapSize} />
       <ShadowBudget enabled={quality.shadows} mapSize={quality.shadowMapSize} />
 
+      {/* The city around the hand-authored district. */}
+      <GeneratedCity quality={quality} />
       <Exterior quality={quality} />
       <Lobby quality={quality} />
       <Elevator />
