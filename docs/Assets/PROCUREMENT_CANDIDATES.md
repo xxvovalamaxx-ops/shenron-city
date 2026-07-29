@@ -38,6 +38,12 @@ No Graswald model, texture, ecotope, archive, or unofficial patched add-on was
 downloaded or committed. Production vegetation continues to use the existing
 CC0 Poly Haven inputs and project-authored Geometry Nodes/scatter tooling.
 
+The complete workspace audit opened all 145 catalog entries across eight
+ecosystems and found zero individual license overrides. See
+[`GSCATTER_LICENSE_AUDIT.md`](GSCATTER_LICENSE_AUDIT.md) for the decision and
+[`GSCATTER_LICENSE_AUDIT.csv`](GSCATTER_LICENSE_AUDIT.csv) for the
+asset-by-asset ledger.
+
 ## Procurement rule
 
 Prefer improving the procedural vertical slice over collecting speculative
