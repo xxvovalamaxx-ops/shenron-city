@@ -125,35 +125,35 @@
           "url": "https://dl.polyhaven.org/file/ph-assets/Models/blend/1k/grass_bermuda_01/grass_bermuda_01_1k.blend",
           "md5": "61d700a2259ec67ba8ed6846ebc680cc",
           "size": 185844,
-          "status": "downloaded"
+          "status": "cached"
         },
         {
           "filename": "textures/grass_bermuda_01_alpha_1k.png",
           "url": "https://dl.polyhaven.org/file/ph-assets/Models/png/1k/grass_bermuda_01/grass_bermuda_01_alpha_1k.png",
           "md5": "274285abb11b3b7a0fd277b9923d1074",
           "size": 59564,
-          "status": "downloaded"
+          "status": "cached"
         },
         {
           "filename": "textures/grass_bermuda_01_diff_1k.jpg",
           "url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/1k/grass_bermuda_01/grass_bermuda_01_diff_1k.jpg",
           "md5": "234be9f52cfcd3380c7f782baaa841c3",
           "size": 175425,
-          "status": "downloaded"
+          "status": "cached"
         },
         {
           "filename": "textures/grass_bermuda_01_nor_gl_1k.exr",
           "url": "https://dl.polyhaven.org/file/ph-assets/Models/exr/1k/grass_bermuda_01/grass_bermuda_01_nor_gl_1k.exr",
           "md5": "4b81e770a8d6a27af63f28bc27c58b68",
           "size": 1558026,
-          "status": "downloaded"
+          "status": "cached"
         },
         {
           "filename": "textures/grass_bermuda_01_rough_1k.exr",
           "url": "https://dl.polyhaven.org/file/ph-assets/Models/exr/1k/grass_bermuda_01/grass_bermuda_01_rough_1k.exr",
           "md5": "52c9560c10329520735fa6ed242d4ed3",
           "size": 704249,
-          "status": "downloaded"
+          "status": "cached"
         }
       ]
     },
@@ -330,42 +330,42 @@
           "url": "https://dl.polyhaven.org/file/ph-assets/Models/blend/1k/nettle_plant/nettle_plant_1k.blend",
           "md5": "109c445b3213a24f8c18b0dcb5bf7dcd",
           "size": 1075094,
-          "status": "downloaded"
+          "status": "cached"
         },
         {
           "filename": "textures/nettle_plant_dry_diff_1k.png",
           "url": "https://dl.polyhaven.org/file/ph-assets/Models/png/1k/nettle_plant/nettle_plant_dry_diff_1k.png",
           "md5": "3a38c9d400836924a8816607e2e92d56",
           "size": 3534391,
-          "status": "downloaded"
+          "status": "cached"
         },
         {
           "filename": "textures/nettle_plant_nor_gl_1k.exr",
           "url": "https://dl.polyhaven.org/file/ph-assets/Models/exr/1k/nettle_plant/nettle_plant_nor_gl_1k.exr",
           "md5": "68f48969712c23ad8ed07f28a3e0f422",
           "size": 1413912,
-          "status": "downloaded"
+          "status": "cached"
         },
         {
           "filename": "textures/nettle_plant_diff_1k.jpg",
           "url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/1k/nettle_plant/nettle_plant_diff_1k.jpg",
           "md5": "efa546b37e9a8669b214b1fea1422892",
           "size": 388629,
-          "status": "downloaded"
+          "status": "cached"
         },
         {
           "filename": "textures/nettle_plant_alpha_1k.png",
           "url": "https://dl.polyhaven.org/file/ph-assets/Models/png/1k/nettle_plant/nettle_plant_alpha_1k.png",
           "md5": "57a0ce5b6285f558786511ccff178aa1",
           "size": 189288,
-          "status": "downloaded"
+          "status": "cached"
         },
         {
           "filename": "textures/nettle_plant_rough_1k.exr",
           "url": "https://dl.polyhaven.org/file/ph-assets/Models/exr/1k/nettle_plant/nettle_plant_rough_1k.exr",
           "md5": "a39338d62c23a1f9c6e3acb97d7c2eb7",
           "size": 453489,
-          "status": "downloaded"
+          "status": "cached"
         }
       ]
     },
@@ -385,35 +385,35 @@
           "url": "https://dl.polyhaven.org/file/ph-assets/Models/blend/1k/weed_plant_02/weed_plant_02_1k.blend",
           "md5": "1b05f950d315f67d3f647f67e1872d46",
           "size": 464832,
-          "status": "downloaded"
+          "status": "cached"
         },
         {
           "filename": "textures/weed_plant_02_nor_gl_1k.exr",
           "url": "https://dl.polyhaven.org/file/ph-assets/Models/exr/1k/weed_plant_02/weed_plant_02_nor_gl_1k.exr",
           "md5": "00f635878f0a35225ae59f4e37dd0935",
           "size": 1494615,
-          "status": "downloaded"
+          "status": "cached"
         },
         {
           "filename": "textures/weed_plant_02_alpha_1k.png",
           "url": "https://dl.polyhaven.org/file/ph-assets/Models/png/1k/weed_plant_02/weed_plant_02_alpha_1k.png",
           "md5": "2fbec8fdd3904e8709718562aa6d37d9",
           "size": 182453,
-          "status": "downloaded"
+          "status": "cached"
         },
         {
           "filename": "textures/weed_plant_02_diff_1k.jpg",
           "url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/1k/weed_plant_02/weed_plant_02_diff_1k.jpg",
           "md5": "147c346358cf123ca50473cf05df7b86",
           "size": 457595,
-          "status": "downloaded"
+          "status": "cached"
         },
         {
           "filename": "textures/weed_plant_02_rough_1k.exr",
           "url": "https://dl.polyhaven.org/file/ph-assets/Models/exr/1k/weed_plant_02/weed_plant_02_rough_1k.exr",
           "md5": "9135bc1f9335b9b605bdac101ad9e341",
           "size": 564214,
-          "status": "downloaded"
+          "status": "cached"
         }
       ]
     },
@@ -853,6 +853,365 @@
           "md5": "8ef8f0d1cbd36b1e4578eb729fa6f0b7",
           "size": 1342516,
           "status": "cached"
+        }
+      ]
+    },
+    {
+      "id": "tree_small_02",
+      "kind": "model",
+      "variant": "1k-blend",
+      "name": "Tree Small 02",
+      "authors": [
+        "Rico Cilliers"
+      ],
+      "page": "https://polyhaven.com/a/tree_small_02",
+      "files": [
+        {
+          "filename": "tree_small_02_1k.blend",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/blend/1k/tree_small_02/tree_small_02_1k.blend",
+          "md5": "d602d9e4df77457454ac427fd37d0b53",
+          "size": 63805841,
+          "status": "downloaded"
+        },
+        {
+          "filename": "textures/tree_small_02_branch_diff_1k.png",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/png/1k/tree_small_02/tree_small_02_branch_diff_1k.png",
+          "md5": "2da9ea379228636c4fda2fde9a11d760",
+          "size": 1277270,
+          "status": "downloaded"
+        },
+        {
+          "filename": "textures/tree_small_02_branch_nor_gl_1k.png",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/png/1k/tree_small_02/tree_small_02_branch_nor_gl_1k.png",
+          "md5": "4b6ae81428061986d42f205d03ec1989",
+          "size": 5754879,
+          "status": "downloaded"
+        },
+        {
+          "filename": "textures/tree_small_02_branch_rough_1k.png",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/png/1k/tree_small_02/tree_small_02_branch_rough_1k.png",
+          "md5": "6189ac57979c248f9eb362ca04c5619e",
+          "size": 421614,
+          "status": "downloaded"
+        },
+        {
+          "filename": "textures/tree_small_02_diff_1k.jpg",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/1k/tree_small_02/tree_small_02_diff_1k.jpg",
+          "md5": "a7287a3f4e7f0d4577cb949b245f5b14",
+          "size": 863246,
+          "status": "downloaded"
+        },
+        {
+          "filename": "textures/tree_small_02_leaves_alpha_1k.png",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/png/1k/tree_small_02/tree_small_02_leaves_alpha_1k.png",
+          "md5": "63199ba87a9e8928424bd8c3b8017bd0",
+          "size": 264711,
+          "status": "downloaded"
+        },
+        {
+          "filename": "textures/tree_small_02_leaves_diff_1k.png",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/png/1k/tree_small_02/tree_small_02_leaves_diff_1k.png",
+          "md5": "2c667193084725e8553062ddbdc73c7d",
+          "size": 2338424,
+          "status": "downloaded"
+        },
+        {
+          "filename": "textures/tree_small_02_leaves_nor_gl_1k.png",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/png/1k/tree_small_02/tree_small_02_leaves_nor_gl_1k.png",
+          "md5": "e81c5d7e7fc09af321e8c5ac5b4948f2",
+          "size": 4903387,
+          "status": "downloaded"
+        },
+        {
+          "filename": "textures/tree_small_02_leaves_rough_1k.png",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/png/1k/tree_small_02/tree_small_02_leaves_rough_1k.png",
+          "md5": "49c08fb74ed781e9632b543b8e19c8cb",
+          "size": 1043665,
+          "status": "downloaded"
+        },
+        {
+          "filename": "textures/tree_small_02_nor_gl_1k.exr",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/exr/1k/tree_small_02/tree_small_02_nor_gl_1k.exr",
+          "md5": "eccf7df1617a8d6d841dff98bf58dc3a",
+          "size": 2462999,
+          "status": "downloaded"
+        },
+        {
+          "filename": "textures/tree_small_02_rough_1k.exr",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/exr/1k/tree_small_02/tree_small_02_rough_1k.exr",
+          "md5": "af3b33e4b262b8ac40a94ee5d93ce13e",
+          "size": 978557,
+          "status": "downloaded"
+        }
+      ]
+    },
+    {
+      "id": "jacaranda_tree",
+      "kind": "model",
+      "variant": "1k-blend",
+      "name": "Jacaranda Tree",
+      "authors": [
+        "Rico Cilliers",
+        "Rob Tuytel"
+      ],
+      "page": "https://polyhaven.com/a/jacaranda_tree",
+      "files": [
+        {
+          "filename": "jacaranda_tree_1k.blend",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/blend/1k/jacaranda_tree/jacaranda_tree_1k.blend",
+          "md5": "1b827c7c364c6ebb2cbbff0f02b52a15",
+          "size": 180228496,
+          "status": "downloaded"
+        },
+        {
+          "filename": "textures/jacaranda_tree_branches_diff_1k.png",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/png/1k/jacaranda_tree/jacaranda_tree_branches_diff_1k.png",
+          "md5": "ad4488598993a114236807d60136fc7b",
+          "size": 5223386,
+          "status": "downloaded"
+        },
+        {
+          "filename": "textures/jacaranda_tree_branches_nor_gl_1k.png",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/png/1k/jacaranda_tree/jacaranda_tree_branches_nor_gl_1k.png",
+          "md5": "df3d91a9c29266f44b0b17da135a2899",
+          "size": 5400459,
+          "status": "downloaded"
+        },
+        {
+          "filename": "textures/jacaranda_tree_branches_rough_1k.png",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/png/1k/jacaranda_tree/jacaranda_tree_branches_rough_1k.png",
+          "md5": "8bd9e066f93c242ef468c7c6ea6dc382",
+          "size": 1625206,
+          "status": "downloaded"
+        },
+        {
+          "filename": "textures/jacaranda_tree_leaves_alpha_1k.png",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/png/1k/jacaranda_tree/jacaranda_tree_leaves_alpha_1k.png",
+          "md5": "740214de7b900e30737009ff4ee2c01a",
+          "size": 506043,
+          "status": "downloaded"
+        },
+        {
+          "filename": "textures/jacaranda_tree_leaves_diff_1k.png",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/png/1k/jacaranda_tree/jacaranda_tree_leaves_diff_1k.png",
+          "md5": "879ef43acb3443e247a2d32713fec86c",
+          "size": 2364526,
+          "status": "downloaded"
+        },
+        {
+          "filename": "textures/jacaranda_tree_leaves_nor_gl_1k.png",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/png/1k/jacaranda_tree/jacaranda_tree_leaves_nor_gl_1k.png",
+          "md5": "c968c79960303470e124875a111bd5a4",
+          "size": 4154090,
+          "status": "downloaded"
+        },
+        {
+          "filename": "textures/jacaranda_tree_leaves_rough_1k.png",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/png/1k/jacaranda_tree/jacaranda_tree_leaves_rough_1k.png",
+          "md5": "4cbffd1596f7ad63de8e170ac54fb907",
+          "size": 992522,
+          "status": "downloaded"
+        },
+        {
+          "filename": "textures/jacaranda_tree_trunk_diff_1k.png",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/png/1k/jacaranda_tree/jacaranda_tree_trunk_diff_1k.png",
+          "md5": "eb97b09e36a6683ab5c15496d08a65b2",
+          "size": 5450061,
+          "status": "downloaded"
+        },
+        {
+          "filename": "textures/jacaranda_tree_trunk_nor_gl_1k.png",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/png/1k/jacaranda_tree/jacaranda_tree_trunk_nor_gl_1k.png",
+          "md5": "98bae75f6c5805b4fd22907d74c7d2c0",
+          "size": 5486270,
+          "status": "downloaded"
+        },
+        {
+          "filename": "textures/jacaranda_tree_trunk_rough_1k.png",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/png/1k/jacaranda_tree/jacaranda_tree_trunk_rough_1k.png",
+          "md5": "d3682e710029d485344b9c2c5f819e37",
+          "size": 1747236,
+          "status": "downloaded"
+        }
+      ]
+    },
+    {
+      "id": "island_tree_01",
+      "kind": "model",
+      "variant": "1k-blend",
+      "name": "Island Tree 01",
+      "authors": [
+        "Rico Cilliers",
+        "Rob Tuytel"
+      ],
+      "page": "https://polyhaven.com/a/island_tree_01",
+      "files": [
+        {
+          "filename": "island_tree_01_1k.blend",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/blend/1k/island_tree_01/island_tree_01_1k.blend",
+          "md5": "9482a71fc5482b65d3e07babb7c3a936",
+          "size": 58077856,
+          "status": "downloaded"
+        },
+        {
+          "filename": "textures/island_tree_01_branches_diff_1k.png",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/png/1k/island_tree_01/island_tree_01_branches_diff_1k.png",
+          "md5": "06881375b8ce350a45746e30b68a5d4c",
+          "size": 5300342,
+          "status": "downloaded"
+        },
+        {
+          "filename": "textures/island_tree_01_branches_nor_gl_1k.png",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/png/1k/island_tree_01/island_tree_01_branches_nor_gl_1k.png",
+          "md5": "df3d91a9c29266f44b0b17da135a2899",
+          "size": 5400459,
+          "status": "downloaded"
+        },
+        {
+          "filename": "textures/island_tree_01_branches_rough_1k.png",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/png/1k/island_tree_01/island_tree_01_branches_rough_1k.png",
+          "md5": "8bd9e066f93c242ef468c7c6ea6dc382",
+          "size": 1625206,
+          "status": "downloaded"
+        },
+        {
+          "filename": "textures/island_tree_01_diff_1k.jpg",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/1k/island_tree_01/island_tree_01_diff_1k.jpg",
+          "md5": "8a67489846657df6b859d97e0b80fcf4",
+          "size": 791327,
+          "status": "downloaded"
+        },
+        {
+          "filename": "textures/island_tree_01_leaves_alpha_1k.png",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/png/1k/island_tree_01/island_tree_01_leaves_alpha_1k.png",
+          "md5": "5ad9fb9a06e70c069bd3d3ba23577375",
+          "size": 57438,
+          "status": "downloaded"
+        },
+        {
+          "filename": "textures/island_tree_01_leaves_diff_1k.png",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/png/1k/island_tree_01/island_tree_01_leaves_diff_1k.png",
+          "md5": "f5dcd85f170c154cba9cb8367af5dbdd",
+          "size": 1638916,
+          "status": "downloaded"
+        },
+        {
+          "filename": "textures/island_tree_01_leaves_nor_gl_1k.png",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/png/1k/island_tree_01/island_tree_01_leaves_nor_gl_1k.png",
+          "md5": "13a7610b0459f3175ca049b70eadbfea",
+          "size": 2886859,
+          "status": "downloaded"
+        },
+        {
+          "filename": "textures/island_tree_01_leaves_rough_1k.png",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/png/1k/island_tree_01/island_tree_01_leaves_rough_1k.png",
+          "md5": "6195150c02ed2522f8ab60c2ec02f1b9",
+          "size": 879599,
+          "status": "downloaded"
+        },
+        {
+          "filename": "textures/island_tree_01_nor_gl_1k.exr",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/exr/1k/island_tree_01/island_tree_01_nor_gl_1k.exr",
+          "md5": "2967bc2e9d8b2256165537c395181aa7",
+          "size": 2415664,
+          "status": "downloaded"
+        },
+        {
+          "filename": "textures/island_tree_01_rough_1k.exr",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/exr/1k/island_tree_01/island_tree_01_rough_1k.exr",
+          "md5": "58ebd5b8589f82ee2bc0d23b5332c02d",
+          "size": 875265,
+          "status": "downloaded"
+        }
+      ]
+    },
+    {
+      "id": "island_tree_02",
+      "kind": "model",
+      "variant": "1k-blend",
+      "name": "Island Tree 02",
+      "authors": [
+        "Rico Cilliers",
+        "Rob Tuytel"
+      ],
+      "page": "https://polyhaven.com/a/island_tree_02",
+      "files": [
+        {
+          "filename": "island_tree_02_1k.blend",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/blend/1k/island_tree_02/island_tree_02_1k.blend",
+          "md5": "eeacbddb0ae5ceafa70115d066f21178",
+          "size": 38795227,
+          "status": "downloaded"
+        },
+        {
+          "filename": "textures/island_tree_02_branches_diff_1k.png",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/png/1k/island_tree_02/island_tree_02_branches_diff_1k.png",
+          "md5": "06881375b8ce350a45746e30b68a5d4c",
+          "size": 5300342,
+          "status": "downloaded"
+        },
+        {
+          "filename": "textures/island_tree_02_branches_nor_gl_1k.png",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/png/1k/island_tree_02/island_tree_02_branches_nor_gl_1k.png",
+          "md5": "df3d91a9c29266f44b0b17da135a2899",
+          "size": 5400459,
+          "status": "downloaded"
+        },
+        {
+          "filename": "textures/island_tree_02_branches_rough_1k.png",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/png/1k/island_tree_02/island_tree_02_branches_rough_1k.png",
+          "md5": "8bd9e066f93c242ef468c7c6ea6dc382",
+          "size": 1625206,
+          "status": "downloaded"
+        },
+        {
+          "filename": "textures/island_tree_02_diff_1k.jpg",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/1k/island_tree_02/island_tree_02_diff_1k.jpg",
+          "md5": "b7435527d9628527ce47d89fc1468e9a",
+          "size": 738738,
+          "status": "downloaded"
+        },
+        {
+          "filename": "textures/island_tree_02_leaves_alpha_1k.png",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/png/1k/island_tree_02/island_tree_02_leaves_alpha_1k.png",
+          "md5": "5ad9fb9a06e70c069bd3d3ba23577375",
+          "size": 57438,
+          "status": "downloaded"
+        },
+        {
+          "filename": "textures/island_tree_02_leaves_diff_1k.png",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/png/1k/island_tree_02/island_tree_02_leaves_diff_1k.png",
+          "md5": "f5dcd85f170c154cba9cb8367af5dbdd",
+          "size": 1638916,
+          "status": "downloaded"
+        },
+        {
+          "filename": "textures/island_tree_02_leaves_nor_gl_1k.png",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/png/1k/island_tree_02/island_tree_02_leaves_nor_gl_1k.png",
+          "md5": "13a7610b0459f3175ca049b70eadbfea",
+          "size": 2886859,
+          "status": "downloaded"
+        },
+        {
+          "filename": "textures/island_tree_02_leaves_rough_1k.png",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/png/1k/island_tree_02/island_tree_02_leaves_rough_1k.png",
+          "md5": "6195150c02ed2522f8ab60c2ec02f1b9",
+          "size": 879599,
+          "status": "downloaded"
+        },
+        {
+          "filename": "textures/island_tree_02_nor_gl_1k.exr",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/exr/1k/island_tree_02/island_tree_02_nor_gl_1k.exr",
+          "md5": "0dcb044743f8fd590115311417084a4b",
+          "size": 2353279,
+          "status": "downloaded"
+        },
+        {
+          "filename": "textures/island_tree_02_rough_1k.exr",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/exr/1k/island_tree_02/island_tree_02_rough_1k.exr",
+          "md5": "058be0ebbb1777e70f8df6d9d2337361",
+          "size": 892307,
+          "status": "downloaded"
         }
       ]
     },

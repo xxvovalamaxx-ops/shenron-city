@@ -39,6 +39,10 @@ MODEL_ASSET_IDS = (
     "pine_sapling_small",
     "pine_sapling_medium",
     "pine_tree_01",
+    "tree_small_02",
+    "jacaranda_tree",
+    "island_tree_01",
+    "island_tree_02",
 )
 HDRI_ID = "autumn_field_puresky"
 
