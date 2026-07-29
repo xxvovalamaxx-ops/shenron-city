@@ -58,3 +58,30 @@ export function glbMetrics(document) {
     triangles,
   }
 }
+
+/**
+ * Aggregate baked POSITION accessor bounds.
+ *
+ * Production exports apply object transforms before writing accessors, so this
+ * catches axis mistakes without needing a renderer or binary-buffer decode.
+ */
+export function glbBounds(document) {
+  const min = [Infinity, Infinity, Infinity]
+  const max = [-Infinity, -Infinity, -Infinity]
+  for (const mesh of document.meshes ?? []) {
+    for (const primitive of mesh.primitives ?? []) {
+      const accessor = document.accessors?.[primitive.attributes?.POSITION]
+      if (!accessor?.min || !accessor?.max) continue
+      for (let axis = 0; axis < 3; axis += 1) {
+        min[axis] = Math.min(min[axis], accessor.min[axis])
+        max[axis] = Math.max(max[axis], accessor.max[axis])
+      }
+    }
+  }
+  if (!min.every(Number.isFinite) || !max.every(Number.isFinite)) return null
+  return {
+    min,
+    max,
+    dimensions: max.map((value, axis) => value - min[axis]),
+  }
+}

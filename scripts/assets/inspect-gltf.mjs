@@ -1,7 +1,7 @@
 import { readdirSync, statSync } from 'node:fs'
 import { relative, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
-import { glbMetrics, readGlb } from './glb-utils.mjs'
+import { glbBounds, glbMetrics, readGlb } from './glb-utils.mjs'
 
 const root = resolve(fileURLToPath(new URL('../../', import.meta.url)))
 const requested = process.argv.slice(2)
@@ -21,6 +21,7 @@ const rows = targets.map((path) => {
   return {
     path: relative(root, path).replaceAll('\\', '/'),
     bytes: file.length,
+    bounds: glbBounds(document),
     ...glbMetrics(document),
   }
 })

@@ -13,7 +13,8 @@ import { WorldText as Text } from '../ui/WorldText'
 import { PANEL, SHAFT } from './layout'
 import { PALETTE } from './palette'
 import { DoorPair } from './Doors'
-import { ProductionStatic, PRODUCTION_ASSETS } from './ProductionScene'
+import { ProductionStatic } from './ProductionScene'
+import { PRODUCTION_ASSETS } from './production-assets'
 
 const SH = SHAFT.halfWidth
 const CAR_Z = SHAFT.doorZ - SHAFT.carDepth / 2

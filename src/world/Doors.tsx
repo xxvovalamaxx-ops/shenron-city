@@ -7,7 +7,7 @@ import { forwardRef, useMemo } from 'react'
 import { useGLTF } from '@react-three/drei'
 import * as THREE from 'three'
 import type { Group } from 'three'
-import { PRODUCTION_ASSETS } from './ProductionScene'
+import { PRODUCTION_ASSETS } from './production-assets'
 
 interface LeafProps {
   width: number

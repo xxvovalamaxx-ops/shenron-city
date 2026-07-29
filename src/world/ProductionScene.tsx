@@ -1,26 +1,19 @@
 import { lazy, Suspense, useMemo } from 'react'
-import { useGLTF, useTexture } from '@react-three/drei'
+import { Detailed, useGLTF, useTexture } from '@react-three/drei'
 import * as THREE from 'three'
 import type { QualitySettings } from './palette'
 import { PALETTE } from './palette'
 import { STREET_LIGHTS, STREET_TREES } from './city-data'
 import { MeadowPark } from './MeadowPark'
 import { Traffic } from './Traffic'
+import {
+  PRODUCTION_ASSETS,
+  SKYLINE_LOD_DISTANCES,
+  SKYLINE_PLACEMENTS,
+  type SkylinePlacement,
+} from './production-assets'
 
-export const PRODUCTION_ASSETS = {
-  exterior: '/assets/production/architecture/hero-district.glb',
-  lobby: '/assets/production/interiors/hq-lobby.glb',
-  floor45: '/assets/production/interiors/floor45.glb',
-  elevatorStatic: '/assets/production/interiors/elevator-static.glb',
-  elevatorCar: '/assets/production/interiors/elevator-car.glb',
-  automaticDoor: '/assets/production/props/automatic-door-leaf.glb',
-  vehicles: [
-    '/assets/production/vehicles/premium-sedan.glb',
-    '/assets/production/vehicles/suv-crossover.glb',
-    '/assets/production/vehicles/compact-city.glb',
-    '/assets/production/vehicles/delivery-van.glb',
-  ],
-} as const
+export { PRODUCTION_ASSETS } from './production-assets'
 
 const textureUrls = [
   '/textures/roads/asphalt_floor_diffuse.jpg',
@@ -205,11 +198,39 @@ function ExteriorPracticals() {
   )
 }
 
+function SkylineCluster({ placement }: { placement: SkylinePlacement }) {
+  return (
+    <group
+      name={`production-skyline-${placement.id}`}
+      position={placement.position}
+      rotation={placement.rotation}
+      scale={placement.scale}
+    >
+      <Detailed distances={[...SKYLINE_LOD_DISTANCES]}>
+        {PRODUCTION_ASSETS.skylineLods.map((url) => (
+          <ProductionStatic key={url} url={url} shadows={false} />
+        ))}
+      </Detailed>
+    </group>
+  )
+}
+
+function ProductionSkyline() {
+  return (
+    <group name="production-distant-skyline">
+      {SKYLINE_PLACEMENTS.map((placement) => (
+        <SkylineCluster key={placement.id} placement={placement} />
+      ))}
+    </group>
+  )
+}
+
 /** Complete exterior production zone, with gameplay-owned traffic and foliage. */
 export function ProductionExterior({ quality }: { quality: QualitySettings }) {
   return (
     <group name="production-exterior-hero-district">
       <ProductionStatic url={PRODUCTION_ASSETS.exterior} shadows={quality.shadows} />
+      <ProductionSkyline />
       <MeadowPark quality={quality} />
       {/* Alpha-card foliage dominates the moon shadow pass at ultrawide
           resolution. Architecture and characters keep authored shadows; tree
@@ -281,6 +302,7 @@ for (const url of [
   PRODUCTION_ASSETS.elevatorStatic,
   PRODUCTION_ASSETS.elevatorCar,
   PRODUCTION_ASSETS.automaticDoor,
+  ...PRODUCTION_ASSETS.skylineLods,
   ...PRODUCTION_ASSETS.vehicles,
 ]) {
   useGLTF.preload(url)

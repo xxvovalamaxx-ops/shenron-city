@@ -54,3 +54,13 @@
 **Decision**: Removed entirely — standalone game only
 **Rationale**: User requested no external connections
 **Trade-off**: No live data, but game is fully self-contained
+
+## 2026-07-29: Gscatter and Graswald assets
+**Decision**: Do not import or publish Graswald Web App assets; retain Gscatter only as a future local authoring-tool candidate.
+**Rationale**: Graswald documents the add-on as commercially usable, but documents Web App assets as non-commercial without separate permission and requires all asset users to be registered permitted users. The official download is account-gated and the current compatibility chart does not verify Blender 5.1/Python 3.13.
+**Trade-off**: Continue with project-authored Geometry Nodes/scattering and verified CC0 Poly Haven inputs instead of the account-bound Graswald library.
+
+## 2026-07-29: Authored distant skyline
+**Decision**: Close the hero-route horizon with one original five-tower Blender kit, three exported distance tiers, and five runtime cluster placements.
+**Rationale**: Reusing one material-batched source family keeps provenance simple and geometry shared while the 82k/49k/18k triangle tiers preserve facade depth near the camera and reduce distant cost.
+**Trade-off**: The implementation uses Three.js runtime LOD switching rather than embedded `MSFT_lod`; all existing production GLBs still require a broader embedded-LOD migration.

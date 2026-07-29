@@ -33,3 +33,18 @@ the visible hero route. Their CC0 terms remain recorded in `ASSET_MANIFEST.csv`.
 
 No ripped GTA, Forza, Need for Speed, BeamNG, Unreal Marketplace, Fab, film, or unknown
 marketplace content is present in the Production Pass 02 runtime directory.
+
+## Reviewed but not imported: Gscatter assets
+
+On 2026-07-29 the official Graswald documents were reviewed separately for the
+Gscatter add-on and the Web App asset library. The add-on is documented as free
+for commercial use. The Web App assets are documented as non-commercial unless
+Graswald grants commercial permission, and the EULA requires every asset user
+to be a registered permitted user. Those terms do not grant redistribution of
+editable asset files through this public GitHub repository.
+
+No Graswald model, texture, ecotope, archive, or community-patched Gscatter ZIP
+is included. The project may use the official add-on later as a local authoring
+tool after an account download and compatible Blender release are available,
+but it will scatter only project-owned or separately verified CC0 inputs unless
+written Graswald permission explicitly covers this repository model.

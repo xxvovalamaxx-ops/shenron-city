@@ -1,13 +1,14 @@
 import { readFileSync, readdirSync, statSync } from 'node:fs'
 import { relative, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
-import { glbMetrics, readGlb } from './glb-utils.mjs'
+import { glbBounds, glbMetrics, readGlb } from './glb-utils.mjs'
 
 const root = resolve(fileURLToPath(new URL('../../', import.meta.url)))
 const productionRoot = resolve(root, 'public/assets/production')
 const findings = []
 const warnings = []
 const totals = { bytes: 0, files: 0, materials: 0, meshes: 0, primitives: 0, triangles: 0 }
+const skylineTiers = new Map()
 
 function walk(directory) {
   return readdirSync(directory).flatMap((entry) => {
@@ -21,6 +22,7 @@ for (const path of walk(productionRoot).filter((candidate) => candidate.endsWith
   const { file, document } = readGlb(path)
   const metrics = glbMetrics(document)
   const rel = relative(root, path).replaceAll('\\', '/')
+  const skylineMatch = rel.match(/distant-skyline-lod([0-2])\.glb$/)
   totals.bytes += file.length
   totals.files += 1
   totals.materials += metrics.materials
@@ -47,8 +49,44 @@ for (const path of walk(productionRoot).filter((candidate) => candidate.endsWith
       findings.push(`${rel}: external image dependency ${image.uri}`)
     }
   }
-  if (!(document.extensionsUsed ?? []).includes('MSFT_lod')) {
+  if (skylineMatch) {
+    skylineTiers.set(Number(skylineMatch[1]), {
+      bounds: glbBounds(document),
+      metrics,
+      rel,
+    })
+  }
+  if (!(document.extensionsUsed ?? []).includes('MSFT_lod') && !skylineMatch) {
     warnings.push(`${rel}: no embedded MSFT_lod hierarchy; runtime distance tiers must be verified`)
+  }
+}
+
+if (skylineTiers.size !== 3) {
+  findings.push(`distant skyline: expected three runtime LOD files, found ${skylineTiers.size}`)
+} else {
+  let previousTriangles = Infinity
+  for (const lod of [0, 1, 2]) {
+    const tier = skylineTiers.get(lod)
+    const dimensions = tier?.bounds?.dimensions
+    if (!tier || !dimensions) {
+      findings.push(`distant skyline LOD${lod}: missing baked geometry bounds`)
+      continue
+    }
+    const [width, height, depth] = dimensions
+    if (width < 140 || width > 190 || height < 100 || height > 150 || depth < 35 || depth > 80) {
+      findings.push(
+        `${tier.rel}: implausible skyline bounds ${dimensions.map((value) => value.toFixed(2)).join(' x ')}`,
+      )
+    }
+    if (tier.metrics.materials > 8 || tier.metrics.primitives > 8) {
+      findings.push(
+        `${tier.rel}: skyline exceeds eight material/draw-call batches`,
+      )
+    }
+    if (tier.metrics.triangles >= previousTriangles) {
+      findings.push(`${tier.rel}: triangle count does not decrease with distance`)
+    }
+    previousTriangles = tier.metrics.triangles
   }
 }
 

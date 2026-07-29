@@ -13,6 +13,36 @@
       "modifications": "Original modular architecture, market, headquarters exterior, roadway and street props; runtime PBR overrides use separately manifested CC0 textures"
     },
     {
+      "id": "architecture.distant-skyline.lod0.v1",
+      "name": "Distant skyline near LOD",
+      "source": "Original Blender production in SourceAssets/Models/Environment/Working/Shenzhen_City_Production_Pass_02.blend",
+      "creator": "xxvovalamaxx-ops with OpenAI Codex production tooling",
+      "license": "Project-owned",
+      "redistribution": "Permitted only as part of the Shenzhen City repository/build under project terms",
+      "runtimePath": "public/assets/production/architecture/distant-skyline-lod0.glb",
+      "modifications": "Five original tower families with setbacks, recessed facade ribbons, mullions, fins, podium glazing, rooftop equipment, crowns and aviation lights; evaluated and batched by material"
+    },
+    {
+      "id": "architecture.distant-skyline.lod1.v1",
+      "name": "Distant skyline middle LOD",
+      "source": "Original Blender production in SourceAssets/Models/Environment/Working/Shenzhen_City_Production_Pass_02.blend",
+      "creator": "xxvovalamaxx-ops with OpenAI Codex production tooling",
+      "license": "Project-owned",
+      "redistribution": "Permitted only as part of the Shenzhen City repository/build under project terms",
+      "runtimePath": "public/assets/production/architecture/distant-skyline-lod1.glb",
+      "modifications": "Reduced facade cadence and rooftop detail derived from the same original tower specification; evaluated and batched by material"
+    },
+    {
+      "id": "architecture.distant-skyline.lod2.v1",
+      "name": "Distant skyline far LOD",
+      "source": "Original Blender production in SourceAssets/Models/Environment/Working/Shenzhen_City_Production_Pass_02.blend",
+      "creator": "xxvovalamaxx-ops with OpenAI Codex production tooling",
+      "license": "Project-owned",
+      "redistribution": "Permitted only as part of the Shenzhen City repository/build under project terms",
+      "runtimePath": "public/assets/production/architecture/distant-skyline-lod2.glb",
+      "modifications": "Optimized setback silhouettes with sparse real facade geometry, crowns and navigation lights; evaluated and batched by material"
+    },
+    {
       "id": "interior.hq-lobby.v1",
       "name": "Headquarters lobby",
       "source": "Original Blender production in SourceAssets/Models/Environment/Working/Shenzhen_City_Production_Pass_02.blend",

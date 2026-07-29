@@ -5,8 +5,9 @@
   remains stylized; it does not satisfy the realistic-human or conversation-closeup gate.
 - The project has no production facial rig, viseme playback, eye moisture, hair-card, or
   four-level character LOD pipeline.
-- The authored skyline is still dominated by one headquarters tower; a complete optimized
-  distant skyline cluster remains missing.
+- The new authored distant skyline closes the exterior horizon with three
+  runtime LOD levels, but its final ultrawide draw-call and transition quality
+  still need fresh production-route profiling.
 - Vehicle families have animated wheels and responsive lamps, but no steering pivots,
   suspension rigs, texture-baked wear sets, or explicit LOD meshes.
 - Static production GLBs are material-batched but have no embedded `MSFT_lod` hierarchy.

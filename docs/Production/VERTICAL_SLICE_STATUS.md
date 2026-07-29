@@ -45,10 +45,10 @@
 - [x] Calibrated night exposure across exterior, lobby, and Floor 45
 - [x] Production manifest and visible-placeholder audit in `npm run check`
 - [x] Twelve fixed visual-regression cameras captured in Chromium
+- [x] Authored distant skyline ring with three runtime LOD levels
 
 ## Remaining Work
 - [ ] Realistic hero and pedestrian characters that pass conversation-distance inspection
-- [ ] Complete authored distant skyline
 - [ ] Embedded LOD hierarchy for every production GLB
 - [ ] Stable 60 FPS / 45 FPS 1%-low performance gate at 2560 x 1080
 - [ ] Complete route recording with measured stereo loudness and true peak

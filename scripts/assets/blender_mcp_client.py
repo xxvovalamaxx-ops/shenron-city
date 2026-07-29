@@ -13,7 +13,12 @@ import socket
 from pathlib import Path
 
 
-def execute(host: str, port: int, source: str) -> dict[str, object]:
+def execute(
+    host: str,
+    port: int,
+    source: str,
+    timeout: float = 300,
+) -> dict[str, object]:
     request = json.dumps(
         {
             "type": "execute",
@@ -22,8 +27,8 @@ def execute(host: str, port: int, source: str) -> dict[str, object]:
         }
     ).encode("utf-8") + b"\0"
 
-    with socket.create_connection((host, port), timeout=300) as connection:
-        connection.settimeout(300)
+    with socket.create_connection((host, port), timeout=timeout) as connection:
+        connection.settimeout(timeout)
         connection.sendall(request)
         response = bytearray()
         while b"\0" not in response:
@@ -46,9 +51,20 @@ def main() -> None:
     parser.add_argument("source", type=Path)
     parser.add_argument("--host", default="127.0.0.1")
     parser.add_argument("--port", default=9876, type=int)
+    parser.add_argument(
+        "--timeout",
+        default=300,
+        type=float,
+        help="Socket timeout in seconds for long-running Blender builds.",
+    )
     args = parser.parse_args()
 
-    response = execute(args.host, args.port, args.source.read_text(encoding="utf-8"))
+    response = execute(
+        args.host,
+        args.port,
+        args.source.read_text(encoding="utf-8"),
+        timeout=args.timeout,
+    )
     print(json.dumps(response, indent=2, default=repr))
 
 

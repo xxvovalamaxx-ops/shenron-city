@@ -1,5 +1,26 @@
 # Blender Work Log
 
+## 2026-07-29 - Authored distant skyline LOD set
+
+- Asset ID: `architecture.distant-skyline`
+- Purpose: replace the black exterior horizon around the complete hero route.
+- Source reference: contemporary mixed-use, hotel, residential and office tower
+  construction; original unbranded geometry, no external model inputs.
+- Dimensions: five tower families, 66-112 m tall, arranged as a 150 m modular
+  cluster and instanced as five skyline groups in Three.js.
+- LODs: near, middle and far GLBs generated from the editable Blender source.
+- Materials: concrete, stone, metal, dark glazing, deterministic warm/cool/dark
+  interior variation, and restrained aviation-light emission.
+- Construction: podiums, two-stage setbacks, recessed facade ribbons,
+  vertical fins/mullions, crowns, rooftop mechanical units and antennas.
+- Export: evaluated bevels, stable asset IDs/extras, Y-up GLB, static geometry
+  batched by material for browser draw-call control.
+- Runtime outputs:
+  `public/assets/production/architecture/distant-skyline-lod0.glb`,
+  `distant-skyline-lod1.glb`, and `distant-skyline-lod2.glb`.
+- Export automation: `scripts/assets/export_production_skyline.py`.
+- Known limitations: no close interior rooms; intended for distant skyline use.
+
 ## production.hero-district.v1
 
 - Purpose: replace the visible boulevard, market, headquarters exterior, flat windows,
