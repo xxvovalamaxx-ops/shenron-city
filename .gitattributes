@@ -1,5 +1,4 @@
 * text=auto
-
 # Keep reviews and merges stable across Windows and GitHub runners.
 .gitattributes text eol=lf
 .gitignore text eol=lf
@@ -15,10 +14,8 @@
 *.tsx text eol=lf diff
 *.yml text eol=lf
 *.yaml text eol=lf
-
 # Windows launchers should open naturally in cmd.exe.
 *.bat text eol=crlf
-
 # Future game and documentation assets are never line-normalized.
 *.bin binary
 *.fbx binary
@@ -32,8 +29,13 @@
 *.png binary
 *.webp binary
 *.vrm binary
-
 # Preserve the reviewed high-resolution reconstruction without inflating every
 # normal Git clone. Exported GLBs and review PNGs remain directly browsable.
 SourceAssets/Models/Characters/Source/Capybara/*.obj filter=lfs diff=lfs merge=lfs -text
 SourceAssets/Models/Characters/Source/Capybara/capybara_rigged.blend filter=lfs diff=lfs merge=lfs -text
+docs/Assets/Previews/**/*.png filter=lfs diff=lfs merge=lfs -text
+SourceAssets/**/*.blend filter=lfs diff=lfs merge=lfs -text
+SourceAssets/**/*.glb filter=lfs diff=lfs merge=lfs -text
+SourceAssets/**/*.fbx filter=lfs diff=lfs merge=lfs -text
+SourceAssets/**/*.exr filter=lfs diff=lfs merge=lfs -text
+SourceAssets/**/*.hdr filter=lfs diff=lfs merge=lfs -text
