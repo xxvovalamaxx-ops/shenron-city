@@ -12,6 +12,7 @@ import type { InstancedMesh, Object3D } from 'three'
 import { initialElevator, type ElevatorState } from './elevator'
 import { initialDoor, type DoorState } from './doors'
 import { createTraffic, type Vehicle } from './traffic'
+import type { Weather } from '../world/daycycle'
 import type { Interactable } from './interact'
 import type { Vec3 } from './collision'
 import { SPAWN } from '../world/layout'
@@ -56,6 +57,17 @@ export interface Runtime {
     right: boolean
     sprint: boolean
     jump: boolean
+  }
+  /**
+   * Clock and weather. On rt rather than React state because it changes every
+   * frame; the sky, the road material and the audio all read it.
+   */
+  clock: {
+    /** Hours, 0..24. */
+    hour: number
+    weather: Weather
+    /** Where the weather is heading, 0 dry to 1 downpour. */
+    rainTarget: number
   }
   /** Boulevard traffic. Length is set from the quality preset. */
   vehicles: Vehicle[]
@@ -122,6 +134,7 @@ export const rt: Runtime = {
   paused: false,
   thirdPerson: false,
   keys: { forward: false, back: false, left: false, right: false, sprint: false, jump: false },
+  clock: { hour: 0, weather: { rain: 0, wetness: 0 }, rainTarget: 0 },
   vehicles: [],
   capybara: { ...CAPYBARA_INITIAL_POSE },
   destroyed: new Set<string>(),

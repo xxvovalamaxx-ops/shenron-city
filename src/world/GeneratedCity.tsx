@@ -11,9 +11,12 @@
  * walk up and touch it — Dragon Boulevard.
  */
 import { useLayoutEffect, useMemo, useRef } from 'react'
+import { useFrame } from '@react-three/fiber'
 import * as THREE from 'three'
 import { generateCityPlan, type Lot } from './city-plan'
 import { gradeToNight } from './night-grade'
+import { roadMetalness, roadRoughness } from './daycycle'
+import { rt } from '../gameplay/runtime'
 import { PALETTE, type QualitySettings } from './palette'
 
 /** Facade colours, before the night grade. Concrete, brick, glass, stone. */
@@ -193,6 +196,18 @@ function Buildings({ lots, shadows }: { lots: Lot[]; shadows: boolean }) {
 
 function Roads({ plan }: { plan: ReturnType<typeof generateCityPlan> }) {
   const mesh = useRef<THREE.InstancedMesh>(null)
+  const material = useRef<THREE.MeshStandardMaterial>(null)
+
+  // Wet asphalt is the look in every reference image the owner sent, and it is
+  // one material property away: roughness down, reflectivity up. Read from the
+  // shared clock so the road cannot be dry during a downpour.
+  useFrame(() => {
+    const m = material.current
+    if (!m) return
+    const wet = rt.clock.weather.wetness
+    m.roughness = roadRoughness(wet)
+    m.metalness = roadMetalness(wet)
+  })
 
   useLayoutEffect(() => {
     const target = mesh.current
@@ -214,7 +229,7 @@ function Roads({ plan }: { plan: ReturnType<typeof generateCityPlan> }) {
   return (
     <instancedMesh ref={mesh} args={[undefined, undefined, plan.roads.length]} receiveShadow>
       <planeGeometry args={[1, 1]} />
-      <meshStandardMaterial color="#14171c" roughness={0.92} metalness={0.02} />
+      <meshStandardMaterial ref={material} color="#14171c" roughness={0.92} metalness={0.02} />
     </instancedMesh>
   )
 }

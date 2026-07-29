@@ -34,6 +34,7 @@ import { LaserBeam } from './weapons/LaserBeam'
 import { DestructionSystem } from './destruction/DestructionSystem'
 import { NightEnvironment } from './world/NightEnvironment'
 import { GeneratedCity } from './world/GeneratedCity'
+import { SkyRig } from './world/SkyRig'
 import { ShadowBudget } from './world/ShadowBudget'
 import { AtmosphericDust } from './world/AtmosphericDust'
 import { Capybara } from './animals/CapybaraActor'
@@ -102,40 +103,15 @@ function RendererBridge({ maxDpr, shadows }: { maxDpr: number; shadows: boolean 
  * light of intensity 26 contributes almost nothing. Anything lighting a room
  * belongs in the hundreds.
  */
-function Lighting({ shadows, shadowMapSize }: { shadows: boolean; shadowMapSize: number }) {
+function Lighting() {
   return (
     <>
       {/*
-        Key-to-fill is what makes this read as night rather than as daylight
-        with a black sky. It was hemisphere 0.55 + ambient 0.18 + environment
-        0.32 against a 0.9 key — roughly 1:1, so every façade of every building
-        received the same light and the geometry lost all form.
-
-        Now about 5:1. Total illumination is close to what it was, but it
-        arrives from one direction, so surfaces facing the moon are bright and
-        the rest fall away to the city's own practicals.
+        Sun, hemisphere, ambient and fog now live in world/DayCycle.tsx, which
+        drives them from the clock and the weather. What is left here is the
+        lobby practicals, which are fixtures in the building and do not change
+        with the time of day.
       */}
-      <hemisphereLight args={[PALETTE.horizon, '#0d1420', 0.2]} />
-      <ambientLight intensity={0.07} color={PALETTE.coolLight} />
-
-      {/* Moon key, casting the plaza's long shadows */}
-      <directionalLight
-        position={[38, 60, 34]}
-        intensity={1.12}
-        color="#c3d6f5"
-        castShadow={shadows}
-        shadow-mapSize={[shadowMapSize, shadowMapSize]}
-        shadow-camera-near={1}
-        shadow-camera-far={320}
-        shadow-camera-left={-180}
-        shadow-camera-right={180}
-        shadow-camera-top={180}
-        shadow-camera-bottom={-180}
-        shadow-bias={-0.0006}
-      />
-
-      {/* Cool fill from the opposite side so shadowed faces keep their form */}
-      <directionalLight position={[-30, 26, 28]} intensity={0.16} color="#7f9dd0" />
 
       {/* Warm spill from the lobby, out through the glass onto the plaza —
           this is what makes the entrance read as somewhere worth walking in. */}
@@ -235,14 +211,13 @@ function Scene({
   return (
     <>
       <color attach="background" args={[PALETTE.night]} />
-      {/* The hero boulevard stays readable from spawn while the far skyline
-          still dissolves into the night horizon. */}
-      <fog attach="fog" args={[PALETTE.horizon, 145, 480]} />
 
       <NightEnvironment />
 
       <RendererBridge maxDpr={quality.maxDpr} shadows={quality.shadows} />
-      <Lighting shadows={quality.shadows} shadowMapSize={quality.shadowMapSize} />
+      {/* Sun, sky, fog and weather. Replaces the fixed night rig. */}
+      <SkyRig quality={quality} />
+      <Lighting />
       <ShadowBudget enabled={quality.shadows} mapSize={quality.shadowMapSize} />
 
       {/* The city around the hand-authored district. */}
