@@ -48,3 +48,14 @@ is included. The project may use the official add-on later as a local authoring
 tool after an account download and compatible Blender release are available,
 but it will scatter only project-owned or separately verified CC0 inputs unless
 written Graswald permission explicitly covers this repository model.
+
+## Original CC0 Japanese forest shrine
+
+`SourceAssets/Models/Environment/Working/Japanese_Forest_Shrine_Original_CC0.blend`,
+its checked-in generator, and its proof render are original project work released
+under CC0 1.0 Universal. They contain no third-party mesh, texture, scan, HDRI,
+audio, or linked asset library. The user-supplied reference image is not included
+and is not covered by this dedication; it informed only the general idea of a
+forested Japanese shrine, stone stairway, lanterns, guardian sculptures, and
+cinematic daylight. The exact scope is recorded in
+`SourceAssets/Models/Environment/JAPANESE_FOREST_SHRINE_CC0_LICENSE.md`.

@@ -14,7 +14,7 @@
     "typecheck": "tsc --noEmit",
     "build": "tsc --noEmit && vite build",
     "verify:standalone": "node scripts/verify-standalone-build.mjs",
-    "verify:assets": "node scripts/verify-capybara-asset.mjs && node scripts/verify-service-android-asset.mjs && node scripts/verify-kenney-citizen-asset.mjs && node scripts/verify-quaternius-hero-asset.mjs && node scripts/verify-city-assets.mjs && node scripts/verify-environment-authoring.mjs && node scripts/verify-runtime-meadow-assets.mjs && node scripts/verify-night-environment-asset.mjs",
+    "verify:assets": "node scripts/verify-capybara-asset.mjs && node scripts/verify-service-android-asset.mjs && node scripts/verify-kenney-citizen-asset.mjs && node scripts/verify-quaternius-hero-asset.mjs && node scripts/verify-city-assets.mjs && node scripts/verify-environment-authoring.mjs && node scripts/verify-runtime-meadow-assets.mjs && node scripts/verify-night-environment-asset.mjs && node scripts/verify-japanese-forest-shrine-source.mjs",
     "inspect:production-assets": "node scripts/assets/inspect-gltf.mjs",
     "verify:production-manifest": "node scripts/assets/verify-manifest.mjs",
     "audit:production-scene": "node scripts/assets/scene-audit.mjs",

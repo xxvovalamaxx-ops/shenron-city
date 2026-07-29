@@ -1,0 +1,41 @@
+{
+  "schemaVersion": 1,
+  "assetId": "environment.japanese_forest_shrine.original.v1",
+  "name": "Original Japanese Forest Shrine",
+  "creator": "Shenzhen City project",
+  "source": "Original procedural Blender work",
+  "license": "CC0-1.0",
+  "referenceScope": "Broad composition and atmosphere only; the reference image is not redistributed.",
+  "externalMeshes": 0,
+  "externalTextures": 0,
+  "externalHdris": 0,
+  "linkedLibraries": 0,
+  "counts": {
+    "objects": 1063,
+    "materials": 21,
+    "collections": 8,
+    "meshes": 669,
+    "curves": 32
+  },
+  "files": {
+    "blend": {
+      "path": "SourceAssets/Models/Environment/Working/Japanese_Forest_Shrine_Original_CC0.blend",
+      "bytes": 11371052,
+      "sha256": "f5c76c7657bf30e9f807f4f7cb638dd6834c2c9e18c27c7aa41a2a892c98d512"
+    },
+    "generator": {
+      "path": "SourceAssets/Blender/scripts/create_japanese_forest_shrine.py",
+      "sha256": "2026a5c7f6288d3b81c758055b99247624b3e49ce9a44cc96ed7e5d30888d778"
+    },
+    "preview": {
+      "path": "docs/Assets/Previews/japanese-forest-shrine-original.png",
+      "bytes": 2406993,
+      "sha256": "2e6f2523b6d235c28523eccc33500c63e6161907fc54c523d7d90f497e521e8d",
+      "width": 1600,
+      "height": 900
+    },
+    "license": {
+      "path": "SourceAssets/Models/Environment/JAPANESE_FOREST_SHRINE_CC0_LICENSE.md"
+    }
+  }
+}

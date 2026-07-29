@@ -51,3 +51,20 @@ templates. Medium/high quality reuses the deterministic web scatter with real
 LOD1 silhouettes; low quality keeps the zero-download procedural fallback.
 `verify-runtime-meadow-assets.mjs` pins every output, validates WebP dimensions,
 parses the GLB contract, and enforces triangle and total-byte budgets.
+
+## Original CC0 Japanese forest shrine
+
+The repository also contains a self-contained original shrine scene that can be
+published, forked, and remixed under CC0 1.0 Universal:
+
+```powershell
+& "C:\Program Files\Blender Foundation\Blender 5.1\blender.exe" `
+  --background --factory-startup `
+  --python SourceAssets\Blender\scripts\create_japanese_forest_shrine.py
+```
+
+The generator uses no downloads. It creates the editable source at
+`Working/Japanese_Forest_Shrine_Original_CC0.blend` and configures the proof
+render at `docs/Assets/Previews/japanese-forest-shrine-original.png`. Provenance,
+scope, checksums, and the CC0 dedication are tracked beside the source and
+enforced by `scripts/verify-japanese-forest-shrine-source.mjs`.

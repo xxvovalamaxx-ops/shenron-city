@@ -1,5 +1,29 @@
 # Blender Work Log
 
+## 2026-07-29 - Original CC0 Japanese forest shrine
+
+- Asset ID: `environment.japanese_forest_shrine.original.v1`.
+- Purpose: an editable forest-shrine environment source that is safe to publish
+  and modify in a public GitHub repository.
+- Reference scope: broad composition only—forested hillside, stone stairway,
+  Japanese shrine, stone lanterns, guardian sculptures, moss, flowers, and
+  cinematic daylight. The reference image is not redistributed.
+- Dimensions: approximately 40 × 55 × 22 m in metric Blender units.
+- Geometry: 1,063 tagged objects, 669 mesh datablocks, 32 curves, and eight
+  organized collections.
+- Materials: 21 original procedural materials; no image textures or HDRIs.
+- Contents: irregular stair and retaining-stone set, detailed shrine shell,
+  veranda and curved roofs, shimenawa and shide, three stone lanterns, two
+  original guardian sculptures, twelve trees, reusable leaf and hydrangea
+  clusters, grass, flowers, moss, local fog, camera, and seven lights.
+- Source: `SourceAssets/Models/Environment/Working/Japanese_Forest_Shrine_Original_CC0.blend`.
+- Generator: `SourceAssets/Blender/scripts/create_japanese_forest_shrine.py`.
+- Proof render: `docs/Assets/Previews/japanese-forest-shrine-original.png`.
+- License: CC0 1.0 Universal. No third-party geometry, textures, scans, HDRIs,
+  audio, or linked libraries.
+- Known limitations: this is a compact original scene and art foundation, not a
+  photogrammetry reconstruction or a claim of pixel-identical reproduction.
+
 ## 2026-07-29 - Authored distant skyline LOD set
 
 - Asset ID: `architecture.distant-skyline`
