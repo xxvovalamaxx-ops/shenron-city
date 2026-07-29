@@ -1,0 +1,155 @@
+{
+  "path": "D:\\Projects\\GitHub Projects\\shenron-city\\docs\\Assets\\Previews\\Final\\Passes\\japanese-forest-shrine-final-multilayer.exr",
+  "bytes": 143934878,
+  "sha256": "d4241a7e56e1a9b2247b3657be04697dd05b20d9ac650bc521fca74682df8389",
+  "display_window": [
+    0,
+    0,
+    1936,
+    1078
+  ],
+  "compression": "Compression.ZIP_COMPRESSION",
+  "render_time": "01:26.67",
+  "cycles_render_time": "01:25.03",
+  "cycles_total_time": "01:26.00",
+  "cycles_samples": "512",
+  "parts": [
+    {
+      "name": "ViewLayer.Combined",
+      "channels": [
+        "ViewLayer.Combined"
+      ]
+    },
+    {
+      "name": "ViewLayer.Depth",
+      "channels": [
+        "ViewLayer.Depth.Z"
+      ]
+    },
+    {
+      "name": "ViewLayer.Mist",
+      "channels": [
+        "ViewLayer.Mist.Z"
+      ]
+    },
+    {
+      "name": "ViewLayer.Normal",
+      "channels": [
+        "ViewLayer.Normal.X",
+        "ViewLayer.Normal.Y",
+        "ViewLayer.Normal.Z"
+      ]
+    },
+    {
+      "name": "ViewLayer.Diffuse Color",
+      "channels": [
+        "ViewLayer.Diffuse Color"
+      ]
+    },
+    {
+      "name": "ViewLayer.CryptoObject00",
+      "channels": [
+        "ViewLayer.CryptoObject00.a",
+        "ViewLayer.CryptoObject00.b",
+        "ViewLayer.CryptoObject00.g",
+        "ViewLayer.CryptoObject00.r"
+      ]
+    },
+    {
+      "name": "ViewLayer.CryptoObject01",
+      "channels": [
+        "ViewLayer.CryptoObject01.a",
+        "ViewLayer.CryptoObject01.b",
+        "ViewLayer.CryptoObject01.g",
+        "ViewLayer.CryptoObject01.r"
+      ]
+    },
+    {
+      "name": "ViewLayer.CryptoObject02",
+      "channels": [
+        "ViewLayer.CryptoObject02.a",
+        "ViewLayer.CryptoObject02.b",
+        "ViewLayer.CryptoObject02.g",
+        "ViewLayer.CryptoObject02.r"
+      ]
+    },
+    {
+      "name": "ViewLayer.CryptoMaterial00",
+      "channels": [
+        "ViewLayer.CryptoMaterial00.a",
+        "ViewLayer.CryptoMaterial00.b",
+        "ViewLayer.CryptoMaterial00.g",
+        "ViewLayer.CryptoMaterial00.r"
+      ]
+    },
+    {
+      "name": "ViewLayer.CryptoMaterial01",
+      "channels": [
+        "ViewLayer.CryptoMaterial01.a",
+        "ViewLayer.CryptoMaterial01.b",
+        "ViewLayer.CryptoMaterial01.g",
+        "ViewLayer.CryptoMaterial01.r"
+      ]
+    },
+    {
+      "name": "ViewLayer.CryptoMaterial02",
+      "channels": [
+        "ViewLayer.CryptoMaterial02.a",
+        "ViewLayer.CryptoMaterial02.b",
+        "ViewLayer.CryptoMaterial02.g",
+        "ViewLayer.CryptoMaterial02.r"
+      ]
+    },
+    {
+      "name": "ViewLayer.CryptoAsset00",
+      "channels": [
+        "ViewLayer.CryptoAsset00.a",
+        "ViewLayer.CryptoAsset00.b",
+        "ViewLayer.CryptoAsset00.g",
+        "ViewLayer.CryptoAsset00.r"
+      ]
+    },
+    {
+      "name": "ViewLayer.CryptoAsset01",
+      "channels": [
+        "ViewLayer.CryptoAsset01.a",
+        "ViewLayer.CryptoAsset01.b",
+        "ViewLayer.CryptoAsset01.g",
+        "ViewLayer.CryptoAsset01.r"
+      ]
+    },
+    {
+      "name": "ViewLayer.CryptoAsset02",
+      "channels": [
+        "ViewLayer.CryptoAsset02.a",
+        "ViewLayer.CryptoAsset02.b",
+        "ViewLayer.CryptoAsset02.g",
+        "ViewLayer.CryptoAsset02.r"
+      ]
+    },
+    {
+      "name": "ViewLayer.Noisy Image",
+      "channels": [
+        "ViewLayer.Noisy Image"
+      ]
+    },
+    {
+      "name": "ViewLayer.Roughness",
+      "channels": [
+        "ViewLayer.Roughness.X"
+      ]
+    }
+  ],
+  "required_passes_present": {
+    "Combined": true,
+    "Albedo": true,
+    "Normal": true,
+    "Depth": true,
+    "Mist": true,
+    "Roughness": true,
+    "CryptoObject": true,
+    "CryptoMaterial": true,
+    "CryptoAsset": true
+  },
+  "all_required_passes_present": true
+}

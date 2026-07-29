@@ -49,13 +49,16 @@ tool after an account download and compatible Blender release are available,
 but it will scatter only project-owned or separately verified CC0 inputs unless
 written Graswald permission explicitly covers this repository model.
 
-## Original CC0 Japanese forest shrine
+## Realistic Japanese forest shrine
 
-`SourceAssets/Models/Environment/Working/Japanese_Forest_Shrine_Original_CC0.blend`,
-its checked-in generator, and its proof render are original project work released
-under CC0 1.0 Universal. They contain no third-party mesh, texture, scan, HDRI,
-audio, or linked asset library. The user-supplied reference image is not included
-and is not covered by this dedication; it informed only the general idea of a
-forested Japanese shrine, stone stairway, lanterns, guardian sculptures, and
-cinematic daylight. The exact scope is recorded in
-`SourceAssets/Models/Environment/JAPANESE_FOREST_SHRINE_CC0_LICENSE.md`.
+`SourceAssets/Models/Environment/Working/Japanese_Forest_Shrine_Realistic.blend`
+combines project-authored CC0 architecture, terrain, stairs, lanterns, layout,
+lighting, and procedural materials with verified Poly Haven CC0 nature assets
+and “Komainu Statue” by Zgon under CC BY 4.0.
+
+The untouched 1K guardian source is checked in at
+`SourceAssets/Models/Environment/External/Zgon/Komainu_Statue/`.
+The scene applies the supplied moss material to both symmetric guardians and
+records the modification. The reference image is not redistributed. Exact
+scope, attribution, and license links are recorded in
+`SourceAssets/Models/Environment/JAPANESE_FOREST_SHRINE_LICENSE.md`.

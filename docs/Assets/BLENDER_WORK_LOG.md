@@ -1,5 +1,47 @@
 # Blender Work Log
 
+## 2026-07-29 - Realistic Japanese forest shrine
+
+- Asset ID: `environment.japanese_forest_shrine.realistic.v2`.
+- Purpose: a publishable, editable forest-shrine hero scene that closely
+  follows the supplied composition without redistributing the reference image.
+- Geometry: 12,337 tagged objects, 500 mesh datablocks, 38 curves, and 17
+  organized collections.
+- Materials: 37 active project/CC0/CC-BY materials and 72 packed images; the
+  CC0 forest HDRI stays as one checked-in external dependency.
+- Contents: 88 individually weathered stair stones, expanded dark-wood shrine
+  with 1,904 curved roof-tile instances and a recessed sanctuary, three stone
+  lanterns, two realistic komainu, 87 tree instances plus 13 understory trees,
+  112 moss rocks, 920 ferns, 8,000 grass/moss instances, dense modeled
+  hydrangea banks, local fog, authored sun shafts, hero camera, and 17 lights.
+- Final spatial revision: stair stones were buried further into the hillside,
+  stair-joint moss was made camera-readable, the left guardian was reduced and
+  moved deeper into the scene, the shrine was lowered, and the right foreground
+  flower mound was reduced to reveal the hero guardian silhouette.
+- Grounding revision: the komainu now face inward toward the stair axis, and
+  69 individually staggered retaining-wall blocks and support piers physically
+  connect the shrine's downhill wing to the terraced bank.
+- Guardian geometry: 100,320 evaluated triangles across two symmetric meshes; supplied
+  moss PBR material packed at a 512 px authoring cap.
+- Source:
+  `SourceAssets/Models/Environment/Working/Japanese_Forest_Shrine_Realistic.blend`.
+- Generator: `SourceAssets/Blender/scripts/create_japanese_forest_shrine.py`.
+- Final renders:
+  `docs/Assets/Previews/Final/japanese-forest-shrine-final-1937x1079.png`,
+  `japanese-forest-shrine-final-3840x2140.png`, and the verified multilayer
+  OpenEXR under `docs/Assets/Previews/Final/Passes/`.
+- Render configuration: Cycles/OptiX, 512 adaptive samples, 0.005 noise
+  threshold, 12 maximum bounces, OpenImageDenoise, and AgX Medium High
+  Contrast. The locked exact PNG took 87.370 seconds, the 4K PNG took 333.446
+  seconds, and the exact multilayer EXR took 87.088 seconds on an RTX 5070.
+- License: project-authored and Poly Haven work under CC0 1.0; “Komainu
+  Statue” by Zgon under CC BY 4.0 with attribution and modifications recorded.
+- Known limitation: this is a legally reproducible reference-inspired scene,
+  not a pixel-identical reconstruction of an unavailable original production
+  set.
+
+## Historical checkpoint
+
 ## 2026-07-29 - Original CC0 Japanese forest shrine
 
 - Asset ID: `environment.japanese_forest_shrine.original.v1`.

@@ -52,10 +52,11 @@ LOD1 silhouettes; low quality keeps the zero-download procedural fallback.
 `verify-runtime-meadow-assets.mjs` pins every output, validates WebP dimensions,
 parses the GLB contract, and enforces triangle and total-byte budgets.
 
-## Original CC0 Japanese forest shrine
+## Realistic Japanese forest shrine
 
-The repository also contains a self-contained original shrine scene that can be
-published, forked, and remixed under CC0 1.0 Universal:
+The repository also contains a self-contained publishable shrine scene. Its
+project-authored and Poly Haven content is CC0; the realistic guardian pair is
+“Komainu Statue” by Zgon under CC BY 4.0:
 
 ```powershell
 & "C:\Program Files\Blender Foundation\Blender 5.1\blender.exe" `
@@ -63,8 +64,11 @@ published, forked, and remixed under CC0 1.0 Universal:
   --python SourceAssets\Blender\scripts\create_japanese_forest_shrine.py
 ```
 
-The generator uses no downloads. It creates the editable source at
-`Working/Japanese_Forest_Shrine_Original_CC0.blend` and configures the proof
-render at `docs/Assets/Previews/japanese-forest-shrine-original.png`. Provenance,
-scope, checksums, and the CC0 dedication are tracked beside the source and
-enforced by `scripts/verify-japanese-forest-shrine-source.mjs`.
+Restore the pinned Poly Haven cache first with
+`fetch_cc0_meadow_assets.py`. The attributed Zgon 1K GLB is checked in beside
+its license. The generator creates
+`Working/Japanese_Forest_Shrine_Realistic.blend`. The final 1937×1079 and
+3840×2140 beauty renders, clay render, before/after comparison, render metrics,
+and multilayer OpenEXR are under `docs/Assets/Previews/Final/`. Provenance,
+scope, checksums, render-pass presence, and both license scopes are enforced by
+`scripts/verify-japanese-forest-shrine-source.mjs`.

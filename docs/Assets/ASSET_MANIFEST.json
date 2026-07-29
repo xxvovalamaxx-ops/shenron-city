@@ -131,6 +131,26 @@
       "redistribution": "Permitted only as part of the Shenzhen City repository/build under project terms",
       "runtimePath": "public/assets/production/interiors/elevator-car.glb",
       "modifications": "Original layered cabin, segmented wall panels, mirror band, handrails, physical control panel and practical lighting surfaces"
+    },
+    {
+      "id": "environment.japanese-forest-shrine.realistic.v2",
+      "name": "Realistic Japanese forest shrine Blender scene",
+      "source": "SourceAssets/Models/Environment/Working/Japanese_Forest_Shrine_Realistic.blend",
+      "creator": "Shenzhen City project with Poly Haven CC0 inputs and Zgon guardian meshes",
+      "license": "CC0-1.0 + CC-BY-4.0",
+      "redistribution": "Permitted with Zgon attribution retained under CC BY 4.0",
+      "runtimePath": "docs/Assets/Previews/Final/japanese-forest-shrine-final-1937x1079.png",
+      "modifications": "Reference-inspired original terrain, shrine, stairs, vegetation layout and lighting; Zgon guardians use the supplied moss material with scale, rotation and placement changes"
+    },
+    {
+      "id": "sculpture.zgon-komainu-statue.v1",
+      "name": "Komainu Statue",
+      "source": "https://sketchfab.com/3d-models/komainu-statue-a5d4791ae95d4a9d9becedab6d2c7fc2",
+      "creator": "Zgon",
+      "license": "CC-BY-4.0",
+      "redistribution": "Permitted with attribution, license link, and modification notice",
+      "runtimePath": "SourceAssets/Models/Environment/External/Zgon/Komainu_Statue/komainu_statue_1k.glb",
+      "modifications": "Untouched official 1K GLB retained; generated shrine uses both guardian meshes, the moss material, smooth shading, and altered scale, rotation and placement"
     }
   ]
 }

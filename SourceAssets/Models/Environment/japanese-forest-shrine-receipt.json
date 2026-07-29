@@ -1,41 +1,73 @@
 {
-  "schemaVersion": 1,
-  "assetId": "environment.japanese_forest_shrine.original.v1",
-  "name": "Original Japanese Forest Shrine",
-  "creator": "Shenzhen City project",
-  "source": "Original procedural Blender work",
-  "license": "CC0-1.0",
-  "referenceScope": "Broad composition and atmosphere only; the reference image is not redistributed.",
-  "externalMeshes": 0,
-  "externalTextures": 0,
-  "externalHdris": 0,
+  "schemaVersion": 2,
+  "assetId": "environment.japanese_forest_shrine.realistic.v2",
+  "name": "Realistic Japanese Forest Shrine",
+  "creator": "Shenzhen City project with verified external inputs",
+  "source": "Original Blender work with Poly Haven CC0 nature and Zgon CC-BY-4.0 guardians",
+  "license": "CC0-1.0 + CC-BY-4.0",
+  "referenceScope": "Composition and atmosphere only; the user-supplied reference image is not redistributed.",
+  "externalMeshMasters": 41,
+  "packedImages": 72,
+  "externalHdris": 1,
   "linkedLibraries": 0,
   "counts": {
-    "objects": 1063,
-    "materials": 21,
-    "collections": 8,
-    "meshes": 669,
-    "curves": 32
+    "objects": 12337,
+    "materials": 37,
+    "collections": 17,
+    "meshes": 500,
+    "curves": 38
+  },
+  "guardian": {
+    "title": "Komainu Statue",
+    "creator": "Zgon",
+    "source": "https://sketchfab.com/3d-models/komainu-statue-a5d4791ae95d4a9d9becedab6d2c7fc2",
+    "license": "CC-BY-4.0",
+    "trianglesInScene": 100320,
+    "modifications": "Moss material applied to both symmetric meshes; packed images capped at 512 px; smooth shading, scale, rotation, and placement changed."
   },
   "files": {
     "blend": {
-      "path": "SourceAssets/Models/Environment/Working/Japanese_Forest_Shrine_Original_CC0.blend",
-      "bytes": 11371052,
-      "sha256": "f5c76c7657bf30e9f807f4f7cb638dd6834c2c9e18c27c7aa41a2a892c98d512"
+      "path": "SourceAssets/Models/Environment/Working/Japanese_Forest_Shrine_Realistic.blend",
+      "bytes": 61328519,
+      "sha256": "fb320c314e61f4ff06afe7a266ce412f67274ba91b11b167cda50de2c86920cb"
     },
     "generator": {
       "path": "SourceAssets/Blender/scripts/create_japanese_forest_shrine.py",
-      "sha256": "2026a5c7f6288d3b81c758055b99247624b3e49ce9a44cc96ed7e5d30888d778"
+      "bytes": 131995,
+      "sha256": "0555a0fd914c7ca5a740283b176f2ae91701eddae7f6b606479df4adce677ef9"
     },
     "preview": {
-      "path": "docs/Assets/Previews/japanese-forest-shrine-original.png",
-      "bytes": 2406993,
-      "sha256": "2e6f2523b6d235c28523eccc33500c63e6161907fc54c523d7d90f497e521e8d",
-      "width": 1600,
-      "height": 900
+      "path": "docs/Assets/Previews/Final/japanese-forest-shrine-final-1937x1079.png",
+      "bytes": 3569799,
+      "sha256": "acc34709423bc9e62994d51b0a3b107d9a6a13c50e21c3e15bd0a58465b3fa4f",
+      "width": 1937,
+      "height": 1079
+    },
+    "guardianSource": {
+      "path": "SourceAssets/Models/Environment/External/Zgon/Komainu_Statue/komainu_statue_1k.glb",
+      "bytes": 18298624,
+      "sha256": "ee512df089e58f79e8993d2d593e197ef93847482ffcd288cb1d6bf1bdb5dfb9"
+    },
+    "finalizer": {
+      "path": "SourceAssets/Blender/scripts/finalize_japanese_forest_shrine.py",
+      "bytes": 11340,
+      "sha256": "bdc640829f56f1c2551fc0509ba6e9f6ddcb6f2382301b6b5b2c738847f940fc"
+    },
+    "evidenceGenerator": {
+      "path": "scripts/finalize_shrine_evidence.py",
+      "bytes": 12019,
+      "sha256": "2e3a428a8ee22c2992e6833b14276c816e64b83969135e08fd6c917fb1b89cfe"
+    },
+    "multilayerExr": {
+      "path": "docs/Assets/Previews/Final/Passes/japanese-forest-shrine-final-multilayer.exr",
+      "bytes": 143934878,
+      "sha256": "d4241a7e56e1a9b2247b3657be04697dd05b20d9ac650bc521fca74682df8389"
     },
     "license": {
-      "path": "SourceAssets/Models/Environment/JAPANESE_FOREST_SHRINE_CC0_LICENSE.md"
+      "path": "SourceAssets/Models/Environment/JAPANESE_FOREST_SHRINE_LICENSE.md"
+    },
+    "attribution": {
+      "path": "docs/Assets/ATTRIBUTION.md"
     }
   }
 }

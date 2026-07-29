@@ -45,7 +45,17 @@ Thumbs.db
 !/SourceAssets/Models/Environment/Working/
 /SourceAssets/Models/Environment/Working/*
 !/SourceAssets/Models/Environment/Working/Shenzhen_City_Production_Pass_02.blend
-!/SourceAssets/Models/Environment/Working/Japanese_Forest_Shrine_Original_CC0.blend
+!/SourceAssets/Models/Environment/Working/Japanese_Forest_Shrine_Realistic.blend
 /SourceAssets/Textures/Raw/
 /SourceAssets/Audio/Raw/
 /.asset-restore-*/
+
+# Local-only shrine review material. The user's reference pixels and raw
+# grading intermediates are never redistributed.
+/docs/Assets/Previews/LocalValidation/
+/docs/Assets/Previews/Final/Raw/
+/docs/Assets/Previews/Final/*.log
+/docs/Assets/Previews/Final/*.pid
+/docs/Assets/Previews/japanese-forest-shrine-*-test.png
+/docs/Assets/Previews/japanese-forest-shrine-clay.png
+/docs/Assets/Previews/japanese-forest-shrine-realistic.png
