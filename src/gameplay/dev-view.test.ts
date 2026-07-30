@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { MARKET_KEEPER } from '../world/city-data'
-import { HQ } from '../world/layout'
+import { HQ, SHAFT } from '../world/layout'
 import { debugInspectionView, debugSpawnPosition, isDevInspection } from './dev-view'
 
 describe('development visual inspection', () => {
@@ -35,8 +35,10 @@ describe('development visual inspection', () => {
 
     const floor = debugInspectionView('?spawn=floor45-arrival', true)
     const aegis = debugInspectionView('?spawn=agent-workstation', true)
+    const elevator = debugInspectionView('?spawn=elevator-interior', true)
     expect(floor?.position.y).toBeGreaterThan(HQ.y)
     expect(aegis?.target.x).toBeGreaterThan(aegis?.position.x ?? 0)
+    expect(elevator?.position.z).toBeLessThan(SHAFT.doorZ)
   })
 
   it('is inert in production and without the explicit inspection flag', () => {

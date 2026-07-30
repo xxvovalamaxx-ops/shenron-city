@@ -23,6 +23,7 @@ export function Secretary() {
           appearance={4}
           phase={0.31}
           height={1.72}
+          scope="lobby"
         />
       </Suspense>
 

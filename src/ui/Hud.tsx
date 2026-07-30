@@ -15,6 +15,7 @@ import {
 import { minimapPoint, minimapRect, type MinimapBox } from '../gameplay/minimap'
 import { BOULEVARD, MARKET_STALLS, STOREFRONTS } from '../world/city-data'
 import { TOWER } from '../world/layout'
+import { hudVisibilityForZone } from '../gameplay/zone'
 
 function LinkChip() {
   return (
@@ -222,6 +223,8 @@ export function Hud() {
   const prompt = useHud((s) => s.promptLabel)
   const floor = useHud((s) => s.floorLabel)
   const phase = useHud((s) => s.elevatorPhase)
+  const gameplayZone = useHud((s) => s.gameplayZone)
+  const visibility = hudVisibilityForZone(gameplayZone)
   const logRef = useRef<HTMLDivElement>(null)
 
   return (
@@ -231,7 +234,7 @@ export function Hud() {
       </div>
 
       <CityTour />
-      <Minimap />
+      {visibility.minimap && <Minimap />}
 
       <WeaponHUD />
 
@@ -242,11 +245,13 @@ export function Hud() {
         </div>
       )}
 
-      <div className="floor">
-        <span>FLOOR</span>
-        <b>{floor}</b>
-        <span>{phase === 'travelling' ? 'IN TRANSIT' : phase.toUpperCase()}</span>
-      </div>
+      {visibility.elevator && (
+        <div className="floor">
+          <span>FLOOR</span>
+          <b>{floor}</b>
+          <span>{phase === 'travelling' ? 'IN TRANSIT' : phase.toUpperCase()}</span>
+        </div>
+      )}
 
       <PerfOverlay />
     </div>

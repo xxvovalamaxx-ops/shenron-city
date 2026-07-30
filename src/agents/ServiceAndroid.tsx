@@ -11,6 +11,10 @@ import {
 } from './service-android'
 import { DEFAULT_CHARACTER_HEIGHT, heightScaleFor } from './character-scale'
 import { rt } from '../gameplay/runtime'
+import {
+  simulationScopeActive,
+  type SimulationScope,
+} from '../gameplay/zone'
 
 interface Props {
   motion: ServiceAndroidMotion
@@ -20,6 +24,8 @@ interface Props {
   expression?: 'neutral' | 'alert' | 'concerned'
   /** Final standing height in metres. See agents/character-scale.ts. */
   height?: number
+  /** Skip mixer and facial work while the owning zone is not visible. */
+  scope?: SimulationScope
 }
 
 /**
@@ -37,6 +43,7 @@ export function ServiceAndroid({
   castShadow = true,
   expression = 'neutral',
   height = DEFAULT_CHARACTER_HEIGHT,
+  scope = 'global',
 }: Props) {
   const source = useGLTF(SERVICE_ANDROID_URL)
   const palette = SERVICE_ANDROID_STYLES[style]
@@ -124,7 +131,7 @@ export function ServiceAndroid({
   )
 
   useFrame((_, delta) => {
-    if (rt.paused) return
+    if (rt.paused || !simulationScopeActive(scope, rt.zone)) return
     mixer.update(Math.min(delta, 0.05))
     if (!face?.morphTargetDictionary || !face.morphTargetInfluences) return
     const target = expression === 'alert' ? 'Surprised' : expression === 'concerned' ? 'Sad' : null

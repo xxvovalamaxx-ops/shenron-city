@@ -14,6 +14,7 @@ export function MarketKeeper() {
           appearance={5}
           phase={0.62}
           height={1.7}
+          scope="outdoor"
         />
       </Suspense>
       <InteractionFocusMarker kind="city-character" payload="mira" color="#d8a862" />

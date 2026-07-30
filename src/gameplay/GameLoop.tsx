@@ -42,6 +42,7 @@ import { capybaraCollider, capybaraPose } from '../animals/capybara'
 import { residentColliders } from './residents'
 import { breakableColliders } from '../destruction/collision'
 import { debugInspectionView } from './dev-view'
+import { gameplayZoneAt, outdoorSimulationActive } from './zone'
 
 const WALK_SPEED = 4.3
 const SPRINT_SPEED = 7.1
@@ -258,6 +259,8 @@ export function GameLoop({ interactables, ambientPedestrians, onInteract }: Game
 
     const carY = carHeight(rt.elevator)
     const carOpen = doorOpenness(rt.elevator)
+    rt.zone = gameplayZoneAt(p.pos, carY)
+    const outdoorActive = outdoorSimulationActive(rt.zone)
 
     // ── 2b. Audio events, fired on edges rather than on state ────────────────
     // The doors and the lift expose continuous values, so a level test would
@@ -290,12 +293,14 @@ export function GameLoop({ interactables, ambientPedestrians, onInteract }: Game
     audio.travelling = travelling
 
     // ── 3. Traffic, before collision so the boxes match the visible cars ─────
-    advanceTraffic(rt.vehicles, dt, p.pos)
-    writeTrafficInstances(dt)
+    if (outdoorActive) {
+      advanceTraffic(rt.vehicles, dt, p.pos)
+      writeTrafficInstances(dt)
+    }
 
     // Sample once so the visible animal and its moving collision box share the
     // exact same route state.
-    rt.capybara = capybaraPose(simulationTime)
+    if (outdoorActive) rt.capybara = capybaraPose(simulationTime)
 
     // ── 4. Dynamic collision ─────────────────────────────────────────────────
     const colliders: AABB[] = [
@@ -303,9 +308,9 @@ export function GameLoop({ interactables, ambientPedestrians, onInteract }: Game
       ...stationaryResidents,
       ...breakableColliders(rt.destroyed),
       ...city.near(p.pos),
-      ...vehicleColliders(rt.vehicles),
-      ...npcColliders(simulationTime, ambientPedestrians),
-      capybaraCollider(rt.capybara),
+      ...(outdoorActive ? vehicleColliders(rt.vehicles) : []),
+      ...(outdoorActive ? npcColliders(simulationTime, ambientPedestrians) : []),
+      ...(outdoorActive ? [capybaraCollider(rt.capybara)] : []),
       ...carColliders(carY),
       ...shaftGuards(carY, carOpen),
       ...slidingDoorColliders(
@@ -384,6 +389,7 @@ export function GameLoop({ interactables, ambientPedestrians, onInteract }: Game
       }
     }
     prevCarY.current = carY
+    rt.zone = gameplayZoneAt(p.pos, carY)
 
     // ── 8. Camera follows the body ───────────────────────────────────────────
     camera.position.set(p.pos.x, p.pos.y + EYE_HEIGHT, p.pos.z)
@@ -512,6 +518,7 @@ export function GameLoop({ interactables, ambientPedestrians, onInteract }: Game
         promptPayload: rt.target?.payload ?? null,
         floorLabel: label,
         elevatorPhase: rt.elevator.phase,
+        gameplayZone: rt.zone,
         fps: Math.round(perf.fps),
         frameMs: Math.round(perf.frameMs * 10) / 10,
         tourBearing: tourGuidance?.bearing ?? null,

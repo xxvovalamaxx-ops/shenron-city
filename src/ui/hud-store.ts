@@ -7,6 +7,8 @@
  */
 import { create } from 'zustand'
 import type { InteractKind } from '../gameplay/interact'
+import type { GameplayZone } from '../gameplay/zone'
+import { rt } from '../gameplay/runtime'
 import type { CharacterId } from '../agents/dialogue'
 import {
   advanceCityTour,
@@ -25,6 +27,7 @@ export interface HudState {
   promptPayload: string | null
   floorLabel: string
   elevatorPhase: string
+  gameplayZone: GameplayZone
   fps: number
   frameMs: number
   tourBearing: number | null
@@ -62,6 +65,7 @@ export const useHud = create<HudState>((set) => ({
   promptPayload: null,
   floorLabel: 'L',
   elevatorPhase: 'open',
+  gameplayZone: rt.zone,
   fps: 0,
   frameMs: 0,
   tourBearing: null,

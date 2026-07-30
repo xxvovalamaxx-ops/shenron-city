@@ -1,6 +1,6 @@
 import type { Vec3 } from './collision'
 import { MARKET_KEEPER, PLAZA_WARDEN } from '../world/city-data'
-import { HQ, SPAWN } from '../world/layout'
+import { HQ, SHAFT, SPAWN } from '../world/layout'
 
 export type DevViewpoint =
   | 'city-entry'
@@ -82,7 +82,7 @@ const VIEWS: Readonly<Record<DevViewpoint, DevInspectionView>> = {
     target: { x: -6.5, y: 1.48, z: -13.8 },
   },
   'elevator-interior': {
-    position: { x: 0, y: SPAWN.y, z: -28.9 },
+    position: { x: 0, y: SPAWN.y, z: SHAFT.doorZ - SHAFT.carDepth / 2 },
     target: { x: 1.25, y: 1.48, z: -31.2 },
   },
   'floor45-arrival': {

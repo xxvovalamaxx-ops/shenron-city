@@ -14,6 +14,7 @@ import { locomotionTimeScale } from './locomotion'
 import { QuaterniusHero } from './QuaterniusHero'
 import type { QuaterniusHeroMotion } from './quaternius-hero'
 import { rt } from '../gameplay/runtime'
+import { outdoorSimulationActive } from '../gameplay/zone'
 
 const WALK_MOTIONS: QuaterniusHeroMotion[] = [
   'Walk_Loop',
@@ -25,7 +26,7 @@ function Pedestrian({ index }: { index: number }) {
   const root = useRef<Group>(null)
 
   useFrame(() => {
-    if (rt.paused) return
+    if (rt.paused || !outdoorSimulationActive(rt.zone)) return
     const sample = ambientPedestrianPose(index, rt.clock.elapsed)
     const group = root.current
     if (!group) return
@@ -47,6 +48,7 @@ function Pedestrian({ index }: { index: number }) {
         phase={((index * 0.173) % 1 + 1) % 1}
         animationSpeed={animationSpeed}
         castShadow={index < 10}
+        scope="outdoor"
       />
     </group>
   )

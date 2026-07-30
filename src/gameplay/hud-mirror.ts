@@ -1,4 +1,5 @@
 import type { InteractKind } from './interact'
+import type { GameplayZone } from './zone'
 
 export interface HudMirror {
   promptLabel: string | null
@@ -6,6 +7,7 @@ export interface HudMirror {
   promptPayload: string | null
   floorLabel: string
   elevatorPhase: string
+  gameplayZone: GameplayZone
   fps: number
   frameMs: number
   tourBearing: number | null
@@ -28,6 +30,7 @@ export function hudMirrorChanged(next: HudMirror, current: HudMirror): boolean {
     next.promptPayload !== current.promptPayload ||
     next.floorLabel !== current.floorLabel ||
     next.elevatorPhase !== current.elevatorPhase ||
+    next.gameplayZone !== current.gameplayZone ||
     next.fps !== current.fps ||
     next.frameMs !== current.frameMs ||
     next.tourBearing !== current.tourBearing ||

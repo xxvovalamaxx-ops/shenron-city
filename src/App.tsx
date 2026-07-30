@@ -22,7 +22,7 @@ import { ResilientResizeObserver } from './lib/resize'
 import { GameLoop } from './gameplay/GameLoop'
 import type { Interactable } from './gameplay/interact'
 import { rt, setRuntimePaused } from './gameplay/runtime'
-import { step as stepElevator } from './gameplay/elevator'
+import { carHeight, initialElevator, step as stepElevator } from './gameplay/elevator'
 import { Exterior } from './world/Exterior'
 import { Lobby } from './world/Lobby'
 import { Elevator } from './world/Elevator'
@@ -51,9 +51,9 @@ import { Capybara } from './animals/CapybaraActor'
 import { OfficePanel } from './ui/OfficePanel'
 import { DEFAULT_SETTINGS, LoadingScreen, PauseMenu, TitleScreen, type Settings } from './ui/Screens'
 import { floorAtPosition, loadGame, saveGame, type SaveData } from './gameplay/save'
-import { initialElevator } from './gameplay/elevator'
 import { cityAudio } from './audio'
 import { isDevInspection } from './gameplay/dev-view'
+import { gameplayZoneAt, sceneVisibilityForZone } from './gameplay/zone'
 
 /** Slow enough to be free, often enough that a crash costs little progress. */
 const SAVE_INTERVAL_MS = 5000
@@ -80,7 +80,8 @@ function applySave(data: SaveData): void {
   // Derived, never stored: a persisted floor could contradict the position and
   // drop the player down the shaft.
   rt.elevator = initialElevator(floorAtPosition(data.pos))
-  useHud.setState({ cityTour: data.tour })
+  rt.zone = gameplayZoneAt(rt.player.pos, carHeight(rt.elevator))
+  useHud.setState({ cityTour: data.tour, gameplayZone: rt.zone })
 }
 
 const PostProcessing = lazy(() => import('./world/PostProcessing'))
@@ -150,8 +151,10 @@ function Scene({
   onInteract(t: Interactable): void
 }) {
   const snapshot = useGame((s) => s.snapshot)
+  const gameplayZone = useHud((s) => s.gameplayZone)
   const quality = QUALITY[settings.quality]
   const agents = useMemo(() => snapshot?.agents ?? [], [snapshot?.agents])
+  const zoneVisibility = sceneVisibilityForZone(gameplayZone)
 
   // Interaction points. Rebuilt only when the agent roster changes — this is
   // not per-frame data.
@@ -231,37 +234,47 @@ function Scene({
 
       {/* The city around the hand-authored district. */}
       <GeneratedCity quality={quality} />
-      <Exterior quality={quality} />
-      <Lobby quality={quality} />
+      <group visible={zoneVisibility.exterior} name="zone-exterior-visibility">
+        <Exterior quality={quality} />
+        <MarketKeeper />
+        <PlazaWarden />
+        <AmbientCrowd count={quality.ambientPedestrians} />
+      </group>
+      <group visible={zoneVisibility.lobby} name="zone-lobby-visibility">
+        <Lobby quality={quality} />
+        <Secretary />
+      </group>
       <Elevator />
-      <Floor45 agents={agents} quality={quality} source={snapshot?.source ?? 'standalone'} />
-      <Secretary />
-      <MarketKeeper />
-      <PlazaWarden />
-      <AmbientCrowd count={quality.ambientPedestrians} />
+      <group visible={zoneVisibility.floor45} name="zone-floor45-visibility">
+        <Floor45 agents={agents} quality={quality} source={snapshot?.source ?? 'standalone'} />
+      </group>
       {/* The high-detail animal starts loading with the scene but does not
           hold the title screen hostage on a cold cache. */}
-      <Suspense fallback={null}>
-        <Capybara shadows={quality.shadows} />
-      </Suspense>
+      <group visible={zoneVisibility.exterior} name="zone-exterior-effects">
+        <Suspense fallback={null}>
+          <Capybara shadows={quality.shadows} />
+        </Suspense>
+        <AtmosphericDust />
+      </group>
 
       <PlayerAvatar />
       <LaserBeam />
       <DestructionSystem />
-      <AtmosphericDust />
 
       {/* Entrance doors live outside the car group — they do not travel */}
-      <DoorPair
-        halfWidth={ENTRANCE.halfWidth}
-        height={ENTRANCE.height}
-        z={ENTRANCE.z}
-        leftRef={(g) => {
-          rt.refs.entranceLeft = g
-        }}
-        rightRef={(g) => {
-          rt.refs.entranceRight = g
-        }}
-      />
+      <group visible={zoneVisibility.lobby} name="zone-entrance-visibility">
+        <DoorPair
+          halfWidth={ENTRANCE.halfWidth}
+          height={ENTRANCE.height}
+          z={ENTRANCE.z}
+          leftRef={(group) => {
+            rt.refs.entranceLeft = group
+          }}
+          rightRef={(group) => {
+            rt.refs.entranceRight = group
+          }}
+        />
+      </group>
 
       <GameLoop
         interactables={interactables}
@@ -400,6 +413,7 @@ export default function App() {
         rt.elevator.phase === 'travelling'
           ? `${rt.elevator.from}->${rt.elevator.target}:${rt.elevator.phase}`
           : `${rt.elevator.floor}:${rt.elevator.phase}`
+      root.dataset.runtimeZone = rt.zone
       root.dataset.scenarioPaused = String(useGame.getState().paused)
     }
     publish()
@@ -418,6 +432,7 @@ export default function App() {
         'runtimeElapsedSeconds',
         'runtimePlayerPosition',
         'runtimeElevatorState',
+        'runtimeZone',
         'scenarioPaused',
       ] as const) {
         delete document.documentElement.dataset[key]
@@ -447,6 +462,8 @@ export default function App() {
   useEffect(() => {
     if (visualInspection) {
       rt.elevator = initialElevator(floorAtPosition(rt.player.pos))
+      rt.zone = gameplayZoneAt(rt.player.pos, carHeight(rt.elevator))
+      useHud.setState({ gameplayZone: rt.zone })
     } else {
       applySave(restored.data)
     }
@@ -578,7 +595,7 @@ export default function App() {
         )}
       </Canvas>
 
-      {(screen === 'playing' || screen === 'paused') && <Hud />}
+      {screen === 'playing' && <Hud />}
       {screen === 'loading' && <LoadingScreen progress={progress} />}
       {screen === 'title' && <TitleScreen onStart={enterWorld} />}
       {screen === 'paused' && (

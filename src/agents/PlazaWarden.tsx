@@ -20,6 +20,7 @@ export function PlazaWarden() {
           appearance={1}
           phase={0.18}
           height={1.84}
+          scope="outdoor"
         />
       </Suspense>
       <InteractionFocusMarker kind="city-character" payload="kai" color="#7ec7bd" />

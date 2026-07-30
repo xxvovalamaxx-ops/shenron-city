@@ -38,6 +38,7 @@ function Presence({ agent }: { agent: Agent }) {
             : 'neutral'
       }
       height={1.78}
+      scope="floor45"
     />
   )
 }

@@ -9,6 +9,10 @@ import {
 } from './quaternius-hero'
 import { DEFAULT_CHARACTER_HEIGHT, heightScaleFor } from './character-scale'
 import { rt } from '../gameplay/runtime'
+import {
+  simulationScopeActive,
+  type SimulationScope,
+} from '../gameplay/zone'
 
 interface Props {
   motion: QuaterniusHeroMotion
@@ -20,6 +24,8 @@ interface Props {
   phase?: number
   /** Final standing height in metres. See agents/character-scale.ts. */
   height?: number
+  /** Skip mixer work when this actor's physical zone is not visible. */
+  scope?: SimulationScope
 }
 
 const APPAREL_TINTS = [
@@ -41,6 +47,7 @@ export function QuaterniusHero({
   appearance = 0,
   phase = 0,
   height = DEFAULT_CHARACTER_HEIGHT,
+  scope = 'global',
 }: Props) {
   const source = useLoader(GLTFLoader, QUATERNIUS_HERO_URL, (loader) => {
     // Match the capybara's browser-safe path for embedded GLB textures.
@@ -120,7 +127,7 @@ export function QuaterniusHero({
   )
 
   useFrame((_, delta) => {
-    if (rt.paused) return
+    if (rt.paused || !simulationScopeActive(scope, rt.zone)) return
     mixer.update(Math.min(delta, 0.05))
   })
 

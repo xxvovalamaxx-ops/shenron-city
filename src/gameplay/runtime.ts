@@ -9,15 +9,16 @@
  * A single module-level instance is correct here — there is one game.
  */
 import type { InstancedMesh, Object3D } from 'three'
-import { initialElevator, type ElevatorState } from './elevator'
+import { carHeight, initialElevator, type ElevatorState } from './elevator'
 import { initialDoor, type DoorState } from './doors'
 import { createTraffic, type Vehicle } from './traffic'
 import type { Weather } from '../world/daycycle'
 import type { Interactable } from './interact'
 import type { Vec3 } from './collision'
-import { SPAWN } from '../world/layout'
+import { HQ, SPAWN } from '../world/layout'
 import { CAPYBARA_INITIAL_POSE, type CapybaraPose } from '../animals/capybara'
 import { debugSpawnPosition } from './dev-view'
+import { gameplayZoneAt, type GameplayZone } from './zone'
 
 function initialPlayerPosition(): Vec3 {
   const defaultSpawn = { x: SPAWN.x, y: SPAWN.y, z: SPAWN.z }
@@ -25,6 +26,11 @@ function initialPlayerPosition(): Vec3 {
 
   return debugSpawnPosition(location.search, import.meta.env.DEV) ?? defaultSpawn
 }
+
+const INITIAL_PLAYER_POSITION = initialPlayerPosition()
+const INITIAL_ELEVATOR = initialElevator(
+  INITIAL_PLAYER_POSITION.y >= HQ.y - 0.65 ? 'hq' : 'lobby',
+)
 
 export interface Runtime {
   elevator: ElevatorState
@@ -47,6 +53,8 @@ export interface Runtime {
   interactables: Interactable[]
   /** True while a modal (dialogue, menu) owns input. */
   paused: boolean
+  /** Coarse physical zone shared by simulation, rendering and HUD. */
+  zone: GameplayZone
   /** Increments on every transition into pause so held actions cannot resume. */
   pauseEpoch: number
   /** Camera mode. Toggled with V; first person is the default. */
@@ -121,10 +129,10 @@ export interface Runtime {
 }
 
 export const rt: Runtime = {
-  elevator: initialElevator('lobby'),
+  elevator: INITIAL_ELEVATOR,
   entranceDoor: initialDoor(),
   player: {
-    pos: initialPlayerPosition(),
+    pos: { ...INITIAL_PLAYER_POSITION },
     velocityY: 0,
     grounded: false,
     forward: { x: 0, z: -1 },
@@ -138,6 +146,7 @@ export const rt: Runtime = {
   // The HUD begins on the loading screen, so the world must not start moving
   // before App synchronises the first screen state.
   paused: true,
+  zone: gameplayZoneAt(INITIAL_PLAYER_POSITION, carHeight(INITIAL_ELEVATOR)),
   pauseEpoch: 0,
   thirdPerson: false,
   keys: { forward: false, back: false, left: false, right: false, sprint: false, jump: false },
