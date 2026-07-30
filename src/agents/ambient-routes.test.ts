@@ -7,6 +7,7 @@ import {
   npcColliders,
   pedestrianGait,
   sampleLoop,
+  smoothRouteHeading,
 } from './ambient-routes'
 
 const SQUARE = [
@@ -65,5 +66,24 @@ describe('ambient pedestrian routes', () => {
       expect(gait.bob).toBeLessThanOrEqual(0.025)
       expect(Math.abs(gait.sway)).toBeLessThanOrEqual(0.035)
     }
+  })
+
+  it('turns toward a new route segment without snapping', () => {
+    const firstFrame = smoothRouteHeading(0, Math.PI / 2, 1 / 60)
+    expect(firstFrame).toBeGreaterThan(0)
+    expect(firstFrame).toBeLessThan(Math.PI / 2)
+
+    let heading = 0
+    for (let frame = 0; frame < 90; frame++) {
+      heading = smoothRouteHeading(heading, Math.PI / 2, 1 / 60)
+    }
+    expect(heading).toBeCloseTo(Math.PI / 2, 3)
+  })
+
+  it('uses the short arc across the -pi/pi seam', () => {
+    const degrees = Math.PI / 180
+    const next = smoothRouteHeading(179 * degrees, -179 * degrees, 1 / 60)
+    expect(next).toBeGreaterThan(179 * degrees)
+    expect(next - 179 * degrees).toBeLessThan(2 * degrees)
   })
 })

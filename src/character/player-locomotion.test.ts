@@ -9,7 +9,9 @@ import {
   IDLE_SPEED,
   playerAnimationRate,
   playerMotionFor,
+  nextPlayerAnimationSample,
   SPRINT_SPEED,
+  type PlayerAnimationSample,
   WALK_SPEED,
 } from './player-locomotion'
 
@@ -91,5 +93,33 @@ describe('playerAnimationRate', () => {
     for (const bad of [NaN, Infinity, -1]) {
       expect(Number.isFinite(playerAnimationRate('Jog_Fwd_Loop', bad))).toBe(true)
     }
+  })
+})
+
+describe('nextPlayerAnimationSample', () => {
+  it('publishes real idle, jog, sprint, jump, and return-to-idle transitions', () => {
+    let sample: PlayerAnimationSample = { motion: 'Idle_Loop', speed: 0 }
+
+    sample = nextPlayerAnimationSample(sample, { speed: WALK_SPEED, grounded: true })
+    expect(sample.motion).toBe('Jog_Fwd_Loop')
+
+    sample = nextPlayerAnimationSample(sample, { speed: SPRINT_SPEED, grounded: true })
+    expect(sample.motion).toBe('Sprint_Loop')
+
+    sample = nextPlayerAnimationSample(sample, { speed: SPRINT_SPEED, grounded: false })
+    expect(sample.motion).toBe('Jump_Loop')
+
+    sample = nextPlayerAnimationSample(sample, { speed: 0, grounded: true })
+    expect(sample.motion).toBe('Idle_Loop')
+  })
+
+  it('reuses the prior object for sub-threshold speed noise', () => {
+    const current = { motion: 'Jog_Fwd_Loop', speed: WALK_SPEED } as const
+    expect(
+      nextPlayerAnimationSample(current, {
+        speed: WALK_SPEED + 0.01,
+        grounded: true,
+      }),
+    ).toBe(current)
   })
 })

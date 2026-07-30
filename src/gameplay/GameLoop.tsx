@@ -539,7 +539,7 @@ export function GameLoop({ interactables, ambientPedestrians, onInteract }: Game
         useHud.setState(next)
       }
     }
-  })
+  }, -100)
 
   return null
 }

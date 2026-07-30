@@ -8,7 +8,11 @@
 import { useRef } from 'react'
 import { useFrame } from '@react-three/fiber'
 import type { Group } from 'three'
-import { ambientPedestrianPose, ambientPedestrianSpeed } from './ambient-routes'
+import {
+  ambientPedestrianPose,
+  ambientPedestrianSpeed,
+  smoothRouteHeading,
+} from './ambient-routes'
 import { DEFAULT_CHARACTER_HEIGHT } from './character-scale'
 import { locomotionTimeScale } from './locomotion'
 import { QuaterniusHero } from './QuaterniusHero'
@@ -24,14 +28,19 @@ const WALK_MOTIONS: QuaterniusHeroMotion[] = [
 
 function Pedestrian({ index }: { index: number }) {
   const root = useRef<Group>(null)
+  const heading = useRef<number | null>(null)
 
-  useFrame(() => {
+  useFrame((_, rawDelta) => {
     if (rt.paused || !outdoorSimulationActive(rt.zone)) return
     const sample = ambientPedestrianPose(index, rt.clock.elapsed)
     const group = root.current
     if (!group) return
     group.position.set(sample.x, 0, sample.z)
-    group.rotation.y = sample.heading
+    heading.current =
+      heading.current === null
+        ? sample.heading
+        : smoothRouteHeading(heading.current, sample.heading, Math.min(rawDelta, 0.05))
+    group.rotation.y = heading.current
   })
 
   const heightVariation = 0.94 + (index % 7) * 0.018

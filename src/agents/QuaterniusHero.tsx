@@ -107,7 +107,7 @@ export function QuaterniusHero({
     if (!clip) return
     const action = mixer.clipAction(clip)
     const loops = motion.endsWith('_Loop')
-    action.reset().setEffectiveTimeScale(animationSpeed).setEffectiveWeight(1)
+    action.reset().setEffectiveWeight(1)
     action.time = Math.max(0, Math.min(0.999, phase)) * clip.duration
     action.clampWhenFinished = !loops
     action.setLoop(loops ? THREE.LoopRepeat : THREE.LoopOnce, loops ? Infinity : 1)
@@ -115,7 +115,16 @@ export function QuaterniusHero({
     return () => {
       action.fadeOut(0.16)
     }
-  }, [animationSpeed, mixer, motion, phase, source.animations])
+  }, [mixer, motion, phase, source.animations])
+
+  // Playback rate changes with measured ground speed. Updating the active
+  // action in place preserves phase; restarting the clip on every speed sample
+  // made planted feet visibly pop back to frame zero.
+  useEffect(() => {
+    const clip = THREE.AnimationClip.findByName(source.animations, motion)
+    if (!clip) return
+    mixer.clipAction(clip).setEffectiveTimeScale(animationSpeed)
+  }, [animationSpeed, mixer, motion, source.animations])
 
   useEffect(
     () => () => {

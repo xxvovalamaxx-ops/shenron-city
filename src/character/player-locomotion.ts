@@ -36,6 +36,14 @@ export interface PlayerLocomotionInput {
   grounded: boolean
 }
 
+export interface PlayerAnimationSample {
+  motion: PlayerMotion
+  speed: number
+}
+
+/** Minimum speed change worth publishing through React. */
+export const ANIMATION_SPEED_PUBLISH_DELTA = 0.05
+
 /**
  * Airborne wins over everything: a player mid-jump running a walk cycle is the
  * kind of thing that reads as broken even when the feet happen to line up.
@@ -46,6 +54,28 @@ export function playerMotionFor({ speed, grounded }: PlayerLocomotionInput): Pla
   if (speed < STROLL_SPEED) return 'Walk_Loop'
   if (speed < (WALK_SPEED + SPRINT_SPEED) / 2) return 'Jog_Fwd_Loop'
   return 'Sprint_Loop'
+}
+
+/**
+ * Publish only meaningful animation changes.
+ *
+ * Returning the previous object is important: the renderer samples movement
+ * every frame, but React should only rerender when a clip or playback rate can
+ * actually change.
+ */
+export function nextPlayerAnimationSample(
+  current: PlayerAnimationSample,
+  input: PlayerLocomotionInput,
+): PlayerAnimationSample {
+  const speed = Number.isFinite(input.speed) && input.speed > 0 ? input.speed : 0
+  const motion = playerMotionFor({ speed, grounded: input.grounded })
+  if (
+    current.motion === motion &&
+    Math.abs(current.speed - speed) < ANIMATION_SPEED_PUBLISH_DELTA
+  ) {
+    return current
+  }
+  return { motion, speed }
 }
 
 /**

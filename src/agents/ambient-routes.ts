@@ -29,6 +29,22 @@ function segmentLength(a: RoutePoint, b: RoutePoint): number {
   return Math.hypot(b.x - a.x, b.z - a.z)
 }
 
+/** Smooth a route-corner turn through the shortest angular arc. */
+export function smoothRouteHeading(
+  current: number,
+  target: number,
+  dt: number,
+  response = 7,
+): number {
+  if (![current, target, dt, response].every(Number.isFinite) || dt <= 0 || response <= 0) {
+    return current
+  }
+  let difference = target - current
+  while (difference > Math.PI) difference -= Math.PI * 2
+  while (difference < -Math.PI) difference += Math.PI * 2
+  return current + difference * (1 - Math.exp(-response * dt))
+}
+
 /** Total length of a route, including its closing segment. */
 export function loopLength(points: readonly RoutePoint[]): number {
   if (points.length < 2) return 0

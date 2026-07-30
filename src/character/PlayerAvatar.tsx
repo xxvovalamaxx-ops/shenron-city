@@ -10,13 +10,17 @@
  * Not rendered in first person at all. Hiding it costs nothing and avoids the
  * camera sitting inside a head, which no amount of near-plane tuning fixes.
  */
-import { Suspense, useRef } from 'react'
+import { Suspense, useEffect, useRef, useState } from 'react'
 import { useFrame } from '@react-three/fiber'
 import type { Group } from 'three'
 import { rt } from '../gameplay/runtime'
 import { useHud } from '../ui/hud-store'
 import { QuaterniusHero } from '../agents/QuaterniusHero'
-import { playerAnimationRate, playerMotionFor, type PlayerMotion } from './player-locomotion'
+import {
+  nextPlayerAnimationSample,
+  playerAnimationRate,
+  type PlayerAnimationSample,
+} from './player-locomotion'
 
 /** How fast the body turns to face travel, radians per second. */
 const TURN_RATE = 9
@@ -25,14 +29,31 @@ export function PlayerAvatar() {
   const root = useRef<Group>(null)
   const yaw = useRef(0)
   const speed = useRef(0)
-  const last = useRef({ x: 0, z: 0 })
-  const motion = useRef<PlayerMotion>('Idle_Loop')
+  const last = useRef({ x: rt.player.pos.x, z: rt.player.pos.z })
+  const [animation, setAnimation] = useState<PlayerAnimationSample>({
+    motion: 'Idle_Loop',
+    speed: 0,
+  })
+  const publishedAnimation = useRef(animation)
   const thirdPerson = useHud((s) => s.thirdPerson)
+
+  useEffect(() => {
+    const root = document.documentElement
+    root.dataset.avatarMotion = animation.motion
+    root.dataset.avatarPlaybackRate = playerAnimationRate(
+      animation.motion,
+      animation.speed,
+    ).toFixed(3)
+    root.dataset.avatarThirdPerson = String(thirdPerson)
+    return () => {
+      delete root.dataset.avatarMotion
+      delete root.dataset.avatarPlaybackRate
+      delete root.dataset.avatarThirdPerson
+    }
+  }, [animation, thirdPerson])
 
   useFrame((_, delta) => {
     if (rt.paused) return
-    const group = root.current
-    if (!group) return
 
     const dt = Math.max(1e-4, Math.min(delta, 0.05))
     const p = rt.player
@@ -48,33 +69,40 @@ export function PlayerAvatar() {
     // Smoothed, or a single stuttered frame flips the clip and back.
     speed.current += (instantaneous - speed.current) * Math.min(1, dt * 12)
 
-    group.position.set(p.pos.x, p.pos.y, p.pos.z)
+    const group = root.current
+    if (group) group.position.set(p.pos.x, p.pos.y, p.pos.z)
 
     // Face travel while moving, and hold the last heading when stopped so the
     // body does not snap to a default direction the instant you release a key.
-    if (Math.hypot(dx, dz) > 1e-4) {
+    if (group && Math.hypot(dx, dz) > 1e-4) {
       const target = Math.atan2(dx, dz)
       let diff = target - yaw.current
       while (diff > Math.PI) diff -= Math.PI * 2
       while (diff < -Math.PI) diff += Math.PI * 2
       yaw.current += diff * Math.min(1, dt * TURN_RATE)
     }
-    group.rotation.y = yaw.current
+    if (group) group.rotation.y = yaw.current
 
-    motion.current = playerMotionFor({ speed: speed.current, grounded: p.grounded })
+    const next = nextPlayerAnimationSample(publishedAnimation.current, {
+      speed: speed.current,
+      grounded: p.grounded,
+    })
+    if (next !== publishedAnimation.current) {
+      publishedAnimation.current = next
+      setAnimation(next)
+    }
   })
 
   if (!thirdPerson) return null
 
-  const chosen = motion.current
   return (
     <group ref={root}>
       {/* No fallback body: a placeholder that appears for a moment and is
           replaced is worse than the character simply arriving. */}
       <Suspense fallback={null}>
         <QuaterniusHero
-          motion={chosen}
-          animationSpeed={playerAnimationRate(chosen, speed.current)}
+          motion={animation.motion}
+          animationSpeed={playerAnimationRate(animation.motion, animation.speed)}
         />
       </Suspense>
     </group>
