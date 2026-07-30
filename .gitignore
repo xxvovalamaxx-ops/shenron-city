@@ -1,6 +1,7 @@
 node_modules/
 dist/
 .vite/
+.playwright-cli/
 /.vite-dev.*.log
 /.vite-preview.*.log
 *.local

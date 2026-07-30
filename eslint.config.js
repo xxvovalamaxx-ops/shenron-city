@@ -11,6 +11,7 @@ export default tseslint.config(
       'public/**',
       'SourceAssets/**',
       'coverage/**',
+      '.playwright-cli/**',
     ],
   },
   eslint.configs.recommended,
