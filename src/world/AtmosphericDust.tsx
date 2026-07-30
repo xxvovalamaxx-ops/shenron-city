@@ -8,6 +8,7 @@
 import { useRef, useMemo } from 'react'
 import { useFrame } from '@react-three/fiber'
 import * as THREE from 'three'
+import { rt } from '../gameplay/runtime'
 
 const PARTICLE_COUNT = 260
 const SPREAD = 60
@@ -52,12 +53,13 @@ export function AtmosphericDust() {
     return [pos, s] as const
   }, [])
 
-  useFrame(({ camera, clock }) => {
+  useFrame(({ camera }) => {
+    if (rt.paused) return
     const pts = ref.current
     if (!pts) return
     const geo = pts.geometry
     const posAttr = geo.attributes.position as THREE.BufferAttribute
-    const t = clock.elapsedTime
+    const t = rt.clock.elapsed
     const cx = camera.position.x
     const cz = camera.position.z
 

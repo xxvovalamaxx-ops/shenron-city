@@ -8,6 +8,7 @@ describe('standalone game store', () => {
 
   afterEach(() => {
     useGame.getState().dispose()
+    useGame.getState().setPaused(true)
     vi.unstubAllGlobals()
     vi.useRealTimers()
   })
@@ -44,6 +45,7 @@ describe('standalone game store', () => {
 
   it('drifts metrics over time', () => {
     useGame.getState().start()
+    useGame.getState().setPaused(false)
     const before = useGame.getState().snapshot
 
     vi.advanceTimersByTime(6000)
@@ -51,5 +53,17 @@ describe('standalone game store', () => {
 
     expect(after.metrics).toBeDefined()
     expect(after.metrics!.cpu).not.toBe(before.metrics!.cpu)
+  })
+
+  it('freezes local scenario timers while paused and resumes without catch-up', () => {
+    useGame.getState().start()
+    const before = useGame.getState().snapshot
+
+    vi.advanceTimersByTime(6000)
+    expect(useGame.getState().snapshot).toBe(before)
+
+    useGame.getState().setPaused(false)
+    vi.advanceTimersByTime(2000)
+    expect(useGame.getState().snapshot).not.toBe(before)
   })
 })

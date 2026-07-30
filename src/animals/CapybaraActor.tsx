@@ -6,6 +6,7 @@ import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
 import { clone } from 'three/examples/jsm/utils/SkeletonUtils.js'
 import { rt } from '../gameplay/runtime'
 import { CAPYBARA_EXPECTED_CLIPS, CAPYBARA_MODEL_URL } from './capybara'
+import { inputLocked, useHud } from '../ui/hud-store'
 
 export function Capybara({ shadows }: { shadows: boolean }) {
   const gltf = useLoader(GLTFLoader, CAPYBARA_MODEL_URL, (loader) => {
@@ -24,7 +25,15 @@ export function Capybara({ shadows }: { shadows: boolean }) {
   const instance = useMemo(() => clone(gltf.scene), [gltf.scene])
   const root = useRef<Group>(null)
   const currentAction = useRef<AnimationAction | null>(null)
-  const { actions, names } = useAnimations(gltf.animations, instance)
+  const { actions, names, mixer } = useAnimations(gltf.animations, instance)
+  const paused = useHud((state) => inputLocked(state.screen))
+
+  // Drei advances its mixer in an internal useFrame. Drive mixer timeScale
+  // from the same authoritative screen state so the animal cannot animate
+  // behind a menu or jump forward on resume.
+  useLayoutEffect(() => {
+    mixer.timeScale = paused ? 0 : 1
+  }, [mixer, paused])
 
   useLayoutEffect(() => {
     instance.traverse((object) => {
@@ -53,6 +62,7 @@ export function Capybara({ shadows }: { shadows: boolean }) {
   }, [names])
 
   useFrame(() => {
+    if (rt.paused) return
     const next = actions[rt.capybara.clip]
     if (!next || next === currentAction.current) return
     next.reset().fadeIn(0.22).play()

@@ -58,6 +58,7 @@ export function DestructionSystem() {
   // Expose damage handler for the laser hook to call.
   // Returns the aimPoint if damage was applied, for beam targeting.
   useFrame(() => {
+    if (rt.paused) return
     if (!rt.player.firing || rt.player.overheated || !rt.player.aimPoint) return
 
     const aim = rt.player.aimPoint

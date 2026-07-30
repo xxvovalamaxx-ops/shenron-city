@@ -5,6 +5,7 @@
 import { useRef } from 'react'
 import { useFrame } from '@react-three/fiber'
 import { Mesh, Object3D } from 'three'
+import { rt } from '../gameplay/runtime'
 
 interface ScorchMarkProps {
   position: [number, number, number]
@@ -20,6 +21,7 @@ export function ScorchMark({ position, normal, onExpire, lifetime = 6 }: ScorchM
   const age = useRef(0)
 
   useFrame((_, rawDt) => {
+    if (rt.paused) return
     const dt = Math.min(rawDt, 1 / 20)
     age.current += dt
 

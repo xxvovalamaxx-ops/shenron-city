@@ -12,6 +12,7 @@ import {
 } from './kenney-citizen'
 import { DEFAULT_CHARACTER_HEIGHT, heightScaleFor } from './character-scale'
 import { dropArms, LEFT_ARM_BONE, RIGHT_ARM_BONE } from './arm-pose'
+import { rt } from '../gameplay/runtime'
 
 interface Props {
   motion: KenneyCitizenMotion
@@ -112,6 +113,7 @@ export function KenneyCitizen({
   )
 
   useFrame((_, delta) => {
+    if (rt.paused) return
     mixer.update(Math.min(delta, 0.05))
     // After the mixer, never before: it overwrites bone rotation wholesale
     // each frame, which is what keeps this additive rather than accumulating.

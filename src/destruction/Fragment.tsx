@@ -8,6 +8,7 @@ import { useRef } from 'react'
 import { useFrame } from '@react-three/fiber'
 import { Mesh, Vector3 } from 'three'
 import type { BreakableDef } from './BreakableRegistry'
+import { rt } from '../gameplay/runtime'
 
 interface FragmentProps {
   def: BreakableDef
@@ -27,6 +28,7 @@ export function Fragment({ def, origin, direction, onExpired }: FragmentProps) {
   const initialized = useRef(false)
 
   useFrame((_, rawDt) => {
+    if (rt.paused) return
     const dt = Math.min(rawDt, 1 / 20)
     const mesh = meshRef.current
     if (!mesh) return

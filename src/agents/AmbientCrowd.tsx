@@ -13,6 +13,7 @@ import { DEFAULT_CHARACTER_HEIGHT } from './character-scale'
 import { locomotionTimeScale } from './locomotion'
 import { QuaterniusHero } from './QuaterniusHero'
 import type { QuaterniusHeroMotion } from './quaternius-hero'
+import { rt } from '../gameplay/runtime'
 
 const WALK_MOTIONS: QuaterniusHeroMotion[] = [
   'Walk_Loop',
@@ -23,8 +24,9 @@ const WALK_MOTIONS: QuaterniusHeroMotion[] = [
 function Pedestrian({ index }: { index: number }) {
   const root = useRef<Group>(null)
 
-  useFrame((state) => {
-    const sample = ambientPedestrianPose(index, state.clock.elapsedTime)
+  useFrame(() => {
+    if (rt.paused) return
+    const sample = ambientPedestrianPose(index, rt.clock.elapsed)
     const group = root.current
     if (!group) return
     group.position.set(sample.x, 0, sample.z)

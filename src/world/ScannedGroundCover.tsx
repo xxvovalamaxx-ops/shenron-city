@@ -8,6 +8,7 @@ import {
   type GroundCoverKind,
 } from './scatter-data'
 import { MEADOW_TEXTURES, type MeadowTextureSet } from './meadow-assets'
+import { rt } from '../gameplay/runtime'
 
 const MODEL_URL = '/models/environment/meadow-templates.glb?v=1342e73c'
 const MAX_GROUND_COVER = 1_600
@@ -164,8 +165,9 @@ uniform float uMeadowWind;`,
     mesh.computeBoundingSphere()
   }, [instances, style.alternate, style.height, style.tint])
 
-  useFrame(({ clock }) => {
-    wind.current.time.value = clock.elapsedTime
+  useFrame(() => {
+    if (rt.paused) return
+    wind.current.time.value = rt.clock.elapsed
   })
 
   useEffect(() => () => material.dispose(), [material])

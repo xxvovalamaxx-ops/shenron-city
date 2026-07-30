@@ -8,6 +8,7 @@ import {
   type QuaterniusHeroMotion,
 } from './quaternius-hero'
 import { DEFAULT_CHARACTER_HEIGHT, heightScaleFor } from './character-scale'
+import { rt } from '../gameplay/runtime'
 
 interface Props {
   motion: QuaterniusHeroMotion
@@ -119,6 +120,7 @@ export function QuaterniusHero({
   )
 
   useFrame((_, delta) => {
+    if (rt.paused) return
     mixer.update(Math.min(delta, 0.05))
   })
 

@@ -44,6 +44,7 @@ export function SkyRig({ quality }: { quality: QualitySettings }) {
   }, [])
 
   useFrame((state, rawDt) => {
+    if (rt.paused) return
     const dt = Math.min(rawDt, 1 / 20)
 
     rt.clock.hour = (rt.clock.hour + dt / SECONDS_PER_HOUR) % 24

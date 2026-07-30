@@ -12,7 +12,9 @@ const SIMULATION_INTERVAL_MS = 2000
 
 export interface GameState {
   snapshot: WorldSnapshot
+  paused: boolean
   start(): void
+  setPaused(paused: boolean): void
   requestSummary(agentId: string): Promise<import('../contracts/mission-control').Agent | null>
   dispose(): void
 }
@@ -27,6 +29,7 @@ function stopTimers(): void {
 
 export const useGame = create<GameState>((set, get) => ({
   snapshot: standaloneSnapshot(),
+  paused: true,
 
   start() {
     stopTimers()
@@ -34,9 +37,14 @@ export const useGame = create<GameState>((set, get) => ({
     set({ snapshot: standaloneSnapshot() })
 
     timer = setInterval(() => {
+      if (get().paused) return
       simulationTick += 1
       set({ snapshot: driftStandalone(get().snapshot, simulationTick) })
     }, SIMULATION_INTERVAL_MS)
+  },
+
+  setPaused(paused) {
+    set({ paused })
   },
 
   async requestSummary(agentId: string) {

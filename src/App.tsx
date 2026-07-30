@@ -2,17 +2,26 @@
  * Assembly: canvas, scene graph, overlays, and the screen state machine that
  * decides who owns the mouse.
  */
-import { lazy, Suspense, useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import {
+  lazy,
+  Suspense,
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react'
 import { Canvas, useThree } from '@react-three/fiber'
 import { PointerLockControls, useProgress } from '@react-three/drei'
 import * as THREE from 'three'
 
 import { useGame } from './adapter/store'
-import { useHud } from './ui/hud-store'
+import { inputLocked, useHud } from './ui/hud-store'
 import { ResilientResizeObserver } from './lib/resize'
 import { GameLoop } from './gameplay/GameLoop'
 import type { Interactable } from './gameplay/interact'
-import { rt } from './gameplay/runtime'
+import { rt, setRuntimePaused } from './gameplay/runtime'
 import { step as stepElevator } from './gameplay/elevator'
 import { Exterior } from './world/Exterior'
 import { Lobby } from './world/Lobby'
@@ -316,6 +325,7 @@ export default function App() {
   const openCharacterId = useHud((s) => s.openCharacterId)
   const start = useGame((s) => s.start)
   const dispose = useGame((s) => s.dispose)
+  const setGamePaused = useGame((s) => s.setPaused)
 
   // Read the save once, before first paint, so the world is never built at the
   // spawn and then visibly snapped to the restored position a frame later.
@@ -338,6 +348,31 @@ export default function App() {
     setReady(true)
   }, [bootStartedAt])
 
+  // One screen state owns every pause boundary. A layout effect applies it
+  // before the next rendered frame, so world components mounted before the
+  // central GameLoop cannot advance once a modal or menu takes control.
+  useLayoutEffect(() => {
+    const paused = inputLocked(screen)
+    setRuntimePaused(paused)
+    setGamePaused(paused)
+
+    // Dialogue and office panels may play positional voice/UI audio while the
+    // simulation is frozen. Loading, title, and the actual pause menu suspend
+    // the audio thread outright.
+    const audioEnabled = screen === 'playing' || screen === 'dialogue' || screen === 'office'
+    cityAudio.setEnabled(audioEnabled)
+  }, [screen, setGamePaused])
+
+  useEffect(() => {
+    const pauseOnEscape = (event: KeyboardEvent) => {
+      if (event.code !== 'Escape' || useHud.getState().screen !== 'playing') return
+      controls.current?.unlock()
+      setScreen('paused')
+    }
+    window.addEventListener('keydown', pauseOnEscape)
+    return () => window.removeEventListener('keydown', pauseOnEscape)
+  }, [setScreen])
+
   useEffect(() => {
     const target = window as Window & {
       __cityAudioDiagnostics?: typeof cityAudio.diagnostics
@@ -351,6 +386,21 @@ export default function App() {
       root.dataset.audioLeftRms = diagnostics.leftRms.toFixed(6)
       root.dataset.audioRightRms = diagnostics.rightRms.toFixed(6)
       root.dataset.audioStereoDifference = diagnostics.stereoDifference.toFixed(6)
+      root.dataset.runtimePaused = String(rt.paused)
+      root.dataset.runtimePauseEpoch = String(rt.pauseEpoch)
+      root.dataset.runtimeElapsedSeconds = rt.clock.elapsed.toFixed(3)
+      root.dataset.runtimePlayerPosition = [
+        rt.player.pos.x,
+        rt.player.pos.y,
+        rt.player.pos.z,
+      ]
+        .map((value) => value.toFixed(3))
+        .join(',')
+      root.dataset.runtimeElevatorState =
+        rt.elevator.phase === 'travelling'
+          ? `${rt.elevator.from}->${rt.elevator.target}:${rt.elevator.phase}`
+          : `${rt.elevator.floor}:${rt.elevator.phase}`
+      root.dataset.scenarioPaused = String(useGame.getState().paused)
     }
     publish()
     const interval = window.setInterval(publish, 250)
@@ -363,6 +413,12 @@ export default function App() {
         'audioLeftRms',
         'audioRightRms',
         'audioStereoDifference',
+        'runtimePaused',
+        'runtimePauseEpoch',
+        'runtimeElapsedSeconds',
+        'runtimePlayerPosition',
+        'runtimeElevatorState',
+        'scenarioPaused',
       ] as const) {
         delete document.documentElement.dataset[key]
       }

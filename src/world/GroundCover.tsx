@@ -6,6 +6,7 @@ import {
   type GroundCoverInstance,
   type GroundCoverKind,
 } from './scatter-data'
+import { rt } from '../gameplay/runtime'
 
 const MAX_GROUND_COVER = 1_600
 const ALL_GROUND_COVER = generateGroundCover(MAX_GROUND_COVER)
@@ -181,8 +182,9 @@ uniform float uFoliageHeight;`,
     mesh.computeBoundingSphere()
   }, [instances, style.alternate, style.color])
 
-  useFrame(({ clock }) => {
-    windUniforms.current.uFoliageTime.value = clock.elapsedTime
+  useFrame(() => {
+    if (rt.paused) return
+    windUniforms.current.uFoliageTime.value = rt.clock.elapsed
   })
 
   useEffect(

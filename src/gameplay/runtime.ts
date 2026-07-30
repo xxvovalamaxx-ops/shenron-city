@@ -47,6 +47,8 @@ export interface Runtime {
   interactables: Interactable[]
   /** True while a modal (dialogue, menu) owns input. */
   paused: boolean
+  /** Increments on every transition into pause so held actions cannot resume. */
+  pauseEpoch: number
   /** Camera mode. Toggled with V; first person is the default. */
   thirdPerson: boolean
   /** Keyboard state, populated by useKeys. */
@@ -63,6 +65,8 @@ export interface Runtime {
    * frame; the sky, the road material and the audio all read it.
    */
   clock: {
+    /** Simulation seconds. Unlike R3F's clock, this does not advance while paused. */
+    elapsed: number
     /** Hours, 0..24. */
     hour: number
     weather: Weather
@@ -131,10 +135,13 @@ export const rt: Runtime = {
   },
   target: null,
   interactables: [],
-  paused: false,
+  // The HUD begins on the loading screen, so the world must not start moving
+  // before App synchronises the first screen state.
+  paused: true,
+  pauseEpoch: 0,
   thirdPerson: false,
   keys: { forward: false, back: false, left: false, right: false, sprint: false, jump: false },
-  clock: { hour: 0, weather: { rain: 0, wetness: 0 }, rainTarget: 0 },
+  clock: { elapsed: 0, hour: 0, weather: { rain: 0, wetness: 0 }, rainTarget: 0 },
   vehicles: [],
   capybara: { ...CAPYBARA_INITIAL_POSE },
   destroyed: new Set<string>(),
@@ -167,6 +174,33 @@ export const rt: Runtime = {
 export function resetPlayer(): void {
   rt.player.pos = initialPlayerPosition()
   rt.player.velocityY = 0
+}
+
+/**
+ * Apply the authoritative simulation pause transition.
+ *
+ * Pausing clears every latched action immediately. Heat and cooldown are
+ * intentionally preserved: they resume from the exact paused state instead
+ * of silently cooling behind the menu.
+ */
+export function setRuntimePaused(paused: boolean): void {
+  if (paused && !rt.paused) rt.pauseEpoch += 1
+  rt.paused = paused
+  if (!paused) return
+
+  for (const key of Object.keys(rt.keys) as (keyof Runtime['keys'])[]) {
+    rt.keys[key] = false
+  }
+  rt.player.firing = false
+  rt.player.aimPoint = null
+  rt.target = null
+}
+
+/** Advance and return the pause-aware simulation clock. */
+export function advanceRuntimeTime(dt: number): number {
+  if (rt.paused || !Number.isFinite(dt) || dt <= 0) return rt.clock.elapsed
+  rt.clock.elapsed += dt
+  return rt.clock.elapsed
 }
 
 /**

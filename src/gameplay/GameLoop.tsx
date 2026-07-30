@@ -10,7 +10,7 @@
 import { useEffect, useMemo, useRef } from 'react'
 import { useFrame, useThree } from '@react-three/fiber'
 import { Matrix4, Object3D, Quaternion, Vector3 } from 'three'
-import { rt } from './runtime'
+import { advanceRuntimeTime, rt, setRuntimePaused } from './runtime'
 import { advanceTraffic, vehicleColliders, vehiclePose } from './traffic'
 import { boomDistance, smoothBoom } from './camera-boom'
 import { buildCityCollision } from './city-colliders'
@@ -227,6 +227,17 @@ export function GameLoop({ interactables, ambientPedestrians, onInteract }: Game
 
     // Sync key state so other components can read it from rt.keys.
     Object.assign(rt.keys, keys.current)
+    setRuntimePaused(locked)
+    if (locked) {
+      // Clear the hook's latch too. Otherwise a key held while Esc opens the
+      // menu becomes movement again on resume without a fresh keydown.
+      Object.assign(keys.current, rt.keys)
+      return
+    }
+
+    // R3F's clock keeps advancing behind menus. Every deterministic actor uses
+    // this clock instead so pause/resume cannot teleport it along its route.
+    const simulationTime = advanceRuntimeTime(dt)
 
     // ── 1. Entrance doors ────────────────────────────────────────────────────
     rt.entranceDoor = stepDoor(rt.entranceDoor, {
@@ -284,7 +295,7 @@ export function GameLoop({ interactables, ambientPedestrians, onInteract }: Game
 
     // Sample once so the visible animal and its moving collision box share the
     // exact same route state.
-    rt.capybara = capybaraPose(state.clock.elapsedTime)
+    rt.capybara = capybaraPose(simulationTime)
 
     // ── 4. Dynamic collision ─────────────────────────────────────────────────
     const colliders: AABB[] = [
@@ -293,7 +304,7 @@ export function GameLoop({ interactables, ambientPedestrians, onInteract }: Game
       ...breakableColliders(rt.destroyed),
       ...city.near(p.pos),
       ...vehicleColliders(rt.vehicles),
-      ...npcColliders(state.clock.elapsedTime, ambientPedestrians),
+      ...npcColliders(simulationTime, ambientPedestrians),
       capybaraCollider(rt.capybara),
       ...carColliders(carY),
       ...shaftGuards(carY, carOpen),

@@ -20,8 +20,12 @@ const _dir = new Vector3()
 export function useLaser() {
   const state = useRef<LaserState>({ heat: 0, overheated: false, cooldownTimer: 0 })
   const mouseDown = useRef(false)
+  const pauseEpoch = useRef(rt.pauseEpoch)
 
   useEffect(() => {
+    const clear = () => {
+      mouseDown.current = false
+    }
     const onDown = (e: MouseEvent) => {
       if (e.button === 0 && !rt.paused) {
         mouseDown.current = true
@@ -29,20 +33,37 @@ export function useLaser() {
     }
     const onUp = (e: MouseEvent) => {
       if (e.button === 0) {
-        mouseDown.current = false
+        clear()
       }
+    }
+    const onPointerLockChange = () => {
+      if (!document.pointerLockElement) clear()
     }
 
     window.addEventListener('mousedown', onDown)
     window.addEventListener('mouseup', onUp)
+    window.addEventListener('blur', clear)
+    document.addEventListener('pointerlockchange', onPointerLockChange)
     return () => {
       window.removeEventListener('mousedown', onDown)
       window.removeEventListener('mouseup', onUp)
+      window.removeEventListener('blur', clear)
+      document.removeEventListener('pointerlockchange', onPointerLockChange)
     }
   }, [])
 
   const update = useCallback(
     (camera: { position: Vector3; getWorldDirection: (target: Vector3) => Vector3 }, dt: number) => {
+      if (pauseEpoch.current !== rt.pauseEpoch) {
+        pauseEpoch.current = rt.pauseEpoch
+        mouseDown.current = false
+      }
+      if (rt.paused) {
+        rt.player.firing = false
+        rt.player.aimPoint = null
+        return
+      }
+
       const s = state.current
       const firing = mouseDown.current && !s.overheated
       stepLaser(s, firing, dt)

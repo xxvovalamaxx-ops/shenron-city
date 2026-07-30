@@ -79,6 +79,7 @@ export function PlayerBody() {
   const prevPos = useRef({ x: 0, y: 0, z: 0 })
 
   useFrame((_, rawDt) => {
+    if (rt.paused) return
     const dt = Math.min(rawDt, 1 / 20)
     const group = groupRef.current
     if (!group) return

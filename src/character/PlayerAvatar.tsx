@@ -30,6 +30,7 @@ export function PlayerAvatar() {
   const thirdPerson = useHud((s) => s.thirdPerson)
 
   useFrame((_, delta) => {
+    if (rt.paused) return
     const group = root.current
     if (!group) return
 

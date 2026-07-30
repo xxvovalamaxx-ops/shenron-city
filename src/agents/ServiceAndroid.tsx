@@ -10,6 +10,7 @@ import {
   type ServiceAndroidStyle,
 } from './service-android'
 import { DEFAULT_CHARACTER_HEIGHT, heightScaleFor } from './character-scale'
+import { rt } from '../gameplay/runtime'
 
 interface Props {
   motion: ServiceAndroidMotion
@@ -123,6 +124,7 @@ export function ServiceAndroid({
   )
 
   useFrame((_, delta) => {
+    if (rt.paused) return
     mixer.update(Math.min(delta, 0.05))
     if (!face?.morphTargetDictionary || !face.morphTargetInfluences) return
     const target = expression === 'alert' ? 'Surprised' : expression === 'concerned' ? 'Sad' : null
