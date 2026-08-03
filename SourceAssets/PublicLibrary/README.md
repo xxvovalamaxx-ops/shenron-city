@@ -38,6 +38,8 @@ The voice pack also retains its included `Credits.txt` file.
   UI packs, mobile controls, cursor pack, minimap pack, emotes, and ranks.
 - `UI/Icons/game-icons-urban/`: curated CC-BY-3.0 HUD, transport, weather, and
   status icons (167 SVGs, `Credits.txt` attribution retained).
+- `UI/Icons/game-icons-full/`: the complete game-icons.net catalogue (4,239
+  SVGs by 35+ authors, CC-BY-3.0, `Credits.txt` attribution retained).
 - `Textures/ambientcg-*/`: curated CC0 PBR materials (asphalt, concrete,
   metal, glass-adjacent, brick, tile, plaster, wood, ground) at 1K JPG.
 - `Environment/HDRI/polyhaven-*/`: six curated CC0 city/street skyboxes at 1K.
@@ -45,6 +47,9 @@ The voice pack also retains its included `Credits.txt` file.
 - `Fonts/google-fonts-*/`: OFL-1.1 Rajdhani, Orbitron, and Noto Sans SC.
 - `Characters/Animated/`: Kenney animated, blocky, and mini character packs.
 - `Vehicles/Cars/`: Kenney car kit and racing kit.
+- `Kenney/`: the complete Kenney.nl asset catalogue (151 packs, CC0) —
+  every kit, pack, and tool listed on the site's categories and series pages,
+  spanning 2D, 3D, audio, textures, UI, and VFX.
 - `Props/Quaternius/quaternius-downtown-city-megakit/`: CC0 modular city
   mega-kit with glTF (Godot), Unity, and Unreal exports.
 - `Props/Quaternius/quaternius-lowpoly-cars/`: CC0 low-poly car pack
@@ -85,3 +90,20 @@ those icons. The Google Fonts sets are SIL OFL 1.1: keep their `License.txt`.
 Kenney credit is not mandatory under CC0, but the project keeps the creator and
 included license records for provenance. The current library is not yet
 integrated into the game, so it does not affect the standalone browser build.
+
+## Catalogue coverage
+
+This library attempts complete, redistributable coverage of the largest free
+asset sources where the full catalogue fits GitHub's repository limits:
+
+- **Kenney** (CC0): complete — all 151 packs listed on kenney.nl (2D, 3D,
+  audio, textures, UI, VFX, characters, vehicles, kits).
+- **game-icons.net** (CC-BY-3.0): complete — all 4,239 icons.
+- **ambientCG** (CC0): curated — the full catalogue is ~30 GB and cannot fit
+  a public GitHub repository; 16 city-relevant materials are included.
+- **Poly Haven** (CC0): curated — full catalogue is tens of GB; 6 HDRIs and
+  6 models are included.
+- **Quaternius** (CC0): curated — city-relevant packs (downtown mega-kit,
+  cars, modular street) are included.
+- **cgbookcase** (CC0): curated — 11 street textures are included.
+- **Google Fonts** (OFL-1.1): curated — Rajdhani, Orbitron, Noto Sans SC.

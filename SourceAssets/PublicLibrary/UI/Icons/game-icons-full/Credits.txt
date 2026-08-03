@@ -1,0 +1,20 @@
+game-icons.net — full icon catalogue (4,239 SVGs)
+
+Icons are by the Game Icons contributors and are licensed under
+Creative Commons Attribution 3.0 (CC BY 3.0):
+https://creativecommons.org/licenses/by/3.0/
+
+Project: https://gameicons.net/
+Source repository: https://github.com/game-icons/icons
+
+Icon author folders included in this pack:
+andymeneely, aussiesim, badges, carl-olsen, caro-asercion, cathelineau,
+catsu, darkzaitzev, delapouite, faithtoken, felbrigg, generalace135,
+guard13007, heavenly-dog, irongamer, john-colburn, john-redman, kier-heyl,
+lorc, lord-berandas, lucasms, pepijn-poolman, pierre-leducq, priorblue,
+quoting, rihlsul, sbed, seregacthtuf, skoll, sparker, spencerdub,
+starseeker, various-artists, viscious-speed, willdabeast, zajkonur,
+zeromancer
+
+When redistributing or using these icons, keep this file and provide
+attribution to the Game Icons project and its contributors.

@@ -65,6 +65,8 @@ records credit, a `Credits.txt` is also retained.
 | Google Fonts Orbitron | Fonts | https://fonts.google.com/specimen/orbitron | OFL-1.1 | Sci-fi UI typeface |
 | Google Fonts Noto Sans SC | Fonts | https://fonts.google.com/specimen/noto+sans+sc | OFL-1.1 | Chinese text typeface |
 | Game Icons Urban Set | UI/Icons | https://gameicons.net/ | CC-BY-3.0 | HUD, transport, weather, and status icons |
+| Game Icons Full Catalogue | UI/Icons | https://github.com/game-icons/icons | CC-BY-3.0 | Complete 4,239-icon catalogue with Credits.txt |
+| Kenney Full Catalogue | Kenney | https://kenney.nl/assets | CC0 1.0 | Complete 151-pack catalogue (2D, 3D, audio, textures, UI, VFX) |
 | Quaternius Downtown City MegaKit | Props | https://quaternius.itch.io/downtown-city-megakit | CC0 1.0 | Modular city buildings, roads, and props (glTF/FBX) |
 | Quaternius Low-Poly Cars | Props | https://quaternius.itch.io/lowpoly-cars | CC0 1.0 | City traffic vehicle models (FBX/OBJ) |
 | Quaternius Low-Poly Modular Street | Props | https://quaternius.itch.io/lowpoly-modular-street | CC0 1.0 | Street signs, lights, and road segments (FBX/OBJ) |
@@ -103,5 +105,8 @@ catalogues:
   blocked by the repository policy for public source redistribution.
 
 This is a documented, useful scan of sources relevant to this game, not a claim
-that every file on the Internet has been reviewed. New packs must pass the same
-exact-item license and provenance checks.
+that every file on the Internet has been reviewed. Complete catalogues are
+included where they fit the repository's GitHub size limits (Kenney, game-icons).
+Sources whose full catalogues exceed those limits (ambientCG ~30 GB, Poly Haven,
+full Google Fonts) are represented by curated subsets. New packs must pass the
+same exact-item license and provenance checks.
