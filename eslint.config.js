@@ -12,6 +12,7 @@ export default tseslint.config(
       'SourceAssets/**',
       'coverage/**',
       '.playwright-cli/**',
+      'Made assets/**',
     ],
   },
   eslint.configs.recommended,

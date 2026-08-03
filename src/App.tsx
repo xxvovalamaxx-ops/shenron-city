@@ -233,7 +233,7 @@ function Scene({
       <ShadowBudget enabled={quality.shadows} mapSize={quality.shadowMapSize} />
 
       {/* Streamed Blender Manhattan City island */}
-      <ManhattanCity mode="full" />
+      <ManhattanCity mode="tiles" />
       <group visible={zoneVisibility.exterior} name="zone-exterior-visibility">
         <Exterior quality={quality} />
         <MarketKeeper />

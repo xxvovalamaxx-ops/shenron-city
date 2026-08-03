@@ -10,6 +10,7 @@
   "description": "Shenzhen City — a standalone walkable 3D headquarters experience",
   "scripts": {
     "dev": "vite",
+    "generate:manhattan-tiles": "node scripts/generate-manhattan-tiles.mjs",
     "lint": "eslint . --max-warnings=0",
     "typecheck": "tsc --noEmit",
     "build": "tsc --noEmit && vite build",
