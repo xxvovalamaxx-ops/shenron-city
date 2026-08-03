@@ -1,4 +1,4 @@
-node_modules/
+﻿node_modules/
 dist/
 .vite/
 .playwright-cli/
@@ -19,7 +19,7 @@ Thumbs.db
 .vscode/*
 !.vscode/extensions.json
 
-# Local launcher config — hardcodes absolute machine paths
+# Local launcher config â€” hardcodes absolute machine paths
 .claude/launch.json
 
 # Large source assets belong in Git LFS, not here. See docs/ASSETS.md before
@@ -66,3 +66,4 @@ Thumbs.db
 /docs/Assets/Previews/japanese-forest-shrine-realistic.png
 
 *.log
+!/SourceAssets/Museum/asset_museum.blend
