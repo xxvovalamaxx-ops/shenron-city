@@ -40,6 +40,17 @@ files, Unreal or Unity packages, or unreviewed character/animation bundles.
 
 ## Local authoring workspace
 
+`SourceAssets/PublicLibrary/` is the tracked intake area for the current
+license-screened Kenney source packs. It contains UI, input prompts, audio,
+particle, and skybox candidates with included license files, download receipts,
+and per-file SHA-256 manifests. It is intentionally outside `public/` until a
+runtime feature uses a reviewed, optimized subset. Verify it with:
+
+```powershell
+node scripts/assets/catalog-public-library.mjs
+node scripts/assets/verify-public-library.mjs
+```
+
 `SourceAssets/` provides the Blender/model/animation/texture folder structure
 without adding working binaries to normal Git history. The historical FBX
 archive can be restored locally with:

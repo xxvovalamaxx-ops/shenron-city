@@ -36,6 +36,12 @@ history with unused binaries, and does not produce coherent art direction.
 
 ## Quality rule
 
+The tracked `SourceAssets/PublicLibrary/` is an intake library, not a second
+runtime tree. A source pack may be stored there only when its exact item page,
+included license, archive hash, and extracted file hashes are recorded. Runtime
+promotion still requires an implemented feature, browser optimization, and an
+entry in the production manifest.
+
 AAA quality is an outcome, not a download count. Each production tranche must:
 
 1. serve a specific visible district need;

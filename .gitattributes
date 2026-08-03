@@ -26,7 +26,10 @@
 *.ktx2 binary
 *.mp3 binary
 *.ogg binary
+*.wav binary
 *.png binary
+*.otf binary
+*.ttf binary
 *.exr binary
 *.webp binary
 *.vrm binary
