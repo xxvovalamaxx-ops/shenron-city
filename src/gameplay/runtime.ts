@@ -39,6 +39,7 @@ export interface Runtime {
     pos: Vec3
     velocityY: number
     grounded: boolean
+    flying: boolean
     /** Camera forward, horizontal plane, normalised. */
     forward: { x: number; z: number }
     /** Laser weapon state. */
@@ -67,6 +68,7 @@ export interface Runtime {
     right: boolean
     sprint: boolean
     jump: boolean
+    crouch: boolean
   }
   /**
    * Clock and weather. On rt rather than React state because it changes every
@@ -135,6 +137,7 @@ export const rt: Runtime = {
     pos: { ...INITIAL_PLAYER_POSITION },
     velocityY: 0,
     grounded: false,
+    flying: false,
     forward: { x: 0, z: -1 },
     heat: 0,
     firing: false,
@@ -149,7 +152,7 @@ export const rt: Runtime = {
   zone: gameplayZoneAt(INITIAL_PLAYER_POSITION, carHeight(INITIAL_ELEVATOR)),
   pauseEpoch: 0,
   thirdPerson: false,
-  keys: { forward: false, back: false, left: false, right: false, sprint: false, jump: false },
+  keys: { forward: false, back: false, left: false, right: false, sprint: false, jump: false, crouch: false },
   clock: { elapsed: 0, hour: 0, weather: { rain: 0, wetness: 0 }, rainTarget: 0 },
   vehicles: [],
   capybara: { ...CAPYBARA_INITIAL_POSE },

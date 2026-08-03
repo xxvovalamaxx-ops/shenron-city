@@ -42,7 +42,7 @@ import { PlayerAvatar } from './character/PlayerAvatar'
 import { LaserBeam } from './weapons/LaserBeam'
 import { DestructionSystem } from './destruction/DestructionSystem'
 import { NightEnvironment } from './world/NightEnvironment'
-import { GeneratedCity } from './world/GeneratedCity'
+import { ManhattanCity } from './world/ManhattanCity'
 import { SkyRig } from './world/SkyRig'
 import { ShadowBudget } from './world/ShadowBudget'
 import { AtmosphericDust } from './world/AtmosphericDust'
@@ -232,8 +232,8 @@ function Scene({
       <Lighting />
       <ShadowBudget enabled={quality.shadows} mapSize={quality.shadowMapSize} />
 
-      {/* The city around the hand-authored district. */}
-      <GeneratedCity quality={quality} />
+      {/* Streamed Blender Manhattan City island */}
+      <ManhattanCity mode="full" />
       <group visible={zoneVisibility.exterior} name="zone-exterior-visibility">
         <Exterior quality={quality} />
         <MarketKeeper />

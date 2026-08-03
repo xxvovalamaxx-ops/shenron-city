@@ -13,6 +13,7 @@ export interface Keys {
   right: boolean
   sprint: boolean
   jump: boolean
+  crouch: boolean
 }
 
 const MAP: Record<string, keyof Keys> = {
@@ -27,6 +28,9 @@ const MAP: Record<string, keyof Keys> = {
   ShiftLeft: 'sprint',
   ShiftRight: 'sprint',
   Space: 'jump',
+  ControlLeft: 'crouch',
+  ControlRight: 'crouch',
+  KeyC: 'crouch',
 }
 
 export function useKeys() {
@@ -37,6 +41,7 @@ export function useKeys() {
     right: false,
     sprint: false,
     jump: false,
+    crouch: false,
   })
 
   useEffect(() => {

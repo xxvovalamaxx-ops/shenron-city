@@ -97,6 +97,8 @@ export function GameLoop({ interactables, ambientPedestrians, onInteract }: Game
     camera.lookAt(view.target.x, view.target.y, view.target.z)
   }, [camera])
 
+  const lastSpacePress = useRef(0)
+
   // ── Interact key ───────────────────────────────────────────────────────────
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
@@ -109,6 +111,24 @@ export function GameLoop({ interactables, ambientPedestrians, onInteract }: Game
         e.preventDefault()
         useHud.getState().togglePerf()
         return
+      }
+      if (e.code === 'Space') {
+        if (!inputLocked(useHud.getState().screen)) {
+          const now = performance.now()
+          if (now - lastSpacePress.current < 350) {
+            rt.player.flying = !rt.player.flying
+            rt.player.velocityY = 0
+            useHud
+              .getState()
+              .set(
+                'promptLabel',
+                rt.player.flying
+                  ? '✈ FLY MODE — Space↑ Ctrl↓ Shift=Fast — Double-Space to land'
+                  : '🚶 WALK MODE — Double-Space to fly',
+              )
+          }
+          lastSpacePress.current = now
+        }
       }
       if (e.code !== 'KeyE') return
       if (inputLocked(useHud.getState().screen)) return
@@ -324,7 +344,7 @@ export function GameLoop({ interactables, ambientPedestrians, onInteract }: Game
       ...slidingDoorColliders(0, carY, SHAFT.doorZ, SHAFT.halfWidth, CAR_DOOR_HEIGHT, carOpen),
     ]
 
-    // ── 5. Input → desired horizontal motion, in camera space ────────────────
+    // ── 5. Input → desired horizontal & vertical motion ──────────────────────
     let dx = 0
     let dz = 0
     if (!locked) {
@@ -347,22 +367,36 @@ export function GameLoop({ interactables, ambientPedestrians, onInteract }: Game
         mx /= len
         mz /= len
 
-        const speed = k.sprint ? SPRINT_SPEED : WALK_SPEED
+        const speed = p.flying ? (k.sprint ? 36 : 18) : k.sprint ? SPRINT_SPEED : WALK_SPEED
         dx = mx * speed * dt
         dz = mz * speed * dt
       }
 
-      if (k.jump && p.grounded) {
-        p.velocityY = JUMP_VELOCITY
+      if (p.flying) {
+        const flySpeed = k.sprint ? 36 : 18
+        let dy = 0
+        if (k.jump) dy += flySpeed * dt     // Space = ascend
+        if (k.crouch) dy -= flySpeed * dt    // Ctrl/C = descend
+        p.pos.x += dx
+        p.pos.y += dy
+        p.pos.z += dz
+        // Clamp to ground — never clip below terrain
+        if (p.pos.y < 0.1) p.pos.y = 0.1
+        p.velocityY = 0
         p.grounded = false
+      } else {
+        if (k.jump && p.grounded) {
+          p.velocityY = JUMP_VELOCITY
+          p.grounded = false
+        }
+
+        // ── 6. Move ──────────────────────────────────────────────────────────────
+        const result = moveWithCollisions(p.pos, { x: dx, z: dz }, p.velocityY, dt, colliders)
+        p.pos = result.position
+        p.velocityY = result.velocityY
+        p.grounded = result.grounded
       }
     }
-
-    // ── 6. Move ──────────────────────────────────────────────────────────────
-    const result = moveWithCollisions(p.pos, { x: dx, z: dz }, p.velocityY, dt, colliders)
-    p.pos = result.position
-    p.velocityY = result.velocityY
-    p.grounded = result.grounded
 
     // Location objectives are pure and idempotent. Once a step advances,
     // repeated frames in the same zone return the exact same tour object.
