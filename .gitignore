@@ -52,8 +52,8 @@ Thumbs.db
 /.asset-restore-*/
 
 # Standalone local authoring projects, not part of the game repo.
-/Manheten/
-/brick_building/
+/Made assets/Manhattan City/
+/Made assets/brick building/
 
 # Local-only shrine review material. The user's reference pixels and raw
 # grading intermediates are never redistributed.

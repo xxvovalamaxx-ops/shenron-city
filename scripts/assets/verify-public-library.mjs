@@ -32,6 +32,7 @@ const findings = []
 const manifestFiles = new Map(manifest.files.map((file) => [file.path, file]))
 const actualFiles = new Set()
 const blockedExtensions = /\.(?:html|ini|unitypackage|url)$/i
+const allowedLicenses = ['CC0-1.0', 'OFL-1.1', 'CC-BY-3.0']
 
 for (const pack of manifest.packs) {
   const packRoot = join(libraryRoot, ...pack.category.split('/'), pack.id)
@@ -45,7 +46,7 @@ for (const pack of manifest.packs) {
   if (!pack.sourcePage || !pack.downloadUrl || !pack.archiveSha256) {
     findings.push(`${pack.id}: incomplete source provenance`)
   }
-  if (pack.license !== 'CC0-1.0') findings.push(`${pack.id}: license is not CC0-1.0`)
+  if (!allowedLicenses.includes(pack.license)) findings.push(`${pack.id}: license is not allowlisted (${pack.license})`)
   if (!existsSync(licensePath)) findings.push(`${pack.id}: included license is missing`)
   if (pack.creditFile && !existsSync(join(libraryRoot, pack.creditFile))) {
     findings.push(`${pack.id}: included credits file is missing`)
