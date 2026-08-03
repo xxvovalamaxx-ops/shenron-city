@@ -1,36 +1,34 @@
 # Shenzhen City asset museum
 
-A Blender display file that shows the 3D content of the public library at a
+Blender display files that show the 3D content of the public library at a
 glance, organized like a museum floor.
 
-## What it contains
+## Files
 
-- **`asset_museum.blend`** — the museum scene (256 models on display).
-- **`museum_preview.png`** — a rendered overview of the museum floor.
-- **`scripts/assets/build-asset-museum.py`** — the generator script that
-  imports models from `SourceAssets/PublicLibrary` and lays them out.
+- **`asset_museum.blend`** — the full museum (256 models on display, one
+  collection per category).
+- **`Top10_Buildings.blend`** / `Top10_Vehicles.blend` /
+  `Top10_Characters.blend` / `Top10_Nature.blend` / `Top10_VFX.blend` /
+  `Top10_Props.blend` — one file per category showing that category's 10
+  most detailed assets, each with a floating name label. A `Top10_*.png`
+  preview sits next to each.
+- **`museum_preview.png`** — rendered overview of the full museum floor.
+- **`scripts/assets/build-asset-museum.py`** — full-museum generator.
+- **`scripts/assets/build-top10-museum.py`** — per-category Top-10 generator.
 
-## Organization
+## Top-10 selection
 
-Models are grouped into collections, one per asset category:
-
-| Collection | What it shows |
-|---|---|
-| `Buildings` | City kits, modular building kit, fantasy town, retro urban, factory, space station, modular cave/dungeon/space, graveyard |
-| `Vehicles` | Cars, racing kit, train kit, watercraft, space kit |
-| `Characters` | Animated characters, cube pets, mini arena |
-| `Nature` | Nature kit, mini forest |
-| `Street & Props` | Market, Quaternius street props, prototype, interior, platformer, retro fantasy, pirate, survival, blaster, mini packs |
-
-Each pack is one row; models sit side by side with their name floating above
-them. Floors are marked per pack row so the eye can follow each collection.
+"Top 10" = the 10 largest (most detailed) 3D files per category,
+deduplicated by model name. VFX shows the 10 largest 2D sprites as textured
+planes, since the VFX packs are sprite-based.
 
 ## Regenerating
 
 ```powershell
 & "C:\Program Files\Blender Foundation\Blender 5.1\blender.exe" --background --python scripts/assets/build-asset-museum.py
+& "C:\Program Files\Blender Foundation\Blender 5.1\blender.exe" --background --python scripts/assets/build-top10-museum.py
 ```
 
-The script re-imports from the library, so it picks up new packs automatically
-(the selection is capped at 8 representative models per pack to keep the file
-usable — a full 7,000-model display would be multiple GB).
+Both scripts re-import from the library, so they pick up new packs
+automatically. The selection is capped to keep files usable — a full
+7,000-model display would be multiple GB.
