@@ -22,7 +22,17 @@ as CC0 1.0. The voice pack also retains its included `Credits.txt` file.
 - `Audio/Music/`: short music jingles and stingers.
 - `Audio/Voice/`: placeholder male and female voiceover lines.
 - `VFX/kenney-particle-pack/`: 2D particle and effect textures.
+- `VFX/kenney-light-masks/`: light cone, mask, and glow textures.
+- `VFX/kenney-smoke-particles/`: smoke puff and cloud sprites.
+- `VFX/kenney-splat-pack/`: paint and stain overlay textures.
+- `VFX/kenney-foliage-sprites/`: vegetation sprite sheets.
 - `Environment/Skyboxes/`: skybox source textures.
+- `Environment/Nature/kenney-nature-kit/`: nature props, rocks, and vegetation.
+- `Buildings/City/`: commercial, industrial, and suburban city kits plus roads.
+- `Buildings/Modular/kenney-building-kit/`: modular building parts.
+- `Props/`: furniture kit, food kit, and prototype kit props.
+- `UI/kenney-ui-pack/` (see above) plus sci-fi, adventure, and pixel-adventure
+  UI packs, mobile controls, cursor pack, minimap pack, emotes, and ranks.
 - `Characters/Animated/`: Kenney animated, blocky, and mini character packs.
 - `Vehicles/Cars/`: Kenney car kit and racing kit.
 

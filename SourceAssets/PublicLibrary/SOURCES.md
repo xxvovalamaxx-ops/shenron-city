@@ -28,6 +28,27 @@ Each extracted pack retains its own `License.txt`; the voice pack also retains
 | Kenney Animated Characters Survivors | Characters/Animated | https://kenney.nl/assets/animated-characters-survivors | CC0 1.0 | Additional rigged character skins |
 | Kenney Blocky Characters | Characters/Animated | https://kenney.nl/assets/blocky-characters | CC0 1.0 | Blocky animated crowd options |
 | Kenney Mini Characters | Characters/Animated | https://kenney.nl/assets/mini-characters | CC0 1.0 | Mini animated people set |
+| Kenney City Kit Commercial | Buildings/City | https://kenney.nl/assets/city-kit-commercial | CC0 1.0 | Commercial district buildings and props |
+| Kenney City Kit Industrial | Buildings/City | https://kenney.nl/assets/city-kit-industrial | CC0 1.0 | Industrial buildings, silos, and machinery |
+| Kenney City Kit Suburban | Buildings/City | https://kenney.nl/assets/city-kit-suburban | CC0 1.0 | Suburban houses, garages, and lots |
+| Kenney City Kit Roads | Buildings/City | https://kenney.nl/assets/city-kit-roads | CC0 1.0 | Roads, intersections, pavement, and markings |
+| Kenney Building Kit | Buildings/Modular | https://kenney.nl/assets/building-kit | CC0 1.0 | Modular building façades and parts |
+| Kenney Nature Kit | Environment/Nature | https://kenney.nl/assets/nature-kit | CC0 1.0 | Trees, rocks, plants, and nature props |
+| Kenney Furniture Kit | Props/Interior | https://kenney.nl/assets/furniture-kit | CC0 1.0 | Interior furniture props |
+| Kenney Food Kit | Props/Market | https://kenney.nl/assets/food-kit | CC0 1.0 | Market and food stand props |
+| Kenney Prototype Kit | Props/Prototype | https://kenney.nl/assets/prototype-kit | CC0 1.0 | Abstract prototype building shapes |
+| Kenney UI Pack Sci-fi | UI | https://kenney.nl/assets/ui-pack-sci-fi | CC0 1.0 | Sci-fi HUD panels and icons |
+| Kenney UI Pack Adventure | UI | https://kenney.nl/assets/ui-pack-adventure | CC0 1.0 | Adventure-style HUD elements |
+| Kenney UI Pack Pixel Adventure | UI | https://kenney.nl/assets/ui-pack-pixel-adventure | CC0 1.0 | Pixel-art HUD elements |
+| Kenney Mobile Controls | UI | https://kenney.nl/assets/mobile-controls | CC0 1.0 | Touch joystick and button assets |
+| Kenney Cursor Pack | UI | https://kenney.nl/assets/cursor-pack | CC0 1.0 | Cursor and pointer graphics |
+| Kenney Minimap Pack | UI | https://kenney.nl/assets/minimap-pack | CC0 1.0 | Minimap icons and markers |
+| Kenney Emotes Pack | UI | https://kenney.nl/assets/emotes-pack | CC0 1.0 | Chat and emoticon graphics |
+| Kenney Ranks Pack | UI | https://kenney.nl/assets/ranks-pack | CC0 1.0 | Rank and badge graphics |
+| Kenney Light Masks | VFX | https://kenney.nl/assets/light-masks | CC0 1.0 | Light cones, glows, and masks |
+| Kenney Smoke Particles | VFX | https://kenney.nl/assets/smoke-particles | CC0 1.0 | Smoke puff and cloud sprites |
+| Kenney Splat Pack | VFX | https://kenney.nl/assets/splat-pack | CC0 1.0 | Paint, stain, and wetness stains |
+| Kenney Foliage Sprites | VFX | https://kenney.nl/assets/foliage-sprites | CC0 1.0 | Vegetation sprite sheets |
 
 ## Wider source review
 
