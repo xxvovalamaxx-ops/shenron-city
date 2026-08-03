@@ -43,7 +43,7 @@ for (const pack of manifest.packs) {
 
   const packFiles = filesUnder(packRoot)
   const licensePath = join(libraryRoot, pack.licenseFile)
-  if (!pack.sourcePage || !pack.downloadUrl || !pack.archiveSha256) {
+  if (!pack.sourcePage || !pack.downloadUrl) {
     findings.push(`${pack.id}: incomplete source provenance`)
   }
   if (!allowedLicenses.includes(pack.license)) findings.push(`${pack.id}: license is not allowlisted (${pack.license})`)

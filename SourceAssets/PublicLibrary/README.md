@@ -8,9 +8,12 @@ manifest is updated.
 
 ## Current contents
 
-All current packs were downloaded from official Kenney asset pages on
-2026-08-03. The pages and the included `License.txt` files identify the packs
-as CC0 1.0. The voice pack also retains its included `Credits.txt` file.
+All current packs were downloaded from official Kenney, ambientCG, Poly Haven,
+Google Fonts, and game-icons.net pages on 2026-08-03. The pages and the included
+license files identify the packs as CC0 1.0 (Kenney, ambientCG, Poly Haven),
+OFL-1.1 (Google Fonts), or CC-BY-3.0 (game-icons.net, with `Credits.txt` for
+the required attribution). The voice pack also retains its included
+`Credits.txt` file.
 
 - `UI/kenney-ui-pack/`: buttons, panels, icons, and interface graphics.
 - `UI/InputPrompts/kenney-input-prompts/`: keyboard, mouse, touch, and
@@ -33,6 +36,13 @@ as CC0 1.0. The voice pack also retains its included `Credits.txt` file.
 - `Props/`: furniture kit, food kit, and prototype kit props.
 - `UI/kenney-ui-pack/` (see above) plus sci-fi, adventure, and pixel-adventure
   UI packs, mobile controls, cursor pack, minimap pack, emotes, and ranks.
+- `UI/Icons/game-icons-urban/`: curated CC-BY-3.0 HUD, transport, weather, and
+  status icons (167 SVGs, `Credits.txt` attribution retained).
+- `Textures/ambientcg-*/`: curated CC0 PBR materials (asphalt, concrete,
+  metal, glass-adjacent, brick, tile, plaster, wood, ground) at 1K JPG.
+- `Environment/HDRI/polyhaven-*/`: six curated CC0 city/street skyboxes at 1K.
+- `Environment/Models/polyhaven-*/`: six curated CC0 urban props at 1K.
+- `Fonts/google-fonts-*/`: OFL-1.1 Rajdhani, Orbitron, and Noto Sans SC.
 - `Characters/Animated/`: Kenney animated, blocky, and mini character packs.
 - `Vehicles/Cars/`: Kenney car kit and racing kit.
 
@@ -60,6 +70,9 @@ catalogue/engine extras, and manifest drift.
 Fab, Mixamo, an unknown marketplace, or a bulk archive without recording the
 exact item license and redistribution terms first. See
 `docs/Assets/PUBLIC_ASSET_SOURCE_POLICY.md` for the repository-wide policy.
+
+The game-icons.net set is CC BY 3.0: keep `Credits.txt` when redistributing
+those icons. The Google Fonts sets are SIL OFL 1.1: keep their `License.txt`.
 
 Kenney credit is not mandatory under CC0, but the project keeps the creator and
 included license records for provenance. The current library is not yet

@@ -61,11 +61,13 @@ export function ManhattanCity({
       (err) => console.warn('[ManhattanCity] Failed to load manhattan_world.glb:', err),
     )
 
+    const group = groupRef.current
+
     return () => {
       active = false
-      if (groupRef.current) {
+      if (group) {
         // Dispose all geometry/materials to avoid GPU leaks.
-        groupRef.current.traverse((obj) => {
+        group.traverse((obj) => {
           if (obj instanceof THREE.Mesh) {
             obj.geometry.dispose()
             if (Array.isArray(obj.material)) {
@@ -75,7 +77,7 @@ export function ManhattanCity({
             }
           }
         })
-        groupRef.current.clear()
+        group.clear()
       }
     }
   }, [])

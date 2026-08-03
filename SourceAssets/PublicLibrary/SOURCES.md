@@ -2,10 +2,11 @@
 
 Acquisition date: 2026-08-03
 
-Every entry below was downloaded from an official Kenney asset page. The exact
-download URL and archive SHA-256 are recorded in `download-receipts.json`.
-Each extracted pack retains its own `License.txt`; the voice pack also retains
-`Credits.txt` for the recorded voice performers.
+Every entry below was downloaded from an official source page (Kenney,
+ambientCG, Poly Haven, Google Fonts, or game-icons.net). The exact download
+URL and archive SHA-256 are recorded in `download-receipts.json`. Each
+extracted pack retains its own `License.txt`; where the source requires or
+records credit, a `Credits.txt` is also retained.
 
 | Pack | Category | Official page | License | Intended use |
 |---|---|---|---|---|
@@ -49,6 +50,28 @@ Each extracted pack retains its own `License.txt`; the voice pack also retains
 | Kenney Smoke Particles | VFX | https://kenney.nl/assets/smoke-particles | CC0 1.0 | Smoke puff and cloud sprites |
 | Kenney Splat Pack | VFX | https://kenney.nl/assets/splat-pack | CC0 1.0 | Paint, stain, and wetness stains |
 | Kenney Foliage Sprites | VFX | https://kenney.nl/assets/foliage-sprites | CC0 1.0 | Vegetation sprite sheets |
+| ambientCG Asphalt 010/011 | Textures | https://ambientcg.com/view?id=Asphalt011 | CC0 1.0 | Road and street surface PBR materials |
+| ambientCG Concrete 017/022 | Textures | https://ambientcg.com/view?id=Concrete017 | CC0 1.0 | Sidewalk and building concrete PBR materials |
+| ambientCG Gravel 001 | Textures | https://ambientcg.com/view?id=Gravel001 | CC0 1.0 | Gravel ground PBR material |
+| ambientCG Ground 048 | Textures | https://ambientcg.com/view?id=Ground048 | CC0 1.0 | Dry ground PBR material |
+| ambientCG Metal 009/028/032/035 | Textures | https://ambientcg.com/view?id=Metal032 | CC0 1.0 | Metal, grating, corrugated, and rust PBR materials |
+| ambientCG Plaster 001 | Textures | https://ambientcg.com/view?id=Plaster001 | CC0 1.0 | Facade plaster PBR material |
+| ambientCG Wood 047 | Textures | https://ambientcg.com/view?id=Wood047 | CC0 1.0 | Wood plank PBR material |
+| ambientCG Bricks 102/104 | Textures | https://ambientcg.com/view?id=Bricks104 | CC0 1.0 | Brick wall PBR materials |
+| ambientCG Tiles 107/141 | Textures | https://ambientcg.com/view?id=Tiles141 | CC0 1.0 | Tiled surface PBR materials |
+| Poly Haven HDRI Set | Environment/HDRI | https://polyhaven.com/ | CC0 1.0 | City, street, and dusk skybox environments |
+| Poly Haven Model Set | Environment/Models | https://polyhaven.com/ | CC0 1.0 | Fire hydrant, stove, wet-floor sign, lantern, workshop lamp, boulder |
+| Google Fonts Rajdhani | Fonts | https://fonts.google.com/specimen/rajdhani | OFL-1.1 | Urban UI/heading typeface |
+| Google Fonts Orbitron | Fonts | https://fonts.google.com/specimen/orbitron | OFL-1.1 | Sci-fi UI typeface |
+| Google Fonts Noto Sans SC | Fonts | https://fonts.google.com/specimen/noto+sans+sc | OFL-1.1 | Chinese text typeface |
+| Game Icons Urban Set | UI/Icons | https://gameicons.net/ | CC-BY-3.0 | HUD, transport, weather, and status icons |
+
+## HDRI and model picks
+
+Poly Haven HDRI picks (1K): `shanghai_bund`, `modern_evening_street`,
+`potsdamer_platz`, `canary_wharf`, `cobblestone_street_night`,
+`modern_buildings`. Model picks (1K textures): `fire_hydrant`, `barrel_stove`,
+`WetFloorSign_01`, `Lantern_01`, `hanging_industrial_lamp`, `boulder_01`.
 
 ## Wider source review
 

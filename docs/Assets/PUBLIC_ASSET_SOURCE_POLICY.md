@@ -13,6 +13,8 @@ its implemented runtime use passes the asset and performance gates.
 | [cgbookcase](https://www.cgbookcase.com/) | Exact CC0 texture items | Item URL, creator, source hash, runtime hash |
 | [Quaternius](https://quaternius.com/faq.html) | CC0 packs and Universal Animation Libraries | Pack URL, included license, archive hash, implemented clip list |
 | [Kenney](https://kenney.nl/support) | CC0 game assets | Asset-page URL, included license, archive and runtime hashes |
+| [Google Fonts](https://fonts.google.com/about) | OFL-1.1 font families | Official GitHub `google/fonts` OFL.txt, font-file hashes |
+| [game-icons.net](https://gameicons.net/) | CC-BY-3.0 SVG icons with attribution | Official GitHub tree, included license, icon hashes, Credits.txt |
 | Fab or Sketchfab | Exact CC0 or CC-BY item only | Listing snapshot, creator, exact license, attribution/change notice, hashes |
 
 Official APIs are preferred. Do not scrape websites, bypass authentication, or
