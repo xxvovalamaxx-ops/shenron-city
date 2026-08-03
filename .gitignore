@@ -64,3 +64,5 @@ Thumbs.db
 /docs/Assets/Previews/japanese-forest-shrine-*-test.png
 /docs/Assets/Previews/japanese-forest-shrine-clay.png
 /docs/Assets/Previews/japanese-forest-shrine-realistic.png
+
+*.log
