@@ -15,8 +15,11 @@ export default defineConfig({
     host: '127.0.0.1',
     hmr: false,
     watch: {
-      usePolling: true,
-      interval: 1000,
+      // Native watchers, not per-file 1s polling: polling the whole repo at
+      // ~15k tracked files stalls the event loop and starves real requests
+      // (a 20 MB GLB took 140 s to serve). The authoring library and local
+      // projects are huge and never imported by the runtime.
+      ignored: ['**/SourceAssets/**', '**/Made assets/**', '**/node_modules/**'],
     },
   },
   build: {

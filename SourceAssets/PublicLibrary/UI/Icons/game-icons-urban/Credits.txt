@@ -1,0 +1,5 @@
+Game Icons (https://gameicons.net) - curated set of 110 SVG icons.
+License: Creative Commons Attribution 3.0 Unported (CC BY 3.0) - see License.txt.
+Icons are by Lorc, Delapouite, sbed, and other contributors to the game-icons.net project.
+Attribution required: include this notice and link to https://gameicons.net when redistributing.
+Downloaded 2026-08-03.

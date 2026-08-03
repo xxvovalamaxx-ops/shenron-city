@@ -2,4 +2,4 @@ polyhaven.com 3D model "boulder_01", published under the CC0 1.0 Universal Publi
 Source: https://polyhaven.com/a/boulder_01
 Creator: Poly Haven (polyhaven.com)
 License: CC0 1.0  https://creativecommons.org/publicdomain/zero/1.0/
-No attribution required. Downloaded 2026-08-03. 1K textures.
+No attribution required. Downloaded 2026-08-03. 1K textures. Textures and buffers re-saved alongside the GLTF with updated URIs.
