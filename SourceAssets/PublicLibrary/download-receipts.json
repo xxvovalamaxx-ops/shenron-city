@@ -36,6 +36,15 @@
     "extractedBytes": 12851426
   },
   {
+    "id": "kenney-building-kit",
+    "category": "Buildings/Modular",
+    "sourcePage": "https://kenney.nl/assets/building-kit",
+    "downloadUrl": "https://kenney.nl/media/pages/assets/building-kit/0de7aaa492-1743244741/kenney_building-kit.zip",
+    "archiveSha256": "2740ef5772fb5fb3d7aab881db22d129f6b68afe711b1a79e6d5e9e19cf3eec6",
+    "fileCount": 403,
+    "extractedBytes": 4511144
+  },
+  {
     "id": "kenney-car-kit",
     "category": "Vehicles/Cars",
     "sourcePage": "https://kenney.nl/assets/car-kit",
@@ -45,6 +54,51 @@
     "extractedBytes": 14473176
   },
   {
+    "id": "kenney-city-kit-commercial",
+    "category": "Buildings/City",
+    "sourcePage": "https://kenney.nl/assets/city-kit-commercial",
+    "downloadUrl": "https://kenney.nl/media/pages/assets/city-kit-commercial/a742d900eb-1753115042/kenney_city-kit-commercial_2.1.zip",
+    "archiveSha256": "f8b09b081c2bb88bcc126e2dec1cb40fd0dad7e7e591b6c26aaefe96fb35276b",
+    "fileCount": 215,
+    "extractedBytes": 11180448
+  },
+  {
+    "id": "kenney-city-kit-industrial",
+    "category": "Buildings/City",
+    "sourcePage": "https://kenney.nl/assets/city-kit-industrial",
+    "downloadUrl": "https://kenney.nl/media/pages/assets/city-kit-industrial/5fcb837741-1750838303/kenney_city-kit-industrial_1.0.zip",
+    "archiveSha256": "99a09ff148056678c0c3b7977ad9dbce55d2f243e06fbfc7c28642accef4dd9e",
+    "fileCount": 137,
+    "extractedBytes": 8505180
+  },
+  {
+    "id": "kenney-city-kit-roads",
+    "category": "Buildings/City",
+    "sourcePage": "https://kenney.nl/assets/city-kit-roads",
+    "downloadUrl": "https://kenney.nl/media/pages/assets/city-kit-roads/74288c9459-1741864740/kenney_city-kit-roads.zip",
+    "archiveSha256": "2c1644a293a85d98837ef788b0cbc4b9d53dffb1280fbe9a4f927b644aaba4b0",
+    "fileCount": 368,
+    "extractedBytes": 4720255
+  },
+  {
+    "id": "kenney-city-kit-suburban",
+    "category": "Buildings/City",
+    "sourcePage": "https://kenney.nl/assets/city-kit-suburban",
+    "downloadUrl": "https://kenney.nl/media/pages/assets/city-kit-suburban/2c871b7af2-1745479373/kenney_city-kit-suburban_20.zip",
+    "archiveSha256": "5869c35cf30b1c87bdb2d197b6d325eebadd2ef08ea27f04797e8e08d77a9a39",
+    "fileCount": 212,
+    "extractedBytes": 8059673
+  },
+  {
+    "id": "kenney-cursor-pack",
+    "category": "UI",
+    "sourcePage": "https://kenney.nl/assets/cursor-pack",
+    "downloadUrl": "https://kenney.nl/media/pages/assets/cursor-pack/461b29df18-1717599281/kenney_cursor-pack.zip",
+    "archiveSha256": "baa87634f3cfd294b0c83e70222053aab2f56d19f78eca4067b9b38a555269cc",
+    "fileCount": 1094,
+    "extractedBytes": 816486
+  },
+  {
     "id": "kenney-digital-audio",
     "category": "Audio/World",
     "sourcePage": "https://kenney.nl/assets/digital-audio",
@@ -52,6 +106,42 @@
     "archiveSha256": "24e6ce28b76a6d8c89cff4d331e0965ff5c3de8a73c612028e9d363cc64e4f06",
     "fileCount": 64,
     "extractedBytes": 1064484
+  },
+  {
+    "id": "kenney-emotes-pack",
+    "category": "UI",
+    "sourcePage": "https://kenney.nl/assets/emotes-pack",
+    "downloadUrl": "https://kenney.nl/media/pages/assets/emotes-pack/d00a3dcb06-1677578798/kenney_emotes-pack.zip",
+    "archiveSha256": "96ab3f2c92d7acd860942efca1c9f1295184b11d3db5c79c28da82036e496526",
+    "fileCount": 532,
+    "extractedBytes": 385641
+  },
+  {
+    "id": "kenney-foliage-sprites",
+    "category": "VFX",
+    "sourcePage": "https://kenney.nl/assets/foliage-sprites",
+    "downloadUrl": "https://kenney.nl/media/pages/assets/foliage-sprites/b65bd70c69-1677495980/kenney_foliage-sprites.zip",
+    "archiveSha256": "8e3e944acaa731a90e0b004846d2ce99ee8a65d5479b4c2f421cab7cdde128e5",
+    "fileCount": 105,
+    "extractedBytes": 2968409
+  },
+  {
+    "id": "kenney-food-kit",
+    "category": "Props/Market",
+    "sourcePage": "https://kenney.nl/assets/food-kit",
+    "downloadUrl": "https://kenney.nl/media/pages/assets/food-kit/83086fa91c-1719418518/kenney_food-kit.zip",
+    "archiveSha256": "cdad90853682499b94c9fda2f87678b24bfd8f3264e0ed323f6b6a27fd7c6f6f",
+    "fileCount": 1005,
+    "extractedBytes": 13610922
+  },
+  {
+    "id": "kenney-furniture-kit",
+    "category": "Props/Interior",
+    "sourcePage": "https://kenney.nl/assets/furniture-kit",
+    "downloadUrl": "https://kenney.nl/media/pages/assets/furniture-kit/440e0608a4-1677580847/kenney_furniture-kit.zip",
+    "archiveSha256": "e67652d0932cee41683f74711c03d3e192a2af9979ef8e6b237711f5482d46b0",
+    "fileCount": 1543,
+    "extractedBytes": 17671250
   },
   {
     "id": "kenney-impact-sounds",
@@ -81,6 +171,15 @@
     "extractedBytes": 961173
   },
   {
+    "id": "kenney-light-masks",
+    "category": "VFX",
+    "sourcePage": "https://kenney.nl/assets/light-masks",
+    "downloadUrl": "https://kenney.nl/media/pages/assets/light-masks/6530e254f9-1775631687/kenney_light-masks-1.0.zip",
+    "archiveSha256": "e1238694d7e49046e42d67f2975be0217861c7cc9bc358383a8e5e583645004f",
+    "fileCount": 458,
+    "extractedBytes": 15442309
+  },
+  {
     "id": "kenney-mini-characters",
     "category": "Characters/Animated",
     "sourcePage": "https://kenney.nl/assets/mini-characters",
@@ -88,6 +187,24 @@
     "archiveSha256": "9e1d48e6d7b8479ebbe84df71eb5bd8e1b3f0da546dea641890dccc8a02d0999",
     "fileCount": 135,
     "extractedBytes": 13849480
+  },
+  {
+    "id": "kenney-minimap-pack",
+    "category": "UI",
+    "sourcePage": "https://kenney.nl/assets/minimap-pack",
+    "downloadUrl": "https://kenney.nl/media/pages/assets/minimap-pack/37d4e34596-1730884114/kenney_minimap-pack.zip",
+    "archiveSha256": "aa1538204809789e25feefaa371a6b94132d3a2f8c751da7fb15b08a78114ae5",
+    "fileCount": 166,
+    "extractedBytes": 58613
+  },
+  {
+    "id": "kenney-mobile-controls",
+    "category": "UI",
+    "sourcePage": "https://kenney.nl/assets/mobile-controls",
+    "downloadUrl": "https://kenney.nl/media/pages/assets/mobile-controls/0d047b3be4-1754738457/mobile-controls-1.zip",
+    "archiveSha256": "7331c648651858fb3186a8c76e0e360e4d3ea71cfec9b502eb5cbb04a02e192b",
+    "fileCount": 1433,
+    "extractedBytes": 3402495
   },
   {
     "id": "kenney-music-jingles",
@@ -99,6 +216,15 @@
     "extractedBytes": 1433122
   },
   {
+    "id": "kenney-nature-kit",
+    "category": "Environment/Nature",
+    "sourcePage": "https://kenney.nl/assets/nature-kit",
+    "downloadUrl": "https://kenney.nl/media/pages/assets/nature-kit/37ac38a37b-1677698939/kenney_nature-kit.zip",
+    "archiveSha256": "fa7974a0d342bfe63c38664ba9f8ec1a4aab8ea25f099bdc56870e33588c4d9d",
+    "fileCount": 3615,
+    "extractedBytes": 29442980
+  },
+  {
     "id": "kenney-particle-pack",
     "category": "VFX",
     "sourcePage": "https://kenney.nl/assets/particle-pack",
@@ -108,6 +234,15 @@
     "extractedBytes": 9704025
   },
   {
+    "id": "kenney-prototype-kit",
+    "category": "Props/Prototype",
+    "sourcePage": "https://kenney.nl/assets/prototype-kit",
+    "downloadUrl": "https://kenney.nl/media/pages/assets/prototype-kit/4d3b7073ed-1724832076/kenney_prototype-kit.zip",
+    "archiveSha256": "213b522fb12bcc9b9ac66c4f7581f7c74623293272212e40a70c39936ad3da95",
+    "fileCount": 736,
+    "extractedBytes": 10375170
+  },
+  {
     "id": "kenney-racing-kit",
     "category": "Vehicles/Cars",
     "sourcePage": "https://kenney.nl/assets/racing-kit",
@@ -115,6 +250,15 @@
     "archiveSha256": "8a71ea16219315a01d00d5a90c4f6b5c090faddbc56d80ecf727e2b3b853c6c0",
     "fileCount": 1260,
     "extractedBytes": 18286426
+  },
+  {
+    "id": "kenney-ranks-pack",
+    "category": "UI",
+    "sourcePage": "https://kenney.nl/assets/ranks-pack",
+    "downloadUrl": "https://kenney.nl/media/pages/assets/ranks-pack/6f46ba5840-1677578852/kenney_ranks-pack.zip",
+    "archiveSha256": "976624df6935f10015c7094f0691172f9c10b7958c8b2a5fc0eddd714ceafb17",
+    "fileCount": 642,
+    "extractedBytes": 819879
   },
   {
     "id": "kenney-rpg-audio",
@@ -144,6 +288,24 @@
     "extractedBytes": 5070766
   },
   {
+    "id": "kenney-smoke-particles",
+    "category": "VFX",
+    "sourcePage": "https://kenney.nl/assets/smoke-particles",
+    "downloadUrl": "https://kenney.nl/media/pages/assets/smoke-particles/23249a0d35-1677695171/kenney_smoke-particles.zip",
+    "archiveSha256": "97a1d09c66e4fd6c247c8ea87f84c0cc59caaeceae19414c995afb1616a1e1c9",
+    "fileCount": 80,
+    "extractedBytes": 6009920
+  },
+  {
+    "id": "kenney-splat-pack",
+    "category": "VFX",
+    "sourcePage": "https://kenney.nl/assets/splat-pack",
+    "downloadUrl": "https://kenney.nl/media/pages/assets/splat-pack/1070534984-1677495350/kenney_splat-pack.zip",
+    "archiveSha256": "cf50b2671c48fd5b957e249447c9b0dff63c878a538c8e38af282b51f1571925",
+    "fileCount": 111,
+    "extractedBytes": 464239
+  },
+  {
     "id": "kenney-ui-audio",
     "category": "Audio/UI",
     "sourcePage": "https://kenney.nl/assets/ui-audio",
@@ -160,6 +322,33 @@
     "archiveSha256": "a8a14a234911eb648c062622915c93e79e94e97cb7f9f375a70f6617f1174318",
     "fileCount": 1313,
     "extractedBytes": 1416420
+  },
+  {
+    "id": "kenney-ui-pack-adventure",
+    "category": "UI",
+    "sourcePage": "https://kenney.nl/assets/ui-pack-adventure",
+    "downloadUrl": "https://kenney.nl/media/pages/assets/ui-pack-adventure/9a877376bc-1723597274/kenney_ui-pack-adventure.zip",
+    "archiveSha256": "982e8ab66842509ee9214f9c2038e594cbe029f19d1dc177fecaad3b41a67ed3",
+    "fileCount": 391,
+    "extractedBytes": 678677
+  },
+  {
+    "id": "kenney-ui-pack-pixel-adventure",
+    "category": "UI",
+    "sourcePage": "https://kenney.nl/assets/ui-pack-pixel-adventure",
+    "downloadUrl": "https://kenney.nl/media/pages/assets/ui-pack-pixel-adventure/405ba5278a-1729196257/kenney_ui-pack-pixel-adventure.zip",
+    "archiveSha256": "0b0ed4802ebcfff5e44e370f394baa1d751862a5a4a7612ac4ce84e85faa0627",
+    "fileCount": 517,
+    "extractedBytes": 215904
+  },
+  {
+    "id": "kenney-ui-pack-sci-fi",
+    "category": "UI",
+    "sourcePage": "https://kenney.nl/assets/ui-pack-sci-fi",
+    "downloadUrl": "https://kenney.nl/media/pages/assets/ui-pack-sci-fi/b67c2acd31-1724181109/kenney_ui-pack-space-expansion.zip",
+    "archiveSha256": "4ae5a4949b71ba6c08bfb4d4708b3880915782f7deae7bc5872e1d56f0a668af",
+    "fileCount": 1115,
+    "extractedBytes": 865295
   },
   {
     "id": "kenney-voiceover-pack",
