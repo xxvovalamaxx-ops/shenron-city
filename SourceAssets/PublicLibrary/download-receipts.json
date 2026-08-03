@@ -1,110 +1,173 @@
-﻿[
-    {
-        "id":  "kenney-ui-pack",
-        "category":  "UI",
-        "sourcePage":  "https://kenney.nl/assets/ui-pack",
-        "downloadUrl":  "https://kenney.nl/media/pages/assets/ui-pack/f651646eab-1718203990/kenney_ui-pack.zip",
-        "archiveSha256":  "a8a14a234911eb648c062622915c93e79e94e97cb7f9f375a70f6617f1174318",
-        "fileCount":  1313,
-        "extractedBytes":  1416420
-    },
-    {
-        "id":  "kenney-input-prompts",
-        "category":  "UI/InputPrompts",
-        "sourcePage":  "https://kenney.nl/assets/input-prompts",
-        "downloadUrl":  "https://kenney.nl/media/pages/assets/input-prompts/8de120163f-1783763952/kenney_input-prompts_1.5.zip",
-        "archiveSha256":  "ac2fcf599080b0f3ba2d174c9474db6df1a0e96ff0662580e2da79a122ab78a1",
-        "fileCount":  4663,
-        "extractedBytes":  5742631
-    },
-    {
-        "id":  "kenney-ui-audio",
-        "category":  "Audio/UI",
-        "sourcePage":  "https://kenney.nl/assets/ui-audio",
-        "downloadUrl":  "https://kenney.nl/media/pages/assets/ui-audio/490d233f68-1677590494/kenney_ui-audio.zip",
-        "archiveSha256":  "946fc23a63d535d693eb31b2eabb80c8c28d6351e2186b344ceb71b2cb1d5eb6",
-        "fileCount":  53,
-        "extractedBytes":  487337
-    },
-    {
-        "id":  "kenney-interface-sounds",
-        "category":  "Audio/UI",
-        "sourcePage":  "https://kenney.nl/assets/interface-sounds",
-        "downloadUrl":  "https://kenney.nl/media/pages/assets/interface-sounds/fa43c1dd4d-1677589452/kenney_interface-sounds.zip",
-        "archiveSha256":  "f2193d072726d6758a5f7871b2dcc54dcce0d5c35c6f0a62f92549b327c81232",
-        "fileCount":  101,
-        "extractedBytes":  961173
-    },
-    {
-        "id":  "kenney-impact-sounds",
-        "category":  "Audio/Foley",
-        "sourcePage":  "https://kenney.nl/assets/impact-sounds",
-        "downloadUrl":  "https://kenney.nl/media/pages/assets/impact-sounds/87b4ddecda-1677589768/kenney_impact-sounds.zip",
-        "archiveSha256":  "029d734af1582474edf3a694d1b0cebc97c1c152f2f39fa34d4c2bafc5de77f8",
-        "fileCount":  131,
-        "extractedBytes":  1034904
-    },
-    {
-        "id":  "kenney-sci-fi-sounds",
-        "category":  "Audio/World",
-        "sourcePage":  "https://kenney.nl/assets/sci-fi-sounds",
-        "downloadUrl":  "https://kenney.nl/media/pages/assets/sci-fi-sounds/6b296f9ecf-1677589334/kenney_sci-fi-sounds.zip",
-        "archiveSha256":  "119340f351a5098ad814f78719438c0da355a9ce8a4c8a3af6a8d48aa3d49e04",
-        "fileCount":  74,
-        "extractedBytes":  6009396
-    },
-    {
-        "id":  "kenney-rpg-audio",
-        "category":  "Audio/Foley",
-        "sourcePage":  "https://kenney.nl/assets/rpg-audio",
-        "downloadUrl":  "https://kenney.nl/media/pages/assets/rpg-audio/8e99002d76-1677590336/kenney_rpg-audio.zip",
-        "archiveSha256":  "6dbeaf8544da958d8f2adcb4a4a4b76c1ade34a05f8ab9edccd327da7375f38b",
-        "fileCount":  53,
-        "extractedBytes":  1049117
-    },
-    {
-        "id":  "kenney-digital-audio",
-        "category":  "Audio/World",
-        "sourcePage":  "https://kenney.nl/assets/digital-audio",
-        "downloadUrl":  "https://kenney.nl/media/pages/assets/digital-audio/216eac4753-1677590265/kenney_digital-audio.zip",
-        "archiveSha256":  "24e6ce28b76a6d8c89cff4d331e0965ff5c3de8a73c612028e9d363cc64e4f06",
-        "fileCount":  64,
-        "extractedBytes":  1064484
-    },
-    {
-        "id":  "kenney-music-jingles",
-        "category":  "Audio/Music",
-        "sourcePage":  "https://kenney.nl/assets/music-jingles",
-        "downloadUrl":  "https://kenney.nl/media/pages/assets/music-jingles/f37e530b9e-1677590399/kenney_music-jingles.zip",
-        "archiveSha256":  "b729ba57959bd58793d2c5cafa348aaf2655d354f3da35ec4729e03ec77197b8",
-        "fileCount":  87,
-        "extractedBytes":  1433122
-    },
-    {
-        "id":  "kenney-voiceover-pack",
-        "category":  "Audio/Voice",
-        "sourcePage":  "https://kenney.nl/assets/voiceover-pack",
-        "downloadUrl":  "https://kenney.nl/media/pages/assets/voiceover-pack/3f7f168698-1677589897/kenney_voiceover-pack.zip",
-        "archiveSha256":  "a5194df2f05f7ec439a8d4c1a7c20ba12ffe700d363a0733ae6fa826846af458",
-        "fileCount":  97,
-        "extractedBytes":  1987938
-    },
-    {
-        "id":  "kenney-particle-pack",
-        "category":  "VFX",
-        "sourcePage":  "https://kenney.nl/assets/particle-pack",
-        "downloadUrl":  "https://kenney.nl/media/pages/assets/particle-pack/f8fe0f8cb8-1677578741/kenney_particle-pack.zip",
-        "archiveSha256":  "b631d4b07f7002549fdcf155f01141ad482f79f3440e4e301eed49ce5f1d8958",
-        "fileCount":  194,
-        "extractedBytes":  9704025
-    },
-    {
-        "id":  "kenney-skyboxes",
-        "category":  "Environment/Skyboxes",
-        "sourcePage":  "https://kenney.nl/assets/skyboxes",
-        "downloadUrl":  "https://kenney.nl/media/pages/assets/skyboxes/6736ff5c10-1784123473/kenney_skyboxes.zip",
-        "archiveSha256":  "ff339713105fe1b777ecafa0b66094e8fb1431cfcf88df761b9ad015aadf4028",
-        "fileCount":  9,
-        "extractedBytes":  5070766
-    }
+[
+  {
+    "id": "kenney-animated-characters-protagonists",
+    "category": "Characters/Animated",
+    "sourcePage": "https://kenney.nl/assets/animated-characters-protagonists",
+    "downloadUrl": "https://kenney.nl/media/pages/assets/animated-characters-protagonists/608191acc4-1774773108/kenney_animated-characters-protagonists.zip",
+    "archiveSha256": "ec3787de70fa2200256848d74201b10f6b6c3126594e9857bf989753312c2b84",
+    "fileCount": 14,
+    "extractedBytes": 2241533
+  },
+  {
+    "id": "kenney-animated-characters-retro",
+    "category": "Characters/Animated",
+    "sourcePage": "https://kenney.nl/assets/animated-characters-retro",
+    "downloadUrl": "https://kenney.nl/media/pages/assets/animated-characters-retro/93305a3c49-1774772819/kenney_animated-characters-retro.zip",
+    "archiveSha256": "1d03f1fb001f3cf629425b69c898df58261a316616220ea25b58bd35298e6882",
+    "fileCount": 10,
+    "extractedBytes": 2268999
+  },
+  {
+    "id": "kenney-animated-characters-survivors",
+    "category": "Characters/Animated",
+    "sourcePage": "https://kenney.nl/assets/animated-characters-survivors",
+    "downloadUrl": "https://kenney.nl/media/pages/assets/animated-characters-survivors/27b16052a7-1774772958/kenney_animated-characters-survivors.zip",
+    "archiveSha256": "fdadced07a0454c9b7f0b46507be6144a072b4d03b4ffa37f225893c76c62845",
+    "fileCount": 15,
+    "extractedBytes": 2388133
+  },
+  {
+    "id": "kenney-blocky-characters",
+    "category": "Characters/Animated",
+    "sourcePage": "https://kenney.nl/assets/blocky-characters",
+    "downloadUrl": "https://kenney.nl/media/pages/assets/blocky-characters/8369c0cf30-1749547469/kenney_blocky-characters_20.zip",
+    "archiveSha256": "5e123859aa0c1598342b600c6db197024a1d63eb9ec531398b310725f589887e",
+    "fileCount": 146,
+    "extractedBytes": 12851426
+  },
+  {
+    "id": "kenney-car-kit",
+    "category": "Vehicles/Cars",
+    "sourcePage": "https://kenney.nl/assets/car-kit",
+    "downloadUrl": "https://kenney.nl/media/pages/assets/car-kit/1a312ec241-1775131960/kenney_car-kit.zip",
+    "archiveSha256": "fac7dacac5c7874348cf19729af3ef205f3d366493edaf0a827d93f4fdf3d0c4",
+    "fileCount": 255,
+    "extractedBytes": 14473176
+  },
+  {
+    "id": "kenney-digital-audio",
+    "category": "Audio/World",
+    "sourcePage": "https://kenney.nl/assets/digital-audio",
+    "downloadUrl": "https://kenney.nl/media/pages/assets/digital-audio/216eac4753-1677590265/kenney_digital-audio.zip",
+    "archiveSha256": "24e6ce28b76a6d8c89cff4d331e0965ff5c3de8a73c612028e9d363cc64e4f06",
+    "fileCount": 64,
+    "extractedBytes": 1064484
+  },
+  {
+    "id": "kenney-impact-sounds",
+    "category": "Audio/Foley",
+    "sourcePage": "https://kenney.nl/assets/impact-sounds",
+    "downloadUrl": "https://kenney.nl/media/pages/assets/impact-sounds/87b4ddecda-1677589768/kenney_impact-sounds.zip",
+    "archiveSha256": "029d734af1582474edf3a694d1b0cebc97c1c152f2f39fa34d4c2bafc5de77f8",
+    "fileCount": 131,
+    "extractedBytes": 1034904
+  },
+  {
+    "id": "kenney-input-prompts",
+    "category": "UI/InputPrompts",
+    "sourcePage": "https://kenney.nl/assets/input-prompts",
+    "downloadUrl": "https://kenney.nl/media/pages/assets/input-prompts/8de120163f-1783763952/kenney_input-prompts_1.5.zip",
+    "archiveSha256": "ac2fcf599080b0f3ba2d174c9474db6df1a0e96ff0662580e2da79a122ab78a1",
+    "fileCount": 4663,
+    "extractedBytes": 5742631
+  },
+  {
+    "id": "kenney-interface-sounds",
+    "category": "Audio/UI",
+    "sourcePage": "https://kenney.nl/assets/interface-sounds",
+    "downloadUrl": "https://kenney.nl/media/pages/assets/interface-sounds/fa43c1dd4d-1677589452/kenney_interface-sounds.zip",
+    "archiveSha256": "f2193d072726d6758a5f7871b2dcc54dcce0d5c35c6f0a62f92549b327c81232",
+    "fileCount": 101,
+    "extractedBytes": 961173
+  },
+  {
+    "id": "kenney-mini-characters",
+    "category": "Characters/Animated",
+    "sourcePage": "https://kenney.nl/assets/mini-characters",
+    "downloadUrl": "https://kenney.nl/media/pages/assets/mini-characters/bfc7e272b4-1774770718/kenney_mini-characters.zip",
+    "archiveSha256": "9e1d48e6d7b8479ebbe84df71eb5bd8e1b3f0da546dea641890dccc8a02d0999",
+    "fileCount": 135,
+    "extractedBytes": 13849480
+  },
+  {
+    "id": "kenney-music-jingles",
+    "category": "Audio/Music",
+    "sourcePage": "https://kenney.nl/assets/music-jingles",
+    "downloadUrl": "https://kenney.nl/media/pages/assets/music-jingles/f37e530b9e-1677590399/kenney_music-jingles.zip",
+    "archiveSha256": "b729ba57959bd58793d2c5cafa348aaf2655d354f3da35ec4729e03ec77197b8",
+    "fileCount": 87,
+    "extractedBytes": 1433122
+  },
+  {
+    "id": "kenney-particle-pack",
+    "category": "VFX",
+    "sourcePage": "https://kenney.nl/assets/particle-pack",
+    "downloadUrl": "https://kenney.nl/media/pages/assets/particle-pack/f8fe0f8cb8-1677578741/kenney_particle-pack.zip",
+    "archiveSha256": "b631d4b07f7002549fdcf155f01141ad482f79f3440e4e301eed49ce5f1d8958",
+    "fileCount": 194,
+    "extractedBytes": 9704025
+  },
+  {
+    "id": "kenney-racing-kit",
+    "category": "Vehicles/Cars",
+    "sourcePage": "https://kenney.nl/assets/racing-kit",
+    "downloadUrl": "https://kenney.nl/media/pages/assets/racing-kit/933b8fd9fd-1677580949/kenney_racing-kit.zip",
+    "archiveSha256": "8a71ea16219315a01d00d5a90c4f6b5c090faddbc56d80ecf727e2b3b853c6c0",
+    "fileCount": 1260,
+    "extractedBytes": 18286426
+  },
+  {
+    "id": "kenney-rpg-audio",
+    "category": "Audio/Foley",
+    "sourcePage": "https://kenney.nl/assets/rpg-audio",
+    "downloadUrl": "https://kenney.nl/media/pages/assets/rpg-audio/8e99002d76-1677590336/kenney_rpg-audio.zip",
+    "archiveSha256": "6dbeaf8544da958d8f2adcb4a4a4b76c1ade34a05f8ab9edccd327da7375f38b",
+    "fileCount": 53,
+    "extractedBytes": 1049117
+  },
+  {
+    "id": "kenney-sci-fi-sounds",
+    "category": "Audio/World",
+    "sourcePage": "https://kenney.nl/assets/sci-fi-sounds",
+    "downloadUrl": "https://kenney.nl/media/pages/assets/sci-fi-sounds/6b296f9ecf-1677589334/kenney_sci-fi-sounds.zip",
+    "archiveSha256": "119340f351a5098ad814f78719438c0da355a9ce8a4c8a3af6a8d48aa3d49e04",
+    "fileCount": 74,
+    "extractedBytes": 6009396
+  },
+  {
+    "id": "kenney-skyboxes",
+    "category": "Environment/Skyboxes",
+    "sourcePage": "https://kenney.nl/assets/skyboxes",
+    "downloadUrl": "https://kenney.nl/media/pages/assets/skyboxes/6736ff5c10-1784123473/kenney_skyboxes.zip",
+    "archiveSha256": "ff339713105fe1b777ecafa0b66094e8fb1431cfcf88df761b9ad015aadf4028",
+    "fileCount": 9,
+    "extractedBytes": 5070766
+  },
+  {
+    "id": "kenney-ui-audio",
+    "category": "Audio/UI",
+    "sourcePage": "https://kenney.nl/assets/ui-audio",
+    "downloadUrl": "https://kenney.nl/media/pages/assets/ui-audio/490d233f68-1677590494/kenney_ui-audio.zip",
+    "archiveSha256": "946fc23a63d535d693eb31b2eabb80c8c28d6351e2186b344ceb71b2cb1d5eb6",
+    "fileCount": 53,
+    "extractedBytes": 487337
+  },
+  {
+    "id": "kenney-ui-pack",
+    "category": "UI",
+    "sourcePage": "https://kenney.nl/assets/ui-pack",
+    "downloadUrl": "https://kenney.nl/media/pages/assets/ui-pack/f651646eab-1718203990/kenney_ui-pack.zip",
+    "archiveSha256": "a8a14a234911eb648c062622915c93e79e94e97cb7f9f375a70f6617f1174318",
+    "fileCount": 1313,
+    "extractedBytes": 1416420
+  },
+  {
+    "id": "kenney-voiceover-pack",
+    "category": "Audio/Voice",
+    "sourcePage": "https://kenney.nl/assets/voiceover-pack",
+    "downloadUrl": "https://kenney.nl/media/pages/assets/voiceover-pack/3f7f168698-1677589897/kenney_voiceover-pack.zip",
+    "archiveSha256": "a5194df2f05f7ec439a8d4c1a7c20ba12ffe700d363a0733ae6fa826846af458",
+    "fileCount": 97,
+    "extractedBytes": 1987938
+  }
 ]

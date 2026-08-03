@@ -21,6 +21,13 @@ Each extracted pack retains its own `License.txt`; the voice pack also retains
 | Kenney Voiceover Pack | Audio/Voice | https://kenney.nl/assets/voiceover-pack | CC0 1.0 | Temporary dialogue and objective callouts |
 | Kenney Particle Pack | VFX | https://kenney.nl/assets/particle-pack | CC0 1.0 | Dust, sparks, impacts, and UI effects |
 | Kenney Skyboxes | Environment/Skyboxes | https://kenney.nl/assets/skyboxes | CC0 1.0 | Optional environment backgrounds |
+| Kenney Car Kit | Vehicles/Cars | https://kenney.nl/assets/car-kit | CC0 1.0 | City traffic shells and kart variants |
+| Kenney Racing Kit | Vehicles/Cars | https://kenney.nl/assets/racing-kit | CC0 1.0 | Racing cars and track pieces |
+| Kenney Animated Characters Retro | Characters/Animated | https://kenney.nl/assets/animated-characters-retro | CC0 1.0 | Rigged citizens with idle/jump/run |
+| Kenney Animated Characters Protagonists | Characters/Animated | https://kenney.nl/assets/animated-characters-protagonists | CC0 1.0 | Rigged skater/cyborg/criminal skins |
+| Kenney Animated Characters Survivors | Characters/Animated | https://kenney.nl/assets/animated-characters-survivors | CC0 1.0 | Additional rigged character skins |
+| Kenney Blocky Characters | Characters/Animated | https://kenney.nl/assets/blocky-characters | CC0 1.0 | Blocky animated crowd options |
+| Kenney Mini Characters | Characters/Animated | https://kenney.nl/assets/mini-characters | CC0 1.0 | Mini animated people set |
 
 ## Wider source review
 
@@ -31,8 +38,10 @@ catalogues:
   recorded in `docs/Assets/ASSET_MANIFEST.csv`.
 - ambientCG and cgbookcase: suitable only for exact CC0 item records; no new
   item was needed for this tranche.
-- Quaternius: CC0 models and animation packs. Existing character imports are
-  recorded in the asset manifest.
+- Quaternius: CC0 models and animation packs. Runtime already ships the
+  Universal Hero / animation subset. Free Standard packs on itch.io require an
+  interactive zero-price checkout, so fresh full archives were not bulk-mirrored
+  in this automated pass; existing verified runtime conversions remain.
 - OpenGameArt and Sketchfab: item-by-item review is required because licenses
   vary; no unreviewed item was downloaded.
 - Fab Standard, Mixamo raw files, Gscatter Web App assets, and unknown mirrors:

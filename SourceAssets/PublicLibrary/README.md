@@ -23,6 +23,8 @@ as CC0 1.0. The voice pack also retains its included `Credits.txt` file.
 - `Audio/Voice/`: placeholder male and female voiceover lines.
 - `VFX/kenney-particle-pack/`: 2D particle and effect textures.
 - `Environment/Skyboxes/`: skybox source textures.
+- `Characters/Animated/`: Kenney animated, blocky, and mini character packs.
+- `Vehicles/Cars/`: Kenney car kit and racing kit.
 
 The archives themselves are not committed. The exact archive SHA-256 values
 are in `download-receipts.json`, and the extracted file hashes are in
