@@ -9,11 +9,11 @@ manifest is updated.
 ## Current contents
 
 All current packs were downloaded from official Kenney, ambientCG, Poly Haven,
-Google Fonts, and game-icons.net pages on 2026-08-03. The pages and the included
-license files identify the packs as CC0 1.0 (Kenney, ambientCG, Poly Haven),
-OFL-1.1 (Google Fonts), or CC-BY-3.0 (game-icons.net, with `Credits.txt` for
-the required attribution). The voice pack also retains its included
-`Credits.txt` file.
+Google Fonts, game-icons.net, Quaternius, and cgbookcase pages on 2026-08-03.
+The pages and the included license files identify the packs as CC0 1.0 (Kenney,
+ambientCG, Poly Haven, Quaternius, cgbookcase), OFL-1.1 (Google Fonts), or
+CC-BY-3.0 (game-icons.net, with `Credits.txt` for the required attribution).
+The voice pack also retains its included `Credits.txt` file.
 
 - `UI/kenney-ui-pack/`: buttons, panels, icons, and interface graphics.
 - `UI/InputPrompts/kenney-input-prompts/`: keyboard, mouse, touch, and
@@ -45,6 +45,14 @@ the required attribution). The voice pack also retains its included
 - `Fonts/google-fonts-*/`: OFL-1.1 Rajdhani, Orbitron, and Noto Sans SC.
 - `Characters/Animated/`: Kenney animated, blocky, and mini character packs.
 - `Vehicles/Cars/`: Kenney car kit and racing kit.
+- `Props/Quaternius/quaternius-downtown-city-megakit/`: CC0 modular city
+  mega-kit with glTF (Godot), Unity, and Unreal exports.
+- `Props/Quaternius/quaternius-lowpoly-cars/`: CC0 low-poly car pack
+  (FBX/OBJ).
+- `Props/Quaternius/quaternius-lowpoly-modular-street/`: CC0 modular street
+  pack — signs, streetlights, roads, and crossings (FBX/OBJ).
+- `Textures/cgbookcase-*/`: curated CC0 PBR street textures (asphalt,
+  concrete, gravel, metal, brick, plaster, stucco, manhole cover) at 2K.
 
 The archives themselves are not committed. The exact archive SHA-256 values
 are in `download-receipts.json`, and the extracted file hashes are in

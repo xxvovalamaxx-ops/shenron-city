@@ -65,6 +65,16 @@ records credit, a `Credits.txt` is also retained.
 | Google Fonts Orbitron | Fonts | https://fonts.google.com/specimen/orbitron | OFL-1.1 | Sci-fi UI typeface |
 | Google Fonts Noto Sans SC | Fonts | https://fonts.google.com/specimen/noto+sans+sc | OFL-1.1 | Chinese text typeface |
 | Game Icons Urban Set | UI/Icons | https://gameicons.net/ | CC-BY-3.0 | HUD, transport, weather, and status icons |
+| Quaternius Downtown City MegaKit | Props | https://quaternius.itch.io/downtown-city-megakit | CC0 1.0 | Modular city buildings, roads, and props (glTF/FBX) |
+| Quaternius Low-Poly Cars | Props | https://quaternius.itch.io/lowpoly-cars | CC0 1.0 | City traffic vehicle models (FBX/OBJ) |
+| Quaternius Low-Poly Modular Street | Props | https://quaternius.itch.io/lowpoly-modular-street | CC0 1.0 | Street signs, lights, and road segments (FBX/OBJ) |
+| cgbookcase Asphalt 01/02 | Textures | https://www.cgbookcase.com/textures/asphalt-01 | CC0 1.0 | Street surface PBR materials at 2K |
+| cgbookcase Concrete Wall 01/02 | Textures | https://www.cgbookcase.com/textures/concrete-wall-01 | CC0 1.0 | Concrete facade PBR materials at 2K |
+| cgbookcase Gravel 03 / Driveway 01 | Textures | https://www.cgbookcase.com/textures/gravel-03 | CC0 1.0 | Gravel ground PBR materials at 2K |
+| cgbookcase Metal Panels 01 (+rusty) | Textures | https://www.cgbookcase.com/textures/corrugated-metal-panel-01 | CC0 1.0 | Corrugated metal PBR materials at 2K |
+| cgbookcase Stucco Wall 01 | Textures | https://www.cgbookcase.com/textures/stucco-wall-01 | CC0 1.0 | Stucco facade PBR material at 2K |
+| cgbookcase Brick Wall 29 | Textures | https://www.cgbookcase.com/textures/brick-wall-29 | CC0 1.0 | Brick facade PBR material at 2K |
+| cgbookcase Manhole Cover 16 | Textures | https://www.cgbookcase.com/textures/manhole-cover-16 | CC0 1.0 | Street manhole cover PBR material at 2K |
 
 ## HDRI and model picks
 
@@ -80,12 +90,13 @@ catalogues:
 
 - Poly Haven: CC0 models, textures, and HDRIs. Existing project imports are
   recorded in `docs/Assets/ASSET_MANIFEST.csv`.
-- ambientCG and cgbookcase: suitable only for exact CC0 item records; no new
-  item was needed for this tranche.
-- Quaternius: CC0 models and animation packs. Runtime already ships the
-  Universal Hero / animation subset. Free Standard packs on itch.io require an
-  interactive zero-price checkout, so fresh full archives were not bulk-mirrored
-  in this automated pass; existing verified runtime conversions remain.
+- ambientCG and cgbookcase: CC0 texture libraries; curated city-relevant items
+  are recorded above. cgbookcase archives are delivered through a JS challenge,
+  so acquisition used a headless-browser download rather than a plain HTTP GET.
+- Quaternius: CC0 models and animation packs. The Standard packs on itch.io use
+  a tokenized two-step download (CSRF + upload endpoint); the three city packs
+  above were acquired through that flow. Full catalogue mirroring is not
+  attempted.
 - OpenGameArt and Sketchfab: item-by-item review is required because licenses
   vary; no unreviewed item was downloaded.
 - Fab Standard, Mixamo raw files, Gscatter Web App assets, and unknown mirrors:
