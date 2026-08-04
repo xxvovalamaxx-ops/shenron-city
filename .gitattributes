@@ -33,14 +33,42 @@
 *.exr binary
 *.webp binary
 *.vrm binary
-# Preserve the reviewed high-resolution reconstruction without inflating every
-# normal Git clone. Exported GLBs and review PNGs remain directly browsable.
-SourceAssets/Models/Characters/Source/Capybara/*.obj filter=lfs diff=lfs merge=lfs -text
-SourceAssets/Models/Characters/Source/Capybara/capybara_rigged.blend filter=lfs diff=lfs merge=lfs -text
-docs/Assets/Previews/**/*.png filter=lfs diff=lfs merge=lfs -text
-docs/Assets/Previews/**/*.exr filter=lfs diff=lfs merge=lfs -text
+# Large binary assets go through LFS to keep the git pack small.
+# 3D models
 SourceAssets/**/*.blend filter=lfs diff=lfs merge=lfs -text
 SourceAssets/**/*.glb filter=lfs diff=lfs merge=lfs -text
+SourceAssets/**/*.gltf filter=lfs diff=lfs merge=lfs -text
 SourceAssets/**/*.fbx filter=lfs diff=lfs merge=lfs -text
+SourceAssets/**/*.obj filter=lfs diff=lfs merge=lfs -text
+SourceAssets/**/*.abc filter=lfs diff=lfs merge=lfs -text
+SourceAssets/**/*.vrm filter=lfs diff=lfs merge=lfs -text
+# Textures & images
+SourceAssets/**/*.png filter=lfs diff=lfs merge=lfs -text
+SourceAssets/**/*.jpg filter=lfs diff=lfs merge=lfs -text
+SourceAssets/**/*.jpeg filter=lfs diff=lfs merge=lfs -text
+SourceAssets/**/*.tif filter=lfs diff=lfs merge=lfs -text
+SourceAssets/**/*.tiff filter=lfs diff=lfs merge=lfs -text
 SourceAssets/**/*.exr filter=lfs diff=lfs merge=lfs -text
 SourceAssets/**/*.hdr filter=lfs diff=lfs merge=lfs -text
+SourceAssets/**/*.ktx2 filter=lfs diff=lfs merge=lfs -text
+SourceAssets/**/*.webp filter=lfs diff=lfs merge=lfs -text
+# Audio
+SourceAssets/**/*.mp3 filter=lfs diff=lfs merge=lfs -text
+SourceAssets/**/*.ogg filter=lfs diff=lfs merge=lfs -text
+SourceAssets/**/*.wav filter=lfs diff=lfs merge=lfs -text
+# Unreal & other binary
+SourceAssets/**/*.uasset filter=lfs diff=lfs merge=lfs -text
+SourceAssets/**/*.umap filter=lfs diff=lfs merge=lfs -text
+SourceAssets/**/*.bin filter=lfs diff=lfs merge=lfs -text
+# Fonts
+SourceAssets/**/*.otf filter=lfs diff=lfs merge=lfs -text
+SourceAssets/**/*.ttf filter=lfs diff=lfs merge=lfs -text
+# Video
+SourceAssets/**/*.mp4 filter=lfs diff=lfs merge=lfs -text
+SourceAssets/**/*.mov filter=lfs diff=lfs merge=lfs -text
+# Previews & exports
+docs/Assets/Previews/** filter=lfs diff=lfs merge=lfs -text
+public/models/** filter=lfs diff=lfs merge=lfs -text
+public/assets/** filter=lfs diff=lfs merge=lfs -text
+*.vrm filter=lfs diff=lfs merge=lfs -text
+*.abc filter=lfs diff=lfs merge=lfs -text

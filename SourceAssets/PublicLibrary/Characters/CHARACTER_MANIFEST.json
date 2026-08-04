@@ -1,0 +1,66 @@
+﻿{
+  "generated": "2026-08-04 16:24:41",
+  "description": "High-quality character asset library for Shenron City",
+  "total_models": 154,
+  "total_size_mb": 6056.3,
+  "sources": {
+    "renderpeople": {
+      "description": "Photogrammetry-scanned real humans with 8K PBR textures",
+      "license": "Free commercial use",
+      "url": "https://renderpeople.com/free-3d-people/",
+      "unique_people": 12,
+      "people": ["Dennis", "Fabienne & Percy", "Mei", "Carla", "Claudia", "Eric", "Manuel", "Nathan", "Sophia", "Posed Person 0178", "Posed Plus 00068", "Aliyah 4D"],
+      "formats": ["FBX", "OBJ", "GLB", "Blend", "ABC"]
+    },
+    "mixamo": {
+      "description": "Adobe's character library, fully rigged and textured",
+      "license": "Adobe Terms of Use (free commercial/non-commercial)",
+      "url": "https://www.mixamo.com",
+      "source": "HuggingFace: GbotHQ/mixamo-characters",
+      "count": 108,
+      "format": "FBX"
+    },
+    "sketchfab": {
+      "description": "Curated realistic human characters from Sketchfab community",
+      "license": "CC-BY (attribution required)",
+      "url": "https://sketchfab.com",
+      "count": 34,
+      "format": "GLB",
+      "models": [
+        "3d_scan_man_1": { "size_mb": 23.8, "display_name": "3d scan man 1" },
+        "alina_ip_realistic_asian_woman_animated": { "size_mb": 130.2, "display_name": "alina ip realistic asian woman animated" },
+        "Anatomy_Study_Male_Body": { "size_mb": 7.5, "display_name": "Anatomy Study Male Body" },
+        "angela_cross": { "size_mb": 40, "display_name": "angela cross" },
+        "angelica": { "size_mb": 28.5, "display_name": "angelica" },
+        "Australian_Infantryman_WW2": { "size_mb": 45.8, "display_name": "Australian Infantryman WW2" },
+        "base_mesh_pack_free": { "size_mb": 67.3, "display_name": "base mesh pack free" },
+        "Business_Man_Low_Polygon": { "size_mb": 12.3, "display_name": "Business Man Low Polygon" },
+        "Carla_Rigged_Business_Woman": { "size_mb": 61, "display_name": "Carla Rigged Business Woman" },
+        "CC0_Free_Rigged_Character": { "size_mb": 19.8, "display_name": "CC0 Free Rigged Character" },
+        "cyberpunk_character": { "size_mb": 198.5, "display_name": "cyberpunk character" },
+        "Dennis_Posed_Business_Man": { "size_mb": 61.9, "display_name": "Dennis Posed Business Man" },
+        "Dragon_Warrior_Futuristic": { "size_mb": 201.1, "display_name": "Dragon Warrior Futuristic" },
+        "Eric_Rigged_Business_Man": { "size_mb": 35.5, "display_name": "Eric Rigged Business Man" },
+        "Fantasy_Queen": { "size_mb": 34.9, "display_name": "Fantasy Queen" },
+        "Female_n_Male_Base_Mesh": { "size_mb": 71.5, "display_name": "Female n Male Base Mesh" },
+        "Hand_Skeleton_Skin": { "size_mb": 0.7, "display_name": "Hand Skeleton Skin" },
+        "Handsome_Man_Casual_Clothes": { "size_mb": 62.1, "display_name": "Handsome Man Casual Clothes" },
+        "helmet_mask_shemagh_pack": { "size_mb": 4.9, "display_name": "helmet mask shemagh pack" },
+        "Human_Models_Set_Rigged": { "size_mb": 6.1, "display_name": "Human Models Set Rigged" },
+        "Joe_Realistic_Human": { "size_mb": 21.2, "display_name": "Joe Realistic Human" },
+        "Kindred_League_of_Legends": { "size_mb": 30.8, "display_name": "Kindred League of Legends" },
+        "Male_Surgical_Doctor": { "size_mb": 43.3, "display_name": "Male Surgical Doctor" },
+        "Man_Black_Business_Suit": { "size_mb": 13.3, "display_name": "Man Black Business Suit" },
+        "MetaHuman_Platemail_Rigged": { "size_mb": 47.3, "display_name": "MetaHuman Platemail Rigged" },
+        "old_man_bust_sculpt": { "size_mb": 53.3, "display_name": "old man bust sculpt" },
+        "realistic_granny": { "size_mb": 0.6, "display_name": "realistic granny" },
+        "Realistic_Human_AAA_Game": { "size_mb": 4.2, "display_name": "Realistic Human AAA Game" },
+        "Realistic_Male_T_Pose": { "size_mb": 19.9, "display_name": "Realistic Male T Pose" },
+        "REPO_Realistic_Character": { "size_mb": 51.8, "display_name": "REPO Realistic Character" },
+        "Rigged_T_Pose_Male_Blendshapes": { "size_mb": 3.5, "display_name": "Rigged T Pose Male Blendshapes" },
+        "Sci_Fi_Soldier": { "size_mb": 84.1, "display_name": "Sci Fi Soldier" },
+        "Storm_Trooper_Rigged_UE4": { "size_mb": 6.9, "display_name": "Storm Trooper Rigged UE4" },
+        "stylized_female_base_mesh": { "size_mb": 23.1, "display_name": "stylized female base mesh" }]
+    }
+  }
+}
