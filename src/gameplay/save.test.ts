@@ -44,6 +44,7 @@ const SAMPLE: SaveData = {
   forward: { x: 0, z: -1 },
   tour: { completed: 3 },
   settings: { quality: 'medium', sensitivity: 1.5, fov: 90, volume: 0.7 },
+  destroyed: ['plaza-supply-west'],
 }
 
 /** Build a stored payload with one section replaced by something unusable. */
@@ -101,7 +102,8 @@ describe('unusable saves fall back to defaults', () => {
   })
 
   it('refuses versions it has no migration path from', () => {
-    for (const version of [0, -1, 1.5, 2, 99]) {
+    // 1 is excluded: since the v1 -> v2 migration exists, a v1 save loads.
+    for (const version of [0, -1, 1.5, 999]) {
       const result = decodeSave(JSON.stringify({ v: version, ...SAMPLE }))
       expect(result.fault).toBe('unsupported')
       expect(result.data).toEqual(defaultSave())
@@ -118,7 +120,7 @@ describe('unusable saves fall back to defaults', () => {
 
     expect(result.fault).toBeNull()
     expect(result.data).toEqual(defaultSave())
-    expect(result.repaired).toEqual(['pos', 'forward', 'tour', 'settings'])
+    expect(result.repaired).toEqual(['pos', 'forward', 'tour', 'settings', 'destroyed'])
   })
 
   it('accepts a payload whose every section is the wrong type', () => {
@@ -128,12 +130,13 @@ describe('unusable saves fall back to defaults', () => {
       forward: 'north',
       tour: 5,
       settings: [1, 2, 3],
+      destroyed: 'all of them',
     })
     const result = decodeSave(garbage)
 
     expect(result.fault).toBeNull()
     expect(result.data).toEqual(defaultSave())
-    expect(result.repaired).toEqual(['pos', 'forward', 'tour', 'settings'])
+    expect(result.repaired).toEqual(['pos', 'forward', 'tour', 'settings', 'destroyed'])
   })
 })
 
@@ -309,6 +312,47 @@ describe('migration', () => {
   it('fails on versions that cannot exist', () => {
     for (const from of [0, -3, 1.5, Number.NaN, 4]) {
       expect(runMigrations({}, from, table, 3)).toEqual({ ok: false })
+    }
+  })
+
+  it('migrates a v1 save to the current version with an empty destroyed list', () => {
+    // The v1 shape had no `destroyed` section; v2 added it as an empty list.
+    const v1 = JSON.stringify({
+      v: 1,
+      pos: SAMPLE.pos,
+      forward: SAMPLE.forward,
+      tour: { completed: SAMPLE.tour.completed },
+      settings: SAMPLE.settings,
+    })
+    const result = decodeSave(v1)
+
+    expect(result.fault).toBeNull()
+    expect(result.repaired).toEqual([])
+    expect(result.data).toEqual({ ...SAMPLE, destroyed: [] })
+  })
+
+  it('round trips a destroyed list through encode and decode', () => {
+    const withDestroyed: SaveData = {
+      ...SAMPLE,
+      destroyed: ['plaza-supply-west', 'lobby-security-desk', 'plaza-supply-west'],
+    }
+    const result = decodeSave(encodeSave(withDestroyed))
+
+    expect(result.fault).toBeNull()
+    expect(result.repaired).toEqual([])
+    // Duplicates are dropped so the list stays canonical.
+    expect(result.data.destroyed).toEqual(['plaza-supply-west', 'lobby-security-desk'])
+  })
+
+  it('repairs a destroyed section that is not a string array', () => {
+    for (const bad of ['crate', 42, null, { id: 'x' }, [1, 2]]) {
+      const payload = JSON.parse(encodeSave(SAMPLE)) as Record<string, unknown>
+      payload.destroyed = bad
+      const result = decodeSave(JSON.stringify(payload))
+
+      expect(result.fault).toBeNull()
+      expect(result.data.destroyed).toEqual([])
+      expect(result.repaired).toContain('destroyed')
     }
   })
 })

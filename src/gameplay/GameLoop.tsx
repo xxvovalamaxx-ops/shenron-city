@@ -41,6 +41,7 @@ import { useLaser } from '../weapons/useLaser'
 import { capybaraCollider, capybaraPose } from '../animals/capybara'
 import { residentColliders } from './residents'
 import { breakableColliders } from '../destruction/collision'
+import { stepDestruction } from '../destruction/destruction'
 import { debugInspectionView } from './dev-view'
 import { gameplayZoneAt, outdoorSimulationActive } from './zone'
 
@@ -445,6 +446,16 @@ export function GameLoop({ interactables, ambientPedestrians, onInteract }: Game
 
     // ── 8b. Laser weapon raycasting + heat ───────────────────────────────────
     updateLaser(camera, dt)
+
+    // ── 8c. Destructible-prop damage, with the same real dt as everything
+    // else in this loop. Damage used to be applied from the component's own
+    // useFrame at a fixed 1/60 s, so time-to-destroy scaled with frame rate;
+    // now it is part of the one place the simulation advances.
+    stepDestruction(rt.destruction, {
+      aim: rt.player.aimPoint,
+      dt,
+      destroyed: rt.destroyed,
+    })
 
     // ── 9. Interaction targeting ─────────────────────────────────────────────
     camera.getWorldDirection(forwardVec.current)
