@@ -67,3 +67,19 @@ Thumbs.db
 
 *.log
 !/SourceAssets/Museum/asset_museum.blend
+
+# Scratch download/debug tooling. One-off scripts and session cookies from the
+# asset procurement attempts; never linted, never committed, kept on disk only.
+scripts/.cookies.txt
+/check-sketchfab-login.cjs
+/download-vehicles-robust.cjs
+scripts/download-*.cjs
+scripts/sketchfab-*.cjs
+scripts/tmp*.py
+scripts/ifbx_patched_*.py
+scripts/patched_fbx_*.py
+scripts/debug-page.png
+scripts/run-with-chrome.cjs
+
+# Git worktrees for parallel asset/QA branches (own .git pointers, never committed)
+/ds/

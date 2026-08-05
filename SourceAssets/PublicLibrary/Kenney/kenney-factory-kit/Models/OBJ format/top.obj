@@ -1,30 +1,3 @@
-# Created by Kenney (www.kenney.nl)
-
-mtllib top.mtl
-
-g top
-
-v 0.5 0 -0.5 1 1 1
-v 0.5 2.406371E-16 0.5 1 1 1
-v -0.5 0 -0.5 1 1 1
-v -0.5 2.406371E-16 0.5 1 1 1
-
-vn 0 1 0
-
-vt 0.03125 0.125
-
-usemtl colormap
-
-f 3/1/1 2/1/1 1/1/1
-f 2/1/1 3/1/1 4/1/1
-
-g top
-
-
-
-
-usemtl colormap
-
-f 3/1/1 2/1/1 1/1/1
-f 2/1/1 3/1/1 4/1/1
-
+version https://git-lfs.github.com/spec/v1
+oid sha256:bb1d7adbe819b47374c1be91e23fff2040d3e8295b5b734542072f3d25e0ec42
+size 343
