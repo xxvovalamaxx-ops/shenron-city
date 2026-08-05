@@ -51,6 +51,7 @@ import { Capybara } from './animals/CapybaraActor'
 import { OfficePanel } from './ui/OfficePanel'
 import { DEFAULT_SETTINGS, LoadingScreen, PauseMenu, TitleScreen, type Settings } from './ui/Screens'
 import { floorAtPosition, loadGame, saveGame, type SaveData } from './gameplay/save'
+import { restoreDestruction } from './gameplay/runtime'
 import { cityAudio } from './audio'
 import { isDevInspection } from './gameplay/dev-view'
 import { gameplayZoneAt, sceneVisibilityForZone } from './gameplay/zone'
@@ -70,6 +71,7 @@ function currentSaveData(settings: Settings): SaveData {
     forward: { ...rt.player.forward },
     tour: useHud.getState().cityTour,
     settings: { quality: settings.quality, sensitivity: settings.sensitivity, fov: settings.fov, volume: settings.volume },
+    destroyed: [...rt.destroyed],
   }
 }
 
@@ -82,6 +84,9 @@ function applySave(data: SaveData): void {
   rt.elevator = initialElevator(floorAtPosition(data.pos))
   rt.zone = gameplayZoneAt(rt.player.pos, carHeight(rt.elevator))
   useHud.setState({ cityTour: data.tour, gameplayZone: rt.zone })
+  // Destruction is restored whole: the persisted set is the authority for
+  // what no longer exists, and every other breakable returns to full health.
+  restoreDestruction(new Set(data.destroyed))
 }
 
 const PostProcessing = lazy(() => import('./world/PostProcessing'))

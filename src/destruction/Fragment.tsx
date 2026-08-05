@@ -8,12 +8,13 @@ import { useRef } from 'react'
 import { useFrame } from '@react-three/fiber'
 import { Mesh, Vector3 } from 'three'
 import type { BreakableDef } from './BreakableRegistry'
+import type { Vec3 } from '../gameplay/collision'
 import { rt } from '../gameplay/runtime'
 
 interface FragmentProps {
   def: BreakableDef
-  origin: Vector3
-  direction: Vector3
+  origin: Vec3
+  direction: Vec3
   onExpired: () => void
 }
 
@@ -46,7 +47,7 @@ export function Fragment({ def, origin, direction, onExpired }: FragmentProps) {
         (Math.random() - 0.5) * 12,
         (Math.random() - 0.5) * 12,
       )
-      pos.current.copy(origin)
+      pos.current.set(origin.x, origin.y, origin.z)
     }
 
     age.current += dt

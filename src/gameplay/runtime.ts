@@ -15,6 +15,8 @@ import { createTraffic, type Vehicle } from './traffic'
 import type { Weather } from '../world/daycycle'
 import type { Interactable } from './interact'
 import type { Vec3 } from './collision'
+import type { DestructionState } from '../destruction/destruction'
+import { createDestructionState, resetDestructionHealths } from '../destruction/destruction'
 import { HQ, SPAWN } from '../world/layout'
 import { CAPYBARA_INITIAL_POSE, type CapybaraPose } from '../animals/capybara'
 import { debugSpawnPosition } from './dev-view'
@@ -89,6 +91,12 @@ export interface Runtime {
   capybara: CapybaraPose
   /** Destroyed breakable object IDs. */
   destroyed: Set<string>
+  /**
+   * Destructible-prop simulation. Lives on the runtime (not React state) so
+   * it is stepped deterministically by GameLoop and survives StrictMode
+   * remounts; React mirrors it for presentation.
+   */
+  destruction: DestructionState
   /** Objects the simulation moves directly, to keep visuals frame-exact. */
   refs: {
     car: Object3D | null
@@ -157,6 +165,7 @@ export const rt: Runtime = {
   vehicles: [],
   capybara: { ...CAPYBARA_INITIAL_POSE },
   destroyed: new Set<string>(),
+  destruction: createDestructionState(),
   refs: {
     car: null,
     carDoorLeft: null,
@@ -213,6 +222,18 @@ export function advanceRuntimeTime(dt: number): number {
   if (rt.paused || !Number.isFinite(dt) || dt <= 0) return rt.clock.elapsed
   rt.clock.elapsed += dt
   return rt.clock.elapsed
+}
+
+/**
+ * Restore the destruction simulation from a persisted destroyed set.
+ *
+ * The health map is rebuilt rather than patched: the persisted list is the
+ * authority for what no longer exists, and every other breakable returns to
+ * full health — a reload restores the world the save describes.
+ */
+export function restoreDestruction(destroyed: ReadonlySet<string>): void {
+  rt.destroyed = new Set(destroyed)
+  resetDestructionHealths(rt.destruction, rt.destroyed)
 }
 
 /**

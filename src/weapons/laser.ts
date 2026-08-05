@@ -2,8 +2,10 @@
  * Laser weapon pure logic — no renderer, fully testable.
  *
  * The weapon is a continuous beam that accumulates heat while firing.
- * Overheating forces a cooldown. Damage is applied per frame to whatever
- * the raycast hits.
+ * Overheating forces a cooldown. The beam's aim point (from the raycast in
+ * useLaser) is written to `rt.player.aimPoint`; damage per frame is applied
+ * to the breakable at that point by stepDestruction, with the same real dt
+ * as the rest of the simulation.
  */
 
 export const LASER_CONFIG = {
@@ -25,7 +27,11 @@ export const LASER_CONFIG = {
   glowRadius: 0.08,
   /** Impact flash duration in seconds. */
   flashDuration: 0.12,
-  /** Damage per frame = dps * dt. Used by DestructionSystem. */
+  /**
+   * Damage per frame = dps * dt. Used by stepDestruction, which receives the
+   * simulation's real dt — time-to-destroy is therefore the same at 30, 60
+   * or 120 fps.
+   */
   damagePerFrame(dps: number, dt: number): number {
     return dps * dt
   },

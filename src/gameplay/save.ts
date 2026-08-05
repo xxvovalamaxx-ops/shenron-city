@@ -49,6 +49,8 @@ export interface SaveData {
   forward: { x: number; z: number }
   tour: CityTourState
   settings: SavedSettings
+  /** Breakable prop ids that are destroyed, so reloads restore the world. */
+  destroyed: string[]
 }
 
 /** The slice of the Web Storage API this module touches. */
@@ -84,7 +86,7 @@ export interface LoadResult {
   repaired: readonly string[]
 }
 
-export const SAVE_VERSION = 1
+export const SAVE_VERSION = 2
 
 /** Version lives in the payload, not the key, or migration could never find it. */
 export const SAVE_KEY = 'shenron-city:save'
@@ -108,6 +110,7 @@ export function defaultSave(): SaveData {
     forward: { ...FALLBACK_FORWARD },
     tour: { ...INITIAL_CITY_TOUR },
     settings: { ...FALLBACK_SETTINGS },
+    destroyed: [],
   }
 }
 
@@ -237,10 +240,10 @@ type Migration = (payload: unknown) => unknown
 export type MigrationResult = { ok: true; payload: unknown } | { ok: false }
 
 /**
- * How to add version 2.
+ * How to add version 3.
  *
- * Write the v1 → v2 upgrade as `MIGRATIONS[1]`, bump `SAVE_VERSION` to 2, and
- * leave the v1 writer deleted but its shape documented in the migration. Steps
+ * Write the v2 → v3 upgrade as `MIGRATIONS[2]`, bump `SAVE_VERSION` to 3, and
+ * leave the v2 writer deleted but its shape documented in the migration. Steps
  * run in sequence from whatever is on disk up to the current version, so a save
  * written by any earlier build still loads.
  *
@@ -248,7 +251,15 @@ export type MigrationResult = { ok: true; payload: unknown } | { ok: false }
  * one — is refused rather than guessed at. Half-applying a shape we have never
  * seen is how a save file teleports someone into a wall.
  */
-const MIGRATIONS: Readonly<Record<number, Migration | undefined>> = {}
+const MIGRATIONS: Readonly<Record<number, Migration | undefined>> = {
+  /**
+   * v1 → v2: destruction persistence. The v1 shape was
+   * `{ v: 1, pos, forward, tour, settings }`; v2 adds `destroyed`, the list
+   * of breakable prop ids that are gone. Old saves get the empty list — the
+   * world simply starts whole again, which is what a v1 save meant.
+   */
+  1: (payload) => ({ ...(payload as Record<string, unknown>), v: 2, destroyed: [] }),
+}
 
 export function runMigrations(
   payload: unknown,
@@ -289,6 +300,7 @@ export function encodeSave(data: SaveData): string {
       fov: data.settings.fov,
       volume: data.settings.volume,
     },
+    destroyed: data.destroyed,
   })
 }
 
@@ -317,6 +329,7 @@ export function decodeSave(raw: string | null | undefined): LoadResult {
     forward: readForward(section(payload, 'forward'), repaired),
     tour: readTour(section(payload, 'tour'), repaired),
     settings: readSettings(section(payload, 'settings'), repaired),
+    destroyed: readDestroyed(section(payload, 'destroyed'), repaired),
   }
   return { data, fault: null, repaired }
 }
@@ -385,6 +398,26 @@ function readSettings(input: unknown, repaired: string[]): SavedSettings {
   else repaired.push('settings.volume')
 
   return settings
+}
+
+/**
+ * The destroyed-breakable list.
+ *
+ * Ids are opaque strings from the breakable registry, so the only validity
+ * test is "an array of strings". Unknown ids are harmless — the runtime
+ * ignores ids nothing owns — but duplicates are dropped so the set stays
+ * canonical, and the list is never trusted as an authority for anything
+ * other than "these props are gone".
+ */
+const StoredDestroyed = z.array(z.string())
+
+function readDestroyed(input: unknown, repaired: string[]): string[] {
+  const parsed = StoredDestroyed.safeParse(input)
+  if (!parsed.success) {
+    repaired.push('destroyed')
+    return []
+  }
+  return [...new Set(parsed.data)]
 }
 
 // ── Storage adapter ──────────────────────────────────────────────────────────
