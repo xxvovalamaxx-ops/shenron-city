@@ -1,0 +1,108 @@
+{
+ "id": "Environment_Models_polyhaven-WetFloorSign_01_WetFloorSign_01_1k.gltf",
+ "ext": "gltf",
+ "started": 1785955732.696402,
+ "importSeconds": 0.01,
+ "objectCount": 1,
+ "meshCount": 1,
+ "armatureCount": 0,
+ "negativeScale": false,
+ "emptyCount": 0,
+ "vertexCount": 254,
+ "triangleCount": 228,
+ "meshes": [
+  {
+   "verts": 254,
+   "tris": 228,
+   "hasUV": true,
+   "uvDegeneratePolys": 0,
+   "nonManifoldEdges": 0,
+   "nonManifoldVerts": 0,
+   "shapeKeyCount": 0,
+   "hasCustomNormals": true,
+   "objectName": "WetFloorSign_01",
+   "materialSlots": 1
+  }
+ ],
+ "boundsMin": [
+  -0.15,
+  -0.1653,
+  0.0022
+ ],
+ "boundsMax": [
+  0.15,
+  0.1933,
+  0.6317
+ ],
+ "boundsSize": [
+  0.3001,
+  0.3585,
+  0.6295
+ ],
+ "boundsCenter": [
+  -0.0,
+  0.014,
+  0.3169
+ ],
+ "maxDimensionM": 0.6295,
+ "pivotOffsetM": [
+  0.0,
+  -0.014,
+  -0.317
+ ],
+ "materialCount": 1,
+ "materialNodeTypes": [
+  "BSDF_PRINCIPLED",
+  "NORMAL_MAP",
+  "OUTPUT_MATERIAL",
+  "SEPARATE_COLOR",
+  "TEX_IMAGE"
+ ],
+ "principledCount": 1,
+ "alphaModes": [
+  "HASHED"
+ ],
+ "unsupportedNodeTypes": [
+  "SEPARATE_COLOR"
+ ],
+ "textureCount": 3,
+ "textureDims": [
+  [
+   1024,
+   1024
+  ],
+  [
+   1024,
+   1024
+  ],
+  [
+   1024,
+   1024
+  ]
+ ],
+ "maxTextureDim": 1024,
+ "embeddedTextureCount": 3,
+ "externalTextureCount": 0,
+ "missingTextureRefs": [],
+ "estimatedVRAMMB": 12.0,
+ "boneCount": 0,
+ "hasSkinWeights": false,
+ "vertexGroupCount": 0,
+ "actionCount": 0,
+ "animationDurations": [],
+ "maxAnimationDuration": 0,
+ "hasRootMotion": false,
+ "lodCount": 0,
+ "collisionCount": 0,
+ "importWarnings": [
+  "21:48:52 | INFO: Data are loaded, start creating Blender stuff",
+  "21:48:52 | INFO: Blender create Mesh node Mesh",
+  "21:48:52 | INFO: glTF import finished in 0.00s"
+ ],
+ "status": "OK",
+ "bytes": 6158,
+ "pack": "polyhaven-WetFloorSign_01",
+ "packCategory": "Environment/Models",
+ "license": "CC0-1.0",
+ "relPath": "Environment/Models/polyhaven-WetFloorSign_01/WetFloorSign_01_1k.gltf"
+}

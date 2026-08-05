@@ -1,0 +1,92 @@
+{
+ "id": "Characters_Animated_kenney-mini-characters_Models_OBJ_format_aid-glasses.obj",
+ "ext": "obj",
+ "started": 1785955730.3323386,
+ "importSeconds": 0.0,
+ "objectCount": 1,
+ "meshCount": 1,
+ "armatureCount": 0,
+ "negativeScale": false,
+ "emptyCount": 0,
+ "vertexCount": 48,
+ "triangleCount": 38,
+ "meshes": [
+  {
+   "verts": 48,
+   "tris": 38,
+   "hasUV": true,
+   "uvDegeneratePolys": 38,
+   "nonManifoldEdges": 40,
+   "nonManifoldVerts": 4,
+   "shapeKeyCount": 0,
+   "hasCustomNormals": true,
+   "objectName": "aid-glasses",
+   "materialSlots": 1
+  }
+ ],
+ "boundsMin": [
+  -0.165,
+  -0.0918,
+  0.0
+ ],
+ "boundsMax": [
+  0.165,
+  0.0918,
+  0.0958
+ ],
+ "boundsSize": [
+  0.33,
+  0.1836,
+  0.0958
+ ],
+ "boundsCenter": [
+  0.0,
+  0.0,
+  0.0479
+ ],
+ "maxDimensionM": 0.33,
+ "pivotOffsetM": [
+  0.0,
+  -0.0,
+  -0.048
+ ],
+ "materialCount": 1,
+ "materialNodeTypes": [
+  "BSDF_PRINCIPLED",
+  "OUTPUT_MATERIAL",
+  "TEX_IMAGE"
+ ],
+ "principledCount": 1,
+ "alphaModes": [
+  "HASHED"
+ ],
+ "unsupportedNodeTypes": [],
+ "textureCount": 1,
+ "textureDims": [
+  [
+   512,
+   512
+  ]
+ ],
+ "maxTextureDim": 512,
+ "embeddedTextureCount": 0,
+ "externalTextureCount": 1,
+ "missingTextureRefs": [],
+ "estimatedVRAMMB": 1.0,
+ "boneCount": 0,
+ "hasSkinWeights": false,
+ "vertexGroupCount": 0,
+ "actionCount": 0,
+ "animationDurations": [],
+ "maxAnimationDuration": 0,
+ "hasRootMotion": false,
+ "lodCount": 0,
+ "collisionCount": 0,
+ "importWarnings": [],
+ "status": "OK",
+ "bytes": 5270,
+ "pack": "kenney-mini-characters",
+ "packCategory": "Characters/Animated",
+ "license": "CC0-1.0",
+ "relPath": "Characters/Animated/kenney-mini-characters/Models/OBJ format/aid-glasses.obj"
+}

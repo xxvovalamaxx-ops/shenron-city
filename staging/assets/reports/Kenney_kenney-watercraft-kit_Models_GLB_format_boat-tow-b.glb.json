@@ -1,0 +1,100 @@
+{
+ "id": "Kenney_kenney-watercraft-kit_Models_GLB_format_boat-tow-b.glb",
+ "ext": "glb",
+ "started": 1785955741.814957,
+ "importSeconds": 0.01,
+ "objectCount": 1,
+ "meshCount": 1,
+ "armatureCount": 0,
+ "negativeScale": false,
+ "emptyCount": 0,
+ "vertexCount": 962,
+ "triangleCount": 588,
+ "meshes": [
+  {
+   "verts": 962,
+   "tris": 588,
+   "hasUV": true,
+   "uvDegeneratePolys": 588,
+   "nonManifoldEdges": 82,
+   "nonManifoldVerts": 0,
+   "shapeKeyCount": 0,
+   "hasCustomNormals": true,
+   "objectName": "boat-tow-b",
+   "materialSlots": 1
+  }
+ ],
+ "boundsMin": [
+  -1.4402,
+  -2.8073,
+  0.0
+ ],
+ "boundsMax": [
+  1.4402,
+  3.3151,
+  3.0546
+ ],
+ "boundsSize": [
+  2.8804,
+  6.1224,
+  3.0546
+ ],
+ "boundsCenter": [
+  0.0,
+  0.2539,
+  1.5273
+ ],
+ "maxDimensionM": 6.1224,
+ "pivotOffsetM": [
+  0.0,
+  -0.254,
+  -1.527
+ ],
+ "materialCount": 1,
+ "materialNodeTypes": [
+  "BSDF_PRINCIPLED",
+  "MAPPING",
+  "OUTPUT_MATERIAL",
+  "TEX_IMAGE",
+  "UVMAP"
+ ],
+ "principledCount": 1,
+ "alphaModes": [
+  "HASHED"
+ ],
+ "unsupportedNodeTypes": [
+  "UVMAP"
+ ],
+ "textureCount": 1,
+ "textureDims": [
+  [
+   512,
+   512
+  ]
+ ],
+ "maxTextureDim": 512,
+ "embeddedTextureCount": 1,
+ "externalTextureCount": 0,
+ "missingTextureRefs": [],
+ "estimatedVRAMMB": 1.0,
+ "boneCount": 0,
+ "hasSkinWeights": false,
+ "vertexGroupCount": 0,
+ "actionCount": 0,
+ "animationDurations": [],
+ "maxAnimationDuration": 0,
+ "hasRootMotion": false,
+ "lodCount": 0,
+ "collisionCount": 0,
+ "importWarnings": [
+  "21:49:01 | INFO: Data are loaded, start creating Blender stuff",
+  "21:49:01 | INFO: Blender create Mesh node boat-tow-b",
+  "21:49:01 | INFO: glTF import finished in 0.00s"
+ ],
+ "status": "OK",
+ "bytes": 51476,
+ "pack": "kenney-watercraft-kit",
+ "packCategory": "Kenney",
+ "license": "CC0-1.0",
+ "relPath": "Kenney/kenney-watercraft-kit/Models/GLB format/boat-tow-b.glb"
+}

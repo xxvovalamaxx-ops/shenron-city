@@ -1,0 +1,92 @@
+{
+ "id": "Vehicles_Cars_kenney-car-kit_Models_OBJ_format_firetruck.obj",
+ "ext": "obj",
+ "started": 1785955747.6730816,
+ "importSeconds": 0.0,
+ "objectCount": 1,
+ "meshCount": 1,
+ "armatureCount": 0,
+ "negativeScale": false,
+ "emptyCount": 0,
+ "vertexCount": 1738,
+ "triangleCount": 2767,
+ "meshes": [
+  {
+   "verts": 1738,
+   "tris": 2767,
+   "hasUV": true,
+   "uvDegeneratePolys": 2767,
+   "nonManifoldEdges": 109,
+   "nonManifoldVerts": 56,
+   "shapeKeyCount": 0,
+   "hasCustomNormals": true,
+   "objectName": "firetruck",
+   "materialSlots": 1
+  }
+ ],
+ "boundsMin": [
+  -0.75,
+  -1.7,
+  -0.0
+ ],
+ "boundsMax": [
+  0.75,
+  1.7,
+  1.7
+ ],
+ "boundsSize": [
+  1.5,
+  3.4,
+  1.7
+ ],
+ "boundsCenter": [
+  0.0,
+  0.0,
+  0.85
+ ],
+ "maxDimensionM": 3.4,
+ "pivotOffsetM": [
+  0.0,
+  0.0,
+  -0.85
+ ],
+ "materialCount": 1,
+ "materialNodeTypes": [
+  "BSDF_PRINCIPLED",
+  "OUTPUT_MATERIAL",
+  "TEX_IMAGE"
+ ],
+ "principledCount": 1,
+ "alphaModes": [
+  "HASHED"
+ ],
+ "unsupportedNodeTypes": [],
+ "textureCount": 1,
+ "textureDims": [
+  [
+   512,
+   512
+  ]
+ ],
+ "maxTextureDim": 512,
+ "embeddedTextureCount": 0,
+ "externalTextureCount": 1,
+ "missingTextureRefs": [],
+ "estimatedVRAMMB": 1.0,
+ "boneCount": 0,
+ "hasSkinWeights": false,
+ "vertexGroupCount": 0,
+ "actionCount": 0,
+ "animationDurations": [],
+ "maxAnimationDuration": 0,
+ "hasRootMotion": false,
+ "lodCount": 0,
+ "collisionCount": 0,
+ "importWarnings": [],
+ "status": "OK",
+ "bytes": 164892,
+ "pack": "kenney-car-kit",
+ "packCategory": "Vehicles/Cars",
+ "license": "CC0-1.0",
+ "relPath": "Vehicles/Cars/kenney-car-kit/Models/OBJ format/firetruck.obj"
+}

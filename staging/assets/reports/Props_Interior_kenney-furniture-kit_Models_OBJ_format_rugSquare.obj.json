@@ -1,0 +1,86 @@
+{
+ "id": "Props_Interior_kenney-furniture-kit_Models_OBJ_format_rugSquare.obj",
+ "ext": "obj",
+ "started": 1785955742.4657965,
+ "importSeconds": 0.0,
+ "objectCount": 1,
+ "meshCount": 1,
+ "armatureCount": 0,
+ "negativeScale": false,
+ "emptyCount": 0,
+ "vertexCount": 16,
+ "triangleCount": 28,
+ "meshes": [
+  {
+   "verts": 16,
+   "tris": 28,
+   "hasUV": true,
+   "uvDegeneratePolys": 0,
+   "nonManifoldEdges": 0,
+   "nonManifoldVerts": 0,
+   "shapeKeyCount": 0,
+   "hasCustomNormals": true,
+   "objectName": "rugSquare",
+   "materialSlots": 2
+  }
+ ],
+ "boundsMin": [
+  -0.9043,
+  -0.92,
+  0.0
+ ],
+ "boundsMax": [
+  0.0,
+  0.0,
+  0.01
+ ],
+ "boundsSize": [
+  0.9043,
+  0.92,
+  0.01
+ ],
+ "boundsCenter": [
+  -0.4522,
+  -0.46,
+  0.005
+ ],
+ "maxDimensionM": 0.92,
+ "pivotOffsetM": [
+  0.452,
+  0.46,
+  -0.005
+ ],
+ "materialCount": 2,
+ "materialNodeTypes": [
+  "BSDF_PRINCIPLED",
+  "OUTPUT_MATERIAL"
+ ],
+ "principledCount": 2,
+ "alphaModes": [
+  "HASHED"
+ ],
+ "unsupportedNodeTypes": [],
+ "textureCount": 0,
+ "textureDims": [],
+ "maxTextureDim": 0,
+ "embeddedTextureCount": 0,
+ "externalTextureCount": 0,
+ "missingTextureRefs": [],
+ "estimatedVRAMMB": 0.0,
+ "boneCount": 0,
+ "hasSkinWeights": false,
+ "vertexGroupCount": 0,
+ "actionCount": 0,
+ "animationDurations": [],
+ "maxAnimationDuration": 0,
+ "hasRootMotion": false,
+ "lodCount": 0,
+ "collisionCount": 0,
+ "importWarnings": [],
+ "status": "OK",
+ "bytes": 2332,
+ "pack": "kenney-furniture-kit",
+ "packCategory": "Props/Interior",
+ "license": "CC0-1.0",
+ "relPath": "Props/Interior/kenney-furniture-kit/Models/OBJ format/rugSquare.obj"
+}

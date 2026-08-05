@@ -1,0 +1,86 @@
+{
+ "id": "Vehicles_Cars_kenney-racing-kit_Models_OBJ_format_bannerTowerGreen.obj",
+ "ext": "obj",
+ "started": 1785955748.4102068,
+ "importSeconds": 0.0,
+ "objectCount": 1,
+ "meshCount": 1,
+ "armatureCount": 0,
+ "negativeScale": false,
+ "emptyCount": 0,
+ "vertexCount": 208,
+ "triangleCount": 328,
+ "meshes": [
+  {
+   "verts": 208,
+   "tris": 328,
+   "hasUV": true,
+   "uvDegeneratePolys": 48,
+   "nonManifoldEdges": 120,
+   "nonManifoldVerts": 0,
+   "shapeKeyCount": 0,
+   "hasCustomNormals": true,
+   "objectName": "bannerTowerGreen",
+   "materialSlots": 3
+  }
+ ],
+ "boundsMin": [
+  -0.3852,
+  -0.3852,
+  0.0
+ ],
+ "boundsMax": [
+  0.0,
+  0.0,
+  1.2457
+ ],
+ "boundsSize": [
+  0.3852,
+  0.3852,
+  1.2457
+ ],
+ "boundsCenter": [
+  -0.1926,
+  -0.1926,
+  0.6228
+ ],
+ "maxDimensionM": 1.2457,
+ "pivotOffsetM": [
+  0.193,
+  0.193,
+  -0.623
+ ],
+ "materialCount": 3,
+ "materialNodeTypes": [
+  "BSDF_PRINCIPLED",
+  "OUTPUT_MATERIAL"
+ ],
+ "principledCount": 3,
+ "alphaModes": [
+  "HASHED"
+ ],
+ "unsupportedNodeTypes": [],
+ "textureCount": 0,
+ "textureDims": [],
+ "maxTextureDim": 0,
+ "embeddedTextureCount": 0,
+ "externalTextureCount": 0,
+ "missingTextureRefs": [],
+ "estimatedVRAMMB": 0.0,
+ "boneCount": 0,
+ "hasSkinWeights": false,
+ "vertexGroupCount": 0,
+ "actionCount": 0,
+ "animationDurations": [],
+ "maxAnimationDuration": 0,
+ "hasRootMotion": false,
+ "lodCount": 0,
+ "collisionCount": 0,
+ "importWarnings": [],
+ "status": "OK",
+ "bytes": 30308,
+ "pack": "kenney-racing-kit",
+ "packCategory": "Vehicles/Cars",
+ "license": "CC0-1.0",
+ "relPath": "Vehicles/Cars/kenney-racing-kit/Models/OBJ format/bannerTowerGreen.obj"
+}

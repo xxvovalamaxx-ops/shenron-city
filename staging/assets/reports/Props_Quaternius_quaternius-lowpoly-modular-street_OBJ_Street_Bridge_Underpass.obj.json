@@ -1,0 +1,86 @@
+{
+ "id": "Props_Quaternius_quaternius-lowpoly-modular-street_OBJ_Street_Bridge_Underpass.obj",
+ "ext": "obj",
+ "started": 1785955746.57755,
+ "importSeconds": 0.0,
+ "objectCount": 1,
+ "meshCount": 1,
+ "armatureCount": 0,
+ "negativeScale": false,
+ "emptyCount": 0,
+ "vertexCount": 538,
+ "triangleCount": 1044,
+ "meshes": [
+  {
+   "verts": 538,
+   "tris": 1044,
+   "hasUV": false,
+   "uvDegeneratePolys": 0,
+   "nonManifoldEdges": 0,
+   "nonManifoldVerts": 0,
+   "shapeKeyCount": 0,
+   "hasCustomNormals": true,
+   "objectName": "Street_Bridge_Underpass_Cube.020",
+   "materialSlots": 4
+  }
+ ],
+ "boundsMin": [
+  -1.0,
+  -1.0,
+  -0.1
+ ],
+ "boundsMax": [
+  1.0,
+  1.0,
+  0.6659
+ ],
+ "boundsSize": [
+  2.0,
+  2.0,
+  0.7659
+ ],
+ "boundsCenter": [
+  0.0,
+  -0.0,
+  0.2829
+ ],
+ "maxDimensionM": 2.0,
+ "pivotOffsetM": [
+  0.0,
+  0.0,
+  -0.283
+ ],
+ "materialCount": 4,
+ "materialNodeTypes": [
+  "BSDF_PRINCIPLED",
+  "OUTPUT_MATERIAL"
+ ],
+ "principledCount": 4,
+ "alphaModes": [
+  "HASHED"
+ ],
+ "unsupportedNodeTypes": [],
+ "textureCount": 0,
+ "textureDims": [],
+ "maxTextureDim": 0,
+ "embeddedTextureCount": 0,
+ "externalTextureCount": 0,
+ "missingTextureRefs": [],
+ "estimatedVRAMMB": 0.0,
+ "boneCount": 0,
+ "hasSkinWeights": false,
+ "vertexGroupCount": 0,
+ "actionCount": 0,
+ "animationDurations": [],
+ "maxAnimationDuration": 0,
+ "hasRootMotion": false,
+ "lodCount": 0,
+ "collisionCount": 0,
+ "importWarnings": [],
+ "status": "OK",
+ "bytes": 33589,
+ "pack": "quaternius-lowpoly-modular-street",
+ "packCategory": "Props/Quaternius",
+ "license": "CC0-1.0",
+ "relPath": "Props/Quaternius/quaternius-lowpoly-modular-street/OBJ/Street_Bridge_Underpass.obj"
+}

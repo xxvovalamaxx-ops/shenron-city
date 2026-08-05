@@ -1,0 +1,114 @@
+{
+ "id": "Kenney_kenney-fantasy-town-kit_Models_GLB_format_fountain-round-detail.glb",
+ "ext": "glb",
+ "started": 1785955734.951362,
+ "importSeconds": 0.01,
+ "objectCount": 2,
+ "meshCount": 2,
+ "armatureCount": 0,
+ "negativeScale": false,
+ "emptyCount": 0,
+ "vertexCount": 2592,
+ "triangleCount": 1628,
+ "meshes": [
+  {
+   "verts": 144,
+   "tris": 142,
+   "hasUV": true,
+   "uvDegeneratePolys": 1,
+   "nonManifoldEdges": 144,
+   "nonManifoldVerts": 0,
+   "shapeKeyCount": 0,
+   "hasCustomNormals": true,
+   "objectName": "(%ignore)",
+   "materialSlots": 1
+  },
+  {
+   "verts": 2448,
+   "tris": 1486,
+   "hasUV": true,
+   "uvDegeneratePolys": 1486,
+   "nonManifoldEdges": 48,
+   "nonManifoldVerts": 96,
+   "shapeKeyCount": 0,
+   "hasCustomNormals": true,
+   "objectName": "fountain-round-detail",
+   "materialSlots": 1
+  }
+ ],
+ "boundsMin": [
+  -1.0,
+  -1.0,
+  -0.0
+ ],
+ "boundsMax": [
+  1.0,
+  1.0,
+  0.48
+ ],
+ "boundsSize": [
+  2.0,
+  2.0,
+  0.48
+ ],
+ "boundsCenter": [
+  0.0,
+  0.0,
+  0.24
+ ],
+ "maxDimensionM": 2.0,
+ "pivotOffsetM": [
+  0.0,
+  0.0,
+  -0.24
+ ],
+ "materialCount": 2,
+ "materialNodeTypes": [
+  "BSDF_PRINCIPLED",
+  "MAPPING",
+  "OUTPUT_MATERIAL",
+  "TEX_IMAGE",
+  "UVMAP"
+ ],
+ "principledCount": 2,
+ "alphaModes": [
+  "BLEND",
+  "HASHED"
+ ],
+ "unsupportedNodeTypes": [
+  "UVMAP"
+ ],
+ "textureCount": 1,
+ "textureDims": [
+  [
+   512,
+   512
+  ]
+ ],
+ "maxTextureDim": 512,
+ "embeddedTextureCount": 1,
+ "externalTextureCount": 0,
+ "missingTextureRefs": [],
+ "estimatedVRAMMB": 1.0,
+ "boneCount": 0,
+ "hasSkinWeights": false,
+ "vertexGroupCount": 0,
+ "actionCount": 0,
+ "animationDurations": [],
+ "maxAnimationDuration": 0,
+ "hasRootMotion": false,
+ "lodCount": 0,
+ "collisionCount": 0,
+ "importWarnings": [
+  "21:48:54 | INFO: Data are loaded, start creating Blender stuff",
+  "21:48:54 | INFO: Blender create Mesh node fountain-round-detail",
+  "21:48:54 | INFO: Blender create Mesh node (%ignore)",
+  "21:48:54 | INFO: glTF import finished in 0.01s"
+ ],
+ "status": "OK",
+ "bytes": 136888,
+ "pack": "kenney-fantasy-town-kit",
+ "packCategory": "Kenney",
+ "license": "CC0-1.0",
+ "relPath": "Kenney/kenney-fantasy-town-kit/Models/GLB format/fountain-round-detail.glb"
+}

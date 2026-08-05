@@ -1,0 +1,103 @@
+{
+ "id": "Props_Interior_kenney-furniture-kit_Models_GLTF_format_bathroomCabinet.glb",
+ "ext": "glb",
+ "started": 1785955742.2254028,
+ "importSeconds": 0.0,
+ "objectCount": 2,
+ "meshCount": 2,
+ "armatureCount": 0,
+ "negativeScale": false,
+ "emptyCount": 0,
+ "vertexCount": 104,
+ "triangleCount": 64,
+ "meshes": [
+  {
+   "verts": 72,
+   "tris": 44,
+   "hasUV": true,
+   "uvDegeneratePolys": 0,
+   "nonManifoldEdges": 0,
+   "nonManifoldVerts": 0,
+   "shapeKeyCount": 0,
+   "hasCustomNormals": true,
+   "objectName": "bathroomCabinet(Clone)",
+   "materialSlots": 1
+  },
+  {
+   "verts": 32,
+   "tris": 20,
+   "hasUV": true,
+   "uvDegeneratePolys": 0,
+   "nonManifoldEdges": 0,
+   "nonManifoldVerts": 0,
+   "shapeKeyCount": 0,
+   "hasCustomNormals": true,
+   "objectName": "door",
+   "materialSlots": 3
+  }
+ ],
+ "boundsMin": [
+  0.2,
+  0.08,
+  0.0
+ ],
+ "boundsMax": [
+  0.43,
+  0.21,
+  0.39
+ ],
+ "boundsSize": [
+  0.23,
+  0.13,
+  0.39
+ ],
+ "boundsCenter": [
+  0.315,
+  0.145,
+  0.195
+ ],
+ "maxDimensionM": 0.39,
+ "pivotOffsetM": [
+  -0.315,
+  -0.145,
+  -0.195
+ ],
+ "materialCount": 3,
+ "materialNodeTypes": [
+  "BSDF_PRINCIPLED",
+  "OUTPUT_MATERIAL"
+ ],
+ "principledCount": 3,
+ "alphaModes": [
+  "HASHED"
+ ],
+ "unsupportedNodeTypes": [],
+ "textureCount": 0,
+ "textureDims": [],
+ "maxTextureDim": 0,
+ "embeddedTextureCount": 0,
+ "externalTextureCount": 0,
+ "missingTextureRefs": [],
+ "estimatedVRAMMB": 0.0,
+ "boneCount": 0,
+ "hasSkinWeights": false,
+ "vertexGroupCount": 0,
+ "actionCount": 0,
+ "animationDurations": [],
+ "maxAnimationDuration": 0,
+ "hasRootMotion": false,
+ "lodCount": 0,
+ "collisionCount": 0,
+ "importWarnings": [
+  "21:49:02 | INFO: Data are loaded, start creating Blender stuff",
+  "21:49:02 | INFO: Blender create Mesh node Mesh bathroomCabinet",
+  "21:49:02 | INFO: Blender create Mesh node Mesh door",
+  "21:49:02 | INFO: glTF import finished in 0.00s"
+ ],
+ "status": "OK",
+ "bytes": 7216,
+ "pack": "kenney-furniture-kit",
+ "packCategory": "Props/Interior",
+ "license": "CC0-1.0",
+ "relPath": "Props/Interior/kenney-furniture-kit/Models/GLTF format/bathroomCabinet.glb"
+}

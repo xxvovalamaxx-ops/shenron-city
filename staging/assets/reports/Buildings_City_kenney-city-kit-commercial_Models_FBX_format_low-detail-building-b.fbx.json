@@ -1,0 +1,99 @@
+{
+ "id": "Buildings_City_kenney-city-kit-commercial_Models_FBX_format_low-detail-building-b.fbx",
+ "ext": "fbx",
+ "started": 1785955723.1233597,
+ "importSeconds": 0.01,
+ "objectCount": 1,
+ "meshCount": 1,
+ "armatureCount": 0,
+ "negativeScale": false,
+ "emptyCount": 0,
+ "vertexCount": 112,
+ "triangleCount": 200,
+ "meshes": [
+  {
+   "verts": 112,
+   "tris": 200,
+   "hasUV": true,
+   "uvDegeneratePolys": 200,
+   "nonManifoldEdges": 24,
+   "nonManifoldVerts": 8,
+   "shapeKeyCount": 0,
+   "hasCustomNormals": true,
+   "objectName": "low-detail-building-b",
+   "materialSlots": 1
+  }
+ ],
+ "boundsMin": [
+  -0.25,
+  -0.25,
+  -0.0
+ ],
+ "boundsMax": [
+  0.25,
+  0.25,
+  2.225
+ ],
+ "boundsSize": [
+  0.5,
+  0.5,
+  2.225
+ ],
+ "boundsCenter": [
+  0.0,
+  0.0,
+  1.1125
+ ],
+ "maxDimensionM": 2.225,
+ "pivotOffsetM": [
+  0.0,
+  -0.0,
+  -1.113
+ ],
+ "materialCount": 1,
+ "materialNodeTypes": [
+  "BSDF_PRINCIPLED",
+  "NORMAL_MAP",
+  "OUTPUT_MATERIAL",
+  "TEX_IMAGE"
+ ],
+ "principledCount": 1,
+ "alphaModes": [
+  "HASHED"
+ ],
+ "unsupportedNodeTypes": [],
+ "textureCount": 2,
+ "textureDims": [
+  [
+   512,
+   512
+  ],
+  [
+   512,
+   512
+  ]
+ ],
+ "maxTextureDim": 512,
+ "embeddedTextureCount": 0,
+ "externalTextureCount": 2,
+ "missingTextureRefs": [],
+ "estimatedVRAMMB": 2.0,
+ "boneCount": 0,
+ "hasSkinWeights": false,
+ "vertexGroupCount": 0,
+ "actionCount": 0,
+ "animationDurations": [],
+ "maxAnimationDuration": 0,
+ "hasRootMotion": false,
+ "lodCount": 0,
+ "collisionCount": 0,
+ "importWarnings": [
+  "FBX version: 7700"
+ ],
+ "status": "OK",
+ "bytes": 27968,
+ "pack": "kenney-city-kit-commercial",
+ "packCategory": "Buildings/City",
+ "license": "CC0-1.0",
+ "relPath": "Buildings/City/kenney-city-kit-commercial/Models/FBX format/low-detail-building-b.fbx"
+}

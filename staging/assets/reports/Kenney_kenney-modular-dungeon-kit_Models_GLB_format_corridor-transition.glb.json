@@ -1,0 +1,100 @@
+{
+ "id": "Kenney_kenney-modular-dungeon-kit_Models_GLB_format_corridor-transition.glb",
+ "ext": "glb",
+ "started": 1785955738.1266282,
+ "importSeconds": 0.01,
+ "objectCount": 1,
+ "meshCount": 1,
+ "armatureCount": 0,
+ "negativeScale": false,
+ "emptyCount": 0,
+ "vertexCount": 4568,
+ "triangleCount": 2524,
+ "meshes": [
+  {
+   "verts": 4568,
+   "tris": 2524,
+   "hasUV": true,
+   "uvDegeneratePolys": 2512,
+   "nonManifoldEdges": 282,
+   "nonManifoldVerts": 240,
+   "shapeKeyCount": 0,
+   "hasCustomNormals": true,
+   "objectName": "corridor-transition",
+   "materialSlots": 1
+  }
+ ],
+ "boundsMin": [
+  -6.0,
+  -4.0,
+  -0.0
+ ],
+ "boundsMax": [
+  2.0,
+  4.0,
+  4.15
+ ],
+ "boundsSize": [
+  8.0,
+  8.0,
+  4.15
+ ],
+ "boundsCenter": [
+  -2.0,
+  0.0,
+  2.075
+ ],
+ "maxDimensionM": 8.0,
+ "pivotOffsetM": [
+  2.0,
+  0.0,
+  -2.075
+ ],
+ "materialCount": 1,
+ "materialNodeTypes": [
+  "BSDF_PRINCIPLED",
+  "MAPPING",
+  "OUTPUT_MATERIAL",
+  "TEX_IMAGE",
+  "UVMAP"
+ ],
+ "principledCount": 1,
+ "alphaModes": [
+  "HASHED"
+ ],
+ "unsupportedNodeTypes": [
+  "UVMAP"
+ ],
+ "textureCount": 1,
+ "textureDims": [
+  [
+   512,
+   512
+  ]
+ ],
+ "maxTextureDim": 512,
+ "embeddedTextureCount": 1,
+ "externalTextureCount": 0,
+ "missingTextureRefs": [],
+ "estimatedVRAMMB": 1.0,
+ "boneCount": 0,
+ "hasSkinWeights": false,
+ "vertexGroupCount": 0,
+ "actionCount": 0,
+ "animationDurations": [],
+ "maxAnimationDuration": 0,
+ "hasRootMotion": false,
+ "lodCount": 0,
+ "collisionCount": 0,
+ "importWarnings": [
+  "21:48:58 | INFO: Data are loaded, start creating Blender stuff",
+  "21:48:58 | INFO: Blender create Mesh node corridor-transition",
+  "21:48:58 | INFO: glTF import finished in 0.01s"
+ ],
+ "status": "OK",
+ "bytes": 236320,
+ "pack": "kenney-modular-dungeon-kit",
+ "packCategory": "Kenney",
+ "license": "CC0-1.0",
+ "relPath": "Kenney/kenney-modular-dungeon-kit/Models/GLB format/corridor-transition.glb"
+}

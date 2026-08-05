@@ -1,0 +1,103 @@
+{
+ "id": "Kenney_kenney-mini-dungeon_Models_FBX_format_gate.fbx",
+ "ext": "fbx",
+ "started": 1785955736.211604,
+ "importSeconds": 0.01,
+ "objectCount": 2,
+ "meshCount": 1,
+ "armatureCount": 0,
+ "negativeScale": false,
+ "emptyCount": 1,
+ "vertexCount": 52,
+ "triangleCount": 76,
+ "meshes": [
+  {
+   "verts": 52,
+   "tris": 76,
+   "hasUV": true,
+   "uvDegeneratePolys": 76,
+   "nonManifoldEdges": 16,
+   "nonManifoldVerts": 4,
+   "shapeKeyCount": 0,
+   "hasCustomNormals": true,
+   "objectName": "door",
+   "materialSlots": 1
+  }
+ ],
+ "boundsMin": [
+  -0.4,
+  -0.1,
+  -0.0
+ ],
+ "boundsMax": [
+  0.4,
+  0.1,
+  0.75
+ ],
+ "boundsSize": [
+  0.8,
+  0.2,
+  0.75
+ ],
+ "boundsCenter": [
+  0.0,
+  0.0,
+  0.375
+ ],
+ "maxDimensionM": 0.8,
+ "pivotOffsetM": [
+  0.0,
+  -0.0,
+  -0.375
+ ],
+ "materialCount": 1,
+ "materialNodeTypes": [
+  "BSDF_PRINCIPLED",
+  "NORMAL_MAP",
+  "OUTPUT_MATERIAL",
+  "TEX_IMAGE"
+ ],
+ "principledCount": 1,
+ "alphaModes": [
+  "HASHED"
+ ],
+ "unsupportedNodeTypes": [],
+ "textureCount": 2,
+ "textureDims": [
+  [
+   512,
+   512
+  ],
+  [
+   512,
+   512
+  ]
+ ],
+ "maxTextureDim": 512,
+ "embeddedTextureCount": 0,
+ "externalTextureCount": 2,
+ "missingTextureRefs": [],
+ "estimatedVRAMMB": 2.0,
+ "boneCount": 0,
+ "hasSkinWeights": false,
+ "vertexGroupCount": 0,
+ "actionCount": 3,
+ "animationDurations": [
+  2.5,
+  5.0,
+  2.5
+ ],
+ "maxAnimationDuration": 5.0,
+ "hasRootMotion": false,
+ "lodCount": 0,
+ "collisionCount": 0,
+ "importWarnings": [
+  "FBX version: 7700"
+ ],
+ "status": "OK",
+ "bytes": 54960,
+ "pack": "kenney-mini-dungeon",
+ "packCategory": "Kenney",
+ "license": "CC0-1.0",
+ "relPath": "Kenney/kenney-mini-dungeon/Models/FBX format/gate.fbx"
+}

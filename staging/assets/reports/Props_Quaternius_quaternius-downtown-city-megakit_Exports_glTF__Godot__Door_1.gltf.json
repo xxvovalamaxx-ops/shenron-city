@@ -1,0 +1,108 @@
+{
+ "id": "Props_Quaternius_quaternius-downtown-city-megakit_Exports_glTF__Godot__Door_1.gltf",
+ "ext": "gltf",
+ "started": 1785955744.667945,
+ "importSeconds": 0.02,
+ "objectCount": 1,
+ "meshCount": 1,
+ "armatureCount": 0,
+ "negativeScale": false,
+ "emptyCount": 0,
+ "vertexCount": 980,
+ "triangleCount": 676,
+ "meshes": [
+  {
+   "verts": 980,
+   "tris": 676,
+   "hasUV": true,
+   "uvDegeneratePolys": 20,
+   "nonManifoldEdges": 28,
+   "nonManifoldVerts": 0,
+   "shapeKeyCount": 0,
+   "hasCustomNormals": true,
+   "objectName": "Door_1",
+   "materialSlots": 1
+  }
+ ],
+ "boundsMin": [
+  -1.0,
+  -0.1304,
+  0.0
+ ],
+ "boundsMax": [
+  0.0,
+  0.1294,
+  2.2
+ ],
+ "boundsSize": [
+  1.0,
+  0.2599,
+  2.2
+ ],
+ "boundsCenter": [
+  -0.5,
+  -0.0005,
+  1.1
+ ],
+ "maxDimensionM": 2.2,
+ "pivotOffsetM": [
+  0.5,
+  0.001,
+  -1.1
+ ],
+ "materialCount": 1,
+ "materialNodeTypes": [
+  "BSDF_PRINCIPLED",
+  "NORMAL_MAP",
+  "OUTPUT_MATERIAL",
+  "SEPARATE_COLOR",
+  "TEX_IMAGE"
+ ],
+ "principledCount": 1,
+ "alphaModes": [
+  "HASHED"
+ ],
+ "unsupportedNodeTypes": [
+  "SEPARATE_COLOR"
+ ],
+ "textureCount": 3,
+ "textureDims": [
+  [
+   2048,
+   2048
+  ],
+  [
+   2048,
+   2048
+  ],
+  [
+   2048,
+   2048
+  ]
+ ],
+ "maxTextureDim": 2048,
+ "embeddedTextureCount": 3,
+ "externalTextureCount": 0,
+ "missingTextureRefs": [],
+ "estimatedVRAMMB": 48.0,
+ "boneCount": 0,
+ "hasSkinWeights": false,
+ "vertexGroupCount": 0,
+ "actionCount": 0,
+ "animationDurations": [],
+ "maxAnimationDuration": 0,
+ "hasRootMotion": false,
+ "lodCount": 0,
+ "collisionCount": 0,
+ "importWarnings": [
+  "21:49:04 | INFO: Data are loaded, start creating Blender stuff",
+  "21:49:04 | INFO: Blender create Mesh node Cube.184",
+  "21:49:04 | INFO: glTF import finished in 0.02s"
+ ],
+ "status": "OK",
+ "bytes": 2372,
+ "pack": "quaternius-downtown-city-megakit",
+ "packCategory": "Props/Quaternius",
+ "license": "CC0-1.0",
+ "relPath": "Props/Quaternius/quaternius-downtown-city-megakit/Exports/glTF (Godot)/Door_1.gltf"
+}

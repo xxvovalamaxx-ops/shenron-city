@@ -1,0 +1,95 @@
+{
+ "id": "Buildings_Modular_kenney-building-kit_Models_FBX_format_border-high.fbx",
+ "ext": "fbx",
+ "started": 1785955725.827647,
+ "importSeconds": 0.01,
+ "objectCount": 1,
+ "meshCount": 1,
+ "armatureCount": 0,
+ "negativeScale": false,
+ "emptyCount": 0,
+ "vertexCount": 12,
+ "triangleCount": 20,
+ "meshes": [
+  {
+   "verts": 12,
+   "tris": 20,
+   "hasUV": true,
+   "uvDegeneratePolys": 20,
+   "nonManifoldEdges": 0,
+   "nonManifoldVerts": 0,
+   "shapeKeyCount": 0,
+   "hasCustomNormals": true,
+   "objectName": "border-high",
+   "materialSlots": 1
+  }
+ ],
+ "boundsMin": [
+  0.05,
+  -1.0,
+  -0.0
+ ],
+ "boundsMax": [
+  0.25,
+  1.0,
+  0.5
+ ],
+ "boundsSize": [
+  0.2,
+  2.0,
+  0.5
+ ],
+ "boundsCenter": [
+  0.15,
+  0.0,
+  0.25
+ ],
+ "maxDimensionM": 2.0,
+ "pivotOffsetM": [
+  -0.15,
+  0.0,
+  -0.25
+ ],
+ "materialCount": 1,
+ "materialNodeTypes": [
+  "BSDF_PRINCIPLED",
+  "NORMAL_MAP",
+  "OUTPUT_MATERIAL",
+  "TEX_IMAGE"
+ ],
+ "principledCount": 1,
+ "alphaModes": [
+  "HASHED"
+ ],
+ "unsupportedNodeTypes": [],
+ "textureCount": 1,
+ "textureDims": [
+  [
+   512,
+   512
+  ]
+ ],
+ "maxTextureDim": 512,
+ "embeddedTextureCount": 0,
+ "externalTextureCount": 1,
+ "missingTextureRefs": [],
+ "estimatedVRAMMB": 1.0,
+ "boneCount": 0,
+ "hasSkinWeights": false,
+ "vertexGroupCount": 0,
+ "actionCount": 0,
+ "animationDurations": [],
+ "maxAnimationDuration": 0,
+ "hasRootMotion": false,
+ "lodCount": 0,
+ "collisionCount": 0,
+ "importWarnings": [
+  "FBX version: 7700"
+ ],
+ "status": "OK",
+ "bytes": 26256,
+ "pack": "kenney-building-kit",
+ "packCategory": "Buildings/Modular",
+ "license": "CC0-1.0",
+ "relPath": "Buildings/Modular/kenney-building-kit/Models/FBX format/border-high.fbx"
+}

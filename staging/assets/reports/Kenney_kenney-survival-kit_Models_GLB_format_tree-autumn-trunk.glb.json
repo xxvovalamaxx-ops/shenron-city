@@ -1,0 +1,100 @@
+{
+ "id": "Kenney_kenney-survival-kit_Models_GLB_format_tree-autumn-trunk.glb",
+ "ext": "glb",
+ "started": 1785955741.137353,
+ "importSeconds": 0.0,
+ "objectCount": 1,
+ "meshCount": 1,
+ "armatureCount": 0,
+ "negativeScale": false,
+ "emptyCount": 0,
+ "vertexCount": 104,
+ "triangleCount": 52,
+ "meshes": [
+  {
+   "verts": 104,
+   "tris": 52,
+   "hasUV": true,
+   "uvDegeneratePolys": 52,
+   "nonManifoldEdges": 12,
+   "nonManifoldVerts": 16,
+   "shapeKeyCount": 0,
+   "hasCustomNormals": true,
+   "objectName": "tree-autumn-trunk",
+   "materialSlots": 1
+  }
+ ],
+ "boundsMin": [
+  -0.1,
+  -0.1,
+  0.0
+ ],
+ "boundsMax": [
+  0.1,
+  0.1,
+  0.2608
+ ],
+ "boundsSize": [
+  0.2,
+  0.2,
+  0.2608
+ ],
+ "boundsCenter": [
+  0.0,
+  0.0,
+  0.1304
+ ],
+ "maxDimensionM": 0.2608,
+ "pivotOffsetM": [
+  0.0,
+  0.0,
+  -0.13
+ ],
+ "materialCount": 1,
+ "materialNodeTypes": [
+  "BSDF_PRINCIPLED",
+  "MAPPING",
+  "OUTPUT_MATERIAL",
+  "TEX_IMAGE",
+  "UVMAP"
+ ],
+ "principledCount": 1,
+ "alphaModes": [
+  "HASHED"
+ ],
+ "unsupportedNodeTypes": [
+  "UVMAP"
+ ],
+ "textureCount": 1,
+ "textureDims": [
+  [
+   512,
+   512
+  ]
+ ],
+ "maxTextureDim": 512,
+ "embeddedTextureCount": 1,
+ "externalTextureCount": 0,
+ "missingTextureRefs": [],
+ "estimatedVRAMMB": 1.0,
+ "boneCount": 0,
+ "hasSkinWeights": false,
+ "vertexGroupCount": 0,
+ "actionCount": 0,
+ "animationDurations": [],
+ "maxAnimationDuration": 0,
+ "hasRootMotion": false,
+ "lodCount": 0,
+ "collisionCount": 0,
+ "importWarnings": [
+  "21:49:01 | INFO: Data are loaded, start creating Blender stuff",
+  "21:49:01 | INFO: Blender create Mesh node tree-autumn-trunk",
+  "21:49:01 | INFO: glTF import finished in 0.00s"
+ ],
+ "status": "OK",
+ "bytes": 6928,
+ "pack": "kenney-survival-kit",
+ "packCategory": "Kenney",
+ "license": "CC0-1.0",
+ "relPath": "Kenney/kenney-survival-kit/Models/GLB format/tree-autumn-trunk.glb"
+}

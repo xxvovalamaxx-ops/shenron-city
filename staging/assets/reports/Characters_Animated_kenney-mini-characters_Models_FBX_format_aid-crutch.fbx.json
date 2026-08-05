@@ -1,0 +1,107 @@
+{
+ "id": "Characters_Animated_kenney-mini-characters_Models_FBX_format_aid-crutch.fbx",
+ "ext": "fbx",
+ "started": 1785955729.3306198,
+ "importSeconds": 0.01,
+ "objectCount": 2,
+ "meshCount": 2,
+ "armatureCount": 0,
+ "negativeScale": false,
+ "emptyCount": 0,
+ "vertexCount": 80,
+ "triangleCount": 144,
+ "meshes": [
+  {
+   "verts": 64,
+   "tris": 116,
+   "hasUV": true,
+   "uvDegeneratePolys": 116,
+   "nonManifoldEdges": 0,
+   "nonManifoldVerts": 0,
+   "shapeKeyCount": 0,
+   "hasCustomNormals": true,
+   "objectName": "aid-crutch",
+   "materialSlots": 1
+  },
+  {
+   "verts": 16,
+   "tris": 28,
+   "hasUV": true,
+   "uvDegeneratePolys": 28,
+   "nonManifoldEdges": 0,
+   "nonManifoldVerts": 0,
+   "shapeKeyCount": 0,
+   "hasCustomNormals": true,
+   "objectName": "Group",
+   "materialSlots": 1
+  }
+ ],
+ "boundsMin": [
+  -0.098,
+  -0.139,
+  -0.0
+ ],
+ "boundsMax": [
+  0.098,
+  0.048,
+  0.31
+ ],
+ "boundsSize": [
+  0.196,
+  0.187,
+  0.31
+ ],
+ "boundsCenter": [
+  0.0,
+  -0.0455,
+  0.155
+ ],
+ "maxDimensionM": 0.31,
+ "pivotOffsetM": [
+  0.0,
+  0.046,
+  -0.155
+ ],
+ "materialCount": 1,
+ "materialNodeTypes": [
+  "BSDF_PRINCIPLED",
+  "NORMAL_MAP",
+  "OUTPUT_MATERIAL",
+  "TEX_IMAGE"
+ ],
+ "principledCount": 1,
+ "alphaModes": [
+  "HASHED"
+ ],
+ "unsupportedNodeTypes": [],
+ "textureCount": 1,
+ "textureDims": [
+  [
+   512,
+   512
+  ]
+ ],
+ "maxTextureDim": 512,
+ "embeddedTextureCount": 0,
+ "externalTextureCount": 1,
+ "missingTextureRefs": [],
+ "estimatedVRAMMB": 1.0,
+ "boneCount": 0,
+ "hasSkinWeights": false,
+ "vertexGroupCount": 0,
+ "actionCount": 0,
+ "animationDurations": [],
+ "maxAnimationDuration": 0,
+ "hasRootMotion": false,
+ "lodCount": 0,
+ "collisionCount": 0,
+ "importWarnings": [
+  "FBX version: 7700"
+ ],
+ "status": "OK",
+ "bytes": 37584,
+ "pack": "kenney-mini-characters",
+ "packCategory": "Characters/Animated",
+ "license": "CC0-1.0",
+ "relPath": "Characters/Animated/kenney-mini-characters/Models/FBX format/aid-crutch.fbx"
+}

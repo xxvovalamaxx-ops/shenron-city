@@ -1,0 +1,171 @@
+{
+ "id": "Vehicles_Cars_kenney-car-kit_Models_FBX_format_ambulance.fbx",
+ "ext": "fbx",
+ "started": 1785955746.782892,
+ "importSeconds": 0.02,
+ "objectCount": 8,
+ "meshCount": 7,
+ "armatureCount": 0,
+ "negativeScale": false,
+ "emptyCount": 1,
+ "vertexCount": 1746,
+ "triangleCount": 2746,
+ "meshes": [
+  {
+   "verts": 650,
+   "tris": 986,
+   "hasUV": true,
+   "uvDegeneratePolys": 986,
+   "nonManifoldEdges": 42,
+   "nonManifoldVerts": 52,
+   "shapeKeyCount": 0,
+   "hasCustomNormals": true,
+   "objectName": "body",
+   "materialSlots": 1
+  },
+  {
+   "verts": 20,
+   "tris": 24,
+   "hasUV": true,
+   "uvDegeneratePolys": 24,
+   "nonManifoldEdges": 0,
+   "nonManifoldVerts": 0,
+   "shapeKeyCount": 0,
+   "hasCustomNormals": true,
+   "objectName": "door-left",
+   "materialSlots": 1
+  },
+  {
+   "verts": 20,
+   "tris": 24,
+   "hasUV": true,
+   "uvDegeneratePolys": 24,
+   "nonManifoldEdges": 0,
+   "nonManifoldVerts": 0,
+   "shapeKeyCount": 0,
+   "hasCustomNormals": true,
+   "objectName": "door-right",
+   "materialSlots": 1
+  },
+  {
+   "verts": 264,
+   "tris": 428,
+   "hasUV": true,
+   "uvDegeneratePolys": 428,
+   "nonManifoldEdges": 0,
+   "nonManifoldVerts": 0,
+   "shapeKeyCount": 0,
+   "hasCustomNormals": true,
+   "objectName": "wheel-back-left",
+   "materialSlots": 1
+  },
+  {
+   "verts": 264,
+   "tris": 428,
+   "hasUV": true,
+   "uvDegeneratePolys": 428,
+   "nonManifoldEdges": 0,
+   "nonManifoldVerts": 0,
+   "shapeKeyCount": 0,
+   "hasCustomNormals": true,
+   "objectName": "wheel-back-right",
+   "materialSlots": 1
+  },
+  {
+   "verts": 264,
+   "tris": 428,
+   "hasUV": true,
+   "uvDegeneratePolys": 428,
+   "nonManifoldEdges": 0,
+   "nonManifoldVerts": 0,
+   "shapeKeyCount": 0,
+   "hasCustomNormals": true,
+   "objectName": "wheel-front-left",
+   "materialSlots": 1
+  },
+  {
+   "verts": 264,
+   "tris": 428,
+   "hasUV": true,
+   "uvDegeneratePolys": 428,
+   "nonManifoldEdges": 0,
+   "nonManifoldVerts": 0,
+   "shapeKeyCount": 0,
+   "hasCustomNormals": true,
+   "objectName": "wheel-front-right",
+   "materialSlots": 1
+  }
+ ],
+ "boundsMin": [
+  -0.75,
+  -1.6,
+  -0.0
+ ],
+ "boundsMax": [
+  0.75,
+  1.65,
+  1.8
+ ],
+ "boundsSize": [
+  1.5,
+  3.25,
+  1.8
+ ],
+ "boundsCenter": [
+  0.0,
+  0.025,
+  0.9
+ ],
+ "maxDimensionM": 3.25,
+ "pivotOffsetM": [
+  0.0,
+  -0.025,
+  -0.9
+ ],
+ "materialCount": 1,
+ "materialNodeTypes": [
+  "BSDF_PRINCIPLED",
+  "NORMAL_MAP",
+  "OUTPUT_MATERIAL",
+  "TEX_IMAGE"
+ ],
+ "principledCount": 1,
+ "alphaModes": [
+  "HASHED"
+ ],
+ "unsupportedNodeTypes": [],
+ "textureCount": 2,
+ "textureDims": [
+  [
+   512,
+   512
+  ],
+  [
+   512,
+   512
+  ]
+ ],
+ "maxTextureDim": 512,
+ "embeddedTextureCount": 0,
+ "externalTextureCount": 2,
+ "missingTextureRefs": [],
+ "estimatedVRAMMB": 2.0,
+ "boneCount": 0,
+ "hasSkinWeights": false,
+ "vertexGroupCount": 0,
+ "actionCount": 0,
+ "animationDurations": [],
+ "maxAnimationDuration": 0,
+ "hasRootMotion": false,
+ "lodCount": 0,
+ "collisionCount": 0,
+ "importWarnings": [
+  "FBX version: 7700"
+ ],
+ "status": "OK",
+ "bytes": 146544,
+ "pack": "kenney-car-kit",
+ "packCategory": "Vehicles/Cars",
+ "license": "CC0-1.0",
+ "relPath": "Vehicles/Cars/kenney-car-kit/Models/FBX format/ambulance.fbx"
+}

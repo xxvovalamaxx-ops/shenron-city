@@ -1,0 +1,95 @@
+{
+ "id": "Kenney_kenney-mini-arena_Models_FBX_format_banner.fbx",
+ "ext": "fbx",
+ "started": 1785955735.8554254,
+ "importSeconds": 0.01,
+ "objectCount": 1,
+ "meshCount": 1,
+ "armatureCount": 0,
+ "negativeScale": false,
+ "emptyCount": 0,
+ "vertexCount": 131,
+ "triangleCount": 217,
+ "meshes": [
+  {
+   "verts": 131,
+   "tris": 217,
+   "hasUV": true,
+   "uvDegeneratePolys": 217,
+   "nonManifoldEdges": 19,
+   "nonManifoldVerts": 0,
+   "shapeKeyCount": 0,
+   "hasCustomNormals": true,
+   "objectName": "banner",
+   "materialSlots": 1
+  }
+ ],
+ "boundsMin": [
+  -0.3,
+  -0.125,
+  -0.0
+ ],
+ "boundsMax": [
+  0.3,
+  0.1,
+  1.025
+ ],
+ "boundsSize": [
+  0.6,
+  0.225,
+  1.025
+ ],
+ "boundsCenter": [
+  0.0,
+  -0.0125,
+  0.5125
+ ],
+ "maxDimensionM": 1.025,
+ "pivotOffsetM": [
+  0.0,
+  0.012,
+  -0.512
+ ],
+ "materialCount": 1,
+ "materialNodeTypes": [
+  "BSDF_PRINCIPLED",
+  "NORMAL_MAP",
+  "OUTPUT_MATERIAL",
+  "TEX_IMAGE"
+ ],
+ "principledCount": 1,
+ "alphaModes": [
+  "HASHED"
+ ],
+ "unsupportedNodeTypes": [],
+ "textureCount": 1,
+ "textureDims": [
+  [
+   512,
+   512
+  ]
+ ],
+ "maxTextureDim": 512,
+ "embeddedTextureCount": 0,
+ "externalTextureCount": 1,
+ "missingTextureRefs": [],
+ "estimatedVRAMMB": 1.0,
+ "boneCount": 0,
+ "hasSkinWeights": false,
+ "vertexGroupCount": 0,
+ "actionCount": 0,
+ "animationDurations": [],
+ "maxAnimationDuration": 0,
+ "hasRootMotion": false,
+ "lodCount": 0,
+ "collisionCount": 0,
+ "importWarnings": [
+  "FBX version: 7700"
+ ],
+ "status": "OK",
+ "bytes": 30096,
+ "pack": "kenney-mini-arena",
+ "packCategory": "Kenney",
+ "license": "CC0-1.0",
+ "relPath": "Kenney/kenney-mini-arena/Models/FBX format/banner.fbx"
+}

@@ -1,0 +1,12 @@
+{
+ "id": "Vehicles_Cars_kenney-racing-kit_Models_FBX_format_grass.fbx",
+ "ext": "fbx",
+ "started": 1785955748.090033,
+ "importError": "RuntimeError(\"Error: ASCII FBX files are not supported 'E:\\\\\\\\temp projects\\\\\\\\shenron-city\\\\\\\\ds\\\\\\\\asset-technical\\\\\\\\staging\\\\\\\\assets\\\\\\\\files\\\\\\\\Vehicles/Cars/kenney-racing-kit/Models/FBX format/grass.fbx'\\n\")",
+ "status": "IMPORT_FAILED",
+ "bytes": 11110,
+ "pack": "kenney-racing-kit",
+ "packCategory": "Vehicles/Cars",
+ "license": "CC0-1.0",
+ "relPath": "Vehicles/Cars/kenney-racing-kit/Models/FBX format/grass.fbx"
+}

@@ -1,0 +1,100 @@
+{
+ "id": "Buildings_City_kenney-city-kit-suburban_Models_GLB_format_fence-3x2.glb",
+ "ext": "glb",
+ "started": 1785955725.4575536,
+ "importSeconds": 0.01,
+ "objectCount": 1,
+ "meshCount": 1,
+ "armatureCount": 0,
+ "negativeScale": false,
+ "emptyCount": 0,
+ "vertexCount": 576,
+ "triangleCount": 316,
+ "meshes": [
+  {
+   "verts": 576,
+   "tris": 316,
+   "hasUV": true,
+   "uvDegeneratePolys": 316,
+   "nonManifoldEdges": 16,
+   "nonManifoldVerts": 0,
+   "shapeKeyCount": 0,
+   "hasCustomNormals": true,
+   "objectName": "fence-3x2",
+   "materialSlots": 1
+  }
+ ],
+ "boundsMin": [
+  -0.4375,
+  -0.6375,
+  -0.0
+ ],
+ "boundsMax": [
+  0.4375,
+  0.6,
+  0.27
+ ],
+ "boundsSize": [
+  0.875,
+  1.2375,
+  0.27
+ ],
+ "boundsCenter": [
+  0.0,
+  -0.0188,
+  0.135
+ ],
+ "maxDimensionM": 1.2375,
+ "pivotOffsetM": [
+  0.0,
+  0.019,
+  -0.135
+ ],
+ "materialCount": 1,
+ "materialNodeTypes": [
+  "BSDF_PRINCIPLED",
+  "MAPPING",
+  "OUTPUT_MATERIAL",
+  "TEX_IMAGE",
+  "UVMAP"
+ ],
+ "principledCount": 1,
+ "alphaModes": [
+  "HASHED"
+ ],
+ "unsupportedNodeTypes": [
+  "UVMAP"
+ ],
+ "textureCount": 1,
+ "textureDims": [
+  [
+   512,
+   512
+  ]
+ ],
+ "maxTextureDim": 512,
+ "embeddedTextureCount": 1,
+ "externalTextureCount": 0,
+ "missingTextureRefs": [],
+ "estimatedVRAMMB": 1.0,
+ "boneCount": 0,
+ "hasSkinWeights": false,
+ "vertexGroupCount": 0,
+ "actionCount": 0,
+ "animationDurations": [],
+ "maxAnimationDuration": 0,
+ "hasRootMotion": false,
+ "lodCount": 0,
+ "collisionCount": 0,
+ "importWarnings": [
+  "21:48:45 | INFO: Data are loaded, start creating Blender stuff",
+  "21:48:45 | INFO: Blender create Mesh node fence-3x2",
+  "21:48:45 | INFO: glTF import finished in 0.00s"
+ ],
+ "status": "OK",
+ "bytes": 31280,
+ "pack": "kenney-city-kit-suburban",
+ "packCategory": "Buildings/City",
+ "license": "CC0-1.0",
+ "relPath": "Buildings/City/kenney-city-kit-suburban/Models/GLB format/fence-3x2.glb"
+}

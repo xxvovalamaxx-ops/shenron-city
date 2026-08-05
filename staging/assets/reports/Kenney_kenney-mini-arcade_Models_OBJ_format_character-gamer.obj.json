@@ -1,0 +1,92 @@
+{
+ "id": "Kenney_kenney-mini-arcade_Models_OBJ_format_character-gamer.obj",
+ "ext": "obj",
+ "started": 1785955735.7800348,
+ "importSeconds": 0.0,
+ "objectCount": 1,
+ "meshCount": 1,
+ "armatureCount": 0,
+ "negativeScale": false,
+ "emptyCount": 0,
+ "vertexCount": 295,
+ "triangleCount": 477,
+ "meshes": [
+  {
+   "verts": 295,
+   "tris": 477,
+   "hasUV": true,
+   "uvDegeneratePolys": 477,
+   "nonManifoldEdges": 67,
+   "nonManifoldVerts": 16,
+   "shapeKeyCount": 0,
+   "hasCustomNormals": true,
+   "objectName": "character-gamer",
+   "materialSlots": 1
+  }
+ ],
+ "boundsMin": [
+  -0.3903,
+  -0.2741,
+  -0.0
+ ],
+ "boundsMax": [
+  0.3903,
+  0.2449,
+  0.7733
+ ],
+ "boundsSize": [
+  0.7806,
+  0.5189,
+  0.7733
+ ],
+ "boundsCenter": [
+  0.0,
+  -0.0146,
+  0.3866
+ ],
+ "maxDimensionM": 0.7806,
+ "pivotOffsetM": [
+  0.0,
+  0.015,
+  -0.387
+ ],
+ "materialCount": 1,
+ "materialNodeTypes": [
+  "BSDF_PRINCIPLED",
+  "OUTPUT_MATERIAL",
+  "TEX_IMAGE"
+ ],
+ "principledCount": 1,
+ "alphaModes": [
+  "HASHED"
+ ],
+ "unsupportedNodeTypes": [],
+ "textureCount": 1,
+ "textureDims": [
+  [
+   512,
+   512
+  ]
+ ],
+ "maxTextureDim": 512,
+ "embeddedTextureCount": 0,
+ "externalTextureCount": 1,
+ "missingTextureRefs": [],
+ "estimatedVRAMMB": 1.0,
+ "boneCount": 0,
+ "hasSkinWeights": false,
+ "vertexGroupCount": 0,
+ "actionCount": 0,
+ "animationDurations": [],
+ "maxAnimationDuration": 0,
+ "hasRootMotion": false,
+ "lodCount": 0,
+ "collisionCount": 0,
+ "importWarnings": [],
+ "status": "OK",
+ "bytes": 31007,
+ "pack": "kenney-mini-arcade",
+ "packCategory": "Kenney",
+ "license": "CC0-1.0",
+ "relPath": "Kenney/kenney-mini-arcade/Models/OBJ format/character-gamer.obj"
+}

@@ -1,0 +1,90 @@
+{
+ "id": "Props_Interior_kenney-furniture-kit_Models_GLTF_format_loungeDesignSofa.glb",
+ "ext": "glb",
+ "started": 1785955742.3108969,
+ "importSeconds": 0.0,
+ "objectCount": 1,
+ "meshCount": 1,
+ "armatureCount": 0,
+ "negativeScale": false,
+ "emptyCount": 0,
+ "vertexCount": 184,
+ "triangleCount": 116,
+ "meshes": [
+  {
+   "verts": 184,
+   "tris": 116,
+   "hasUV": true,
+   "uvDegeneratePolys": 7,
+   "nonManifoldEdges": 0,
+   "nonManifoldVerts": 0,
+   "shapeKeyCount": 0,
+   "hasCustomNormals": true,
+   "objectName": "loungeDesignSofa(Clone)",
+   "materialSlots": 2
+  }
+ ],
+ "boundsMin": [
+  0.0,
+  0.0,
+  0.0
+ ],
+ "boundsMax": [
+  1.12,
+  0.41,
+  0.4
+ ],
+ "boundsSize": [
+  1.12,
+  0.41,
+  0.4
+ ],
+ "boundsCenter": [
+  0.56,
+  0.205,
+  0.2
+ ],
+ "maxDimensionM": 1.12,
+ "pivotOffsetM": [
+  -0.56,
+  -0.205,
+  -0.2
+ ],
+ "materialCount": 2,
+ "materialNodeTypes": [
+  "BSDF_PRINCIPLED",
+  "OUTPUT_MATERIAL"
+ ],
+ "principledCount": 2,
+ "alphaModes": [
+  "HASHED"
+ ],
+ "unsupportedNodeTypes": [],
+ "textureCount": 0,
+ "textureDims": [],
+ "maxTextureDim": 0,
+ "embeddedTextureCount": 0,
+ "externalTextureCount": 0,
+ "missingTextureRefs": [],
+ "estimatedVRAMMB": 0.0,
+ "boneCount": 0,
+ "hasSkinWeights": false,
+ "vertexGroupCount": 0,
+ "actionCount": 0,
+ "animationDurations": [],
+ "maxAnimationDuration": 0,
+ "hasRootMotion": false,
+ "lodCount": 0,
+ "collisionCount": 0,
+ "importWarnings": [
+  "21:49:02 | INFO: Data are loaded, start creating Blender stuff",
+  "21:49:02 | INFO: Blender create Mesh node Mesh loungeDesignSofa",
+  "21:49:02 | INFO: glTF import finished in 0.00s"
+ ],
+ "status": "OK",
+ "bytes": 9128,
+ "pack": "kenney-furniture-kit",
+ "packCategory": "Props/Interior",
+ "license": "CC0-1.0",
+ "relPath": "Props/Interior/kenney-furniture-kit/Models/GLTF format/loungeDesignSofa.glb"
+}

@@ -1,0 +1,92 @@
+{
+ "id": "Buildings_City_kenney-city-kit-suburban_Models_OBJ_format_driveway-short.obj",
+ "ext": "obj",
+ "started": 1785955725.676454,
+ "importSeconds": 0.0,
+ "objectCount": 1,
+ "meshCount": 1,
+ "armatureCount": 0,
+ "negativeScale": false,
+ "emptyCount": 0,
+ "vertexCount": 8,
+ "triangleCount": 12,
+ "meshes": [
+  {
+   "verts": 8,
+   "tris": 12,
+   "hasUV": true,
+   "uvDegeneratePolys": 12,
+   "nonManifoldEdges": 0,
+   "nonManifoldVerts": 0,
+   "shapeKeyCount": 0,
+   "hasCustomNormals": true,
+   "objectName": "driveway-short",
+   "materialSlots": 1
+  }
+ ],
+ "boundsMin": [
+  -0.18,
+  -0.1,
+  -0.0
+ ],
+ "boundsMax": [
+  0.18,
+  0.1,
+  0.01
+ ],
+ "boundsSize": [
+  0.36,
+  0.2,
+  0.01
+ ],
+ "boundsCenter": [
+  0.0,
+  0.0,
+  0.005
+ ],
+ "maxDimensionM": 0.36,
+ "pivotOffsetM": [
+  0.0,
+  0.0,
+  -0.005
+ ],
+ "materialCount": 1,
+ "materialNodeTypes": [
+  "BSDF_PRINCIPLED",
+  "OUTPUT_MATERIAL",
+  "TEX_IMAGE"
+ ],
+ "principledCount": 1,
+ "alphaModes": [
+  "HASHED"
+ ],
+ "unsupportedNodeTypes": [],
+ "textureCount": 1,
+ "textureDims": [
+  [
+   512,
+   512
+  ]
+ ],
+ "maxTextureDim": 512,
+ "embeddedTextureCount": 0,
+ "externalTextureCount": 1,
+ "missingTextureRefs": [],
+ "estimatedVRAMMB": 1.0,
+ "boneCount": 0,
+ "hasSkinWeights": false,
+ "vertexGroupCount": 0,
+ "actionCount": 0,
+ "animationDurations": [],
+ "maxAnimationDuration": 0,
+ "hasRootMotion": false,
+ "lodCount": 0,
+ "collisionCount": 0,
+ "importWarnings": [],
+ "status": "OK",
+ "bytes": 973,
+ "pack": "kenney-city-kit-suburban",
+ "packCategory": "Buildings/City",
+ "license": "CC0-1.0",
+ "relPath": "Buildings/City/kenney-city-kit-suburban/Models/OBJ format/driveway-short.obj"
+}

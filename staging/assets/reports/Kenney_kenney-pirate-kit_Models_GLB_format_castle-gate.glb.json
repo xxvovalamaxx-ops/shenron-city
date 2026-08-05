@@ -1,0 +1,100 @@
+{
+ "id": "Kenney_kenney-pirate-kit_Models_GLB_format_castle-gate.glb",
+ "ext": "glb",
+ "started": 1785955739.136059,
+ "importSeconds": 0.01,
+ "objectCount": 1,
+ "meshCount": 1,
+ "armatureCount": 0,
+ "negativeScale": false,
+ "emptyCount": 0,
+ "vertexCount": 1278,
+ "triangleCount": 716,
+ "meshes": [
+  {
+   "verts": 1278,
+   "tris": 716,
+   "hasUV": true,
+   "uvDegeneratePolys": 716,
+   "nonManifoldEdges": 188,
+   "nonManifoldVerts": 140,
+   "shapeKeyCount": 0,
+   "hasCustomNormals": true,
+   "objectName": "castle-gate",
+   "materialSlots": 1
+  }
+ ],
+ "boundsMin": [
+  -2.0,
+  -1.8,
+  0.0
+ ],
+ "boundsMax": [
+  2.0,
+  1.8,
+  4.4
+ ],
+ "boundsSize": [
+  4.0,
+  3.6,
+  4.4
+ ],
+ "boundsCenter": [
+  0.0,
+  0.0,
+  2.2
+ ],
+ "maxDimensionM": 4.4,
+ "pivotOffsetM": [
+  0.0,
+  0.0,
+  -2.2
+ ],
+ "materialCount": 1,
+ "materialNodeTypes": [
+  "BSDF_PRINCIPLED",
+  "MAPPING",
+  "OUTPUT_MATERIAL",
+  "TEX_IMAGE",
+  "UVMAP"
+ ],
+ "principledCount": 1,
+ "alphaModes": [
+  "HASHED"
+ ],
+ "unsupportedNodeTypes": [
+  "UVMAP"
+ ],
+ "textureCount": 1,
+ "textureDims": [
+  [
+   512,
+   512
+  ]
+ ],
+ "maxTextureDim": 512,
+ "embeddedTextureCount": 1,
+ "externalTextureCount": 0,
+ "missingTextureRefs": [],
+ "estimatedVRAMMB": 1.0,
+ "boneCount": 0,
+ "hasSkinWeights": false,
+ "vertexGroupCount": 0,
+ "actionCount": 0,
+ "animationDurations": [],
+ "maxAnimationDuration": 0,
+ "hasRootMotion": false,
+ "lodCount": 0,
+ "collisionCount": 0,
+ "importWarnings": [
+  "21:48:59 | INFO: Data are loaded, start creating Blender stuff",
+  "21:48:59 | INFO: Blender create Mesh node castle-gate",
+  "21:48:59 | INFO: glTF import finished in 0.01s"
+ ],
+ "status": "OK",
+ "bytes": 67440,
+ "pack": "kenney-pirate-kit",
+ "packCategory": "Kenney",
+ "license": "CC0-1.0",
+ "relPath": "Kenney/kenney-pirate-kit/Models/GLB format/castle-gate.glb"
+}

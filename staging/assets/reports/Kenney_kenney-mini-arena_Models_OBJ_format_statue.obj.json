@@ -1,0 +1,92 @@
+{
+ "id": "Kenney_kenney-mini-arena_Models_OBJ_format_statue.obj",
+ "ext": "obj",
+ "started": 1785955736.1228693,
+ "importSeconds": 0.0,
+ "objectCount": 1,
+ "meshCount": 1,
+ "armatureCount": 0,
+ "negativeScale": false,
+ "emptyCount": 0,
+ "vertexCount": 363,
+ "triangleCount": 549,
+ "meshes": [
+  {
+   "verts": 363,
+   "tris": 549,
+   "hasUV": true,
+   "uvDegeneratePolys": 549,
+   "nonManifoldEdges": 89,
+   "nonManifoldVerts": 8,
+   "shapeKeyCount": 0,
+   "hasCustomNormals": true,
+   "objectName": "statue",
+   "materialSlots": 1
+  }
+ ],
+ "boundsMin": [
+  -0.35,
+  -0.35,
+  -0.0
+ ],
+ "boundsMax": [
+  0.35,
+  0.35,
+  1.3363
+ ],
+ "boundsSize": [
+  0.7,
+  0.7,
+  1.3363
+ ],
+ "boundsCenter": [
+  0.0,
+  0.0,
+  0.6682
+ ],
+ "maxDimensionM": 1.3363,
+ "pivotOffsetM": [
+  0.0,
+  0.0,
+  -0.668
+ ],
+ "materialCount": 1,
+ "materialNodeTypes": [
+  "BSDF_PRINCIPLED",
+  "OUTPUT_MATERIAL",
+  "TEX_IMAGE"
+ ],
+ "principledCount": 1,
+ "alphaModes": [
+  "HASHED"
+ ],
+ "unsupportedNodeTypes": [],
+ "textureCount": 1,
+ "textureDims": [
+  [
+   512,
+   512
+  ]
+ ],
+ "maxTextureDim": 512,
+ "embeddedTextureCount": 0,
+ "externalTextureCount": 1,
+ "missingTextureRefs": [],
+ "estimatedVRAMMB": 1.0,
+ "boneCount": 0,
+ "hasSkinWeights": false,
+ "vertexGroupCount": 0,
+ "actionCount": 0,
+ "animationDurations": [],
+ "maxAnimationDuration": 0,
+ "hasRootMotion": false,
+ "lodCount": 0,
+ "collisionCount": 0,
+ "importWarnings": [],
+ "status": "OK",
+ "bytes": 53748,
+ "pack": "kenney-mini-arena",
+ "packCategory": "Kenney",
+ "license": "CC0-1.0",
+ "relPath": "Kenney/kenney-mini-arena/Models/OBJ format/statue.obj"
+}

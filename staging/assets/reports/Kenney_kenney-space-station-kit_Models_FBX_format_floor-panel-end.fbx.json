@@ -1,0 +1,95 @@
+{
+ "id": "Kenney_kenney-space-station-kit_Models_FBX_format_floor-panel-end.fbx",
+ "ext": "fbx",
+ "started": 1785955740.6738715,
+ "importSeconds": 0.01,
+ "objectCount": 1,
+ "meshCount": 1,
+ "armatureCount": 0,
+ "negativeScale": false,
+ "emptyCount": 0,
+ "vertexCount": 38,
+ "triangleCount": 60,
+ "meshes": [
+  {
+   "verts": 38,
+   "tris": 60,
+   "hasUV": true,
+   "uvDegeneratePolys": 60,
+   "nonManifoldEdges": 0,
+   "nonManifoldVerts": 0,
+   "shapeKeyCount": 0,
+   "hasCustomNormals": true,
+   "objectName": "floor-panel-end",
+   "materialSlots": 1
+  }
+ ],
+ "boundsMin": [
+  -0.5,
+  -0.5,
+  -0.0
+ ],
+ "boundsMax": [
+  0.5,
+  0.5,
+  0.3
+ ],
+ "boundsSize": [
+  1.0,
+  1.0,
+  0.3
+ ],
+ "boundsCenter": [
+  0.0,
+  0.0,
+  0.15
+ ],
+ "maxDimensionM": 1.0,
+ "pivotOffsetM": [
+  0.0,
+  0.0,
+  -0.15
+ ],
+ "materialCount": 1,
+ "materialNodeTypes": [
+  "BSDF_PRINCIPLED",
+  "NORMAL_MAP",
+  "OUTPUT_MATERIAL",
+  "TEX_IMAGE"
+ ],
+ "principledCount": 1,
+ "alphaModes": [
+  "HASHED"
+ ],
+ "unsupportedNodeTypes": [],
+ "textureCount": 1,
+ "textureDims": [
+  [
+   512,
+   512
+  ]
+ ],
+ "maxTextureDim": 512,
+ "embeddedTextureCount": 0,
+ "externalTextureCount": 1,
+ "missingTextureRefs": [],
+ "estimatedVRAMMB": 1.0,
+ "boneCount": 0,
+ "hasSkinWeights": false,
+ "vertexGroupCount": 0,
+ "actionCount": 0,
+ "animationDurations": [],
+ "maxAnimationDuration": 0,
+ "hasRootMotion": false,
+ "lodCount": 0,
+ "collisionCount": 0,
+ "importWarnings": [
+  "FBX version: 7700"
+ ],
+ "status": "OK",
+ "bytes": 26608,
+ "pack": "kenney-space-station-kit",
+ "packCategory": "Kenney",
+ "license": "CC0-1.0",
+ "relPath": "Kenney/kenney-space-station-kit/Models/FBX format/floor-panel-end.fbx"
+}

@@ -1,0 +1,143 @@
+{
+ "id": "Kenney_kenney-mini-arcade_Models_GLB_format_wall-door-rotate.glb",
+ "ext": "glb",
+ "started": 1785955735.7384436,
+ "importSeconds": 0.01,
+ "objectCount": 4,
+ "meshCount": 4,
+ "armatureCount": 0,
+ "negativeScale": false,
+ "emptyCount": 0,
+ "vertexCount": 500,
+ "triangleCount": 308,
+ "meshes": [
+  {
+   "verts": 200,
+   "tris": 124,
+   "hasUV": true,
+   "uvDegeneratePolys": 124,
+   "nonManifoldEdges": 8,
+   "nonManifoldVerts": 8,
+   "shapeKeyCount": 0,
+   "hasCustomNormals": true,
+   "objectName": "door-left",
+   "materialSlots": 1
+  },
+  {
+   "verts": 200,
+   "tris": 124,
+   "hasUV": true,
+   "uvDegeneratePolys": 124,
+   "nonManifoldEdges": 8,
+   "nonManifoldVerts": 8,
+   "shapeKeyCount": 0,
+   "hasCustomNormals": true,
+   "objectName": "door-right",
+   "materialSlots": 1
+  },
+  {
+   "verts": 56,
+   "tris": 36,
+   "hasUV": true,
+   "uvDegeneratePolys": 36,
+   "nonManifoldEdges": 20,
+   "nonManifoldVerts": 0,
+   "shapeKeyCount": 0,
+   "hasCustomNormals": true,
+   "objectName": "Group",
+   "materialSlots": 1
+  },
+  {
+   "verts": 44,
+   "tris": 24,
+   "hasUV": true,
+   "uvDegeneratePolys": 24,
+   "nonManifoldEdges": 20,
+   "nonManifoldVerts": 0,
+   "shapeKeyCount": 0,
+   "hasCustomNormals": true,
+   "objectName": "wall-door-rotate",
+   "materialSlots": 1
+  }
+ ],
+ "boundsMin": [
+  -0.5,
+  -0.3,
+  0.0
+ ],
+ "boundsMax": [
+  0.5,
+  0.3,
+  1.0
+ ],
+ "boundsSize": [
+  1.0,
+  0.6,
+  1.0
+ ],
+ "boundsCenter": [
+  0.0,
+  0.0,
+  0.5
+ ],
+ "maxDimensionM": 1.0,
+ "pivotOffsetM": [
+  0.0,
+  0.0,
+  -0.5
+ ],
+ "materialCount": 1,
+ "materialNodeTypes": [
+  "BSDF_PRINCIPLED",
+  "MAPPING",
+  "OUTPUT_MATERIAL",
+  "TEX_IMAGE",
+  "UVMAP"
+ ],
+ "principledCount": 1,
+ "alphaModes": [
+  "HASHED"
+ ],
+ "unsupportedNodeTypes": [
+  "UVMAP"
+ ],
+ "textureCount": 1,
+ "textureDims": [
+  [
+   512,
+   512
+  ]
+ ],
+ "maxTextureDim": 512,
+ "embeddedTextureCount": 1,
+ "externalTextureCount": 0,
+ "missingTextureRefs": [],
+ "estimatedVRAMMB": 1.0,
+ "boneCount": 0,
+ "hasSkinWeights": false,
+ "vertexGroupCount": 0,
+ "actionCount": 3,
+ "animationDurations": [
+  1.0,
+  1.0,
+  2.0
+ ],
+ "maxAnimationDuration": 2.0,
+ "hasRootMotion": false,
+ "lodCount": 0,
+ "collisionCount": 0,
+ "importWarnings": [
+  "21:48:55 | INFO: Data are loaded, start creating Blender stuff",
+  "21:48:55 | INFO: Blender create Mesh node wall-door-rotate",
+  "21:48:55 | INFO: Blender create Mesh node Group",
+  "21:48:55 | INFO: Blender create Mesh node door-right",
+  "21:48:55 | INFO: Blender create Mesh node door-left",
+  "21:48:55 | INFO: glTF import finished in 0.01s"
+ ],
+ "status": "OK",
+ "bytes": 37888,
+ "pack": "kenney-mini-arcade",
+ "packCategory": "Kenney",
+ "license": "CC0-1.0",
+ "relPath": "Kenney/kenney-mini-arcade/Models/GLB format/wall-door-rotate.glb"
+}

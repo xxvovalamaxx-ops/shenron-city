@@ -1,0 +1,100 @@
+{
+ "id": "Kenney_kenney-platformer-kit_Models_GLB_format_block-grass-low-hexagon.glb",
+ "ext": "glb",
+ "started": 1785955739.5354574,
+ "importSeconds": 0.0,
+ "objectCount": 1,
+ "meshCount": 1,
+ "armatureCount": 0,
+ "negativeScale": false,
+ "emptyCount": 0,
+ "vertexCount": 84,
+ "triangleCount": 44,
+ "meshes": [
+  {
+   "verts": 84,
+   "tris": 44,
+   "hasUV": true,
+   "uvDegeneratePolys": 44,
+   "nonManifoldEdges": 0,
+   "nonManifoldVerts": 0,
+   "shapeKeyCount": 0,
+   "hasCustomNormals": true,
+   "objectName": "block-grass-low-hexagon",
+   "materialSlots": 1
+  }
+ ],
+ "boundsMin": [
+  -0.55,
+  -0.6351,
+  0.0
+ ],
+ "boundsMax": [
+  0.55,
+  0.6351,
+  0.5
+ ],
+ "boundsSize": [
+  1.1,
+  1.2702,
+  0.5
+ ],
+ "boundsCenter": [
+  0.0,
+  0.0,
+  0.25
+ ],
+ "maxDimensionM": 1.2702,
+ "pivotOffsetM": [
+  0.0,
+  0.0,
+  -0.25
+ ],
+ "materialCount": 1,
+ "materialNodeTypes": [
+  "BSDF_PRINCIPLED",
+  "MAPPING",
+  "OUTPUT_MATERIAL",
+  "TEX_IMAGE",
+  "UVMAP"
+ ],
+ "principledCount": 1,
+ "alphaModes": [
+  "HASHED"
+ ],
+ "unsupportedNodeTypes": [
+  "UVMAP"
+ ],
+ "textureCount": 1,
+ "textureDims": [
+  [
+   512,
+   512
+  ]
+ ],
+ "maxTextureDim": 512,
+ "embeddedTextureCount": 1,
+ "externalTextureCount": 0,
+ "missingTextureRefs": [],
+ "estimatedVRAMMB": 1.0,
+ "boneCount": 0,
+ "hasSkinWeights": false,
+ "vertexGroupCount": 0,
+ "actionCount": 0,
+ "animationDurations": [],
+ "maxAnimationDuration": 0,
+ "hasRootMotion": false,
+ "lodCount": 0,
+ "collisionCount": 0,
+ "importWarnings": [
+  "21:48:59 | INFO: Data are loaded, start creating Blender stuff",
+  "21:48:59 | INFO: Blender create Mesh node block-grass-low-hexagon",
+  "21:48:59 | INFO: glTF import finished in 0.00s"
+ ],
+ "status": "OK",
+ "bytes": 5952,
+ "pack": "kenney-platformer-kit",
+ "packCategory": "Kenney",
+ "license": "CC0-1.0",
+ "relPath": "Kenney/kenney-platformer-kit/Models/GLB format/block-grass-low-hexagon.glb"
+}

@@ -1,0 +1,92 @@
+{
+ "id": "Kenney_kenney-modular-dungeon-kit_Models_OBJ_format_template-corner.obj",
+ "ext": "obj",
+ "started": 1785955738.3509963,
+ "importSeconds": 0.0,
+ "objectCount": 1,
+ "meshCount": 1,
+ "armatureCount": 0,
+ "negativeScale": false,
+ "emptyCount": 0,
+ "vertexCount": 251,
+ "triangleCount": 387,
+ "meshes": [
+  {
+   "verts": 251,
+   "tris": 387,
+   "hasUV": true,
+   "uvDegeneratePolys": 385,
+   "nonManifoldEdges": 89,
+   "nonManifoldVerts": 42,
+   "shapeKeyCount": 0,
+   "hasCustomNormals": true,
+   "objectName": "template-corner",
+   "materialSlots": 1
+  }
+ ],
+ "boundsMin": [
+  -2.0,
+  -2.0,
+  -0.0
+ ],
+ "boundsMax": [
+  2.0,
+  2.0,
+  4.2333
+ ],
+ "boundsSize": [
+  4.0,
+  4.0,
+  4.2333
+ ],
+ "boundsCenter": [
+  0.0,
+  0.0,
+  2.1166
+ ],
+ "maxDimensionM": 4.2333,
+ "pivotOffsetM": [
+  0.0,
+  -0.0,
+  -2.117
+ ],
+ "materialCount": 1,
+ "materialNodeTypes": [
+  "BSDF_PRINCIPLED",
+  "OUTPUT_MATERIAL",
+  "TEX_IMAGE"
+ ],
+ "principledCount": 1,
+ "alphaModes": [
+  "HASHED"
+ ],
+ "unsupportedNodeTypes": [],
+ "textureCount": 1,
+ "textureDims": [
+  [
+   512,
+   512
+  ]
+ ],
+ "maxTextureDim": 512,
+ "embeddedTextureCount": 0,
+ "externalTextureCount": 1,
+ "missingTextureRefs": [],
+ "estimatedVRAMMB": 1.0,
+ "boneCount": 0,
+ "hasSkinWeights": false,
+ "vertexGroupCount": 0,
+ "actionCount": 0,
+ "animationDurations": [],
+ "maxAnimationDuration": 0,
+ "hasRootMotion": false,
+ "lodCount": 0,
+ "collisionCount": 0,
+ "importWarnings": [],
+ "status": "OK",
+ "bytes": 62891,
+ "pack": "kenney-modular-dungeon-kit",
+ "packCategory": "Kenney",
+ "license": "CC0-1.0",
+ "relPath": "Kenney/kenney-modular-dungeon-kit/Models/OBJ format/template-corner.obj"
+}

@@ -1,0 +1,86 @@
+{
+ "id": "Vehicles_Cars_kenney-racing-kit_Models_OBJ_format_roadSplitRound.obj",
+ "ext": "obj",
+ "started": 1785955748.553254,
+ "importSeconds": 0.0,
+ "objectCount": 1,
+ "meshCount": 1,
+ "armatureCount": 0,
+ "negativeScale": false,
+ "emptyCount": 0,
+ "vertexCount": 221,
+ "triangleCount": 375,
+ "meshes": [
+  {
+   "verts": 221,
+   "tris": 375,
+   "hasUV": true,
+   "uvDegeneratePolys": 0,
+   "nonManifoldEdges": 65,
+   "nonManifoldVerts": 0,
+   "shapeKeyCount": 0,
+   "hasCustomNormals": true,
+   "objectName": "roadSplitRound",
+   "materialSlots": 3
+  }
+ ],
+ "boundsMin": [
+  -2.0,
+  -2.0,
+  0.0
+ ],
+ "boundsMax": [
+  1.0,
+  0.0,
+  0.02
+ ],
+ "boundsSize": [
+  3.0,
+  2.0,
+  0.02
+ ],
+ "boundsCenter": [
+  -0.5,
+  -1.0,
+  0.01
+ ],
+ "maxDimensionM": 3.0,
+ "pivotOffsetM": [
+  0.5,
+  1.0,
+  -0.01
+ ],
+ "materialCount": 3,
+ "materialNodeTypes": [
+  "BSDF_PRINCIPLED",
+  "OUTPUT_MATERIAL"
+ ],
+ "principledCount": 3,
+ "alphaModes": [
+  "HASHED"
+ ],
+ "unsupportedNodeTypes": [],
+ "textureCount": 0,
+ "textureDims": [],
+ "maxTextureDim": 0,
+ "embeddedTextureCount": 0,
+ "externalTextureCount": 0,
+ "missingTextureRefs": [],
+ "estimatedVRAMMB": 0.0,
+ "boneCount": 0,
+ "hasSkinWeights": false,
+ "vertexGroupCount": 0,
+ "actionCount": 0,
+ "animationDurations": [],
+ "maxAnimationDuration": 0,
+ "hasRootMotion": false,
+ "lodCount": 0,
+ "collisionCount": 0,
+ "importWarnings": [],
+ "status": "OK",
+ "bytes": 43232,
+ "pack": "kenney-racing-kit",
+ "packCategory": "Vehicles/Cars",
+ "license": "CC0-1.0",
+ "relPath": "Vehicles/Cars/kenney-racing-kit/Models/OBJ format/roadSplitRound.obj"
+}

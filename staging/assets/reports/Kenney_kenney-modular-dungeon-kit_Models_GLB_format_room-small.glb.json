@@ -1,0 +1,100 @@
+{
+ "id": "Kenney_kenney-modular-dungeon-kit_Models_GLB_format_room-small.glb",
+ "ext": "glb",
+ "started": 1785955738.1858344,
+ "importSeconds": 0.01,
+ "objectCount": 1,
+ "meshCount": 1,
+ "armatureCount": 0,
+ "negativeScale": false,
+ "emptyCount": 0,
+ "vertexCount": 8016,
+ "triangleCount": 4388,
+ "meshes": [
+  {
+   "verts": 8016,
+   "tris": 4388,
+   "hasUV": true,
+   "uvDegeneratePolys": 4352,
+   "nonManifoldEdges": 584,
+   "nonManifoldVerts": 312,
+   "shapeKeyCount": 0,
+   "hasCustomNormals": true,
+   "objectName": "room-small",
+   "materialSlots": 1
+  }
+ ],
+ "boundsMin": [
+  -6.0,
+  -6.0,
+  -0.0
+ ],
+ "boundsMax": [
+  6.0,
+  6.0,
+  4.2333
+ ],
+ "boundsSize": [
+  12.0,
+  12.0,
+  4.2333
+ ],
+ "boundsCenter": [
+  0.0,
+  -0.0,
+  2.1166
+ ],
+ "maxDimensionM": 12.0,
+ "pivotOffsetM": [
+  -0.0,
+  0.0,
+  -2.117
+ ],
+ "materialCount": 1,
+ "materialNodeTypes": [
+  "BSDF_PRINCIPLED",
+  "MAPPING",
+  "OUTPUT_MATERIAL",
+  "TEX_IMAGE",
+  "UVMAP"
+ ],
+ "principledCount": 1,
+ "alphaModes": [
+  "HASHED"
+ ],
+ "unsupportedNodeTypes": [
+  "UVMAP"
+ ],
+ "textureCount": 1,
+ "textureDims": [
+  [
+   512,
+   512
+  ]
+ ],
+ "maxTextureDim": 512,
+ "embeddedTextureCount": 1,
+ "externalTextureCount": 0,
+ "missingTextureRefs": [],
+ "estimatedVRAMMB": 1.0,
+ "boneCount": 0,
+ "hasSkinWeights": false,
+ "vertexGroupCount": 0,
+ "actionCount": 0,
+ "animationDurations": [],
+ "maxAnimationDuration": 0,
+ "hasRootMotion": false,
+ "lodCount": 0,
+ "collisionCount": 0,
+ "importWarnings": [
+  "21:48:58 | INFO: Data are loaded, start creating Blender stuff",
+  "21:48:58 | INFO: Blender create Mesh node room-small",
+  "21:48:58 | INFO: glTF import finished in 0.01s"
+ ],
+ "status": "OK",
+ "bytes": 412996,
+ "pack": "kenney-modular-dungeon-kit",
+ "packCategory": "Kenney",
+ "license": "CC0-1.0",
+ "relPath": "Kenney/kenney-modular-dungeon-kit/Models/GLB format/room-small.glb"
+}

@@ -1,0 +1,12 @@
+{
+ "id": "Environment_Nature_kenney-nature-kit_Models_DAE_format_bed.dae",
+ "ext": "dae",
+ "started": 1785955732.7548923,
+ "importError": "RuntimeError('Collada import removed in Blender 5.1 (DAE unsupported)')",
+ "status": "IMPORT_FAILED",
+ "bytes": 48378,
+ "pack": "kenney-nature-kit",
+ "packCategory": "Environment/Nature",
+ "license": "CC0-1.0",
+ "relPath": "Environment/Nature/kenney-nature-kit/Models/DAE format/bed.dae"
+}

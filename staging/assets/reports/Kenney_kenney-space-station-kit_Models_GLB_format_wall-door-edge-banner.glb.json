@@ -1,0 +1,100 @@
+{
+ "id": "Kenney_kenney-space-station-kit_Models_GLB_format_wall-door-edge-banner.glb",
+ "ext": "glb",
+ "started": 1785955740.8277917,
+ "importSeconds": 0.0,
+ "objectCount": 1,
+ "meshCount": 1,
+ "armatureCount": 0,
+ "negativeScale": false,
+ "emptyCount": 0,
+ "vertexCount": 118,
+ "triangleCount": 68,
+ "meshes": [
+  {
+   "verts": 118,
+   "tris": 68,
+   "hasUV": true,
+   "uvDegeneratePolys": 68,
+   "nonManifoldEdges": 14,
+   "nonManifoldVerts": 8,
+   "shapeKeyCount": 0,
+   "hasCustomNormals": true,
+   "objectName": "wall-door-edge-banner",
+   "materialSlots": 1
+  }
+ ],
+ "boundsMin": [
+  -0.5,
+  -0.15,
+  0.0
+ ],
+ "boundsMax": [
+  0.5,
+  0.15,
+  1.0
+ ],
+ "boundsSize": [
+  1.0,
+  0.3,
+  1.0
+ ],
+ "boundsCenter": [
+  0.0,
+  0.0,
+  0.5
+ ],
+ "maxDimensionM": 1.0,
+ "pivotOffsetM": [
+  0.0,
+  0.0,
+  -0.5
+ ],
+ "materialCount": 1,
+ "materialNodeTypes": [
+  "BSDF_PRINCIPLED",
+  "MAPPING",
+  "OUTPUT_MATERIAL",
+  "TEX_IMAGE",
+  "UVMAP"
+ ],
+ "principledCount": 1,
+ "alphaModes": [
+  "HASHED"
+ ],
+ "unsupportedNodeTypes": [
+  "UVMAP"
+ ],
+ "textureCount": 1,
+ "textureDims": [
+  [
+   512,
+   512
+  ]
+ ],
+ "maxTextureDim": 512,
+ "embeddedTextureCount": 1,
+ "externalTextureCount": 0,
+ "missingTextureRefs": [],
+ "estimatedVRAMMB": 1.0,
+ "boneCount": 0,
+ "hasSkinWeights": false,
+ "vertexGroupCount": 0,
+ "actionCount": 0,
+ "animationDurations": [],
+ "maxAnimationDuration": 0,
+ "hasRootMotion": false,
+ "lodCount": 0,
+ "collisionCount": 0,
+ "importWarnings": [
+  "21:49:00 | INFO: Data are loaded, start creating Blender stuff",
+  "21:49:00 | INFO: Blender create Mesh node wall-door-edge-banner",
+  "21:49:00 | INFO: glTF import finished in 0.00s"
+ ],
+ "status": "OK",
+ "bytes": 7608,
+ "pack": "kenney-space-station-kit",
+ "packCategory": "Kenney",
+ "license": "CC0-1.0",
+ "relPath": "Kenney/kenney-space-station-kit/Models/GLB format/wall-door-edge-banner.glb"
+}

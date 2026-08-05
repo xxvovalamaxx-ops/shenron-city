@@ -1,0 +1,99 @@
+{
+ "id": "Kenney_kenney-retro-urban-kit_Models_FBX_format_balcony-ladder-bottom.fbx",
+ "ext": "fbx",
+ "started": 1785955740.0527039,
+ "importSeconds": 0.01,
+ "objectCount": 1,
+ "meshCount": 1,
+ "armatureCount": 0,
+ "negativeScale": false,
+ "emptyCount": 0,
+ "vertexCount": 15,
+ "triangleCount": 14,
+ "meshes": [
+  {
+   "verts": 15,
+   "tris": 14,
+   "hasUV": true,
+   "uvDegeneratePolys": 0,
+   "nonManifoldEdges": 14,
+   "nonManifoldVerts": 4,
+   "shapeKeyCount": 0,
+   "hasCustomNormals": true,
+   "objectName": "balcony-ladder-bottom",
+   "materialSlots": 1
+  }
+ ],
+ "boundsMin": [
+  -0.5,
+  -0.1419,
+  -0.0
+ ],
+ "boundsMax": [
+  0.5,
+  0.1419,
+  0.7192
+ ],
+ "boundsSize": [
+  1.0,
+  0.2837,
+  0.7192
+ ],
+ "boundsCenter": [
+  0.0,
+  0.0,
+  0.3596
+ ],
+ "maxDimensionM": 1.0,
+ "pivotOffsetM": [
+  0.0,
+  -0.0,
+  -0.36
+ ],
+ "materialCount": 1,
+ "materialNodeTypes": [
+  "BSDF_PRINCIPLED",
+  "NORMAL_MAP",
+  "OUTPUT_MATERIAL",
+  "TEX_IMAGE"
+ ],
+ "principledCount": 1,
+ "alphaModes": [
+  "HASHED"
+ ],
+ "unsupportedNodeTypes": [],
+ "textureCount": 2,
+ "textureDims": [
+  [
+   64,
+   64
+  ],
+  [
+   64,
+   64
+  ]
+ ],
+ "maxTextureDim": 64,
+ "embeddedTextureCount": 0,
+ "externalTextureCount": 2,
+ "missingTextureRefs": [],
+ "estimatedVRAMMB": 0.03,
+ "boneCount": 0,
+ "hasSkinWeights": false,
+ "vertexGroupCount": 0,
+ "actionCount": 0,
+ "animationDurations": [],
+ "maxAnimationDuration": 0,
+ "hasRootMotion": false,
+ "lodCount": 0,
+ "collisionCount": 0,
+ "importWarnings": [
+  "FBX version: 7700"
+ ],
+ "status": "OK",
+ "bytes": 27280,
+ "pack": "kenney-retro-urban-kit",
+ "packCategory": "Kenney",
+ "license": "CC0-1.0",
+ "relPath": "Kenney/kenney-retro-urban-kit/Models/FBX format/balcony-ladder-bottom.fbx"
+}

@@ -1,0 +1,92 @@
+{
+ "id": "Kenney_kenney-modular-cave-kit_Models_OBJ_format_corridor.obj",
+ "ext": "obj",
+ "started": 1785955737.9060388,
+ "importSeconds": 0.0,
+ "objectCount": 1,
+ "meshCount": 1,
+ "armatureCount": 0,
+ "negativeScale": false,
+ "emptyCount": 0,
+ "vertexCount": 270,
+ "triangleCount": 442,
+ "meshes": [
+  {
+   "verts": 270,
+   "tris": 442,
+   "hasUV": true,
+   "uvDegeneratePolys": 440,
+   "nonManifoldEdges": 44,
+   "nonManifoldVerts": 8,
+   "shapeKeyCount": 0,
+   "hasCustomNormals": true,
+   "objectName": "corridor",
+   "materialSlots": 1
+  }
+ ],
+ "boundsMin": [
+  -2.0,
+  -2.0,
+  -0.0
+ ],
+ "boundsMax": [
+  2.0,
+  2.0,
+  4.05
+ ],
+ "boundsSize": [
+  4.0,
+  4.0,
+  4.05
+ ],
+ "boundsCenter": [
+  0.0,
+  0.0,
+  2.025
+ ],
+ "maxDimensionM": 4.05,
+ "pivotOffsetM": [
+  0.0,
+  -0.0,
+  -2.025
+ ],
+ "materialCount": 1,
+ "materialNodeTypes": [
+  "BSDF_PRINCIPLED",
+  "OUTPUT_MATERIAL",
+  "TEX_IMAGE"
+ ],
+ "principledCount": 1,
+ "alphaModes": [
+  "HASHED"
+ ],
+ "unsupportedNodeTypes": [],
+ "textureCount": 1,
+ "textureDims": [
+  [
+   512,
+   512
+  ]
+ ],
+ "maxTextureDim": 512,
+ "embeddedTextureCount": 0,
+ "externalTextureCount": 1,
+ "missingTextureRefs": [],
+ "estimatedVRAMMB": 1.0,
+ "boneCount": 0,
+ "hasSkinWeights": false,
+ "vertexGroupCount": 0,
+ "actionCount": 0,
+ "animationDurations": [],
+ "maxAnimationDuration": 0,
+ "hasRootMotion": false,
+ "lodCount": 0,
+ "collisionCount": 0,
+ "importWarnings": [],
+ "status": "OK",
+ "bytes": 74350,
+ "pack": "kenney-modular-cave-kit",
+ "packCategory": "Kenney",
+ "license": "CC0-1.0",
+ "relPath": "Kenney/kenney-modular-cave-kit/Models/OBJ format/corridor.obj"
+}

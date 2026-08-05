@@ -1,0 +1,174 @@
+{
+ "id": "Kenney_kenney-cube-pets_Models_GLB_format_animal-fox.glb",
+ "ext": "glb",
+ "started": 1785955734.273424,
+ "importSeconds": 0.02,
+ "objectCount": 8,
+ "meshCount": 6,
+ "armatureCount": 0,
+ "negativeScale": false,
+ "emptyCount": 2,
+ "vertexCount": 993,
+ "triangleCount": 568,
+ "meshes": [
+  {
+   "verts": 493,
+   "tris": 298,
+   "hasUV": true,
+   "uvDegeneratePolys": 298,
+   "nonManifoldEdges": 56,
+   "nonManifoldVerts": 4,
+   "shapeKeyCount": 0,
+   "hasCustomNormals": true,
+   "objectName": "body",
+   "materialSlots": 1
+  },
+  {
+   "verts": 80,
+   "tris": 44,
+   "hasUV": true,
+   "uvDegeneratePolys": 44,
+   "nonManifoldEdges": 0,
+   "nonManifoldVerts": 0,
+   "shapeKeyCount": 0,
+   "hasCustomNormals": true,
+   "objectName": "leg-back-left",
+   "materialSlots": 1
+  },
+  {
+   "verts": 84,
+   "tris": 46,
+   "hasUV": true,
+   "uvDegeneratePolys": 46,
+   "nonManifoldEdges": 0,
+   "nonManifoldVerts": 0,
+   "shapeKeyCount": 0,
+   "hasCustomNormals": true,
+   "objectName": "leg-back-right",
+   "materialSlots": 1
+  },
+  {
+   "verts": 80,
+   "tris": 44,
+   "hasUV": true,
+   "uvDegeneratePolys": 44,
+   "nonManifoldEdges": 0,
+   "nonManifoldVerts": 0,
+   "shapeKeyCount": 0,
+   "hasCustomNormals": true,
+   "objectName": "leg-front-left",
+   "materialSlots": 1
+  },
+  {
+   "verts": 80,
+   "tris": 44,
+   "hasUV": true,
+   "uvDegeneratePolys": 44,
+   "nonManifoldEdges": 0,
+   "nonManifoldVerts": 0,
+   "shapeKeyCount": 0,
+   "hasCustomNormals": true,
+   "objectName": "leg-front-right",
+   "materialSlots": 1
+  },
+  {
+   "verts": 176,
+   "tris": 92,
+   "hasUV": true,
+   "uvDegeneratePolys": 92,
+   "nonManifoldEdges": 0,
+   "nonManifoldVerts": 0,
+   "shapeKeyCount": 0,
+   "hasCustomNormals": true,
+   "objectName": "tail",
+   "materialSlots": 1
+  }
+ ],
+ "boundsMin": [
+  -0.625,
+  -0.9347,
+  0.0
+ ],
+ "boundsMax": [
+  0.625,
+  1.3738,
+  1.6863
+ ],
+ "boundsSize": [
+  1.25,
+  2.3084,
+  1.6863
+ ],
+ "boundsCenter": [
+  0.0,
+  0.2196,
+  0.8432
+ ],
+ "maxDimensionM": 2.3084,
+ "pivotOffsetM": [
+  0.0,
+  -0.22,
+  -0.843
+ ],
+ "materialCount": 1,
+ "materialNodeTypes": [
+  "BSDF_PRINCIPLED",
+  "MAPPING",
+  "OUTPUT_MATERIAL",
+  "TEX_IMAGE",
+  "UVMAP"
+ ],
+ "principledCount": 1,
+ "alphaModes": [
+  "HASHED"
+ ],
+ "unsupportedNodeTypes": [
+  "UVMAP"
+ ],
+ "textureCount": 1,
+ "textureDims": [
+  [
+   512,
+   512
+  ]
+ ],
+ "maxTextureDim": 512,
+ "embeddedTextureCount": 1,
+ "externalTextureCount": 0,
+ "missingTextureRefs": [],
+ "estimatedVRAMMB": 1.0,
+ "boneCount": 0,
+ "hasSkinWeights": false,
+ "vertexGroupCount": 0,
+ "actionCount": 8,
+ "animationDurations": [
+  0.5,
+  0.5,
+  0.25,
+  0.25,
+  1.0,
+  0.25,
+  0.1,
+  0.5
+ ],
+ "maxAnimationDuration": 1.0,
+ "hasRootMotion": false,
+ "lodCount": 0,
+ "collisionCount": 0,
+ "importWarnings": [
+  "21:48:54 | INFO: Data are loaded, start creating Blender stuff",
+  "21:48:54 | INFO: Blender create Mesh node body",
+  "21:48:54 | INFO: Blender create Mesh node tail",
+  "21:48:54 | INFO: Blender create Mesh node leg-back-left",
+  "21:48:54 | INFO: Blender create Mesh node leg-back-right",
+  "21:48:54 | INFO: Blender create Mesh node leg-front-left",
+  "21:48:54 | INFO: Blender create Mesh node leg-front-right",
+  "21:48:54 | INFO: glTF import finished in 0.01s"
+ ],
+ "status": "OK",
+ "bytes": 141880,
+ "pack": "kenney-cube-pets",
+ "packCategory": "Kenney",
+ "license": "CC0-1.0",
+ "relPath": "Kenney/kenney-cube-pets/Models/GLB format/animal-fox.glb"
+}

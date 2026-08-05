@@ -1,0 +1,92 @@
+{
+ "id": "Buildings_City_kenney-city-kit-suburban_Models_OBJ_format_building-type-o.obj",
+ "ext": "obj",
+ "started": 1785955725.6174004,
+ "importSeconds": 0.0,
+ "objectCount": 1,
+ "meshCount": 1,
+ "armatureCount": 0,
+ "negativeScale": false,
+ "emptyCount": 0,
+ "vertexCount": 806,
+ "triangleCount": 1326,
+ "meshes": [
+  {
+   "verts": 806,
+   "tris": 1326,
+   "hasUV": true,
+   "uvDegeneratePolys": 1326,
+   "nonManifoldEdges": 100,
+   "nonManifoldVerts": 58,
+   "shapeKeyCount": 0,
+   "hasCustomNormals": true,
+   "objectName": "building-type-o",
+   "materialSlots": 1
+  }
+ ],
+ "boundsMin": [
+  -0.635,
+  -0.514,
+  -0.0
+ ],
+ "boundsMax": [
+  0.635,
+  0.514,
+  1.1375
+ ],
+ "boundsSize": [
+  1.27,
+  1.028,
+  1.1375
+ ],
+ "boundsCenter": [
+  -0.0,
+  0.0,
+  0.5688
+ ],
+ "maxDimensionM": 1.27,
+ "pivotOffsetM": [
+  0.0,
+  -0.0,
+  -0.569
+ ],
+ "materialCount": 1,
+ "materialNodeTypes": [
+  "BSDF_PRINCIPLED",
+  "OUTPUT_MATERIAL",
+  "TEX_IMAGE"
+ ],
+ "principledCount": 1,
+ "alphaModes": [
+  "HASHED"
+ ],
+ "unsupportedNodeTypes": [],
+ "textureCount": 1,
+ "textureDims": [
+  [
+   512,
+   512
+  ]
+ ],
+ "maxTextureDim": 512,
+ "embeddedTextureCount": 0,
+ "externalTextureCount": 1,
+ "missingTextureRefs": [],
+ "estimatedVRAMMB": 1.0,
+ "boneCount": 0,
+ "hasSkinWeights": false,
+ "vertexGroupCount": 0,
+ "actionCount": 0,
+ "animationDurations": [],
+ "maxAnimationDuration": 0,
+ "hasRootMotion": false,
+ "lodCount": 0,
+ "collisionCount": 0,
+ "importWarnings": [],
+ "status": "OK",
+ "bytes": 114505,
+ "pack": "kenney-city-kit-suburban",
+ "packCategory": "Buildings/City",
+ "license": "CC0-1.0",
+ "relPath": "Buildings/City/kenney-city-kit-suburban/Models/OBJ format/building-type-o.obj"
+}

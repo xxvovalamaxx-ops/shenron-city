@@ -1,0 +1,107 @@
+{
+ "id": "Kenney_kenney-retro-fantasy-kit_Models_FBX_format_barrels.fbx",
+ "ext": "fbx",
+ "started": 1785955739.7333806,
+ "importSeconds": 0.01,
+ "objectCount": 1,
+ "meshCount": 1,
+ "armatureCount": 0,
+ "negativeScale": false,
+ "emptyCount": 0,
+ "vertexCount": 188,
+ "triangleCount": 328,
+ "meshes": [
+  {
+   "verts": 188,
+   "tris": 328,
+   "hasUV": true,
+   "uvDegeneratePolys": 4,
+   "nonManifoldEdges": 20,
+   "nonManifoldVerts": 12,
+   "shapeKeyCount": 0,
+   "hasCustomNormals": true,
+   "objectName": "barrels",
+   "materialSlots": 2
+  }
+ ],
+ "boundsMin": [
+  -0.296,
+  -0.15,
+  -0.0
+ ],
+ "boundsMax": [
+  0.296,
+  0.15,
+  0.492
+ ],
+ "boundsSize": [
+  0.592,
+  0.3,
+  0.492
+ ],
+ "boundsCenter": [
+  0.0,
+  0.0,
+  0.246
+ ],
+ "maxDimensionM": 0.592,
+ "pivotOffsetM": [
+  0.0,
+  -0.0,
+  -0.246
+ ],
+ "materialCount": 2,
+ "materialNodeTypes": [
+  "BSDF_PRINCIPLED",
+  "NORMAL_MAP",
+  "OUTPUT_MATERIAL",
+  "TEX_IMAGE"
+ ],
+ "principledCount": 2,
+ "alphaModes": [
+  "HASHED"
+ ],
+ "unsupportedNodeTypes": [],
+ "textureCount": 4,
+ "textureDims": [
+  [
+   64,
+   64
+  ],
+  [
+   64,
+   64
+  ],
+  [
+   64,
+   64
+  ],
+  [
+   64,
+   64
+  ]
+ ],
+ "maxTextureDim": 64,
+ "embeddedTextureCount": 0,
+ "externalTextureCount": 4,
+ "missingTextureRefs": [],
+ "estimatedVRAMMB": 0.06,
+ "boneCount": 0,
+ "hasSkinWeights": false,
+ "vertexGroupCount": 0,
+ "actionCount": 0,
+ "animationDurations": [],
+ "maxAnimationDuration": 0,
+ "hasRootMotion": false,
+ "lodCount": 0,
+ "collisionCount": 0,
+ "importWarnings": [
+  "FBX version: 7700"
+ ],
+ "status": "OK",
+ "bytes": 43552,
+ "pack": "kenney-retro-fantasy-kit",
+ "packCategory": "Kenney",
+ "license": "CC0-1.0",
+ "relPath": "Kenney/kenney-retro-fantasy-kit/Models/FBX format/barrels.fbx"
+}

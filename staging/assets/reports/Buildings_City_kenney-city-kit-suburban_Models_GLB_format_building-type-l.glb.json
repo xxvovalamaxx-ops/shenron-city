@@ -1,0 +1,100 @@
+{
+ "id": "Buildings_City_kenney-city-kit-suburban_Models_GLB_format_building-type-l.glb",
+ "ext": "glb",
+ "started": 1785955725.340954,
+ "importSeconds": 0.01,
+ "objectCount": 1,
+ "meshCount": 1,
+ "armatureCount": 0,
+ "negativeScale": false,
+ "emptyCount": 0,
+ "vertexCount": 2072,
+ "triangleCount": 1310,
+ "meshes": [
+  {
+   "verts": 2072,
+   "tris": 1310,
+   "hasUV": true,
+   "uvDegeneratePolys": 1310,
+   "nonManifoldEdges": 112,
+   "nonManifoldVerts": 84,
+   "shapeKeyCount": 0,
+   "hasCustomNormals": true,
+   "objectName": "building-type-l",
+   "materialSlots": 1
+  }
+ ],
+ "boundsMin": [
+  -0.5168,
+  -0.51,
+  0.0
+ ],
+ "boundsMax": [
+  0.5168,
+  0.51,
+  1.0492
+ ],
+ "boundsSize": [
+  1.0336,
+  1.02,
+  1.0492
+ ],
+ "boundsCenter": [
+  0.0,
+  -0.0,
+  0.5246
+ ],
+ "maxDimensionM": 1.0492,
+ "pivotOffsetM": [
+  0.0,
+  0.0,
+  -0.525
+ ],
+ "materialCount": 1,
+ "materialNodeTypes": [
+  "BSDF_PRINCIPLED",
+  "MAPPING",
+  "OUTPUT_MATERIAL",
+  "TEX_IMAGE",
+  "UVMAP"
+ ],
+ "principledCount": 1,
+ "alphaModes": [
+  "HASHED"
+ ],
+ "unsupportedNodeTypes": [
+  "UVMAP"
+ ],
+ "textureCount": 1,
+ "textureDims": [
+  [
+   512,
+   512
+  ]
+ ],
+ "maxTextureDim": 512,
+ "embeddedTextureCount": 1,
+ "externalTextureCount": 0,
+ "missingTextureRefs": [],
+ "estimatedVRAMMB": 1.0,
+ "boneCount": 0,
+ "hasSkinWeights": false,
+ "vertexGroupCount": 0,
+ "actionCount": 0,
+ "animationDurations": [],
+ "maxAnimationDuration": 0,
+ "hasRootMotion": false,
+ "lodCount": 0,
+ "collisionCount": 0,
+ "importWarnings": [
+  "21:48:45 | INFO: Data are loaded, start creating Blender stuff",
+  "21:48:45 | INFO: Blender create Mesh node building-type-l",
+  "21:48:45 | INFO: glTF import finished in 0.01s"
+ ],
+ "status": "OK",
+ "bytes": 109232,
+ "pack": "kenney-city-kit-suburban",
+ "packCategory": "Buildings/City",
+ "license": "CC0-1.0",
+ "relPath": "Buildings/City/kenney-city-kit-suburban/Models/GLB format/building-type-l.glb"
+}

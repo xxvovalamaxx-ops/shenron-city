@@ -1,0 +1,125 @@
+{
+ "id": "Props_Quaternius_quaternius-lowpoly-cars_Realistic_Car_Pack_-_Nov_2018_FBX_SUV.fbx",
+ "ext": "fbx",
+ "started": 1785955745.7267122,
+ "importSeconds": 0.01,
+ "objectCount": 4,
+ "meshCount": 4,
+ "armatureCount": 0,
+ "negativeScale": false,
+ "emptyCount": 0,
+ "vertexCount": 1663,
+ "triangleCount": 3212,
+ "meshes": [
+  {
+   "verts": 815,
+   "tris": 1596,
+   "hasUV": false,
+   "uvDegeneratePolys": 0,
+   "nonManifoldEdges": 2,
+   "nonManifoldVerts": 4,
+   "shapeKeyCount": 0,
+   "hasCustomNormals": true,
+   "objectName": "SUV",
+   "materialSlots": 6
+  },
+  {
+   "verts": 424,
+   "tris": 808,
+   "hasUV": false,
+   "uvDegeneratePolys": 0,
+   "nonManifoldEdges": 0,
+   "nonManifoldVerts": 0,
+   "shapeKeyCount": 0,
+   "hasCustomNormals": true,
+   "objectName": "SUV_BackWheels",
+   "materialSlots": 2
+  },
+  {
+   "verts": 212,
+   "tris": 404,
+   "hasUV": false,
+   "uvDegeneratePolys": 0,
+   "nonManifoldEdges": 0,
+   "nonManifoldVerts": 0,
+   "shapeKeyCount": 0,
+   "hasCustomNormals": true,
+   "objectName": "SUV_FrontLeftWheel",
+   "materialSlots": 2
+  },
+  {
+   "verts": 212,
+   "tris": 404,
+   "hasUV": false,
+   "uvDegeneratePolys": 0,
+   "nonManifoldEdges": 0,
+   "nonManifoldVerts": 0,
+   "shapeKeyCount": 0,
+   "hasCustomNormals": true,
+   "objectName": "SUV_FrontRightWheel",
+   "materialSlots": 2
+  }
+ ],
+ "boundsMin": [
+  -1.0556,
+  -2.1045,
+  -0.0181
+ ],
+ "boundsMax": [
+  1.0556,
+  2.1049,
+  1.5098
+ ],
+ "boundsSize": [
+  2.1111,
+  4.2093,
+  1.5279
+ ],
+ "boundsCenter": [
+  0.0,
+  0.0002,
+  0.7458
+ ],
+ "maxDimensionM": 4.2093,
+ "pivotOffsetM": [
+  0.0,
+  -0.0,
+  -0.746
+ ],
+ "materialCount": 6,
+ "materialNodeTypes": [
+  "BSDF_PRINCIPLED",
+  "NORMAL_MAP",
+  "OUTPUT_MATERIAL"
+ ],
+ "principledCount": 6,
+ "alphaModes": [
+  "HASHED"
+ ],
+ "unsupportedNodeTypes": [],
+ "textureCount": 0,
+ "textureDims": [],
+ "maxTextureDim": 0,
+ "embeddedTextureCount": 0,
+ "externalTextureCount": 0,
+ "missingTextureRefs": [],
+ "estimatedVRAMMB": 0.0,
+ "boneCount": 0,
+ "hasSkinWeights": false,
+ "vertexGroupCount": 0,
+ "actionCount": 0,
+ "animationDurations": [],
+ "maxAnimationDuration": 0,
+ "hasRootMotion": false,
+ "lodCount": 0,
+ "collisionCount": 0,
+ "importWarnings": [
+  "FBX version: 7400"
+ ],
+ "status": "OK",
+ "bytes": 78076,
+ "pack": "quaternius-lowpoly-cars",
+ "packCategory": "Props/Quaternius",
+ "license": "CC0-1.0",
+ "relPath": "Props/Quaternius/quaternius-lowpoly-cars/Realistic Car Pack - Nov 2018/FBX/SUV.fbx"
+}

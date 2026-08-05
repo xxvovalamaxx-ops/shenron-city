@@ -1,0 +1,90 @@
+{
+ "id": "Environment_Nature_kenney-nature-kit_Models_GLTF_format_tree_pineDefaultA.glb",
+ "ext": "glb",
+ "started": 1785955733.3906977,
+ "importSeconds": 0.01,
+ "objectCount": 2,
+ "meshCount": 1,
+ "armatureCount": 0,
+ "negativeScale": false,
+ "emptyCount": 1,
+ "vertexCount": 392,
+ "triangleCount": 230,
+ "meshes": [
+  {
+   "verts": 392,
+   "tris": 230,
+   "hasUV": true,
+   "uvDegeneratePolys": 0,
+   "nonManifoldEdges": 0,
+   "nonManifoldVerts": 0,
+   "shapeKeyCount": 0,
+   "hasCustomNormals": true,
+   "objectName": "tree_pineDefaultA",
+   "materialSlots": 2
+  }
+ ],
+ "boundsMin": [
+  -0.266,
+  -0.266,
+  -0.05
+ ],
+ "boundsMax": [
+  0.266,
+  0.266,
+  1.4958
+ ],
+ "boundsSize": [
+  0.532,
+  0.532,
+  1.5458
+ ],
+ "boundsCenter": [
+  0.0,
+  0.0,
+  0.7229
+ ],
+ "maxDimensionM": 1.5458,
+ "pivotOffsetM": [
+  0.0,
+  0.0,
+  -0.723
+ ],
+ "materialCount": 2,
+ "materialNodeTypes": [
+  "BSDF_PRINCIPLED",
+  "OUTPUT_MATERIAL"
+ ],
+ "principledCount": 2,
+ "alphaModes": [
+  "HASHED"
+ ],
+ "unsupportedNodeTypes": [],
+ "textureCount": 0,
+ "textureDims": [],
+ "maxTextureDim": 0,
+ "embeddedTextureCount": 0,
+ "externalTextureCount": 0,
+ "missingTextureRefs": [],
+ "estimatedVRAMMB": 0.0,
+ "boneCount": 0,
+ "hasSkinWeights": false,
+ "vertexGroupCount": 0,
+ "actionCount": 0,
+ "animationDurations": [],
+ "maxAnimationDuration": 0,
+ "hasRootMotion": false,
+ "lodCount": 0,
+ "collisionCount": 0,
+ "importWarnings": [
+  "21:48:53 | INFO: Data are loaded, start creating Blender stuff",
+  "21:48:53 | INFO: Blender create Mesh node Mesh tree_pineDefaultA",
+  "21:48:53 | INFO: glTF import finished in 0.00s"
+ ],
+ "status": "OK",
+ "bytes": 17220,
+ "pack": "kenney-nature-kit",
+ "packCategory": "Environment/Nature",
+ "license": "CC0-1.0",
+ "relPath": "Environment/Nature/kenney-nature-kit/Models/GLTF format/tree_pineDefaultA.glb"
+}

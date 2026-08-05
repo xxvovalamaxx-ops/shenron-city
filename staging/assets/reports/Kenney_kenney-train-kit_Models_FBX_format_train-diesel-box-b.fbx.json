@@ -1,0 +1,119 @@
+{
+ "id": "Kenney_kenney-train-kit_Models_FBX_format_train-diesel-box-b.fbx",
+ "ext": "fbx",
+ "started": 1785955741.36287,
+ "importSeconds": 0.01,
+ "objectCount": 3,
+ "meshCount": 3,
+ "armatureCount": 0,
+ "negativeScale": false,
+ "emptyCount": 0,
+ "vertexCount": 756,
+ "triangleCount": 1228,
+ "meshes": [
+  {
+   "verts": 388,
+   "tris": 596,
+   "hasUV": true,
+   "uvDegeneratePolys": 596,
+   "nonManifoldEdges": 136,
+   "nonManifoldVerts": 0,
+   "shapeKeyCount": 0,
+   "hasCustomNormals": true,
+   "objectName": "train-diesel-box-b",
+   "materialSlots": 1
+  },
+  {
+   "verts": 184,
+   "tris": 316,
+   "hasUV": true,
+   "uvDegeneratePolys": 316,
+   "nonManifoldEdges": 16,
+   "nonManifoldVerts": 0,
+   "shapeKeyCount": 0,
+   "hasCustomNormals": true,
+   "objectName": "wheels-back",
+   "materialSlots": 1
+  },
+  {
+   "verts": 184,
+   "tris": 316,
+   "hasUV": true,
+   "uvDegeneratePolys": 316,
+   "nonManifoldEdges": 16,
+   "nonManifoldVerts": 0,
+   "shapeKeyCount": 0,
+   "hasCustomNormals": true,
+   "objectName": "wheels-front",
+   "materialSlots": 1
+  }
+ ],
+ "boundsMin": [
+  -0.65,
+  -1.45,
+  -0.0
+ ],
+ "boundsMax": [
+  0.65,
+  1.15,
+  1.6491
+ ],
+ "boundsSize": [
+  1.3,
+  2.6,
+  1.6491
+ ],
+ "boundsCenter": [
+  0.0,
+  -0.15,
+  0.8246
+ ],
+ "maxDimensionM": 2.6,
+ "pivotOffsetM": [
+  0.0,
+  0.15,
+  -0.825
+ ],
+ "materialCount": 1,
+ "materialNodeTypes": [
+  "BSDF_PRINCIPLED",
+  "NORMAL_MAP",
+  "OUTPUT_MATERIAL",
+  "TEX_IMAGE"
+ ],
+ "principledCount": 1,
+ "alphaModes": [
+  "HASHED"
+ ],
+ "unsupportedNodeTypes": [],
+ "textureCount": 1,
+ "textureDims": [
+  [
+   512,
+   512
+  ]
+ ],
+ "maxTextureDim": 512,
+ "embeddedTextureCount": 0,
+ "externalTextureCount": 1,
+ "missingTextureRefs": [],
+ "estimatedVRAMMB": 1.0,
+ "boneCount": 0,
+ "hasSkinWeights": false,
+ "vertexGroupCount": 0,
+ "actionCount": 0,
+ "animationDurations": [],
+ "maxAnimationDuration": 0,
+ "hasRootMotion": false,
+ "lodCount": 0,
+ "collisionCount": 0,
+ "importWarnings": [
+  "FBX version: 7700"
+ ],
+ "status": "OK",
+ "bytes": 65712,
+ "pack": "kenney-train-kit",
+ "packCategory": "Kenney",
+ "license": "CC0-1.0",
+ "relPath": "Kenney/kenney-train-kit/Models/FBX format/train-diesel-box-b.fbx"
+}

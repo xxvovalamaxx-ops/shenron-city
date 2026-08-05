@@ -1,0 +1,95 @@
+{
+ "id": "Buildings_City_kenney-city-kit-roads_Models_FBX_format_bridge-pillar-wide.fbx",
+ "ext": "fbx",
+ "started": 1785955724.3659565,
+ "importSeconds": 0.0,
+ "objectCount": 1,
+ "meshCount": 1,
+ "armatureCount": 0,
+ "negativeScale": false,
+ "emptyCount": 0,
+ "vertexCount": 28,
+ "triangleCount": 40,
+ "meshes": [
+  {
+   "verts": 28,
+   "tris": 40,
+   "hasUV": true,
+   "uvDegeneratePolys": 40,
+   "nonManifoldEdges": 8,
+   "nonManifoldVerts": 0,
+   "shapeKeyCount": 0,
+   "hasCustomNormals": true,
+   "objectName": "bridge-pillar-wide",
+   "materialSlots": 1
+  }
+ ],
+ "boundsMin": [
+  -0.07,
+  -0.07,
+  -0.0
+ ],
+ "boundsMax": [
+  0.07,
+  0.07,
+  0.5
+ ],
+ "boundsSize": [
+  0.14,
+  0.14,
+  0.5
+ ],
+ "boundsCenter": [
+  0.0,
+  0.0,
+  0.25
+ ],
+ "maxDimensionM": 0.5,
+ "pivotOffsetM": [
+  0.0,
+  0.0,
+  -0.25
+ ],
+ "materialCount": 1,
+ "materialNodeTypes": [
+  "BSDF_PRINCIPLED",
+  "NORMAL_MAP",
+  "OUTPUT_MATERIAL",
+  "TEX_IMAGE"
+ ],
+ "principledCount": 1,
+ "alphaModes": [
+  "HASHED"
+ ],
+ "unsupportedNodeTypes": [],
+ "textureCount": 1,
+ "textureDims": [
+  [
+   512,
+   512
+  ]
+ ],
+ "maxTextureDim": 512,
+ "embeddedTextureCount": 0,
+ "externalTextureCount": 1,
+ "missingTextureRefs": [],
+ "estimatedVRAMMB": 1.0,
+ "boneCount": 0,
+ "hasSkinWeights": false,
+ "vertexGroupCount": 0,
+ "actionCount": 0,
+ "animationDurations": [],
+ "maxAnimationDuration": 0,
+ "hasRootMotion": false,
+ "lodCount": 0,
+ "collisionCount": 0,
+ "importWarnings": [
+  "FBX version: 7700"
+ ],
+ "status": "OK",
+ "bytes": 28336,
+ "pack": "kenney-city-kit-roads",
+ "packCategory": "Buildings/City",
+ "license": "CC0-1.0",
+ "relPath": "Buildings/City/kenney-city-kit-roads/Models/FBX format/bridge-pillar-wide.fbx"
+}

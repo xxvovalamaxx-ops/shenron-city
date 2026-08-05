@@ -1,0 +1,100 @@
+{
+ "id": "Buildings_City_kenney-city-kit-industrial_Models_GLB_format_building-m.glb",
+ "ext": "glb",
+ "started": 1785955724.042857,
+ "importSeconds": 0.01,
+ "objectCount": 1,
+ "meshCount": 1,
+ "armatureCount": 0,
+ "negativeScale": false,
+ "emptyCount": 0,
+ "vertexCount": 2634,
+ "triangleCount": 1706,
+ "meshes": [
+  {
+   "verts": 2634,
+   "tris": 1706,
+   "hasUV": true,
+   "uvDegeneratePolys": 1706,
+   "nonManifoldEdges": 138,
+   "nonManifoldVerts": 144,
+   "shapeKeyCount": 0,
+   "hasCustomNormals": true,
+   "objectName": "building-m",
+   "materialSlots": 1
+  }
+ ],
+ "boundsMin": [
+  -0.6581,
+  -0.85,
+  0.0
+ ],
+ "boundsMax": [
+  0.6581,
+  0.85,
+  1.519
+ ],
+ "boundsSize": [
+  1.3163,
+  1.7,
+  1.519
+ ],
+ "boundsCenter": [
+  0.0,
+  0.0,
+  0.7595
+ ],
+ "maxDimensionM": 1.7,
+ "pivotOffsetM": [
+  0.0,
+  0.0,
+  -0.76
+ ],
+ "materialCount": 1,
+ "materialNodeTypes": [
+  "BSDF_PRINCIPLED",
+  "MAPPING",
+  "OUTPUT_MATERIAL",
+  "TEX_IMAGE",
+  "UVMAP"
+ ],
+ "principledCount": 1,
+ "alphaModes": [
+  "HASHED"
+ ],
+ "unsupportedNodeTypes": [
+  "UVMAP"
+ ],
+ "textureCount": 1,
+ "textureDims": [
+  [
+   512,
+   512
+  ]
+ ],
+ "maxTextureDim": 512,
+ "embeddedTextureCount": 1,
+ "externalTextureCount": 0,
+ "missingTextureRefs": [],
+ "estimatedVRAMMB": 1.0,
+ "boneCount": 0,
+ "hasSkinWeights": false,
+ "vertexGroupCount": 0,
+ "actionCount": 0,
+ "animationDurations": [],
+ "maxAnimationDuration": 0,
+ "hasRootMotion": false,
+ "lodCount": 0,
+ "collisionCount": 0,
+ "importWarnings": [
+  "21:48:44 | INFO: Data are loaded, start creating Blender stuff",
+  "21:48:44 | INFO: Blender create Mesh node building-m",
+  "21:48:44 | INFO: glTF import finished in 0.01s"
+ ],
+ "status": "OK",
+ "bytes": 138560,
+ "pack": "kenney-city-kit-industrial",
+ "packCategory": "Buildings/City",
+ "license": "CC0-1.0",
+ "relPath": "Buildings/City/kenney-city-kit-industrial/Models/GLB format/building-m.glb"
+}

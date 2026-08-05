@@ -1,0 +1,100 @@
+{
+ "id": "Kenney_kenney-factory-kit_Models_GLB_format_catwalk-straight.glb",
+ "ext": "glb",
+ "started": 1785955734.6162014,
+ "importSeconds": 0.0,
+ "objectCount": 1,
+ "meshCount": 1,
+ "armatureCount": 0,
+ "negativeScale": false,
+ "emptyCount": 0,
+ "vertexCount": 620,
+ "triangleCount": 328,
+ "meshes": [
+  {
+   "verts": 620,
+   "tris": 328,
+   "hasUV": true,
+   "uvDegeneratePolys": 328,
+   "nonManifoldEdges": 32,
+   "nonManifoldVerts": 0,
+   "shapeKeyCount": 0,
+   "hasCustomNormals": true,
+   "objectName": "catwalk-straight",
+   "materialSlots": 1
+  }
+ ],
+ "boundsMin": [
+  -0.5,
+  -0.6277,
+  -0.1472
+ ],
+ "boundsMax": [
+  0.5,
+  0.6277,
+  0.4541
+ ],
+ "boundsSize": [
+  1.0,
+  1.2555,
+  0.6014
+ ],
+ "boundsCenter": [
+  0.0,
+  0.0,
+  0.1534
+ ],
+ "maxDimensionM": 1.2555,
+ "pivotOffsetM": [
+  0.0,
+  0.0,
+  -0.153
+ ],
+ "materialCount": 1,
+ "materialNodeTypes": [
+  "BSDF_PRINCIPLED",
+  "MAPPING",
+  "OUTPUT_MATERIAL",
+  "TEX_IMAGE",
+  "UVMAP"
+ ],
+ "principledCount": 1,
+ "alphaModes": [
+  "HASHED"
+ ],
+ "unsupportedNodeTypes": [
+  "UVMAP"
+ ],
+ "textureCount": 1,
+ "textureDims": [
+  [
+   512,
+   512
+  ]
+ ],
+ "maxTextureDim": 512,
+ "embeddedTextureCount": 1,
+ "externalTextureCount": 0,
+ "missingTextureRefs": [],
+ "estimatedVRAMMB": 1.0,
+ "boneCount": 0,
+ "hasSkinWeights": false,
+ "vertexGroupCount": 0,
+ "actionCount": 0,
+ "animationDurations": [],
+ "maxAnimationDuration": 0,
+ "hasRootMotion": false,
+ "lodCount": 0,
+ "collisionCount": 0,
+ "importWarnings": [
+  "21:48:54 | INFO: Data are loaded, start creating Blender stuff",
+  "21:48:54 | INFO: Blender create Mesh node catwalk-straight",
+  "21:48:54 | INFO: glTF import finished in 0.00s"
+ ],
+ "status": "OK",
+ "bytes": 33492,
+ "pack": "kenney-factory-kit",
+ "packCategory": "Kenney",
+ "license": "CC0-1.0",
+ "relPath": "Kenney/kenney-factory-kit/Models/GLB format/catwalk-straight.glb"
+}
