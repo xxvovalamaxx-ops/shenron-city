@@ -1,0 +1,100 @@
+{
+ "id": "Kenney_kenney-mini-forest_Models_GLB_format_building-roof.glb",
+ "ext": "glb",
+ "started": 1785955736.70681,
+ "importSeconds": 0.0,
+ "objectCount": 1,
+ "meshCount": 1,
+ "armatureCount": 0,
+ "negativeScale": false,
+ "emptyCount": 0,
+ "vertexCount": 588,
+ "triangleCount": 324,
+ "meshes": [
+  {
+   "verts": 588,
+   "tris": 324,
+   "hasUV": true,
+   "uvDegeneratePolys": 324,
+   "nonManifoldEdges": 0,
+   "nonManifoldVerts": 0,
+   "shapeKeyCount": 0,
+   "hasCustomNormals": true,
+   "objectName": "building-roof",
+   "materialSlots": 1
+  }
+ ],
+ "boundsMin": [
+  -0.6705,
+  -0.5827,
+  0.0
+ ],
+ "boundsMax": [
+  0.6705,
+  0.5827,
+  1.05
+ ],
+ "boundsSize": [
+  1.3409,
+  1.1655,
+  1.05
+ ],
+ "boundsCenter": [
+  0.0,
+  0.0,
+  0.525
+ ],
+ "maxDimensionM": 1.3409,
+ "pivotOffsetM": [
+  0.0,
+  0.0,
+  -0.525
+ ],
+ "materialCount": 1,
+ "materialNodeTypes": [
+  "BSDF_PRINCIPLED",
+  "MAPPING",
+  "OUTPUT_MATERIAL",
+  "TEX_IMAGE",
+  "UVMAP"
+ ],
+ "principledCount": 1,
+ "alphaModes": [
+  "HASHED"
+ ],
+ "unsupportedNodeTypes": [
+  "UVMAP"
+ ],
+ "textureCount": 1,
+ "textureDims": [
+  [
+   512,
+   512
+  ]
+ ],
+ "maxTextureDim": 512,
+ "embeddedTextureCount": 1,
+ "externalTextureCount": 0,
+ "missingTextureRefs": [],
+ "estimatedVRAMMB": 1.0,
+ "boneCount": 0,
+ "hasSkinWeights": false,
+ "vertexGroupCount": 0,
+ "actionCount": 0,
+ "animationDurations": [],
+ "maxAnimationDuration": 0,
+ "hasRootMotion": false,
+ "lodCount": 0,
+ "collisionCount": 0,
+ "importWarnings": [
+  "21:48:56 | INFO: Data are loaded, start creating Blender stuff",
+  "21:48:56 | INFO: Blender create Mesh node building-roof",
+  "21:48:56 | INFO: glTF import finished in 0.00s"
+ ],
+ "status": "OK",
+ "bytes": 31964,
+ "pack": "kenney-mini-forest",
+ "packCategory": "Kenney",
+ "license": "CC0-1.0",
+ "relPath": "Kenney/kenney-mini-forest/Models/GLB format/building-roof.glb"
+}

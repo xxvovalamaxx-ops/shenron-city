@@ -1,0 +1,134 @@
+{
+ "id": "Environment_Models_polyhaven-Lantern_01_Lantern_01_1k.gltf",
+ "ext": "gltf",
+ "started": 1785955732.3811066,
+ "importSeconds": 0.04,
+ "objectCount": 2,
+ "meshCount": 2,
+ "armatureCount": 0,
+ "negativeScale": false,
+ "emptyCount": 0,
+ "vertexCount": 20670,
+ "triangleCount": 33902,
+ "meshes": [
+  {
+   "verts": 18954,
+   "tris": 30830,
+   "hasUV": true,
+   "uvDegeneratePolys": 5,
+   "nonManifoldEdges": 516,
+   "nonManifoldVerts": 0,
+   "shapeKeyCount": 0,
+   "hasCustomNormals": true,
+   "objectName": "Lantern_01",
+   "materialSlots": 1
+  },
+  {
+   "verts": 1716,
+   "tris": 3072,
+   "hasUV": true,
+   "uvDegeneratePolys": 0,
+   "nonManifoldEdges": 0,
+   "nonManifoldVerts": 0,
+   "shapeKeyCount": 0,
+   "hasCustomNormals": true,
+   "objectName": "Lantern_01_glass",
+   "materialSlots": 1
+  }
+ ],
+ "boundsMin": [
+  -0.061,
+  -0.0486,
+  0.0
+ ],
+ "boundsMax": [
+  0.0611,
+  0.0486,
+  0.2942
+ ],
+ "boundsSize": [
+  0.1221,
+  0.0972,
+  0.2942
+ ],
+ "boundsCenter": [
+  0.0,
+  0.0,
+  0.1471
+ ],
+ "maxDimensionM": 0.2942,
+ "pivotOffsetM": [
+  -0.0,
+  -0.0,
+  -0.147
+ ],
+ "materialCount": 2,
+ "materialNodeTypes": [
+  "BSDF_PRINCIPLED",
+  "NORMAL_MAP",
+  "OUTPUT_MATERIAL",
+  "SEPARATE_COLOR",
+  "TEX_IMAGE"
+ ],
+ "principledCount": 2,
+ "alphaModes": [
+  "BLEND",
+  "HASHED"
+ ],
+ "unsupportedNodeTypes": [
+  "SEPARATE_COLOR"
+ ],
+ "textureCount": 6,
+ "textureDims": [
+  [
+   1024,
+   1024
+  ],
+  [
+   1024,
+   1024
+  ],
+  [
+   1024,
+   1024
+  ],
+  [
+   1024,
+   1024
+  ],
+  [
+   1024,
+   1024
+  ],
+  [
+   1024,
+   1024
+  ]
+ ],
+ "maxTextureDim": 1024,
+ "embeddedTextureCount": 6,
+ "externalTextureCount": 0,
+ "missingTextureRefs": [],
+ "estimatedVRAMMB": 24.0,
+ "boneCount": 0,
+ "hasSkinWeights": false,
+ "vertexGroupCount": 0,
+ "actionCount": 0,
+ "animationDurations": [],
+ "maxAnimationDuration": 0,
+ "hasRootMotion": false,
+ "lodCount": 0,
+ "collisionCount": 0,
+ "importWarnings": [
+  "21:48:52 | INFO: Data are loaded, start creating Blender stuff",
+  "21:48:52 | INFO: Blender create Mesh node Mesh",
+  "21:48:52 | INFO: Blender create Mesh node Mesh.002",
+  "21:48:52 | INFO: glTF import finished in 0.04s"
+ ],
+ "status": "OK",
+ "bytes": 11479,
+ "pack": "polyhaven-Lantern_01",
+ "packCategory": "Environment/Models",
+ "license": "CC0-1.0",
+ "relPath": "Environment/Models/polyhaven-Lantern_01/Lantern_01_1k.gltf"
+}

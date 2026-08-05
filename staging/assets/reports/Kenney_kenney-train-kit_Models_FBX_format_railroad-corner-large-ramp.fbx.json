@@ -1,0 +1,95 @@
+{
+ "id": "Kenney_kenney-train-kit_Models_FBX_format_railroad-corner-large-ramp.fbx",
+ "ext": "fbx",
+ "started": 1785955741.2710729,
+ "importSeconds": 0.01,
+ "objectCount": 1,
+ "meshCount": 1,
+ "armatureCount": 0,
+ "negativeScale": false,
+ "emptyCount": 0,
+ "vertexCount": 336,
+ "triangleCount": 552,
+ "meshes": [
+  {
+   "verts": 336,
+   "tris": 552,
+   "hasUV": true,
+   "uvDegeneratePolys": 552,
+   "nonManifoldEdges": 144,
+   "nonManifoldVerts": 96,
+   "shapeKeyCount": 0,
+   "hasCustomNormals": true,
+   "objectName": "railroad-corner-large-ramp",
+   "materialSlots": 1
+  }
+ ],
+ "boundsMin": [
+  -4.0,
+  -4.4866,
+  -0.0011
+ ],
+ "boundsMax": [
+  0.4875,
+  -0.0,
+  1.1
+ ],
+ "boundsSize": [
+  4.4875,
+  4.4866,
+  1.1011
+ ],
+ "boundsCenter": [
+  -1.7562,
+  -2.2433,
+  0.5494
+ ],
+ "maxDimensionM": 4.4875,
+ "pivotOffsetM": [
+  1.756,
+  2.243,
+  -0.549
+ ],
+ "materialCount": 1,
+ "materialNodeTypes": [
+  "BSDF_PRINCIPLED",
+  "NORMAL_MAP",
+  "OUTPUT_MATERIAL",
+  "TEX_IMAGE"
+ ],
+ "principledCount": 1,
+ "alphaModes": [
+  "HASHED"
+ ],
+ "unsupportedNodeTypes": [],
+ "textureCount": 1,
+ "textureDims": [
+  [
+   512,
+   512
+  ]
+ ],
+ "maxTextureDim": 512,
+ "embeddedTextureCount": 0,
+ "externalTextureCount": 1,
+ "missingTextureRefs": [],
+ "estimatedVRAMMB": 1.0,
+ "boneCount": 0,
+ "hasSkinWeights": false,
+ "vertexGroupCount": 0,
+ "actionCount": 0,
+ "animationDurations": [],
+ "maxAnimationDuration": 0,
+ "hasRootMotion": false,
+ "lodCount": 0,
+ "collisionCount": 0,
+ "importWarnings": [
+  "FBX version: 7700"
+ ],
+ "status": "OK",
+ "bytes": 42880,
+ "pack": "kenney-train-kit",
+ "packCategory": "Kenney",
+ "license": "CC0-1.0",
+ "relPath": "Kenney/kenney-train-kit/Models/FBX format/railroad-corner-large-ramp.fbx"
+}

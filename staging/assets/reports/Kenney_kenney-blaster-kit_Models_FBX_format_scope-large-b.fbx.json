@@ -1,0 +1,99 @@
+{
+ "id": "Kenney_kenney-blaster-kit_Models_FBX_format_scope-large-b.fbx",
+ "ext": "fbx",
+ "started": 1785955733.6737683,
+ "importSeconds": 0.01,
+ "objectCount": 1,
+ "meshCount": 1,
+ "armatureCount": 0,
+ "negativeScale": false,
+ "emptyCount": 0,
+ "vertexCount": 120,
+ "triangleCount": 224,
+ "meshes": [
+  {
+   "verts": 120,
+   "tris": 224,
+   "hasUV": true,
+   "uvDegeneratePolys": 224,
+   "nonManifoldEdges": 0,
+   "nonManifoldVerts": 0,
+   "shapeKeyCount": 0,
+   "hasCustomNormals": true,
+   "objectName": "scope-large-b",
+   "materialSlots": 1
+  }
+ ],
+ "boundsMin": [
+  -0.05,
+  -0.22,
+  -0.0
+ ],
+ "boundsMax": [
+  0.06,
+  0.22,
+  0.1117
+ ],
+ "boundsSize": [
+  0.11,
+  0.44,
+  0.1117
+ ],
+ "boundsCenter": [
+  0.005,
+  0.0,
+  0.0558
+ ],
+ "maxDimensionM": 0.44,
+ "pivotOffsetM": [
+  -0.005,
+  -0.0,
+  -0.056
+ ],
+ "materialCount": 1,
+ "materialNodeTypes": [
+  "BSDF_PRINCIPLED",
+  "NORMAL_MAP",
+  "OUTPUT_MATERIAL",
+  "TEX_IMAGE"
+ ],
+ "principledCount": 1,
+ "alphaModes": [
+  "HASHED"
+ ],
+ "unsupportedNodeTypes": [],
+ "textureCount": 2,
+ "textureDims": [
+  [
+   512,
+   512
+  ],
+  [
+   512,
+   512
+  ]
+ ],
+ "maxTextureDim": 512,
+ "embeddedTextureCount": 0,
+ "externalTextureCount": 2,
+ "missingTextureRefs": [],
+ "estimatedVRAMMB": 2.0,
+ "boneCount": 0,
+ "hasSkinWeights": false,
+ "vertexGroupCount": 0,
+ "actionCount": 0,
+ "animationDurations": [],
+ "maxAnimationDuration": 0,
+ "hasRootMotion": false,
+ "lodCount": 0,
+ "collisionCount": 0,
+ "importWarnings": [
+  "FBX version: 7700"
+ ],
+ "status": "OK",
+ "bytes": 31248,
+ "pack": "kenney-blaster-kit",
+ "packCategory": "Kenney",
+ "license": "CC0-1.0",
+ "relPath": "Kenney/kenney-blaster-kit/Models/FBX format/scope-large-b.fbx"
+}

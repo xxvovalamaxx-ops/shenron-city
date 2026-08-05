@@ -1,0 +1,86 @@
+{
+ "id": "Vehicles_Cars_kenney-racing-kit_Models_OBJ_format_roadCornerSmallBorder.obj",
+ "ext": "obj",
+ "started": 1785955748.5168507,
+ "importSeconds": 0.0,
+ "objectCount": 1,
+ "meshCount": 1,
+ "armatureCount": 0,
+ "negativeScale": false,
+ "emptyCount": 0,
+ "vertexCount": 52,
+ "triangleCount": 76,
+ "meshes": [
+  {
+   "verts": 52,
+   "tris": 76,
+   "hasUV": true,
+   "uvDegeneratePolys": 0,
+   "nonManifoldEdges": 26,
+   "nonManifoldVerts": 0,
+   "shapeKeyCount": 0,
+   "hasCustomNormals": true,
+   "objectName": "roadCornerSmallBorder",
+   "materialSlots": 2
+  }
+ ],
+ "boundsMin": [
+  -1.0,
+  -1.21,
+  0.0
+ ],
+ "boundsMax": [
+  0.21,
+  0.0,
+  0.02
+ ],
+ "boundsSize": [
+  1.21,
+  1.21,
+  0.02
+ ],
+ "boundsCenter": [
+  -0.395,
+  -0.605,
+  0.01
+ ],
+ "maxDimensionM": 1.21,
+ "pivotOffsetM": [
+  0.395,
+  0.605,
+  -0.01
+ ],
+ "materialCount": 2,
+ "materialNodeTypes": [
+  "BSDF_PRINCIPLED",
+  "OUTPUT_MATERIAL"
+ ],
+ "principledCount": 2,
+ "alphaModes": [
+  "HASHED"
+ ],
+ "unsupportedNodeTypes": [],
+ "textureCount": 0,
+ "textureDims": [],
+ "maxTextureDim": 0,
+ "embeddedTextureCount": 0,
+ "externalTextureCount": 0,
+ "missingTextureRefs": [],
+ "estimatedVRAMMB": 0.0,
+ "boneCount": 0,
+ "hasSkinWeights": false,
+ "vertexGroupCount": 0,
+ "actionCount": 0,
+ "animationDurations": [],
+ "maxAnimationDuration": 0,
+ "hasRootMotion": false,
+ "lodCount": 0,
+ "collisionCount": 0,
+ "importWarnings": [],
+ "status": "OK",
+ "bytes": 9295,
+ "pack": "kenney-racing-kit",
+ "packCategory": "Vehicles/Cars",
+ "license": "CC0-1.0",
+ "relPath": "Vehicles/Cars/kenney-racing-kit/Models/OBJ format/roadCornerSmallBorder.obj"
+}

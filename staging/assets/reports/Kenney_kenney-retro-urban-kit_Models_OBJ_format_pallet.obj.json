@@ -1,0 +1,92 @@
+{
+ "id": "Kenney_kenney-retro-urban-kit_Models_OBJ_format_pallet.obj",
+ "ext": "obj",
+ "started": 1785955740.2814515,
+ "importSeconds": 0.0,
+ "objectCount": 1,
+ "meshCount": 1,
+ "armatureCount": 0,
+ "negativeScale": false,
+ "emptyCount": 0,
+ "vertexCount": 54,
+ "triangleCount": 84,
+ "meshes": [
+  {
+   "verts": 54,
+   "tris": 84,
+   "hasUV": true,
+   "uvDegeneratePolys": 0,
+   "nonManifoldEdges": 0,
+   "nonManifoldVerts": 0,
+   "shapeKeyCount": 0,
+   "hasCustomNormals": true,
+   "objectName": "pallet",
+   "materialSlots": 1
+  }
+ ],
+ "boundsMin": [
+  -0.5,
+  -0.5,
+  -0.0
+ ],
+ "boundsMax": [
+  0.5,
+  0.5,
+  0.15
+ ],
+ "boundsSize": [
+  1.0,
+  1.0,
+  0.15
+ ],
+ "boundsCenter": [
+  0.0,
+  0.0,
+  0.075
+ ],
+ "maxDimensionM": 1.0,
+ "pivotOffsetM": [
+  0.0,
+  0.0,
+  -0.075
+ ],
+ "materialCount": 1,
+ "materialNodeTypes": [
+  "BSDF_PRINCIPLED",
+  "OUTPUT_MATERIAL",
+  "TEX_IMAGE"
+ ],
+ "principledCount": 1,
+ "alphaModes": [
+  "HASHED"
+ ],
+ "unsupportedNodeTypes": [],
+ "textureCount": 1,
+ "textureDims": [
+  [
+   64,
+   64
+  ]
+ ],
+ "maxTextureDim": 64,
+ "embeddedTextureCount": 0,
+ "externalTextureCount": 1,
+ "missingTextureRefs": [],
+ "estimatedVRAMMB": 0.02,
+ "boneCount": 0,
+ "hasSkinWeights": false,
+ "vertexGroupCount": 0,
+ "actionCount": 0,
+ "animationDurations": [],
+ "maxAnimationDuration": 0,
+ "hasRootMotion": false,
+ "lodCount": 0,
+ "collisionCount": 0,
+ "importWarnings": [],
+ "status": "OK",
+ "bytes": 6096,
+ "pack": "kenney-retro-urban-kit",
+ "packCategory": "Kenney",
+ "license": "CC0-1.0",
+ "relPath": "Kenney/kenney-retro-urban-kit/Models/OBJ format/pallet.obj"
+}

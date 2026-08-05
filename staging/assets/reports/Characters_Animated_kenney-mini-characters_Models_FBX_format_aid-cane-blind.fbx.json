@@ -1,0 +1,95 @@
+{
+ "id": "Characters_Animated_kenney-mini-characters_Models_FBX_format_aid-cane-blind.fbx",
+ "ext": "fbx",
+ "started": 1785955729.2907972,
+ "importSeconds": 0.01,
+ "objectCount": 1,
+ "meshCount": 1,
+ "armatureCount": 0,
+ "negativeScale": false,
+ "emptyCount": 0,
+ "vertexCount": 44,
+ "triangleCount": 64,
+ "meshes": [
+  {
+   "verts": 44,
+   "tris": 64,
+   "hasUV": true,
+   "uvDegeneratePolys": 64,
+   "nonManifoldEdges": 0,
+   "nonManifoldVerts": 0,
+   "shapeKeyCount": 0,
+   "hasCustomNormals": true,
+   "objectName": "aid-cane-blind",
+   "materialSlots": 1
+  }
+ ],
+ "boundsMin": [
+  -0.048,
+  -0.048,
+  0.0
+ ],
+ "boundsMax": [
+  0.048,
+  0.048,
+  0.31
+ ],
+ "boundsSize": [
+  0.096,
+  0.096,
+  0.31
+ ],
+ "boundsCenter": [
+  0.0,
+  0.0,
+  0.155
+ ],
+ "maxDimensionM": 0.31,
+ "pivotOffsetM": [
+  0.0,
+  -0.0,
+  -0.155
+ ],
+ "materialCount": 1,
+ "materialNodeTypes": [
+  "BSDF_PRINCIPLED",
+  "NORMAL_MAP",
+  "OUTPUT_MATERIAL",
+  "TEX_IMAGE"
+ ],
+ "principledCount": 1,
+ "alphaModes": [
+  "HASHED"
+ ],
+ "unsupportedNodeTypes": [],
+ "textureCount": 1,
+ "textureDims": [
+  [
+   512,
+   512
+  ]
+ ],
+ "maxTextureDim": 512,
+ "embeddedTextureCount": 0,
+ "externalTextureCount": 1,
+ "missingTextureRefs": [],
+ "estimatedVRAMMB": 1.0,
+ "boneCount": 0,
+ "hasSkinWeights": false,
+ "vertexGroupCount": 0,
+ "actionCount": 0,
+ "animationDurations": [],
+ "maxAnimationDuration": 0,
+ "hasRootMotion": false,
+ "lodCount": 0,
+ "collisionCount": 0,
+ "importWarnings": [
+  "FBX version: 7700"
+ ],
+ "status": "OK",
+ "bytes": 26896,
+ "pack": "kenney-mini-characters",
+ "packCategory": "Characters/Animated",
+ "license": "CC0-1.0",
+ "relPath": "Characters/Animated/kenney-mini-characters/Models/FBX format/aid-cane-blind.fbx"
+}

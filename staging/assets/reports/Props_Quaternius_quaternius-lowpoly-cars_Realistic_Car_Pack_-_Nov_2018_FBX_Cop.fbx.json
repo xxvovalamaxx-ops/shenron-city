@@ -1,0 +1,125 @@
+{
+ "id": "Props_Quaternius_quaternius-lowpoly-cars_Realistic_Car_Pack_-_Nov_2018_FBX_Cop.fbx",
+ "ext": "fbx",
+ "started": 1785955745.4835367,
+ "importSeconds": 0.01,
+ "objectCount": 4,
+ "meshCount": 4,
+ "armatureCount": 0,
+ "negativeScale": false,
+ "emptyCount": 0,
+ "vertexCount": 1630,
+ "triangleCount": 3148,
+ "meshes": [
+  {
+   "verts": 782,
+   "tris": 1532,
+   "hasUV": false,
+   "uvDegeneratePolys": 0,
+   "nonManifoldEdges": 0,
+   "nonManifoldVerts": 0,
+   "shapeKeyCount": 0,
+   "hasCustomNormals": true,
+   "objectName": "Cop",
+   "materialSlots": 8
+  },
+  {
+   "verts": 424,
+   "tris": 808,
+   "hasUV": false,
+   "uvDegeneratePolys": 0,
+   "nonManifoldEdges": 0,
+   "nonManifoldVerts": 0,
+   "shapeKeyCount": 0,
+   "hasCustomNormals": true,
+   "objectName": "Cop_BackWheels",
+   "materialSlots": 2
+  },
+  {
+   "verts": 212,
+   "tris": 404,
+   "hasUV": false,
+   "uvDegeneratePolys": 0,
+   "nonManifoldEdges": 0,
+   "nonManifoldVerts": 0,
+   "shapeKeyCount": 0,
+   "hasCustomNormals": true,
+   "objectName": "Cop_FrontLeftWheel",
+   "materialSlots": 2
+  },
+  {
+   "verts": 212,
+   "tris": 404,
+   "hasUV": false,
+   "uvDegeneratePolys": 0,
+   "nonManifoldEdges": 0,
+   "nonManifoldVerts": 0,
+   "shapeKeyCount": 0,
+   "hasCustomNormals": true,
+   "objectName": "Cop_FrontRightWheel",
+   "materialSlots": 2
+  }
+ ],
+ "boundsMin": [
+  -0.8888,
+  -1.8635,
+  -0.0163
+ ],
+ "boundsMax": [
+  0.8888,
+  1.867,
+  1.2225
+ ],
+ "boundsSize": [
+  1.7776,
+  3.7305,
+  1.2388
+ ],
+ "boundsCenter": [
+  0.0,
+  0.0018,
+  0.6031
+ ],
+ "maxDimensionM": 3.7305,
+ "pivotOffsetM": [
+  -0.0,
+  -0.002,
+  -0.603
+ ],
+ "materialCount": 8,
+ "materialNodeTypes": [
+  "BSDF_PRINCIPLED",
+  "NORMAL_MAP",
+  "OUTPUT_MATERIAL"
+ ],
+ "principledCount": 8,
+ "alphaModes": [
+  "HASHED"
+ ],
+ "unsupportedNodeTypes": [],
+ "textureCount": 0,
+ "textureDims": [],
+ "maxTextureDim": 0,
+ "embeddedTextureCount": 0,
+ "externalTextureCount": 0,
+ "missingTextureRefs": [],
+ "estimatedVRAMMB": 0.0,
+ "boneCount": 0,
+ "hasSkinWeights": false,
+ "vertexGroupCount": 0,
+ "actionCount": 0,
+ "animationDurations": [],
+ "maxAnimationDuration": 0,
+ "hasRootMotion": false,
+ "lodCount": 0,
+ "collisionCount": 0,
+ "importWarnings": [
+  "FBX version: 7400"
+ ],
+ "status": "OK",
+ "bytes": 79948,
+ "pack": "quaternius-lowpoly-cars",
+ "packCategory": "Props/Quaternius",
+ "license": "CC0-1.0",
+ "relPath": "Props/Quaternius/quaternius-lowpoly-cars/Realistic Car Pack - Nov 2018/FBX/Cop.fbx"
+}

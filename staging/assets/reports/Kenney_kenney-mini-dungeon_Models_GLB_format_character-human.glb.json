@@ -1,0 +1,158 @@
+{
+ "id": "Kenney_kenney-mini-dungeon_Models_GLB_format_character-human.glb",
+ "ext": "glb",
+ "started": 1785955736.3154294,
+ "importSeconds": 0.03,
+ "objectCount": 4,
+ "meshCount": 3,
+ "armatureCount": 1,
+ "negativeScale": false,
+ "emptyCount": 0,
+ "vertexCount": 863,
+ "triangleCount": 545,
+ "meshes": [
+  {
+   "verts": 382,
+   "tris": 214,
+   "hasUV": true,
+   "uvDegeneratePolys": 210,
+   "nonManifoldEdges": 22,
+   "nonManifoldVerts": 32,
+   "shapeKeyCount": 0,
+   "hasCustomNormals": true,
+   "objectName": "body-mesh",
+   "materialSlots": 1
+  },
+  {
+   "verts": 439,
+   "tris": 251,
+   "hasUV": true,
+   "uvDegeneratePolys": 251,
+   "nonManifoldEdges": 93,
+   "nonManifoldVerts": 32,
+   "shapeKeyCount": 0,
+   "hasCustomNormals": true,
+   "objectName": "head-mesh",
+   "materialSlots": 1
+  },
+  {
+   "verts": 42,
+   "tris": 80,
+   "hasUV": true,
+   "uvDegeneratePolys": 0,
+   "nonManifoldEdges": 0,
+   "nonManifoldVerts": 0,
+   "shapeKeyCount": 0,
+   "hasCustomNormals": false,
+   "objectName": "Icosphere",
+   "materialSlots": 0
+  }
+ ],
+ "boundsMin": [
+  -0.9511,
+  -1.0,
+  -1.0
+ ],
+ "boundsMax": [
+  0.9511,
+  1.0,
+  1.0
+ ],
+ "boundsSize": [
+  1.9021,
+  2.0,
+  2.0
+ ],
+ "boundsCenter": [
+  0.0,
+  0.0,
+  0.0
+ ],
+ "maxDimensionM": 2.0,
+ "pivotOffsetM": [
+  0.0,
+  0.0,
+  0.0
+ ],
+ "materialCount": 1,
+ "materialNodeTypes": [
+  "BSDF_PRINCIPLED",
+  "MAPPING",
+  "OUTPUT_MATERIAL",
+  "TEX_IMAGE",
+  "UVMAP"
+ ],
+ "principledCount": 1,
+ "alphaModes": [
+  "HASHED"
+ ],
+ "unsupportedNodeTypes": [
+  "UVMAP"
+ ],
+ "textureCount": 1,
+ "textureDims": [
+  [
+   512,
+   512
+  ]
+ ],
+ "maxTextureDim": 512,
+ "embeddedTextureCount": 1,
+ "externalTextureCount": 0,
+ "missingTextureRefs": [],
+ "estimatedVRAMMB": 1.0,
+ "boneCount": 7,
+ "hasSkinWeights": true,
+ "vertexGroupCount": 7,
+ "actionCount": 32,
+ "animationDurations": [
+  0.533,
+  0.533,
+  0.417,
+  0.417,
+  0.167,
+  0.333,
+  0.167,
+  0.667,
+  0.667,
+  0.333,
+  0.167,
+  0.2,
+  0.167,
+  0.2,
+  0.167,
+  0.2,
+  1.333,
+  0.667,
+  0.667,
+  0.5,
+  0.333,
+  0.167,
+  0.5,
+  0.1,
+  0.667,
+  0.333,
+  0.333,
+  0.5,
+  0.5,
+  0.5,
+  0.5,
+  0.167
+ ],
+ "maxAnimationDuration": 1.333,
+ "hasRootMotion": false,
+ "lodCount": 0,
+ "collisionCount": 0,
+ "importWarnings": [
+  "21:48:56 | INFO: Data are loaded, start creating Blender stuff",
+  "21:48:56 | INFO: Blender create Mesh node body-mesh",
+  "21:48:56 | INFO: Blender create Mesh node head-mesh",
+  "21:48:56 | INFO: glTF import finished in 0.02s"
+ ],
+ "status": "OK",
+ "bytes": 218072,
+ "pack": "kenney-mini-dungeon",
+ "packCategory": "Kenney",
+ "license": "CC0-1.0",
+ "relPath": "Kenney/kenney-mini-dungeon/Models/GLB format/character-human.glb"
+}

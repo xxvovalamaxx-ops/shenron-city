@@ -1,0 +1,92 @@
+{
+ "id": "Kenney_kenney-graveyard-kit_Models_OBJ_format_crypt-a.obj",
+ "ext": "obj",
+ "started": 1785955735.4286563,
+ "importSeconds": 0.0,
+ "objectCount": 1,
+ "meshCount": 1,
+ "armatureCount": 0,
+ "negativeScale": false,
+ "emptyCount": 0,
+ "vertexCount": 64,
+ "triangleCount": 108,
+ "meshes": [
+  {
+   "verts": 64,
+   "tris": 108,
+   "hasUV": true,
+   "uvDegeneratePolys": 108,
+   "nonManifoldEdges": 12,
+   "nonManifoldVerts": 0,
+   "shapeKeyCount": 0,
+   "hasCustomNormals": true,
+   "objectName": "crypt-a",
+   "materialSlots": 1
+  }
+ ],
+ "boundsMin": [
+  -0.31,
+  -0.558,
+  -0.0
+ ],
+ "boundsMax": [
+  0.31,
+  0.558,
+  0.5224
+ ],
+ "boundsSize": [
+  0.62,
+  1.116,
+  0.5224
+ ],
+ "boundsCenter": [
+  0.0,
+  0.0,
+  0.2612
+ ],
+ "maxDimensionM": 1.116,
+ "pivotOffsetM": [
+  0.0,
+  0.0,
+  -0.261
+ ],
+ "materialCount": 1,
+ "materialNodeTypes": [
+  "BSDF_PRINCIPLED",
+  "OUTPUT_MATERIAL",
+  "TEX_IMAGE"
+ ],
+ "principledCount": 1,
+ "alphaModes": [
+  "HASHED"
+ ],
+ "unsupportedNodeTypes": [],
+ "textureCount": 1,
+ "textureDims": [
+  [
+   512,
+   512
+  ]
+ ],
+ "maxTextureDim": 512,
+ "embeddedTextureCount": 0,
+ "externalTextureCount": 1,
+ "missingTextureRefs": [],
+ "estimatedVRAMMB": 1.0,
+ "boneCount": 0,
+ "hasSkinWeights": false,
+ "vertexGroupCount": 0,
+ "actionCount": 0,
+ "animationDurations": [],
+ "maxAnimationDuration": 0,
+ "hasRootMotion": false,
+ "lodCount": 0,
+ "collisionCount": 0,
+ "importWarnings": [],
+ "status": "OK",
+ "bytes": 8037,
+ "pack": "kenney-graveyard-kit",
+ "packCategory": "Kenney",
+ "license": "CC0-1.0",
+ "relPath": "Kenney/kenney-graveyard-kit/Models/OBJ format/crypt-a.obj"
+}

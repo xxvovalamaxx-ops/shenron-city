@@ -1,0 +1,95 @@
+{
+ "id": "Kenney_kenney-mini-market_Models_FBX_format_bottle-return.fbx",
+ "ext": "fbx",
+ "started": 1785955736.9161012,
+ "importSeconds": 0.01,
+ "objectCount": 1,
+ "meshCount": 1,
+ "armatureCount": 0,
+ "negativeScale": false,
+ "emptyCount": 0,
+ "vertexCount": 190,
+ "triangleCount": 324,
+ "meshes": [
+  {
+   "verts": 190,
+   "tris": 324,
+   "hasUV": true,
+   "uvDegeneratePolys": 324,
+   "nonManifoldEdges": 42,
+   "nonManifoldVerts": 0,
+   "shapeKeyCount": 0,
+   "hasCustomNormals": true,
+   "objectName": "bottle-return",
+   "materialSlots": 1
+  }
+ ],
+ "boundsMin": [
+  -0.225,
+  -0.2123,
+  -0.0
+ ],
+ "boundsMax": [
+  0.225,
+  0.2688,
+  1.0925
+ ],
+ "boundsSize": [
+  0.45,
+  0.481,
+  1.0925
+ ],
+ "boundsCenter": [
+  0.0,
+  0.0282,
+  0.5463
+ ],
+ "maxDimensionM": 1.0925,
+ "pivotOffsetM": [
+  0.0,
+  -0.028,
+  -0.546
+ ],
+ "materialCount": 1,
+ "materialNodeTypes": [
+  "BSDF_PRINCIPLED",
+  "NORMAL_MAP",
+  "OUTPUT_MATERIAL",
+  "TEX_IMAGE"
+ ],
+ "principledCount": 1,
+ "alphaModes": [
+  "HASHED"
+ ],
+ "unsupportedNodeTypes": [],
+ "textureCount": 1,
+ "textureDims": [
+  [
+   512,
+   512
+  ]
+ ],
+ "maxTextureDim": 512,
+ "embeddedTextureCount": 0,
+ "externalTextureCount": 1,
+ "missingTextureRefs": [],
+ "estimatedVRAMMB": 1.0,
+ "boneCount": 0,
+ "hasSkinWeights": false,
+ "vertexGroupCount": 0,
+ "actionCount": 0,
+ "animationDurations": [],
+ "maxAnimationDuration": 0,
+ "hasRootMotion": false,
+ "lodCount": 0,
+ "collisionCount": 0,
+ "importWarnings": [
+  "FBX version: 7700"
+ ],
+ "status": "OK",
+ "bytes": 40736,
+ "pack": "kenney-mini-market",
+ "packCategory": "Kenney",
+ "license": "CC0-1.0",
+ "relPath": "Kenney/kenney-mini-market/Models/FBX format/bottle-return.fbx"
+}

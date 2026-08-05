@@ -1,0 +1,95 @@
+{
+ "id": "Kenney_kenney-mini-arcade_Models_FBX_format_column.fbx",
+ "ext": "fbx",
+ "started": 1785955735.5680501,
+ "importSeconds": 0.01,
+ "objectCount": 1,
+ "meshCount": 1,
+ "armatureCount": 0,
+ "negativeScale": false,
+ "emptyCount": 0,
+ "vertexCount": 96,
+ "triangleCount": 188,
+ "meshes": [
+  {
+   "verts": 96,
+   "tris": 188,
+   "hasUV": true,
+   "uvDegeneratePolys": 188,
+   "nonManifoldEdges": 0,
+   "nonManifoldVerts": 0,
+   "shapeKeyCount": 0,
+   "hasCustomNormals": true,
+   "objectName": "column",
+   "materialSlots": 1
+  }
+ ],
+ "boundsMin": [
+  -0.3629,
+  -0.3629,
+  -0.0
+ ],
+ "boundsMax": [
+  0.3629,
+  0.3629,
+  1.0
+ ],
+ "boundsSize": [
+  0.7258,
+  0.7258,
+  1.0
+ ],
+ "boundsCenter": [
+  0.0,
+  0.0,
+  0.5
+ ],
+ "maxDimensionM": 1.0,
+ "pivotOffsetM": [
+  0.0,
+  -0.0,
+  -0.5
+ ],
+ "materialCount": 1,
+ "materialNodeTypes": [
+  "BSDF_PRINCIPLED",
+  "NORMAL_MAP",
+  "OUTPUT_MATERIAL",
+  "TEX_IMAGE"
+ ],
+ "principledCount": 1,
+ "alphaModes": [
+  "HASHED"
+ ],
+ "unsupportedNodeTypes": [],
+ "textureCount": 1,
+ "textureDims": [
+  [
+   512,
+   512
+  ]
+ ],
+ "maxTextureDim": 512,
+ "embeddedTextureCount": 0,
+ "externalTextureCount": 1,
+ "missingTextureRefs": [],
+ "estimatedVRAMMB": 1.0,
+ "boneCount": 0,
+ "hasSkinWeights": false,
+ "vertexGroupCount": 0,
+ "actionCount": 0,
+ "animationDurations": [],
+ "maxAnimationDuration": 0,
+ "hasRootMotion": false,
+ "lodCount": 0,
+ "collisionCount": 0,
+ "importWarnings": [
+  "FBX version: 7700"
+ ],
+ "status": "OK",
+ "bytes": 31200,
+ "pack": "kenney-mini-arcade",
+ "packCategory": "Kenney",
+ "license": "CC0-1.0",
+ "relPath": "Kenney/kenney-mini-arcade/Models/FBX format/column.fbx"
+}

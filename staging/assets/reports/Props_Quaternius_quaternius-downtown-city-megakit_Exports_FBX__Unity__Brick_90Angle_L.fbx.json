@@ -1,0 +1,110 @@
+{
+ "id": "Props_Quaternius_quaternius-downtown-city-megakit_Exports_FBX__Unity__Brick_90Angle_L.fbx",
+ "ext": "fbx",
+ "started": 1785955743.5060132,
+ "importSeconds": 0.01,
+ "objectCount": 1,
+ "meshCount": 1,
+ "armatureCount": 0,
+ "negativeScale": false,
+ "emptyCount": 0,
+ "vertexCount": 20,
+ "triangleCount": 18,
+ "meshes": [
+  {
+   "verts": 20,
+   "tris": 18,
+   "hasUV": true,
+   "uvDegeneratePolys": 0,
+   "nonManifoldEdges": 18,
+   "nonManifoldVerts": 0,
+   "shapeKeyCount": 0,
+   "hasCustomNormals": true,
+   "objectName": "Brick_90Angle_L",
+   "materialSlots": 2
+  }
+ ],
+ "boundsMin": [
+  -1.0,
+  0.0,
+  -0.0
+ ],
+ "boundsMax": [
+  -0.2938,
+  0.7,
+  3.0
+ ],
+ "boundsSize": [
+  0.7062,
+  0.7,
+  3.0
+ ],
+ "boundsCenter": [
+  -0.6469,
+  0.35,
+  1.5
+ ],
+ "maxDimensionM": 3.0,
+ "pivotOffsetM": [
+  0.647,
+  -0.35,
+  -1.5
+ ],
+ "materialCount": 2,
+ "materialNodeTypes": [
+  "BSDF_PRINCIPLED",
+  "NORMAL_MAP",
+  "OUTPUT_MATERIAL",
+  "TEX_IMAGE"
+ ],
+ "principledCount": 2,
+ "alphaModes": [
+  "HASHED"
+ ],
+ "unsupportedNodeTypes": [],
+ "textureCount": 4,
+ "textureDims": [
+  [
+   0,
+   0
+  ],
+  [
+   0,
+   0
+  ],
+  [
+   0,
+   0
+  ],
+  [
+   0,
+   0
+  ]
+ ],
+ "maxTextureDim": 0,
+ "embeddedTextureCount": 0,
+ "externalTextureCount": 4,
+ "missingTextureRefs": [
+  "C:\\Dropbox\\Work\\Blender\\_FreeModels\\_Unfinished\\Downtown City MegaKit\\Blends\\T_RedBrick_BaseColor.png",
+  "C:\\Dropbox\\Work\\Blender\\_FreeModels\\_Unfinished\\Downtown City MegaKit\\Blends\\T_RedBrick_Normal.png"
+ ],
+ "estimatedVRAMMB": 0.0,
+ "boneCount": 0,
+ "hasSkinWeights": false,
+ "vertexGroupCount": 0,
+ "actionCount": 0,
+ "animationDurations": [],
+ "maxAnimationDuration": 0,
+ "hasRootMotion": false,
+ "lodCount": 0,
+ "collisionCount": 0,
+ "importWarnings": [
+  "FBX version: 7400"
+ ],
+ "status": "OK",
+ "bytes": 23740,
+ "pack": "quaternius-downtown-city-megakit",
+ "packCategory": "Props/Quaternius",
+ "license": "CC0-1.0",
+ "relPath": "Props/Quaternius/quaternius-downtown-city-megakit/Exports/FBX (Unity)/Brick_90Angle_L.fbx"
+}

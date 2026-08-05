@@ -1,0 +1,92 @@
+{
+ "id": "Kenney_kenney-pirate-kit_Models_OBJ_format_ship-ghost.obj",
+ "ext": "obj",
+ "started": 1785955739.3481512,
+ "importSeconds": 0.0,
+ "objectCount": 1,
+ "meshCount": 1,
+ "armatureCount": 0,
+ "negativeScale": false,
+ "emptyCount": 0,
+ "vertexCount": 1051,
+ "triangleCount": 1658,
+ "meshes": [
+  {
+   "verts": 1051,
+   "tris": 1658,
+   "hasUV": true,
+   "uvDegeneratePolys": 1658,
+   "nonManifoldEdges": 311,
+   "nonManifoldVerts": 90,
+   "shapeKeyCount": 0,
+   "hasCustomNormals": true,
+   "objectName": "ship-ghost",
+   "materialSlots": 1
+  }
+ ],
+ "boundsMin": [
+  -2.4,
+  -5.3,
+  -0.0
+ ],
+ "boundsMax": [
+  2.4,
+  5.3,
+  9.9635
+ ],
+ "boundsSize": [
+  4.8,
+  10.6,
+  9.9635
+ ],
+ "boundsCenter": [
+  0.0,
+  0.0,
+  4.9818
+ ],
+ "maxDimensionM": 10.6,
+ "pivotOffsetM": [
+  0.0,
+  -0.0,
+  -4.982
+ ],
+ "materialCount": 1,
+ "materialNodeTypes": [
+  "BSDF_PRINCIPLED",
+  "OUTPUT_MATERIAL",
+  "TEX_IMAGE"
+ ],
+ "principledCount": 1,
+ "alphaModes": [
+  "HASHED"
+ ],
+ "unsupportedNodeTypes": [],
+ "textureCount": 1,
+ "textureDims": [
+  [
+   512,
+   512
+  ]
+ ],
+ "maxTextureDim": 512,
+ "embeddedTextureCount": 0,
+ "externalTextureCount": 1,
+ "missingTextureRefs": [],
+ "estimatedVRAMMB": 1.0,
+ "boneCount": 0,
+ "hasSkinWeights": false,
+ "vertexGroupCount": 0,
+ "actionCount": 0,
+ "animationDurations": [],
+ "maxAnimationDuration": 0,
+ "hasRootMotion": false,
+ "lodCount": 0,
+ "collisionCount": 0,
+ "importWarnings": [],
+ "status": "OK",
+ "bytes": 124658,
+ "pack": "kenney-pirate-kit",
+ "packCategory": "Kenney",
+ "license": "CC0-1.0",
+ "relPath": "Kenney/kenney-pirate-kit/Models/OBJ format/ship-ghost.obj"
+}

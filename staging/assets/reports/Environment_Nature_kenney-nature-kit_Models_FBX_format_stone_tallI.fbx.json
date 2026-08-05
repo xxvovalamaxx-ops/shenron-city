@@ -1,0 +1,12 @@
+{
+ "id": "Environment_Nature_kenney-nature-kit_Models_FBX_format_stone_tallI.fbx",
+ "ext": "fbx",
+ "started": 1785955733.120016,
+ "importError": "RuntimeError(\"Error: ASCII FBX files are not supported 'E:\\\\\\\\temp projects\\\\\\\\shenron-city\\\\\\\\ds\\\\\\\\asset-technical\\\\\\\\staging\\\\\\\\assets\\\\\\\\files\\\\\\\\Environment/Nature/kenney-nature-kit/Models/FBX format/stone_tallI.fbx'\\n\")",
+ "status": "IMPORT_FAILED",
+ "bytes": 18825,
+ "pack": "kenney-nature-kit",
+ "packCategory": "Environment/Nature",
+ "license": "CC0-1.0",
+ "relPath": "Environment/Nature/kenney-nature-kit/Models/FBX format/stone_tallI.fbx"
+}

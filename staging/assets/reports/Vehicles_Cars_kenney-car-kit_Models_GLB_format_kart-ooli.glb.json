@@ -1,0 +1,165 @@
+{
+ "id": "Vehicles_Cars_kenney-car-kit_Models_GLB_format_kart-ooli.glb",
+ "ext": "glb",
+ "started": 1785955747.3390775,
+ "importSeconds": 0.02,
+ "objectCount": 6,
+ "meshCount": 6,
+ "armatureCount": 0,
+ "negativeScale": false,
+ "emptyCount": 0,
+ "vertexCount": 4343,
+ "triangleCount": 2706,
+ "meshes": [
+  {
+   "verts": 1217,
+   "tris": 798,
+   "hasUV": true,
+   "uvDegeneratePolys": 798,
+   "nonManifoldEdges": 20,
+   "nonManifoldVerts": 0,
+   "shapeKeyCount": 0,
+   "hasCustomNormals": true,
+   "objectName": "character",
+   "materialSlots": 1
+  },
+  {
+   "verts": 1014,
+   "tris": 580,
+   "hasUV": true,
+   "uvDegeneratePolys": 580,
+   "nonManifoldEdges": 0,
+   "nonManifoldVerts": 0,
+   "shapeKeyCount": 0,
+   "hasCustomNormals": true,
+   "objectName": "kart-ooli",
+   "materialSlots": 1
+  },
+  {
+   "verts": 528,
+   "tris": 332,
+   "hasUV": true,
+   "uvDegeneratePolys": 332,
+   "nonManifoldEdges": 0,
+   "nonManifoldVerts": 0,
+   "shapeKeyCount": 0,
+   "hasCustomNormals": true,
+   "objectName": "wheel-back-left",
+   "materialSlots": 1
+  },
+  {
+   "verts": 528,
+   "tris": 332,
+   "hasUV": true,
+   "uvDegeneratePolys": 332,
+   "nonManifoldEdges": 0,
+   "nonManifoldVerts": 0,
+   "shapeKeyCount": 0,
+   "hasCustomNormals": true,
+   "objectName": "wheel-back-right",
+   "materialSlots": 1
+  },
+  {
+   "verts": 528,
+   "tris": 332,
+   "hasUV": true,
+   "uvDegeneratePolys": 332,
+   "nonManifoldEdges": 0,
+   "nonManifoldVerts": 0,
+   "shapeKeyCount": 0,
+   "hasCustomNormals": true,
+   "objectName": "wheel-front-left",
+   "materialSlots": 1
+  },
+  {
+   "verts": 528,
+   "tris": 332,
+   "hasUV": true,
+   "uvDegeneratePolys": 332,
+   "nonManifoldEdges": 0,
+   "nonManifoldVerts": 0,
+   "shapeKeyCount": 0,
+   "hasCustomNormals": true,
+   "objectName": "wheel-front-right",
+   "materialSlots": 1
+  }
+ ],
+ "boundsMin": [
+  -0.4871,
+  -0.8259,
+  0.0
+ ],
+ "boundsMax": [
+  0.4871,
+  0.6019,
+  1.3291
+ ],
+ "boundsSize": [
+  0.9743,
+  1.4278,
+  1.3291
+ ],
+ "boundsCenter": [
+  0.0,
+  -0.112,
+  0.6646
+ ],
+ "maxDimensionM": 1.4278,
+ "pivotOffsetM": [
+  -0.0,
+  0.112,
+  -0.665
+ ],
+ "materialCount": 1,
+ "materialNodeTypes": [
+  "BSDF_PRINCIPLED",
+  "MAPPING",
+  "OUTPUT_MATERIAL",
+  "TEX_IMAGE",
+  "UVMAP"
+ ],
+ "principledCount": 1,
+ "alphaModes": [
+  "HASHED"
+ ],
+ "unsupportedNodeTypes": [
+  "UVMAP"
+ ],
+ "textureCount": 1,
+ "textureDims": [
+  [
+   512,
+   512
+  ]
+ ],
+ "maxTextureDim": 512,
+ "embeddedTextureCount": 1,
+ "externalTextureCount": 0,
+ "missingTextureRefs": [],
+ "estimatedVRAMMB": 1.0,
+ "boneCount": 0,
+ "hasSkinWeights": false,
+ "vertexGroupCount": 0,
+ "actionCount": 0,
+ "animationDurations": [],
+ "maxAnimationDuration": 0,
+ "hasRootMotion": false,
+ "lodCount": 0,
+ "collisionCount": 0,
+ "importWarnings": [
+  "21:49:07 | INFO: Data are loaded, start creating Blender stuff",
+  "21:49:07 | INFO: Blender create Mesh node kart-ooli",
+  "21:49:07 | INFO: Blender create Mesh node character",
+  "21:49:07 | INFO: Blender create Mesh node wheel-back-right",
+  "21:49:07 | INFO: Blender create Mesh node wheel-front-left",
+  "21:49:07 | INFO: Blender create Mesh node wheel-front-right",
+  "21:49:07 | INFO: Blender create Mesh node wheel-back-left",
+  "21:49:07 | INFO: glTF import finished in 0.02s"
+ ],
+ "status": "OK",
+ "bytes": 233380,
+ "pack": "kenney-car-kit",
+ "packCategory": "Vehicles/Cars",
+ "license": "CC0-1.0",
+ "relPath": "Vehicles/Cars/kenney-car-kit/Models/GLB format/kart-ooli.glb"
+}

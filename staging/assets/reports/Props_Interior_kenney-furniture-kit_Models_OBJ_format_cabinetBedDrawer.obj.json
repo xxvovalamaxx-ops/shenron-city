@@ -1,0 +1,86 @@
+{
+ "id": "Props_Interior_kenney-furniture-kit_Models_OBJ_format_cabinetBedDrawer.obj",
+ "ext": "obj",
+ "started": 1785955742.393684,
+ "importSeconds": 0.0,
+ "objectCount": 1,
+ "meshCount": 1,
+ "armatureCount": 0,
+ "negativeScale": false,
+ "emptyCount": 0,
+ "vertexCount": 98,
+ "triangleCount": 182,
+ "meshes": [
+  {
+   "verts": 98,
+   "tris": 182,
+   "hasUV": true,
+   "uvDegeneratePolys": 2,
+   "nonManifoldEdges": 11,
+   "nonManifoldVerts": 14,
+   "shapeKeyCount": 0,
+   "hasCustomNormals": true,
+   "objectName": "cabinetBedDrawer",
+   "materialSlots": 3
+  }
+ ],
+ "boundsMin": [
+  -0.256,
+  -0.205,
+  0.0
+ ],
+ "boundsMax": [
+  0.01,
+  0.0123,
+  0.2632
+ ],
+ "boundsSize": [
+  0.266,
+  0.2173,
+  0.2632
+ ],
+ "boundsCenter": [
+  -0.123,
+  -0.0963,
+  0.1316
+ ],
+ "maxDimensionM": 0.266,
+ "pivotOffsetM": [
+  0.123,
+  0.096,
+  -0.132
+ ],
+ "materialCount": 3,
+ "materialNodeTypes": [
+  "BSDF_PRINCIPLED",
+  "OUTPUT_MATERIAL"
+ ],
+ "principledCount": 3,
+ "alphaModes": [
+  "HASHED"
+ ],
+ "unsupportedNodeTypes": [],
+ "textureCount": 0,
+ "textureDims": [],
+ "maxTextureDim": 0,
+ "embeddedTextureCount": 0,
+ "externalTextureCount": 0,
+ "missingTextureRefs": [],
+ "estimatedVRAMMB": 0.0,
+ "boneCount": 0,
+ "hasSkinWeights": false,
+ "vertexGroupCount": 0,
+ "actionCount": 0,
+ "animationDurations": [],
+ "maxAnimationDuration": 0,
+ "hasRootMotion": false,
+ "lodCount": 0,
+ "collisionCount": 0,
+ "importWarnings": [],
+ "status": "OK",
+ "bytes": 15985,
+ "pack": "kenney-furniture-kit",
+ "packCategory": "Props/Interior",
+ "license": "CC0-1.0",
+ "relPath": "Props/Interior/kenney-furniture-kit/Models/OBJ format/cabinetBedDrawer.obj"
+}

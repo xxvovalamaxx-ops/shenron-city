@@ -1,0 +1,106 @@
+{
+ "id": "Kenney_kenney-retro-fantasy-kit_Models_GLB_format_structure.glb",
+ "ext": "glb",
+ "started": 1785955739.8972118,
+ "importSeconds": 0.0,
+ "objectCount": 1,
+ "meshCount": 1,
+ "armatureCount": 0,
+ "negativeScale": false,
+ "emptyCount": 0,
+ "vertexCount": 411,
+ "triangleCount": 256,
+ "meshes": [
+  {
+   "verts": 411,
+   "tris": 256,
+   "hasUV": true,
+   "uvDegeneratePolys": 28,
+   "nonManifoldEdges": 32,
+   "nonManifoldVerts": 0,
+   "shapeKeyCount": 0,
+   "hasCustomNormals": true,
+   "objectName": "structure",
+   "materialSlots": 1
+  }
+ ],
+ "boundsMin": [
+  -0.5,
+  -0.5,
+  0.0
+ ],
+ "boundsMax": [
+  0.5,
+  0.5,
+  1.0
+ ],
+ "boundsSize": [
+  1.0,
+  1.0,
+  1.0
+ ],
+ "boundsCenter": [
+  0.0,
+  0.0,
+  0.5
+ ],
+ "maxDimensionM": 1.0,
+ "pivotOffsetM": [
+  0.0,
+  0.0,
+  -0.5
+ ],
+ "materialCount": 1,
+ "materialNodeTypes": [
+  "BSDF_TRANSPARENT",
+  "EMISSION",
+  "LIGHT_PATH",
+  "MAPPING",
+  "MIX_SHADER",
+  "OUTPUT_MATERIAL",
+  "TEX_IMAGE",
+  "UVMAP"
+ ],
+ "principledCount": 0,
+ "alphaModes": [
+  "HASHED"
+ ],
+ "unsupportedNodeTypes": [
+  "EMISSION",
+  "LIGHT_PATH",
+  "MIX_SHADER",
+  "UVMAP"
+ ],
+ "textureCount": 1,
+ "textureDims": [
+  [
+   64,
+   64
+  ]
+ ],
+ "maxTextureDim": 64,
+ "embeddedTextureCount": 1,
+ "externalTextureCount": 0,
+ "missingTextureRefs": [],
+ "estimatedVRAMMB": 0.02,
+ "boneCount": 0,
+ "hasSkinWeights": false,
+ "vertexGroupCount": 0,
+ "actionCount": 0,
+ "animationDurations": [],
+ "maxAnimationDuration": 0,
+ "hasRootMotion": false,
+ "lodCount": 0,
+ "collisionCount": 0,
+ "importWarnings": [
+  "21:48:59 | INFO: Data are loaded, start creating Blender stuff",
+  "21:48:59 | INFO: Blender create Mesh node structure",
+  "21:48:59 | INFO: glTF import finished in 0.00s"
+ ],
+ "status": "OK",
+ "bytes": 22992,
+ "pack": "kenney-retro-fantasy-kit",
+ "packCategory": "Kenney",
+ "license": "CC0-1.0",
+ "relPath": "Kenney/kenney-retro-fantasy-kit/Models/GLB format/structure.glb"
+}

@@ -1,0 +1,106 @@
+{
+ "id": "Kenney_kenney-retro-urban-kit_Models_GLB_format_detail-bricks-type-a.glb",
+ "ext": "glb",
+ "started": 1785955740.1685157,
+ "importSeconds": 0.0,
+ "objectCount": 1,
+ "meshCount": 1,
+ "armatureCount": 0,
+ "negativeScale": false,
+ "emptyCount": 0,
+ "vertexCount": 148,
+ "triangleCount": 80,
+ "meshes": [
+  {
+   "verts": 148,
+   "tris": 80,
+   "hasUV": true,
+   "uvDegeneratePolys": 4,
+   "nonManifoldEdges": 0,
+   "nonManifoldVerts": 0,
+   "shapeKeyCount": 0,
+   "hasCustomNormals": true,
+   "objectName": "detail-bricks-type-a",
+   "materialSlots": 1
+  }
+ ],
+ "boundsMin": [
+  -0.2853,
+  -0.2671,
+  0.0
+ ],
+ "boundsMax": [
+  0.2853,
+  0.2671,
+  0.2
+ ],
+ "boundsSize": [
+  0.5705,
+  0.5343,
+  0.2
+ ],
+ "boundsCenter": [
+  0.0,
+  0.0,
+  0.1
+ ],
+ "maxDimensionM": 0.5705,
+ "pivotOffsetM": [
+  0.0,
+  0.0,
+  -0.1
+ ],
+ "materialCount": 1,
+ "materialNodeTypes": [
+  "BSDF_TRANSPARENT",
+  "EMISSION",
+  "LIGHT_PATH",
+  "MAPPING",
+  "MIX_SHADER",
+  "OUTPUT_MATERIAL",
+  "TEX_IMAGE",
+  "UVMAP"
+ ],
+ "principledCount": 0,
+ "alphaModes": [
+  "HASHED"
+ ],
+ "unsupportedNodeTypes": [
+  "EMISSION",
+  "LIGHT_PATH",
+  "MIX_SHADER",
+  "UVMAP"
+ ],
+ "textureCount": 1,
+ "textureDims": [
+  [
+   64,
+   64
+  ]
+ ],
+ "maxTextureDim": 64,
+ "embeddedTextureCount": 1,
+ "externalTextureCount": 0,
+ "missingTextureRefs": [],
+ "estimatedVRAMMB": 0.02,
+ "boneCount": 0,
+ "hasSkinWeights": false,
+ "vertexGroupCount": 0,
+ "actionCount": 0,
+ "animationDurations": [],
+ "maxAnimationDuration": 0,
+ "hasRootMotion": false,
+ "lodCount": 0,
+ "collisionCount": 0,
+ "importWarnings": [
+  "21:49:00 | INFO: Data are loaded, start creating Blender stuff",
+  "21:49:00 | INFO: Blender create Mesh node detail-bricks-type-a",
+  "21:49:00 | INFO: glTF import finished in 0.00s"
+ ],
+ "status": "OK",
+ "bytes": 9200,
+ "pack": "kenney-retro-urban-kit",
+ "packCategory": "Kenney",
+ "license": "CC0-1.0",
+ "relPath": "Kenney/kenney-retro-urban-kit/Models/GLB format/detail-bricks-type-a.glb"
+}

@@ -1,0 +1,155 @@
+{
+ "id": "Kenney_kenney-space-kit_Models_GLTF_format_alien.glb",
+ "ext": "glb",
+ "started": 1785955740.4862554,
+ "importSeconds": 0.01,
+ "objectCount": 8,
+ "meshCount": 6,
+ "armatureCount": 0,
+ "negativeScale": false,
+ "emptyCount": 2,
+ "vertexCount": 488,
+ "triangleCount": 292,
+ "meshes": [
+  {
+   "verts": 52,
+   "tris": 28,
+   "hasUV": true,
+   "uvDegeneratePolys": 0,
+   "nonManifoldEdges": 0,
+   "nonManifoldVerts": 0,
+   "shapeKeyCount": 0,
+   "hasCustomNormals": true,
+   "objectName": "armLeft",
+   "materialSlots": 3
+  },
+  {
+   "verts": 52,
+   "tris": 28,
+   "hasUV": true,
+   "uvDegeneratePolys": 0,
+   "nonManifoldEdges": 0,
+   "nonManifoldVerts": 0,
+   "shapeKeyCount": 0,
+   "hasCustomNormals": true,
+   "objectName": "armRight",
+   "materialSlots": 3
+  },
+  {
+   "verts": 124,
+   "tris": 72,
+   "hasUV": true,
+   "uvDegeneratePolys": 6,
+   "nonManifoldEdges": 0,
+   "nonManifoldVerts": 0,
+   "shapeKeyCount": 0,
+   "hasCustomNormals": true,
+   "objectName": "body",
+   "materialSlots": 3
+  },
+  {
+   "verts": 144,
+   "tris": 100,
+   "hasUV": true,
+   "uvDegeneratePolys": 1,
+   "nonManifoldEdges": 0,
+   "nonManifoldVerts": 0,
+   "shapeKeyCount": 0,
+   "hasCustomNormals": true,
+   "objectName": "head",
+   "materialSlots": 3
+  },
+  {
+   "verts": 58,
+   "tris": 32,
+   "hasUV": true,
+   "uvDegeneratePolys": 0,
+   "nonManifoldEdges": 0,
+   "nonManifoldVerts": 0,
+   "shapeKeyCount": 0,
+   "hasCustomNormals": true,
+   "objectName": "legLeft",
+   "materialSlots": 3
+  },
+  {
+   "verts": 58,
+   "tris": 32,
+   "hasUV": true,
+   "uvDegeneratePolys": 0,
+   "nonManifoldEdges": 0,
+   "nonManifoldVerts": 0,
+   "shapeKeyCount": 0,
+   "hasCustomNormals": true,
+   "objectName": "legRight",
+   "materialSlots": 3
+  }
+ ],
+ "boundsMin": [
+  1.7584,
+  -1.7,
+  0.0
+ ],
+ "boundsMax": [
+  2.2416,
+  -1.37,
+  0.8432
+ ],
+ "boundsSize": [
+  0.4832,
+  0.33,
+  0.8432
+ ],
+ "boundsCenter": [
+  2.0,
+  -1.535,
+  0.4216
+ ],
+ "maxDimensionM": 0.8432,
+ "pivotOffsetM": [
+  -2.0,
+  1.535,
+  -0.422
+ ],
+ "materialCount": 5,
+ "materialNodeTypes": [
+  "BSDF_PRINCIPLED",
+  "OUTPUT_MATERIAL"
+ ],
+ "principledCount": 5,
+ "alphaModes": [
+  "HASHED"
+ ],
+ "unsupportedNodeTypes": [],
+ "textureCount": 0,
+ "textureDims": [],
+ "maxTextureDim": 0,
+ "embeddedTextureCount": 0,
+ "externalTextureCount": 0,
+ "missingTextureRefs": [],
+ "estimatedVRAMMB": 0.0,
+ "boneCount": 0,
+ "hasSkinWeights": false,
+ "vertexGroupCount": 0,
+ "actionCount": 0,
+ "animationDurations": [],
+ "maxAnimationDuration": 0,
+ "hasRootMotion": false,
+ "lodCount": 0,
+ "collisionCount": 0,
+ "importWarnings": [
+  "21:49:00 | INFO: Data are loaded, start creating Blender stuff",
+  "21:49:00 | INFO: Blender create Mesh node Mesh armLeft",
+  "21:49:00 | INFO: Blender create Mesh node Mesh armRight",
+  "21:49:00 | INFO: Blender create Mesh node Mesh body",
+  "21:49:00 | INFO: Blender create Mesh node Mesh head",
+  "21:49:00 | INFO: Blender create Mesh node Mesh legLeft",
+  "21:49:00 | INFO: Blender create Mesh node Mesh legRight",
+  "21:49:00 | INFO: glTF import finished in 0.00s"
+ ],
+ "status": "OK",
+ "bytes": 27784,
+ "pack": "kenney-space-kit",
+ "packCategory": "Kenney",
+ "license": "CC0-1.0",
+ "relPath": "Kenney/kenney-space-kit/Models/GLTF format/alien.glb"
+}

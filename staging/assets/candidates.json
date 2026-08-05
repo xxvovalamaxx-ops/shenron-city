@@ -1,0 +1,4219 @@
+{
+  "generated": "2026-08-05T18:48:40.833Z",
+  "library": "E:\\temp projects\\shenron-city\\ds\\asset-technical\\SourceAssets\\PublicLibrary",
+  "count": 468,
+  "candidates": [
+    {
+      "id": "Buildings_City_kenney-city-kit-commercial_Models_FBX_format_building-a.fbx",
+      "pack": "kenney-city-kit-commercial",
+      "packCategory": "Buildings/City",
+      "license": "CC0-1.0",
+      "relPath": "Buildings/City/kenney-city-kit-commercial/Models/FBX format/building-a.fbx",
+      "ext": "fbx",
+      "bytes": 56672
+    },
+    {
+      "id": "Buildings_City_kenney-city-kit-commercial_Models_FBX_format_building-i.fbx",
+      "pack": "kenney-city-kit-commercial",
+      "packCategory": "Buildings/City",
+      "license": "CC0-1.0",
+      "relPath": "Buildings/City/kenney-city-kit-commercial/Models/FBX format/building-i.fbx",
+      "ext": "fbx",
+      "bytes": 85424
+    },
+    {
+      "id": "Buildings_City_kenney-city-kit-commercial_Models_FBX_format_building-skyscraper-d.fbx",
+      "pack": "kenney-city-kit-commercial",
+      "packCategory": "Buildings/City",
+      "license": "CC0-1.0",
+      "relPath": "Buildings/City/kenney-city-kit-commercial/Models/FBX format/building-skyscraper-d.fbx",
+      "ext": "fbx",
+      "bytes": 73200
+    },
+    {
+      "id": "Buildings_City_kenney-city-kit-commercial_Models_FBX_format_low-detail-building-b.fbx",
+      "pack": "kenney-city-kit-commercial",
+      "packCategory": "Buildings/City",
+      "license": "CC0-1.0",
+      "relPath": "Buildings/City/kenney-city-kit-commercial/Models/FBX format/low-detail-building-b.fbx",
+      "ext": "fbx",
+      "bytes": 27968
+    },
+    {
+      "id": "Buildings_City_kenney-city-kit-commercial_Models_FBX_format_low-detail-building-k.fbx",
+      "pack": "kenney-city-kit-commercial",
+      "packCategory": "Buildings/City",
+      "license": "CC0-1.0",
+      "relPath": "Buildings/City/kenney-city-kit-commercial/Models/FBX format/low-detail-building-k.fbx",
+      "ext": "fbx",
+      "bytes": 25392
+    },
+    {
+      "id": "Buildings_City_kenney-city-kit-commercial_Models_GLB_format_building-c.glb",
+      "pack": "kenney-city-kit-commercial",
+      "packCategory": "Buildings/City",
+      "license": "CC0-1.0",
+      "relPath": "Buildings/City/kenney-city-kit-commercial/Models/GLB format/building-c.glb",
+      "ext": "glb",
+      "bytes": 102788
+    },
+    {
+      "id": "Buildings_City_kenney-city-kit-commercial_Models_GLB_format_building-l.glb",
+      "pack": "kenney-city-kit-commercial",
+      "packCategory": "Buildings/City",
+      "license": "CC0-1.0",
+      "relPath": "Buildings/City/kenney-city-kit-commercial/Models/GLB format/building-l.glb",
+      "ext": "glb",
+      "bytes": 290516
+    },
+    {
+      "id": "Buildings_City_kenney-city-kit-commercial_Models_GLB_format_detail-awning.glb",
+      "pack": "kenney-city-kit-commercial",
+      "packCategory": "Buildings/City",
+      "license": "CC0-1.0",
+      "relPath": "Buildings/City/kenney-city-kit-commercial/Models/GLB format/detail-awning.glb",
+      "ext": "glb",
+      "bytes": 5528
+    },
+    {
+      "id": "Buildings_City_kenney-city-kit-commercial_Models_GLB_format_low-detail-building-e.glb",
+      "pack": "kenney-city-kit-commercial",
+      "packCategory": "Buildings/City",
+      "license": "CC0-1.0",
+      "relPath": "Buildings/City/kenney-city-kit-commercial/Models/GLB format/low-detail-building-e.glb",
+      "ext": "glb",
+      "bytes": 8240
+    },
+    {
+      "id": "Buildings_City_kenney-city-kit-commercial_Models_GLB_format_low-detail-building-n.glb",
+      "pack": "kenney-city-kit-commercial",
+      "packCategory": "Buildings/City",
+      "license": "CC0-1.0",
+      "relPath": "Buildings/City/kenney-city-kit-commercial/Models/GLB format/low-detail-building-n.glb",
+      "ext": "glb",
+      "bytes": 5904
+    },
+    {
+      "id": "Buildings_City_kenney-city-kit-commercial_Models_OBJ_format_building-f.obj",
+      "pack": "kenney-city-kit-commercial",
+      "packCategory": "Buildings/City",
+      "license": "CC0-1.0",
+      "relPath": "Buildings/City/kenney-city-kit-commercial/Models/OBJ format/building-f.obj",
+      "ext": "obj",
+      "bytes": 141358
+    },
+    {
+      "id": "Buildings_City_kenney-city-kit-commercial_Models_OBJ_format_building-skyscraper-a.obj",
+      "pack": "kenney-city-kit-commercial",
+      "packCategory": "Buildings/City",
+      "license": "CC0-1.0",
+      "relPath": "Buildings/City/kenney-city-kit-commercial/Models/OBJ format/building-skyscraper-a.obj",
+      "ext": "obj",
+      "bytes": 114477
+    },
+    {
+      "id": "Buildings_City_kenney-city-kit-commercial_Models_OBJ_format_detail-parasol-a.obj",
+      "pack": "kenney-city-kit-commercial",
+      "packCategory": "Buildings/City",
+      "license": "CC0-1.0",
+      "relPath": "Buildings/City/kenney-city-kit-commercial/Models/OBJ format/detail-parasol-a.obj",
+      "ext": "obj",
+      "bytes": 7043
+    },
+    {
+      "id": "Buildings_City_kenney-city-kit-commercial_Models_OBJ_format_low-detail-building-h.obj",
+      "pack": "kenney-city-kit-commercial",
+      "packCategory": "Buildings/City",
+      "license": "CC0-1.0",
+      "relPath": "Buildings/City/kenney-city-kit-commercial/Models/OBJ format/low-detail-building-h.obj",
+      "ext": "obj",
+      "bytes": 24277
+    },
+    {
+      "id": "Buildings_City_kenney-city-kit-industrial_Models_FBX_format_building-a.fbx",
+      "pack": "kenney-city-kit-industrial",
+      "packCategory": "Buildings/City",
+      "license": "CC0-1.0",
+      "relPath": "Buildings/City/kenney-city-kit-industrial/Models/FBX format/building-a.fbx",
+      "ext": "fbx",
+      "bytes": 78736
+    },
+    {
+      "id": "Buildings_City_kenney-city-kit-industrial_Models_FBX_format_building-f.fbx",
+      "pack": "kenney-city-kit-industrial",
+      "packCategory": "Buildings/City",
+      "license": "CC0-1.0",
+      "relPath": "Buildings/City/kenney-city-kit-industrial/Models/FBX format/building-f.fbx",
+      "ext": "fbx",
+      "bytes": 66576
+    },
+    {
+      "id": "Buildings_City_kenney-city-kit-industrial_Models_FBX_format_building-k.fbx",
+      "pack": "kenney-city-kit-industrial",
+      "packCategory": "Buildings/City",
+      "license": "CC0-1.0",
+      "relPath": "Buildings/City/kenney-city-kit-industrial/Models/FBX format/building-k.fbx",
+      "ext": "fbx",
+      "bytes": 45136
+    },
+    {
+      "id": "Buildings_City_kenney-city-kit-industrial_Models_FBX_format_building-q.fbx",
+      "pack": "kenney-city-kit-industrial",
+      "packCategory": "Buildings/City",
+      "license": "CC0-1.0",
+      "relPath": "Buildings/City/kenney-city-kit-industrial/Models/FBX format/building-q.fbx",
+      "ext": "fbx",
+      "bytes": 78896
+    },
+    {
+      "id": "Buildings_City_kenney-city-kit-industrial_Models_FBX_format_chimney-large.fbx",
+      "pack": "kenney-city-kit-industrial",
+      "packCategory": "Buildings/City",
+      "license": "CC0-1.0",
+      "relPath": "Buildings/City/kenney-city-kit-industrial/Models/FBX format/chimney-large.fbx",
+      "ext": "fbx",
+      "bytes": 32848
+    },
+    {
+      "id": "Buildings_City_kenney-city-kit-industrial_Models_GLB_format_building-b.glb",
+      "pack": "kenney-city-kit-industrial",
+      "packCategory": "Buildings/City",
+      "license": "CC0-1.0",
+      "relPath": "Buildings/City/kenney-city-kit-industrial/Models/GLB format/building-b.glb",
+      "ext": "glb",
+      "bytes": 211608
+    },
+    {
+      "id": "Buildings_City_kenney-city-kit-industrial_Models_GLB_format_building-h.glb",
+      "pack": "kenney-city-kit-industrial",
+      "packCategory": "Buildings/City",
+      "license": "CC0-1.0",
+      "relPath": "Buildings/City/kenney-city-kit-industrial/Models/GLB format/building-h.glb",
+      "ext": "glb",
+      "bytes": 63212
+    },
+    {
+      "id": "Buildings_City_kenney-city-kit-industrial_Models_GLB_format_building-m.glb",
+      "pack": "kenney-city-kit-industrial",
+      "packCategory": "Buildings/City",
+      "license": "CC0-1.0",
+      "relPath": "Buildings/City/kenney-city-kit-industrial/Models/GLB format/building-m.glb",
+      "ext": "glb",
+      "bytes": 138560
+    },
+    {
+      "id": "Buildings_City_kenney-city-kit-industrial_Models_GLB_format_building-r.glb",
+      "pack": "kenney-city-kit-industrial",
+      "packCategory": "Buildings/City",
+      "license": "CC0-1.0",
+      "relPath": "Buildings/City/kenney-city-kit-industrial/Models/GLB format/building-r.glb",
+      "ext": "glb",
+      "bytes": 164696
+    },
+    {
+      "id": "Buildings_City_kenney-city-kit-industrial_Models_GLB_format_chimney-small.glb",
+      "pack": "kenney-city-kit-industrial",
+      "packCategory": "Buildings/City",
+      "license": "CC0-1.0",
+      "relPath": "Buildings/City/kenney-city-kit-industrial/Models/GLB format/chimney-small.glb",
+      "ext": "glb",
+      "bytes": 10536
+    },
+    {
+      "id": "Buildings_City_kenney-city-kit-industrial_Models_OBJ_format_building-d.obj",
+      "pack": "kenney-city-kit-industrial",
+      "packCategory": "Buildings/City",
+      "license": "CC0-1.0",
+      "relPath": "Buildings/City/kenney-city-kit-industrial/Models/OBJ format/building-d.obj",
+      "ext": "obj",
+      "bytes": 96916
+    },
+    {
+      "id": "Buildings_City_kenney-city-kit-industrial_Models_OBJ_format_building-i.obj",
+      "pack": "kenney-city-kit-industrial",
+      "packCategory": "Buildings/City",
+      "license": "CC0-1.0",
+      "relPath": "Buildings/City/kenney-city-kit-industrial/Models/OBJ format/building-i.obj",
+      "ext": "obj",
+      "bytes": 74002
+    },
+    {
+      "id": "Buildings_City_kenney-city-kit-industrial_Models_OBJ_format_building-o.obj",
+      "pack": "kenney-city-kit-industrial",
+      "packCategory": "Buildings/City",
+      "license": "CC0-1.0",
+      "relPath": "Buildings/City/kenney-city-kit-industrial/Models/OBJ format/building-o.obj",
+      "ext": "obj",
+      "bytes": 71263
+    },
+    {
+      "id": "Buildings_City_kenney-city-kit-industrial_Models_OBJ_format_building-t.obj",
+      "pack": "kenney-city-kit-industrial",
+      "packCategory": "Buildings/City",
+      "license": "CC0-1.0",
+      "relPath": "Buildings/City/kenney-city-kit-industrial/Models/OBJ format/building-t.obj",
+      "ext": "obj",
+      "bytes": 147481
+    },
+    {
+      "id": "Buildings_City_kenney-city-kit-roads_Models_FBX_format_bridge-pillar-wide.fbx",
+      "pack": "kenney-city-kit-roads",
+      "packCategory": "Buildings/City",
+      "license": "CC0-1.0",
+      "relPath": "Buildings/City/kenney-city-kit-roads/Models/FBX format/bridge-pillar-wide.fbx",
+      "ext": "fbx",
+      "bytes": 28336
+    },
+    {
+      "id": "Buildings_City_kenney-city-kit-roads_Models_FBX_format_road-bend.fbx",
+      "pack": "kenney-city-kit-roads",
+      "packCategory": "Buildings/City",
+      "license": "CC0-1.0",
+      "relPath": "Buildings/City/kenney-city-kit-roads/Models/FBX format/road-bend.fbx",
+      "ext": "fbx",
+      "bytes": 29344
+    },
+    {
+      "id": "Buildings_City_kenney-city-kit-roads_Models_FBX_format_road-driveway-single.fbx",
+      "pack": "kenney-city-kit-roads",
+      "packCategory": "Buildings/City",
+      "license": "CC0-1.0",
+      "relPath": "Buildings/City/kenney-city-kit-roads/Models/FBX format/road-driveway-single.fbx",
+      "ext": "fbx",
+      "bytes": 26144
+    },
+    {
+      "id": "Buildings_City_kenney-city-kit-roads_Models_FBX_format_road-side.fbx",
+      "pack": "kenney-city-kit-roads",
+      "packCategory": "Buildings/City",
+      "license": "CC0-1.0",
+      "relPath": "Buildings/City/kenney-city-kit-roads/Models/FBX format/road-side.fbx",
+      "ext": "fbx",
+      "bytes": 25488
+    },
+    {
+      "id": "Buildings_City_kenney-city-kit-roads_Models_FBX_format_road-straight-barrier-half.fbx",
+      "pack": "kenney-city-kit-roads",
+      "packCategory": "Buildings/City",
+      "license": "CC0-1.0",
+      "relPath": "Buildings/City/kenney-city-kit-roads/Models/FBX format/road-straight-barrier-half.fbx",
+      "ext": "fbx",
+      "bytes": 27056
+    },
+    {
+      "id": "Buildings_City_kenney-city-kit-roads_Models_GLB_format_light-curved-cross.glb",
+      "pack": "kenney-city-kit-roads",
+      "packCategory": "Buildings/City",
+      "license": "CC0-1.0",
+      "relPath": "Buildings/City/kenney-city-kit-roads/Models/GLB format/light-curved-cross.glb",
+      "ext": "glb",
+      "bytes": 24916
+    },
+    {
+      "id": "Buildings_City_kenney-city-kit-roads_Models_GLB_format_road-crossroad-path.glb",
+      "pack": "kenney-city-kit-roads",
+      "packCategory": "Buildings/City",
+      "license": "CC0-1.0",
+      "relPath": "Buildings/City/kenney-city-kit-roads/Models/GLB format/road-crossroad-path.glb",
+      "ext": "glb",
+      "bytes": 18724
+    },
+    {
+      "id": "Buildings_City_kenney-city-kit-roads_Models_GLB_format_road-intersection-line.glb",
+      "pack": "kenney-city-kit-roads",
+      "packCategory": "Buildings/City",
+      "license": "CC0-1.0",
+      "relPath": "Buildings/City/kenney-city-kit-roads/Models/GLB format/road-intersection-line.glb",
+      "ext": "glb",
+      "bytes": 7508
+    },
+    {
+      "id": "Buildings_City_kenney-city-kit-roads_Models_GLB_format_road-slant-flat-high.glb",
+      "pack": "kenney-city-kit-roads",
+      "packCategory": "Buildings/City",
+      "license": "CC0-1.0",
+      "relPath": "Buildings/City/kenney-city-kit-roads/Models/GLB format/road-slant-flat-high.glb",
+      "ext": "glb",
+      "bytes": 5316
+    },
+    {
+      "id": "Buildings_City_kenney-city-kit-roads_Models_GLB_format_sign-highway-wide.glb",
+      "pack": "kenney-city-kit-roads",
+      "packCategory": "Buildings/City",
+      "license": "CC0-1.0",
+      "relPath": "Buildings/City/kenney-city-kit-roads/Models/GLB format/sign-highway-wide.glb",
+      "ext": "glb",
+      "bytes": 13984
+    },
+    {
+      "id": "Buildings_City_kenney-city-kit-roads_Models_OBJ_format_light-square.obj",
+      "pack": "kenney-city-kit-roads",
+      "packCategory": "Buildings/City",
+      "license": "CC0-1.0",
+      "relPath": "Buildings/City/kenney-city-kit-roads/Models/OBJ format/light-square.obj",
+      "ext": "obj",
+      "bytes": 4324
+    },
+    {
+      "id": "Buildings_City_kenney-city-kit-roads_Models_OBJ_format_road-curve-pavement.obj",
+      "pack": "kenney-city-kit-roads",
+      "packCategory": "Buildings/City",
+      "license": "CC0-1.0",
+      "relPath": "Buildings/City/kenney-city-kit-roads/Models/OBJ format/road-curve-pavement.obj",
+      "ext": "obj",
+      "bytes": 17359
+    },
+    {
+      "id": "Buildings_City_kenney-city-kit-roads_Models_OBJ_format_road-side-barrier.obj",
+      "pack": "kenney-city-kit-roads",
+      "packCategory": "Buildings/City",
+      "license": "CC0-1.0",
+      "relPath": "Buildings/City/kenney-city-kit-roads/Models/OBJ format/road-side-barrier.obj",
+      "ext": "obj",
+      "bytes": 1873
+    },
+    {
+      "id": "Buildings_City_kenney-city-kit-roads_Models_OBJ_format_road-split-barrier.obj",
+      "pack": "kenney-city-kit-roads",
+      "packCategory": "Buildings/City",
+      "license": "CC0-1.0",
+      "relPath": "Buildings/City/kenney-city-kit-roads/Models/OBJ format/road-split-barrier.obj",
+      "ext": "obj",
+      "bytes": 44537
+    },
+    {
+      "id": "Buildings_City_kenney-city-kit-suburban_Models_FBX_format_building-type-a.fbx",
+      "pack": "kenney-city-kit-suburban",
+      "packCategory": "Buildings/City",
+      "license": "CC0-1.0",
+      "relPath": "Buildings/City/kenney-city-kit-suburban/Models/FBX format/building-type-a.fbx",
+      "ext": "fbx",
+      "bytes": 58032
+    },
+    {
+      "id": "Buildings_City_kenney-city-kit-suburban_Models_FBX_format_building-type-i.fbx",
+      "pack": "kenney-city-kit-suburban",
+      "packCategory": "Buildings/City",
+      "license": "CC0-1.0",
+      "relPath": "Buildings/City/kenney-city-kit-suburban/Models/FBX format/building-type-i.fbx",
+      "ext": "fbx",
+      "bytes": 49552
+    },
+    {
+      "id": "Buildings_City_kenney-city-kit-suburban_Models_FBX_format_building-type-r.fbx",
+      "pack": "kenney-city-kit-suburban",
+      "packCategory": "Buildings/City",
+      "license": "CC0-1.0",
+      "relPath": "Buildings/City/kenney-city-kit-suburban/Models/FBX format/building-type-r.fbx",
+      "ext": "fbx",
+      "bytes": 56432
+    },
+    {
+      "id": "Buildings_City_kenney-city-kit-suburban_Models_FBX_format_fence-1x4.fbx",
+      "pack": "kenney-city-kit-suburban",
+      "packCategory": "Buildings/City",
+      "license": "CC0-1.0",
+      "relPath": "Buildings/City/kenney-city-kit-suburban/Models/FBX format/fence-1x4.fbx",
+      "ext": "fbx",
+      "bytes": 30272
+    },
+    {
+      "id": "Buildings_City_kenney-city-kit-suburban_Models_FBX_format_path-stones-long.fbx",
+      "pack": "kenney-city-kit-suburban",
+      "packCategory": "Buildings/City",
+      "license": "CC0-1.0",
+      "relPath": "Buildings/City/kenney-city-kit-suburban/Models/FBX format/path-stones-long.fbx",
+      "ext": "fbx",
+      "bytes": 26320
+    },
+    {
+      "id": "Buildings_City_kenney-city-kit-suburban_Models_GLB_format_building-type-c.glb",
+      "pack": "kenney-city-kit-suburban",
+      "packCategory": "Buildings/City",
+      "license": "CC0-1.0",
+      "relPath": "Buildings/City/kenney-city-kit-suburban/Models/GLB format/building-type-c.glb",
+      "ext": "glb",
+      "bytes": 99592
+    },
+    {
+      "id": "Buildings_City_kenney-city-kit-suburban_Models_GLB_format_building-type-l.glb",
+      "pack": "kenney-city-kit-suburban",
+      "packCategory": "Buildings/City",
+      "license": "CC0-1.0",
+      "relPath": "Buildings/City/kenney-city-kit-suburban/Models/GLB format/building-type-l.glb",
+      "ext": "glb",
+      "bytes": 109232
+    },
+    {
+      "id": "Buildings_City_kenney-city-kit-suburban_Models_GLB_format_building-type-u.glb",
+      "pack": "kenney-city-kit-suburban",
+      "packCategory": "Buildings/City",
+      "license": "CC0-1.0",
+      "relPath": "Buildings/City/kenney-city-kit-suburban/Models/GLB format/building-type-u.glb",
+      "ext": "glb",
+      "bytes": 117912
+    },
+    {
+      "id": "Buildings_City_kenney-city-kit-suburban_Models_GLB_format_fence-3x2.glb",
+      "pack": "kenney-city-kit-suburban",
+      "packCategory": "Buildings/City",
+      "license": "CC0-1.0",
+      "relPath": "Buildings/City/kenney-city-kit-suburban/Models/GLB format/fence-3x2.glb",
+      "ext": "glb",
+      "bytes": 31280
+    },
+    {
+      "id": "Buildings_City_kenney-city-kit-suburban_Models_GLB_format_planter.glb",
+      "pack": "kenney-city-kit-suburban",
+      "packCategory": "Buildings/City",
+      "license": "CC0-1.0",
+      "relPath": "Buildings/City/kenney-city-kit-suburban/Models/GLB format/planter.glb",
+      "ext": "glb",
+      "bytes": 20368
+    },
+    {
+      "id": "Buildings_City_kenney-city-kit-suburban_Models_OBJ_format_building-type-f.obj",
+      "pack": "kenney-city-kit-suburban",
+      "packCategory": "Buildings/City",
+      "license": "CC0-1.0",
+      "relPath": "Buildings/City/kenney-city-kit-suburban/Models/OBJ format/building-type-f.obj",
+      "ext": "obj",
+      "bytes": 146588
+    },
+    {
+      "id": "Buildings_City_kenney-city-kit-suburban_Models_OBJ_format_building-type-o.obj",
+      "pack": "kenney-city-kit-suburban",
+      "packCategory": "Buildings/City",
+      "license": "CC0-1.0",
+      "relPath": "Buildings/City/kenney-city-kit-suburban/Models/OBJ format/building-type-o.obj",
+      "ext": "obj",
+      "bytes": 114505
+    },
+    {
+      "id": "Buildings_City_kenney-city-kit-suburban_Models_OBJ_format_driveway-short.obj",
+      "pack": "kenney-city-kit-suburban",
+      "packCategory": "Buildings/City",
+      "license": "CC0-1.0",
+      "relPath": "Buildings/City/kenney-city-kit-suburban/Models/OBJ format/driveway-short.obj",
+      "ext": "obj",
+      "bytes": 973
+    },
+    {
+      "id": "Buildings_City_kenney-city-kit-suburban_Models_OBJ_format_fence.obj",
+      "pack": "kenney-city-kit-suburban",
+      "packCategory": "Buildings/City",
+      "license": "CC0-1.0",
+      "relPath": "Buildings/City/kenney-city-kit-suburban/Models/OBJ format/fence.obj",
+      "ext": "obj",
+      "bytes": 6434
+    },
+    {
+      "id": "Buildings_Modular_kenney-building-kit_Models_FBX_format_barricade-doorway-a.fbx",
+      "pack": "kenney-building-kit",
+      "packCategory": "Buildings/Modular",
+      "license": "CC0-1.0",
+      "relPath": "Buildings/Modular/kenney-building-kit/Models/FBX format/barricade-doorway-a.fbx",
+      "ext": "fbx",
+      "bytes": 26304
+    },
+    {
+      "id": "Buildings_Modular_kenney-building-kit_Models_FBX_format_border-high.fbx",
+      "pack": "kenney-building-kit",
+      "packCategory": "Buildings/Modular",
+      "license": "CC0-1.0",
+      "relPath": "Buildings/Modular/kenney-building-kit/Models/FBX format/border-high.fbx",
+      "ext": "fbx",
+      "bytes": 26256
+    },
+    {
+      "id": "Buildings_Modular_kenney-building-kit_Models_FBX_format_floor-corner-round.fbx",
+      "pack": "kenney-building-kit",
+      "packCategory": "Buildings/Modular",
+      "license": "CC0-1.0",
+      "relPath": "Buildings/Modular/kenney-building-kit/Models/FBX format/floor-corner-round.fbx",
+      "ext": "fbx",
+      "bytes": 26096
+    },
+    {
+      "id": "Buildings_Modular_kenney-building-kit_Models_FBX_format_roof-flat-corner.fbx",
+      "pack": "kenney-building-kit",
+      "packCategory": "Buildings/Modular",
+      "license": "CC0-1.0",
+      "relPath": "Buildings/Modular/kenney-building-kit/Models/FBX format/roof-flat-corner.fbx",
+      "ext": "fbx",
+      "bytes": 26848
+    },
+    {
+      "id": "Buildings_Modular_kenney-building-kit_Models_FBX_format_wall-corner-column-small.fbx",
+      "pack": "kenney-building-kit",
+      "packCategory": "Buildings/Modular",
+      "license": "CC0-1.0",
+      "relPath": "Buildings/Modular/kenney-building-kit/Models/FBX format/wall-corner-column-small.fbx",
+      "ext": "fbx",
+      "bytes": 28096
+    },
+    {
+      "id": "Buildings_Modular_kenney-building-kit_Models_FBX_format_wall-window-wide-round-detailed.fbx",
+      "pack": "kenney-building-kit",
+      "packCategory": "Buildings/Modular",
+      "license": "CC0-1.0",
+      "relPath": "Buildings/Modular/kenney-building-kit/Models/FBX format/wall-window-wide-round-detailed.fbx",
+      "ext": "fbx",
+      "bytes": 37552
+    },
+    {
+      "id": "Buildings_Modular_kenney-building-kit_Models_GLB_format_border-corner.glb",
+      "pack": "kenney-building-kit",
+      "packCategory": "Buildings/Modular",
+      "license": "CC0-1.0",
+      "relPath": "Buildings/Modular/kenney-building-kit/Models/GLB format/border-corner.glb",
+      "ext": "glb",
+      "bytes": 5304
+    },
+    {
+      "id": "Buildings_Modular_kenney-building-kit_Models_GLB_format_door-rotate-square-a.glb",
+      "pack": "kenney-building-kit",
+      "packCategory": "Buildings/Modular",
+      "license": "CC0-1.0",
+      "relPath": "Buildings/Modular/kenney-building-kit/Models/GLB format/door-rotate-square-a.glb",
+      "ext": "glb",
+      "bytes": 25616
+    },
+    {
+      "id": "Buildings_Modular_kenney-building-kit_Models_GLB_format_plating-detailed.glb",
+      "pack": "kenney-building-kit",
+      "packCategory": "Buildings/Modular",
+      "license": "CC0-1.0",
+      "relPath": "Buildings/Modular/kenney-building-kit/Models/GLB format/plating-detailed.glb",
+      "ext": "glb",
+      "bytes": 17024
+    },
+    {
+      "id": "Buildings_Modular_kenney-building-kit_Models_GLB_format_stairs-open.glb",
+      "pack": "kenney-building-kit",
+      "packCategory": "Buildings/Modular",
+      "license": "CC0-1.0",
+      "relPath": "Buildings/Modular/kenney-building-kit/Models/GLB format/stairs-open.glb",
+      "ext": "glb",
+      "bytes": 14780
+    },
+    {
+      "id": "Buildings_Modular_kenney-building-kit_Models_GLB_format_wall-low.glb",
+      "pack": "kenney-building-kit",
+      "packCategory": "Buildings/Modular",
+      "license": "CC0-1.0",
+      "relPath": "Buildings/Modular/kenney-building-kit/Models/GLB format/wall-low.glb",
+      "ext": "glb",
+      "bytes": 2672
+    },
+    {
+      "id": "Buildings_Modular_kenney-building-kit_Models_OBJ_format_barricade-window-b.obj",
+      "pack": "kenney-building-kit",
+      "packCategory": "Buildings/Modular",
+      "license": "CC0-1.0",
+      "relPath": "Buildings/Modular/kenney-building-kit/Models/OBJ format/barricade-window-b.obj",
+      "ext": "obj",
+      "bytes": 8645
+    },
+    {
+      "id": "Buildings_Modular_kenney-building-kit_Models_OBJ_format_detail-pipe.obj",
+      "pack": "kenney-building-kit",
+      "packCategory": "Buildings/Modular",
+      "license": "CC0-1.0",
+      "relPath": "Buildings/Modular/kenney-building-kit/Models/OBJ format/detail-pipe.obj",
+      "ext": "obj",
+      "bytes": 4837
+    },
+    {
+      "id": "Buildings_Modular_kenney-building-kit_Models_OBJ_format_gutter-vertical-short.obj",
+      "pack": "kenney-building-kit",
+      "packCategory": "Buildings/Modular",
+      "license": "CC0-1.0",
+      "relPath": "Buildings/Modular/kenney-building-kit/Models/OBJ format/gutter-vertical-short.obj",
+      "ext": "obj",
+      "bytes": 3787
+    },
+    {
+      "id": "Buildings_Modular_kenney-building-kit_Models_OBJ_format_stairs-center-short.obj",
+      "pack": "kenney-building-kit",
+      "packCategory": "Buildings/Modular",
+      "license": "CC0-1.0",
+      "relPath": "Buildings/Modular/kenney-building-kit/Models/OBJ format/stairs-center-short.obj",
+      "ext": "obj",
+      "bytes": 4406
+    },
+    {
+      "id": "Buildings_Modular_kenney-building-kit_Models_OBJ_format_wall-doorway-round.obj",
+      "pack": "kenney-building-kit",
+      "packCategory": "Buildings/Modular",
+      "license": "CC0-1.0",
+      "relPath": "Buildings/Modular/kenney-building-kit/Models/OBJ format/wall-doorway-round.obj",
+      "ext": "obj",
+      "bytes": 12477
+    },
+    {
+      "id": "Characters_Animated_kenney-animated-characters-protagonists_Animations_idle.fbx",
+      "pack": "kenney-animated-characters-protagonists",
+      "packCategory": "Characters/Animated",
+      "license": "CC0-1.0",
+      "relPath": "Characters/Animated/kenney-animated-characters-protagonists/Animations/idle.fbx",
+      "ext": "fbx",
+      "bytes": 608188
+    },
+    {
+      "id": "Characters_Animated_kenney-animated-characters-protagonists_Animations_jump.fbx",
+      "pack": "kenney-animated-characters-protagonists",
+      "packCategory": "Characters/Animated",
+      "license": "CC0-1.0",
+      "relPath": "Characters/Animated/kenney-animated-characters-protagonists/Animations/jump.fbx",
+      "ext": "fbx",
+      "bytes": 562796
+    },
+    {
+      "id": "Characters_Animated_kenney-animated-characters-protagonists_Animations_run.fbx",
+      "pack": "kenney-animated-characters-protagonists",
+      "packCategory": "Characters/Animated",
+      "license": "CC0-1.0",
+      "relPath": "Characters/Animated/kenney-animated-characters-protagonists/Animations/run.fbx",
+      "ext": "fbx",
+      "bytes": 572732
+    },
+    {
+      "id": "Characters_Animated_kenney-animated-characters-protagonists_Model_characterMedium.fbx",
+      "pack": "kenney-animated-characters-protagonists",
+      "packCategory": "Characters/Animated",
+      "license": "CC0-1.0",
+      "relPath": "Characters/Animated/kenney-animated-characters-protagonists/Model/characterMedium.fbx",
+      "ext": "fbx",
+      "bytes": 167212
+    },
+    {
+      "id": "Characters_Animated_kenney-animated-characters-retro_Animations_idle.fbx",
+      "pack": "kenney-animated-characters-retro",
+      "packCategory": "Characters/Animated",
+      "license": "CC0-1.0",
+      "relPath": "Characters/Animated/kenney-animated-characters-retro/Animations/idle.fbx",
+      "ext": "fbx",
+      "bytes": 608188
+    },
+    {
+      "id": "Characters_Animated_kenney-animated-characters-retro_Animations_jump.fbx",
+      "pack": "kenney-animated-characters-retro",
+      "packCategory": "Characters/Animated",
+      "license": "CC0-1.0",
+      "relPath": "Characters/Animated/kenney-animated-characters-retro/Animations/jump.fbx",
+      "ext": "fbx",
+      "bytes": 562796
+    },
+    {
+      "id": "Characters_Animated_kenney-animated-characters-retro_Animations_run.fbx",
+      "pack": "kenney-animated-characters-retro",
+      "packCategory": "Characters/Animated",
+      "license": "CC0-1.0",
+      "relPath": "Characters/Animated/kenney-animated-characters-retro/Animations/run.fbx",
+      "ext": "fbx",
+      "bytes": 572732
+    },
+    {
+      "id": "Characters_Animated_kenney-animated-characters-retro_Model_characterMedium.fbx",
+      "pack": "kenney-animated-characters-retro",
+      "packCategory": "Characters/Animated",
+      "license": "CC0-1.0",
+      "relPath": "Characters/Animated/kenney-animated-characters-retro/Model/characterMedium.fbx",
+      "ext": "fbx",
+      "bytes": 167212
+    },
+    {
+      "id": "Characters_Animated_kenney-animated-characters-survivors_Animations_idle.fbx",
+      "pack": "kenney-animated-characters-survivors",
+      "packCategory": "Characters/Animated",
+      "license": "CC0-1.0",
+      "relPath": "Characters/Animated/kenney-animated-characters-survivors/Animations/idle.fbx",
+      "ext": "fbx",
+      "bytes": 608188
+    },
+    {
+      "id": "Characters_Animated_kenney-animated-characters-survivors_Animations_jump.fbx",
+      "pack": "kenney-animated-characters-survivors",
+      "packCategory": "Characters/Animated",
+      "license": "CC0-1.0",
+      "relPath": "Characters/Animated/kenney-animated-characters-survivors/Animations/jump.fbx",
+      "ext": "fbx",
+      "bytes": 562796
+    },
+    {
+      "id": "Characters_Animated_kenney-animated-characters-survivors_Animations_run.fbx",
+      "pack": "kenney-animated-characters-survivors",
+      "packCategory": "Characters/Animated",
+      "license": "CC0-1.0",
+      "relPath": "Characters/Animated/kenney-animated-characters-survivors/Animations/run.fbx",
+      "ext": "fbx",
+      "bytes": 572732
+    },
+    {
+      "id": "Characters_Animated_kenney-animated-characters-survivors_Model_characterMedium.fbx",
+      "pack": "kenney-animated-characters-survivors",
+      "packCategory": "Characters/Animated",
+      "license": "CC0-1.0",
+      "relPath": "Characters/Animated/kenney-animated-characters-survivors/Model/characterMedium.fbx",
+      "ext": "fbx",
+      "bytes": 167212
+    },
+    {
+      "id": "Characters_Animated_kenney-blocky-characters_Models_FBX_format_character-a.fbx",
+      "pack": "kenney-blocky-characters",
+      "packCategory": "Characters/Animated",
+      "license": "CC0-1.0",
+      "relPath": "Characters/Animated/kenney-blocky-characters/Models/FBX format/character-a.fbx",
+      "ext": "fbx",
+      "bytes": 534960
+    },
+    {
+      "id": "Characters_Animated_kenney-blocky-characters_Models_FBX_format_character-c.fbx",
+      "pack": "kenney-blocky-characters",
+      "packCategory": "Characters/Animated",
+      "license": "CC0-1.0",
+      "relPath": "Characters/Animated/kenney-blocky-characters/Models/FBX format/character-c.fbx",
+      "ext": "fbx",
+      "bytes": 534960
+    },
+    {
+      "id": "Characters_Animated_kenney-blocky-characters_Models_FBX_format_character-e.fbx",
+      "pack": "kenney-blocky-characters",
+      "packCategory": "Characters/Animated",
+      "license": "CC0-1.0",
+      "relPath": "Characters/Animated/kenney-blocky-characters/Models/FBX format/character-e.fbx",
+      "ext": "fbx",
+      "bytes": 534960
+    },
+    {
+      "id": "Characters_Animated_kenney-blocky-characters_Models_FBX_format_character-g.fbx",
+      "pack": "kenney-blocky-characters",
+      "packCategory": "Characters/Animated",
+      "license": "CC0-1.0",
+      "relPath": "Characters/Animated/kenney-blocky-characters/Models/FBX format/character-g.fbx",
+      "ext": "fbx",
+      "bytes": 534960
+    },
+    {
+      "id": "Characters_Animated_kenney-blocky-characters_Models_FBX_format_character-j.fbx",
+      "pack": "kenney-blocky-characters",
+      "packCategory": "Characters/Animated",
+      "license": "CC0-1.0",
+      "relPath": "Characters/Animated/kenney-blocky-characters/Models/FBX format/character-j.fbx",
+      "ext": "fbx",
+      "bytes": 534960
+    },
+    {
+      "id": "Characters_Animated_kenney-blocky-characters_Models_FBX_format_character-l.fbx",
+      "pack": "kenney-blocky-characters",
+      "packCategory": "Characters/Animated",
+      "license": "CC0-1.0",
+      "relPath": "Characters/Animated/kenney-blocky-characters/Models/FBX format/character-l.fbx",
+      "ext": "fbx",
+      "bytes": 534960
+    },
+    {
+      "id": "Characters_Animated_kenney-blocky-characters_Models_FBX_format_character-n.fbx",
+      "pack": "kenney-blocky-characters",
+      "packCategory": "Characters/Animated",
+      "license": "CC0-1.0",
+      "relPath": "Characters/Animated/kenney-blocky-characters/Models/FBX format/character-n.fbx",
+      "ext": "fbx",
+      "bytes": 534960
+    },
+    {
+      "id": "Characters_Animated_kenney-blocky-characters_Models_FBX_format_character-p.fbx",
+      "pack": "kenney-blocky-characters",
+      "packCategory": "Characters/Animated",
+      "license": "CC0-1.0",
+      "relPath": "Characters/Animated/kenney-blocky-characters/Models/FBX format/character-p.fbx",
+      "ext": "fbx",
+      "bytes": 534960
+    },
+    {
+      "id": "Characters_Animated_kenney-blocky-characters_Models_GLB_format_character-a.glb",
+      "pack": "kenney-blocky-characters",
+      "packCategory": "Characters/Animated",
+      "license": "CC0-1.0",
+      "relPath": "Characters/Animated/kenney-blocky-characters/Models/GLB format/character-a.glb",
+      "ext": "glb",
+      "bytes": 113596
+    },
+    {
+      "id": "Characters_Animated_kenney-blocky-characters_Models_GLB_format_character-c.glb",
+      "pack": "kenney-blocky-characters",
+      "packCategory": "Characters/Animated",
+      "license": "CC0-1.0",
+      "relPath": "Characters/Animated/kenney-blocky-characters/Models/GLB format/character-c.glb",
+      "ext": "glb",
+      "bytes": 113580
+    },
+    {
+      "id": "Characters_Animated_kenney-blocky-characters_Models_GLB_format_character-e.glb",
+      "pack": "kenney-blocky-characters",
+      "packCategory": "Characters/Animated",
+      "license": "CC0-1.0",
+      "relPath": "Characters/Animated/kenney-blocky-characters/Models/GLB format/character-e.glb",
+      "ext": "glb",
+      "bytes": 113596
+    },
+    {
+      "id": "Characters_Animated_kenney-blocky-characters_Models_GLB_format_character-g.glb",
+      "pack": "kenney-blocky-characters",
+      "packCategory": "Characters/Animated",
+      "license": "CC0-1.0",
+      "relPath": "Characters/Animated/kenney-blocky-characters/Models/GLB format/character-g.glb",
+      "ext": "glb",
+      "bytes": 113596
+    },
+    {
+      "id": "Characters_Animated_kenney-blocky-characters_Models_GLB_format_character-j.glb",
+      "pack": "kenney-blocky-characters",
+      "packCategory": "Characters/Animated",
+      "license": "CC0-1.0",
+      "relPath": "Characters/Animated/kenney-blocky-characters/Models/GLB format/character-j.glb",
+      "ext": "glb",
+      "bytes": 113584
+    },
+    {
+      "id": "Characters_Animated_kenney-blocky-characters_Models_GLB_format_character-l.glb",
+      "pack": "kenney-blocky-characters",
+      "packCategory": "Characters/Animated",
+      "license": "CC0-1.0",
+      "relPath": "Characters/Animated/kenney-blocky-characters/Models/GLB format/character-l.glb",
+      "ext": "glb",
+      "bytes": 113596
+    },
+    {
+      "id": "Characters_Animated_kenney-blocky-characters_Models_GLB_format_character-n.glb",
+      "pack": "kenney-blocky-characters",
+      "packCategory": "Characters/Animated",
+      "license": "CC0-1.0",
+      "relPath": "Characters/Animated/kenney-blocky-characters/Models/GLB format/character-n.glb",
+      "ext": "glb",
+      "bytes": 113596
+    },
+    {
+      "id": "Characters_Animated_kenney-blocky-characters_Models_GLB_format_character-p.glb",
+      "pack": "kenney-blocky-characters",
+      "packCategory": "Characters/Animated",
+      "license": "CC0-1.0",
+      "relPath": "Characters/Animated/kenney-blocky-characters/Models/GLB format/character-p.glb",
+      "ext": "glb",
+      "bytes": 113584
+    },
+    {
+      "id": "Characters_Animated_kenney-blocky-characters_Models_OBJ_format_character-a.obj",
+      "pack": "kenney-blocky-characters",
+      "packCategory": "Characters/Animated",
+      "license": "CC0-1.0",
+      "relPath": "Characters/Animated/kenney-blocky-characters/Models/OBJ format/character-a.obj",
+      "ext": "obj",
+      "bytes": 7011
+    },
+    {
+      "id": "Characters_Animated_kenney-blocky-characters_Models_OBJ_format_character-c.obj",
+      "pack": "kenney-blocky-characters",
+      "packCategory": "Characters/Animated",
+      "license": "CC0-1.0",
+      "relPath": "Characters/Animated/kenney-blocky-characters/Models/OBJ format/character-c.obj",
+      "ext": "obj",
+      "bytes": 6884
+    },
+    {
+      "id": "Characters_Animated_kenney-blocky-characters_Models_OBJ_format_character-e.obj",
+      "pack": "kenney-blocky-characters",
+      "packCategory": "Characters/Animated",
+      "license": "CC0-1.0",
+      "relPath": "Characters/Animated/kenney-blocky-characters/Models/OBJ format/character-e.obj",
+      "ext": "obj",
+      "bytes": 7011
+    },
+    {
+      "id": "Characters_Animated_kenney-blocky-characters_Models_OBJ_format_character-g.obj",
+      "pack": "kenney-blocky-characters",
+      "packCategory": "Characters/Animated",
+      "license": "CC0-1.0",
+      "relPath": "Characters/Animated/kenney-blocky-characters/Models/OBJ format/character-g.obj",
+      "ext": "obj",
+      "bytes": 7107
+    },
+    {
+      "id": "Characters_Animated_kenney-blocky-characters_Models_OBJ_format_character-j.obj",
+      "pack": "kenney-blocky-characters",
+      "packCategory": "Characters/Animated",
+      "license": "CC0-1.0",
+      "relPath": "Characters/Animated/kenney-blocky-characters/Models/OBJ format/character-j.obj",
+      "ext": "obj",
+      "bytes": 7023
+    },
+    {
+      "id": "Characters_Animated_kenney-blocky-characters_Models_OBJ_format_character-l.obj",
+      "pack": "kenney-blocky-characters",
+      "packCategory": "Characters/Animated",
+      "license": "CC0-1.0",
+      "relPath": "Characters/Animated/kenney-blocky-characters/Models/OBJ format/character-l.obj",
+      "ext": "obj",
+      "bytes": 7107
+    },
+    {
+      "id": "Characters_Animated_kenney-blocky-characters_Models_OBJ_format_character-n.obj",
+      "pack": "kenney-blocky-characters",
+      "packCategory": "Characters/Animated",
+      "license": "CC0-1.0",
+      "relPath": "Characters/Animated/kenney-blocky-characters/Models/OBJ format/character-n.obj",
+      "ext": "obj",
+      "bytes": 7107
+    },
+    {
+      "id": "Characters_Animated_kenney-blocky-characters_Models_OBJ_format_character-p.obj",
+      "pack": "kenney-blocky-characters",
+      "packCategory": "Characters/Animated",
+      "license": "CC0-1.0",
+      "relPath": "Characters/Animated/kenney-blocky-characters/Models/OBJ format/character-p.obj",
+      "ext": "obj",
+      "bytes": 7023
+    },
+    {
+      "id": "Characters_Animated_kenney-mini-characters_Models_FBX_format_aid_hearing.fbx",
+      "pack": "kenney-mini-characters",
+      "packCategory": "Characters/Animated",
+      "license": "CC0-1.0",
+      "relPath": "Characters/Animated/kenney-mini-characters/Models/FBX format/aid_hearing.fbx",
+      "ext": "fbx",
+      "bytes": 27408
+    },
+    {
+      "id": "Characters_Animated_kenney-mini-characters_Models_FBX_format_aid-cane-blind.fbx",
+      "pack": "kenney-mini-characters",
+      "packCategory": "Characters/Animated",
+      "license": "CC0-1.0",
+      "relPath": "Characters/Animated/kenney-mini-characters/Models/FBX format/aid-cane-blind.fbx",
+      "ext": "fbx",
+      "bytes": 26896
+    },
+    {
+      "id": "Characters_Animated_kenney-mini-characters_Models_FBX_format_aid-crutch.fbx",
+      "pack": "kenney-mini-characters",
+      "packCategory": "Characters/Animated",
+      "license": "CC0-1.0",
+      "relPath": "Characters/Animated/kenney-mini-characters/Models/FBX format/aid-crutch.fbx",
+      "ext": "fbx",
+      "bytes": 37584
+    },
+    {
+      "id": "Characters_Animated_kenney-mini-characters_Models_FBX_format_aid-glasses.fbx",
+      "pack": "kenney-mini-characters",
+      "packCategory": "Characters/Animated",
+      "license": "CC0-1.0",
+      "relPath": "Characters/Animated/kenney-mini-characters/Models/FBX format/aid-glasses.fbx",
+      "ext": "fbx",
+      "bytes": 27312
+    },
+    {
+      "id": "Characters_Animated_kenney-mini-characters_Models_FBX_format_character-female-d.fbx",
+      "pack": "kenney-mini-characters",
+      "packCategory": "Characters/Animated",
+      "license": "CC0-1.0",
+      "relPath": "Characters/Animated/kenney-mini-characters/Models/FBX format/character-female-d.fbx",
+      "ext": "fbx",
+      "bytes": 727152
+    },
+    {
+      "id": "Characters_Animated_kenney-mini-characters_Models_FBX_format_character-male-a.fbx",
+      "pack": "kenney-mini-characters",
+      "packCategory": "Characters/Animated",
+      "license": "CC0-1.0",
+      "relPath": "Characters/Animated/kenney-mini-characters/Models/FBX format/character-male-a.fbx",
+      "ext": "fbx",
+      "bytes": 719360
+    },
+    {
+      "id": "Characters_Animated_kenney-mini-characters_Models_FBX_format_character-male-d.fbx",
+      "pack": "kenney-mini-characters",
+      "packCategory": "Characters/Animated",
+      "license": "CC0-1.0",
+      "relPath": "Characters/Animated/kenney-mini-characters/Models/FBX format/character-male-d.fbx",
+      "ext": "fbx",
+      "bytes": 721456
+    },
+    {
+      "id": "Characters_Animated_kenney-mini-characters_Models_FBX_format_wheelchair-deluxe.fbx",
+      "pack": "kenney-mini-characters",
+      "packCategory": "Characters/Animated",
+      "license": "CC0-1.0",
+      "relPath": "Characters/Animated/kenney-mini-characters/Models/FBX format/wheelchair-deluxe.fbx",
+      "ext": "fbx",
+      "bytes": 46912
+    },
+    {
+      "id": "Characters_Animated_kenney-mini-characters_Models_GLB_format_aid_hearing.glb",
+      "pack": "kenney-mini-characters",
+      "packCategory": "Characters/Animated",
+      "license": "CC0-1.0",
+      "relPath": "Characters/Animated/kenney-mini-characters/Models/GLB format/aid_hearing.glb",
+      "ext": "glb",
+      "bytes": 7212
+    },
+    {
+      "id": "Characters_Animated_kenney-mini-characters_Models_GLB_format_aid-cane-blind.glb",
+      "pack": "kenney-mini-characters",
+      "packCategory": "Characters/Animated",
+      "license": "CC0-1.0",
+      "relPath": "Characters/Animated/kenney-mini-characters/Models/GLB format/aid-cane-blind.glb",
+      "ext": "glb",
+      "bytes": 6168
+    },
+    {
+      "id": "Characters_Animated_kenney-mini-characters_Models_GLB_format_aid-crutch.glb",
+      "pack": "kenney-mini-characters",
+      "packCategory": "Characters/Animated",
+      "license": "CC0-1.0",
+      "relPath": "Characters/Animated/kenney-mini-characters/Models/GLB format/aid-crutch.glb",
+      "ext": "glb",
+      "bytes": 16008
+    },
+    {
+      "id": "Characters_Animated_kenney-mini-characters_Models_GLB_format_aid-glasses.glb",
+      "pack": "kenney-mini-characters",
+      "packCategory": "Characters/Animated",
+      "license": "CC0-1.0",
+      "relPath": "Characters/Animated/kenney-mini-characters/Models/GLB format/aid-glasses.glb",
+      "ext": "glb",
+      "bytes": 6764
+    },
+    {
+      "id": "Characters_Animated_kenney-mini-characters_Models_GLB_format_character-female-d.glb",
+      "pack": "kenney-mini-characters",
+      "packCategory": "Characters/Animated",
+      "license": "CC0-1.0",
+      "relPath": "Characters/Animated/kenney-mini-characters/Models/GLB format/character-female-d.glb",
+      "ext": "glb",
+      "bytes": 258760
+    },
+    {
+      "id": "Characters_Animated_kenney-mini-characters_Models_GLB_format_character-male-a.glb",
+      "pack": "kenney-mini-characters",
+      "packCategory": "Characters/Animated",
+      "license": "CC0-1.0",
+      "relPath": "Characters/Animated/kenney-mini-characters/Models/GLB format/character-male-a.glb",
+      "ext": "glb",
+      "bytes": 246916
+    },
+    {
+      "id": "Characters_Animated_kenney-mini-characters_Models_GLB_format_character-male-d.glb",
+      "pack": "kenney-mini-characters",
+      "packCategory": "Characters/Animated",
+      "license": "CC0-1.0",
+      "relPath": "Characters/Animated/kenney-mini-characters/Models/GLB format/character-male-d.glb",
+      "ext": "glb",
+      "bytes": 245184
+    },
+    {
+      "id": "Characters_Animated_kenney-mini-characters_Models_GLB_format_wheelchair-deluxe.glb",
+      "pack": "kenney-mini-characters",
+      "packCategory": "Characters/Animated",
+      "license": "CC0-1.0",
+      "relPath": "Characters/Animated/kenney-mini-characters/Models/GLB format/wheelchair-deluxe.glb",
+      "ext": "glb",
+      "bytes": 60588
+    },
+    {
+      "id": "Characters_Animated_kenney-mini-characters_Models_OBJ_format_aid_hearing.obj",
+      "pack": "kenney-mini-characters",
+      "packCategory": "Characters/Animated",
+      "license": "CC0-1.0",
+      "relPath": "Characters/Animated/kenney-mini-characters/Models/OBJ format/aid_hearing.obj",
+      "ext": "obj",
+      "bytes": 4149
+    },
+    {
+      "id": "Characters_Animated_kenney-mini-characters_Models_OBJ_format_aid-cane-blind.obj",
+      "pack": "kenney-mini-characters",
+      "packCategory": "Characters/Animated",
+      "license": "CC0-1.0",
+      "relPath": "Characters/Animated/kenney-mini-characters/Models/OBJ format/aid-cane-blind.obj",
+      "ext": "obj",
+      "bytes": 6292
+    },
+    {
+      "id": "Characters_Animated_kenney-mini-characters_Models_OBJ_format_aid-crutch.obj",
+      "pack": "kenney-mini-characters",
+      "packCategory": "Characters/Animated",
+      "license": "CC0-1.0",
+      "relPath": "Characters/Animated/kenney-mini-characters/Models/OBJ format/aid-crutch.obj",
+      "ext": "obj",
+      "bytes": 12816
+    },
+    {
+      "id": "Characters_Animated_kenney-mini-characters_Models_OBJ_format_aid-glasses.obj",
+      "pack": "kenney-mini-characters",
+      "packCategory": "Characters/Animated",
+      "license": "CC0-1.0",
+      "relPath": "Characters/Animated/kenney-mini-characters/Models/OBJ format/aid-glasses.obj",
+      "ext": "obj",
+      "bytes": 5270
+    },
+    {
+      "id": "Characters_Animated_kenney-mini-characters_Models_OBJ_format_character-female-d.obj",
+      "pack": "kenney-mini-characters",
+      "packCategory": "Characters/Animated",
+      "license": "CC0-1.0",
+      "relPath": "Characters/Animated/kenney-mini-characters/Models/OBJ format/character-female-d.obj",
+      "ext": "obj",
+      "bytes": 61464
+    },
+    {
+      "id": "Characters_Animated_kenney-mini-characters_Models_OBJ_format_character-male-a.obj",
+      "pack": "kenney-mini-characters",
+      "packCategory": "Characters/Animated",
+      "license": "CC0-1.0",
+      "relPath": "Characters/Animated/kenney-mini-characters/Models/OBJ format/character-male-a.obj",
+      "ext": "obj",
+      "bytes": 52857
+    },
+    {
+      "id": "Characters_Animated_kenney-mini-characters_Models_OBJ_format_character-male-d.obj",
+      "pack": "kenney-mini-characters",
+      "packCategory": "Characters/Animated",
+      "license": "CC0-1.0",
+      "relPath": "Characters/Animated/kenney-mini-characters/Models/OBJ format/character-male-d.obj",
+      "ext": "obj",
+      "bytes": 53877
+    },
+    {
+      "id": "Characters_Animated_kenney-mini-characters_Models_OBJ_format_wheelchair-deluxe.obj",
+      "pack": "kenney-mini-characters",
+      "packCategory": "Characters/Animated",
+      "license": "CC0-1.0",
+      "relPath": "Characters/Animated/kenney-mini-characters/Models/OBJ format/wheelchair-deluxe.obj",
+      "ext": "obj",
+      "bytes": 61953
+    },
+    {
+      "id": "Environment_Models_polyhaven-barrel_stove_barrel_stove_1k.gltf",
+      "pack": "polyhaven-barrel_stove",
+      "packCategory": "Environment/Models",
+      "license": "CC0-1.0",
+      "relPath": "Environment/Models/polyhaven-barrel_stove/barrel_stove_1k.gltf",
+      "ext": "gltf",
+      "bytes": 6313
+    },
+    {
+      "id": "Environment_Models_polyhaven-boulder_01_boulder_01_1k.gltf",
+      "pack": "polyhaven-boulder_01",
+      "packCategory": "Environment/Models",
+      "license": "CC0-1.0",
+      "relPath": "Environment/Models/polyhaven-boulder_01/boulder_01_1k.gltf",
+      "ext": "gltf",
+      "bytes": 6388
+    },
+    {
+      "id": "Environment_Models_polyhaven-fire_hydrant_fire_hydrant_1k.gltf",
+      "pack": "polyhaven-fire_hydrant",
+      "packCategory": "Environment/Models",
+      "license": "CC0-1.0",
+      "relPath": "Environment/Models/polyhaven-fire_hydrant/fire_hydrant_1k.gltf",
+      "ext": "gltf",
+      "bytes": 49803
+    },
+    {
+      "id": "Environment_Models_polyhaven-hanging_industrial_lamp_hanging_industrial_lamp_1k.gltf",
+      "pack": "polyhaven-hanging_industrial_lamp",
+      "packCategory": "Environment/Models",
+      "license": "CC0-1.0",
+      "relPath": "Environment/Models/polyhaven-hanging_industrial_lamp/hanging_industrial_lamp_1k.gltf",
+      "ext": "gltf",
+      "bytes": 12666
+    },
+    {
+      "id": "Environment_Models_polyhaven-Lantern_01_Lantern_01_1k.gltf",
+      "pack": "polyhaven-Lantern_01",
+      "packCategory": "Environment/Models",
+      "license": "CC0-1.0",
+      "relPath": "Environment/Models/polyhaven-Lantern_01/Lantern_01_1k.gltf",
+      "ext": "gltf",
+      "bytes": 11479
+    },
+    {
+      "id": "Environment_Models_polyhaven-WetFloorSign_01_WetFloorSign_01_1k.gltf",
+      "pack": "polyhaven-WetFloorSign_01",
+      "packCategory": "Environment/Models",
+      "license": "CC0-1.0",
+      "relPath": "Environment/Models/polyhaven-WetFloorSign_01/WetFloorSign_01_1k.gltf",
+      "ext": "gltf",
+      "bytes": 6158
+    },
+    {
+      "id": "Environment_Nature_kenney-nature-kit_Models_DAE_format_bed.dae",
+      "pack": "kenney-nature-kit",
+      "packCategory": "Environment/Nature",
+      "license": "CC0-1.0",
+      "relPath": "Environment/Nature/kenney-nature-kit/Models/DAE format/bed.dae",
+      "ext": "dae",
+      "bytes": 48378
+    },
+    {
+      "id": "Environment_Nature_kenney-nature-kit_Models_DAE_format_cliff_stone.dae",
+      "pack": "kenney-nature-kit",
+      "packCategory": "Environment/Nature",
+      "license": "CC0-1.0",
+      "relPath": "Environment/Nature/kenney-nature-kit/Models/DAE format/cliff_stone.dae",
+      "ext": "dae",
+      "bytes": 9722
+    },
+    {
+      "id": "Environment_Nature_kenney-nature-kit_Models_DAE_format_ground_riverCornerSmall.dae",
+      "pack": "kenney-nature-kit",
+      "packCategory": "Environment/Nature",
+      "license": "CC0-1.0",
+      "relPath": "Environment/Nature/kenney-nature-kit/Models/DAE format/ground_riverCornerSmall.dae",
+      "ext": "dae",
+      "bytes": 12315
+    },
+    {
+      "id": "Environment_Nature_kenney-nature-kit_Models_DAE_format_rock_tallJ.dae",
+      "pack": "kenney-nature-kit",
+      "packCategory": "Environment/Nature",
+      "license": "CC0-1.0",
+      "relPath": "Environment/Nature/kenney-nature-kit/Models/DAE format/rock_tallJ.dae",
+      "ext": "dae",
+      "bytes": 14758
+    },
+    {
+      "id": "Environment_Nature_kenney-nature-kit_Models_DAE_format_tree_pineDefaultA.dae",
+      "pack": "kenney-nature-kit",
+      "packCategory": "Environment/Nature",
+      "license": "CC0-1.0",
+      "relPath": "Environment/Nature/kenney-nature-kit/Models/DAE format/tree_pineDefaultA.dae",
+      "ext": "dae",
+      "bytes": 43185
+    },
+    {
+      "id": "Environment_Nature_kenney-nature-kit_Models_FBX_format_cliff_blockSlopeWalls_rock.fbx",
+      "pack": "kenney-nature-kit",
+      "packCategory": "Environment/Nature",
+      "license": "CC0-1.0",
+      "relPath": "Environment/Nature/kenney-nature-kit/Models/FBX format/cliff_blockSlopeWalls_rock.fbx",
+      "ext": "fbx",
+      "bytes": 26861
+    },
+    {
+      "id": "Environment_Nature_kenney-nature-kit_Models_FBX_format_fence_simple.fbx",
+      "pack": "kenney-nature-kit",
+      "packCategory": "Environment/Nature",
+      "license": "CC0-1.0",
+      "relPath": "Environment/Nature/kenney-nature-kit/Models/FBX format/fence_simple.fbx",
+      "ext": "fbx",
+      "bytes": 17067
+    },
+    {
+      "id": "Environment_Nature_kenney-nature-kit_Models_FBX_format_plant_bushTriangle.fbx",
+      "pack": "kenney-nature-kit",
+      "packCategory": "Environment/Nature",
+      "license": "CC0-1.0",
+      "relPath": "Environment/Nature/kenney-nature-kit/Models/FBX format/plant_bushTriangle.fbx",
+      "ext": "fbx",
+      "bytes": 17134
+    },
+    {
+      "id": "Environment_Nature_kenney-nature-kit_Models_FBX_format_stone_tallI.fbx",
+      "pack": "kenney-nature-kit",
+      "packCategory": "Environment/Nature",
+      "license": "CC0-1.0",
+      "relPath": "Environment/Nature/kenney-nature-kit/Models/FBX format/stone_tallI.fbx",
+      "ext": "fbx",
+      "bytes": 18825
+    },
+    {
+      "id": "Environment_Nature_kenney-nature-kit_Models_GLTF_format_bed.glb",
+      "pack": "kenney-nature-kit",
+      "packCategory": "Environment/Nature",
+      "license": "CC0-1.0",
+      "relPath": "Environment/Nature/kenney-nature-kit/Models/GLTF format/bed.glb",
+      "ext": "glb",
+      "bytes": 19108
+    },
+    {
+      "id": "Environment_Nature_kenney-nature-kit_Models_GLTF_format_cliff_stone.glb",
+      "pack": "kenney-nature-kit",
+      "packCategory": "Environment/Nature",
+      "license": "CC0-1.0",
+      "relPath": "Environment/Nature/kenney-nature-kit/Models/GLTF format/cliff_stone.glb",
+      "ext": "glb",
+      "bytes": 3560
+    },
+    {
+      "id": "Environment_Nature_kenney-nature-kit_Models_GLTF_format_ground_riverCornerSmall.glb",
+      "pack": "kenney-nature-kit",
+      "packCategory": "Environment/Nature",
+      "license": "CC0-1.0",
+      "relPath": "Environment/Nature/kenney-nature-kit/Models/GLTF format/ground_riverCornerSmall.glb",
+      "ext": "glb",
+      "bytes": 4236
+    },
+    {
+      "id": "Environment_Nature_kenney-nature-kit_Models_GLTF_format_rock_tallJ.glb",
+      "pack": "kenney-nature-kit",
+      "packCategory": "Environment/Nature",
+      "license": "CC0-1.0",
+      "relPath": "Environment/Nature/kenney-nature-kit/Models/GLTF format/rock_tallJ.glb",
+      "ext": "glb",
+      "bytes": 5424
+    },
+    {
+      "id": "Environment_Nature_kenney-nature-kit_Models_GLTF_format_tree_pineDefaultA.glb",
+      "pack": "kenney-nature-kit",
+      "packCategory": "Environment/Nature",
+      "license": "CC0-1.0",
+      "relPath": "Environment/Nature/kenney-nature-kit/Models/GLTF format/tree_pineDefaultA.glb",
+      "ext": "glb",
+      "bytes": 17220
+    },
+    {
+      "id": "Environment_Nature_kenney-nature-kit_Models_OBJ_format_cliff_blockSlopeWalls_rock.obj",
+      "pack": "kenney-nature-kit",
+      "packCategory": "Environment/Nature",
+      "license": "CC0-1.0",
+      "relPath": "Environment/Nature/kenney-nature-kit/Models/OBJ format/cliff_blockSlopeWalls_rock.obj",
+      "ext": "obj",
+      "bytes": 7892
+    },
+    {
+      "id": "Environment_Nature_kenney-nature-kit_Models_OBJ_format_fence_simple.obj",
+      "pack": "kenney-nature-kit",
+      "packCategory": "Environment/Nature",
+      "license": "CC0-1.0",
+      "relPath": "Environment/Nature/kenney-nature-kit/Models/OBJ format/fence_simple.obj",
+      "ext": "obj",
+      "bytes": 3370
+    },
+    {
+      "id": "Environment_Nature_kenney-nature-kit_Models_OBJ_format_plant_bushTriangle.obj",
+      "pack": "kenney-nature-kit",
+      "packCategory": "Environment/Nature",
+      "license": "CC0-1.0",
+      "relPath": "Environment/Nature/kenney-nature-kit/Models/OBJ format/plant_bushTriangle.obj",
+      "ext": "obj",
+      "bytes": 2799
+    },
+    {
+      "id": "Environment_Nature_kenney-nature-kit_Models_OBJ_format_stone_tallI.obj",
+      "pack": "kenney-nature-kit",
+      "packCategory": "Environment/Nature",
+      "license": "CC0-1.0",
+      "relPath": "Environment/Nature/kenney-nature-kit/Models/OBJ format/stone_tallI.obj",
+      "ext": "obj",
+      "bytes": 3974
+    },
+    {
+      "id": "Kenney_kenney-blaster-kit_Models_FBX_format_blaster-a.fbx",
+      "pack": "kenney-blaster-kit",
+      "packCategory": "Kenney",
+      "license": "CC0-1.0",
+      "relPath": "Kenney/kenney-blaster-kit/Models/FBX format/blaster-a.fbx",
+      "ext": "fbx",
+      "bytes": 42960
+    },
+    {
+      "id": "Kenney_kenney-blaster-kit_Models_FBX_format_blaster-p.fbx",
+      "pack": "kenney-blaster-kit",
+      "packCategory": "Kenney",
+      "license": "CC0-1.0",
+      "relPath": "Kenney/kenney-blaster-kit/Models/FBX format/blaster-p.fbx",
+      "ext": "fbx",
+      "bytes": 55920
+    },
+    {
+      "id": "Kenney_kenney-blaster-kit_Models_FBX_format_scope-large-b.fbx",
+      "pack": "kenney-blaster-kit",
+      "packCategory": "Kenney",
+      "license": "CC0-1.0",
+      "relPath": "Kenney/kenney-blaster-kit/Models/FBX format/scope-large-b.fbx",
+      "ext": "fbx",
+      "bytes": 31248
+    },
+    {
+      "id": "Kenney_kenney-blaster-kit_Models_GLB_format_blaster-f.glb",
+      "pack": "kenney-blaster-kit",
+      "packCategory": "Kenney",
+      "license": "CC0-1.0",
+      "relPath": "Kenney/kenney-blaster-kit/Models/GLB format/blaster-f.glb",
+      "ext": "glb",
+      "bytes": 72460
+    },
+    {
+      "id": "Kenney_kenney-blaster-kit_Models_GLB_format_bullet-foam-tip.glb",
+      "pack": "kenney-blaster-kit",
+      "packCategory": "Kenney",
+      "license": "CC0-1.0",
+      "relPath": "Kenney/kenney-blaster-kit/Models/GLB format/bullet-foam-tip.glb",
+      "ext": "glb",
+      "bytes": 5744
+    },
+    {
+      "id": "Kenney_kenney-blaster-kit_Models_GLB_format_target-detail.glb",
+      "pack": "kenney-blaster-kit",
+      "packCategory": "Kenney",
+      "license": "CC0-1.0",
+      "relPath": "Kenney/kenney-blaster-kit/Models/GLB format/target-detail.glb",
+      "ext": "glb",
+      "bytes": 15168
+    },
+    {
+      "id": "Kenney_kenney-blaster-kit_Models_OBJ_format_blaster-k.obj",
+      "pack": "kenney-blaster-kit",
+      "packCategory": "Kenney",
+      "license": "CC0-1.0",
+      "relPath": "Kenney/kenney-blaster-kit/Models/OBJ format/blaster-k.obj",
+      "ext": "obj",
+      "bytes": 35486
+    },
+    {
+      "id": "Kenney_kenney-blaster-kit_Models_OBJ_format_crate-small.obj",
+      "pack": "kenney-blaster-kit",
+      "packCategory": "Kenney",
+      "license": "CC0-1.0",
+      "relPath": "Kenney/kenney-blaster-kit/Models/OBJ format/crate-small.obj",
+      "ext": "obj",
+      "bytes": 42355
+    },
+    {
+      "id": "Kenney_kenney-cube-pets_Models_FBX_format_animal-beaver.fbx",
+      "pack": "kenney-cube-pets",
+      "packCategory": "Kenney",
+      "license": "CC0-1.0",
+      "relPath": "Kenney/kenney-cube-pets/Models/FBX format/animal-beaver.fbx",
+      "ext": "fbx",
+      "bytes": 459216
+    },
+    {
+      "id": "Kenney_kenney-cube-pets_Models_FBX_format_animal-dog.fbx",
+      "pack": "kenney-cube-pets",
+      "packCategory": "Kenney",
+      "license": "CC0-1.0",
+      "relPath": "Kenney/kenney-cube-pets/Models/FBX format/animal-dog.fbx",
+      "ext": "fbx",
+      "bytes": 392032
+    },
+    {
+      "id": "Kenney_kenney-cube-pets_Models_FBX_format_animal-panda.fbx",
+      "pack": "kenney-cube-pets",
+      "packCategory": "Kenney",
+      "license": "CC0-1.0",
+      "relPath": "Kenney/kenney-cube-pets/Models/FBX format/animal-panda.fbx",
+      "ext": "fbx",
+      "bytes": 398560
+    },
+    {
+      "id": "Kenney_kenney-cube-pets_Models_GLB_format_animal-cat.glb",
+      "pack": "kenney-cube-pets",
+      "packCategory": "Kenney",
+      "license": "CC0-1.0",
+      "relPath": "Kenney/kenney-cube-pets/Models/GLB format/animal-cat.glb",
+      "ext": "glb",
+      "bytes": 165164
+    },
+    {
+      "id": "Kenney_kenney-cube-pets_Models_GLB_format_animal-fox.glb",
+      "pack": "kenney-cube-pets",
+      "packCategory": "Kenney",
+      "license": "CC0-1.0",
+      "relPath": "Kenney/kenney-cube-pets/Models/GLB format/animal-fox.glb",
+      "ext": "glb",
+      "bytes": 141880
+    },
+    {
+      "id": "Kenney_kenney-cube-pets_Models_GLB_format_animal-pig.glb",
+      "pack": "kenney-cube-pets",
+      "packCategory": "Kenney",
+      "license": "CC0-1.0",
+      "relPath": "Kenney/kenney-cube-pets/Models/GLB format/animal-pig.glb",
+      "ext": "glb",
+      "bytes": 127032
+    },
+    {
+      "id": "Kenney_kenney-cube-pets_Models_OBJ_format_animal-cow.obj",
+      "pack": "kenney-cube-pets",
+      "packCategory": "Kenney",
+      "license": "CC0-1.0",
+      "relPath": "Kenney/kenney-cube-pets/Models/OBJ format/animal-cow.obj",
+      "ext": "obj",
+      "bytes": 38115
+    },
+    {
+      "id": "Kenney_kenney-cube-pets_Models_OBJ_format_animal-koala.obj",
+      "pack": "kenney-cube-pets",
+      "packCategory": "Kenney",
+      "license": "CC0-1.0",
+      "relPath": "Kenney/kenney-cube-pets/Models/OBJ format/animal-koala.obj",
+      "ext": "obj",
+      "bytes": 37899
+    },
+    {
+      "id": "Kenney_kenney-factory-kit_Models_FBX_format_arrow-basic-rounded.fbx",
+      "pack": "kenney-factory-kit",
+      "packCategory": "Kenney",
+      "license": "CC0-1.0",
+      "relPath": "Kenney/kenney-factory-kit/Models/FBX format/arrow-basic-rounded.fbx",
+      "ext": "fbx",
+      "bytes": 28368
+    },
+    {
+      "id": "Kenney_kenney-factory-kit_Models_FBX_format_conveyor-stripe-cross.fbx",
+      "pack": "kenney-factory-kit",
+      "packCategory": "Kenney",
+      "license": "CC0-1.0",
+      "relPath": "Kenney/kenney-factory-kit/Models/FBX format/conveyor-stripe-cross.fbx",
+      "ext": "fbx",
+      "bytes": 31904
+    },
+    {
+      "id": "Kenney_kenney-factory-kit_Models_FBX_format_piston-round.fbx",
+      "pack": "kenney-factory-kit",
+      "packCategory": "Kenney",
+      "license": "CC0-1.0",
+      "relPath": "Kenney/kenney-factory-kit/Models/FBX format/piston-round.fbx",
+      "ext": "fbx",
+      "bytes": 99584
+    },
+    {
+      "id": "Kenney_kenney-factory-kit_Models_GLB_format_catwalk-straight.glb",
+      "pack": "kenney-factory-kit",
+      "packCategory": "Kenney",
+      "license": "CC0-1.0",
+      "relPath": "Kenney/kenney-factory-kit/Models/GLB format/catwalk-straight.glb",
+      "ext": "glb",
+      "bytes": 33492
+    },
+    {
+      "id": "Kenney_kenney-factory-kit_Models_GLB_format_hopper-high-round.glb",
+      "pack": "kenney-factory-kit",
+      "packCategory": "Kenney",
+      "license": "CC0-1.0",
+      "relPath": "Kenney/kenney-factory-kit/Models/GLB format/hopper-high-round.glb",
+      "ext": "glb",
+      "bytes": 16644
+    },
+    {
+      "id": "Kenney_kenney-factory-kit_Models_GLB_format_structure-doorway-wide.glb",
+      "pack": "kenney-factory-kit",
+      "packCategory": "Kenney",
+      "license": "CC0-1.0",
+      "relPath": "Kenney/kenney-factory-kit/Models/GLB format/structure-doorway-wide.glb",
+      "ext": "glb",
+      "bytes": 5572
+    },
+    {
+      "id": "Kenney_kenney-factory-kit_Models_OBJ_format_conveyor-bars.obj",
+      "pack": "kenney-factory-kit",
+      "packCategory": "Kenney",
+      "license": "CC0-1.0",
+      "relPath": "Kenney/kenney-factory-kit/Models/OBJ format/conveyor-bars.obj",
+      "ext": "obj",
+      "bytes": 16077
+    },
+    {
+      "id": "Kenney_kenney-factory-kit_Models_OBJ_format_pipe-glass-large-bend.obj",
+      "pack": "kenney-factory-kit",
+      "packCategory": "Kenney",
+      "license": "CC0-1.0",
+      "relPath": "Kenney/kenney-factory-kit/Models/OBJ format/pipe-glass-large-bend.obj",
+      "ext": "obj",
+      "bytes": 37064
+    },
+    {
+      "id": "Kenney_kenney-fantasy-town-kit_Models_FBX_format_balcony-wall-fence.fbx",
+      "pack": "kenney-fantasy-town-kit",
+      "packCategory": "Kenney",
+      "license": "CC0-1.0",
+      "relPath": "Kenney/kenney-fantasy-town-kit/Models/FBX format/balcony-wall-fence.fbx",
+      "ext": "fbx",
+      "bytes": 26032
+    },
+    {
+      "id": "Kenney_kenney-fantasy-town-kit_Models_FBX_format_roof-high-flat.fbx",
+      "pack": "kenney-fantasy-town-kit",
+      "packCategory": "Kenney",
+      "license": "CC0-1.0",
+      "relPath": "Kenney/kenney-fantasy-town-kit/Models/FBX format/roof-high-flat.fbx",
+      "ext": "fbx",
+      "bytes": 26272
+    },
+    {
+      "id": "Kenney_kenney-fantasy-town-kit_Models_FBX_format_wall-slope.fbx",
+      "pack": "kenney-fantasy-town-kit",
+      "packCategory": "Kenney",
+      "license": "CC0-1.0",
+      "relPath": "Kenney/kenney-fantasy-town-kit/Models/FBX format/wall-slope.fbx",
+      "ext": "fbx",
+      "bytes": 27344
+    },
+    {
+      "id": "Kenney_kenney-fantasy-town-kit_Models_GLB_format_fountain-round-detail.glb",
+      "pack": "kenney-fantasy-town-kit",
+      "packCategory": "Kenney",
+      "license": "CC0-1.0",
+      "relPath": "Kenney/kenney-fantasy-town-kit/Models/GLB format/fountain-round-detail.glb",
+      "ext": "glb",
+      "bytes": 136888
+    },
+    {
+      "id": "Kenney_kenney-fantasy-town-kit_Models_GLB_format_stairs-stone.glb",
+      "pack": "kenney-fantasy-town-kit",
+      "packCategory": "Kenney",
+      "license": "CC0-1.0",
+      "relPath": "Kenney/kenney-fantasy-town-kit/Models/GLB format/stairs-stone.glb",
+      "ext": "glb",
+      "bytes": 12172
+    },
+    {
+      "id": "Kenney_kenney-fantasy-town-kit_Models_GLB_format_wall-wood-door.glb",
+      "pack": "kenney-fantasy-town-kit",
+      "packCategory": "Kenney",
+      "license": "CC0-1.0",
+      "relPath": "Kenney/kenney-fantasy-town-kit/Models/GLB format/wall-wood-door.glb",
+      "ext": "glb",
+      "bytes": 30744
+    },
+    {
+      "id": "Kenney_kenney-fantasy-town-kit_Models_OBJ_format_road-corner.obj",
+      "pack": "kenney-fantasy-town-kit",
+      "packCategory": "Kenney",
+      "license": "CC0-1.0",
+      "relPath": "Kenney/kenney-fantasy-town-kit/Models/OBJ format/road-corner.obj",
+      "ext": "obj",
+      "bytes": 12064
+    },
+    {
+      "id": "Kenney_kenney-fantasy-town-kit_Models_OBJ_format_wall-block.obj",
+      "pack": "kenney-fantasy-town-kit",
+      "packCategory": "Kenney",
+      "license": "CC0-1.0",
+      "relPath": "Kenney/kenney-fantasy-town-kit/Models/OBJ format/wall-block.obj",
+      "ext": "obj",
+      "bytes": 5183
+    },
+    {
+      "id": "Kenney_kenney-graveyard-kit_Models_FBX_format_altar-stone.fbx",
+      "pack": "kenney-graveyard-kit",
+      "packCategory": "Kenney",
+      "license": "CC0-1.0",
+      "relPath": "Kenney/kenney-graveyard-kit/Models/FBX format/altar-stone.fbx",
+      "ext": "fbx",
+      "bytes": 28624
+    },
+    {
+      "id": "Kenney_kenney-graveyard-kit_Models_FBX_format_detail-chalice.fbx",
+      "pack": "kenney-graveyard-kit",
+      "packCategory": "Kenney",
+      "license": "CC0-1.0",
+      "relPath": "Kenney/kenney-graveyard-kit/Models/FBX format/detail-chalice.fbx",
+      "ext": "fbx",
+      "bytes": 29872
+    },
+    {
+      "id": "Kenney_kenney-graveyard-kit_Models_FBX_format_pillar-small.fbx",
+      "pack": "kenney-graveyard-kit",
+      "packCategory": "Kenney",
+      "license": "CC0-1.0",
+      "relPath": "Kenney/kenney-graveyard-kit/Models/FBX format/pillar-small.fbx",
+      "ext": "fbx",
+      "bytes": 27296
+    },
+    {
+      "id": "Kenney_kenney-graveyard-kit_Models_GLB_format_character-ghost.glb",
+      "pack": "kenney-graveyard-kit",
+      "packCategory": "Kenney",
+      "license": "CC0-1.0",
+      "relPath": "Kenney/kenney-graveyard-kit/Models/GLB format/character-ghost.glb",
+      "ext": "glb",
+      "bytes": 114016
+    },
+    {
+      "id": "Kenney_kenney-graveyard-kit_Models_GLB_format_gravestone-cross.glb",
+      "pack": "kenney-graveyard-kit",
+      "packCategory": "Kenney",
+      "license": "CC0-1.0",
+      "relPath": "Kenney/kenney-graveyard-kit/Models/GLB format/gravestone-cross.glb",
+      "ext": "glb",
+      "bytes": 20584
+    },
+    {
+      "id": "Kenney_kenney-graveyard-kit_Models_GLB_format_rocks-tall.glb",
+      "pack": "kenney-graveyard-kit",
+      "packCategory": "Kenney",
+      "license": "CC0-1.0",
+      "relPath": "Kenney/kenney-graveyard-kit/Models/GLB format/rocks-tall.glb",
+      "ext": "glb",
+      "bytes": 36924
+    },
+    {
+      "id": "Kenney_kenney-graveyard-kit_Models_OBJ_format_crypt-a.obj",
+      "pack": "kenney-graveyard-kit",
+      "packCategory": "Kenney",
+      "license": "CC0-1.0",
+      "relPath": "Kenney/kenney-graveyard-kit/Models/OBJ format/crypt-a.obj",
+      "ext": "obj",
+      "bytes": 8037
+    },
+    {
+      "id": "Kenney_kenney-graveyard-kit_Models_OBJ_format_iron-fence-border-gate.obj",
+      "pack": "kenney-graveyard-kit",
+      "packCategory": "Kenney",
+      "license": "CC0-1.0",
+      "relPath": "Kenney/kenney-graveyard-kit/Models/OBJ format/iron-fence-border-gate.obj",
+      "ext": "obj",
+      "bytes": 20109
+    },
+    {
+      "id": "Kenney_kenney-mini-arcade_Models_FBX_format_air-hockey.fbx",
+      "pack": "kenney-mini-arcade",
+      "packCategory": "Kenney",
+      "license": "CC0-1.0",
+      "relPath": "Kenney/kenney-mini-arcade/Models/FBX format/air-hockey.fbx",
+      "ext": "fbx",
+      "bytes": 53872
+    },
+    {
+      "id": "Kenney_kenney-mini-arcade_Models_FBX_format_column.fbx",
+      "pack": "kenney-mini-arcade",
+      "packCategory": "Kenney",
+      "license": "CC0-1.0",
+      "relPath": "Kenney/kenney-mini-arcade/Models/FBX format/column.fbx",
+      "ext": "fbx",
+      "bytes": 31200
+    },
+    {
+      "id": "Kenney_kenney-mini-arcade_Models_FBX_format_vending-machine.fbx",
+      "pack": "kenney-mini-arcade",
+      "packCategory": "Kenney",
+      "license": "CC0-1.0",
+      "relPath": "Kenney/kenney-mini-arcade/Models/FBX format/vending-machine.fbx",
+      "ext": "fbx",
+      "bytes": 28512
+    },
+    {
+      "id": "Kenney_kenney-mini-arcade_Models_GLB_format_basketball-game.glb",
+      "pack": "kenney-mini-arcade",
+      "packCategory": "Kenney",
+      "license": "CC0-1.0",
+      "relPath": "Kenney/kenney-mini-arcade/Models/GLB format/basketball-game.glb",
+      "ext": "glb",
+      "bytes": 49532
+    },
+    {
+      "id": "Kenney_kenney-mini-arcade_Models_GLB_format_gambling-machine.glb",
+      "pack": "kenney-mini-arcade",
+      "packCategory": "Kenney",
+      "license": "CC0-1.0",
+      "relPath": "Kenney/kenney-mini-arcade/Models/GLB format/gambling-machine.glb",
+      "ext": "glb",
+      "bytes": 55048
+    },
+    {
+      "id": "Kenney_kenney-mini-arcade_Models_GLB_format_wall-door-rotate.glb",
+      "pack": "kenney-mini-arcade",
+      "packCategory": "Kenney",
+      "license": "CC0-1.0",
+      "relPath": "Kenney/kenney-mini-arcade/Models/GLB format/wall-door-rotate.glb",
+      "ext": "glb",
+      "bytes": 37888
+    },
+    {
+      "id": "Kenney_kenney-mini-arcade_Models_OBJ_format_character-gamer.obj",
+      "pack": "kenney-mini-arcade",
+      "packCategory": "Kenney",
+      "license": "CC0-1.0",
+      "relPath": "Kenney/kenney-mini-arcade/Models/OBJ format/character-gamer.obj",
+      "ext": "obj",
+      "bytes": 31007
+    },
+    {
+      "id": "Kenney_kenney-mini-arcade_Models_OBJ_format_prize-wheel.obj",
+      "pack": "kenney-mini-arcade",
+      "packCategory": "Kenney",
+      "license": "CC0-1.0",
+      "relPath": "Kenney/kenney-mini-arcade/Models/OBJ format/prize-wheel.obj",
+      "ext": "obj",
+      "bytes": 16494
+    },
+    {
+      "id": "Kenney_kenney-mini-arena_Models_FBX_format_banner.fbx",
+      "pack": "kenney-mini-arena",
+      "packCategory": "Kenney",
+      "license": "CC0-1.0",
+      "relPath": "Kenney/kenney-mini-arena/Models/FBX format/banner.fbx",
+      "ext": "fbx",
+      "bytes": 30096
+    },
+    {
+      "id": "Kenney_kenney-mini-arena_Models_FBX_format_floor-detail.fbx",
+      "pack": "kenney-mini-arena",
+      "packCategory": "Kenney",
+      "license": "CC0-1.0",
+      "relPath": "Kenney/kenney-mini-arena/Models/FBX format/floor-detail.fbx",
+      "ext": "fbx",
+      "bytes": 26624
+    },
+    {
+      "id": "Kenney_kenney-mini-arena_Models_FBX_format_wall-corner.fbx",
+      "pack": "kenney-mini-arena",
+      "packCategory": "Kenney",
+      "license": "CC0-1.0",
+      "relPath": "Kenney/kenney-mini-arena/Models/FBX format/wall-corner.fbx",
+      "ext": "fbx",
+      "bytes": 33344
+    },
+    {
+      "id": "Kenney_kenney-mini-arena_Models_GLB_format_border-corner.glb",
+      "pack": "kenney-mini-arena",
+      "packCategory": "Kenney",
+      "license": "CC0-1.0",
+      "relPath": "Kenney/kenney-mini-arena/Models/GLB format/border-corner.glb",
+      "ext": "glb",
+      "bytes": 11144
+    },
+    {
+      "id": "Kenney_kenney-mini-arena_Models_GLB_format_stairs-corner.glb",
+      "pack": "kenney-mini-arena",
+      "packCategory": "Kenney",
+      "license": "CC0-1.0",
+      "relPath": "Kenney/kenney-mini-arena/Models/GLB format/stairs-corner.glb",
+      "ext": "glb",
+      "bytes": 8772
+    },
+    {
+      "id": "Kenney_kenney-mini-arena_Models_GLB_format_weapon-rack.glb",
+      "pack": "kenney-mini-arena",
+      "packCategory": "Kenney",
+      "license": "CC0-1.0",
+      "relPath": "Kenney/kenney-mini-arena/Models/GLB format/weapon-rack.glb",
+      "ext": "glb",
+      "bytes": 20072
+    },
+    {
+      "id": "Kenney_kenney-mini-arena_Models_OBJ_format_character-soldier.obj",
+      "pack": "kenney-mini-arena",
+      "packCategory": "Kenney",
+      "license": "CC0-1.0",
+      "relPath": "Kenney/kenney-mini-arena/Models/OBJ format/character-soldier.obj",
+      "ext": "obj",
+      "bytes": 67
+    },
+    {
+      "id": "Kenney_kenney-mini-arena_Models_OBJ_format_statue.obj",
+      "pack": "kenney-mini-arena",
+      "packCategory": "Kenney",
+      "license": "CC0-1.0",
+      "relPath": "Kenney/kenney-mini-arena/Models/OBJ format/statue.obj",
+      "ext": "obj",
+      "bytes": 53748
+    },
+    {
+      "id": "Kenney_kenney-mini-dungeon_Models_FBX_format_banner.fbx",
+      "pack": "kenney-mini-dungeon",
+      "packCategory": "Kenney",
+      "license": "CC0-1.0",
+      "relPath": "Kenney/kenney-mini-dungeon/Models/FBX format/banner.fbx",
+      "ext": "fbx",
+      "bytes": 28784
+    },
+    {
+      "id": "Kenney_kenney-mini-dungeon_Models_FBX_format_gate.fbx",
+      "pack": "kenney-mini-dungeon",
+      "packCategory": "Kenney",
+      "license": "CC0-1.0",
+      "relPath": "Kenney/kenney-mini-dungeon/Models/FBX format/gate.fbx",
+      "ext": "fbx",
+      "bytes": 54960
+    },
+    {
+      "id": "Kenney_kenney-mini-dungeon_Models_FBX_format_wall-half.fbx",
+      "pack": "kenney-mini-dungeon",
+      "packCategory": "Kenney",
+      "license": "CC0-1.0",
+      "relPath": "Kenney/kenney-mini-dungeon/Models/FBX format/wall-half.fbx",
+      "ext": "fbx",
+      "bytes": 29776
+    },
+    {
+      "id": "Kenney_kenney-mini-dungeon_Models_GLB_format_character-human.glb",
+      "pack": "kenney-mini-dungeon",
+      "packCategory": "Kenney",
+      "license": "CC0-1.0",
+      "relPath": "Kenney/kenney-mini-dungeon/Models/GLB format/character-human.glb",
+      "ext": "glb",
+      "bytes": 218072
+    },
+    {
+      "id": "Kenney_kenney-mini-dungeon_Models_GLB_format_rocks.glb",
+      "pack": "kenney-mini-dungeon",
+      "packCategory": "Kenney",
+      "license": "CC0-1.0",
+      "relPath": "Kenney/kenney-mini-dungeon/Models/GLB format/rocks.glb",
+      "ext": "glb",
+      "bytes": 18452
+    },
+    {
+      "id": "Kenney_kenney-mini-dungeon_Models_GLB_format_weapon-spear.glb",
+      "pack": "kenney-mini-dungeon",
+      "packCategory": "Kenney",
+      "license": "CC0-1.0",
+      "relPath": "Kenney/kenney-mini-dungeon/Models/GLB format/weapon-spear.glb",
+      "ext": "glb",
+      "bytes": 7152
+    },
+    {
+      "id": "Kenney_kenney-mini-dungeon_Models_OBJ_format_column.obj",
+      "pack": "kenney-mini-dungeon",
+      "packCategory": "Kenney",
+      "license": "CC0-1.0",
+      "relPath": "Kenney/kenney-mini-dungeon/Models/OBJ format/column.obj",
+      "ext": "obj",
+      "bytes": 9149
+    },
+    {
+      "id": "Kenney_kenney-mini-dungeon_Models_OBJ_format_stairs.obj",
+      "pack": "kenney-mini-dungeon",
+      "packCategory": "Kenney",
+      "license": "CC0-1.0",
+      "relPath": "Kenney/kenney-mini-dungeon/Models/OBJ format/stairs.obj",
+      "ext": "obj",
+      "bytes": 7979
+    },
+    {
+      "id": "Kenney_kenney-mini-forest_Models_FBX_format_bridge.fbx",
+      "pack": "kenney-mini-forest",
+      "packCategory": "Kenney",
+      "license": "CC0-1.0",
+      "relPath": "Kenney/kenney-mini-forest/Models/FBX format/bridge.fbx",
+      "ext": "fbx",
+      "bytes": 39696
+    },
+    {
+      "id": "Kenney_kenney-mini-forest_Models_FBX_format_patch-dirt.fbx",
+      "pack": "kenney-mini-forest",
+      "packCategory": "Kenney",
+      "license": "CC0-1.0",
+      "relPath": "Kenney/kenney-mini-forest/Models/FBX format/patch-dirt.fbx",
+      "ext": "fbx",
+      "bytes": 27312
+    },
+    {
+      "id": "Kenney_kenney-mini-forest_Models_FBX_format_target.fbx",
+      "pack": "kenney-mini-forest",
+      "packCategory": "Kenney",
+      "license": "CC0-1.0",
+      "relPath": "Kenney/kenney-mini-forest/Models/FBX format/target.fbx",
+      "ext": "fbx",
+      "bytes": 29680
+    },
+    {
+      "id": "Kenney_kenney-mini-forest_Models_GLB_format_building-roof.glb",
+      "pack": "kenney-mini-forest",
+      "packCategory": "Kenney",
+      "license": "CC0-1.0",
+      "relPath": "Kenney/kenney-mini-forest/Models/GLB format/building-roof.glb",
+      "ext": "glb",
+      "bytes": 31964
+    },
+    {
+      "id": "Kenney_kenney-mini-forest_Models_GLB_format_platform.glb",
+      "pack": "kenney-mini-forest",
+      "packCategory": "Kenney",
+      "license": "CC0-1.0",
+      "relPath": "Kenney/kenney-mini-forest/Models/GLB format/platform.glb",
+      "ext": "glb",
+      "bytes": 63436
+    },
+    {
+      "id": "Kenney_kenney-mini-forest_Models_GLB_format_tree.glb",
+      "pack": "kenney-mini-forest",
+      "packCategory": "Kenney",
+      "license": "CC0-1.0",
+      "relPath": "Kenney/kenney-mini-forest/Models/GLB format/tree.glb",
+      "ext": "glb",
+      "bytes": 23476
+    },
+    {
+      "id": "Kenney_kenney-mini-forest_Models_OBJ_format_fence.obj",
+      "pack": "kenney-mini-forest",
+      "packCategory": "Kenney",
+      "license": "CC0-1.0",
+      "relPath": "Kenney/kenney-mini-forest/Models/OBJ format/fence.obj",
+      "ext": "obj",
+      "bytes": 29624
+    },
+    {
+      "id": "Kenney_kenney-mini-forest_Models_OBJ_format_rocks-low.obj",
+      "pack": "kenney-mini-forest",
+      "packCategory": "Kenney",
+      "license": "CC0-1.0",
+      "relPath": "Kenney/kenney-mini-forest/Models/OBJ format/rocks-low.obj",
+      "ext": "obj",
+      "bytes": 20640
+    },
+    {
+      "id": "Kenney_kenney-mini-market_Models_FBX_format_bottle-return.fbx",
+      "pack": "kenney-mini-market",
+      "packCategory": "Kenney",
+      "license": "CC0-1.0",
+      "relPath": "Kenney/kenney-mini-market/Models/FBX format/bottle-return.fbx",
+      "ext": "fbx",
+      "bytes": 40736
+    },
+    {
+      "id": "Kenney_kenney-mini-market_Models_FBX_format_fence.fbx",
+      "pack": "kenney-mini-market",
+      "packCategory": "Kenney",
+      "license": "CC0-1.0",
+      "relPath": "Kenney/kenney-mini-market/Models/FBX format/fence.fbx",
+      "ext": "fbx",
+      "bytes": 26656
+    },
+    {
+      "id": "Kenney_kenney-mini-market_Models_FBX_format_shopping-cart.fbx",
+      "pack": "kenney-mini-market",
+      "packCategory": "Kenney",
+      "license": "CC0-1.0",
+      "relPath": "Kenney/kenney-mini-market/Models/FBX format/shopping-cart.fbx",
+      "ext": "fbx",
+      "bytes": 33696
+    },
+    {
+      "id": "Kenney_kenney-mini-market_Models_GLB_format_character-employee.glb",
+      "pack": "kenney-mini-market",
+      "packCategory": "Kenney",
+      "license": "CC0-1.0",
+      "relPath": "Kenney/kenney-mini-market/Models/GLB format/character-employee.glb",
+      "ext": "glb",
+      "bytes": 215836
+    },
+    {
+      "id": "Kenney_kenney-mini-market_Models_GLB_format_freezers-standing.glb",
+      "pack": "kenney-mini-market",
+      "packCategory": "Kenney",
+      "license": "CC0-1.0",
+      "relPath": "Kenney/kenney-mini-market/Models/GLB format/freezers-standing.glb",
+      "ext": "glb",
+      "bytes": 15340
+    },
+    {
+      "id": "Kenney_kenney-mini-market_Models_GLB_format_wall-door-rotate.glb",
+      "pack": "kenney-mini-market",
+      "packCategory": "Kenney",
+      "license": "CC0-1.0",
+      "relPath": "Kenney/kenney-mini-market/Models/GLB format/wall-door-rotate.glb",
+      "ext": "glb",
+      "bytes": 38492
+    },
+    {
+      "id": "Kenney_kenney-mini-market_Models_OBJ_format_display-fruit.obj",
+      "pack": "kenney-mini-market",
+      "packCategory": "Kenney",
+      "license": "CC0-1.0",
+      "relPath": "Kenney/kenney-mini-market/Models/OBJ format/display-fruit.obj",
+      "ext": "obj",
+      "bytes": 68842
+    },
+    {
+      "id": "Kenney_kenney-mini-market_Models_OBJ_format_shelf-boxes.obj",
+      "pack": "kenney-mini-market",
+      "packCategory": "Kenney",
+      "license": "CC0-1.0",
+      "relPath": "Kenney/kenney-mini-market/Models/OBJ format/shelf-boxes.obj",
+      "ext": "obj",
+      "bytes": 27278
+    },
+    {
+      "id": "Kenney_kenney-mini-skate_Models_FBX_format_bowl-corner-inner.fbx",
+      "pack": "kenney-mini-skate",
+      "packCategory": "Kenney",
+      "license": "CC0-1.0",
+      "relPath": "Kenney/kenney-mini-skate/Models/FBX format/bowl-corner-inner.fbx",
+      "ext": "fbx",
+      "bytes": 30432
+    },
+    {
+      "id": "Kenney_kenney-mini-skate_Models_FBX_format_half-pipe.fbx",
+      "pack": "kenney-mini-skate",
+      "packCategory": "Kenney",
+      "license": "CC0-1.0",
+      "relPath": "Kenney/kenney-mini-skate/Models/FBX format/half-pipe.fbx",
+      "ext": "fbx",
+      "bytes": 25840
+    },
+    {
+      "id": "Kenney_kenney-mini-skate_Models_FBX_format_rail-slope.fbx",
+      "pack": "kenney-mini-skate",
+      "packCategory": "Kenney",
+      "license": "CC0-1.0",
+      "relPath": "Kenney/kenney-mini-skate/Models/FBX format/rail-slope.fbx",
+      "ext": "fbx",
+      "bytes": 26208
+    },
+    {
+      "id": "Kenney_kenney-mini-skate_Models_GLB_format_bowl-side.glb",
+      "pack": "kenney-mini-skate",
+      "packCategory": "Kenney",
+      "license": "CC0-1.0",
+      "relPath": "Kenney/kenney-mini-skate/Models/GLB format/bowl-side.glb",
+      "ext": "glb",
+      "bytes": 5268
+    },
+    {
+      "id": "Kenney_kenney-mini-skate_Models_GLB_format_obstacle-middle.glb",
+      "pack": "kenney-mini-skate",
+      "packCategory": "Kenney",
+      "license": "CC0-1.0",
+      "relPath": "Kenney/kenney-mini-skate/Models/GLB format/obstacle-middle.glb",
+      "ext": "glb",
+      "bytes": 13228
+    },
+    {
+      "id": "Kenney_kenney-mini-skate_Models_GLB_format_steps.glb",
+      "pack": "kenney-mini-skate",
+      "packCategory": "Kenney",
+      "license": "CC0-1.0",
+      "relPath": "Kenney/kenney-mini-skate/Models/GLB format/steps.glb",
+      "ext": "glb",
+      "bytes": 8248
+    },
+    {
+      "id": "Kenney_kenney-mini-skate_Models_OBJ_format_floor-concrete.obj",
+      "pack": "kenney-mini-skate",
+      "packCategory": "Kenney",
+      "license": "CC0-1.0",
+      "relPath": "Kenney/kenney-mini-skate/Models/OBJ format/floor-concrete.obj",
+      "ext": "obj",
+      "bytes": 324
+    },
+    {
+      "id": "Kenney_kenney-mini-skate_Models_OBJ_format_rail-curve.obj",
+      "pack": "kenney-mini-skate",
+      "packCategory": "Kenney",
+      "license": "CC0-1.0",
+      "relPath": "Kenney/kenney-mini-skate/Models/OBJ format/rail-curve.obj",
+      "ext": "obj",
+      "bytes": 7164
+    },
+    {
+      "id": "Kenney_kenney-modular-cave-kit_Models_FBX_format_corridor-corner.fbx",
+      "pack": "kenney-modular-cave-kit",
+      "packCategory": "Kenney",
+      "license": "CC0-1.0",
+      "relPath": "Kenney/kenney-modular-cave-kit/Models/FBX format/corridor-corner.fbx",
+      "ext": "fbx",
+      "bytes": 53776
+    },
+    {
+      "id": "Kenney_kenney-modular-cave-kit_Models_FBX_format_ladder.fbx",
+      "pack": "kenney-modular-cave-kit",
+      "packCategory": "Kenney",
+      "license": "CC0-1.0",
+      "relPath": "Kenney/kenney-modular-cave-kit/Models/FBX format/ladder.fbx",
+      "ext": "fbx",
+      "bytes": 27552
+    },
+    {
+      "id": "Kenney_kenney-modular-cave-kit_Models_FBX_format_template-floor-layer-hole.fbx",
+      "pack": "kenney-modular-cave-kit",
+      "packCategory": "Kenney",
+      "license": "CC0-1.0",
+      "relPath": "Kenney/kenney-modular-cave-kit/Models/FBX format/template-floor-layer-hole.fbx",
+      "ext": "fbx",
+      "bytes": 33696
+    },
+    {
+      "id": "Kenney_kenney-modular-cave-kit_Models_GLB_format_corridor-wide-corner.glb",
+      "pack": "kenney-modular-cave-kit",
+      "packCategory": "Kenney",
+      "license": "CC0-1.0",
+      "relPath": "Kenney/kenney-modular-cave-kit/Models/GLB format/corridor-wide-corner.glb",
+      "ext": "glb",
+      "bytes": 152320
+    },
+    {
+      "id": "Kenney_kenney-modular-cave-kit_Models_GLB_format_room-small.glb",
+      "pack": "kenney-modular-cave-kit",
+      "packCategory": "Kenney",
+      "license": "CC0-1.0",
+      "relPath": "Kenney/kenney-modular-cave-kit/Models/GLB format/room-small.glb",
+      "ext": "glb",
+      "bytes": 346532
+    },
+    {
+      "id": "Kenney_kenney-modular-cave-kit_Models_GLB_format_template-wall-detail-a.glb",
+      "pack": "kenney-modular-cave-kit",
+      "packCategory": "Kenney",
+      "license": "CC0-1.0",
+      "relPath": "Kenney/kenney-modular-cave-kit/Models/GLB format/template-wall-detail-a.glb",
+      "ext": "glb",
+      "bytes": 41936
+    },
+    {
+      "id": "Kenney_kenney-modular-cave-kit_Models_OBJ_format_corridor.obj",
+      "pack": "kenney-modular-cave-kit",
+      "packCategory": "Kenney",
+      "license": "CC0-1.0",
+      "relPath": "Kenney/kenney-modular-cave-kit/Models/OBJ format/corridor.obj",
+      "ext": "obj",
+      "bytes": 74350
+    },
+    {
+      "id": "Kenney_kenney-modular-cave-kit_Models_OBJ_format_template-corner.obj",
+      "pack": "kenney-modular-cave-kit",
+      "packCategory": "Kenney",
+      "license": "CC0-1.0",
+      "relPath": "Kenney/kenney-modular-cave-kit/Models/OBJ format/template-corner.obj",
+      "ext": "obj",
+      "bytes": 50721
+    },
+    {
+      "id": "Kenney_kenney-modular-dungeon-kit_Models_FBX_format_corridor-corner.fbx",
+      "pack": "kenney-modular-dungeon-kit",
+      "packCategory": "Kenney",
+      "license": "CC0-1.0",
+      "relPath": "Kenney/kenney-modular-dungeon-kit/Models/FBX format/corridor-corner.fbx",
+      "ext": "fbx",
+      "bytes": 49840
+    },
+    {
+      "id": "Kenney_kenney-modular-dungeon-kit_Models_FBX_format_gate.fbx",
+      "pack": "kenney-modular-dungeon-kit",
+      "packCategory": "Kenney",
+      "license": "CC0-1.0",
+      "relPath": "Kenney/kenney-modular-dungeon-kit/Models/FBX format/gate.fbx",
+      "ext": "fbx",
+      "bytes": 45376
+    },
+    {
+      "id": "Kenney_kenney-modular-dungeon-kit_Models_FBX_format_template-floor-layer-hole.fbx",
+      "pack": "kenney-modular-dungeon-kit",
+      "packCategory": "Kenney",
+      "license": "CC0-1.0",
+      "relPath": "Kenney/kenney-modular-dungeon-kit/Models/FBX format/template-floor-layer-hole.fbx",
+      "ext": "fbx",
+      "bytes": 33712
+    },
+    {
+      "id": "Kenney_kenney-modular-dungeon-kit_Models_GLB_format_corridor-transition.glb",
+      "pack": "kenney-modular-dungeon-kit",
+      "packCategory": "Kenney",
+      "license": "CC0-1.0",
+      "relPath": "Kenney/kenney-modular-dungeon-kit/Models/GLB format/corridor-transition.glb",
+      "ext": "glb",
+      "bytes": 236320
+    },
+    {
+      "id": "Kenney_kenney-modular-dungeon-kit_Models_GLB_format_room-small.glb",
+      "pack": "kenney-modular-dungeon-kit",
+      "packCategory": "Kenney",
+      "license": "CC0-1.0",
+      "relPath": "Kenney/kenney-modular-dungeon-kit/Models/GLB format/room-small.glb",
+      "ext": "glb",
+      "bytes": 412996
+    },
+    {
+      "id": "Kenney_kenney-modular-dungeon-kit_Models_GLB_format_template-wall-detail-a.glb",
+      "pack": "kenney-modular-dungeon-kit",
+      "packCategory": "Kenney",
+      "license": "CC0-1.0",
+      "relPath": "Kenney/kenney-modular-dungeon-kit/Models/GLB format/template-wall-detail-a.glb",
+      "ext": "glb",
+      "bytes": 58744
+    },
+    {
+      "id": "Kenney_kenney-modular-dungeon-kit_Models_OBJ_format_corridor-wide.obj",
+      "pack": "kenney-modular-dungeon-kit",
+      "packCategory": "Kenney",
+      "license": "CC0-1.0",
+      "relPath": "Kenney/kenney-modular-dungeon-kit/Models/OBJ format/corridor-wide.obj",
+      "ext": "obj",
+      "bytes": 184866
+    },
+    {
+      "id": "Kenney_kenney-modular-dungeon-kit_Models_OBJ_format_template-corner.obj",
+      "pack": "kenney-modular-dungeon-kit",
+      "packCategory": "Kenney",
+      "license": "CC0-1.0",
+      "relPath": "Kenney/kenney-modular-dungeon-kit/Models/OBJ format/template-corner.obj",
+      "ext": "obj",
+      "bytes": 62891
+    },
+    {
+      "id": "Kenney_kenney-modular-space-kit_Models_FBX_format_cables.fbx",
+      "pack": "kenney-modular-space-kit",
+      "packCategory": "Kenney",
+      "license": "CC0-1.0",
+      "relPath": "Kenney/kenney-modular-space-kit/Models/FBX format/cables.fbx",
+      "ext": "fbx",
+      "bytes": 42640
+    },
+    {
+      "id": "Kenney_kenney-modular-space-kit_Models_FBX_format_gate.fbx",
+      "pack": "kenney-modular-space-kit",
+      "packCategory": "Kenney",
+      "license": "CC0-1.0",
+      "relPath": "Kenney/kenney-modular-space-kit/Models/FBX format/gate.fbx",
+      "ext": "fbx",
+      "bytes": 38928
+    },
+    {
+      "id": "Kenney_kenney-modular-space-kit_Models_FBX_format_template-floor-layer-hole.fbx",
+      "pack": "kenney-modular-space-kit",
+      "packCategory": "Kenney",
+      "license": "CC0-1.0",
+      "relPath": "Kenney/kenney-modular-space-kit/Models/FBX format/template-floor-layer-hole.fbx",
+      "ext": "fbx",
+      "bytes": 122336
+    },
+    {
+      "id": "Kenney_kenney-modular-space-kit_Models_GLB_format_corridor-transition.glb",
+      "pack": "kenney-modular-space-kit",
+      "packCategory": "Kenney",
+      "license": "CC0-1.0",
+      "relPath": "Kenney/kenney-modular-space-kit/Models/GLB format/corridor-transition.glb",
+      "ext": "glb",
+      "bytes": 179736
+    },
+    {
+      "id": "Kenney_kenney-modular-space-kit_Models_GLB_format_room-small.glb",
+      "pack": "kenney-modular-space-kit",
+      "packCategory": "Kenney",
+      "license": "CC0-1.0",
+      "relPath": "Kenney/kenney-modular-space-kit/Models/GLB format/room-small.glb",
+      "ext": "glb",
+      "bytes": 424016
+    },
+    {
+      "id": "Kenney_kenney-modular-space-kit_Models_GLB_format_template-wall-detail-a.glb",
+      "pack": "kenney-modular-space-kit",
+      "packCategory": "Kenney",
+      "license": "CC0-1.0",
+      "relPath": "Kenney/kenney-modular-space-kit/Models/GLB format/template-wall-detail-a.glb",
+      "ext": "glb",
+      "bytes": 84516
+    },
+    {
+      "id": "Kenney_kenney-modular-space-kit_Models_OBJ_format_corridor-wide.obj",
+      "pack": "kenney-modular-space-kit",
+      "packCategory": "Kenney",
+      "license": "CC0-1.0",
+      "relPath": "Kenney/kenney-modular-space-kit/Models/OBJ format/corridor-wide.obj",
+      "ext": "obj",
+      "bytes": 166031
+    },
+    {
+      "id": "Kenney_kenney-modular-space-kit_Models_OBJ_format_template-corner.obj",
+      "pack": "kenney-modular-space-kit",
+      "packCategory": "Kenney",
+      "license": "CC0-1.0",
+      "relPath": "Kenney/kenney-modular-space-kit/Models/OBJ format/template-corner.obj",
+      "ext": "obj",
+      "bytes": 80218
+    },
+    {
+      "id": "Kenney_kenney-pirate-kit_Models_FBX_format_barrel.fbx",
+      "pack": "kenney-pirate-kit",
+      "packCategory": "Kenney",
+      "license": "CC0-1.0",
+      "relPath": "Kenney/kenney-pirate-kit/Models/FBX format/barrel.fbx",
+      "ext": "fbx",
+      "bytes": 28736
+    },
+    {
+      "id": "Kenney_kenney-pirate-kit_Models_FBX_format_mast-ropes.fbx",
+      "pack": "kenney-pirate-kit",
+      "packCategory": "Kenney",
+      "license": "CC0-1.0",
+      "relPath": "Kenney/kenney-pirate-kit/Models/FBX format/mast-ropes.fbx",
+      "ext": "fbx",
+      "bytes": 44096
+    },
+    {
+      "id": "Kenney_kenney-pirate-kit_Models_FBX_format_structure-fence.fbx",
+      "pack": "kenney-pirate-kit",
+      "packCategory": "Kenney",
+      "license": "CC0-1.0",
+      "relPath": "Kenney/kenney-pirate-kit/Models/FBX format/structure-fence.fbx",
+      "ext": "fbx",
+      "bytes": 33216
+    },
+    {
+      "id": "Kenney_kenney-pirate-kit_Models_GLB_format_castle-gate.glb",
+      "pack": "kenney-pirate-kit",
+      "packCategory": "Kenney",
+      "license": "CC0-1.0",
+      "relPath": "Kenney/kenney-pirate-kit/Models/GLB format/castle-gate.glb",
+      "ext": "glb",
+      "bytes": 67440
+    },
+    {
+      "id": "Kenney_kenney-pirate-kit_Models_GLB_format_patch-sand.glb",
+      "pack": "kenney-pirate-kit",
+      "packCategory": "Kenney",
+      "license": "CC0-1.0",
+      "relPath": "Kenney/kenney-pirate-kit/Models/GLB format/patch-sand.glb",
+      "ext": "glb",
+      "bytes": 10212
+    },
+    {
+      "id": "Kenney_kenney-pirate-kit_Models_GLB_format_tower-base-door.glb",
+      "pack": "kenney-pirate-kit",
+      "packCategory": "Kenney",
+      "license": "CC0-1.0",
+      "relPath": "Kenney/kenney-pirate-kit/Models/GLB format/tower-base-door.glb",
+      "ext": "glb",
+      "bytes": 12592
+    },
+    {
+      "id": "Kenney_kenney-pirate-kit_Models_OBJ_format_flag-pirate-high-pennant.obj",
+      "pack": "kenney-pirate-kit",
+      "packCategory": "Kenney",
+      "license": "CC0-1.0",
+      "relPath": "Kenney/kenney-pirate-kit/Models/OBJ format/flag-pirate-high-pennant.obj",
+      "ext": "obj",
+      "bytes": 11583
+    },
+    {
+      "id": "Kenney_kenney-pirate-kit_Models_OBJ_format_ship-ghost.obj",
+      "pack": "kenney-pirate-kit",
+      "packCategory": "Kenney",
+      "license": "CC0-1.0",
+      "relPath": "Kenney/kenney-pirate-kit/Models/OBJ format/ship-ghost.obj",
+      "ext": "obj",
+      "bytes": 124658
+    },
+    {
+      "id": "Kenney_kenney-platformer-kit_Models_FBX_format_arrow.fbx",
+      "pack": "kenney-platformer-kit",
+      "packCategory": "Kenney",
+      "license": "CC0-1.0",
+      "relPath": "Kenney/kenney-platformer-kit/Models/FBX format/arrow.fbx",
+      "ext": "fbx",
+      "bytes": 27152
+    },
+    {
+      "id": "Kenney_kenney-platformer-kit_Models_FBX_format_block-snow-large-slope.fbx",
+      "pack": "kenney-platformer-kit",
+      "packCategory": "Kenney",
+      "license": "CC0-1.0",
+      "relPath": "Kenney/kenney-platformer-kit/Models/FBX format/block-snow-large-slope.fbx",
+      "ext": "fbx",
+      "bytes": 28272
+    },
+    {
+      "id": "Kenney_kenney-platformer-kit_Models_FBX_format_fence-straight.fbx",
+      "pack": "kenney-platformer-kit",
+      "packCategory": "Kenney",
+      "license": "CC0-1.0",
+      "relPath": "Kenney/kenney-platformer-kit/Models/FBX format/fence-straight.fbx",
+      "ext": "fbx",
+      "bytes": 25824
+    },
+    {
+      "id": "Kenney_kenney-platformer-kit_Models_GLB_format_block-grass-low-hexagon.glb",
+      "pack": "kenney-platformer-kit",
+      "packCategory": "Kenney",
+      "license": "CC0-1.0",
+      "relPath": "Kenney/kenney-platformer-kit/Models/GLB format/block-grass-low-hexagon.glb",
+      "ext": "glb",
+      "bytes": 5952
+    },
+    {
+      "id": "Kenney_kenney-platformer-kit_Models_GLB_format_block-snow-overhang-long.glb",
+      "pack": "kenney-platformer-kit",
+      "packCategory": "Kenney",
+      "license": "CC0-1.0",
+      "relPath": "Kenney/kenney-platformer-kit/Models/GLB format/block-snow-overhang-long.glb",
+      "ext": "glb",
+      "bytes": 12308
+    },
+    {
+      "id": "Kenney_kenney-platformer-kit_Models_GLB_format_platform-overhang.glb",
+      "pack": "kenney-platformer-kit",
+      "packCategory": "Kenney",
+      "license": "CC0-1.0",
+      "relPath": "Kenney/kenney-platformer-kit/Models/GLB format/platform-overhang.glb",
+      "ext": "glb",
+      "bytes": 8448
+    },
+    {
+      "id": "Kenney_kenney-platformer-kit_Models_OBJ_format_block-grass-overhang-low-narrow.obj",
+      "pack": "kenney-platformer-kit",
+      "packCategory": "Kenney",
+      "license": "CC0-1.0",
+      "relPath": "Kenney/kenney-platformer-kit/Models/OBJ format/block-grass-overhang-low-narrow.obj",
+      "ext": "obj",
+      "bytes": 11186
+    },
+    {
+      "id": "Kenney_kenney-platformer-kit_Models_OBJ_format_coin-gold.obj",
+      "pack": "kenney-platformer-kit",
+      "packCategory": "Kenney",
+      "license": "CC0-1.0",
+      "relPath": "Kenney/kenney-platformer-kit/Models/OBJ format/coin-gold.obj",
+      "ext": "obj",
+      "bytes": 10758
+    },
+    {
+      "id": "Kenney_kenney-retro-fantasy-kit_Models_FBX_format_barrels.fbx",
+      "pack": "kenney-retro-fantasy-kit",
+      "packCategory": "Kenney",
+      "license": "CC0-1.0",
+      "relPath": "Kenney/kenney-retro-fantasy-kit/Models/FBX format/barrels.fbx",
+      "ext": "fbx",
+      "bytes": 43552
+    },
+    {
+      "id": "Kenney_kenney-retro-fantasy-kit_Models_FBX_format_roof-high-side.fbx",
+      "pack": "kenney-retro-fantasy-kit",
+      "packCategory": "Kenney",
+      "license": "CC0-1.0",
+      "relPath": "Kenney/kenney-retro-fantasy-kit/Models/FBX format/roof-high-side.fbx",
+      "ext": "fbx",
+      "bytes": 30528
+    },
+    {
+      "id": "Kenney_kenney-retro-fantasy-kit_Models_FBX_format_wall-low.fbx",
+      "pack": "kenney-retro-fantasy-kit",
+      "packCategory": "Kenney",
+      "license": "CC0-1.0",
+      "relPath": "Kenney/kenney-retro-fantasy-kit/Models/FBX format/wall-low.fbx",
+      "ext": "fbx",
+      "bytes": 29248
+    },
+    {
+      "id": "Kenney_kenney-retro-fantasy-kit_Models_GLB_format_detail-crate-small.glb",
+      "pack": "kenney-retro-fantasy-kit",
+      "packCategory": "Kenney",
+      "license": "CC0-1.0",
+      "relPath": "Kenney/kenney-retro-fantasy-kit/Models/GLB format/detail-crate-small.glb",
+      "ext": "glb",
+      "bytes": 4196
+    },
+    {
+      "id": "Kenney_kenney-retro-fantasy-kit_Models_GLB_format_structure.glb",
+      "pack": "kenney-retro-fantasy-kit",
+      "packCategory": "Kenney",
+      "license": "CC0-1.0",
+      "relPath": "Kenney/kenney-retro-fantasy-kit/Models/GLB format/structure.glb",
+      "ext": "glb",
+      "bytes": 22992
+    },
+    {
+      "id": "Kenney_kenney-retro-fantasy-kit_Models_GLB_format_wall-pane-painted-wood-window.glb",
+      "pack": "kenney-retro-fantasy-kit",
+      "packCategory": "Kenney",
+      "license": "CC0-1.0",
+      "relPath": "Kenney/kenney-retro-fantasy-kit/Models/GLB format/wall-pane-painted-wood-window.glb",
+      "ext": "glb",
+      "bytes": 6424
+    },
+    {
+      "id": "Kenney_kenney-retro-fantasy-kit_Models_OBJ_format_floor-steps.obj",
+      "pack": "kenney-retro-fantasy-kit",
+      "packCategory": "Kenney",
+      "license": "CC0-1.0",
+      "relPath": "Kenney/kenney-retro-fantasy-kit/Models/OBJ format/floor-steps.obj",
+      "ext": "obj",
+      "bytes": 4685
+    },
+    {
+      "id": "Kenney_kenney-retro-fantasy-kit_Models_OBJ_format_wall-fortified-gate-half.obj",
+      "pack": "kenney-retro-fantasy-kit",
+      "packCategory": "Kenney",
+      "license": "CC0-1.0",
+      "relPath": "Kenney/kenney-retro-fantasy-kit/Models/OBJ format/wall-fortified-gate-half.obj",
+      "ext": "obj",
+      "bytes": 10388
+    },
+    {
+      "id": "Kenney_kenney-retro-urban-kit_Models_FBX_format_balcony-ladder-bottom.fbx",
+      "pack": "kenney-retro-urban-kit",
+      "packCategory": "Kenney",
+      "license": "CC0-1.0",
+      "relPath": "Kenney/kenney-retro-urban-kit/Models/FBX format/balcony-ladder-bottom.fbx",
+      "ext": "fbx",
+      "bytes": 27280
+    },
+    {
+      "id": "Kenney_kenney-retro-urban-kit_Models_FBX_format_road-dirt-pavement.fbx",
+      "pack": "kenney-retro-urban-kit",
+      "packCategory": "Kenney",
+      "license": "CC0-1.0",
+      "relPath": "Kenney/kenney-retro-urban-kit/Models/FBX format/road-dirt-pavement.fbx",
+      "ext": "fbx",
+      "bytes": 23968
+    },
+    {
+      "id": "Kenney_kenney-retro-urban-kit_Models_FBX_format_wall-b-corner.fbx",
+      "pack": "kenney-retro-urban-kit",
+      "packCategory": "Kenney",
+      "license": "CC0-1.0",
+      "relPath": "Kenney/kenney-retro-urban-kit/Models/FBX format/wall-b-corner.fbx",
+      "ext": "fbx",
+      "bytes": 28624
+    },
+    {
+      "id": "Kenney_kenney-retro-urban-kit_Models_GLB_format_detail-bricks-type-a.glb",
+      "pack": "kenney-retro-urban-kit",
+      "packCategory": "Kenney",
+      "license": "CC0-1.0",
+      "relPath": "Kenney/kenney-retro-urban-kit/Models/GLB format/detail-bricks-type-a.glb",
+      "ext": "glb",
+      "bytes": 9200
+    },
+    {
+      "id": "Kenney_kenney-retro-urban-kit_Models_GLB_format_tree-small.glb",
+      "pack": "kenney-retro-urban-kit",
+      "packCategory": "Kenney",
+      "license": "CC0-1.0",
+      "relPath": "Kenney/kenney-retro-urban-kit/Models/GLB format/tree-small.glb",
+      "ext": "glb",
+      "bytes": 3008
+    },
+    {
+      "id": "Kenney_kenney-retro-urban-kit_Models_GLB_format_wall-b.glb",
+      "pack": "kenney-retro-urban-kit",
+      "packCategory": "Kenney",
+      "license": "CC0-1.0",
+      "relPath": "Kenney/kenney-retro-urban-kit/Models/GLB format/wall-b.glb",
+      "ext": "glb",
+      "bytes": 3352
+    },
+    {
+      "id": "Kenney_kenney-retro-urban-kit_Models_OBJ_format_pallet.obj",
+      "pack": "kenney-retro-urban-kit",
+      "packCategory": "Kenney",
+      "license": "CC0-1.0",
+      "relPath": "Kenney/kenney-retro-urban-kit/Models/OBJ format/pallet.obj",
+      "ext": "obj",
+      "bytes": 6096
+    },
+    {
+      "id": "Kenney_kenney-retro-urban-kit_Models_OBJ_format_wall-a-flat-painted.obj",
+      "pack": "kenney-retro-urban-kit",
+      "packCategory": "Kenney",
+      "license": "CC0-1.0",
+      "relPath": "Kenney/kenney-retro-urban-kit/Models/OBJ format/wall-a-flat-painted.obj",
+      "ext": "obj",
+      "bytes": 379
+    },
+    {
+      "id": "Kenney_kenney-space-kit_Models_DAE_format_alien.dae",
+      "pack": "kenney-space-kit",
+      "packCategory": "Kenney",
+      "license": "CC0-1.0",
+      "relPath": "Kenney/kenney-space-kit/Models/DAE format/alien.dae",
+      "ext": "dae",
+      "bytes": 64473
+    },
+    {
+      "id": "Kenney_kenney-space-kit_Models_DAE_format_pipe_open.dae",
+      "pack": "kenney-space-kit",
+      "packCategory": "Kenney",
+      "license": "CC0-1.0",
+      "relPath": "Kenney/kenney-space-kit/Models/DAE format/pipe_open.dae",
+      "ext": "dae",
+      "bytes": 19650
+    },
+    {
+      "id": "Kenney_kenney-space-kit_Models_FBX_format_alien.fbx",
+      "pack": "kenney-space-kit",
+      "packCategory": "Kenney",
+      "license": "CC0-1.0",
+      "relPath": "Kenney/kenney-space-kit/Models/FBX format/alien.fbx",
+      "ext": "fbx",
+      "bytes": 55798
+    },
+    {
+      "id": "Kenney_kenney-space-kit_Models_FBX_format_pipe_open.fbx",
+      "pack": "kenney-space-kit",
+      "packCategory": "Kenney",
+      "license": "CC0-1.0",
+      "relPath": "Kenney/kenney-space-kit/Models/FBX format/pipe_open.fbx",
+      "ext": "fbx",
+      "bytes": 21577
+    },
+    {
+      "id": "Kenney_kenney-space-kit_Models_GLTF_format_alien.glb",
+      "pack": "kenney-space-kit",
+      "packCategory": "Kenney",
+      "license": "CC0-1.0",
+      "relPath": "Kenney/kenney-space-kit/Models/GLTF format/alien.glb",
+      "ext": "glb",
+      "bytes": 27784
+    },
+    {
+      "id": "Kenney_kenney-space-kit_Models_GLTF_format_pipe_open.glb",
+      "pack": "kenney-space-kit",
+      "packCategory": "Kenney",
+      "license": "CC0-1.0",
+      "relPath": "Kenney/kenney-space-kit/Models/GLTF format/pipe_open.glb",
+      "ext": "glb",
+      "bytes": 7612
+    },
+    {
+      "id": "Kenney_kenney-space-kit_Models_OBJ_format_alien.obj",
+      "pack": "kenney-space-kit",
+      "packCategory": "Kenney",
+      "license": "CC0-1.0",
+      "relPath": "Kenney/kenney-space-kit/Models/OBJ format/alien.obj",
+      "ext": "obj",
+      "bytes": 22299
+    },
+    {
+      "id": "Kenney_kenney-space-kit_Models_OBJ_format_pipe_open.obj",
+      "pack": "kenney-space-kit",
+      "packCategory": "Kenney",
+      "license": "CC0-1.0",
+      "relPath": "Kenney/kenney-space-kit/Models/OBJ format/pipe_open.obj",
+      "ext": "obj",
+      "bytes": 5627
+    },
+    {
+      "id": "Kenney_kenney-space-station-kit_Models_FBX_format_balcony-floor-center.fbx",
+      "pack": "kenney-space-station-kit",
+      "packCategory": "Kenney",
+      "license": "CC0-1.0",
+      "relPath": "Kenney/kenney-space-station-kit/Models/FBX format/balcony-floor-center.fbx",
+      "ext": "fbx",
+      "bytes": 26192
+    },
+    {
+      "id": "Kenney_kenney-space-station-kit_Models_FBX_format_floor-panel-end.fbx",
+      "pack": "kenney-space-station-kit",
+      "packCategory": "Kenney",
+      "license": "CC0-1.0",
+      "relPath": "Kenney/kenney-space-station-kit/Models/FBX format/floor-panel-end.fbx",
+      "ext": "fbx",
+      "bytes": 26608
+    },
+    {
+      "id": "Kenney_kenney-space-station-kit_Models_FBX_format_table-inset-small.fbx",
+      "pack": "kenney-space-station-kit",
+      "packCategory": "Kenney",
+      "license": "CC0-1.0",
+      "relPath": "Kenney/kenney-space-station-kit/Models/FBX format/table-inset-small.fbx",
+      "ext": "fbx",
+      "bytes": 27392
+    },
+    {
+      "id": "Kenney_kenney-space-station-kit_Models_GLB_format_chair-cushion-headrest.glb",
+      "pack": "kenney-space-station-kit",
+      "packCategory": "Kenney",
+      "license": "CC0-1.0",
+      "relPath": "Kenney/kenney-space-station-kit/Models/GLB format/chair-cushion-headrest.glb",
+      "ext": "glb",
+      "bytes": 11764
+    },
+    {
+      "id": "Kenney_kenney-space-station-kit_Models_GLB_format_rail.glb",
+      "pack": "kenney-space-station-kit",
+      "packCategory": "Kenney",
+      "license": "CC0-1.0",
+      "relPath": "Kenney/kenney-space-station-kit/Models/GLB format/rail.glb",
+      "ext": "glb",
+      "bytes": 9692
+    },
+    {
+      "id": "Kenney_kenney-space-station-kit_Models_GLB_format_wall-door-edge-banner.glb",
+      "pack": "kenney-space-station-kit",
+      "packCategory": "Kenney",
+      "license": "CC0-1.0",
+      "relPath": "Kenney/kenney-space-station-kit/Models/GLB format/wall-door-edge-banner.glb",
+      "ext": "glb",
+      "bytes": 7608
+    },
+    {
+      "id": "Kenney_kenney-space-station-kit_Models_OBJ_format_container.obj",
+      "pack": "kenney-space-station-kit",
+      "packCategory": "Kenney",
+      "license": "CC0-1.0",
+      "relPath": "Kenney/kenney-space-station-kit/Models/OBJ format/container.obj",
+      "ext": "obj",
+      "bytes": 6442
+    },
+    {
+      "id": "Kenney_kenney-space-station-kit_Models_OBJ_format_stairs-small-edge-handrail.obj",
+      "pack": "kenney-space-station-kit",
+      "packCategory": "Kenney",
+      "license": "CC0-1.0",
+      "relPath": "Kenney/kenney-space-station-kit/Models/OBJ format/stairs-small-edge-handrail.obj",
+      "ext": "obj",
+      "bytes": 5742
+    },
+    {
+      "id": "Kenney_kenney-survival-kit_Models_FBX_format_barrel-open.fbx",
+      "pack": "kenney-survival-kit",
+      "packCategory": "Kenney",
+      "license": "CC0-1.0",
+      "relPath": "Kenney/kenney-survival-kit/Models/FBX format/barrel-open.fbx",
+      "ext": "fbx",
+      "bytes": 33024
+    },
+    {
+      "id": "Kenney_kenney-survival-kit_Models_FBX_format_metal-panel.fbx",
+      "pack": "kenney-survival-kit",
+      "packCategory": "Kenney",
+      "license": "CC0-1.0",
+      "relPath": "Kenney/kenney-survival-kit/Models/FBX format/metal-panel.fbx",
+      "ext": "fbx",
+      "bytes": 29296
+    },
+    {
+      "id": "Kenney_kenney-survival-kit_Models_FBX_format_tool-axe.fbx",
+      "pack": "kenney-survival-kit",
+      "packCategory": "Kenney",
+      "license": "CC0-1.0",
+      "relPath": "Kenney/kenney-survival-kit/Models/FBX format/tool-axe.fbx",
+      "ext": "fbx",
+      "bytes": 26880
+    },
+    {
+      "id": "Kenney_kenney-survival-kit_Models_GLB_format_box.glb",
+      "pack": "kenney-survival-kit",
+      "packCategory": "Kenney",
+      "license": "CC0-1.0",
+      "relPath": "Kenney/kenney-survival-kit/Models/GLB format/box.glb",
+      "ext": "glb",
+      "bytes": 14056
+    },
+    {
+      "id": "Kenney_kenney-survival-kit_Models_GLB_format_rock-flat-grass.glb",
+      "pack": "kenney-survival-kit",
+      "packCategory": "Kenney",
+      "license": "CC0-1.0",
+      "relPath": "Kenney/kenney-survival-kit/Models/GLB format/rock-flat-grass.glb",
+      "ext": "glb",
+      "bytes": 65376
+    },
+    {
+      "id": "Kenney_kenney-survival-kit_Models_GLB_format_tree-autumn-trunk.glb",
+      "pack": "kenney-survival-kit",
+      "packCategory": "Kenney",
+      "license": "CC0-1.0",
+      "relPath": "Kenney/kenney-survival-kit/Models/GLB format/tree-autumn-trunk.glb",
+      "ext": "glb",
+      "bytes": 6928
+    },
+    {
+      "id": "Kenney_kenney-survival-kit_Models_OBJ_format_fish.obj",
+      "pack": "kenney-survival-kit",
+      "packCategory": "Kenney",
+      "license": "CC0-1.0",
+      "relPath": "Kenney/kenney-survival-kit/Models/OBJ format/fish.obj",
+      "ext": "obj",
+      "bytes": 29390
+    },
+    {
+      "id": "Kenney_kenney-survival-kit_Models_OBJ_format_structure-metal-floor.obj",
+      "pack": "kenney-survival-kit",
+      "packCategory": "Kenney",
+      "license": "CC0-1.0",
+      "relPath": "Kenney/kenney-survival-kit/Models/OBJ format/structure-metal-floor.obj",
+      "ext": "obj",
+      "bytes": 24002
+    },
+    {
+      "id": "Kenney_kenney-train-kit_Models_FBX_format_railroad-corner-large-ramp.fbx",
+      "pack": "kenney-train-kit",
+      "packCategory": "Kenney",
+      "license": "CC0-1.0",
+      "relPath": "Kenney/kenney-train-kit/Models/FBX format/railroad-corner-large-ramp.fbx",
+      "ext": "fbx",
+      "bytes": 42880
+    },
+    {
+      "id": "Kenney_kenney-train-kit_Models_FBX_format_railroad-rail-straight-skew-right-side.fbx",
+      "pack": "kenney-train-kit",
+      "packCategory": "Kenney",
+      "license": "CC0-1.0",
+      "relPath": "Kenney/kenney-train-kit/Models/FBX format/railroad-rail-straight-skew-right-side.fbx",
+      "ext": "fbx",
+      "bytes": 28224
+    },
+    {
+      "id": "Kenney_kenney-train-kit_Models_FBX_format_train-diesel-box-b.fbx",
+      "pack": "kenney-train-kit",
+      "packCategory": "Kenney",
+      "license": "CC0-1.0",
+      "relPath": "Kenney/kenney-train-kit/Models/FBX format/train-diesel-box-b.fbx",
+      "ext": "fbx",
+      "bytes": 65712
+    },
+    {
+      "id": "Kenney_kenney-train-kit_Models_GLB_format_railroad-damaged-straight-bump-down.glb",
+      "pack": "kenney-train-kit",
+      "packCategory": "Kenney",
+      "license": "CC0-1.0",
+      "relPath": "Kenney/kenney-train-kit/Models/GLB format/railroad-damaged-straight-bump-down.glb",
+      "ext": "glb",
+      "bytes": 40124
+    },
+    {
+      "id": "Kenney_kenney-train-kit_Models_GLB_format_railroad-straight-skew-right-side.glb",
+      "pack": "kenney-train-kit",
+      "packCategory": "Kenney",
+      "license": "CC0-1.0",
+      "relPath": "Kenney/kenney-train-kit/Models/GLB format/railroad-straight-skew-right-side.glb",
+      "ext": "glb",
+      "bytes": 34868
+    },
+    {
+      "id": "Kenney_kenney-train-kit_Models_GLB_format_train-electric-square-b.glb",
+      "pack": "kenney-train-kit",
+      "packCategory": "Kenney",
+      "license": "CC0-1.0",
+      "relPath": "Kenney/kenney-train-kit/Models/GLB format/train-electric-square-b.glb",
+      "ext": "glb",
+      "bytes": 128948
+    },
+    {
+      "id": "Kenney_kenney-train-kit_Models_OBJ_format_railroad-rail-corner-small-ramp.obj",
+      "pack": "kenney-train-kit",
+      "packCategory": "Kenney",
+      "license": "CC0-1.0",
+      "relPath": "Kenney/kenney-train-kit/Models/OBJ format/railroad-rail-corner-small-ramp.obj",
+      "ext": "obj",
+      "bytes": 12254
+    },
+    {
+      "id": "Kenney_kenney-train-kit_Models_OBJ_format_train-carriage-container-green.obj",
+      "pack": "kenney-train-kit",
+      "packCategory": "Kenney",
+      "license": "CC0-1.0",
+      "relPath": "Kenney/kenney-train-kit/Models/OBJ format/train-carriage-container-green.obj",
+      "ext": "obj",
+      "bytes": 80559
+    },
+    {
+      "id": "Kenney_kenney-watercraft-kit_Models_FBX_format_arrow-standing.fbx",
+      "pack": "kenney-watercraft-kit",
+      "packCategory": "Kenney",
+      "license": "CC0-1.0",
+      "relPath": "Kenney/kenney-watercraft-kit/Models/FBX format/arrow-standing.fbx",
+      "ext": "fbx",
+      "bytes": 28960
+    },
+    {
+      "id": "Kenney_kenney-watercraft-kit_Models_FBX_format_boat-speed-f.fbx",
+      "pack": "kenney-watercraft-kit",
+      "packCategory": "Kenney",
+      "license": "CC0-1.0",
+      "relPath": "Kenney/kenney-watercraft-kit/Models/FBX format/boat-speed-f.fbx",
+      "ext": "fbx",
+      "bytes": 31472
+    },
+    {
+      "id": "Kenney_kenney-watercraft-kit_Models_FBX_format_gate-finish.fbx",
+      "pack": "kenney-watercraft-kit",
+      "packCategory": "Kenney",
+      "license": "CC0-1.0",
+      "relPath": "Kenney/kenney-watercraft-kit/Models/FBX format/gate-finish.fbx",
+      "ext": "fbx",
+      "bytes": 28080
+    },
+    {
+      "id": "Kenney_kenney-watercraft-kit_Models_GLB_format_boat-house-b.glb",
+      "pack": "kenney-watercraft-kit",
+      "packCategory": "Kenney",
+      "license": "CC0-1.0",
+      "relPath": "Kenney/kenney-watercraft-kit/Models/GLB format/boat-house-b.glb",
+      "ext": "glb",
+      "bytes": 36316
+    },
+    {
+      "id": "Kenney_kenney-watercraft-kit_Models_GLB_format_boat-tow-b.glb",
+      "pack": "kenney-watercraft-kit",
+      "packCategory": "Kenney",
+      "license": "CC0-1.0",
+      "relPath": "Kenney/kenney-watercraft-kit/Models/GLB format/boat-tow-b.glb",
+      "ext": "glb",
+      "bytes": 51476
+    },
+    {
+      "id": "Kenney_kenney-watercraft-kit_Models_GLB_format_ship-cargo-c.glb",
+      "pack": "kenney-watercraft-kit",
+      "packCategory": "Kenney",
+      "license": "CC0-1.0",
+      "relPath": "Kenney/kenney-watercraft-kit/Models/GLB format/ship-cargo-c.glb",
+      "ext": "glb",
+      "bytes": 31600
+    },
+    {
+      "id": "Kenney_kenney-watercraft-kit_Models_OBJ_format_boat-sail-b.obj",
+      "pack": "kenney-watercraft-kit",
+      "packCategory": "Kenney",
+      "license": "CC0-1.0",
+      "relPath": "Kenney/kenney-watercraft-kit/Models/OBJ format/boat-sail-b.obj",
+      "ext": "obj",
+      "bytes": 30421
+    },
+    {
+      "id": "Kenney_kenney-watercraft-kit_Models_OBJ_format_buoy.obj",
+      "pack": "kenney-watercraft-kit",
+      "packCategory": "Kenney",
+      "license": "CC0-1.0",
+      "relPath": "Kenney/kenney-watercraft-kit/Models/OBJ format/buoy.obj",
+      "ext": "obj",
+      "bytes": 8944
+    },
+    {
+      "id": "Props_Interior_kenney-furniture-kit_Models_DAE_format_bathroomCabinet.dae",
+      "pack": "kenney-furniture-kit",
+      "packCategory": "Props/Interior",
+      "license": "CC0-1.0",
+      "relPath": "Props/Interior/kenney-furniture-kit/Models/DAE format/bathroomCabinet.dae",
+      "ext": "dae",
+      "bytes": 18581
+    },
+    {
+      "id": "Props_Interior_kenney-furniture-kit_Models_DAE_format_doorway.dae",
+      "pack": "kenney-furniture-kit",
+      "packCategory": "Props/Interior",
+      "license": "CC0-1.0",
+      "relPath": "Props/Interior/kenney-furniture-kit/Models/DAE format/doorway.dae",
+      "ext": "dae",
+      "bytes": 36231
+    },
+    {
+      "id": "Props_Interior_kenney-furniture-kit_Models_DAE_format_loungeDesignSofa.dae",
+      "pack": "kenney-furniture-kit",
+      "packCategory": "Props/Interior",
+      "license": "CC0-1.0",
+      "relPath": "Props/Interior/kenney-furniture-kit/Models/DAE format/loungeDesignSofa.dae",
+      "ext": "dae",
+      "bytes": 23294
+    },
+    {
+      "id": "Props_Interior_kenney-furniture-kit_Models_DAE_format_tableCrossCloth.dae",
+      "pack": "kenney-furniture-kit",
+      "packCategory": "Props/Interior",
+      "license": "CC0-1.0",
+      "relPath": "Props/Interior/kenney-furniture-kit/Models/DAE format/tableCrossCloth.dae",
+      "ext": "dae",
+      "bytes": 35079
+    },
+    {
+      "id": "Props_Interior_kenney-furniture-kit_Models_FBX_format_cabinetBedDrawer.fbx",
+      "pack": "kenney-furniture-kit",
+      "packCategory": "Props/Interior",
+      "license": "CC0-1.0",
+      "relPath": "Props/Interior/kenney-furniture-kit/Models/FBX format/cabinetBedDrawer.fbx",
+      "ext": "fbx",
+      "bytes": 36228
+    },
+    {
+      "id": "Props_Interior_kenney-furniture-kit_Models_FBX_format_kitchenCabinetUpperLow.fbx",
+      "pack": "kenney-furniture-kit",
+      "packCategory": "Props/Interior",
+      "license": "CC0-1.0",
+      "relPath": "Props/Interior/kenney-furniture-kit/Models/FBX format/kitchenCabinetUpperLow.fbx",
+      "ext": "fbx",
+      "bytes": 20200
+    },
+    {
+      "id": "Props_Interior_kenney-furniture-kit_Models_FBX_format_rugSquare.fbx",
+      "pack": "kenney-furniture-kit",
+      "packCategory": "Props/Interior",
+      "license": "CC0-1.0",
+      "relPath": "Props/Interior/kenney-furniture-kit/Models/FBX format/rugSquare.fbx",
+      "ext": "fbx",
+      "bytes": 13537
+    },
+    {
+      "id": "Props_Interior_kenney-furniture-kit_Models_GLTF_format_bathroomCabinet.glb",
+      "pack": "kenney-furniture-kit",
+      "packCategory": "Props/Interior",
+      "license": "CC0-1.0",
+      "relPath": "Props/Interior/kenney-furniture-kit/Models/GLTF format/bathroomCabinet.glb",
+      "ext": "glb",
+      "bytes": 7216
+    },
+    {
+      "id": "Props_Interior_kenney-furniture-kit_Models_GLTF_format_doorway.glb",
+      "pack": "kenney-furniture-kit",
+      "packCategory": "Props/Interior",
+      "license": "CC0-1.0",
+      "relPath": "Props/Interior/kenney-furniture-kit/Models/GLTF format/doorway.glb",
+      "ext": "glb",
+      "bytes": 14532
+    },
+    {
+      "id": "Props_Interior_kenney-furniture-kit_Models_GLTF_format_loungeDesignSofa.glb",
+      "pack": "kenney-furniture-kit",
+      "packCategory": "Props/Interior",
+      "license": "CC0-1.0",
+      "relPath": "Props/Interior/kenney-furniture-kit/Models/GLTF format/loungeDesignSofa.glb",
+      "ext": "glb",
+      "bytes": 9128
+    },
+    {
+      "id": "Props_Interior_kenney-furniture-kit_Models_GLTF_format_tableCrossCloth.glb",
+      "pack": "kenney-furniture-kit",
+      "packCategory": "Props/Interior",
+      "license": "CC0-1.0",
+      "relPath": "Props/Interior/kenney-furniture-kit/Models/GLTF format/tableCrossCloth.glb",
+      "ext": "glb",
+      "bytes": 13852
+    },
+    {
+      "id": "Props_Interior_kenney-furniture-kit_Models_OBJ_format_cabinetBedDrawer.obj",
+      "pack": "kenney-furniture-kit",
+      "packCategory": "Props/Interior",
+      "license": "CC0-1.0",
+      "relPath": "Props/Interior/kenney-furniture-kit/Models/OBJ format/cabinetBedDrawer.obj",
+      "ext": "obj",
+      "bytes": 15985
+    },
+    {
+      "id": "Props_Interior_kenney-furniture-kit_Models_OBJ_format_kitchenCabinetUpperLow.obj",
+      "pack": "kenney-furniture-kit",
+      "packCategory": "Props/Interior",
+      "license": "CC0-1.0",
+      "relPath": "Props/Interior/kenney-furniture-kit/Models/OBJ format/kitchenCabinetUpperLow.obj",
+      "ext": "obj",
+      "bytes": 4891
+    },
+    {
+      "id": "Props_Interior_kenney-furniture-kit_Models_OBJ_format_rugSquare.obj",
+      "pack": "kenney-furniture-kit",
+      "packCategory": "Props/Interior",
+      "license": "CC0-1.0",
+      "relPath": "Props/Interior/kenney-furniture-kit/Models/OBJ format/rugSquare.obj",
+      "ext": "obj",
+      "bytes": 2332
+    },
+    {
+      "id": "Props_Market_kenney-food-kit_Models_FBX_format_advocado-half.fbx",
+      "pack": "kenney-food-kit",
+      "packCategory": "Props/Market",
+      "license": "CC0-1.0",
+      "relPath": "Props/Market/kenney-food-kit/Models/FBX format/advocado-half.fbx",
+      "ext": "fbx",
+      "bytes": 34816
+    },
+    {
+      "id": "Props_Market_kenney-food-kit_Models_FBX_format_cookie-chocolate.fbx",
+      "pack": "kenney-food-kit",
+      "packCategory": "Props/Market",
+      "license": "CC0-1.0",
+      "relPath": "Props/Market/kenney-food-kit/Models/FBX format/cookie-chocolate.fbx",
+      "ext": "fbx",
+      "bytes": 29424
+    },
+    {
+      "id": "Props_Market_kenney-food-kit_Models_FBX_format_lemon-half.fbx",
+      "pack": "kenney-food-kit",
+      "packCategory": "Props/Market",
+      "license": "CC0-1.0",
+      "relPath": "Props/Market/kenney-food-kit/Models/FBX format/lemon-half.fbx",
+      "ext": "fbx",
+      "bytes": 27552
+    },
+    {
+      "id": "Props_Market_kenney-food-kit_Models_FBX_format_popsicle.fbx",
+      "pack": "kenney-food-kit",
+      "packCategory": "Props/Market",
+      "license": "CC0-1.0",
+      "relPath": "Props/Market/kenney-food-kit/Models/FBX format/popsicle.fbx",
+      "ext": "fbx",
+      "bytes": 26688
+    },
+    {
+      "id": "Props_Market_kenney-food-kit_Models_GLB_format_advocado-half.glb",
+      "pack": "kenney-food-kit",
+      "packCategory": "Props/Market",
+      "license": "CC0-1.0",
+      "relPath": "Props/Market/kenney-food-kit/Models/GLB format/advocado-half.glb",
+      "ext": "glb",
+      "bytes": 11240
+    },
+    {
+      "id": "Props_Market_kenney-food-kit_Models_GLB_format_cookie-chocolate.glb",
+      "pack": "kenney-food-kit",
+      "packCategory": "Props/Market",
+      "license": "CC0-1.0",
+      "relPath": "Props/Market/kenney-food-kit/Models/GLB format/cookie-chocolate.glb",
+      "ext": "glb",
+      "bytes": 12344
+    },
+    {
+      "id": "Props_Market_kenney-food-kit_Models_GLB_format_lemon-half.glb",
+      "pack": "kenney-food-kit",
+      "packCategory": "Props/Market",
+      "license": "CC0-1.0",
+      "relPath": "Props/Market/kenney-food-kit/Models/GLB format/lemon-half.glb",
+      "ext": "glb",
+      "bytes": 10280
+    },
+    {
+      "id": "Props_Market_kenney-food-kit_Models_GLB_format_popsicle.glb",
+      "pack": "kenney-food-kit",
+      "packCategory": "Props/Market",
+      "license": "CC0-1.0",
+      "relPath": "Props/Market/kenney-food-kit/Models/GLB format/popsicle.glb",
+      "ext": "glb",
+      "bytes": 8116
+    },
+    {
+      "id": "Props_Market_kenney-food-kit_Models_OBJ_format_advocado-half.obj",
+      "pack": "kenney-food-kit",
+      "packCategory": "Props/Market",
+      "license": "CC0-1.0",
+      "relPath": "Props/Market/kenney-food-kit/Models/OBJ format/advocado-half.obj",
+      "ext": "obj",
+      "bytes": 8426
+    },
+    {
+      "id": "Props_Market_kenney-food-kit_Models_OBJ_format_cookie-chocolate.obj",
+      "pack": "kenney-food-kit",
+      "packCategory": "Props/Market",
+      "license": "CC0-1.0",
+      "relPath": "Props/Market/kenney-food-kit/Models/OBJ format/cookie-chocolate.obj",
+      "ext": "obj",
+      "bytes": 11083
+    },
+    {
+      "id": "Props_Market_kenney-food-kit_Models_OBJ_format_lemon-half.obj",
+      "pack": "kenney-food-kit",
+      "packCategory": "Props/Market",
+      "license": "CC0-1.0",
+      "relPath": "Props/Market/kenney-food-kit/Models/OBJ format/lemon-half.obj",
+      "ext": "obj",
+      "bytes": 9192
+    },
+    {
+      "id": "Props_Market_kenney-food-kit_Models_OBJ_format_popsicle.obj",
+      "pack": "kenney-food-kit",
+      "packCategory": "Props/Market",
+      "license": "CC0-1.0",
+      "relPath": "Props/Market/kenney-food-kit/Models/OBJ format/popsicle.obj",
+      "ext": "obj",
+      "bytes": 5934
+    },
+    {
+      "id": "Props_Prototype_kenney-prototype-kit_Models_FBX_format_animal-bison.fbx",
+      "pack": "kenney-prototype-kit",
+      "packCategory": "Props/Prototype",
+      "license": "CC0-1.0",
+      "relPath": "Props/Prototype/kenney-prototype-kit/Models/FBX format/animal-bison.fbx",
+      "ext": "fbx",
+      "bytes": 131360
+    },
+    {
+      "id": "Props_Prototype_kenney-prototype-kit_Models_FBX_format_hat-hard.fbx",
+      "pack": "kenney-prototype-kit",
+      "packCategory": "Props/Prototype",
+      "license": "CC0-1.0",
+      "relPath": "Props/Prototype/kenney-prototype-kit/Models/FBX format/hat-hard.fbx",
+      "ext": "fbx",
+      "bytes": 26192
+    },
+    {
+      "id": "Props_Prototype_kenney-prototype-kit_Models_FBX_format_number-double-3.fbx",
+      "pack": "kenney-prototype-kit",
+      "packCategory": "Props/Prototype",
+      "license": "CC0-1.0",
+      "relPath": "Props/Prototype/kenney-prototype-kit/Models/FBX format/number-double-3.fbx",
+      "ext": "fbx",
+      "bytes": 25728
+    },
+    {
+      "id": "Props_Prototype_kenney-prototype-kit_Models_FBX_format_stairs-small-narrow.fbx",
+      "pack": "kenney-prototype-kit",
+      "packCategory": "Props/Prototype",
+      "license": "CC0-1.0",
+      "relPath": "Props/Prototype/kenney-prototype-kit/Models/FBX format/stairs-small-narrow.fbx",
+      "ext": "fbx",
+      "bytes": 26512
+    },
+    {
+      "id": "Props_Prototype_kenney-prototype-kit_Models_GLB_format_animal-bison.glb",
+      "pack": "kenney-prototype-kit",
+      "packCategory": "Props/Prototype",
+      "license": "CC0-1.0",
+      "relPath": "Props/Prototype/kenney-prototype-kit/Models/GLB format/animal-bison.glb",
+      "ext": "glb",
+      "bytes": 45120
+    },
+    {
+      "id": "Props_Prototype_kenney-prototype-kit_Models_GLB_format_hat-hard.glb",
+      "pack": "kenney-prototype-kit",
+      "packCategory": "Props/Prototype",
+      "license": "CC0-1.0",
+      "relPath": "Props/Prototype/kenney-prototype-kit/Models/GLB format/hat-hard.glb",
+      "ext": "glb",
+      "bytes": 6128
+    },
+    {
+      "id": "Props_Prototype_kenney-prototype-kit_Models_GLB_format_number-double-3.glb",
+      "pack": "kenney-prototype-kit",
+      "packCategory": "Props/Prototype",
+      "license": "CC0-1.0",
+      "relPath": "Props/Prototype/kenney-prototype-kit/Models/GLB format/number-double-3.glb",
+      "ext": "glb",
+      "bytes": 9712
+    },
+    {
+      "id": "Props_Prototype_kenney-prototype-kit_Models_GLB_format_stairs-small-narrow.glb",
+      "pack": "kenney-prototype-kit",
+      "packCategory": "Props/Prototype",
+      "license": "CC0-1.0",
+      "relPath": "Props/Prototype/kenney-prototype-kit/Models/GLB format/stairs-small-narrow.glb",
+      "ext": "glb",
+      "bytes": 7364
+    },
+    {
+      "id": "Props_Prototype_kenney-prototype-kit_Models_OBJ_format_animal-bison.obj",
+      "pack": "kenney-prototype-kit",
+      "packCategory": "Props/Prototype",
+      "license": "CC0-1.0",
+      "relPath": "Props/Prototype/kenney-prototype-kit/Models/OBJ format/animal-bison.obj",
+      "ext": "obj",
+      "bytes": 14882
+    },
+    {
+      "id": "Props_Prototype_kenney-prototype-kit_Models_OBJ_format_hat-hard.obj",
+      "pack": "kenney-prototype-kit",
+      "packCategory": "Props/Prototype",
+      "license": "CC0-1.0",
+      "relPath": "Props/Prototype/kenney-prototype-kit/Models/OBJ format/hat-hard.obj",
+      "ext": "obj",
+      "bytes": 3675
+    },
+    {
+      "id": "Props_Prototype_kenney-prototype-kit_Models_OBJ_format_number-double-3.obj",
+      "pack": "kenney-prototype-kit",
+      "packCategory": "Props/Prototype",
+      "license": "CC0-1.0",
+      "relPath": "Props/Prototype/kenney-prototype-kit/Models/OBJ format/number-double-3.obj",
+      "ext": "obj",
+      "bytes": 6234
+    },
+    {
+      "id": "Props_Prototype_kenney-prototype-kit_Models_OBJ_format_stairs-small-narrow.obj",
+      "pack": "kenney-prototype-kit",
+      "packCategory": "Props/Prototype",
+      "license": "CC0-1.0",
+      "relPath": "Props/Prototype/kenney-prototype-kit/Models/OBJ format/stairs-small-narrow.obj",
+      "ext": "obj",
+      "bytes": 4239
+    },
+    {
+      "id": "Props_Quaternius_quaternius-downtown-city-megakit_Exports_FBX__Unity__Brick_90Angle_L.fbx",
+      "pack": "quaternius-downtown-city-megakit",
+      "packCategory": "Props/Quaternius",
+      "license": "CC0-1.0",
+      "relPath": "Props/Quaternius/quaternius-downtown-city-megakit/Exports/FBX (Unity)/Brick_90Angle_L.fbx",
+      "ext": "fbx",
+      "bytes": 23740
+    },
+    {
+      "id": "Props_Quaternius_quaternius-downtown-city-megakit_Exports_FBX__Unity__Brick_Plain_1.fbx",
+      "pack": "quaternius-downtown-city-megakit",
+      "packCategory": "Props/Quaternius",
+      "license": "CC0-1.0",
+      "relPath": "Props/Quaternius/quaternius-downtown-city-megakit/Exports/FBX (Unity)/Brick_Plain_1.fbx",
+      "ext": "fbx",
+      "bytes": 23276
+    },
+    {
+      "id": "Props_Quaternius_quaternius-downtown-city-megakit_Exports_FBX__Unity__Cornice_Trim_90Angle_L.fbx",
+      "pack": "quaternius-downtown-city-megakit",
+      "packCategory": "Props/Quaternius",
+      "license": "CC0-1.0",
+      "relPath": "Props/Quaternius/quaternius-downtown-city-megakit/Exports/FBX (Unity)/Cornice_Trim_90Angle_L.fbx",
+      "ext": "fbx",
+      "bytes": 27212
+    },
+    {
+      "id": "Props_Quaternius_quaternius-downtown-city-megakit_Exports_FBX__Unity__Door_1.fbx",
+      "pack": "quaternius-downtown-city-megakit",
+      "packCategory": "Props/Quaternius",
+      "license": "CC0-1.0",
+      "relPath": "Props/Quaternius/quaternius-downtown-city-megakit/Exports/FBX (Unity)/Door_1.fbx",
+      "ext": "fbx",
+      "bytes": 38572
+    },
+    {
+      "id": "Props_Quaternius_quaternius-downtown-city-megakit_Exports_FBX__Unity__Prop_Planter_Single.fbx",
+      "pack": "quaternius-downtown-city-megakit",
+      "packCategory": "Props/Quaternius",
+      "license": "CC0-1.0",
+      "relPath": "Props/Quaternius/quaternius-downtown-city-megakit/Exports/FBX (Unity)/Prop_Planter_Single.fbx",
+      "ext": "fbx",
+      "bytes": 27276
+    },
+    {
+      "id": "Props_Quaternius_quaternius-downtown-city-megakit_Exports_FBX__Unity__Stairs_Rails_Metal_Straight_2.fbx",
+      "pack": "quaternius-downtown-city-megakit",
+      "packCategory": "Props/Quaternius",
+      "license": "CC0-1.0",
+      "relPath": "Props/Quaternius/quaternius-downtown-city-megakit/Exports/FBX (Unity)/Stairs_Rails_Metal_Straight_2.fbx",
+      "ext": "fbx",
+      "bytes": 26364
+    },
+    {
+      "id": "Props_Quaternius_quaternius-downtown-city-megakit_Exports_FBX__Unreal_Engine__Brick_90Angle_L.fbx",
+      "pack": "quaternius-downtown-city-megakit",
+      "packCategory": "Props/Quaternius",
+      "license": "CC0-1.0",
+      "relPath": "Props/Quaternius/quaternius-downtown-city-megakit/Exports/FBX (Unreal Engine)/Brick_90Angle_L.fbx",
+      "ext": "fbx",
+      "bytes": 24316
+    },
+    {
+      "id": "Props_Quaternius_quaternius-downtown-city-megakit_Exports_FBX__Unreal_Engine__Brick_Plain_1.fbx",
+      "pack": "quaternius-downtown-city-megakit",
+      "packCategory": "Props/Quaternius",
+      "license": "CC0-1.0",
+      "relPath": "Props/Quaternius/quaternius-downtown-city-megakit/Exports/FBX (Unreal Engine)/Brick_Plain_1.fbx",
+      "ext": "fbx",
+      "bytes": 23788
+    },
+    {
+      "id": "Props_Quaternius_quaternius-downtown-city-megakit_Exports_FBX__Unreal_Engine__Cornice_Trim_90Angle_L.fbx",
+      "pack": "quaternius-downtown-city-megakit",
+      "packCategory": "Props/Quaternius",
+      "license": "CC0-1.0",
+      "relPath": "Props/Quaternius/quaternius-downtown-city-megakit/Exports/FBX (Unreal Engine)/Cornice_Trim_90Angle_L.fbx",
+      "ext": "fbx",
+      "bytes": 27628
+    },
+    {
+      "id": "Props_Quaternius_quaternius-downtown-city-megakit_Exports_FBX__Unreal_Engine__Door_1.fbx",
+      "pack": "quaternius-downtown-city-megakit",
+      "packCategory": "Props/Quaternius",
+      "license": "CC0-1.0",
+      "relPath": "Props/Quaternius/quaternius-downtown-city-megakit/Exports/FBX (Unreal Engine)/Door_1.fbx",
+      "ext": "fbx",
+      "bytes": 39148
+    },
+    {
+      "id": "Props_Quaternius_quaternius-downtown-city-megakit_Exports_FBX__Unreal_Engine__Prop_Planter_Single.fbx",
+      "pack": "quaternius-downtown-city-megakit",
+      "packCategory": "Props/Quaternius",
+      "license": "CC0-1.0",
+      "relPath": "Props/Quaternius/quaternius-downtown-city-megakit/Exports/FBX (Unreal Engine)/Prop_Planter_Single.fbx",
+      "ext": "fbx",
+      "bytes": 27788
+    },
+    {
+      "id": "Props_Quaternius_quaternius-downtown-city-megakit_Exports_FBX__Unreal_Engine__Stairs_Rails_Metal_Straight_2.fbx",
+      "pack": "quaternius-downtown-city-megakit",
+      "packCategory": "Props/Quaternius",
+      "license": "CC0-1.0",
+      "relPath": "Props/Quaternius/quaternius-downtown-city-megakit/Exports/FBX (Unreal Engine)/Stairs_Rails_Metal_Straight_2.fbx",
+      "ext": "fbx",
+      "bytes": 26956
+    },
+    {
+      "id": "Props_Quaternius_quaternius-downtown-city-megakit_Exports_glTF__Godot__Brick_90Angle_L.gltf",
+      "pack": "quaternius-downtown-city-megakit",
+      "packCategory": "Props/Quaternius",
+      "license": "CC0-1.0",
+      "relPath": "Props/Quaternius/quaternius-downtown-city-megakit/Exports/glTF (Godot)/Brick_90Angle_L.gltf",
+      "ext": "gltf",
+      "bytes": 4650
+    },
+    {
+      "id": "Props_Quaternius_quaternius-downtown-city-megakit_Exports_glTF__Godot__Brick_Plain_1.gltf",
+      "pack": "quaternius-downtown-city-megakit",
+      "packCategory": "Props/Quaternius",
+      "license": "CC0-1.0",
+      "relPath": "Props/Quaternius/quaternius-downtown-city-megakit/Exports/glTF (Godot)/Brick_Plain_1.gltf",
+      "ext": "gltf",
+      "bytes": 4576
+    },
+    {
+      "id": "Props_Quaternius_quaternius-downtown-city-megakit_Exports_glTF__Godot__Cornice_Trim_90Angle_L.gltf",
+      "pack": "quaternius-downtown-city-megakit",
+      "packCategory": "Props/Quaternius",
+      "license": "CC0-1.0",
+      "relPath": "Props/Quaternius/quaternius-downtown-city-megakit/Exports/glTF (Godot)/Cornice_Trim_90Angle_L.gltf",
+      "ext": "gltf",
+      "bytes": 2327
+    },
+    {
+      "id": "Props_Quaternius_quaternius-downtown-city-megakit_Exports_glTF__Godot__Door_1.gltf",
+      "pack": "quaternius-downtown-city-megakit",
+      "packCategory": "Props/Quaternius",
+      "license": "CC0-1.0",
+      "relPath": "Props/Quaternius/quaternius-downtown-city-megakit/Exports/glTF (Godot)/Door_1.gltf",
+      "ext": "gltf",
+      "bytes": 2372
+    },
+    {
+      "id": "Props_Quaternius_quaternius-downtown-city-megakit_Exports_glTF__Godot__Prop_Planter_Single.gltf",
+      "pack": "quaternius-downtown-city-megakit",
+      "packCategory": "Props/Quaternius",
+      "license": "CC0-1.0",
+      "relPath": "Props/Quaternius/quaternius-downtown-city-megakit/Exports/glTF (Godot)/Prop_Planter_Single.gltf",
+      "ext": "gltf",
+      "bytes": 4132
+    },
+    {
+      "id": "Props_Quaternius_quaternius-downtown-city-megakit_Exports_glTF__Godot__Stairs_Rails_Metal_Straight_2.gltf",
+      "pack": "quaternius-downtown-city-megakit",
+      "packCategory": "Props/Quaternius",
+      "license": "CC0-1.0",
+      "relPath": "Props/Quaternius/quaternius-downtown-city-megakit/Exports/glTF (Godot)/Stairs_Rails_Metal_Straight_2.gltf",
+      "ext": "gltf",
+      "bytes": 2412
+    },
+    {
+      "id": "Props_Quaternius_quaternius-lowpoly-cars_Realistic_Car_Pack_-_Nov_2018_FBX_Cop.fbx",
+      "pack": "quaternius-lowpoly-cars",
+      "packCategory": "Props/Quaternius",
+      "license": "CC0-1.0",
+      "relPath": "Props/Quaternius/quaternius-lowpoly-cars/Realistic Car Pack - Nov 2018/FBX/Cop.fbx",
+      "ext": "fbx",
+      "bytes": 79948
+    },
+    {
+      "id": "Props_Quaternius_quaternius-lowpoly-cars_Realistic_Car_Pack_-_Nov_2018_FBX_NormalCar1.fbx",
+      "pack": "quaternius-lowpoly-cars",
+      "packCategory": "Props/Quaternius",
+      "license": "CC0-1.0",
+      "relPath": "Props/Quaternius/quaternius-lowpoly-cars/Realistic Car Pack - Nov 2018/FBX/NormalCar1.fbx",
+      "ext": "fbx",
+      "bytes": 72732
+    },
+    {
+      "id": "Props_Quaternius_quaternius-lowpoly-cars_Realistic_Car_Pack_-_Nov_2018_FBX_NormalCar2.fbx",
+      "pack": "quaternius-lowpoly-cars",
+      "packCategory": "Props/Quaternius",
+      "license": "CC0-1.0",
+      "relPath": "Props/Quaternius/quaternius-lowpoly-cars/Realistic Car Pack - Nov 2018/FBX/NormalCar2.fbx",
+      "ext": "fbx",
+      "bytes": 75596
+    },
+    {
+      "id": "Props_Quaternius_quaternius-lowpoly-cars_Realistic_Car_Pack_-_Nov_2018_FBX_SportsCar.fbx",
+      "pack": "quaternius-lowpoly-cars",
+      "packCategory": "Props/Quaternius",
+      "license": "CC0-1.0",
+      "relPath": "Props/Quaternius/quaternius-lowpoly-cars/Realistic Car Pack - Nov 2018/FBX/SportsCar.fbx",
+      "ext": "fbx",
+      "bytes": 75180
+    },
+    {
+      "id": "Props_Quaternius_quaternius-lowpoly-cars_Realistic_Car_Pack_-_Nov_2018_FBX_SportsCar2.fbx",
+      "pack": "quaternius-lowpoly-cars",
+      "packCategory": "Props/Quaternius",
+      "license": "CC0-1.0",
+      "relPath": "Props/Quaternius/quaternius-lowpoly-cars/Realistic Car Pack - Nov 2018/FBX/SportsCar2.fbx",
+      "ext": "fbx",
+      "bytes": 76044
+    },
+    {
+      "id": "Props_Quaternius_quaternius-lowpoly-cars_Realistic_Car_Pack_-_Nov_2018_FBX_SUV.fbx",
+      "pack": "quaternius-lowpoly-cars",
+      "packCategory": "Props/Quaternius",
+      "license": "CC0-1.0",
+      "relPath": "Props/Quaternius/quaternius-lowpoly-cars/Realistic Car Pack - Nov 2018/FBX/SUV.fbx",
+      "ext": "fbx",
+      "bytes": 78076
+    },
+    {
+      "id": "Props_Quaternius_quaternius-lowpoly-cars_Realistic_Car_Pack_-_Nov_2018_FBX_Taxi.fbx",
+      "pack": "quaternius-lowpoly-cars",
+      "packCategory": "Props/Quaternius",
+      "license": "CC0-1.0",
+      "relPath": "Props/Quaternius/quaternius-lowpoly-cars/Realistic Car Pack - Nov 2018/FBX/Taxi.fbx",
+      "ext": "fbx",
+      "bytes": 79612
+    },
+    {
+      "id": "Props_Quaternius_quaternius-lowpoly-cars_Realistic_Car_Pack_-_Nov_2018_OBJ_Cop.obj",
+      "pack": "quaternius-lowpoly-cars",
+      "packCategory": "Props/Quaternius",
+      "license": "CC0-1.0",
+      "relPath": "Props/Quaternius/quaternius-lowpoly-cars/Realistic Car Pack - Nov 2018/OBJ/Cop.obj",
+      "ext": "obj",
+      "bytes": 144292
+    },
+    {
+      "id": "Props_Quaternius_quaternius-lowpoly-cars_Realistic_Car_Pack_-_Nov_2018_OBJ_NormalCar1.obj",
+      "pack": "quaternius-lowpoly-cars",
+      "packCategory": "Props/Quaternius",
+      "license": "CC0-1.0",
+      "relPath": "Props/Quaternius/quaternius-lowpoly-cars/Realistic Car Pack - Nov 2018/OBJ/NormalCar1.obj",
+      "ext": "obj",
+      "bytes": 130205
+    },
+    {
+      "id": "Props_Quaternius_quaternius-lowpoly-cars_Realistic_Car_Pack_-_Nov_2018_OBJ_NormalCar2.obj",
+      "pack": "quaternius-lowpoly-cars",
+      "packCategory": "Props/Quaternius",
+      "license": "CC0-1.0",
+      "relPath": "Props/Quaternius/quaternius-lowpoly-cars/Realistic Car Pack - Nov 2018/OBJ/NormalCar2.obj",
+      "ext": "obj",
+      "bytes": 138648
+    },
+    {
+      "id": "Props_Quaternius_quaternius-lowpoly-cars_Realistic_Car_Pack_-_Nov_2018_OBJ_SportsCar.obj",
+      "pack": "quaternius-lowpoly-cars",
+      "packCategory": "Props/Quaternius",
+      "license": "CC0-1.0",
+      "relPath": "Props/Quaternius/quaternius-lowpoly-cars/Realistic Car Pack - Nov 2018/OBJ/SportsCar.obj",
+      "ext": "obj",
+      "bytes": 136313
+    },
+    {
+      "id": "Props_Quaternius_quaternius-lowpoly-cars_Realistic_Car_Pack_-_Nov_2018_OBJ_SportsCar2.obj",
+      "pack": "quaternius-lowpoly-cars",
+      "packCategory": "Props/Quaternius",
+      "license": "CC0-1.0",
+      "relPath": "Props/Quaternius/quaternius-lowpoly-cars/Realistic Car Pack - Nov 2018/OBJ/SportsCar2.obj",
+      "ext": "obj",
+      "bytes": 140706
+    },
+    {
+      "id": "Props_Quaternius_quaternius-lowpoly-cars_Realistic_Car_Pack_-_Nov_2018_OBJ_SUV.obj",
+      "pack": "quaternius-lowpoly-cars",
+      "packCategory": "Props/Quaternius",
+      "license": "CC0-1.0",
+      "relPath": "Props/Quaternius/quaternius-lowpoly-cars/Realistic Car Pack - Nov 2018/OBJ/SUV.obj",
+      "ext": "obj",
+      "bytes": 146269
+    },
+    {
+      "id": "Props_Quaternius_quaternius-lowpoly-cars_Realistic_Car_Pack_-_Nov_2018_OBJ_Taxi.obj",
+      "pack": "quaternius-lowpoly-cars",
+      "packCategory": "Props/Quaternius",
+      "license": "CC0-1.0",
+      "relPath": "Props/Quaternius/quaternius-lowpoly-cars/Realistic Car Pack - Nov 2018/OBJ/Taxi.obj",
+      "ext": "obj",
+      "bytes": 145842
+    },
+    {
+      "id": "Props_Quaternius_quaternius-lowpoly-modular-street_FBX_Sign_NoParking.fbx",
+      "pack": "quaternius-lowpoly-modular-street",
+      "packCategory": "Props/Quaternius",
+      "license": "CC0-1.0",
+      "relPath": "Props/Quaternius/quaternius-lowpoly-modular-street/FBX/Sign_NoParking.fbx",
+      "ext": "fbx",
+      "bytes": 21308
+    },
+    {
+      "id": "Props_Quaternius_quaternius-lowpoly-modular-street_FBX_Sign_Triangle.fbx",
+      "pack": "quaternius-lowpoly-modular-street",
+      "packCategory": "Props/Quaternius",
+      "license": "CC0-1.0",
+      "relPath": "Props/Quaternius/quaternius-lowpoly-modular-street/FBX/Sign_Triangle.fbx",
+      "ext": "fbx",
+      "bytes": 17596
+    },
+    {
+      "id": "Props_Quaternius_quaternius-lowpoly-modular-street_FBX_Street_3Way_2.fbx",
+      "pack": "quaternius-lowpoly-modular-street",
+      "packCategory": "Props/Quaternius",
+      "license": "CC0-1.0",
+      "relPath": "Props/Quaternius/quaternius-lowpoly-modular-street/FBX/Street_3Way_2.fbx",
+      "ext": "fbx",
+      "bytes": 18812
+    },
+    {
+      "id": "Props_Quaternius_quaternius-lowpoly-modular-street_FBX_Street_Bridge_Underpass.fbx",
+      "pack": "quaternius-lowpoly-modular-street",
+      "packCategory": "Props/Quaternius",
+      "license": "CC0-1.0",
+      "relPath": "Props/Quaternius/quaternius-lowpoly-modular-street/FBX/Street_Bridge_Underpass.fbx",
+      "ext": "fbx",
+      "bytes": 30492
+    },
+    {
+      "id": "Props_Quaternius_quaternius-lowpoly-modular-street_FBX_Street_Bridge.fbx",
+      "pack": "quaternius-lowpoly-modular-street",
+      "packCategory": "Props/Quaternius",
+      "license": "CC0-1.0",
+      "relPath": "Props/Quaternius/quaternius-lowpoly-modular-street/FBX/Street_Bridge.fbx",
+      "ext": "fbx",
+      "bytes": 32524
+    },
+    {
+      "id": "Props_Quaternius_quaternius-lowpoly-modular-street_FBX_Street_Curve.fbx",
+      "pack": "quaternius-lowpoly-modular-street",
+      "packCategory": "Props/Quaternius",
+      "license": "CC0-1.0",
+      "relPath": "Props/Quaternius/quaternius-lowpoly-modular-street/FBX/Street_Curve.fbx",
+      "ext": "fbx",
+      "bytes": 19788
+    },
+    {
+      "id": "Props_Quaternius_quaternius-lowpoly-modular-street_FBX_Street_Elevated_Ramp.fbx",
+      "pack": "quaternius-lowpoly-modular-street",
+      "packCategory": "Props/Quaternius",
+      "license": "CC0-1.0",
+      "relPath": "Props/Quaternius/quaternius-lowpoly-modular-street/FBX/Street_Elevated_Ramp.fbx",
+      "ext": "fbx",
+      "bytes": 22620
+    },
+    {
+      "id": "Props_Quaternius_quaternius-lowpoly-modular-street_FBX_Street_Straight.fbx",
+      "pack": "quaternius-lowpoly-modular-street",
+      "packCategory": "Props/Quaternius",
+      "license": "CC0-1.0",
+      "relPath": "Props/Quaternius/quaternius-lowpoly-modular-street/FBX/Street_Straight.fbx",
+      "ext": "fbx",
+      "bytes": 20604
+    },
+    {
+      "id": "Props_Quaternius_quaternius-lowpoly-modular-street_FBX_Streetlight_Triple.fbx",
+      "pack": "quaternius-lowpoly-modular-street",
+      "packCategory": "Props/Quaternius",
+      "license": "CC0-1.0",
+      "relPath": "Props/Quaternius/quaternius-lowpoly-modular-street/FBX/Streetlight_Triple.fbx",
+      "ext": "fbx",
+      "bytes": 59100
+    },
+    {
+      "id": "Props_Quaternius_quaternius-lowpoly-modular-street_OBJ_Sign_NoParking.obj",
+      "pack": "quaternius-lowpoly-modular-street",
+      "packCategory": "Props/Quaternius",
+      "license": "CC0-1.0",
+      "relPath": "Props/Quaternius/quaternius-lowpoly-modular-street/OBJ/Sign_NoParking.obj",
+      "ext": "obj",
+      "bytes": 8560
+    },
+    {
+      "id": "Props_Quaternius_quaternius-lowpoly-modular-street_OBJ_Sign_Triangle.obj",
+      "pack": "quaternius-lowpoly-modular-street",
+      "packCategory": "Props/Quaternius",
+      "license": "CC0-1.0",
+      "relPath": "Props/Quaternius/quaternius-lowpoly-modular-street/OBJ/Sign_Triangle.obj",
+      "ext": "obj",
+      "bytes": 2288
+    },
+    {
+      "id": "Props_Quaternius_quaternius-lowpoly-modular-street_OBJ_Street_3Way_2.obj",
+      "pack": "quaternius-lowpoly-modular-street",
+      "packCategory": "Props/Quaternius",
+      "license": "CC0-1.0",
+      "relPath": "Props/Quaternius/quaternius-lowpoly-modular-street/OBJ/Street_3Way_2.obj",
+      "ext": "obj",
+      "bytes": 5567
+    },
+    {
+      "id": "Props_Quaternius_quaternius-lowpoly-modular-street_OBJ_Street_Bridge_Underpass.obj",
+      "pack": "quaternius-lowpoly-modular-street",
+      "packCategory": "Props/Quaternius",
+      "license": "CC0-1.0",
+      "relPath": "Props/Quaternius/quaternius-lowpoly-modular-street/OBJ/Street_Bridge_Underpass.obj",
+      "ext": "obj",
+      "bytes": 33589
+    },
+    {
+      "id": "Props_Quaternius_quaternius-lowpoly-modular-street_OBJ_Street_Bridge.obj",
+      "pack": "quaternius-lowpoly-modular-street",
+      "packCategory": "Props/Quaternius",
+      "license": "CC0-1.0",
+      "relPath": "Props/Quaternius/quaternius-lowpoly-modular-street/OBJ/Street_Bridge.obj",
+      "ext": "obj",
+      "bytes": 43279
+    },
+    {
+      "id": "Props_Quaternius_quaternius-lowpoly-modular-street_OBJ_Street_Curve.obj",
+      "pack": "quaternius-lowpoly-modular-street",
+      "packCategory": "Props/Quaternius",
+      "license": "CC0-1.0",
+      "relPath": "Props/Quaternius/quaternius-lowpoly-modular-street/OBJ/Street_Curve.obj",
+      "ext": "obj",
+      "bytes": 9634
+    },
+    {
+      "id": "Props_Quaternius_quaternius-lowpoly-modular-street_OBJ_Street_Elevated_Ramp.obj",
+      "pack": "quaternius-lowpoly-modular-street",
+      "packCategory": "Props/Quaternius",
+      "license": "CC0-1.0",
+      "relPath": "Props/Quaternius/quaternius-lowpoly-modular-street/OBJ/Street_Elevated_Ramp.obj",
+      "ext": "obj",
+      "bytes": 15004
+    },
+    {
+      "id": "Props_Quaternius_quaternius-lowpoly-modular-street_OBJ_Street_Straight.obj",
+      "pack": "quaternius-lowpoly-modular-street",
+      "packCategory": "Props/Quaternius",
+      "license": "CC0-1.0",
+      "relPath": "Props/Quaternius/quaternius-lowpoly-modular-street/OBJ/Street_Straight.obj",
+      "ext": "obj",
+      "bytes": 10725
+    },
+    {
+      "id": "Props_Quaternius_quaternius-lowpoly-modular-street_OBJ_Streetlight_Triple.obj",
+      "pack": "quaternius-lowpoly-modular-street",
+      "packCategory": "Props/Quaternius",
+      "license": "CC0-1.0",
+      "relPath": "Props/Quaternius/quaternius-lowpoly-modular-street/OBJ/Streetlight_Triple.obj",
+      "ext": "obj",
+      "bytes": 129514
+    },
+    {
+      "id": "Vehicles_Cars_kenney-car-kit_Models_FBX_format_ambulance.fbx",
+      "pack": "kenney-car-kit",
+      "packCategory": "Vehicles/Cars",
+      "license": "CC0-1.0",
+      "relPath": "Vehicles/Cars/kenney-car-kit/Models/FBX format/ambulance.fbx",
+      "ext": "fbx",
+      "bytes": 146544
+    },
+    {
+      "id": "Vehicles_Cars_kenney-car-kit_Models_FBX_format_debris-door.fbx",
+      "pack": "kenney-car-kit",
+      "packCategory": "Vehicles/Cars",
+      "license": "CC0-1.0",
+      "relPath": "Vehicles/Cars/kenney-car-kit/Models/FBX format/debris-door.fbx",
+      "ext": "fbx",
+      "bytes": 27072
+    },
+    {
+      "id": "Vehicles_Cars_kenney-car-kit_Models_FBX_format_debris-spoiler-a.fbx",
+      "pack": "kenney-car-kit",
+      "packCategory": "Vehicles/Cars",
+      "license": "CC0-1.0",
+      "relPath": "Vehicles/Cars/kenney-car-kit/Models/FBX format/debris-spoiler-a.fbx",
+      "ext": "fbx",
+      "bytes": 25696
+    },
+    {
+      "id": "Vehicles_Cars_kenney-car-kit_Models_FBX_format_hatchback-sports.fbx",
+      "pack": "kenney-car-kit",
+      "packCategory": "Vehicles/Cars",
+      "license": "CC0-1.0",
+      "relPath": "Vehicles/Cars/kenney-car-kit/Models/FBX format/hatchback-sports.fbx",
+      "ext": "fbx",
+      "bytes": 116032
+    },
+    {
+      "id": "Vehicles_Cars_kenney-car-kit_Models_FBX_format_race.fbx",
+      "pack": "kenney-car-kit",
+      "packCategory": "Vehicles/Cars",
+      "license": "CC0-1.0",
+      "relPath": "Vehicles/Cars/kenney-car-kit/Models/FBX format/race.fbx",
+      "ext": "fbx",
+      "bytes": 111760
+    },
+    {
+      "id": "Vehicles_Cars_kenney-car-kit_Models_FBX_format_tractor-shovel.fbx",
+      "pack": "kenney-car-kit",
+      "packCategory": "Vehicles/Cars",
+      "license": "CC0-1.0",
+      "relPath": "Vehicles/Cars/kenney-car-kit/Models/FBX format/tractor-shovel.fbx",
+      "ext": "fbx",
+      "bytes": 141184
+    },
+    {
+      "id": "Vehicles_Cars_kenney-car-kit_Models_FBX_format_wheel-tractor-back.fbx",
+      "pack": "kenney-car-kit",
+      "packCategory": "Vehicles/Cars",
+      "license": "CC0-1.0",
+      "relPath": "Vehicles/Cars/kenney-car-kit/Models/FBX format/wheel-tractor-back.fbx",
+      "ext": "fbx",
+      "bytes": 39648
+    },
+    {
+      "id": "Vehicles_Cars_kenney-car-kit_Models_GLB_format_cone-flat.glb",
+      "pack": "kenney-car-kit",
+      "packCategory": "Vehicles/Cars",
+      "license": "CC0-1.0",
+      "relPath": "Vehicles/Cars/kenney-car-kit/Models/GLB format/cone-flat.glb",
+      "ext": "glb",
+      "bytes": 16712
+    },
+    {
+      "id": "Vehicles_Cars_kenney-car-kit_Models_GLB_format_debris-nut.glb",
+      "pack": "kenney-car-kit",
+      "packCategory": "Vehicles/Cars",
+      "license": "CC0-1.0",
+      "relPath": "Vehicles/Cars/kenney-car-kit/Models/GLB format/debris-nut.glb",
+      "ext": "glb",
+      "bytes": 4744
+    },
+    {
+      "id": "Vehicles_Cars_kenney-car-kit_Models_GLB_format_debris-tire.glb",
+      "pack": "kenney-car-kit",
+      "packCategory": "Vehicles/Cars",
+      "license": "CC0-1.0",
+      "relPath": "Vehicles/Cars/kenney-car-kit/Models/GLB format/debris-tire.glb",
+      "ext": "glb",
+      "bytes": 26548
+    },
+    {
+      "id": "Vehicles_Cars_kenney-car-kit_Models_GLB_format_kart-ooli.glb",
+      "pack": "kenney-car-kit",
+      "packCategory": "Vehicles/Cars",
+      "license": "CC0-1.0",
+      "relPath": "Vehicles/Cars/kenney-car-kit/Models/GLB format/kart-ooli.glb",
+      "ext": "glb",
+      "bytes": 233380
+    },
+    {
+      "id": "Vehicles_Cars_kenney-car-kit_Models_GLB_format_sedan.glb",
+      "pack": "kenney-car-kit",
+      "packCategory": "Vehicles/Cars",
+      "license": "CC0-1.0",
+      "relPath": "Vehicles/Cars/kenney-car-kit/Models/GLB format/sedan.glb",
+      "ext": "glb",
+      "bytes": 172216
+    },
+    {
+      "id": "Vehicles_Cars_kenney-car-kit_Models_GLB_format_truck.glb",
+      "pack": "kenney-car-kit",
+      "packCategory": "Vehicles/Cars",
+      "license": "CC0-1.0",
+      "relPath": "Vehicles/Cars/kenney-car-kit/Models/GLB format/truck.glb",
+      "ext": "glb",
+      "bytes": 176360
+    },
+    {
+      "id": "Vehicles_Cars_kenney-car-kit_Models_GLB_format_wheel-tractor-dark-front.glb",
+      "pack": "kenney-car-kit",
+      "packCategory": "Vehicles/Cars",
+      "license": "CC0-1.0",
+      "relPath": "Vehicles/Cars/kenney-car-kit/Models/GLB format/wheel-tractor-dark-front.glb",
+      "ext": "glb",
+      "bytes": 29156
+    },
+    {
+      "id": "Vehicles_Cars_kenney-car-kit_Models_OBJ_format_debris-bumper.obj",
+      "pack": "kenney-car-kit",
+      "packCategory": "Vehicles/Cars",
+      "license": "CC0-1.0",
+      "relPath": "Vehicles/Cars/kenney-car-kit/Models/OBJ format/debris-bumper.obj",
+      "ext": "obj",
+      "bytes": 7862
+    },
+    {
+      "id": "Vehicles_Cars_kenney-car-kit_Models_OBJ_format_debris-plate-b.obj",
+      "pack": "kenney-car-kit",
+      "packCategory": "Vehicles/Cars",
+      "license": "CC0-1.0",
+      "relPath": "Vehicles/Cars/kenney-car-kit/Models/OBJ format/debris-plate-b.obj",
+      "ext": "obj",
+      "bytes": 3785
+    },
+    {
+      "id": "Vehicles_Cars_kenney-car-kit_Models_OBJ_format_firetruck.obj",
+      "pack": "kenney-car-kit",
+      "packCategory": "Vehicles/Cars",
+      "license": "CC0-1.0",
+      "relPath": "Vehicles/Cars/kenney-car-kit/Models/OBJ format/firetruck.obj",
+      "ext": "obj",
+      "bytes": 164892
+    },
+    {
+      "id": "Vehicles_Cars_kenney-car-kit_Models_OBJ_format_kart-oozi.obj",
+      "pack": "kenney-car-kit",
+      "packCategory": "Vehicles/Cars",
+      "license": "CC0-1.0",
+      "relPath": "Vehicles/Cars/kenney-car-kit/Models/OBJ format/kart-oozi.obj",
+      "ext": "obj",
+      "bytes": 208080
+    },
+    {
+      "id": "Vehicles_Cars_kenney-car-kit_Models_OBJ_format_taxi.obj",
+      "pack": "kenney-car-kit",
+      "packCategory": "Vehicles/Cars",
+      "license": "CC0-1.0",
+      "relPath": "Vehicles/Cars/kenney-car-kit/Models/OBJ format/taxi.obj",
+      "ext": "obj",
+      "bytes": 116213
+    },
+    {
+      "id": "Vehicles_Cars_kenney-car-kit_Models_OBJ_format_wheel-dark.obj",
+      "pack": "kenney-car-kit",
+      "packCategory": "Vehicles/Cars",
+      "license": "CC0-1.0",
+      "relPath": "Vehicles/Cars/kenney-car-kit/Models/OBJ format/wheel-dark.obj",
+      "ext": "obj",
+      "bytes": 30542
+    },
+    {
+      "id": "Vehicles_Cars_kenney-racing-kit_Models_DAE_format_bannerTowerGreen.dae",
+      "pack": "kenney-racing-kit",
+      "packCategory": "Vehicles/Cars",
+      "license": "CC0-1.0",
+      "relPath": "Vehicles/Cars/kenney-racing-kit/Models/DAE format/bannerTowerGreen.dae",
+      "ext": "dae",
+      "bytes": 84008
+    },
+    {
+      "id": "Vehicles_Cars_kenney-racing-kit_Models_DAE_format_grass.dae",
+      "pack": "kenney-racing-kit",
+      "packCategory": "Vehicles/Cars",
+      "license": "CC0-1.0",
+      "relPath": "Vehicles/Cars/kenney-racing-kit/Models/DAE format/grass.dae",
+      "ext": "dae",
+      "bytes": 5106
+    },
+    {
+      "id": "Vehicles_Cars_kenney-racing-kit_Models_DAE_format_radarEquipment.dae",
+      "pack": "kenney-racing-kit",
+      "packCategory": "Vehicles/Cars",
+      "license": "CC0-1.0",
+      "relPath": "Vehicles/Cars/kenney-racing-kit/Models/DAE format/radarEquipment.dae",
+      "ext": "dae",
+      "bytes": 51156
+    },
+    {
+      "id": "Vehicles_Cars_kenney-racing-kit_Models_DAE_format_roadCornerSmallBorder.dae",
+      "pack": "kenney-racing-kit",
+      "packCategory": "Vehicles/Cars",
+      "license": "CC0-1.0",
+      "relPath": "Vehicles/Cars/kenney-racing-kit/Models/DAE format/roadCornerSmallBorder.dae",
+      "ext": "dae",
+      "bytes": 17952
+    },
+    {
+      "id": "Vehicles_Cars_kenney-racing-kit_Models_DAE_format_roadSplitRound.dae",
+      "pack": "kenney-racing-kit",
+      "packCategory": "Vehicles/Cars",
+      "license": "CC0-1.0",
+      "relPath": "Vehicles/Cars/kenney-racing-kit/Models/DAE format/roadSplitRound.dae",
+      "ext": "dae",
+      "bytes": 61135
+    },
+    {
+      "id": "Vehicles_Cars_kenney-racing-kit_Models_FBX_format_bannerTowerGreen.fbx",
+      "pack": "kenney-racing-kit",
+      "packCategory": "Vehicles/Cars",
+      "license": "CC0-1.0",
+      "relPath": "Vehicles/Cars/kenney-racing-kit/Models/FBX format/bannerTowerGreen.fbx",
+      "ext": "fbx",
+      "bytes": 65294
+    },
+    {
+      "id": "Vehicles_Cars_kenney-racing-kit_Models_FBX_format_grass.fbx",
+      "pack": "kenney-racing-kit",
+      "packCategory": "Vehicles/Cars",
+      "license": "CC0-1.0",
+      "relPath": "Vehicles/Cars/kenney-racing-kit/Models/FBX format/grass.fbx",
+      "ext": "fbx",
+      "bytes": 11110
+    },
+    {
+      "id": "Vehicles_Cars_kenney-racing-kit_Models_FBX_format_radarEquipment.fbx",
+      "pack": "kenney-racing-kit",
+      "packCategory": "Vehicles/Cars",
+      "license": "CC0-1.0",
+      "relPath": "Vehicles/Cars/kenney-racing-kit/Models/FBX format/radarEquipment.fbx",
+      "ext": "fbx",
+      "bytes": 59687
+    },
+    {
+      "id": "Vehicles_Cars_kenney-racing-kit_Models_FBX_format_roadCornerSmallBorder.fbx",
+      "pack": "kenney-racing-kit",
+      "packCategory": "Vehicles/Cars",
+      "license": "CC0-1.0",
+      "relPath": "Vehicles/Cars/kenney-racing-kit/Models/FBX format/roadCornerSmallBorder.fbx",
+      "ext": "fbx",
+      "bytes": 21598
+    },
+    {
+      "id": "Vehicles_Cars_kenney-racing-kit_Models_FBX_format_roadSplitRound.fbx",
+      "pack": "kenney-racing-kit",
+      "packCategory": "Vehicles/Cars",
+      "license": "CC0-1.0",
+      "relPath": "Vehicles/Cars/kenney-racing-kit/Models/FBX format/roadSplitRound.fbx",
+      "ext": "fbx",
+      "bytes": 60291
+    },
+    {
+      "id": "Vehicles_Cars_kenney-racing-kit_Models_GLTF_format_bannerTowerGreen.glb",
+      "pack": "kenney-racing-kit",
+      "packCategory": "Vehicles/Cars",
+      "license": "CC0-1.0",
+      "relPath": "Vehicles/Cars/kenney-racing-kit/Models/GLTF format/bannerTowerGreen.glb",
+      "ext": "glb",
+      "bytes": 34000
+    },
+    {
+      "id": "Vehicles_Cars_kenney-racing-kit_Models_GLTF_format_grass.glb",
+      "pack": "kenney-racing-kit",
+      "packCategory": "Vehicles/Cars",
+      "license": "CC0-1.0",
+      "relPath": "Vehicles/Cars/kenney-racing-kit/Models/GLTF format/grass.glb",
+      "ext": "glb",
+      "bytes": 1496
+    },
+    {
+      "id": "Vehicles_Cars_kenney-racing-kit_Models_GLTF_format_radarEquipment.glb",
+      "pack": "kenney-racing-kit",
+      "packCategory": "Vehicles/Cars",
+      "license": "CC0-1.0",
+      "relPath": "Vehicles/Cars/kenney-racing-kit/Models/GLTF format/radarEquipment.glb",
+      "ext": "glb",
+      "bytes": 20288
+    },
+    {
+      "id": "Vehicles_Cars_kenney-racing-kit_Models_GLTF_format_roadCornerSmallBorder.glb",
+      "pack": "kenney-racing-kit",
+      "packCategory": "Vehicles/Cars",
+      "license": "CC0-1.0",
+      "relPath": "Vehicles/Cars/kenney-racing-kit/Models/GLTF format/roadCornerSmallBorder.glb",
+      "ext": "glb",
+      "bytes": 6920
+    },
+    {
+      "id": "Vehicles_Cars_kenney-racing-kit_Models_GLTF_format_roadSplitRound.glb",
+      "pack": "kenney-racing-kit",
+      "packCategory": "Vehicles/Cars",
+      "license": "CC0-1.0",
+      "relPath": "Vehicles/Cars/kenney-racing-kit/Models/GLTF format/roadSplitRound.glb",
+      "ext": "glb",
+      "bytes": 24256
+    },
+    {
+      "id": "Vehicles_Cars_kenney-racing-kit_Models_OBJ_format_bannerTowerGreen.obj",
+      "pack": "kenney-racing-kit",
+      "packCategory": "Vehicles/Cars",
+      "license": "CC0-1.0",
+      "relPath": "Vehicles/Cars/kenney-racing-kit/Models/OBJ format/bannerTowerGreen.obj",
+      "ext": "obj",
+      "bytes": 30308
+    },
+    {
+      "id": "Vehicles_Cars_kenney-racing-kit_Models_OBJ_format_grass.obj",
+      "pack": "kenney-racing-kit",
+      "packCategory": "Vehicles/Cars",
+      "license": "CC0-1.0",
+      "relPath": "Vehicles/Cars/kenney-racing-kit/Models/OBJ format/grass.obj",
+      "ext": "obj",
+      "bytes": 301
+    },
+    {
+      "id": "Vehicles_Cars_kenney-racing-kit_Models_OBJ_format_radarEquipment.obj",
+      "pack": "kenney-racing-kit",
+      "packCategory": "Vehicles/Cars",
+      "license": "CC0-1.0",
+      "relPath": "Vehicles/Cars/kenney-racing-kit/Models/OBJ format/radarEquipment.obj",
+      "ext": "obj",
+      "bytes": 36807
+    },
+    {
+      "id": "Vehicles_Cars_kenney-racing-kit_Models_OBJ_format_roadCornerSmallBorder.obj",
+      "pack": "kenney-racing-kit",
+      "packCategory": "Vehicles/Cars",
+      "license": "CC0-1.0",
+      "relPath": "Vehicles/Cars/kenney-racing-kit/Models/OBJ format/roadCornerSmallBorder.obj",
+      "ext": "obj",
+      "bytes": 9295
+    },
+    {
+      "id": "Vehicles_Cars_kenney-racing-kit_Models_OBJ_format_roadSplitRound.obj",
+      "pack": "kenney-racing-kit",
+      "packCategory": "Vehicles/Cars",
+      "license": "CC0-1.0",
+      "relPath": "Vehicles/Cars/kenney-racing-kit/Models/OBJ format/roadSplitRound.obj",
+      "ext": "obj",
+      "bytes": 43232
+    }
+  ]
+}

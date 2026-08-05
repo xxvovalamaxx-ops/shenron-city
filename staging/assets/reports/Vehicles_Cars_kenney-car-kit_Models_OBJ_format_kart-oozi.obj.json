@@ -1,0 +1,92 @@
+{
+ "id": "Vehicles_Cars_kenney-car-kit_Models_OBJ_format_kart-oozi.obj",
+ "ext": "obj",
+ "started": 1785955747.7281594,
+ "importSeconds": 0.0,
+ "objectCount": 1,
+ "meshCount": 1,
+ "armatureCount": 0,
+ "negativeScale": false,
+ "emptyCount": 0,
+ "vertexCount": 1612,
+ "triangleCount": 2726,
+ "meshes": [
+  {
+   "verts": 1612,
+   "tris": 2726,
+   "hasUV": true,
+   "uvDegeneratePolys": 2726,
+   "nonManifoldEdges": 20,
+   "nonManifoldVerts": 0,
+   "shapeKeyCount": 0,
+   "hasCustomNormals": true,
+   "objectName": "kart-oozi",
+   "materialSlots": 1
+  }
+ ],
+ "boundsMin": [
+  -0.4871,
+  -0.8259,
+  -0.0
+ ],
+ "boundsMax": [
+  0.4871,
+  0.6019,
+  1.3291
+ ],
+ "boundsSize": [
+  0.9743,
+  1.4278,
+  1.3291
+ ],
+ "boundsCenter": [
+  0.0,
+  -0.112,
+  0.6646
+ ],
+ "maxDimensionM": 1.4278,
+ "pivotOffsetM": [
+  0.0,
+  0.112,
+  -0.665
+ ],
+ "materialCount": 1,
+ "materialNodeTypes": [
+  "BSDF_PRINCIPLED",
+  "OUTPUT_MATERIAL",
+  "TEX_IMAGE"
+ ],
+ "principledCount": 1,
+ "alphaModes": [
+  "HASHED"
+ ],
+ "unsupportedNodeTypes": [],
+ "textureCount": 1,
+ "textureDims": [
+  [
+   512,
+   512
+  ]
+ ],
+ "maxTextureDim": 512,
+ "embeddedTextureCount": 0,
+ "externalTextureCount": 1,
+ "missingTextureRefs": [],
+ "estimatedVRAMMB": 1.0,
+ "boneCount": 0,
+ "hasSkinWeights": false,
+ "vertexGroupCount": 0,
+ "actionCount": 0,
+ "animationDurations": [],
+ "maxAnimationDuration": 0,
+ "hasRootMotion": false,
+ "lodCount": 0,
+ "collisionCount": 0,
+ "importWarnings": [],
+ "status": "OK",
+ "bytes": 208080,
+ "pack": "kenney-car-kit",
+ "packCategory": "Vehicles/Cars",
+ "license": "CC0-1.0",
+ "relPath": "Vehicles/Cars/kenney-car-kit/Models/OBJ format/kart-oozi.obj"
+}

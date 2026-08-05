@@ -1,0 +1,100 @@
+{
+ "id": "Buildings_Modular_kenney-building-kit_Models_GLB_format_border-corner.glb",
+ "ext": "glb",
+ "started": 1785955726.0192537,
+ "importSeconds": 0.0,
+ "objectCount": 1,
+ "meshCount": 1,
+ "armatureCount": 0,
+ "negativeScale": false,
+ "emptyCount": 0,
+ "vertexCount": 71,
+ "triangleCount": 46,
+ "meshes": [
+  {
+   "verts": 71,
+   "tris": 46,
+   "hasUV": true,
+   "uvDegeneratePolys": 46,
+   "nonManifoldEdges": 0,
+   "nonManifoldVerts": 0,
+   "shapeKeyCount": 0,
+   "hasCustomNormals": true,
+   "objectName": "border-corner",
+   "materialSlots": 1
+  }
+ ],
+ "boundsMin": [
+  -1.0,
+  -1.2,
+  0.0
+ ],
+ "boundsMax": [
+  1.2,
+  1.0,
+  0.3
+ ],
+ "boundsSize": [
+  2.2,
+  2.2,
+  0.3
+ ],
+ "boundsCenter": [
+  0.1,
+  -0.1,
+  0.15
+ ],
+ "maxDimensionM": 2.2,
+ "pivotOffsetM": [
+  -0.1,
+  0.1,
+  -0.15
+ ],
+ "materialCount": 1,
+ "materialNodeTypes": [
+  "BSDF_PRINCIPLED",
+  "MAPPING",
+  "OUTPUT_MATERIAL",
+  "TEX_IMAGE",
+  "UVMAP"
+ ],
+ "principledCount": 1,
+ "alphaModes": [
+  "HASHED"
+ ],
+ "unsupportedNodeTypes": [
+  "UVMAP"
+ ],
+ "textureCount": 1,
+ "textureDims": [
+  [
+   512,
+   512
+  ]
+ ],
+ "maxTextureDim": 512,
+ "embeddedTextureCount": 1,
+ "externalTextureCount": 0,
+ "missingTextureRefs": [],
+ "estimatedVRAMMB": 1.0,
+ "boneCount": 0,
+ "hasSkinWeights": false,
+ "vertexGroupCount": 0,
+ "actionCount": 0,
+ "animationDurations": [],
+ "maxAnimationDuration": 0,
+ "hasRootMotion": false,
+ "lodCount": 0,
+ "collisionCount": 0,
+ "importWarnings": [
+  "21:48:46 | INFO: Data are loaded, start creating Blender stuff",
+  "21:48:46 | INFO: Blender create Mesh node border-corner",
+  "21:48:46 | INFO: glTF import finished in 0.00s"
+ ],
+ "status": "OK",
+ "bytes": 5304,
+ "pack": "kenney-building-kit",
+ "packCategory": "Buildings/Modular",
+ "license": "CC0-1.0",
+ "relPath": "Buildings/Modular/kenney-building-kit/Models/GLB format/border-corner.glb"
+}

@@ -1,0 +1,100 @@
+{
+ "id": "Kenney_kenney-space-station-kit_Models_GLB_format_rail.glb",
+ "ext": "glb",
+ "started": 1785955740.7900417,
+ "importSeconds": 0.0,
+ "objectCount": 1,
+ "meshCount": 1,
+ "armatureCount": 0,
+ "negativeScale": false,
+ "emptyCount": 0,
+ "vertexCount": 160,
+ "triangleCount": 96,
+ "meshes": [
+  {
+   "verts": 160,
+   "tris": 96,
+   "hasUV": true,
+   "uvDegeneratePolys": 96,
+   "nonManifoldEdges": 8,
+   "nonManifoldVerts": 0,
+   "shapeKeyCount": 0,
+   "hasCustomNormals": true,
+   "objectName": "rail",
+   "materialSlots": 1
+  }
+ ],
+ "boundsMin": [
+  -0.5,
+  -0.05,
+  0.0
+ ],
+ "boundsMax": [
+  0.5,
+  0.05,
+  0.4
+ ],
+ "boundsSize": [
+  1.0,
+  0.1,
+  0.4
+ ],
+ "boundsCenter": [
+  0.0,
+  0.0,
+  0.2
+ ],
+ "maxDimensionM": 1.0,
+ "pivotOffsetM": [
+  0.0,
+  0.0,
+  -0.2
+ ],
+ "materialCount": 1,
+ "materialNodeTypes": [
+  "BSDF_PRINCIPLED",
+  "MAPPING",
+  "OUTPUT_MATERIAL",
+  "TEX_IMAGE",
+  "UVMAP"
+ ],
+ "principledCount": 1,
+ "alphaModes": [
+  "HASHED"
+ ],
+ "unsupportedNodeTypes": [
+  "UVMAP"
+ ],
+ "textureCount": 1,
+ "textureDims": [
+  [
+   512,
+   512
+  ]
+ ],
+ "maxTextureDim": 512,
+ "embeddedTextureCount": 1,
+ "externalTextureCount": 0,
+ "missingTextureRefs": [],
+ "estimatedVRAMMB": 1.0,
+ "boneCount": 0,
+ "hasSkinWeights": false,
+ "vertexGroupCount": 0,
+ "actionCount": 0,
+ "animationDurations": [],
+ "maxAnimationDuration": 0,
+ "hasRootMotion": false,
+ "lodCount": 0,
+ "collisionCount": 0,
+ "importWarnings": [
+  "21:49:00 | INFO: Data are loaded, start creating Blender stuff",
+  "21:49:00 | INFO: Blender create Mesh node rail",
+  "21:49:00 | INFO: glTF import finished in 0.00s"
+ ],
+ "status": "OK",
+ "bytes": 9692,
+ "pack": "kenney-space-station-kit",
+ "packCategory": "Kenney",
+ "license": "CC0-1.0",
+ "relPath": "Kenney/kenney-space-station-kit/Models/GLB format/rail.glb"
+}

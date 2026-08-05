@@ -1,0 +1,100 @@
+{
+ "id": "Vehicles_Cars_kenney-car-kit_Models_GLB_format_debris-tire.glb",
+ "ext": "glb",
+ "started": 1785955747.293161,
+ "importSeconds": 0.0,
+ "objectCount": 1,
+ "meshCount": 1,
+ "armatureCount": 0,
+ "negativeScale": false,
+ "emptyCount": 0,
+ "vertexCount": 480,
+ "triangleCount": 288,
+ "meshes": [
+  {
+   "verts": 480,
+   "tris": 288,
+   "hasUV": true,
+   "uvDegeneratePolys": 288,
+   "nonManifoldEdges": 0,
+   "nonManifoldVerts": 0,
+   "shapeKeyCount": 0,
+   "hasCustomNormals": true,
+   "objectName": "debris-tire",
+   "materialSlots": 1
+  }
+ ],
+ "boundsMin": [
+  -0.175,
+  -0.3,
+  -0.3
+ ],
+ "boundsMax": [
+  0.175,
+  0.3,
+  0.3
+ ],
+ "boundsSize": [
+  0.35,
+  0.6,
+  0.6
+ ],
+ "boundsCenter": [
+  0.0,
+  0.0,
+  0.0
+ ],
+ "maxDimensionM": 0.6,
+ "pivotOffsetM": [
+  0.0,
+  0.0,
+  0.0
+ ],
+ "materialCount": 1,
+ "materialNodeTypes": [
+  "BSDF_PRINCIPLED",
+  "MAPPING",
+  "OUTPUT_MATERIAL",
+  "TEX_IMAGE",
+  "UVMAP"
+ ],
+ "principledCount": 1,
+ "alphaModes": [
+  "HASHED"
+ ],
+ "unsupportedNodeTypes": [
+  "UVMAP"
+ ],
+ "textureCount": 1,
+ "textureDims": [
+  [
+   512,
+   512
+  ]
+ ],
+ "maxTextureDim": 512,
+ "embeddedTextureCount": 1,
+ "externalTextureCount": 0,
+ "missingTextureRefs": [],
+ "estimatedVRAMMB": 1.0,
+ "boneCount": 0,
+ "hasSkinWeights": false,
+ "vertexGroupCount": 0,
+ "actionCount": 0,
+ "animationDurations": [],
+ "maxAnimationDuration": 0,
+ "hasRootMotion": false,
+ "lodCount": 0,
+ "collisionCount": 0,
+ "importWarnings": [
+  "21:49:07 | INFO: Data are loaded, start creating Blender stuff",
+  "21:49:07 | INFO: Blender create Mesh node debris-tire",
+  "21:49:07 | INFO: glTF import finished in 0.00s"
+ ],
+ "status": "OK",
+ "bytes": 26548,
+ "pack": "kenney-car-kit",
+ "packCategory": "Vehicles/Cars",
+ "license": "CC0-1.0",
+ "relPath": "Vehicles/Cars/kenney-car-kit/Models/GLB format/debris-tire.glb"
+}

@@ -1,0 +1,99 @@
+{
+ "id": "Kenney_kenney-modular-space-kit_Models_FBX_format_gate.fbx",
+ "ext": "fbx",
+ "started": 1785955738.4330914,
+ "importSeconds": 0.01,
+ "objectCount": 1,
+ "meshCount": 1,
+ "armatureCount": 0,
+ "negativeScale": false,
+ "emptyCount": 0,
+ "vertexCount": 226,
+ "triangleCount": 382,
+ "meshes": [
+  {
+   "verts": 226,
+   "tris": 382,
+   "hasUV": true,
+   "uvDegeneratePolys": 382,
+   "nonManifoldEdges": 72,
+   "nonManifoldVerts": 16,
+   "shapeKeyCount": 0,
+   "hasCustomNormals": true,
+   "objectName": "gate",
+   "materialSlots": 1
+  }
+ ],
+ "boundsMin": [
+  -2.1,
+  -0.7,
+  -0.0
+ ],
+ "boundsMax": [
+  2.1,
+  0.7,
+  4.6207
+ ],
+ "boundsSize": [
+  4.2,
+  1.4,
+  4.6207
+ ],
+ "boundsCenter": [
+  0.0,
+  0.0,
+  2.3104
+ ],
+ "maxDimensionM": 4.6207,
+ "pivotOffsetM": [
+  0.0,
+  -0.0,
+  -2.31
+ ],
+ "materialCount": 1,
+ "materialNodeTypes": [
+  "BSDF_PRINCIPLED",
+  "NORMAL_MAP",
+  "OUTPUT_MATERIAL",
+  "TEX_IMAGE"
+ ],
+ "principledCount": 1,
+ "alphaModes": [
+  "HASHED"
+ ],
+ "unsupportedNodeTypes": [],
+ "textureCount": 2,
+ "textureDims": [
+  [
+   512,
+   512
+  ],
+  [
+   512,
+   512
+  ]
+ ],
+ "maxTextureDim": 512,
+ "embeddedTextureCount": 0,
+ "externalTextureCount": 2,
+ "missingTextureRefs": [],
+ "estimatedVRAMMB": 2.0,
+ "boneCount": 0,
+ "hasSkinWeights": false,
+ "vertexGroupCount": 0,
+ "actionCount": 0,
+ "animationDurations": [],
+ "maxAnimationDuration": 0,
+ "hasRootMotion": false,
+ "lodCount": 0,
+ "collisionCount": 0,
+ "importWarnings": [
+  "FBX version: 7700"
+ ],
+ "status": "OK",
+ "bytes": 38928,
+ "pack": "kenney-modular-space-kit",
+ "packCategory": "Kenney",
+ "license": "CC0-1.0",
+ "relPath": "Kenney/kenney-modular-space-kit/Models/FBX format/gate.fbx"
+}

@@ -1,0 +1,12 @@
+{
+ "id": "Vehicles_Cars_kenney-racing-kit_Models_DAE_format_roadSplitRound.dae",
+ "ext": "dae",
+ "started": 1785955748.0169687,
+ "importError": "RuntimeError('Collada import removed in Blender 5.1 (DAE unsupported)')",
+ "status": "IMPORT_FAILED",
+ "bytes": 61135,
+ "pack": "kenney-racing-kit",
+ "packCategory": "Vehicles/Cars",
+ "license": "CC0-1.0",
+ "relPath": "Vehicles/Cars/kenney-racing-kit/Models/DAE format/roadSplitRound.dae"
+}

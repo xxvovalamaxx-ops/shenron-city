@@ -1,0 +1,12 @@
+{
+ "id": "Vehicles_Cars_kenney-racing-kit_Models_FBX_format_roadCornerSmallBorder.fbx",
+ "ext": "fbx",
+ "started": 1785955748.161886,
+ "importError": "RuntimeError(\"Error: ASCII FBX files are not supported 'E:\\\\\\\\temp projects\\\\\\\\shenron-city\\\\\\\\ds\\\\\\\\asset-technical\\\\\\\\staging\\\\\\\\assets\\\\\\\\files\\\\\\\\Vehicles/Cars/kenney-racing-kit/Models/FBX format/roadCornerSmallBorder.fbx'\\n\")",
+ "status": "IMPORT_FAILED",
+ "bytes": 21598,
+ "pack": "kenney-racing-kit",
+ "packCategory": "Vehicles/Cars",
+ "license": "CC0-1.0",
+ "relPath": "Vehicles/Cars/kenney-racing-kit/Models/FBX format/roadCornerSmallBorder.fbx"
+}

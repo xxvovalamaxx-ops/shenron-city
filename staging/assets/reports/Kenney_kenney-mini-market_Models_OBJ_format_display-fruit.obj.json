@@ -1,0 +1,92 @@
+{
+ "id": "Kenney_kenney-mini-market_Models_OBJ_format_display-fruit.obj",
+ "ext": "obj",
+ "started": 1785955737.2230592,
+ "importSeconds": 0.0,
+ "objectCount": 1,
+ "meshCount": 1,
+ "armatureCount": 0,
+ "negativeScale": false,
+ "emptyCount": 0,
+ "vertexCount": 368,
+ "triangleCount": 650,
+ "meshes": [
+  {
+   "verts": 368,
+   "tris": 650,
+   "hasUV": true,
+   "uvDegeneratePolys": 650,
+   "nonManifoldEdges": 40,
+   "nonManifoldVerts": 0,
+   "shapeKeyCount": 0,
+   "hasCustomNormals": true,
+   "objectName": "display-fruit",
+   "materialSlots": 1
+  }
+ ],
+ "boundsMin": [
+  -0.3,
+  -0.3,
+  -0.0
+ ],
+ "boundsMax": [
+  0.3,
+  0.3,
+  0.516
+ ],
+ "boundsSize": [
+  0.6,
+  0.6,
+  0.516
+ ],
+ "boundsCenter": [
+  0.0,
+  0.0,
+  0.258
+ ],
+ "maxDimensionM": 0.6,
+ "pivotOffsetM": [
+  0.0,
+  -0.0,
+  -0.258
+ ],
+ "materialCount": 1,
+ "materialNodeTypes": [
+  "BSDF_PRINCIPLED",
+  "OUTPUT_MATERIAL",
+  "TEX_IMAGE"
+ ],
+ "principledCount": 1,
+ "alphaModes": [
+  "HASHED"
+ ],
+ "unsupportedNodeTypes": [],
+ "textureCount": 1,
+ "textureDims": [
+  [
+   512,
+   512
+  ]
+ ],
+ "maxTextureDim": 512,
+ "embeddedTextureCount": 0,
+ "externalTextureCount": 1,
+ "missingTextureRefs": [],
+ "estimatedVRAMMB": 1.0,
+ "boneCount": 0,
+ "hasSkinWeights": false,
+ "vertexGroupCount": 0,
+ "actionCount": 0,
+ "animationDurations": [],
+ "maxAnimationDuration": 0,
+ "hasRootMotion": false,
+ "lodCount": 0,
+ "collisionCount": 0,
+ "importWarnings": [],
+ "status": "OK",
+ "bytes": 68842,
+ "pack": "kenney-mini-market",
+ "packCategory": "Kenney",
+ "license": "CC0-1.0",
+ "relPath": "Kenney/kenney-mini-market/Models/OBJ format/display-fruit.obj"
+}

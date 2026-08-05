@@ -1,0 +1,99 @@
+{
+ "id": "Kenney_kenney-graveyard-kit_Models_FBX_format_altar-stone.fbx",
+ "ext": "fbx",
+ "started": 1785955735.163774,
+ "importSeconds": 0.01,
+ "objectCount": 1,
+ "meshCount": 1,
+ "armatureCount": 0,
+ "negativeScale": false,
+ "emptyCount": 0,
+ "vertexCount": 108,
+ "triangleCount": 166,
+ "meshes": [
+  {
+   "verts": 108,
+   "tris": 166,
+   "hasUV": true,
+   "uvDegeneratePolys": 166,
+   "nonManifoldEdges": 36,
+   "nonManifoldVerts": 0,
+   "shapeKeyCount": 0,
+   "hasCustomNormals": true,
+   "objectName": "altar-stone",
+   "materialSlots": 1
+  }
+ ],
+ "boundsMin": [
+  -0.5198,
+  -0.3266,
+  -0.0
+ ],
+ "boundsMax": [
+  0.5198,
+  0.3266,
+  0.4876
+ ],
+ "boundsSize": [
+  1.0396,
+  0.6532,
+  0.4876
+ ],
+ "boundsCenter": [
+  0.0,
+  0.0,
+  0.2438
+ ],
+ "maxDimensionM": 1.0396,
+ "pivotOffsetM": [
+  0.0,
+  0.0,
+  -0.244
+ ],
+ "materialCount": 1,
+ "materialNodeTypes": [
+  "BSDF_PRINCIPLED",
+  "NORMAL_MAP",
+  "OUTPUT_MATERIAL",
+  "TEX_IMAGE"
+ ],
+ "principledCount": 1,
+ "alphaModes": [
+  "HASHED"
+ ],
+ "unsupportedNodeTypes": [],
+ "textureCount": 2,
+ "textureDims": [
+  [
+   512,
+   512
+  ],
+  [
+   512,
+   512
+  ]
+ ],
+ "maxTextureDim": 512,
+ "embeddedTextureCount": 0,
+ "externalTextureCount": 2,
+ "missingTextureRefs": [],
+ "estimatedVRAMMB": 2.0,
+ "boneCount": 0,
+ "hasSkinWeights": false,
+ "vertexGroupCount": 0,
+ "actionCount": 0,
+ "animationDurations": [],
+ "maxAnimationDuration": 0,
+ "hasRootMotion": false,
+ "lodCount": 0,
+ "collisionCount": 0,
+ "importWarnings": [
+  "FBX version: 7700"
+ ],
+ "status": "OK",
+ "bytes": 28624,
+ "pack": "kenney-graveyard-kit",
+ "packCategory": "Kenney",
+ "license": "CC0-1.0",
+ "relPath": "Kenney/kenney-graveyard-kit/Models/FBX format/altar-stone.fbx"
+}

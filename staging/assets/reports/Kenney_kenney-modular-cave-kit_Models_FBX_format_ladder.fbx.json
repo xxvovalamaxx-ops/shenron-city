@@ -1,0 +1,99 @@
+{
+ "id": "Kenney_kenney-modular-cave-kit_Models_FBX_format_ladder.fbx",
+ "ext": "fbx",
+ "started": 1785955737.6497908,
+ "importSeconds": 0.01,
+ "objectCount": 1,
+ "meshCount": 1,
+ "armatureCount": 0,
+ "negativeScale": false,
+ "emptyCount": 0,
+ "vertexCount": 64,
+ "triangleCount": 80,
+ "meshes": [
+  {
+   "verts": 64,
+   "tris": 80,
+   "hasUV": true,
+   "uvDegeneratePolys": 80,
+   "nonManifoldEdges": 40,
+   "nonManifoldVerts": 0,
+   "shapeKeyCount": 0,
+   "hasCustomNormals": true,
+   "objectName": "ladder",
+   "materialSlots": 1
+  }
+ ],
+ "boundsMin": [
+  -0.573,
+  -0.142,
+  -0.0
+ ],
+ "boundsMax": [
+  0.573,
+  0.142,
+  2.9
+ ],
+ "boundsSize": [
+  1.146,
+  0.284,
+  2.9
+ ],
+ "boundsCenter": [
+  0.0,
+  0.0,
+  1.45
+ ],
+ "maxDimensionM": 2.9,
+ "pivotOffsetM": [
+  0.0,
+  -0.0,
+  -1.45
+ ],
+ "materialCount": 1,
+ "materialNodeTypes": [
+  "BSDF_PRINCIPLED",
+  "NORMAL_MAP",
+  "OUTPUT_MATERIAL",
+  "TEX_IMAGE"
+ ],
+ "principledCount": 1,
+ "alphaModes": [
+  "HASHED"
+ ],
+ "unsupportedNodeTypes": [],
+ "textureCount": 2,
+ "textureDims": [
+  [
+   512,
+   512
+  ],
+  [
+   512,
+   512
+  ]
+ ],
+ "maxTextureDim": 512,
+ "embeddedTextureCount": 0,
+ "externalTextureCount": 2,
+ "missingTextureRefs": [],
+ "estimatedVRAMMB": 2.0,
+ "boneCount": 0,
+ "hasSkinWeights": false,
+ "vertexGroupCount": 0,
+ "actionCount": 0,
+ "animationDurations": [],
+ "maxAnimationDuration": 0,
+ "hasRootMotion": false,
+ "lodCount": 0,
+ "collisionCount": 0,
+ "importWarnings": [
+  "FBX version: 7700"
+ ],
+ "status": "OK",
+ "bytes": 27552,
+ "pack": "kenney-modular-cave-kit",
+ "packCategory": "Kenney",
+ "license": "CC0-1.0",
+ "relPath": "Kenney/kenney-modular-cave-kit/Models/FBX format/ladder.fbx"
+}

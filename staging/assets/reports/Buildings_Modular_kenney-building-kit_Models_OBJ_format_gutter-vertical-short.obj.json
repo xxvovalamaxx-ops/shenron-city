@@ -1,0 +1,92 @@
+{
+ "id": "Buildings_Modular_kenney-building-kit_Models_OBJ_format_gutter-vertical-short.obj",
+ "ext": "obj",
+ "started": 1785955726.292635,
+ "importSeconds": 0.0,
+ "objectCount": 1,
+ "meshCount": 1,
+ "armatureCount": 0,
+ "negativeScale": false,
+ "emptyCount": 0,
+ "vertexCount": 32,
+ "triangleCount": 56,
+ "meshes": [
+  {
+   "verts": 32,
+   "tris": 56,
+   "hasUV": true,
+   "uvDegeneratePolys": 56,
+   "nonManifoldEdges": 0,
+   "nonManifoldVerts": 0,
+   "shapeKeyCount": 0,
+   "hasCustomNormals": true,
+   "objectName": "gutter-vertical-short",
+   "materialSlots": 1
+  }
+ ],
+ "boundsMin": [
+  -0.1541,
+  -0.1541,
+  -0.0
+ ],
+ "boundsMax": [
+  0.1541,
+  0.1541,
+  1.0
+ ],
+ "boundsSize": [
+  0.3082,
+  0.3082,
+  1.0
+ ],
+ "boundsCenter": [
+  0.0,
+  0.0,
+  0.5
+ ],
+ "maxDimensionM": 1.0,
+ "pivotOffsetM": [
+  0.0,
+  -0.0,
+  -0.5
+ ],
+ "materialCount": 1,
+ "materialNodeTypes": [
+  "BSDF_PRINCIPLED",
+  "OUTPUT_MATERIAL",
+  "TEX_IMAGE"
+ ],
+ "principledCount": 1,
+ "alphaModes": [
+  "HASHED"
+ ],
+ "unsupportedNodeTypes": [],
+ "textureCount": 1,
+ "textureDims": [
+  [
+   512,
+   512
+  ]
+ ],
+ "maxTextureDim": 512,
+ "embeddedTextureCount": 0,
+ "externalTextureCount": 1,
+ "missingTextureRefs": [],
+ "estimatedVRAMMB": 1.0,
+ "boneCount": 0,
+ "hasSkinWeights": false,
+ "vertexGroupCount": 0,
+ "actionCount": 0,
+ "animationDurations": [],
+ "maxAnimationDuration": 0,
+ "hasRootMotion": false,
+ "lodCount": 0,
+ "collisionCount": 0,
+ "importWarnings": [],
+ "status": "OK",
+ "bytes": 3787,
+ "pack": "kenney-building-kit",
+ "packCategory": "Buildings/Modular",
+ "license": "CC0-1.0",
+ "relPath": "Buildings/Modular/kenney-building-kit/Models/OBJ format/gutter-vertical-short.obj"
+}

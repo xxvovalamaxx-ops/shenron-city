@@ -1,0 +1,99 @@
+{
+ "id": "Kenney_kenney-fantasy-town-kit_Models_FBX_format_wall-slope.fbx",
+ "ext": "fbx",
+ "started": 1785955734.9089878,
+ "importSeconds": 0.01,
+ "objectCount": 1,
+ "meshCount": 1,
+ "armatureCount": 0,
+ "negativeScale": false,
+ "emptyCount": 0,
+ "vertexCount": 24,
+ "triangleCount": 32,
+ "meshes": [
+  {
+   "verts": 24,
+   "tris": 32,
+   "hasUV": true,
+   "uvDegeneratePolys": 32,
+   "nonManifoldEdges": 8,
+   "nonManifoldVerts": 0,
+   "shapeKeyCount": 0,
+   "hasCustomNormals": true,
+   "objectName": "wall-slope",
+   "materialSlots": 1
+  }
+ ],
+ "boundsMin": [
+  0.4,
+  -0.5,
+  -0.0
+ ],
+ "boundsMax": [
+  0.5,
+  0.5,
+  1.0
+ ],
+ "boundsSize": [
+  0.1,
+  1.0,
+  1.0
+ ],
+ "boundsCenter": [
+  0.45,
+  0.0,
+  0.5
+ ],
+ "maxDimensionM": 1.0,
+ "pivotOffsetM": [
+  -0.45,
+  -0.0,
+  -0.5
+ ],
+ "materialCount": 1,
+ "materialNodeTypes": [
+  "BSDF_PRINCIPLED",
+  "NORMAL_MAP",
+  "OUTPUT_MATERIAL",
+  "TEX_IMAGE"
+ ],
+ "principledCount": 1,
+ "alphaModes": [
+  "HASHED"
+ ],
+ "unsupportedNodeTypes": [],
+ "textureCount": 2,
+ "textureDims": [
+  [
+   512,
+   512
+  ],
+  [
+   512,
+   512
+  ]
+ ],
+ "maxTextureDim": 512,
+ "embeddedTextureCount": 0,
+ "externalTextureCount": 2,
+ "missingTextureRefs": [],
+ "estimatedVRAMMB": 2.0,
+ "boneCount": 0,
+ "hasSkinWeights": false,
+ "vertexGroupCount": 0,
+ "actionCount": 0,
+ "animationDurations": [],
+ "maxAnimationDuration": 0,
+ "hasRootMotion": false,
+ "lodCount": 0,
+ "collisionCount": 0,
+ "importWarnings": [
+  "FBX version: 7700"
+ ],
+ "status": "OK",
+ "bytes": 27344,
+ "pack": "kenney-fantasy-town-kit",
+ "packCategory": "Kenney",
+ "license": "CC0-1.0",
+ "relPath": "Kenney/kenney-fantasy-town-kit/Models/FBX format/wall-slope.fbx"
+}

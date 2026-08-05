@@ -1,0 +1,99 @@
+{
+ "id": "Kenney_kenney-graveyard-kit_Models_FBX_format_pillar-small.fbx",
+ "ext": "fbx",
+ "started": 1785955735.245226,
+ "importSeconds": 0.01,
+ "objectCount": 1,
+ "meshCount": 1,
+ "armatureCount": 0,
+ "negativeScale": false,
+ "emptyCount": 0,
+ "vertexCount": 57,
+ "triangleCount": 96,
+ "meshes": [
+  {
+   "verts": 57,
+   "tris": 96,
+   "hasUV": true,
+   "uvDegeneratePolys": 96,
+   "nonManifoldEdges": 4,
+   "nonManifoldVerts": 0,
+   "shapeKeyCount": 0,
+   "hasCustomNormals": true,
+   "objectName": "pillar-small",
+   "materialSlots": 1
+  }
+ ],
+ "boundsMin": [
+  -0.0908,
+  -0.0908,
+  -0.0
+ ],
+ "boundsMax": [
+  0.0908,
+  0.0908,
+  0.7564
+ ],
+ "boundsSize": [
+  0.1815,
+  0.1815,
+  0.7564
+ ],
+ "boundsCenter": [
+  0.0,
+  0.0,
+  0.3782
+ ],
+ "maxDimensionM": 0.7564,
+ "pivotOffsetM": [
+  0.0,
+  -0.0,
+  -0.378
+ ],
+ "materialCount": 1,
+ "materialNodeTypes": [
+  "BSDF_PRINCIPLED",
+  "NORMAL_MAP",
+  "OUTPUT_MATERIAL",
+  "TEX_IMAGE"
+ ],
+ "principledCount": 1,
+ "alphaModes": [
+  "HASHED"
+ ],
+ "unsupportedNodeTypes": [],
+ "textureCount": 2,
+ "textureDims": [
+  [
+   512,
+   512
+  ],
+  [
+   512,
+   512
+  ]
+ ],
+ "maxTextureDim": 512,
+ "embeddedTextureCount": 0,
+ "externalTextureCount": 2,
+ "missingTextureRefs": [],
+ "estimatedVRAMMB": 2.0,
+ "boneCount": 0,
+ "hasSkinWeights": false,
+ "vertexGroupCount": 0,
+ "actionCount": 0,
+ "animationDurations": [],
+ "maxAnimationDuration": 0,
+ "hasRootMotion": false,
+ "lodCount": 0,
+ "collisionCount": 0,
+ "importWarnings": [
+  "FBX version: 7700"
+ ],
+ "status": "OK",
+ "bytes": 27296,
+ "pack": "kenney-graveyard-kit",
+ "packCategory": "Kenney",
+ "license": "CC0-1.0",
+ "relPath": "Kenney/kenney-graveyard-kit/Models/FBX format/pillar-small.fbx"
+}

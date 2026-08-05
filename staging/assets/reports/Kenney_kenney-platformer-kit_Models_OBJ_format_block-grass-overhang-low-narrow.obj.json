@@ -1,0 +1,92 @@
+{
+ "id": "Kenney_kenney-platformer-kit_Models_OBJ_format_block-grass-overhang-low-narrow.obj",
+ "ext": "obj",
+ "started": 1785955739.6533108,
+ "importSeconds": 0.0,
+ "objectCount": 1,
+ "meshCount": 1,
+ "armatureCount": 0,
+ "negativeScale": false,
+ "emptyCount": 0,
+ "vertexCount": 94,
+ "triangleCount": 120,
+ "meshes": [
+  {
+   "verts": 94,
+   "tris": 120,
+   "hasUV": true,
+   "uvDegeneratePolys": 120,
+   "nonManifoldEdges": 68,
+   "nonManifoldVerts": 40,
+   "shapeKeyCount": 0,
+   "hasCustomNormals": true,
+   "objectName": "block-grass-overhang-low-narrow",
+   "materialSlots": 1
+  }
+ ],
+ "boundsMin": [
+  -0.3911,
+  -0.3911,
+  -0.0
+ ],
+ "boundsMax": [
+  0.3911,
+  0.3911,
+  0.5
+ ],
+ "boundsSize": [
+  0.7821,
+  0.7821,
+  0.5
+ ],
+ "boundsCenter": [
+  0.0,
+  0.0,
+  0.25
+ ],
+ "maxDimensionM": 0.7821,
+ "pivotOffsetM": [
+  -0.0,
+  -0.0,
+  -0.25
+ ],
+ "materialCount": 1,
+ "materialNodeTypes": [
+  "BSDF_PRINCIPLED",
+  "OUTPUT_MATERIAL",
+  "TEX_IMAGE"
+ ],
+ "principledCount": 1,
+ "alphaModes": [
+  "HASHED"
+ ],
+ "unsupportedNodeTypes": [],
+ "textureCount": 1,
+ "textureDims": [
+  [
+   512,
+   512
+  ]
+ ],
+ "maxTextureDim": 512,
+ "embeddedTextureCount": 0,
+ "externalTextureCount": 1,
+ "missingTextureRefs": [],
+ "estimatedVRAMMB": 1.0,
+ "boneCount": 0,
+ "hasSkinWeights": false,
+ "vertexGroupCount": 0,
+ "actionCount": 0,
+ "animationDurations": [],
+ "maxAnimationDuration": 0,
+ "hasRootMotion": false,
+ "lodCount": 0,
+ "collisionCount": 0,
+ "importWarnings": [],
+ "status": "OK",
+ "bytes": 11186,
+ "pack": "kenney-platformer-kit",
+ "packCategory": "Kenney",
+ "license": "CC0-1.0",
+ "relPath": "Kenney/kenney-platformer-kit/Models/OBJ format/block-grass-overhang-low-narrow.obj"
+}

@@ -1,0 +1,147 @@
+{
+ "id": "Vehicles_Cars_kenney-car-kit_Models_FBX_format_race.fbx",
+ "ext": "fbx",
+ "started": 1785955747.0085323,
+ "importSeconds": 0.01,
+ "objectCount": 6,
+ "meshCount": 5,
+ "armatureCount": 0,
+ "negativeScale": false,
+ "emptyCount": 1,
+ "vertexCount": 1171,
+ "triangleCount": 1952,
+ "meshes": [
+  {
+   "verts": 363,
+   "tris": 624,
+   "hasUV": true,
+   "uvDegeneratePolys": 624,
+   "nonManifoldEdges": 48,
+   "nonManifoldVerts": 0,
+   "shapeKeyCount": 0,
+   "hasCustomNormals": true,
+   "objectName": "body",
+   "materialSlots": 1
+  },
+  {
+   "verts": 202,
+   "tris": 332,
+   "hasUV": true,
+   "uvDegeneratePolys": 332,
+   "nonManifoldEdges": 0,
+   "nonManifoldVerts": 0,
+   "shapeKeyCount": 0,
+   "hasCustomNormals": true,
+   "objectName": "wheel-back-left",
+   "materialSlots": 1
+  },
+  {
+   "verts": 202,
+   "tris": 332,
+   "hasUV": true,
+   "uvDegeneratePolys": 332,
+   "nonManifoldEdges": 0,
+   "nonManifoldVerts": 0,
+   "shapeKeyCount": 0,
+   "hasCustomNormals": true,
+   "objectName": "wheel-back-right",
+   "materialSlots": 1
+  },
+  {
+   "verts": 202,
+   "tris": 332,
+   "hasUV": true,
+   "uvDegeneratePolys": 332,
+   "nonManifoldEdges": 0,
+   "nonManifoldVerts": 0,
+   "shapeKeyCount": 0,
+   "hasCustomNormals": true,
+   "objectName": "wheel-front-left",
+   "materialSlots": 1
+  },
+  {
+   "verts": 202,
+   "tris": 332,
+   "hasUV": true,
+   "uvDegeneratePolys": 332,
+   "nonManifoldEdges": 0,
+   "nonManifoldVerts": 0,
+   "shapeKeyCount": 0,
+   "hasCustomNormals": true,
+   "objectName": "wheel-front-right",
+   "materialSlots": 1
+  }
+ ],
+ "boundsMin": [
+  -0.65,
+  -1.2799,
+  -0.0
+ ],
+ "boundsMax": [
+  0.65,
+  1.2799,
+  0.7325
+ ],
+ "boundsSize": [
+  1.3,
+  2.5598,
+  0.7325
+ ],
+ "boundsCenter": [
+  0.0,
+  0.0,
+  0.3663
+ ],
+ "maxDimensionM": 2.5598,
+ "pivotOffsetM": [
+  0.0,
+  0.0,
+  -0.366
+ ],
+ "materialCount": 1,
+ "materialNodeTypes": [
+  "BSDF_PRINCIPLED",
+  "NORMAL_MAP",
+  "OUTPUT_MATERIAL",
+  "TEX_IMAGE"
+ ],
+ "principledCount": 1,
+ "alphaModes": [
+  "HASHED"
+ ],
+ "unsupportedNodeTypes": [],
+ "textureCount": 2,
+ "textureDims": [
+  [
+   512,
+   512
+  ],
+  [
+   512,
+   512
+  ]
+ ],
+ "maxTextureDim": 512,
+ "embeddedTextureCount": 0,
+ "externalTextureCount": 2,
+ "missingTextureRefs": [],
+ "estimatedVRAMMB": 2.0,
+ "boneCount": 0,
+ "hasSkinWeights": false,
+ "vertexGroupCount": 0,
+ "actionCount": 0,
+ "animationDurations": [],
+ "maxAnimationDuration": 0,
+ "hasRootMotion": false,
+ "lodCount": 0,
+ "collisionCount": 0,
+ "importWarnings": [
+  "FBX version: 7700"
+ ],
+ "status": "OK",
+ "bytes": 111760,
+ "pack": "kenney-car-kit",
+ "packCategory": "Vehicles/Cars",
+ "license": "CC0-1.0",
+ "relPath": "Vehicles/Cars/kenney-car-kit/Models/FBX format/race.fbx"
+}

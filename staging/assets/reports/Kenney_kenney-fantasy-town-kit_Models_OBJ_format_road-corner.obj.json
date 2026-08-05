@@ -1,0 +1,92 @@
+{
+ "id": "Kenney_kenney-fantasy-town-kit_Models_OBJ_format_road-corner.obj",
+ "ext": "obj",
+ "started": 1785955735.0901902,
+ "importSeconds": 0.0,
+ "objectCount": 1,
+ "meshCount": 1,
+ "armatureCount": 0,
+ "negativeScale": false,
+ "emptyCount": 0,
+ "vertexCount": 83,
+ "triangleCount": 150,
+ "meshes": [
+  {
+   "verts": 83,
+   "tris": 150,
+   "hasUV": true,
+   "uvDegeneratePolys": 150,
+   "nonManifoldEdges": 0,
+   "nonManifoldVerts": 0,
+   "shapeKeyCount": 0,
+   "hasCustomNormals": true,
+   "objectName": "road-corner",
+   "materialSlots": 1
+  }
+ ],
+ "boundsMin": [
+  -0.5,
+  -0.5,
+  -0.0
+ ],
+ "boundsMax": [
+  0.5,
+  0.5,
+  0.05
+ ],
+ "boundsSize": [
+  1.0,
+  1.0,
+  0.05
+ ],
+ "boundsCenter": [
+  0.0,
+  0.0,
+  0.025
+ ],
+ "maxDimensionM": 1.0,
+ "pivotOffsetM": [
+  0.0,
+  0.0,
+  -0.025
+ ],
+ "materialCount": 1,
+ "materialNodeTypes": [
+  "BSDF_PRINCIPLED",
+  "OUTPUT_MATERIAL",
+  "TEX_IMAGE"
+ ],
+ "principledCount": 1,
+ "alphaModes": [
+  "HASHED"
+ ],
+ "unsupportedNodeTypes": [],
+ "textureCount": 1,
+ "textureDims": [
+  [
+   512,
+   512
+  ]
+ ],
+ "maxTextureDim": 512,
+ "embeddedTextureCount": 0,
+ "externalTextureCount": 1,
+ "missingTextureRefs": [],
+ "estimatedVRAMMB": 1.0,
+ "boneCount": 0,
+ "hasSkinWeights": false,
+ "vertexGroupCount": 0,
+ "actionCount": 0,
+ "animationDurations": [],
+ "maxAnimationDuration": 0,
+ "hasRootMotion": false,
+ "lodCount": 0,
+ "collisionCount": 0,
+ "importWarnings": [],
+ "status": "OK",
+ "bytes": 12064,
+ "pack": "kenney-fantasy-town-kit",
+ "packCategory": "Kenney",
+ "license": "CC0-1.0",
+ "relPath": "Kenney/kenney-fantasy-town-kit/Models/OBJ format/road-corner.obj"
+}

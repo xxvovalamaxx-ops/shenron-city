@@ -1,0 +1,103 @@
+{
+ "id": "Kenney_kenney-retro-urban-kit_Models_FBX_format_wall-b-corner.fbx",
+ "ext": "fbx",
+ "started": 1785955740.1294026,
+ "importSeconds": 0.01,
+ "objectCount": 1,
+ "meshCount": 1,
+ "armatureCount": 0,
+ "negativeScale": false,
+ "emptyCount": 0,
+ "vertexCount": 12,
+ "triangleCount": 20,
+ "meshes": [
+  {
+   "verts": 12,
+   "tris": 20,
+   "hasUV": true,
+   "uvDegeneratePolys": 1,
+   "nonManifoldEdges": 0,
+   "nonManifoldVerts": 0,
+   "shapeKeyCount": 0,
+   "hasCustomNormals": true,
+   "objectName": "wall-b-corner",
+   "materialSlots": 2
+  }
+ ],
+ "boundsMin": [
+  -0.5,
+  -0.5,
+  -0.0
+ ],
+ "boundsMax": [
+  0.5,
+  0.5,
+  1.0
+ ],
+ "boundsSize": [
+  1.0,
+  1.0,
+  1.0
+ ],
+ "boundsCenter": [
+  0.0,
+  0.0,
+  0.5
+ ],
+ "maxDimensionM": 1.0,
+ "pivotOffsetM": [
+  0.0,
+  -0.0,
+  -0.5
+ ],
+ "materialCount": 2,
+ "materialNodeTypes": [
+  "BSDF_PRINCIPLED",
+  "NORMAL_MAP",
+  "OUTPUT_MATERIAL",
+  "TEX_IMAGE"
+ ],
+ "principledCount": 2,
+ "alphaModes": [
+  "HASHED"
+ ],
+ "unsupportedNodeTypes": [],
+ "textureCount": 3,
+ "textureDims": [
+  [
+   64,
+   64
+  ],
+  [
+   64,
+   64
+  ],
+  [
+   64,
+   64
+  ]
+ ],
+ "maxTextureDim": 64,
+ "embeddedTextureCount": 0,
+ "externalTextureCount": 3,
+ "missingTextureRefs": [],
+ "estimatedVRAMMB": 0.05,
+ "boneCount": 0,
+ "hasSkinWeights": false,
+ "vertexGroupCount": 0,
+ "actionCount": 0,
+ "animationDurations": [],
+ "maxAnimationDuration": 0,
+ "hasRootMotion": false,
+ "lodCount": 0,
+ "collisionCount": 0,
+ "importWarnings": [
+  "FBX version: 7700"
+ ],
+ "status": "OK",
+ "bytes": 28624,
+ "pack": "kenney-retro-urban-kit",
+ "packCategory": "Kenney",
+ "license": "CC0-1.0",
+ "relPath": "Kenney/kenney-retro-urban-kit/Models/FBX format/wall-b-corner.fbx"
+}

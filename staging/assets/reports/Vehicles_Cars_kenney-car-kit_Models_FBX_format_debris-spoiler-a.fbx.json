@@ -1,0 +1,99 @@
+{
+ "id": "Vehicles_Cars_kenney-car-kit_Models_FBX_format_debris-spoiler-a.fbx",
+ "ext": "fbx",
+ "started": 1785955746.895381,
+ "importSeconds": 0.01,
+ "objectCount": 1,
+ "meshCount": 1,
+ "armatureCount": 0,
+ "negativeScale": false,
+ "emptyCount": 0,
+ "vertexCount": 26,
+ "triangleCount": 48,
+ "meshes": [
+  {
+   "verts": 26,
+   "tris": 48,
+   "hasUV": true,
+   "uvDegeneratePolys": 48,
+   "nonManifoldEdges": 0,
+   "nonManifoldVerts": 0,
+   "shapeKeyCount": 0,
+   "hasCustomNormals": true,
+   "objectName": "debris-spoiler-a",
+   "materialSlots": 1
+  }
+ ],
+ "boundsMin": [
+  -0.55,
+  -0.1187,
+  -0.0
+ ],
+ "boundsMax": [
+  0.55,
+  0.1187,
+  0.3
+ ],
+ "boundsSize": [
+  1.1,
+  0.2374,
+  0.3
+ ],
+ "boundsCenter": [
+  0.0,
+  0.0,
+  0.15
+ ],
+ "maxDimensionM": 1.1,
+ "pivotOffsetM": [
+  0.0,
+  -0.0,
+  -0.15
+ ],
+ "materialCount": 1,
+ "materialNodeTypes": [
+  "BSDF_PRINCIPLED",
+  "NORMAL_MAP",
+  "OUTPUT_MATERIAL",
+  "TEX_IMAGE"
+ ],
+ "principledCount": 1,
+ "alphaModes": [
+  "HASHED"
+ ],
+ "unsupportedNodeTypes": [],
+ "textureCount": 2,
+ "textureDims": [
+  [
+   512,
+   512
+  ],
+  [
+   512,
+   512
+  ]
+ ],
+ "maxTextureDim": 512,
+ "embeddedTextureCount": 0,
+ "externalTextureCount": 2,
+ "missingTextureRefs": [],
+ "estimatedVRAMMB": 2.0,
+ "boneCount": 0,
+ "hasSkinWeights": false,
+ "vertexGroupCount": 0,
+ "actionCount": 0,
+ "animationDurations": [],
+ "maxAnimationDuration": 0,
+ "hasRootMotion": false,
+ "lodCount": 0,
+ "collisionCount": 0,
+ "importWarnings": [
+  "FBX version: 7700"
+ ],
+ "status": "OK",
+ "bytes": 25696,
+ "pack": "kenney-car-kit",
+ "packCategory": "Vehicles/Cars",
+ "license": "CC0-1.0",
+ "relPath": "Vehicles/Cars/kenney-car-kit/Models/FBX format/debris-spoiler-a.fbx"
+}

@@ -1,0 +1,89 @@
+{
+ "id": "Characters_Animated_kenney-animated-characters-protagonists_Model_characterMedium.fbx",
+ "ext": "fbx",
+ "started": 1785955726.7661352,
+ "importSeconds": 0.02,
+ "objectCount": 2,
+ "meshCount": 1,
+ "armatureCount": 1,
+ "negativeScale": false,
+ "emptyCount": 0,
+ "vertexCount": 804,
+ "triangleCount": 1604,
+ "meshes": [
+  {
+   "verts": 804,
+   "tris": 1604,
+   "hasUV": true,
+   "uvDegeneratePolys": 0,
+   "nonManifoldEdges": 0,
+   "nonManifoldVerts": 0,
+   "shapeKeyCount": 0,
+   "hasCustomNormals": true,
+   "objectName": "characterMedium",
+   "materialSlots": 1
+  }
+ ],
+ "boundsMin": [
+  -1.8091,
+  -0.5142,
+  0.0007
+ ],
+ "boundsMax": [
+  1.8095,
+  0.5339,
+  3.7654
+ ],
+ "boundsSize": [
+  3.6186,
+  1.0481,
+  3.7647
+ ],
+ "boundsCenter": [
+  0.0002,
+  0.0098,
+  1.883
+ ],
+ "maxDimensionM": 3.7647,
+ "pivotOffsetM": [
+  -0.0,
+  -0.01,
+  -1.883
+ ],
+ "materialCount": 1,
+ "materialNodeTypes": [
+  "BSDF_PRINCIPLED",
+  "NORMAL_MAP",
+  "OUTPUT_MATERIAL"
+ ],
+ "principledCount": 1,
+ "alphaModes": [
+  "HASHED"
+ ],
+ "unsupportedNodeTypes": [],
+ "textureCount": 0,
+ "textureDims": [],
+ "maxTextureDim": 0,
+ "embeddedTextureCount": 0,
+ "externalTextureCount": 0,
+ "missingTextureRefs": [],
+ "estimatedVRAMMB": 0.0,
+ "boneCount": 58,
+ "hasSkinWeights": true,
+ "vertexGroupCount": 32,
+ "actionCount": 0,
+ "animationDurations": [],
+ "maxAnimationDuration": 0,
+ "hasRootMotion": false,
+ "lodCount": 0,
+ "collisionCount": 0,
+ "importWarnings": [
+  "FBX version: 7400"
+ ],
+ "status": "OK",
+ "bytes": 167212,
+ "pack": "kenney-animated-characters-protagonists",
+ "packCategory": "Characters/Animated",
+ "license": "CC0-1.0",
+ "relPath": "Characters/Animated/kenney-animated-characters-protagonists/Model/characterMedium.fbx"
+}

@@ -1,0 +1,92 @@
+{
+ "id": "Vehicles_Cars_kenney-car-kit_Models_OBJ_format_debris-plate-b.obj",
+ "ext": "obj",
+ "started": 1785955747.6369507,
+ "importSeconds": 0.0,
+ "objectCount": 1,
+ "meshCount": 1,
+ "armatureCount": 0,
+ "negativeScale": false,
+ "emptyCount": 0,
+ "vertexCount": 24,
+ "triangleCount": 44,
+ "meshes": [
+  {
+   "verts": 24,
+   "tris": 44,
+   "hasUV": true,
+   "uvDegeneratePolys": 44,
+   "nonManifoldEdges": 0,
+   "nonManifoldVerts": 0,
+   "shapeKeyCount": 0,
+   "hasCustomNormals": true,
+   "objectName": "debris-plate-b",
+   "materialSlots": 1
+  }
+ ],
+ "boundsMin": [
+  -0.45,
+  -0.45,
+  -0.0
+ ],
+ "boundsMax": [
+  0.45,
+  0.45,
+  0.2
+ ],
+ "boundsSize": [
+  0.9,
+  0.9,
+  0.2
+ ],
+ "boundsCenter": [
+  0.0,
+  0.0,
+  0.1
+ ],
+ "maxDimensionM": 0.9,
+ "pivotOffsetM": [
+  0.0,
+  -0.0,
+  -0.1
+ ],
+ "materialCount": 1,
+ "materialNodeTypes": [
+  "BSDF_PRINCIPLED",
+  "OUTPUT_MATERIAL",
+  "TEX_IMAGE"
+ ],
+ "principledCount": 1,
+ "alphaModes": [
+  "HASHED"
+ ],
+ "unsupportedNodeTypes": [],
+ "textureCount": 1,
+ "textureDims": [
+  [
+   512,
+   512
+  ]
+ ],
+ "maxTextureDim": 512,
+ "embeddedTextureCount": 0,
+ "externalTextureCount": 1,
+ "missingTextureRefs": [],
+ "estimatedVRAMMB": 1.0,
+ "boneCount": 0,
+ "hasSkinWeights": false,
+ "vertexGroupCount": 0,
+ "actionCount": 0,
+ "animationDurations": [],
+ "maxAnimationDuration": 0,
+ "hasRootMotion": false,
+ "lodCount": 0,
+ "collisionCount": 0,
+ "importWarnings": [],
+ "status": "OK",
+ "bytes": 3785,
+ "pack": "kenney-car-kit",
+ "packCategory": "Vehicles/Cars",
+ "license": "CC0-1.0",
+ "relPath": "Vehicles/Cars/kenney-car-kit/Models/OBJ format/debris-plate-b.obj"
+}

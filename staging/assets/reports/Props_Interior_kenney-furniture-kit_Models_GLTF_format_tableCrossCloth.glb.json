@@ -1,0 +1,90 @@
+{
+ "id": "Props_Interior_kenney-furniture-kit_Models_GLTF_format_tableCrossCloth.glb",
+ "ext": "glb",
+ "started": 1785955742.3561385,
+ "importSeconds": 0.0,
+ "objectCount": 1,
+ "meshCount": 1,
+ "armatureCount": 0,
+ "negativeScale": false,
+ "emptyCount": 0,
+ "vertexCount": 311,
+ "triangleCount": 202,
+ "meshes": [
+  {
+   "verts": 311,
+   "tris": 202,
+   "hasUV": true,
+   "uvDegeneratePolys": 10,
+   "nonManifoldEdges": 16,
+   "nonManifoldVerts": 24,
+   "shapeKeyCount": 0,
+   "hasCustomNormals": true,
+   "objectName": "tableCrossCloth(Clone)",
+   "materialSlots": 2
+  }
+ ],
+ "boundsMin": [
+  0.0,
+  0.0,
+  0.0
+ ],
+ "boundsMax": [
+  0.8521,
+  0.4474,
+  0.3474
+ ],
+ "boundsSize": [
+  0.8521,
+  0.4474,
+  0.3474
+ ],
+ "boundsCenter": [
+  0.4261,
+  0.2237,
+  0.1737
+ ],
+ "maxDimensionM": 0.8521,
+ "pivotOffsetM": [
+  -0.426,
+  -0.224,
+  -0.174
+ ],
+ "materialCount": 2,
+ "materialNodeTypes": [
+  "BSDF_PRINCIPLED",
+  "OUTPUT_MATERIAL"
+ ],
+ "principledCount": 2,
+ "alphaModes": [
+  "HASHED"
+ ],
+ "unsupportedNodeTypes": [],
+ "textureCount": 0,
+ "textureDims": [],
+ "maxTextureDim": 0,
+ "embeddedTextureCount": 0,
+ "externalTextureCount": 0,
+ "missingTextureRefs": [],
+ "estimatedVRAMMB": 0.0,
+ "boneCount": 0,
+ "hasSkinWeights": false,
+ "vertexGroupCount": 0,
+ "actionCount": 0,
+ "animationDurations": [],
+ "maxAnimationDuration": 0,
+ "hasRootMotion": false,
+ "lodCount": 0,
+ "collisionCount": 0,
+ "importWarnings": [
+  "21:49:02 | INFO: Data are loaded, start creating Blender stuff",
+  "21:49:02 | INFO: Blender create Mesh node Mesh tableCrossCloth",
+  "21:49:02 | INFO: glTF import finished in 0.00s"
+ ],
+ "status": "OK",
+ "bytes": 13852,
+ "pack": "kenney-furniture-kit",
+ "packCategory": "Props/Interior",
+ "license": "CC0-1.0",
+ "relPath": "Props/Interior/kenney-furniture-kit/Models/GLTF format/tableCrossCloth.glb"
+}

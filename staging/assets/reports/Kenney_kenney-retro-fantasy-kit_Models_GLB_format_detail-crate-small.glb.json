@@ -1,0 +1,106 @@
+{
+ "id": "Kenney_kenney-retro-fantasy-kit_Models_GLB_format_detail-crate-small.glb",
+ "ext": "glb",
+ "started": 1785955739.8610365,
+ "importSeconds": 0.0,
+ "objectCount": 1,
+ "meshCount": 1,
+ "armatureCount": 0,
+ "negativeScale": false,
+ "emptyCount": 0,
+ "vertexCount": 48,
+ "triangleCount": 24,
+ "meshes": [
+  {
+   "verts": 48,
+   "tris": 24,
+   "hasUV": true,
+   "uvDegeneratePolys": 0,
+   "nonManifoldEdges": 0,
+   "nonManifoldVerts": 0,
+   "shapeKeyCount": 0,
+   "hasCustomNormals": true,
+   "objectName": "detail-crate-small",
+   "materialSlots": 1
+  }
+ ],
+ "boundsMin": [
+  -0.1,
+  -0.1,
+  0.0
+ ],
+ "boundsMax": [
+  0.1,
+  0.1,
+  0.2
+ ],
+ "boundsSize": [
+  0.2,
+  0.2,
+  0.2
+ ],
+ "boundsCenter": [
+  0.0,
+  0.0,
+  0.1
+ ],
+ "maxDimensionM": 0.2,
+ "pivotOffsetM": [
+  0.0,
+  0.0,
+  -0.1
+ ],
+ "materialCount": 1,
+ "materialNodeTypes": [
+  "BSDF_TRANSPARENT",
+  "EMISSION",
+  "LIGHT_PATH",
+  "MAPPING",
+  "MIX_SHADER",
+  "OUTPUT_MATERIAL",
+  "TEX_IMAGE",
+  "UVMAP"
+ ],
+ "principledCount": 0,
+ "alphaModes": [
+  "HASHED"
+ ],
+ "unsupportedNodeTypes": [
+  "EMISSION",
+  "LIGHT_PATH",
+  "MIX_SHADER",
+  "UVMAP"
+ ],
+ "textureCount": 1,
+ "textureDims": [
+  [
+   64,
+   64
+  ]
+ ],
+ "maxTextureDim": 64,
+ "embeddedTextureCount": 1,
+ "externalTextureCount": 0,
+ "missingTextureRefs": [],
+ "estimatedVRAMMB": 0.02,
+ "boneCount": 0,
+ "hasSkinWeights": false,
+ "vertexGroupCount": 0,
+ "actionCount": 0,
+ "animationDurations": [],
+ "maxAnimationDuration": 0,
+ "hasRootMotion": false,
+ "lodCount": 0,
+ "collisionCount": 0,
+ "importWarnings": [
+  "21:48:59 | INFO: Data are loaded, start creating Blender stuff",
+  "21:48:59 | INFO: Blender create Mesh node detail-crate-small",
+  "21:48:59 | INFO: glTF import finished in 0.00s"
+ ],
+ "status": "OK",
+ "bytes": 4196,
+ "pack": "kenney-retro-fantasy-kit",
+ "packCategory": "Kenney",
+ "license": "CC0-1.0",
+ "relPath": "Kenney/kenney-retro-fantasy-kit/Models/GLB format/detail-crate-small.glb"
+}

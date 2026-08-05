@@ -1,0 +1,86 @@
+{
+ "id": "Props_Quaternius_quaternius-lowpoly-modular-street_OBJ_Street_Elevated_Ramp.obj",
+ "ext": "obj",
+ "started": 1785955746.6800275,
+ "importSeconds": 0.0,
+ "objectCount": 1,
+ "meshCount": 1,
+ "armatureCount": 0,
+ "negativeScale": false,
+ "emptyCount": 0,
+ "vertexCount": 184,
+ "triangleCount": 362,
+ "meshes": [
+  {
+   "verts": 184,
+   "tris": 362,
+   "hasUV": false,
+   "uvDegeneratePolys": 0,
+   "nonManifoldEdges": 0,
+   "nonManifoldVerts": 0,
+   "shapeKeyCount": 0,
+   "hasCustomNormals": true,
+   "objectName": "Street_Elevated_Ramp_Cube.018",
+   "materialSlots": 3
+  }
+ ],
+ "boundsMin": [
+  -1.0,
+  -1.0,
+  -0.1021
+ ],
+ "boundsMax": [
+  1.0,
+  1.0012,
+  0.4799
+ ],
+ "boundsSize": [
+  2.0,
+  2.0012,
+  0.582
+ ],
+ "boundsCenter": [
+  -0.0,
+  0.0006,
+  0.1889
+ ],
+ "maxDimensionM": 2.0012,
+ "pivotOffsetM": [
+  0.0,
+  -0.001,
+  -0.189
+ ],
+ "materialCount": 3,
+ "materialNodeTypes": [
+  "BSDF_PRINCIPLED",
+  "OUTPUT_MATERIAL"
+ ],
+ "principledCount": 3,
+ "alphaModes": [
+  "HASHED"
+ ],
+ "unsupportedNodeTypes": [],
+ "textureCount": 0,
+ "textureDims": [],
+ "maxTextureDim": 0,
+ "embeddedTextureCount": 0,
+ "externalTextureCount": 0,
+ "missingTextureRefs": [],
+ "estimatedVRAMMB": 0.0,
+ "boneCount": 0,
+ "hasSkinWeights": false,
+ "vertexGroupCount": 0,
+ "actionCount": 0,
+ "animationDurations": [],
+ "maxAnimationDuration": 0,
+ "hasRootMotion": false,
+ "lodCount": 0,
+ "collisionCount": 0,
+ "importWarnings": [],
+ "status": "OK",
+ "bytes": 15004,
+ "pack": "quaternius-lowpoly-modular-street",
+ "packCategory": "Props/Quaternius",
+ "license": "CC0-1.0",
+ "relPath": "Props/Quaternius/quaternius-lowpoly-modular-street/OBJ/Street_Elevated_Ramp.obj"
+}

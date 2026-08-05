@@ -1,0 +1,113 @@
+{
+ "id": "Kenney_kenney-mini-arena_Models_GLB_format_weapon-rack.glb",
+ "ext": "glb",
+ "started": 1785955736.0484757,
+ "importSeconds": 0.0,
+ "objectCount": 2,
+ "meshCount": 2,
+ "armatureCount": 0,
+ "negativeScale": false,
+ "emptyCount": 0,
+ "vertexCount": 344,
+ "triangleCount": 212,
+ "meshes": [
+  {
+   "verts": 144,
+   "tris": 92,
+   "hasUV": true,
+   "uvDegeneratePolys": 92,
+   "nonManifoldEdges": 0,
+   "nonManifoldVerts": 0,
+   "shapeKeyCount": 0,
+   "hasCustomNormals": true,
+   "objectName": "Group",
+   "materialSlots": 1
+  },
+  {
+   "verts": 200,
+   "tris": 120,
+   "hasUV": true,
+   "uvDegeneratePolys": 120,
+   "nonManifoldEdges": 16,
+   "nonManifoldVerts": 0,
+   "shapeKeyCount": 0,
+   "hasCustomNormals": true,
+   "objectName": "weapon-rack",
+   "materialSlots": 1
+  }
+ ],
+ "boundsMin": [
+  -0.36,
+  -0.15,
+  0.0
+ ],
+ "boundsMax": [
+  0.36,
+  0.15,
+  0.4667
+ ],
+ "boundsSize": [
+  0.72,
+  0.3,
+  0.4667
+ ],
+ "boundsCenter": [
+  0.0,
+  0.0,
+  0.2333
+ ],
+ "maxDimensionM": 0.72,
+ "pivotOffsetM": [
+  0.0,
+  0.0,
+  -0.233
+ ],
+ "materialCount": 1,
+ "materialNodeTypes": [
+  "BSDF_PRINCIPLED",
+  "MAPPING",
+  "OUTPUT_MATERIAL",
+  "TEX_IMAGE",
+  "UVMAP"
+ ],
+ "principledCount": 1,
+ "alphaModes": [
+  "HASHED"
+ ],
+ "unsupportedNodeTypes": [
+  "UVMAP"
+ ],
+ "textureCount": 1,
+ "textureDims": [
+  [
+   512,
+   512
+  ]
+ ],
+ "maxTextureDim": 512,
+ "embeddedTextureCount": 1,
+ "externalTextureCount": 0,
+ "missingTextureRefs": [],
+ "estimatedVRAMMB": 1.0,
+ "boneCount": 0,
+ "hasSkinWeights": false,
+ "vertexGroupCount": 0,
+ "actionCount": 0,
+ "animationDurations": [],
+ "maxAnimationDuration": 0,
+ "hasRootMotion": false,
+ "lodCount": 0,
+ "collisionCount": 0,
+ "importWarnings": [
+  "21:48:56 | INFO: Data are loaded, start creating Blender stuff",
+  "21:48:56 | INFO: Blender create Mesh node weapon-rack",
+  "21:48:56 | INFO: Blender create Mesh node Group",
+  "21:48:56 | INFO: glTF import finished in 0.00s"
+ ],
+ "status": "OK",
+ "bytes": 20072,
+ "pack": "kenney-mini-arena",
+ "packCategory": "Kenney",
+ "license": "CC0-1.0",
+ "relPath": "Kenney/kenney-mini-arena/Models/GLB format/weapon-rack.glb"
+}

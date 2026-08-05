@@ -1,0 +1,100 @@
+{
+ "id": "Kenney_kenney-graveyard-kit_Models_GLB_format_rocks-tall.glb",
+ "ext": "glb",
+ "started": 1785955735.3860419,
+ "importSeconds": 0.0,
+ "objectCount": 1,
+ "meshCount": 1,
+ "armatureCount": 0,
+ "negativeScale": false,
+ "emptyCount": 0,
+ "vertexCount": 684,
+ "triangleCount": 364,
+ "meshes": [
+  {
+   "verts": 684,
+   "tris": 364,
+   "hasUV": true,
+   "uvDegeneratePolys": 364,
+   "nonManifoldEdges": 0,
+   "nonManifoldVerts": 0,
+   "shapeKeyCount": 0,
+   "hasCustomNormals": true,
+   "objectName": "rocks-tall",
+   "materialSlots": 1
+  }
+ ],
+ "boundsMin": [
+  -0.5104,
+  -0.4553,
+  -0.0
+ ],
+ "boundsMax": [
+  0.5227,
+  0.5648,
+  0.5876
+ ],
+ "boundsSize": [
+  1.0331,
+  1.0201,
+  0.5876
+ ],
+ "boundsCenter": [
+  0.0061,
+  0.0547,
+  0.2938
+ ],
+ "maxDimensionM": 1.0331,
+ "pivotOffsetM": [
+  -0.006,
+  -0.055,
+  -0.294
+ ],
+ "materialCount": 1,
+ "materialNodeTypes": [
+  "BSDF_PRINCIPLED",
+  "MAPPING",
+  "OUTPUT_MATERIAL",
+  "TEX_IMAGE",
+  "UVMAP"
+ ],
+ "principledCount": 1,
+ "alphaModes": [
+  "HASHED"
+ ],
+ "unsupportedNodeTypes": [
+  "UVMAP"
+ ],
+ "textureCount": 1,
+ "textureDims": [
+  [
+   512,
+   512
+  ]
+ ],
+ "maxTextureDim": 512,
+ "embeddedTextureCount": 1,
+ "externalTextureCount": 0,
+ "missingTextureRefs": [],
+ "estimatedVRAMMB": 1.0,
+ "boneCount": 0,
+ "hasSkinWeights": false,
+ "vertexGroupCount": 0,
+ "actionCount": 0,
+ "animationDurations": [],
+ "maxAnimationDuration": 0,
+ "hasRootMotion": false,
+ "lodCount": 0,
+ "collisionCount": 0,
+ "importWarnings": [
+  "21:48:55 | INFO: Data are loaded, start creating Blender stuff",
+  "21:48:55 | INFO: Blender create Mesh node rocks-tall",
+  "21:48:55 | INFO: glTF import finished in 0.00s"
+ ],
+ "status": "OK",
+ "bytes": 36924,
+ "pack": "kenney-graveyard-kit",
+ "packCategory": "Kenney",
+ "license": "CC0-1.0",
+ "relPath": "Kenney/kenney-graveyard-kit/Models/GLB format/rocks-tall.glb"
+}

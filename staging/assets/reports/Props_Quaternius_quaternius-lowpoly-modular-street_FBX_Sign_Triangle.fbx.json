@@ -1,0 +1,89 @@
+{
+ "id": "Props_Quaternius_quaternius-lowpoly-modular-street_FBX_Sign_Triangle.fbx",
+ "ext": "fbx",
+ "started": 1785955746.1522205,
+ "importSeconds": 0.0,
+ "objectCount": 1,
+ "meshCount": 1,
+ "armatureCount": 0,
+ "negativeScale": false,
+ "emptyCount": 0,
+ "vertexCount": 34,
+ "triangleCount": 54,
+ "meshes": [
+  {
+   "verts": 34,
+   "tris": 54,
+   "hasUV": false,
+   "uvDegeneratePolys": 0,
+   "nonManifoldEdges": 0,
+   "nonManifoldVerts": 0,
+   "shapeKeyCount": 0,
+   "hasCustomNormals": true,
+   "objectName": "Triangle",
+   "materialSlots": 3
+  }
+ ],
+ "boundsMin": [
+  -0.0076,
+  -0.0774,
+  0.0
+ ],
+ "boundsMax": [
+  0.0269,
+  0.0775,
+  0.5345
+ ],
+ "boundsSize": [
+  0.0345,
+  0.1549,
+  0.5344
+ ],
+ "boundsCenter": [
+  0.0097,
+  0.0,
+  0.2673
+ ],
+ "maxDimensionM": 0.5344,
+ "pivotOffsetM": [
+  -0.01,
+  -0.0,
+  -0.267
+ ],
+ "materialCount": 3,
+ "materialNodeTypes": [
+  "BSDF_PRINCIPLED",
+  "NORMAL_MAP",
+  "OUTPUT_MATERIAL"
+ ],
+ "principledCount": 3,
+ "alphaModes": [
+  "HASHED"
+ ],
+ "unsupportedNodeTypes": [],
+ "textureCount": 0,
+ "textureDims": [],
+ "maxTextureDim": 0,
+ "embeddedTextureCount": 0,
+ "externalTextureCount": 0,
+ "missingTextureRefs": [],
+ "estimatedVRAMMB": 0.0,
+ "boneCount": 0,
+ "hasSkinWeights": false,
+ "vertexGroupCount": 0,
+ "actionCount": 0,
+ "animationDurations": [],
+ "maxAnimationDuration": 0,
+ "hasRootMotion": false,
+ "lodCount": 0,
+ "collisionCount": 0,
+ "importWarnings": [
+  "FBX version: 7400"
+ ],
+ "status": "OK",
+ "bytes": 17596,
+ "pack": "quaternius-lowpoly-modular-street",
+ "packCategory": "Props/Quaternius",
+ "license": "CC0-1.0",
+ "relPath": "Props/Quaternius/quaternius-lowpoly-modular-street/FBX/Sign_Triangle.fbx"
+}

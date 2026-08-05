@@ -1,0 +1,95 @@
+{
+ "id": "Buildings_City_kenney-city-kit-suburban_Models_FBX_format_path-stones-long.fbx",
+ "ext": "fbx",
+ "started": 1785955725.2385573,
+ "importSeconds": 0.01,
+ "objectCount": 1,
+ "meshCount": 1,
+ "armatureCount": 0,
+ "negativeScale": false,
+ "emptyCount": 0,
+ "vertexCount": 30,
+ "triangleCount": 48,
+ "meshes": [
+  {
+   "verts": 30,
+   "tris": 48,
+   "hasUV": true,
+   "uvDegeneratePolys": 48,
+   "nonManifoldEdges": 3,
+   "nonManifoldVerts": 6,
+   "shapeKeyCount": 0,
+   "hasCustomNormals": true,
+   "objectName": "path-stones-long",
+   "materialSlots": 1
+  }
+ ],
+ "boundsMin": [
+  -0.07,
+  -0.2,
+  -0.0
+ ],
+ "boundsMax": [
+  0.07,
+  0.2,
+  0.01
+ ],
+ "boundsSize": [
+  0.14,
+  0.4,
+  0.01
+ ],
+ "boundsCenter": [
+  0.0,
+  0.0,
+  0.005
+ ],
+ "maxDimensionM": 0.4,
+ "pivotOffsetM": [
+  0.0,
+  0.0,
+  -0.005
+ ],
+ "materialCount": 1,
+ "materialNodeTypes": [
+  "BSDF_PRINCIPLED",
+  "NORMAL_MAP",
+  "OUTPUT_MATERIAL",
+  "TEX_IMAGE"
+ ],
+ "principledCount": 1,
+ "alphaModes": [
+  "HASHED"
+ ],
+ "unsupportedNodeTypes": [],
+ "textureCount": 1,
+ "textureDims": [
+  [
+   512,
+   512
+  ]
+ ],
+ "maxTextureDim": 512,
+ "embeddedTextureCount": 0,
+ "externalTextureCount": 1,
+ "missingTextureRefs": [],
+ "estimatedVRAMMB": 1.0,
+ "boneCount": 0,
+ "hasSkinWeights": false,
+ "vertexGroupCount": 0,
+ "actionCount": 0,
+ "animationDurations": [],
+ "maxAnimationDuration": 0,
+ "hasRootMotion": false,
+ "lodCount": 0,
+ "collisionCount": 0,
+ "importWarnings": [
+  "FBX version: 7700"
+ ],
+ "status": "OK",
+ "bytes": 26320,
+ "pack": "kenney-city-kit-suburban",
+ "packCategory": "Buildings/City",
+ "license": "CC0-1.0",
+ "relPath": "Buildings/City/kenney-city-kit-suburban/Models/FBX format/path-stones-long.fbx"
+}
