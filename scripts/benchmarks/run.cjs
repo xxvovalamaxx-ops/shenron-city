@@ -31,8 +31,8 @@ const MANHATTAN_APP = path.join(
   REPO, 'Made assets', 'Manhattan City', 'apps', 'manhattan-threejs')
 const CHROME = process.env.CHROME ||
   'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe'
-const SHENRON_URL = 'http://127.0.0.1:9122'
-const MANHATTAN_URL = 'http://127.0.0.1:5173'
+const SHENRON_URL = 'http://127.0.0.1:9132'
+const MANHATTAN_URL = 'http://127.0.0.1:5176'
 
 // ---------------------------------------------------------------- args ----
 
@@ -79,15 +79,19 @@ async function urlReachable(url) {
   }
 }
 
-async function ensureDevServer(url, cwd, viteBin) {
+async function ensureDevServer(url, cwd, viteBin, port) {
   if (await urlReachable(url)) return { started: false, child: null }
   if (process.env.SKIP_DEV_START) {
     throw new Error(`${url} not reachable and dev-server start disabled`)
   }
   console.log(`[dev] starting vite in ${cwd}`)
   // Run the vite node process directly (not npm, whose wrapper shell orphans
-  // the server when the harness is killed on Windows).
-  const child = spawn(process.execPath, [viteBin], { cwd, stdio: 'ignore' })
+  // the server when the harness is killed on Windows). --host pins IPv4 and
+  // --strictPort makes a port collision fail loudly instead of silently
+  // moving the server to another port where every probe times out.
+  const child = spawn(process.execPath,
+    [viteBin, '--host', '127.0.0.1', '--port', String(port), '--strictPort'],
+    { cwd, stdio: 'ignore' })
   for (let i = 0; i < 120; i++) {
     await sleep(500)
     if (await urlReachable(url)) return { started: true, child }
@@ -97,6 +101,21 @@ async function ensureDevServer(url, cwd, viteBin) {
 }
 
 // ------------------------------------------------------------- sampling ----
+
+function gpuProbeExpr() {
+  return `(() => {
+    try {
+      const c = document.createElement('canvas');
+      const gl = c.getContext('webgl2') || c.getContext('webgl');
+      if (!gl) return { renderer: null, vendor: null };
+      const ext = gl.getExtension('WEBGL_debug_renderer_info');
+      return {
+        renderer: ext ? gl.getParameter(ext.UNMASKED_RENDERER_WEBGL) : gl.getParameter(gl.RENDERER),
+        vendor: ext ? gl.getParameter(ext.UNMASKED_VENDOR_WEBGL) : null,
+      };
+    } catch (e) { return { renderer: null, vendor: null }; }
+  })()`
+}
 
 function samplerScript(ms) {
   return `(async () => {
@@ -168,9 +187,18 @@ function manhattanSnapshotExpr() {
 
 async function setupManhattan(page, location, scenario, seconds) {
   const loc = LOCATIONS[location]
+  // capture.js fetches the street/walk graphs asynchronously, so the first
+  // place() can snap to the carriageway instead of the pavement. Prime both
+  // fetches and wait before placing, or the camera lands somewhere different
+  // on every pass (measured: -1475,2432 vs -1505,2466 on two runs).
   const placeExpr = `(async () => {
     const c = window.__capture;
     if (!c) return { ok: false, why: 'no __capture' };
+    await Promise.all([
+      fetch('/streets/walk_graph.json').catch(() => {}),
+      fetch('/streets/street_graph.json').catch(() => {}),
+    ]);
+    await new Promise((r) => setTimeout(r, 1500));
     await c.place(${JSON.stringify(loc.spec)});
     await c.settle(20000);
     return { ok: true };
@@ -200,12 +228,34 @@ async function setupManhattan(page, location, scenario, seconds) {
 
 async function setupShenron(page, url, scenario) {
   if (scenario === 'zone') return // caller reloads between phases
-  await sleep(3000) // let the scene settle after spawn
+  // The first seconds after spawn are asset streaming + shader compilation;
+  // a sample taken in that window measures loading, not steady state. Wait
+  // for it so pass 1 measures the same thing as pass 2 (measured: a 5 s
+  // stall in pass 1 with a 3 s warmup, gone with 8 s).
+  await sleep(8000)
+}
+
+// Some presets compile shaders or stream assets a few seconds after the
+// fixed warmup (measured: a ~4.5 s stall 8 s after load on the medium
+// preset). A sample containing a >1 s stall measures loading, not steady
+// state, so discard it and take another.
+async function steadySample(page, seconds, moving) {
+  let sample = null
+  for (let attempt = 1; attempt <= 3; attempt++) {
+    sample = await evaluate(page, samplerScript(seconds * 1000))
+    const stalled = (sample.deltas || []).filter((d) => d > 1000).length
+    if (!stalled || attempt === 3) return { ...sample, stalledWarmups: attempt - 1 }
+    if (moving) await key(page, 'ShiftLeft', false)
+    await sleep(3000)
+    if (moving) await key(page, 'ShiftLeft', true)
+  }
+  return { ...sample, stalledWarmups: 2 }
 }
 
 // ----------------------------------------------------------------- main ----
 
 async function runPass({ page, app, url, location, scenario, seconds, quality, cwd }) {
+  const gpu = await evaluate(page, gpuProbeExpr())
   if (app === 'shenron') {
     const view = LOCATIONS[location].view || location
     await navigate(page, `${url}/?spawn=${view}&inspect=1&quality=${quality}`)
@@ -221,13 +271,13 @@ async function runPass({ page, app, url, location, scenario, seconds, quality, c
       if (scenario === 'sprint') await key(page, 'ShiftLeft', true)
       await sleep(500)
     }
-    const sample = await evaluate(page, samplerScript(seconds * 1000))
+    const sample = await steadySample(page, seconds, moving)
     if (moving) {
       await key(page, 'ShiftLeft', false)
       await key(page, 'KeyW', false)
     }
     const before = await screenshot(page)
-    return { sample, stats: null, before }
+    return { sample, stats: null, gpu, before }
   }
 
   // manhattan
@@ -237,10 +287,10 @@ async function runPass({ page, app, url, location, scenario, seconds, quality, c
     return r
   })
   await setupManhattan(page, location, scenario, seconds)
-  const sample = await evaluate(page, samplerScript(seconds * 1000))
+  const sample = await steadySample(page, seconds, false)
   const stats = await evaluate(page, manhattanSnapshotExpr())
   const before = await screenshot(page)
-  return { sample, stats, before }
+  return { sample, stats, gpu, before }
 }
 
 async function main() {
@@ -253,19 +303,19 @@ async function main() {
   }
 
   fs.mkdirSync(args.out, { recursive: true })
-  const tag = `${app}-${location}-${scenario}`
+  const tag = `${app}-${location}-${scenario}` + (app === 'shenron' ? `-${args.quality}` : '')
 
   // dev servers
   const dev = []
   if (!args.noStartDev) {
     trace("ensure shenron")
     const shen = await ensureDevServer(
-      SHENRON_URL, REPO, path.join(REPO, 'node_modules', 'vite', 'bin', 'vite.js'))
+      SHENRON_URL, REPO, path.join(REPO, 'node_modules', 'vite', 'bin', 'vite.js'), 9132)
     if (shen.started) dev.push(shen.child)
     trace("ensure manhattan")
     const manh = await ensureDevServer(
       MANHATTAN_URL, MANHATTAN_APP,
-      path.join(MANHATTAN_APP, 'node_modules', 'vite', 'bin', 'vite.js'))
+      path.join(MANHATTAN_APP, 'node_modules', 'vite', 'bin', 'vite.js'), 5176)
     if (manh.started) dev.push(manh.child)
   }
   const url = app === 'manhattan' ? MANHATTAN_URL : SHENRON_URL
@@ -296,6 +346,7 @@ async function main() {
         heapTotalMB: result.sample.heapTotalMB,
         loadMs: result.sample.loadMs,
         appStats: result.stats,
+        gpu: result.gpu,
       }
       passes.push(pass)
       fs.writeFileSync(

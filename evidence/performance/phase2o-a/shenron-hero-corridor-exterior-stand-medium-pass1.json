@@ -1,0 +1,39 @@
+{
+  "pass": 1,
+  "app": "shenron",
+  "location": "hero-corridor-exterior",
+  "scenario": "stand",
+  "quality": "medium",
+  "startedAtUtc": "2026-08-06T00:48:33.347Z",
+  "measuredMs": 8009.399999991059,
+  "stats": {
+    "frames": 701,
+    "deadFrames": 0,
+    "frameMs": {
+      "avg": 11.425249643358116,
+      "median": 10.200000002980232,
+      "p1": 7.5999999940395355,
+      "p01": 7,
+      "min": 7,
+      "max": 673.4000000059605
+    },
+    "fps": {
+      "avg": 87.52543981227875,
+      "median": 98.03921565762944,
+      "p1": 131.5789474716147,
+      "p01": 142.85714285714286,
+      "min": 1.4850014849883408
+    }
+  },
+  "longTasks": [
+    672
+  ],
+  "heapUsedMB": 456.71270847320557,
+  "heapTotalMB": 509.91224002838135,
+  "loadMs": 810,
+  "appStats": null,
+  "gpu": {
+    "renderer": "ANGLE (NVIDIA, NVIDIA GeForce RTX 5070 (0x00002F04) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+    "vendor": "Google Inc. (NVIDIA)"
+  }
+}

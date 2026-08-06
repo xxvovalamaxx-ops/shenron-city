@@ -13,9 +13,22 @@
 |---|---|---|---|---|---|---|
 | — | ds/asset-catalog | shenron | exists (locked) | — | pending | no |
 | — | ds/asset-technical | shenron | exists (sparse unfinished) | asset-catalog | pending | no |
-| — | ds/2o-baseline | Manhattan | worktree ready | — | pending | no |
+| — | ds/2o-baseline | Manhattan | **delivered 2026-08-06 in outer repo** (harness, P2-075 reconciliation, baseline docs/tests) — see TASK_BOARD 2O-A-001 | — | pending | no |
 | — | ds/qa-integrity | Manhattan | worktree ready | 2o-baseline | pending | no |
 | — | ds/vision-bridge | Manhattan | worktree ready | qa-integrity | pending | no |
+
+## Note (2026-08-06)
+
+- Worker directive for 2O-A-001 specified the **outer** repo (outputs
+  `docs/performance/`, `evidence/performance/phase2o-a/`, `tests/performance/`);
+  task board listed the Manhattan repo. Delivered in the outer repo on
+  `ds/2o-baseline`. QA worker (2O-A-002) should use
+  `docs/performance/CAMERA_LOCATIONS.json` as the camera source and
+  `INVALIDATED_MEASUREMENTS.md` for P2-044/P2-075 context.
+- A concurrent session committed wholesale to shenron `main` during 2O-A-001
+  (swept in mid-development harness scratch files); the 2o-baseline commit
+  removes them. `main` also gained the asset-catalog/qa-integrity/vision-bridge
+  merges — the branch contains them; reconciliation is the merge step.
 
 ## Wave 1 definition of done
 

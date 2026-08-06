@@ -10,14 +10,23 @@
       "title": "Honest benchmark harness (camera identity + metrics)",
       "branch": "ds/2o-baseline",
       "repo": "Manhattan",
-      "status": "worktree_ready_awaiting_dispatch",
+      "status": "delivered_outer_repo",
       "depends_on": [],
       "acceptance": [
         "Programmatic fixed-camera rig keyed to documented world coordinates (START/Times Square, 620 m alt, Floor 45, corridor, Battery, street level)",
         "P2-075 reconciliation record: confirm START = TIMES_SQUARE in main.js; measure at the real location",
         "Re-measure every 'optimistic and unverified' claim from HANDOFF/BASELINE/ledger at real locations; measured vs claimed table",
         "JSON evidence committed under docs/qa/evidence/"
-      ]
+      ],
+      "delivered_2026_08_06": {
+        "repo_used": "outer shenron-city (per worker directive; task board listed Manhattan)",
+        "harness": "scripts/benchmarks/run.cjs (CDP, zero deps; targets both Manhattan app and shenron game)",
+        "p2_075": "verified + reconciled; true Times Square (-1476,-2433); old START (-1900,-600) = Lincoln Square",
+        "evidence": "docs/performance/ + evidence/performance/phase2o-a/ (per-pass JSON, screenshots git-ignored)",
+        "tests": "tests/performance/camera-math.test.ts (9 tests, incl. registry-district regression)",
+        "invalidated": "P2-044 + HANDOFF 'Times Square' numbers (939,647 tris / 89 draws / 0.27 ms) were measured at Lincoln Square",
+        "variance": "3 passes x 8 s per run; spread % reported; cold-pass stalls re-sampled"
+      }
     },
     {
       "id": "2O-A-002",

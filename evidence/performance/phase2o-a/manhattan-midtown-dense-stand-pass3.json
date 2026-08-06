@@ -1,0 +1,69 @@
+{
+  "pass": 3,
+  "app": "manhattan",
+  "location": "midtown-dense",
+  "scenario": "stand",
+  "quality": null,
+  "startedAtUtc": "2026-08-06T00:26:59.517Z",
+  "measuredMs": 8024.5,
+  "stats": {
+    "frames": 216,
+    "deadFrames": 0,
+    "frameMs": {
+      "avg": 37.150000000027596,
+      "median": 37.70000000298023,
+      "p1": 29.900000005960464,
+      "p01": 29.899999991059303,
+      "min": 29.899999991059303,
+      "max": 48.29999999701977
+    },
+    "fps": {
+      "avg": 26.91790040374851,
+      "median": 26.525198936895194,
+      "p1": 33.44481604684459,
+      "p01": 33.44481606351237,
+      "min": 20.703933748689494
+    }
+  },
+  "longTasks": [],
+  "heapUsedMB": 244.84466743469238,
+  "heapTotalMB": 315.97986793518066,
+  "loadMs": 79,
+  "appStats": {
+    "ok": true,
+    "drawCalls": 109,
+    "triangles": 926496,
+    "tilesResident": 21,
+    "tilesLoading": 0,
+    "tilesQueued": 0,
+    "tilesTotal": 119,
+    "vehicles": 477,
+    "pedestrians": 455,
+    "demand": 0.993,
+    "lod": {
+      "full": 6,
+      "L2": 14,
+      "L3": 62,
+      "L4": 20,
+      "off": 0,
+      "tris": 505138,
+      "files": 96
+    },
+    "weather": {
+      "hour": 17,
+      "clouds": 77,
+      "drops": 0,
+      "wet": 0
+    },
+    "camera": {
+      "x": -1468.8,
+      "y": 13.9,
+      "z": 3460.2
+    },
+    "district": "Midtown South-Flatiron-Union Square"
+  },
+  "gpu": {
+    "renderer": "ANGLE (NVIDIA, NVIDIA GeForce RTX 5070 (0x00002F04) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+    "vendor": "Google Inc. (NVIDIA)"
+  }
+}

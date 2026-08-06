@@ -1,0 +1,71 @@
+{
+  "pass": 3,
+  "app": "manhattan",
+  "location": "times-square",
+  "scenario": "night",
+  "quality": null,
+  "startedAtUtc": "2026-08-06T00:30:26.201Z",
+  "measuredMs": 8027,
+  "stats": {
+    "frames": 227,
+    "deadFrames": 0,
+    "frameMs": {
+      "avg": 35.36079295156811,
+      "median": 34.900000005960464,
+      "p1": 28.899999991059303,
+      "p01": 28.5,
+      "min": 28.5,
+      "max": 55
+    },
+    "fps": {
+      "avg": 28.27990880661668,
+      "median": 28.65329512404622,
+      "p1": 34.602076135272206,
+      "p01": 35.08771929824562,
+      "min": 18.181818181818183
+    }
+  },
+  "longTasks": [
+    55
+  ],
+  "heapUsedMB": 203.94146633148193,
+  "heapTotalMB": 207.5595006942749,
+  "loadMs": 88,
+  "appStats": {
+    "ok": true,
+    "drawCalls": 94,
+    "triangles": 972763,
+    "tilesResident": 19,
+    "tilesLoading": 0,
+    "tilesQueued": 0,
+    "tilesTotal": 119,
+    "vehicles": 430,
+    "pedestrians": 359,
+    "demand": 1,
+    "lod": {
+      "full": 4,
+      "L2": 14,
+      "L3": 57,
+      "L4": 27,
+      "off": 0,
+      "tris": 515746,
+      "files": 98
+    },
+    "weather": {
+      "hour": 23.5,
+      "clouds": 77,
+      "drops": 0,
+      "wet": 0
+    },
+    "camera": {
+      "x": -1505.6,
+      "y": 13.9,
+      "z": 2466.2
+    },
+    "district": "Midtown-Times Square"
+  },
+  "gpu": {
+    "renderer": "ANGLE (NVIDIA, NVIDIA GeForce RTX 5070 (0x00002F04) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+    "vendor": "Google Inc. (NVIDIA)"
+  }
+}

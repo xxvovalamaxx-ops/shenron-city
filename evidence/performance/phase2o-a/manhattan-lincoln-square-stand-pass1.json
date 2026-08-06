@@ -1,0 +1,69 @@
+{
+  "pass": 1,
+  "app": "manhattan",
+  "location": "lincoln-square",
+  "scenario": "stand",
+  "quality": null,
+  "startedAtUtc": "2026-08-06T00:25:48.056Z",
+  "measuredMs": 8006.79999999702,
+  "stats": {
+    "frames": 427,
+    "deadFrames": 0,
+    "frameMs": {
+      "avg": 18.7510538641756,
+      "median": 18.69999998807907,
+      "p1": 14.5,
+      "p01": 14.299999997019768,
+      "min": 14.299999997019768,
+      "max": 31.80000001192093
+    },
+    "fps": {
+      "avg": 53.33033584371102,
+      "median": 53.475935862967,
+      "p1": 68.96551724137932,
+      "p01": 69.9300699446439,
+      "min": 31.446540868714717
+    }
+  },
+  "longTasks": [],
+  "heapUsedMB": 230.61966609954834,
+  "heapTotalMB": 279.97433376312256,
+  "loadMs": 98,
+  "appStats": {
+    "ok": true,
+    "drawCalls": 65,
+    "triangles": 402109,
+    "tilesResident": 22,
+    "tilesLoading": 0,
+    "tilesQueued": 0,
+    "tilesTotal": 119,
+    "vehicles": 308,
+    "pedestrians": 25,
+    "demand": 0.029,
+    "lod": {
+      "full": 6,
+      "L2": 12,
+      "L3": 51,
+      "L4": 33,
+      "off": 0,
+      "tris": 479390,
+      "files": 96
+    },
+    "weather": {
+      "hour": 17,
+      "clouds": 77,
+      "drops": 0,
+      "wet": 0
+    },
+    "camera": {
+      "x": -1878.7,
+      "y": 13.9,
+      "z": 580.7
+    },
+    "district": "Upper West Side-Lincoln Square"
+  },
+  "gpu": {
+    "renderer": "ANGLE (NVIDIA, NVIDIA GeForce RTX 5070 (0x00002F04) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+    "vendor": "Google Inc. (NVIDIA)"
+  }
+}

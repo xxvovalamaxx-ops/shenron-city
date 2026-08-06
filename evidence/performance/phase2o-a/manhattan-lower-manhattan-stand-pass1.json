@@ -1,0 +1,69 @@
+{
+  "pass": 1,
+  "app": "manhattan",
+  "location": "lower-manhattan",
+  "scenario": "stand",
+  "quality": null,
+  "startedAtUtc": "2026-08-06T00:27:15.834Z",
+  "measuredMs": 8004,
+  "stats": {
+    "frames": 334,
+    "deadFrames": 0,
+    "frameMs": {
+      "avg": 23.963772455107666,
+      "median": 23.799999997019768,
+      "p1": 19,
+      "p01": 18.69999998807907,
+      "min": 18.69999998807907,
+      "max": 33.6000000089407
+    },
+    "fps": {
+      "avg": 41.72965679228267,
+      "median": 42.01680672795041,
+      "p1": 52.63157894736842,
+      "p01": 53.475935862967,
+      "min": 29.761904753985352
+    }
+  },
+  "longTasks": [],
+  "heapUsedMB": 333.0788278579712,
+  "heapTotalMB": 388.7211084365845,
+  "loadMs": 99,
+  "appStats": {
+    "ok": true,
+    "drawCalls": 93,
+    "triangles": 796587,
+    "tilesResident": 21,
+    "tilesLoading": 0,
+    "tilesQueued": 0,
+    "tilesTotal": 119,
+    "vehicles": 553,
+    "pedestrians": 595,
+    "demand": 1,
+    "lod": {
+      "full": 6,
+      "L2": 14,
+      "L3": 41,
+      "L4": 41,
+      "off": 0,
+      "tris": 375618,
+      "files": 96
+    },
+    "weather": {
+      "hour": 17,
+      "clouds": 77,
+      "drops": 0,
+      "wet": 0
+    },
+    "camera": {
+      "x": -3545.7,
+      "y": 13.9,
+      "z": 8093.6
+    },
+    "district": "Financial District-Battery Park City"
+  },
+  "gpu": {
+    "renderer": "ANGLE (NVIDIA, NVIDIA GeForce RTX 5070 (0x00002F04) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+    "vendor": "Google Inc. (NVIDIA)"
+  }
+}

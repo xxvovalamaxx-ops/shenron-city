@@ -1,0 +1,276 @@
+{
+  "schemaVersion": 1,
+  "generatedAtUtc": "2026-08-06T01:00:27.787Z",
+  "harness": {
+    "url": "scripts/benchmarks/run.cjs",
+    "sampleSeconds": 8,
+    "resolution": "1280x720, DPR 1",
+    "browser": "headless Chrome (CDP), ANGLE/D3D11 GPU",
+    "passesPerRun": 3
+  },
+  "count": 17,
+  "runs": [
+    {
+      "app": "manhattan",
+      "location": "lincoln-square",
+      "scenario": "stand",
+      "quality": "high",
+      "passes": 3,
+      "cameraAsserted": "the old mislabelled START (-1900,-600); registry \"Upper West Side\"",
+      "manhattanProjection": {
+        "x": -1896.6166894201765,
+        "y": -597.0996000001797
+      },
+      "fpsAvg": 49.32088140871459,
+      "fpsP1": 62.921552147494445,
+      "fpsP01": 66.49660611624667,
+      "spreadPct": 13.674434464458256,
+      "appStats": null
+    },
+    {
+      "app": "manhattan",
+      "location": "lower-manhattan",
+      "scenario": "stand",
+      "quality": "high",
+      "passes": 3,
+      "cameraAsserted": "Financial District canyon",
+      "manhattanProjection": {
+        "x": -3540.3511535854473,
+        "y": -8082.959400000411
+      },
+      "fpsAvg": 41.69469196437167,
+      "fpsP1": 51.471136133159355,
+      "fpsP01": 51.92613177459972,
+      "spreadPct": 4.038997852158642,
+      "appStats": null
+    },
+    {
+      "app": "manhattan",
+      "location": "manhattan-aerial",
+      "scenario": "stand",
+      "quality": "high",
+      "passes": 3,
+      "cameraAsserted": "midtown from 500 m",
+      "manhattanProjection": {
+        "x": -1475.1463139937368,
+        "y": -2543.202000000358
+      },
+      "fpsAvg": 100.00790235448073,
+      "fpsP1": 108.30606212813306,
+      "fpsP01": 274.72527501918324,
+      "spreadPct": 0.06745263879790298,
+      "appStats": null
+    },
+    {
+      "app": "manhattan",
+      "location": "midtown-dense",
+      "scenario": "stand",
+      "quality": "high",
+      "passes": 3,
+      "cameraAsserted": "5th Ave & 34th St",
+      "manhattanProjection": {
+        "x": -1492.0051290101715,
+        "y": -3494.138400000499
+      },
+      "fpsAvg": 26.713033836474818,
+      "fpsP1": 33.407655142340836,
+      "fpsP01": 33.51963667105867,
+      "spreadPct": 10.17729231509282,
+      "appStats": null
+    },
+    {
+      "app": "manhattan",
+      "location": "times-square",
+      "scenario": "night",
+      "quality": "high",
+      "passes": 3,
+      "cameraAsserted": "true Times Square (P2-075 corrected: -1476,-2433; registry \"Midtown West / Times Sq\")",
+      "manhattanProjection": {
+        "x": -1475.1463139937368,
+        "y": -2432.62799999983
+      },
+      "fpsAvg": 28.058904982997376,
+      "fpsP1": 34.137051119180136,
+      "fpsP01": 34.645456918215686,
+      "spreadPct": 1.320842758885366,
+      "appStats": null
+    },
+    {
+      "app": "manhattan",
+      "location": "times-square",
+      "scenario": "rain",
+      "quality": "high",
+      "passes": 3,
+      "cameraAsserted": "true Times Square (P2-075 corrected: -1476,-2433; registry \"Midtown West / Times Sq\")",
+      "manhattanProjection": {
+        "x": -1475.1463139937368,
+        "y": -2432.62799999983
+      },
+      "fpsAvg": 25.937219689208373,
+      "fpsP1": 34.682452608082485,
+      "fpsP01": 34.96703894892253,
+      "spreadPct": 0.5388157138948192,
+      "appStats": null
+    },
+    {
+      "app": "manhattan",
+      "location": "times-square",
+      "scenario": "stand",
+      "quality": "high",
+      "passes": 3,
+      "cameraAsserted": "true Times Square (P2-075 corrected: -1476,-2433; registry \"Midtown West / Times Sq\")",
+      "manhattanProjection": {
+        "x": -1475.1463139937368,
+        "y": -2432.62799999983
+      },
+      "fpsAvg": 27.11041829960618,
+      "fpsP1": 34.494459133601616,
+      "fpsP01": 35.09144555201494,
+      "spreadPct": 3.010278163051304,
+      "appStats": null
+    },
+    {
+      "app": "manhattan",
+      "location": "times-square",
+      "scenario": "zone",
+      "quality": "high",
+      "passes": 3,
+      "cameraAsserted": "true Times Square (P2-075 corrected: -1476,-2433; registry \"Midtown West / Times Sq\")",
+      "manhattanProjection": {
+        "x": -1475.1463139937368,
+        "y": -2432.62799999983
+      },
+      "fpsAvg": 23.56199885333339,
+      "fpsP1": 29.07319293171102,
+      "fpsP01": 29.383692691416282,
+      "spreadPct": 3.048742479623814,
+      "appStats": null
+    },
+    {
+      "app": "shenron",
+      "location": "elevator-interior",
+      "scenario": "stand",
+      "quality": "high",
+      "passes": 3,
+      "cameraAsserted": "elevator car (dev-view)",
+      "manhattanProjection": null,
+      "fpsAvg": 99.92670494711814,
+      "fpsP1": 159.42028981334127,
+      "fpsP01": 251.4127854754257,
+      "spreadPct": 0.17001861597143111,
+      "appStats": null
+    },
+    {
+      "app": "shenron",
+      "location": "floor45-arrival",
+      "scenario": "stand",
+      "quality": "high",
+      "passes": 3,
+      "cameraAsserted": "floor 45 arrival (dev-view)",
+      "manhattanProjection": null,
+      "fpsAvg": 99.95499716369322,
+      "fpsP1": 129.970760268316,
+      "fpsP01": 286.16852147600963,
+      "spreadPct": 0.1650352991919658,
+      "appStats": null
+    },
+    {
+      "app": "shenron",
+      "location": "hero-corridor-exterior",
+      "scenario": "sprint",
+      "quality": "high",
+      "passes": 3,
+      "cameraAsserted": "Dragon Boulevard exterior (dev-view)",
+      "manhattanProjection": null,
+      "fpsAvg": 88.95458142430725,
+      "fpsP1": 128.4304942494246,
+      "fpsP01": 145.18675889054532,
+      "spreadPct": 14.706129837826529,
+      "appStats": null
+    },
+    {
+      "app": "shenron",
+      "location": "hero-corridor-exterior",
+      "scenario": "stand",
+      "quality": "high",
+      "passes": 3,
+      "cameraAsserted": "Dragon Boulevard exterior (dev-view)",
+      "manhattanProjection": null,
+      "fpsAvg": 82.2129212845038,
+      "fpsP1": 121.9633124787602,
+      "fpsP01": 131.68718649992178,
+      "spreadPct": 11.399755589807189,
+      "appStats": null
+    },
+    {
+      "app": "shenron",
+      "location": "hero-corridor-exterior",
+      "scenario": "stand",
+      "quality": "low",
+      "passes": 3,
+      "cameraAsserted": "Dragon Boulevard exterior (dev-view)",
+      "manhattanProjection": null,
+      "fpsAvg": 92.39940242940878,
+      "fpsP1": 131.07013104248648,
+      "fpsP01": 143.81589672628473,
+      "spreadPct": 4.617528029167995,
+      "appStats": null
+    },
+    {
+      "app": "shenron",
+      "location": "hero-corridor-exterior",
+      "scenario": "stand",
+      "quality": "medium",
+      "passes": 3,
+      "cameraAsserted": "Dragon Boulevard exterior (dev-view)",
+      "manhattanProjection": null,
+      "fpsAvg": 94.52319531138971,
+      "fpsP1": 133.34913861041204,
+      "fpsP01": 146.4332769762674,
+      "spreadPct": 11.306992123721034,
+      "appStats": null
+    },
+    {
+      "app": "shenron",
+      "location": "hero-corridor-exterior",
+      "scenario": "walk",
+      "quality": "high",
+      "passes": 3,
+      "cameraAsserted": "Dragon Boulevard exterior (dev-view)",
+      "manhattanProjection": null,
+      "fpsAvg": 86.80703657354842,
+      "fpsP1": 123.62298948735565,
+      "fpsP01": 137.3024471188105,
+      "spreadPct": 9.354394128626636,
+      "appStats": null
+    },
+    {
+      "app": "shenron",
+      "location": "hq-lobby",
+      "scenario": "stand",
+      "quality": "high",
+      "passes": 3,
+      "cameraAsserted": "HQ lobby (dev-view)",
+      "manhattanProjection": null,
+      "fpsAvg": 99.62515697548633,
+      "fpsP1": 144.31864822493725,
+      "fpsP01": 197.462428992457,
+      "spreadPct": 0.37874571933216455,
+      "appStats": null
+    },
+    {
+      "app": "shenron",
+      "location": "hq-plaza",
+      "scenario": "stand",
+      "quality": "high",
+      "passes": 3,
+      "cameraAsserted": "HQ plaza (dev-view)",
+      "manhattanProjection": null,
+      "fpsAvg": 99.54186107118073,
+      "fpsP1": 145.65826334828975,
+      "fpsP01": 165.02612612899313,
+      "spreadPct": 0.14301473443631008,
+      "appStats": null
+    }
+  ]
+}

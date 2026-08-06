@@ -1,0 +1,75 @@
+{
+  "pass": 2,
+  "app": "manhattan",
+  "location": "times-square",
+  "scenario": "zone",
+  "quality": null,
+  "startedAtUtc": "2026-08-06T00:31:07.418Z",
+  "measuredMs": 8001.300000011921,
+  "stats": {
+    "frames": 189,
+    "deadFrames": 0,
+    "frameMs": {
+      "avg": 42.33386243390974,
+      "median": 43,
+      "p1": 34.29999999701977,
+      "p01": 34.20000000298023,
+      "min": 34.20000000298023,
+      "max": 55.599999994039536
+    },
+    "fps": {
+      "avg": 23.621752009072356,
+      "median": 23.25581395348837,
+      "p1": 29.154518952970474,
+      "p01": 29.239766079323353,
+      "min": 17.985611512719473
+    }
+  },
+  "longTasks": [
+    55,
+    50,
+    54,
+    50,
+    52
+  ],
+  "heapUsedMB": 250.15256786346436,
+  "heapTotalMB": 293.7973279953003,
+  "loadMs": 83,
+  "appStats": {
+    "ok": true,
+    "drawCalls": 94,
+    "triangles": 888650,
+    "tilesResident": 20,
+    "tilesLoading": 0,
+    "tilesQueued": 0,
+    "tilesTotal": 119,
+    "vehicles": 364,
+    "pedestrians": 88,
+    "demand": 0.154,
+    "lod": {
+      "full": 4,
+      "L2": 11,
+      "L3": 33,
+      "L4": 54,
+      "off": 0,
+      "tris": 343098,
+      "files": 98
+    },
+    "weather": {
+      "hour": 17,
+      "clouds": 77,
+      "drops": 0,
+      "wet": 0
+    },
+    "camera": {
+      "x": 1695.7,
+      "y": 13.9,
+      "z": -3235.1
+    },
+    "district": "Harlem (South)"
+  },
+  "gpu": {
+    "renderer": "ANGLE (NVIDIA, NVIDIA GeForce RTX 5070 (0x00002F04) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+    "vendor": "Google Inc. (NVIDIA)"
+  }
+}

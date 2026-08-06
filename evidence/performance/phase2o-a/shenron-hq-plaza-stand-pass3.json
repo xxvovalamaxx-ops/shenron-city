@@ -1,0 +1,37 @@
+{
+  "pass": 3,
+  "app": "shenron",
+  "location": "hq-plaza",
+  "scenario": "stand",
+  "quality": "high",
+  "startedAtUtc": "2026-08-06T00:34:00.893Z",
+  "measuredMs": 8000.800000011921,
+  "stats": {
+    "frames": 796,
+    "deadFrames": 0,
+    "frameMs": {
+      "avg": 10.05100502511814,
+      "median": 9.899999991059303,
+      "p1": 6.600000008940697,
+      "p01": 5.5,
+      "min": 5.5,
+      "max": 31.099999994039536
+    },
+    "fps": {
+      "avg": 99.49253805971965,
+      "median": 101.0101011013233,
+      "p1": 151.51515130990137,
+      "p01": 181.8181818181818,
+      "min": 32.154340842175394
+    }
+  },
+  "longTasks": [],
+  "heapUsedMB": 462.9149465560913,
+  "heapTotalMB": 510.6987257003784,
+  "loadMs": 142,
+  "appStats": null,
+  "gpu": {
+    "renderer": "ANGLE (NVIDIA, NVIDIA GeForce RTX 5070 (0x00002F04) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+    "vendor": "Google Inc. (NVIDIA)"
+  }
+}
