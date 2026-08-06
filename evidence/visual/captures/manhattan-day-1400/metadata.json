@@ -1,0 +1,95 @@
+{
+  "scene_id": "manhattan-day-1400",
+  "captured_at": "2026-08-06T20:27:24.655Z",
+  "git_rev": "1467b1e197f9223115961260b6b3bb844d70ed98",
+  "commit_repo_workspace": "E:\\temp projects\\shenron-city",
+  "url": "http://127.0.0.1:9122/?visionCapture=1&visionX=300&visionY=13.7&visionZ=300&visionTX=280&visionTY=8&visionTZ=260&visionFov=60&visionTime=14&visionRain=0&visionSeed=phase3c-1400",
+  "settled": true,
+  "fps": 100,
+  "camera_pose_readback": "300.00,13.70,300.00,-0.4436,-0.1264,-0.8872",
+  "resolution": {
+    "width": 1920,
+    "height": 1080
+  },
+  "frame_diff": {
+    "value": 0.000022170910493827258,
+    "pass": false,
+    "threshold": "0.05 <= diff <= 12"
+  },
+  "checks": {
+    "frame-not-black": {
+      "pass": true,
+      "metric": 87.97844878385447,
+      "threshold": "> 6 mean luma",
+      "severity": "P0"
+    },
+    "frame-not-flat": {
+      "pass": true,
+      "metric": {
+        "lumaStddev": 45.58897821329626,
+        "distinctColors": 3724
+      },
+      "threshold": "lumaStddev > 2 and > 400 distinct colours",
+      "severity": "P0"
+    },
+    "aspect-ratio": {
+      "pass": true,
+      "metric": 1.7777777777777777,
+      "threshold": "16:9 within 0.01",
+      "severity": "P1"
+    },
+    "no-full-black-corner": {
+      "pass": true,
+      "metric": 52.44651414239562,
+      "threshold": "all 9 bands > 1 mean luma",
+      "severity": "P1"
+    },
+    "no-void": {
+      "pass": true,
+      "metric": 94.1330574443808,
+      "threshold": "band spread > 4 (not a solid fill)",
+      "severity": "P0"
+    },
+    "overexposure-budget": {
+      "pass": true,
+      "metric": 0,
+      "threshold": "< 0.15 pixels above luma 250",
+      "severity": "P2"
+    },
+    "near-black-budget": {
+      "pass": true,
+      "metric": 0,
+      "threshold": "< 0.85 pixels below luma 8 (night scenes loosen)",
+      "severity": "P2"
+    },
+    "band-uniformity": {
+      "pass": true,
+      "metric": 29.333755512445315,
+      "threshold": "band luma stddev > 1 (varied framing)",
+      "severity": "P2"
+    },
+    "silhouette-coverage": {
+      "pass": true,
+      "metric": 0.4166666666666667,
+      "threshold": "> 0.05 grid edges (geometry present, not fog wall)",
+      "severity": "P1"
+    },
+    "ground-present": {
+      "pass": true,
+      "metric": {
+        "mean": 56.08352680033227,
+        "stddev": 13.010477577415907
+      },
+      "threshold": "bottom band non-black with texture variance",
+      "severity": "P2"
+    },
+    "color-palette-present": {
+      "pass": true,
+      "metric": 0.04847474944819062,
+      "threshold": "bright-pixel saturation > 0.01",
+      "severity": "P2"
+    }
+  },
+  "console_messages": [],
+  "issues": []
+}

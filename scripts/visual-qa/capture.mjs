@@ -214,7 +214,11 @@ async function captureScene(browser, scene, args) {
   await page.close()
 
   const analysisA = runChecks(frameA.frame, { thresholds: scene.thresholdOverrides ?? {} })
-  const diff = runFrameDiffCheck(frameA.frame, frameB.frame)
+  const diffOverride = scene.thresholdOverrides?.['frame-diff']
+  const diff = runFrameDiffCheck(frameA.frame, frameB.frame, {
+    max: typeof diffOverride?.max === 'number' ? diffOverride.max : 12,
+    min: typeof diffOverride?.min === 'number' ? diffOverride.min : 0.05,
+  })
   const checks = Object.fromEntries(
     Object.entries(analysisA.results).map(([id, r]) => [id, { pass: r.pass, metric: r.metric, threshold: r.threshold, severity: r.severity }]),
   )

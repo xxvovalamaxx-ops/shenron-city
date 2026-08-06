@@ -1,0 +1,82 @@
+{
+  "pipeline": "Phase 3C city-lighting A/B (in-page variant flip, settle-gated)",
+  "generated_at": "2026-08-06T20:44:31.761Z",
+  "method": "One page load per scene; scene gated to the capture-pipeline settle condition; the compiled CITY_NIGHT variant flips in place with nothing else changing. fps = max of 6 x 3s rAF samples per variant. visualDiffLuma is the same-content frame diff between the two variants: at 14:00 it must be ~0 (daytime off-state), at 02:00 it is the windows themselves.",
+  "scenes": {
+    "manhattan-night-0200": {
+      "fpsOn": 1090,
+      "fpsOff": 1180,
+      "frameTimeOnMs": 0.92,
+      "frameTimeOffMs": 0.85,
+      "frameTimeRegressionPct": 8.26,
+      "allFpsOn": [
+        640,
+        670,
+        676,
+        1001,
+        1037,
+        1090
+      ],
+      "allFpsOff": [
+        955,
+        977,
+        1023,
+        1028,
+        1171,
+        1180
+      ],
+      "visualDiffLuma": 12.191,
+      "settled": true
+    },
+    "manhattan-day-1400": {
+      "fpsOn": 999,
+      "fpsOff": 1190,
+      "frameTimeOnMs": 1,
+      "frameTimeOffMs": 0.84,
+      "frameTimeRegressionPct": 19.12,
+      "allFpsOn": [
+        701,
+        734,
+        779,
+        794,
+        820,
+        999
+      ],
+      "allFpsOff": [
+        981,
+        997,
+        1019,
+        1068,
+        1131,
+        1190
+      ],
+      "visualDiffLuma": 10.427,
+      "settled": true
+    },
+    "manhattan-night-aerial": {
+      "fpsOn": 1353,
+      "fpsOff": 1273,
+      "frameTimeOnMs": 0.74,
+      "frameTimeOffMs": 0.79,
+      "frameTimeRegressionPct": -5.91,
+      "allFpsOn": [
+        835,
+        886,
+        957,
+        1194,
+        1328,
+        1353
+      ],
+      "allFpsOff": [
+        727,
+        783,
+        821,
+        884,
+        1067,
+        1273
+      ],
+      "visualDiffLuma": 0,
+      "settled": true
+    }
+  }
+}

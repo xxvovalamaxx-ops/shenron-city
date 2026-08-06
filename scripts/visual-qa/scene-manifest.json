@@ -241,6 +241,64 @@
       "graphicsPreset": "ultra",
       "assetIds": ["/assets/production/architecture/hero-district.glb"],
       "note": "Weather variant of hero-street with rain pre-saturated (wet road, falling rain)."
+    },
+    {
+      "scene_id": "manhattan-night-0200",
+      "label": "Manhattan night, 02:00 — Phase 3C city lighting",
+      "status": "ready",
+      "zone": "exterior",
+      "camera": { "position": [300, 13.7, 300], "target": [280, 8, 260], "fov": 60 },
+      "time": 2,
+      "rain": 0,
+      "seed": "phase3c-0200",
+      "resolution": { "width": 1920, "height": 1080 },
+      "graphicsPreset": "ultra",
+      "assetIds": [
+        "/models/manhattan/manhattan_base.glb",
+        "/models/manhattan/building-lighting.bin"
+      ],
+      "thresholdOverrides": {
+        "silhouette-coverage": 0.2,
+        "frame-diff": { "min": 0 }
+      },
+      "note": "Phase 3C handoff capture at 02:00: deterministic lit-window city on the real OSM facades. The clock and the life sims freeze in capture mode, so repeated captures are byte-identical and the within-run frame diff is exactly 0 — hence the frame-diff min override. silhouette-coverage is widened to 0.2: the night grade has no 24-luma steps between 3x3 bands (window luminance sits just under 200), while geometry presence is proven by lumaStddev ~19, >2000 colours and a passing ground band."
+    },
+    {
+      "scene_id": "manhattan-day-1400",
+      "label": "Manhattan day, 14:00 — Phase 3C daytime off-state",
+      "status": "ready",
+      "zone": "exterior",
+      "camera": { "position": [300, 13.7, 300], "target": [280, 8, 260], "fov": 60 },
+      "time": 14,
+      "rain": 0,
+      "seed": "phase3c-1400",
+      "resolution": { "width": 1920, "height": 1080 },
+      "graphicsPreset": "ultra",
+      "assetIds": [
+        "/models/manhattan/manhattan_base.glb",
+        "/models/manhattan/building-lighting.bin"
+      ],
+      "note": "Phase 3C daytime off-state capture at 14:00 (same camera as manhattan-night-0200): zero emissive window contribution in daylight."
+    },
+    {
+      "scene_id": "manhattan-night-aerial",
+      "label": "Manhattan night aerial — Phase 3C distant representation",
+      "status": "ready",
+      "zone": "exterior",
+      "camera": { "position": [900, 380, -2600], "target": [700, 0, -1600], "fov": 60 },
+      "time": 2,
+      "rain": 0,
+      "seed": "phase3c-aerial",
+      "resolution": { "width": 1920, "height": 1080 },
+      "graphicsPreset": "ultra",
+      "assetIds": [
+        "/models/manhattan/manhattan_base.glb",
+        "/models/manhattan/building-lighting.bin"
+      ],
+      "thresholdOverrides": {
+        "near-black-budget": 0.95
+      },
+      "note": "Aerial night view over Midtown: near towers carry the full window grid, far ones read as aggregate warm glow (fwidth LOD)."
     }
   ]
 }

@@ -12,6 +12,7 @@ const root = resolve(dirname(fileURLToPath(import.meta.url)), '..')
 
 const PINS = {
   'public/models/manhattan/manhattan_base.glb': null,
+  'public/models/manhattan/building-lighting.bin': null,
   'public/models/characters/player/player.glb': null,
   'public/models/characters/player/player-clips.glb': null,
   'public/models/dev/sedan.glb': null,

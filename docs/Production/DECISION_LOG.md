@@ -69,3 +69,8 @@
 **Decision**: Close the hero-route horizon with one original five-tower Blender kit, three exported distance tiers, and five runtime cluster placements.
 **Rationale**: Reusing one material-batched source family keeps provenance simple and geometry shared while the 82k/49k/18k triangle tiers preserve facade depth near the camera and reduce distant cost.
 **Trade-off**: The implementation uses Three.js runtime LOD switching rather than embedded `MSFT_lod`; all existing production GLBs still require a broader embedded-LOD migration.
+
+## 2026-08-06: Deterministic city-night lighting (Phase 3C)
+**Decision**: Light the island procedurally in the facade/road fragment shaders from the real per-building OSM data (`_bid` + baked building-lighting texture), driven entirely by the existing day-cycle clock.
+**Rationale**: 56,476 buildings make per-window geometry or texture atlases impractical; the GLBs already carry `_bid`, and the manifest carries real classes (office/residential/hotel/retail/industrial). A pure hash model (world seed, building id, floor, column) with smooth occupancy curves gives determinism (same seed → identical city), five distinct night personalities, floor-aware distribution, and no flicker by construction — nothing reads a clock or random source except the shared day-cycle clock.
+**Trade-off**: Two cached shader program variants (day/night) are needed to keep the daytime cost at baseline; window shading is LOD-approximate (fwidth-smoothed) rather than geometric, which is what keeps it alias-free at distance. Evidence: `docs/Production/evidence/phase3c/PHASE3C_EVIDENCE.md`.

@@ -1,161 +1,35 @@
 {
   "pipeline": "shenron-city visual QA bridge",
-  "generated_at": "2026-08-06T16:19:26.629Z",
-  "git_rev": "0993f318ada22eb2cb3d659199012d77c209f306",
+  "generated_at": "2026-08-06T20:27:35.094Z",
+  "git_rev": "1467b1e197f9223115961260b6b3bb844d70ed98",
   "server": "http://127.0.0.1:9122",
   "results": [
     {
-      "scene_id": "hero-vehicle-exterior",
-      "ok": true,
-      "failed": [],
-      "p0Failed": false,
-      "fps": 89,
-      "settled": false,
-      "diff": 3.3690700327912775
-    },
-    {
-      "scene_id": "hero-street",
-      "ok": true,
-      "failed": [],
-      "p0Failed": false,
-      "fps": 95,
-      "settled": true,
-      "diff": 1.4279597519291833
-    },
-    {
-      "scene_id": "market",
-      "ok": true,
-      "failed": [],
-      "p0Failed": false,
-      "fps": 99,
-      "settled": true,
-      "diff": 1.0426716195985986
-    },
-    {
-      "scene_id": "hq-exterior",
+      "scene_id": "manhattan-night-0200",
       "ok": true,
       "failed": [],
       "p0Failed": false,
       "fps": 100,
       "settled": true,
-      "diff": 0.49980408487669153
+      "diff": 0
     },
     {
-      "scene_id": "hq-entrance",
+      "scene_id": "manhattan-day-1400",
       "ok": true,
       "failed": [],
       "p0Failed": false,
       "fps": 100,
       "settled": true,
-      "diff": 0.6149097824066625
+      "diff": 0.000022170910493827258
     },
     {
-      "scene_id": "hq-lobby",
+      "scene_id": "manhattan-night-aerial",
       "ok": true,
       "failed": [],
       "p0Failed": false,
       "fps": 100,
       "settled": true,
-      "diff": 0.13377554861113372
-    },
-    {
-      "scene_id": "elevator",
-      "ok": true,
-      "failed": [],
-      "p0Failed": false,
-      "fps": 99,
-      "settled": true,
-      "diff": 0.08054991010799599
-    },
-    {
-      "scene_id": "floor-45-wide",
-      "ok": true,
-      "failed": [],
-      "p0Failed": false,
-      "fps": 100,
-      "settled": true,
-      "diff": 0.06473698533943623
-    },
-    {
-      "scene_id": "floor-45-workstation",
-      "ok": true,
-      "failed": [],
-      "p0Failed": false,
-      "fps": 100,
-      "settled": true,
-      "diff": 0.10243044791668057
-    },
-    {
-      "scene_id": "shenron-agent-station",
-      "ok": true,
-      "failed": [],
-      "p0Failed": false,
-      "fps": 100,
-      "settled": true,
-      "diff": 0.09024477121909168
-    },
-    {
-      "scene_id": "manhattan-aerial",
-      "ok": true,
-      "failed": [],
-      "p0Failed": false,
-      "fps": 99,
-      "settled": true,
-      "diff": 1.0203651261590925
-    },
-    {
-      "scene_id": "hero-street-night",
-      "ok": true,
-      "failed": [],
-      "p0Failed": false,
-      "fps": 76,
-      "settled": true,
-      "diff": 0.44777331867284526
-    },
-    {
-      "scene_id": "hero-street-rain",
-      "ok": true,
-      "failed": [],
-      "p0Failed": false,
-      "fps": 74,
-      "settled": true,
-      "diff": 5.698991963347388
-    },
-    {
-      "scene_id": "penthouse-bedroom",
-      "ok": false,
-      "failed": [
-        "not-built (skipped)"
-      ],
-      "p0Failed": true,
-      "note": "No penthouse content exists in the world build. Capture is skipped; ledger entry pending art."
-    },
-    {
-      "scene_id": "penthouse-living-room",
-      "ok": false,
-      "failed": [
-        "not-built (skipped)"
-      ],
-      "p0Failed": true,
-      "note": "No penthouse content exists in the world build. Capture is skipped; ledger entry pending art."
-    },
-    {
-      "scene_id": "residential-lobby",
-      "ok": false,
-      "failed": [
-        "not-built (skipped)"
-      ],
-      "p0Failed": true,
-      "note": "The only authored lobby is the HQ lobby. Capture is skipped; ledger entry pending art."
-    },
-    {
-      "scene_id": "hero-vehicle-interior",
-      "ok": false,
-      "failed": [
-        "not-built (skipped)"
-      ],
-      "p0Failed": true,
-      "note": "No drivable-vehicle interior rig exists. Capture is skipped; ledger entry pending art."
+      "diff": 0
     }
   ]
 }
