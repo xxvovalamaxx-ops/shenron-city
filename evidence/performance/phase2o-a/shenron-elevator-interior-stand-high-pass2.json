@@ -1,0 +1,99 @@
+{
+  "pass": 2,
+  "app": "shenron",
+  "location": "elevator-interior",
+  "scenario": "stand",
+  "quality": "high",
+  "startedAtUtc": "2026-08-06T15:27:29.151Z",
+  "measuredMs": 8003.19999999553,
+  "stats": {
+    "frames": 800,
+    "deadFrames": 0,
+    "frameMs": {
+      "avg": 10.003875000001862,
+      "median": 9.900000005960464,
+      "p1": 6.899999998509884,
+      "p01": 4.199999995529652,
+      "min": 4.199999995529652,
+      "max": 23.399999998509884
+    },
+    "fps": {
+      "avg": 99.9612650097901,
+      "median": 101.01010094928616,
+      "p1": 144.92753626318245,
+      "p01": 238.0952383486592,
+      "min": 42.73504273776411
+    }
+  },
+  "longTasks": [],
+  "heapUsedMB": [
+    {
+      "ts": 6.799999997019768,
+      "mb": 464.5920629501343
+    },
+    {
+      "ts": 5009.69999999553,
+      "mb": 473.83728313446045
+    }
+  ],
+  "loadMs": 212,
+  "appStats": null,
+  "gpu": {
+    "renderer": "ANGLE (NVIDIA, NVIDIA GeForce RTX 5070 (0x00002F04) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+    "vendor": "Google Inc. (NVIDIA)"
+  },
+  "transition": null,
+  "buckets": null,
+  "integrity": {
+    "sha256": "665858ea80d6f40a1cfcd01529f24ca6844804cf314a5cb465050c28eeb1d760",
+    "luminanceBands4x4": [
+      [
+        79,
+        113,
+        119,
+        128
+      ],
+      [
+        74,
+        69,
+        98,
+        118
+      ],
+      [
+        35,
+        31,
+        59,
+        82
+      ],
+      [
+        17,
+        39,
+        79,
+        90
+      ]
+    ],
+    "pngBytes": 641504,
+    "diffVsPass1": {
+      "meanAbsDiff": 0.009,
+      "pctPixelsChanged": 0,
+      "maxBandLuminanceDrift": 12.561600000000013
+    }
+  },
+  "cpu": {
+    "taskMsPerSec": -1.74,
+    "scriptMsPerSec": -1.7,
+    "layoutMsPerSec": -0.01,
+    "recalcStyleMsPerSec": 0,
+    "layoutsPerSec": 0.25,
+    "recalcStylesPerSec": 0.25,
+    "nodesDelta": 8,
+    "heapDeltaMB": 19.61
+  },
+  "errors": {
+    "consoleErrors": 0,
+    "exceptions": 0,
+    "consoleWarnings": 1,
+    "networkFailures": 0,
+    "samples": []
+  }
+}

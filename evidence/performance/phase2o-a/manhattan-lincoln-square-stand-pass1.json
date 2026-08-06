@@ -1,0 +1,138 @@
+{
+  "pass": 1,
+  "app": "manhattan",
+  "location": "lincoln-square",
+  "scenario": "stand",
+  "quality": null,
+  "startedAtUtc": "2026-08-06T15:14:41.560Z",
+  "measuredMs": 8001.80000000447,
+  "stats": {
+    "frames": 480,
+    "deadFrames": 0,
+    "frameMs": {
+      "avg": 16.670000000003103,
+      "median": 15.300000004470348,
+      "p1": 13.799999997019768,
+      "p01": 13.600000001490116,
+      "min": 13.600000001490116,
+      "max": 22.700000002980232
+    },
+    "fps": {
+      "avg": 59.98800239950893,
+      "median": 65.3594771050863,
+      "p1": 72.46376813159122,
+      "p01": 73.52941175664945,
+      "min": 44.05286343033975
+    }
+  },
+  "longTasks": [],
+  "heapUsedMB": [
+    {
+      "ts": 15.100000001490116,
+      "mb": 273.15550899505615
+    },
+    {
+      "ts": 5011.39999999851,
+      "mb": 264.97380447387695
+    }
+  ],
+  "loadMs": 80,
+  "appStats": {
+    "ok": true,
+    "drawCalls": 65,
+    "triangles": 401841,
+    "tilesResident": 22,
+    "tilesLoading": 0,
+    "tilesQueued": 0,
+    "tilesTotal": 119,
+    "vehicles": 308,
+    "pedestrians": 25,
+    "demand": 0.029,
+    "lod": {
+      "full": 6,
+      "L2": 12,
+      "L3": 51,
+      "L4": 33,
+      "off": 0,
+      "tris": 479390,
+      "files": 96
+    },
+    "weather": {
+      "hour": 17,
+      "clouds": 77,
+      "drops": 0,
+      "wet": 0
+    },
+    "camera": {
+      "x": -1878.7,
+      "y": 13.9,
+      "z": 580.7
+    },
+    "district": "Upper West Side-Lincoln Square",
+    "actors": {
+      "skinnedMeshes": 0,
+      "morphTargetMeshes": 0,
+      "totalMeshes": 319
+    },
+    "renderMs": {
+      "avg": 0.539,
+      "max": 15.1,
+      "frames": 652
+    }
+  },
+  "gpu": {
+    "renderer": "ANGLE (NVIDIA, NVIDIA GeForce RTX 5070 (0x00002F04) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+    "vendor": "Google Inc. (NVIDIA)"
+  },
+  "transition": null,
+  "buckets": null,
+  "integrity": {
+    "sha256": "4444ce9bbe2b3939f0038cd59e4bd4160058bbc1587f4d280facf93b1b4aeb28",
+    "luminanceBands4x4": [
+      [
+        25,
+        34,
+        160,
+        164
+      ],
+      [
+        23,
+        36,
+        159,
+        156
+      ],
+      [
+        20,
+        24,
+        79,
+        102
+      ],
+      [
+        25,
+        59,
+        68,
+        59
+      ]
+    ],
+    "pngBytes": 140854
+  },
+  "cpu": {
+    "taskMsPerSec": 1.17,
+    "scriptMsPerSec": 1.07,
+    "layoutMsPerSec": 0,
+    "recalcStyleMsPerSec": 0,
+    "layoutsPerSec": 10,
+    "recalcStylesPerSec": 16.25,
+    "nodesDelta": 456,
+    "heapDeltaMB": 47.98
+  },
+  "errors": {
+    "consoleErrors": 1,
+    "exceptions": 0,
+    "consoleWarnings": 0,
+    "networkFailures": 0,
+    "samples": [
+      "log: Failed to load resource: the server responded with a status of 404 (Not Found)"
+    ]
+  }
+}

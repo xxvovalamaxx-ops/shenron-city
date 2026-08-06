@@ -1,0 +1,141 @@
+{
+  "pass": 3,
+  "app": "manhattan",
+  "location": "times-square",
+  "scenario": "maxpeds",
+  "quality": null,
+  "startedAtUtc": "2026-08-06T15:13:31.122Z",
+  "measuredMs": 8025.39999999851,
+  "stats": {
+    "frames": 247,
+    "deadFrames": 0,
+    "frameMs": {
+      "avg": 32.49149797570247,
+      "median": 29.700000002980232,
+      "p1": 27.5,
+      "p01": 27.100000001490116,
+      "min": 27.100000001490116,
+      "max": 47.899999998509884
+    },
+    "fps": {
+      "avg": 30.777282129245375,
+      "median": 33.670033666655065,
+      "p1": 36.36363636363637,
+      "p01": 36.90036900166104,
+      "min": 20.87682672298766
+    }
+  },
+  "longTasks": [],
+  "heapUsedMB": [
+    {
+      "ts": 47.79999999701977,
+      "mb": 242.11749649047852
+    },
+    {
+      "ts": 5023.10000000149,
+      "mb": 235.95809173583984
+    }
+  ],
+  "loadMs": 89,
+  "appStats": {
+    "ok": true,
+    "drawCalls": 94,
+    "triangles": 972447,
+    "tilesResident": 19,
+    "tilesLoading": 0,
+    "tilesQueued": 0,
+    "tilesTotal": 119,
+    "vehicles": 430,
+    "pedestrians": 359,
+    "demand": 1,
+    "lod": {
+      "full": 4,
+      "L2": 14,
+      "L3": 57,
+      "L4": 27,
+      "off": 0,
+      "tris": 515746,
+      "files": 98
+    },
+    "weather": {
+      "hour": 17,
+      "clouds": 77,
+      "drops": 0,
+      "wet": 0
+    },
+    "camera": {
+      "x": -1505.6,
+      "y": 13.9,
+      "z": 2466.2
+    },
+    "district": "Midtown-Times Square",
+    "actors": {
+      "skinnedMeshes": 0,
+      "morphTargetMeshes": 0,
+      "totalMeshes": 293
+    },
+    "renderMs": {
+      "avg": 0.645,
+      "max": 5.1,
+      "frames": 401
+    }
+  },
+  "gpu": {
+    "renderer": "ANGLE (NVIDIA, NVIDIA GeForce RTX 5070 (0x00002F04) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+    "vendor": "Google Inc. (NVIDIA)"
+  },
+  "transition": null,
+  "buckets": null,
+  "integrity": {
+    "sha256": "8adeede424f8386ff4ee42c4aa4dea80b589cd8e715d9b9b5bd18162158e07b7",
+    "luminanceBands4x4": [
+      [
+        22,
+        76,
+        64,
+        18
+      ],
+      [
+        27,
+        55,
+        57,
+        18
+      ],
+      [
+        39,
+        59,
+        66,
+        33
+      ],
+      [
+        82,
+        83,
+        68,
+        42
+      ]
+    ],
+    "pngBytes": 388828,
+    "diffVsPass1": {
+      "meanAbsDiff": 5.54,
+      "pctPixelsChanged": 8.34,
+      "maxBandLuminanceDrift": 210.1536
+    }
+  },
+  "cpu": {
+    "taskMsPerSec": -0.01,
+    "scriptMsPerSec": -0.01,
+    "layoutMsPerSec": 0,
+    "recalcStyleMsPerSec": 0,
+    "layoutsPerSec": -0.75,
+    "recalcStylesPerSec": -0.88,
+    "nodesDelta": -151,
+    "heapDeltaMB": 12.28
+  },
+  "errors": {
+    "consoleErrors": 0,
+    "exceptions": 0,
+    "consoleWarnings": 0,
+    "networkFailures": 0,
+    "samples": []
+  }
+}

@@ -1,0 +1,99 @@
+{
+  "pass": 2,
+  "app": "shenron",
+  "location": "hq-lobby",
+  "scenario": "stand",
+  "quality": "high",
+  "startedAtUtc": "2026-08-06T15:26:20.231Z",
+  "measuredMs": 8004.79999999702,
+  "stats": {
+    "frames": 800,
+    "deadFrames": 0,
+    "frameMs": {
+      "avg": 10.005875000003725,
+      "median": 10,
+      "p1": 6.399999998509884,
+      "p01": 5.200000002980232,
+      "min": 5.200000002980232,
+      "max": 22.299999997019768
+    },
+    "fps": {
+      "avg": 99.94128449532177,
+      "median": 100,
+      "p1": 156.2500000363798,
+      "p01": 192.30769219747663,
+      "min": 44.8430493333472
+    }
+  },
+  "longTasks": [],
+  "heapUsedMB": [
+    {
+      "ts": 11.100000001490116,
+      "mb": 448.94831943511963
+    },
+    {
+      "ts": 5004.5,
+      "mb": 454.40405559539795
+    }
+  ],
+  "loadMs": 215,
+  "appStats": null,
+  "gpu": {
+    "renderer": "ANGLE (NVIDIA, NVIDIA GeForce RTX 5070 (0x00002F04) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+    "vendor": "Google Inc. (NVIDIA)"
+  },
+  "transition": null,
+  "buckets": null,
+  "integrity": {
+    "sha256": "6b55e498a975fe8cca23f969999ea9bb1846ea7b9e9ccaaed4a4f5514fd9d971",
+    "luminanceBands4x4": [
+      [
+        67,
+        77,
+        114,
+        95
+      ],
+      [
+        112,
+        122,
+        73,
+        86
+      ],
+      [
+        125,
+        158,
+        137,
+        120
+      ],
+      [
+        171,
+        175,
+        152,
+        118
+      ]
+    ],
+    "pngBytes": 733658,
+    "diffVsPass1": {
+      "meanAbsDiff": 0.591,
+      "pctPixelsChanged": 0.03,
+      "maxBandLuminanceDrift": 113.46939999999998
+    }
+  },
+  "cpu": {
+    "taskMsPerSec": -2.01,
+    "scriptMsPerSec": -1.99,
+    "layoutMsPerSec": -0.01,
+    "recalcStyleMsPerSec": 0,
+    "layoutsPerSec": null,
+    "recalcStylesPerSec": null,
+    "nodesDelta": 8,
+    "heapDeltaMB": 33.06
+  },
+  "errors": {
+    "consoleErrors": 0,
+    "exceptions": 0,
+    "consoleWarnings": 1,
+    "networkFailures": 0,
+    "samples": []
+  }
+}

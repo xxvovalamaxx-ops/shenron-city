@@ -1,0 +1,99 @@
+{
+  "pass": 3,
+  "app": "shenron",
+  "location": "hero-corridor-exterior",
+  "scenario": "walk",
+  "quality": "high",
+  "startedAtUtc": "2026-08-06T15:19:36.338Z",
+  "measuredMs": 8008.39999999851,
+  "stats": {
+    "frames": 775,
+    "deadFrames": 0,
+    "frameMs": {
+      "avg": 10.333290322576799,
+      "median": 10.100000001490116,
+      "p1": 7.799999997019768,
+      "p01": 7.100000001490116,
+      "min": 7.100000001490116,
+      "max": 26.899999998509884
+    },
+    "fps": {
+      "avg": 96.77459635631638,
+      "median": 99.00990097549146,
+      "p1": 128.20512825411296,
+      "p01": 140.8450703929753,
+      "min": 37.174721191650356
+    }
+  },
+  "longTasks": [],
+  "heapUsedMB": [
+    {
+      "ts": 8.399999998509884,
+      "mb": 828.6508665084839
+    },
+    {
+      "ts": 5007.5,
+      "mb": 831.753363609314
+    }
+  ],
+  "loadMs": 160,
+  "appStats": null,
+  "gpu": {
+    "renderer": "ANGLE (NVIDIA, NVIDIA GeForce RTX 5070 (0x00002F04) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+    "vendor": "Google Inc. (NVIDIA)"
+  },
+  "transition": null,
+  "buckets": null,
+  "integrity": {
+    "sha256": "413b4dbc5b3dd73797083d9b223a350e79a5e8b3267601a6ddc4fd1caf8a76a5",
+    "luminanceBands4x4": [
+      [
+        50,
+        123,
+        128,
+        89
+      ],
+      [
+        89,
+        106,
+        116,
+        50
+      ],
+      [
+        84,
+        103,
+        108,
+        57
+      ],
+      [
+        83,
+        91,
+        90,
+        52
+      ]
+    ],
+    "pngBytes": 490151,
+    "diffVsPass1": {
+      "meanAbsDiff": 28.785,
+      "pctPixelsChanged": 50.7,
+      "maxBandLuminanceDrift": 243.52499999999998
+    }
+  },
+  "cpu": {
+    "taskMsPerSec": 0.07,
+    "scriptMsPerSec": 0.08,
+    "layoutMsPerSec": 0,
+    "recalcStyleMsPerSec": 0,
+    "layoutsPerSec": 0.13,
+    "recalcStylesPerSec": null,
+    "nodesDelta": 200,
+    "heapDeltaMB": 66.01
+  },
+  "errors": {
+    "consoleErrors": 0,
+    "exceptions": 0,
+    "consoleWarnings": 1,
+    "networkFailures": 0,
+    "samples": []
+  }
+}

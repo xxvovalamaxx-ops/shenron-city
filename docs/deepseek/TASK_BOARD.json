@@ -1,4 +1,4 @@
-{
+﻿{
   "generated": "2026-08-05",
   "handoff_commit": { "expected": "e6303ba", "found": true, "location": "Made assets/Manhattan City (nested git repo, parent of HEAD 4de0874)" },
   "handoff_doc": { "expected": "docs/phase2/HANDOFF.md", "found": true, "location": "Made assets/Manhattan City/docs/phase2/HANDOFF.md" },
@@ -10,7 +10,7 @@
       "title": "Honest benchmark harness (camera identity + metrics)",
       "branch": "ds/2o-baseline",
       "repo": "Manhattan",
-      "status": "done_awaiting_merge_approval",
+      "status": "delivered_and_merged_2026-08-07",
       "commit": "f005768",
       "depends_on": [],
       "acceptance": [
@@ -19,7 +19,19 @@
         "Re-measure every 'optimistic and unverified' claim from HANDOFF/BASELINE/ledger at real locations; measured vs claimed table",
         "JSON evidence committed under docs/qa/evidence/"
       ],
-      "results": "P2-075 CONFIRMED (START == TIMES_SQUARE). Claims: 7 CONFIRMED (0px diff, 400/400 props, 99.88% of 808 pts, 0.00000 RMS silence, 17437px vs claimed 17436, corridor 0.00m, audio table byte-exact), 2 DIFFERS (LOD max 0.00m is FALSE -> max 22.9m bid 20009 missing L2 tile; street-life CPU 0.4->0.8ms), 2 UNVERIFIABLE (RTX5070 payload, frozen Blender stats). Times Square street: 1,005,972 tris / 106 draws / cpu 0.32ms / raster 1.8ms / 21.9MB. Software-GL limitation recorded."
+      "results": "P2-075 CONFIRMED (START == TIMES_SQUARE). Claims: 7 CONFIRMED (0px diff, 400/400 props, 99.88% of 808 pts, 0.00000 RMS silence, 17437px vs claimed 17436, corridor 0.00m, audio table byte-exact), 2 DIFFERS (LOD max 0.00m is FALSE -> max 22.9m bid 20009 missing L2 tile; street-life CPU 0.4->0.8ms), 2 UNVERIFIABLE (RTX5070 payload, frozen Blender stats). Times Square street: 1,005,972 tris / 106 draws / cpu 0.32ms / raster 1.8ms / 21.9MB. Software-GL limitation recorded.",
+      "delivered_2026_08_06": {
+        "repo_used": "outer shenron-city (per worker directive; task board listed Manhattan)",
+        "harness": "scripts/benchmarks/run.cjs (CDP, zero deps; targets both Manhattan app and shenron game)",
+        "p2_075": "verified + reconciled; true Times Square (-1476,-2433); old START (-1900,-600) = Lincoln Square",
+        "evidence": "docs/performance/ + evidence/performance/phase2o-a/ (per-pass JSON, screenshots git-ignored)",
+        "tests": "tests/performance/ (camera-math 9 + png integrity 6 = 15 tests)",
+        "invalidated": "P2-044 + HANDOFF 'Times Square' numbers (939,647 tris / 89 draws / 0.27 ms) were measured at Lincoln Square",
+        "variance": "3 passes x 8 s per run; spread % reported; cold-pass stalls re-sampled",
+        "scenarios": "stand, walk, sprint, rain, night, zone, maxpeds, maxtraffic, elevator transition (corridor ascend 8,456 ms), soak 10 min x2 apps",
+        "metrics": "avg/median/1%/0.1% fps, stall frames, render() ms, CPU counters, long tasks, heap, load time, draw calls/tris/textures/geometries, actors, console/network errors, screenshot sha256 + luminance bands + frame diff",
+        "key_numbers": "Times Sq 31.7 avg fps / 94 draws / 972,867 tris vs Lincoln Sq 58.5 / 65 / 402,157; soak flat over 10 min both apps"
+      }
     },
     {
       "id": "2O-A-002",

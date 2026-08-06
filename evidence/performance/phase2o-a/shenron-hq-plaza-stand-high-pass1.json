@@ -1,0 +1,96 @@
+{
+  "pass": 1,
+  "app": "shenron",
+  "location": "hq-plaza",
+  "scenario": "stand",
+  "quality": "high",
+  "startedAtUtc": "2026-08-06T15:24:51.019Z",
+  "measuredMs": 8004.5,
+  "stats": {
+    "frames": 799,
+    "deadFrames": 0,
+    "frameMs": {
+      "avg": 10.018147684605758,
+      "median": 9.900000005960464,
+      "p1": 6.4000000059604645,
+      "p01": 5,
+      "min": 5,
+      "max": 26.5
+    },
+    "fps": {
+      "avg": 99.8188518958086,
+      "median": 101.01010094928616,
+      "p1": 156.24999985448085,
+      "p01": 200,
+      "min": 37.735849056603776
+    }
+  },
+  "longTasks": [],
+  "heapUsedMB": [
+    {
+      "ts": 10,
+      "mb": 476.16660022735596
+    },
+    {
+      "ts": 5002.60000000149,
+      "mb": 465.5461187362671
+    }
+  ],
+  "loadMs": 883,
+  "appStats": null,
+  "gpu": {
+    "renderer": "ANGLE (NVIDIA, NVIDIA GeForce RTX 5070 (0x00002F04) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+    "vendor": "Google Inc. (NVIDIA)"
+  },
+  "transition": null,
+  "buckets": null,
+  "integrity": {
+    "sha256": "b9f613d94cbfc63a8d790a0093926d4254e9bab3ba8254fbcafed6d9b733b38a",
+    "luminanceBands4x4": [
+      [
+        48,
+        112,
+        115,
+        100
+      ],
+      [
+        115,
+        115,
+        100,
+        113
+      ],
+      [
+        82,
+        69,
+        52,
+        41
+      ],
+      [
+        24,
+        27,
+        26,
+        23
+      ]
+    ],
+    "pngBytes": 610478
+  },
+  "cpu": {
+    "taskMsPerSec": 4.18,
+    "scriptMsPerSec": 4.06,
+    "layoutMsPerSec": 0.01,
+    "recalcStyleMsPerSec": 0,
+    "layoutsPerSec": 1.5,
+    "recalcStylesPerSec": 1.75,
+    "nodesDelta": 200,
+    "heapDeltaMB": 109.97
+  },
+  "errors": {
+    "consoleErrors": 1,
+    "exceptions": 0,
+    "consoleWarnings": 2,
+    "networkFailures": 0,
+    "samples": [
+      "log: Failed to load resource: the server responded with a status of 404 (Not Found)"
+    ]
+  }
+}

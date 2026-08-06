@@ -1,0 +1,99 @@
+{
+  "pass": 3,
+  "app": "shenron",
+  "location": "hq-lobby",
+  "scenario": "stand",
+  "quality": "high",
+  "startedAtUtc": "2026-08-06T15:26:38.201Z",
+  "measuredMs": 8011.89999999851,
+  "stats": {
+    "frames": 800,
+    "deadFrames": 0,
+    "frameMs": {
+      "avg": 10.014874999998137,
+      "median": 9.900000005960464,
+      "p1": 7,
+      "p01": 5.299999997019768,
+      "min": 5.299999997019768,
+      "max": 26.799999997019768
+    },
+    "fps": {
+      "avg": 99.85147093699982,
+      "median": 101.01010094928616,
+      "p1": 142.85714285714286,
+      "p01": 188.6792453891147,
+      "min": 37.31343283997025
+    }
+  },
+  "longTasks": [],
+  "heapUsedMB": [
+    {
+      "ts": 8.100000001490116,
+      "mb": 459.57874488830566
+    },
+    {
+      "ts": 5008.10000000149,
+      "mb": 471.71910095214844
+    }
+  ],
+  "loadMs": 161,
+  "appStats": null,
+  "gpu": {
+    "renderer": "ANGLE (NVIDIA, NVIDIA GeForce RTX 5070 (0x00002F04) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+    "vendor": "Google Inc. (NVIDIA)"
+  },
+  "transition": null,
+  "buckets": null,
+  "integrity": {
+    "sha256": "fc73d07bba0690ae853087b0207a88b2502a02e76c7ec7636fc296376e7e2f51",
+    "luminanceBands4x4": [
+      [
+        67,
+        77,
+        114,
+        95
+      ],
+      [
+        112,
+        122,
+        73,
+        86
+      ],
+      [
+        125,
+        158,
+        136,
+        120
+      ],
+      [
+        171,
+        175,
+        152,
+        118
+      ]
+    ],
+    "pngBytes": 734095,
+    "diffVsPass1": {
+      "meanAbsDiff": 0.692,
+      "pctPixelsChanged": 0.03,
+      "maxBandLuminanceDrift": 117.4092
+    }
+  },
+  "cpu": {
+    "taskMsPerSec": 0.04,
+    "scriptMsPerSec": 0.05,
+    "layoutMsPerSec": 0,
+    "recalcStyleMsPerSec": 0,
+    "layoutsPerSec": -0.13,
+    "recalcStylesPerSec": -0.13,
+    "nodesDelta": 0,
+    "heapDeltaMB": -20.72
+  },
+  "errors": {
+    "consoleErrors": 0,
+    "exceptions": 0,
+    "consoleWarnings": 1,
+    "networkFailures": 0,
+    "samples": []
+  }
+}

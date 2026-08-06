@@ -1,0 +1,128 @@
+{
+  "schemaVersion": 1,
+  "generatedAtUtc": "2026-08-06",
+  "purpose": "Canonical Phase 2O-A benchmark camera registry. Every camera is keyed to documented world coordinates (projection: local tangent plane, lat0=40.78, lon0=-73.968, x=east, y=north, up=Z, metres). Manhattan positions are real addresses projected with the same constants as the Phase 2 build (capture.js); Shenron positions are the dev-view cameras in src/gameplay/dev-view.ts.",
+  "projection": {
+    "lat0": 40.78,
+    "lon0": -73.968,
+    "mPerDegLat": 110574.0,
+    "mPerDegLon": 111320.0,
+    "units": "metres",
+    "up": "Z",
+    "note": "ll2xy(lat,lon) = ((lon - lon0) * mPerDegLon, (lat - lat0) * mPerDegLat); three.js world z = -y_m"
+  },
+  "locations": [
+    {
+      "id": "times-square",
+      "app": "manhattan",
+      "name": "Times Square",
+      "spec": [40.758, -73.9855, 1.7, 0.3, 0.14, "walk"],
+      "projected": { "x": -1475.1, "y": -2432.6 },
+      "measuredSnap": { "x": -1505.6, "z": 2466.2 },
+      "measuredDistrict": "Midtown-Times Square",
+      "p2_075": "TRUE Times Square (corrected); the P2-044/HANDOFF 'Times Square' numbers were measured at the mislabelled START (-1900,-600) = Lincoln Square, ~1.8 km up Broadway",
+      "registryCheck": "4 Times Square x=-1497.7 y=-2652.2, Times Square Tower x=-1591.8 y=-2708.0 (building_manifest.csv)"
+    },
+    {
+      "id": "lincoln-square",
+      "app": "manhattan",
+      "name": "Lincoln Square",
+      "spec": [40.7746, -73.9905, 1.7, 0.3, 0.14, "walk"],
+      "projected": { "x": -1896.6, "y": -597.1 },
+      "measuredSnap": { "x": -1878.7, "z": 580.7 },
+      "measuredDistrict": "Upper West Side-Lincoln Square",
+      "p2_075": "the old mislabelled 'Times Square' START position; registry: The Aldyn, The Ashley, Collegiate School, West End Towers",
+      "registryCheck": "nearest manifest buildings are Upper West Side (building_manifest.csv)"
+    },
+    {
+      "id": "midtown-dense",
+      "app": "manhattan",
+      "name": "5th Ave & 34th St (dense midtown)",
+      "spec": [40.7484, -73.9857, 1.7, 0.35, 0.1, "walk"],
+      "projected": { "x": -1491.9, "y": -3493.8 },
+      "measuredSnap": { "x": -1468.8, "z": 3460.2 },
+      "measuredDistrict": "Midtown South-Flatiron-Union Square",
+      "p2_075": null
+    },
+    {
+      "id": "lower-manhattan",
+      "app": "manhattan",
+      "name": "Financial District canyon",
+      "spec": [40.7069, -74.01, 1.7, 0.9, 0.3, "walk"],
+      "projected": { "x": -3540.3, "y": -8082.6 },
+      "measuredSnap": { "x": -3545.7, "z": 8093.6 },
+      "measuredDistrict": "Financial District-Battery Park City",
+      "p2_075": null
+    },
+    {
+      "id": "manhattan-aerial",
+      "app": "manhattan",
+      "name": "Midtown from 500 m",
+      "spec": [40.757, -73.9855, 500, 0.9, -0.42, "fly"],
+      "projected": { "x": -1475.1, "y": -2543.2 },
+      "measuredSnap": { "x": -1475.1, "z": 2543.2 },
+      "measuredDistrict": "Midtown-Times Square",
+      "p2_075": null
+    },
+    {
+      "id": "harlem-cold-stream",
+      "app": "manhattan",
+      "name": "Harlem (South) — cold-stream zone scenario",
+      "spec": [40.809, -73.948, 1.7, 0.35, 0.05, "walk"],
+      "projected": { "x": 1695.3, "y": 3206.6 },
+      "measuredSnap": { "x": 1695.7, "z": -3235.1 },
+      "measuredDistrict": "Harlem (South)",
+      "p2_075": null
+    },
+    {
+      "id": "hero-corridor-exterior",
+      "app": "shenron",
+      "view": "hero-boulevard",
+      "name": "Dragon Boulevard exterior",
+      "position": { "x": -5.8, "y": 0.05, "z": 123 },
+      "target": { "x": 0, "y": 2.2, "z": 68 },
+      "source": "src/gameplay/dev-view.ts VIEWS['hero-boulevard']",
+      "p2_075": null
+    },
+    {
+      "id": "hq-plaza",
+      "app": "shenron",
+      "view": "hq-exterior",
+      "name": "HQ plaza",
+      "position": { "x": 11.5, "y": 0.05, "z": 36 },
+      "target": { "x": 0, "y": 8.5, "z": 0 },
+      "source": "src/gameplay/dev-view.ts VIEWS['hq-exterior']",
+      "p2_075": null
+    },
+    {
+      "id": "hq-lobby",
+      "app": "shenron",
+      "view": "hq-lobby",
+      "name": "HQ lobby",
+      "position": { "x": 6.4, "y": 0.05, "z": -4 },
+      "target": { "x": -6.5, "y": 1.35, "z": -13.8 },
+      "source": "src/gameplay/dev-view.ts VIEWS['hq-lobby']",
+      "p2_075": null
+    },
+    {
+      "id": "elevator-interior",
+      "app": "shenron",
+      "view": "elevator-interior",
+      "name": "Elevator car",
+      "position": { "x": 0, "y": 0.05, "z": -32.2 },
+      "target": { "x": 1.25, "y": 1.48, "z": -31.2 },
+      "source": "src/gameplay/dev-view.ts VIEWS['elevator-interior'] (SHAFT.doorZ=-30, carDepth=4.4)",
+      "p2_075": null
+    },
+    {
+      "id": "floor45-arrival",
+      "app": "shenron",
+      "view": "floor45-arrival",
+      "name": "Floor 45 arrival",
+      "position": { "x": 0, "y": 180.05, "z": -1.5 },
+      "target": { "x": 0, "y": 181.58, "z": -22 },
+      "source": "src/gameplay/dev-view.ts VIEWS['floor45-arrival'] (HQ.y=180)",
+      "p2_075": null
+    }
+  ]
+}

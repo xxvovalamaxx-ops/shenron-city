@@ -1,0 +1,99 @@
+{
+  "pass": 2,
+  "app": "shenron",
+  "location": "hero-corridor-exterior",
+  "scenario": "stand",
+  "quality": "low",
+  "startedAtUtc": "2026-08-06T15:23:42.591Z",
+  "measuredMs": 8002.29999999702,
+  "stats": {
+    "frames": 789,
+    "deadFrames": 0,
+    "frameMs": {
+      "avg": 10.142332065902433,
+      "median": 10,
+      "p1": 7.600000001490116,
+      "p01": 6.5,
+      "min": 6.5,
+      "max": 26.80000000447035
+    },
+    "fps": {
+      "avg": 98.59665346216636,
+      "median": 100,
+      "p1": 131.57894734262266,
+      "p01": 153.84615384615384,
+      "min": 37.31343282959686
+    }
+  },
+  "longTasks": [],
+  "heapUsedMB": [
+    {
+      "ts": 8.699999995529652,
+      "mb": 477.17609691619873
+    },
+    {
+      "ts": 5002,
+      "mb": 490.9579391479492
+    }
+  ],
+  "loadMs": 245,
+  "appStats": null,
+  "gpu": {
+    "renderer": "ANGLE (NVIDIA, NVIDIA GeForce RTX 5070 (0x00002F04) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+    "vendor": "Google Inc. (NVIDIA)"
+  },
+  "transition": null,
+  "buckets": null,
+  "integrity": {
+    "sha256": "673891299de5b0fec0c8c06329653ec137f094b83f8d65639b03628e3b1b17b8",
+    "luminanceBands4x4": [
+      [
+        57,
+        130,
+        134,
+        120
+      ],
+      [
+        78,
+        112,
+        106,
+        98
+      ],
+      [
+        66,
+        78,
+        95,
+        54
+      ],
+      [
+        43,
+        106,
+        108,
+        62
+      ]
+    ],
+    "pngBytes": 414822,
+    "diffVsPass1": {
+      "meanAbsDiff": 1.086,
+      "pctPixelsChanged": 1.16,
+      "maxBandLuminanceDrift": 248.996
+    }
+  },
+  "cpu": {
+    "taskMsPerSec": -3.46,
+    "scriptMsPerSec": -3.43,
+    "layoutMsPerSec": -0.01,
+    "recalcStyleMsPerSec": 0,
+    "layoutsPerSec": 0.25,
+    "recalcStylesPerSec": 0.25,
+    "nodesDelta": 8,
+    "heapDeltaMB": 26.19
+  },
+  "errors": {
+    "consoleErrors": 0,
+    "exceptions": 0,
+    "consoleWarnings": 1,
+    "networkFailures": 0,
+    "samples": []
+  }
+}

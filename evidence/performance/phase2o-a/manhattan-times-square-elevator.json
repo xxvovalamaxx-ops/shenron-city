@@ -1,0 +1,80 @@
+{
+  "app": "manhattan",
+  "location": "times-square",
+  "scenario": "elevator",
+  "passes": 3,
+  "seconds": 8,
+  "quality": "high",
+  "dateUtc": "2026-08-06T15:12:56.965Z",
+  "locations": {
+    "app": "manhattan",
+    "spec": [
+      40.758,
+      -73.9855,
+      1.7,
+      0.3,
+      0.14,
+      "walk"
+    ],
+    "note": "true Times Square (P2-075 corrected: -1476,-2433; registry \"Midtown West / Times Sq\")"
+  },
+  "variance": {
+    "fpsAvg": {
+      "values": [
+        47.346477280778906,
+        43.90524541516893,
+        41.854573093488725
+      ],
+      "mean": 44.36876526314552,
+      "stdev": 2.7751379943518195,
+      "spreadPct": 12.377861215470826
+    },
+    "fpsP1": {
+      "values": [
+        147.05882359386317,
+        188.6792451238751,
+        163.93442638969267
+      ],
+      "mean": 166.55749836914364,
+      "stdev": 20.933830324166806,
+      "spreadPct": 24.988620709088714
+    },
+    "fpsP01": {
+      "values": [
+        344.8275863840804,
+        400,
+        238.0952383486592
+      ],
+      "mean": 327.6409415775799,
+      "stdev": 82.309316186705,
+      "spreadPct": 49.415302273206436
+    },
+    "frameAvgMs": {
+      "values": [
+        21.12089552237853,
+        22.77632183908731,
+        23.89225181598063
+      ],
+      "mean": 22.596489725815488,
+      "stdev": 1.3944026026384377,
+      "spreadPct": 12.26454341904242
+    },
+    "heapUsedMB": {
+      "values": [
+        0,
+        0,
+        0
+      ],
+      "mean": 0,
+      "stdev": 0,
+      "spreadPct": 0
+    }
+  },
+  "notes": {
+    "cameraAsserted": "true Times Square (P2-075 corrected: -1476,-2433; registry \"Midtown West / Times Sq\")",
+    "manhattanProjection": {
+      "x": -1475.1463139937368,
+      "y": -2432.62799999983
+    }
+  }
+}

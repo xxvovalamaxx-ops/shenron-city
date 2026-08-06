@@ -1,0 +1,99 @@
+{
+  "pass": 3,
+  "app": "shenron",
+  "location": "hero-corridor-exterior",
+  "scenario": "stand",
+  "quality": "medium",
+  "startedAtUtc": "2026-08-06T15:22:34.323Z",
+  "measuredMs": 8005.60000000149,
+  "stats": {
+    "frames": 795,
+    "deadFrames": 0,
+    "frameMs": {
+      "avg": 10.069811320754717,
+      "median": 9.900000005960464,
+      "p1": 7.899999998509884,
+      "p01": 7.299999997019768,
+      "min": 7.299999997019768,
+      "max": 25.600000001490116
+    },
+    "fps": {
+      "avg": 99.30672662544501,
+      "median": 101.01010094928616,
+      "p1": 126.5822785048889,
+      "p01": 136.98630142578781,
+      "min": 39.06249999772626
+    }
+  },
+  "longTasks": [],
+  "heapUsedMB": [
+    {
+      "ts": 10.700000002980232,
+      "mb": 868.8916292190552
+    },
+    {
+      "ts": 5002.20000000298,
+      "mb": 871.3822717666626
+    }
+  ],
+  "loadMs": 159,
+  "appStats": null,
+  "gpu": {
+    "renderer": "ANGLE (NVIDIA, NVIDIA GeForce RTX 5070 (0x00002F04) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+    "vendor": "Google Inc. (NVIDIA)"
+  },
+  "transition": null,
+  "buckets": null,
+  "integrity": {
+    "sha256": "538e2e2a3edf8fab9fd495547265c1196ac88f71ce8a6f7420b09651ab782b78",
+    "luminanceBands4x4": [
+      [
+        48,
+        125,
+        130,
+        100
+      ],
+      [
+        76,
+        114,
+        109,
+        97
+      ],
+      [
+        63,
+        78,
+        98,
+        54
+      ],
+      [
+        33,
+        102,
+        104,
+        54
+      ]
+    ],
+    "pngBytes": 481763,
+    "diffVsPass1": {
+      "meanAbsDiff": 5.3,
+      "pctPixelsChanged": 7.78,
+      "maxBandLuminanceDrift": 197.2482
+    }
+  },
+  "cpu": {
+    "taskMsPerSec": -0.05,
+    "scriptMsPerSec": -0.04,
+    "layoutMsPerSec": 0,
+    "recalcStyleMsPerSec": 0,
+    "layoutsPerSec": -0.38,
+    "recalcStylesPerSec": -0.38,
+    "nodesDelta": 200,
+    "heapDeltaMB": 60.4
+  },
+  "errors": {
+    "consoleErrors": 0,
+    "exceptions": 0,
+    "consoleWarnings": 1,
+    "networkFailures": 0,
+    "samples": []
+  }
+}

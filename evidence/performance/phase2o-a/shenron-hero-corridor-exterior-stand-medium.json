@@ -1,0 +1,70 @@
+{
+  "app": "shenron",
+  "location": "hero-corridor-exterior",
+  "scenario": "stand",
+  "passes": 3,
+  "seconds": 8,
+  "quality": "medium",
+  "dateUtc": "2026-08-06T15:22:34.327Z",
+  "locations": {
+    "app": "shenron",
+    "view": "hero-boulevard",
+    "note": "Dragon Boulevard exterior (dev-view)"
+  },
+  "variance": {
+    "fpsAvg": {
+      "values": [
+        99.46518718442987,
+        99.29556354917915,
+        99.30672662544501
+      ],
+      "mean": 99.35582578635133,
+      "stdev": 0.09487407501628882,
+      "spreadPct": 0.17072339131422842
+    },
+    "fpsP1": {
+      "values": [
+        135.1351351623469,
+        131.57894734262266,
+        126.5822785048889
+      ],
+      "mean": 131.09878700328616,
+      "stdev": 4.2965980396541275,
+      "spreadPct": 6.523978484441359
+    },
+    "fpsP01": {
+      "values": [
+        149.25373127689392,
+        149.25373127689392,
+        136.98630142578781
+      ],
+      "mean": 145.16458799319187,
+      "stdev": 7.082603926800958,
+      "spreadPct": 8.450704142584303
+    },
+    "frameAvgMs": {
+      "values": [
+        10.053768844226722,
+        10.070943396224541,
+        10.069811320754717
+      ],
+      "mean": 10.06484118706866,
+      "stdev": 0.009605622349665974,
+      "spreadPct": 0.17063907595367456
+    },
+    "heapUsedMB": {
+      "values": [
+        440.0120096206665,
+        522.5822038650513,
+        871.3822717666626
+      ],
+      "mean": 611.3254950841268,
+      "stdev": 228.9685667690471,
+      "spreadPct": 70.56310682521651
+    }
+  },
+  "notes": {
+    "cameraAsserted": "Dragon Boulevard exterior (dev-view)",
+    "manhattanProjection": null
+  }
+}

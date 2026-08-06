@@ -11,10 +11,10 @@ function percentile(sorted, p) {
   return sorted[idx]
 }
 
-/** Summarise frame deltas (ms). Deltas > 1000 ms are dead frames, reported separately. */
+/** Summarise frame deltas (ms). Deltas > 1000 ms are stall/dead frames, reported separately but kept in the distribution. */
 function summarizeFrames(deltas) {
   const valid = deltas.filter((d) => Number.isFinite(d) && d > 0)
-  const dead = deltas.length - valid.length
+  const dead = valid.filter((d) => d > 1000).length
   const sorted = [...valid].sort((a, b) => a - b)
   const sum = sorted.reduce((a, b) => a + b, 0)
   const avg = sum / Math.max(1, sorted.length)
