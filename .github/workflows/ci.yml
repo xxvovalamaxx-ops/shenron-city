@@ -4,6 +4,9 @@ on:
   push:
     branches: [main]
   pull_request:
+  # Manual re-run button for when GitHub's hosted runners are slow to pick
+  # up webhook-triggered runs.
+  workflow_dispatch:
 
 permissions:
   contents: read
