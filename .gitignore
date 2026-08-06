@@ -79,3 +79,6 @@ scripts/tmp*.py
 scripts/ifbx_patched_*.py
 scripts/patched_fbx_*.py
 scripts/debug-page.png
+
+# asset technical validation staging (reproducible from SourceAssets/PublicLibrary)
+staging/
