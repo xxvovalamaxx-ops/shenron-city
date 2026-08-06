@@ -10,6 +10,7 @@ import { Suspense, useEffect, useRef, useState } from 'react'
 import { useFrame } from '@react-three/fiber'
 import type { Group } from 'three'
 import { rt } from '../gameplay/runtime'
+import { vehicleSim } from '../gameplay/vehicles/vehicle-session'
 import { useHud } from '../ui/hud-store'
 import { RealisticPlayer } from './RealisticPlayer'
 import {
@@ -51,6 +52,10 @@ export function PlayerAvatar() {
   useFrame((_, delta) => {
     if (rt.paused) return
 
+    // While the player is attached to a seat the avatar is not rendered; the
+    // sim owns the pose and publishes it to rt.player.
+    if (!vehicleSim.playerVisible) return
+
     const dt = Math.max(1e-4, Math.min(delta, 0.05))
     const p = rt.player
 
@@ -87,6 +92,10 @@ export function PlayerAvatar() {
   })
 
   if (!thirdPerson) return null
+  if (!vehicleSim.playerVisible) return null
+  // Deterministic captures: the idle clip animates the skeleton, which moves
+  // pixels between otherwise-identical captures. Captures are city evidence.
+  if (rt.captureFrozen) return null
 
   return (
     <group ref={root}>

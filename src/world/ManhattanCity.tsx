@@ -1,20 +1,33 @@
 import { useEffect, useRef } from 'react'
 import * as THREE from 'three'
-import { useFrame } from '@react-three/fiber'
+import { useFrame, useThree } from '@react-three/fiber'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
 import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js'
 import {
-  acceleratedRaycast,
   computeBoundsTree,
   disposeBoundsTree,
 } from 'three-mesh-bvh'
-import { MANHATTAN_BASE_URL, MANHATTAN_TILES } from './manhattan-tiles'
 import { manhattanCollision } from './manhattan-collision'
+import { getBuildingNightMaterial, getRoadNightMaterial, isCityNightMaterial } from './night-materials'
+import { QUALITY, type QualityPreset } from './palette'
+import { rt } from '../gameplay/runtime'
+import { City } from '../city/city.js'
+import { FacadeMaterial } from '../city/facade.js'
+import { TileStreamer } from '../city/streamer.js'
+import { LodLayer } from '../city/lod.js'
+import { StaticProps } from '../city/props.js'
+import { Demand } from '../city/demand.js'
+import { Traffic } from '../city/traffic.js'
+import { Weather } from '../city/weather.js'
+import { Crowd } from '../city/pedestrians.js'
+import { Subway } from '../city/subway.js'
+import { buildSky } from '../city/sky.js'
+import { cityWorld } from '../city/registry.js'
+import { cityHud } from '../city/city-hud.js'
 
 // three-mesh-bvh extends BufferGeometry/Mesh only when asked; wire it up once.
 THREE.BufferGeometry.prototype.computeBoundsTree = computeBoundsTree
 THREE.BufferGeometry.prototype.disposeBoundsTree = disposeBoundsTree
-THREE.Mesh.prototype.raycast = acceleratedRaycast
 
 let sharedLoader: GLTFLoader | null = null
 
@@ -31,102 +44,467 @@ function getGLTFLoader(): GLTFLoader {
   return sharedLoader
 }
 
-/**
- * The island is exported twice: a single combined `manhattan_world.glb` for
- * the `full` mode, and a `manhattan_base.glb` + per-tile files for the `tiles`
- * mode. The combined export has exactly the same triangle count as base plus
- * every tile, so both modes render the same island — `tiles` just spreads the
- * download over time instead of pulling 26 MB up front.
- *
- * Tile loading is distance-driven: tiles whose bounding box lies within
- * {@link TILE_LOAD_RADIUS} of the camera are requested, and tiles farther than
- * {@link TILE_UNLOAD_RADIUS} are disposed. Radii are hysteresis-paired so a
- * tile that just crossed the load threshold is not immediately evicted while
- * the camera idles on a boundary.
- */
-const TILE_LOAD_RADIUS = 5200
-const TILE_UNLOAD_RADIUS = 8200
+/** The ported facade material is shared across every tile; disposal must skip it. */
+function isSharedCityMaterial(material: THREE.Material): boolean {
+  return material.userData.cityShared === true || isCityNightMaterial(material)
+}
 
-function prepareMaterials(root: THREE.Group) {
+function disposeGroup(root: THREE.Group) {
   root.traverse((obj) => {
     if (obj instanceof THREE.Mesh) {
-      const hasColor = !!obj.geometry.attributes.color
-      obj.material = new THREE.MeshStandardMaterial({
-        vertexColors: hasColor,
-        color: hasColor ? 0xffffff : 0x8a8f96,
-        roughness: 0.78,
-        metalness: 0.08,
-      })
-      obj.castShadow = false
-      obj.receiveShadow = true
-    }
-  })
-}
-
-function computeTileBvh(root: THREE.Group) {
-  root.traverse((obj) => {
-    if (!(obj instanceof THREE.Mesh)) return
-    if (obj.geometry.boundsTree) return
-    const count = obj.geometry.attributes.position?.count ?? 0
-    if (count < 3) return
-    obj.geometry.computeBoundsTree()
-  })
-}
-
-function disposeTileBvh(root: THREE.Group) {
-  root.traverse((obj) => {
-    if (obj instanceof THREE.Mesh && obj.geometry.boundsTree) {
-      obj.geometry.disposeBoundsTree()
-    }
-  })
-}
-
-function disposeScene(root: THREE.Group) {
-  root.traverse((obj) => {
-    if (obj instanceof THREE.Mesh) {
+      if (obj.geometry.boundsTree) obj.geometry.disposeBoundsTree()
       obj.geometry.dispose()
-      if (Array.isArray(obj.material)) {
-        obj.material.forEach((m) => m.dispose())
-      } else {
-        obj.material.dispose()
+      const materials = Array.isArray(obj.material) ? obj.material : [obj.material]
+      for (const m of materials) {
+        if (!isSharedCityMaterial(m)) m.dispose()
       }
     }
   })
+  root.removeFromParent()
   root.clear()
 }
 
-function distanceToTile(camera: THREE.Camera, tile: (typeof MANHATTAN_TILES)[number]) {
-  const x = Math.max(tile.minX - camera.position.x, 0, camera.position.x - tile.maxX)
-  const z = Math.max(tile.minZ - camera.position.z, 0, camera.position.z - tile.maxZ)
-  return Math.hypot(x, z)
+/**
+ * The one city, running the ported Phase 2 reference engine:
+ *
+ *   tile streaming with the facade shader on the BLD_* meshes (procedural
+ *   windows, storefronts, roofs — the look the evidence shots were taken on),
+ *   a separate street-tile streamer for kerbs and paint, far LOD tiers,
+ *   street furniture, the LION traffic sim, the sidewalk crowd, and a
+ *   full weather system (sun, fog, clouds, rain) driven by the game clock.
+ *
+ * Collision and navigation still run through manhattanCollision: the base's
+ * LAND_* islands answer ground-height raycasts, and each streamed BLD_* mesh
+ * gets a BVH for the walk sweeps, exactly like the old tile loader.
+ */
+function prepareFallbackMaterials(root: THREE.Group, quality: QualityPreset) {
+  root.traverse((obj) => {
+    if (!(obj instanceof THREE.Mesh)) return
+    obj.castShadow = false
+    obj.receiveShadow = true
+    const hasColor = !!obj.geometry.attributes.color
+    const mat = obj.material as THREE.Material
+    const hasTexture =
+      mat instanceof THREE.MeshStandardMaterial ||
+      mat instanceof THREE.MeshPhysicalMaterial
+        ? !!(mat as { map?: THREE.Texture }).map ||
+          !!(mat as { normalMap?: THREE.Texture }).normalMap ||
+          !!(mat as { roughnessMap?: THREE.Texture }).roughnessMap ||
+          !!(mat as { emissiveMap?: THREE.Texture }).emissiveMap
+        : false
+    if (hasTexture) return
+    const name = obj.name.toUpperCase()
+    if (name.startsWith('BLD_') && obj.geometry.attributes._bid) {
+      obj.material = getBuildingNightMaterial({ quality })
+      return
+    }
+    if (name.startsWith('ROAD_')) {
+      obj.material = getRoadNightMaterial({ quality })
+      return
+    }
+    obj.material = new THREE.MeshStandardMaterial({
+      vertexColors: hasColor,
+      color: hasColor ? 0xffffff : 0x8a8f96,
+      roughness: 0.78,
+      metalness: 0.08,
+    })
+  })
+}
+
+interface PipelineHooks {
+  onBaseRegistered?: (root: THREE.Group) => void
+  onTileRegistered?: (url: string, root: THREE.Group) => void
+}
+
+/**
+ * The ported life-engine pipeline. Owns the streamers, the sims and the
+ * weather; updated once per frame from the ManhattanCity frame loop.
+ */
+class CityPipeline {
+  private readonly scene: THREE.Scene
+  private readonly groupRoot: THREE.Group
+  private readonly quality: QualityPreset
+  private readonly hooks: PipelineHooks
+  private readonly facade: FacadeMaterial
+  private readonly streamer: TileStreamer
+  private readonly streets: TileStreamer
+  private readonly lod: LodLayer
+  private readonly props: StaticProps
+  private readonly demand: Demand
+  private readonly traffic: Traffic
+  private readonly weather: Weather
+  private readonly crowd: Crowd
+  private readonly subway: Subway
+  private readonly lights: ReturnType<typeof buildSky>
+  private readonly sun: THREE.DirectionalLight | null
+  private readonly processed = new Set<string>()
+  private readonly roots = new Map<string, THREE.Group>()
+  /** Walkable surface meshes registered per tile, so unloading undoes them. */
+  private readonly groundByTile = new Map<string, THREE.Mesh[]>()
+  private baseDone = false
+  private hudTimer = 0
+  private lastNight = -1
+  private disposed = false
+
+  constructor(
+    group: THREE.Group,
+    scene: THREE.Scene,
+    gl: THREE.WebGLRenderer,
+    quality: QualityPreset,
+    hooks: PipelineHooks,
+  ) {
+    this.scene = scene
+    this.groupRoot = group
+    this.quality = quality
+    this.hooks = hooks
+
+    this.facade = new FacadeMaterial(cityWorld.city)
+    this.facade.material.userData.cityShared = true
+    this.streamer = new TileStreamer(group, cityWorld.city!.meta, this.facade.material)
+    this.streets = new TileStreamer(group, cityWorld.city!.meta, null, 'streets')
+    this.lod = new LodLayer(group)
+    this.props = new StaticProps(group, cityWorld.city)
+    this.demand = new Demand()
+    this.traffic = new Traffic(group, cityWorld.city, this.demand)
+    this.crowd = new Crowd(group, cityWorld.city, this.demand)
+    this.subway = new Subway(group, cityWorld.city)
+
+    const lights = buildSky(scene, gl)
+    this.lights = lights
+    this.sun = lights.sun
+    this.weather = new Weather(scene, gl, lights, cityWorld.city)
+
+    cityWorld.facade = this.facade
+    cityWorld.weather = this.weather
+    cityWorld.lights = lights
+    cityWorld.streamer = this.streamer
+    cityWorld.streets = this.streets
+    cityWorld.lod = this.lod
+    cityWorld.props = this.props
+    cityWorld.traffic = this.traffic
+    cityWorld.crowd = this.crowd
+    cityWorld.subway = this.subway
+    cityWorld.demand = this.demand
+    // The reference app exposed the same handle for live inspection; the
+    // visual-QA runner and the debugger read stats and geometry through it.
+    ;(window as unknown as { __cityWorld: typeof cityWorld }).__cityWorld = cityWorld
+    ;(window as unknown as { __manhattanCollision: typeof manhattanCollision }).__manhattanCollision = manhattanCollision
+    ;(window as unknown as { THREE: typeof THREE }).THREE = THREE
+  }
+
+  async boot(): Promise<void> {
+    if (this.disposed) return
+    const { streamer, streets, lod, props, demand, traffic, weather, crowd } = this
+
+    // Far tiers first: a tile that is about to be covered by L2 should never
+    // briefly render at full detail on the way in.
+    await lod.load()
+    if (this.disposed) return
+
+    await props.load()
+    if (this.disposed) return
+
+    await demand.load()
+    if (this.disposed) return
+
+    await traffic.load()
+    if (this.disposed) return
+
+    await weather.load()
+    if (this.disposed) return
+    weather.bindSurfaces(streamer, streets)
+
+    await crowd.load()
+    if (this.disposed) return
+
+    // Station kiosks, and the footfall that thickens the crowd around them.
+    await this.subway.load()
+    if (this.disposed) return
+    demand.setSubway(this.subway)
+
+    this._rigSun()
+    this.weather.setTime(rt.clock.hour)
+    this.weather.setRain(rt.clock.weather.rain)
+    cityWorld.ready = true
+    console.info(
+      '[city]', cityWorld.city?.count, 'buildings,',
+      streamer.tileCount, 'tiles,',
+      traffic.stats.lanes, 'lanes,',
+      crowd.stats.lanes, 'walk lanes,',
+      props.stats.total, 'props,',
+      this.subway.stats.total, 'subway entrances',
+    )
+  }
+
+  /** Character shadows follow the player: the sun is re-anchored each frame. */
+  private _rigSun(): void {
+    const sun = this.sun
+    if (!sun) return
+    const q = QUALITY[this.quality]
+    sun.castShadow = q.shadows
+    sun.shadow.mapSize.set(q.shadowMapSize, q.shadowMapSize)
+    const sc = sun.shadow.camera
+    sc.near = 11000
+    sc.far = 13000
+    sc.left = -240
+    sc.right = 240
+    sc.top = 240
+    sc.bottom = -240
+    sc.updateProjectionMatrix()
+    sun.shadow.bias = -0.0006
+    this.scene.add(sun.target)
+  }
+
+  update(dt: number, camera: THREE.Camera): void {
+    if (this.disposed) return
+    const { streamer, streets, lod, props, traffic, crowd, weather } = this
+    // Deterministic captures freeze the life sims (traffic, crowd, weather)
+    // like pause does, so repeated captures of a scene are identical. The
+    // streamers keep running — they converge to the same loaded set.
+    if (rt.paused || rt.captureFrozen) dt = 0
+
+    const st = streamer.update(camera)
+    const sst = streets.update(camera)
+    void sst
+    this._processTiles(streamer, false)
+    this._processTiles(streets, true)
+    lod.update(camera, streamer)
+    props.update(camera)
+    this.subway.update(camera)
+    traffic.update(dt, camera)
+    crowd.update(dt, camera)
+    weather.update(dt, camera)
+    this._syncWeather(camera)
+    this._hud(dt, camera)
+    void st
+  }
+
+  // ---- tile lifecycle ------------------------------------------------
+
+  private _processTiles(streamer: TileStreamer, isStreets: boolean): void {
+    for (const [file, t] of streamer.tiles) {
+      if (t.always && t.state === 'ready' && !this.baseDone) {
+        this.baseDone = true
+        this._registerBase(t.group)
+        continue
+      }
+      if (t.state === 'ready' && !this.processed.has(file)) {
+        this.processed.add(file)
+        this._onTileReady(t.group, isStreets, file)
+      } else if (t.state !== 'ready' && this.processed.has(file)) {
+        this.processed.delete(file)
+        const prev = this.roots.get(file)
+        if (prev) {
+          this.roots.delete(file)
+          manhattanCollision.unregisterTileBuildings(prev)
+          disposeGroup(prev)
+        }
+        const grounds = this.groundByTile.get(file)
+        if (grounds) {
+          this.groundByTile.delete(file)
+          for (const mesh of grounds) manhattanCollision.unregisterGround(mesh)
+        }
+      }
+    }
+  }
+
+  private _registerBase(root: THREE.Group | null): void {
+    if (!root) return
+    root.traverse((obj) => {
+      if (!(obj instanceof THREE.Mesh)) return
+      if (obj.name.toUpperCase().startsWith('LAND_')) {
+        if (!obj.geometry.boundsTree) obj.geometry.computeBoundsTree()
+        manhattanCollision.registerGround(obj)
+        obj.receiveShadow = true
+      }
+    })
+    manhattanCollision.baseReady = true
+    this.hooks.onBaseRegistered?.(root)
+  }
+
+  private _registerGround(name: string, obj: THREE.Mesh, file: string): void {
+    if (!/^(SIDEWALK_|ROAD_|PARK_)/.test(name)) return
+    if (!obj.geometry.boundsTree) obj.geometry.computeBoundsTree()
+    manhattanCollision.registerGround(obj)
+    let list = this.groundByTile.get(file)
+    if (!list) {
+      list = []
+      this.groundByTile.set(file, list)
+    }
+    list.push(obj)
+  }
+
+  private _onTileReady(root: THREE.Group | null, isStreets: boolean, file: string): void {
+    if (!root) return
+    if (isStreets) {
+      // The street layer is pavement, kerbs and paint: it never carries
+      // buildings, so nothing enters the building index. It does receive the
+      // character's shadow, and its SIDEWALK_/ROAD_ surfaces answer ground
+      // height probes — the base LAND mesh is too coarse to walk on alone.
+      root.traverse((obj) => {
+        if (!(obj instanceof THREE.Mesh)) return
+        obj.receiveShadow = true
+        this._registerGround(obj.name.toUpperCase(), obj, file)
+      })
+      return
+    }
+    root.traverse((obj) => {
+      if (!(obj instanceof THREE.Mesh)) return
+      const name = obj.name.toUpperCase()
+      if (name.startsWith('ROAD_')) {
+        obj.material = getRoadNightMaterial({ quality: this.quality })
+        obj.receiveShadow = true
+      }
+      this._registerGround(name, obj, file)
+    })
+    manhattanCollision.registerTileBuildings(root)
+    this.roots.set(file, root)
+    this.hooks.onTileRegistered?.(file, root)
+  }
+
+  // ---- weather + clock bridge ----------------------------------------
+
+  private _syncWeather(camera: THREE.Camera): void {
+    const { weather, facade, sun } = this
+    const hour = rt.clock.hour
+    if (Math.abs(weather.hour - hour) > 1e-4) weather.setTime(hour)
+    const rain = rt.clock.weather.rain
+    if (Math.abs(weather.rain - rain) > 1e-3) weather.setRain(rain)
+
+    // Facade night windows follow the same shoulders as the city-night
+    // shader: lit between dusk and dawn, fading across the transition bands.
+    const night =
+      1 - smoothstep(5.5, 8, hour) + smoothstep(18, 21, hour)
+    if (Math.abs(night - this.lastNight) > 1e-3) {
+      this.lastNight = night
+      facade.setNight(night)
+    }
+
+    if (sun && sun.castShadow) {
+      const dir = sun.position.clone().normalize()
+      sun.position.copy(camera.position).addScaledVector(dir, 12000)
+      sun.target.position.copy(camera.position)
+      sun.target.updateMatrixWorld()
+    }
+  }
+
+  // ---- HUD ------------------------------------------------------------
+
+  private _hud(dt: number, camera: THREE.Camera): void {
+    this.hudTimer += dt
+    if (this.hudTimer < 0.5) return
+    this.hudTimer = 0
+
+    const { streamer, streets, lod, traffic, crowd, props, weather } = this
+    const city = cityWorld.city
+    if (!city) return
+    const hour = rt.clock.hour
+    cityHud.tiles =
+      `${streamer.stats.resident}/${streamer.tileCount}` +
+      (streamer.stats.loading ? ` +${streamer.stats.loading}` : '') +
+      `  st ${streets.stats.resident}/${streets.tileCount}`
+    cityHud.lod =
+      `${lod.stats.full} full · ${lod.stats.L2} L2 · ` +
+      `${lod.stats.L3} L3 · ${lod.stats.L4} L4`
+    cityHud.cars = `${traffic.stats.vehicles} / ${traffic.stats.simLanes} lanes`
+    cityHud.peds =
+      `${crowd.stats.people}` +
+      (crowd.stats.demand != null ? `  (busy ${crowd.stats.demand.toFixed(2)})` : '')
+    cityHud.props = props.stats.drawn
+    cityHud.sky =
+      `${String(Math.floor(hour)).padStart(2, '0')}:` +
+      `${String(Math.floor((hour % 1) * 60)).padStart(2, '0')}` +
+      `  cloud ${weather.cover.toFixed(2)}  rain ${weather.rain.toFixed(2)}`
+    const i = city.nearest(camera.position.x, camera.position.z, 900)
+    cityHud.where = i >= 0 ? city.district(i) : 'off-island'
+  }
+
+  dispose(): void {
+    if (this.disposed) return
+    this.disposed = true
+    cityWorld.ready = false
+
+    for (const streamer of [this.streamer, this.streets]) {
+      for (const t of streamer.tiles.values()) {
+        if (t.state !== 'ready' || !t.group) continue
+        if (!t.always) manhattanCollision.unregisterTileBuildings(t.group)
+        disposeGroup(t.group)
+      }
+    }
+    // The street grounds are registered per tile; undo them all, then drop
+    // every collision record so a remount starts from a clean index.
+    for (const grounds of this.groundByTile.values()) {
+      for (const mesh of grounds) manhattanCollision.unregisterGround(mesh)
+    }
+    this.groundByTile.clear()
+    manhattanCollision.clearBase()
+    for (const t of this.lod.tiles.values()) {
+      for (const tier of ['L2', 'L3', 'L4'] as const) {
+        const g = (t.groups as Record<string, THREE.Group | undefined> | undefined)?.[tier]
+        if (g) disposeGroup(g)
+      }
+    }
+    // Instanced life layers (props, fleet, crowd, subway kiosks, rain,
+    // clouds) are all named children of the city group or the scene; the
+    // sims hold them in Maps, so clear by name.
+    for (const name of ['PROPS_', 'FLEET_', 'CROWD_', 'SUBWAY_', 'WEATHER_']) {
+      const roots = name === 'WEATHER_' ? [this.scene] : [this.scene, this.groupRoot]
+      for (const root of roots) {
+        for (let i = root.children.length - 1; i >= 0; i--) {
+          const child = root.children[i]
+          if (child.name.startsWith(name)) {
+            root.remove(child)
+            child.traverse((o) => {
+              if (o instanceof THREE.Mesh) {
+                if (o.geometry.boundsTree) o.geometry.disposeBoundsTree()
+                o.geometry.dispose()
+                if (!isSharedCityMaterial(o.material)) o.material.dispose()
+              }
+            })
+          }
+        }
+      }
+    }
+    if (this.lights) this.scene.remove(this.lights.sun.target)
+    this.facade.dispose()
+    this.streamer.plainMaterial.dispose()
+    this.streamer.fallbackMaterial.dispose()
+    this.streets.plainMaterial.dispose()
+    this.streets.fallbackMaterial.dispose()
+    if (this.scene.fog) this.scene.fog = null
+  }
+}
+
+function smoothstep(a: number, b: number, x: number): number {
+  const t = Math.min(1, Math.max(0, (x - a) / (b - a)))
+  return t * t * (3 - 2 * t)
 }
 
 export function ManhattanCity({
   mode = 'full',
   position = [0, 0, 0],
   scale = 1,
+  quality = 'medium',
   onBaseRegistered,
   onTileRegistered,
-  onTileUnregistered,
 }: {
   mode?: 'full' | 'tiles'
   position?: [number, number, number]
   scale?: number
+  quality?: QualityPreset
   onBaseRegistered?: (root: THREE.Group) => void
   onTileRegistered?: (url: string, root: THREE.Group) => void
-  onTileUnregistered?: (url: string, root: THREE.Group) => void
 }) {
   const groupRef = useRef<THREE.Group>(null)
-  const tileRootRef = useRef<THREE.Group>(null)
-  const loadedTiles = useRef(new Map<string, THREE.Group>())
-  const inFlightTiles = useRef(new Set<string>())
-  const baseLoaded = useRef(false)
+  const pipelineRef = useRef<CityPipeline | null>(null)
+  const qualityRef = useRef(quality)
+  qualityRef.current = quality
   const onBase = useRef(onBaseRegistered)
   const onTile = useRef(onTileRegistered)
-  const onTileOut = useRef(onTileUnregistered)
   onBase.current = onBaseRegistered
   onTile.current = onTileRegistered
-  onTileOut.current = onTileUnregistered
+  const gl = useThree((s) => s.gl)
+  const scene = useThree((s) => s.scene)
 
   // Full mode: a single combined GLB. Simple, and the safest fallback when
   // tile streaming misbehaves in an unexpected browser.
@@ -140,7 +518,7 @@ export function ManhattanCity({
       '/models/manhattan/manhattan_world.glb',
       (gltf) => {
         if (!groupRef.current) return
-        prepareMaterials(gltf.scene)
+        prepareFallbackMaterials(gltf.scene, qualityRef.current)
         groupRef.current.add(gltf.scene)
       },
       undefined,
@@ -152,102 +530,47 @@ export function ManhattanCity({
     }
   }, [mode])
 
-  // Tiles mode: the base (water, land, landmarks, bridges) is loaded once and
-  // stays; per-tile road/tree/building chunks stream in around the camera.
+  // Tiles mode: the full city-life pipeline.
   useEffect(() => {
     if (mode !== 'tiles') return
     const group = groupRef.current
     if (!group) return
+    let cancelled = false
 
-    const loader = getGLTFLoader()
-    loader.load(
-      MANHATTAN_BASE_URL,
-      (gltf) => {
-        if (!groupRef.current || baseLoaded.current) return
-        baseLoaded.current = true
-        prepareMaterials(gltf.scene)
-        const base = gltf.scene
-        base.name = 'manhattan-base'
-        groupRef.current.add(base)
-        // Island surface meshes feed ground-height raycasts.
-        base.traverse((obj) => {
-          if (obj instanceof THREE.Mesh && obj.name.toUpperCase().startsWith('LAND_')) {
-            if (!obj.geometry.boundsTree) obj.geometry.computeBoundsTree()
-            manhattanCollision.registerGround(obj)
-          }
+    const boot = async (): Promise<void> => {
+      try {
+        const city = await City.load()
+        if (cancelled) return
+        cityWorld.city = city
+
+        const pipeline = new CityPipeline(group, scene, gl, qualityRef.current, {
+          onBaseRegistered: (root) => onBase.current?.(root),
+          onTileRegistered: (url, root) => onTile.current?.(url, root),
         })
-        manhattanCollision.baseReady = true
-        onBase.current?.(base)
-      },
-      undefined,
-      (err) => console.warn('[ManhattanCity] Failed to load manhattan_base.glb:', err),
-    )
-
-    const tileRoot = new THREE.Group()
-    tileRoot.name = 'manhattan-tiles'
-    group.add(tileRoot)
-    tileRootRef.current = tileRoot
-
-    const loaded = loadedTiles.current
-    const inFlight = inFlightTiles.current
+        if (cancelled) {
+          pipeline.dispose()
+          return
+        }
+        pipelineRef.current = pipeline
+        await pipeline.boot()
+      } catch (err) {
+        if (!cancelled) console.error('[ManhattanCity] city pipeline failed:', err)
+      }
+    }
+    void boot()
 
     return () => {
-      baseLoaded.current = false
-      tileRootRef.current = null
-      manhattanCollision.clearBase()
-      for (const tileGroup of loaded.values()) {
-        tileGroup.removeFromParent()
-        disposeTileBvh(tileGroup)
-        manhattanCollision.unregisterTileBuildings(tileGroup)
-        disposeScene(tileGroup)
-      }
-      loaded.clear()
-      inFlight.clear()
-      group.clear()
+      cancelled = true
+      pipelineRef.current?.dispose()
+      pipelineRef.current = null
     }
-  }, [mode])
+  }, [mode, gl, scene])
 
-  useFrame(({ camera }) => {
+  useFrame((state, rawDt) => {
     if (mode !== 'tiles') return
-    const tileRoot = tileRootRef.current
-    if (!tileRoot) return
-
-    for (const tile of MANHATTAN_TILES) {
-      const distance = distanceToTile(camera, tile)
-      const group = loadedTiles.current.get(tile.url)
-
-      if (!group && !inFlightTiles.current.has(tile.url) && distance < TILE_LOAD_RADIUS) {
-        inFlightTiles.current.add(tile.url)
-        getGLTFLoader().load(
-          tile.url,
-          (gltf) => {
-            inFlightTiles.current.delete(tile.url)
-            if (!tileRootRef.current) return
-            prepareMaterials(gltf.scene)
-            computeTileBvh(gltf.scene)
-            const tileGroup = new THREE.Group()
-            tileGroup.name = tile.url
-            tileGroup.add(gltf.scene)
-            tileRootRef.current.add(tileGroup)
-            loadedTiles.current.set(tile.url, tileGroup)
-            manhattanCollision.registerTileBuildings(tileGroup)
-            onTile.current?.(tile.url, tileGroup)
-          },
-          undefined,
-          (err) => {
-            inFlightTiles.current.delete(tile.url)
-            console.warn(`[ManhattanCity] Failed to load ${tile.url}:`, err)
-          },
-        )
-      } else if (group && distance > TILE_UNLOAD_RADIUS) {
-        loadedTiles.current.delete(tile.url)
-        tileRoot.remove(group)
-        disposeTileBvh(group)
-        manhattanCollision.unregisterTileBuildings(group)
-        onTileOut.current?.(tile.url, group)
-        disposeScene(group)
-      }
-    }
+    const pipeline = pipelineRef.current
+    if (!pipeline) return
+    pipeline.update(Math.min(rawDt, 1 / 20), state.camera)
   })
 
   return <group ref={groupRef} position={position} scale={scale} name="manhattan-city" />

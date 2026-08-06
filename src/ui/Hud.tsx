@@ -1,10 +1,14 @@
 /**
  * The always-on readout for the Manhattan build.
  *
- * FPS + draw-call stats, player position, camera mode and the dev-tools hint.
- * Driven by the HUD store, written at ~10 Hz by the game loop.
+ * FPS + draw-call stats, player position, camera mode, the dev-tools hint,
+ * and the city-life readout (tiles, LOD, traffic, crowds, props, sky) fed by
+ * the ported engine through the cityHud handle.
  */
+import { useEffect, useState } from 'react'
 import { useHud } from './hud-store'
+import { cityHud } from '../city/city-hud.js'
+import { cityWorld } from '../city/registry.js'
 
 export function Hud() {
   const showPerf = useHud((s) => s.showPerf)
@@ -13,6 +17,7 @@ export function Hud() {
   const mapZ = useHud((s) => s.mapPlayerZ)
   const heading = useHud((s) => s.mapHeading)
   const promptLabel = useHud((s) => s.promptLabel)
+  const vehicleSpeedKmh = useHud((s) => s.vehicleSpeedKmh)
 
   return (
     <div className="overlay">
@@ -24,6 +29,9 @@ export function Hud() {
         <div className="chip">
           {thirdPerson ? 'THIRD PERSON · V' : 'FIRST PERSON · V'}
         </div>
+        {vehicleSpeedKmh > 0 && (
+          <div className="chip speed">{vehicleSpeedKmh} km/h</div>
+        )}
         <div className="chip">
           {mapX}, {mapZ} · {heading}°
         </div>
@@ -39,11 +47,31 @@ export function Hud() {
 
 function PerfPanel() {
   const perf = useHud((s) => s)
+  const [, setTick] = useState(0)
+
+  // The engine writes cityHud at ~2 Hz; poll it at the same cadence rather
+  // than re-rendering sixty times a second.
+  useEffect(() => {
+    const id = setInterval(() => setTick((t) => t + 1), 500)
+    return () => clearInterval(id)
+  }, [])
+
   return (
     <aside className="perf" aria-live="off">
       <b>
         {perf.fps} FPS · {perf.frameMs} ms
       </b>
+      {cityWorld.ready && (
+        <>
+          <span>{cityHud.tiles}</span>
+          <span>{cityHud.lod}</span>
+          <span>{cityHud.cars}</span>
+          <span>{cityHud.peds}</span>
+          <span>{cityHud.props} props drawn</span>
+          <span>{cityHud.sky}</span>
+          <span>{cityHud.where}</span>
+        </>
+      )}
       <span>Double-Space to fly · Shift to sprint · Esc to pause</span>
     </aside>
   )

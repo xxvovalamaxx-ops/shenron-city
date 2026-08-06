@@ -44,6 +44,16 @@ export interface SaveData {
   /** Camera forward on the horizontal plane, normalised. */
   forward: { x: number; z: number }
   settings: SavedSettings
+  /**
+   * The player's car, when one has been driven this session. Restored as
+   * PARKED at the saved pose; never restored mid-drive. Null until the
+   * player has actually used a vehicle.
+   */
+  vehicle: {
+    kind: string
+    pos: Vec3
+    heading: number
+  } | null
 }
 
 /** The slice of the Web Storage API this module touches. */
@@ -79,7 +89,7 @@ export interface LoadResult {
   repaired: readonly string[]
 }
 
-export const SAVE_VERSION = 1
+export const SAVE_VERSION = 2
 
 /** Version lives in the payload, not the key, or migration could never find it. */
 export const SAVE_KEY = 'shenron-city:save'
@@ -89,8 +99,12 @@ const FALLBACK_SETTINGS: SavedSettings = { quality: 'high', sensitivity: 1, fov:
 /** Spawn faces -Z, matching `rt.player.forward` in runtime.ts. */
 const FALLBACK_FORWARD = { x: 0, z: -1 } as const
 
-/** Default spawn in midtown Manhattan. Kept in sync with manhattan-collision.ts. */
-const MANHATTAN_FALLBACK_POS = { x: 400, y: 12.4, z: 400 } as const
+/**
+ * Default spawn in midtown Manhattan (36th St & Lexington — the live spawn
+ * point). Kept in sync with MANHATTAN_SPAWN_POINT in manhattan-collision.ts;
+ * the y matches the resolver's data-height fallback.
+ */
+const MANHATTAN_FALLBACK_POS = { x: 1000, y: 12.4, z: -3000 } as const
 
 /**
  * A fresh, always-safe starting state.
@@ -100,6 +114,7 @@ export function defaultSave(): SaveData {
     pos: { ...MANHATTAN_FALLBACK_POS },
     forward: { ...FALLBACK_FORWARD },
     settings: { ...FALLBACK_SETTINGS },
+    vehicle: null,
   }
 }
 
@@ -150,6 +165,7 @@ function section(payload: unknown, key: string): unknown {
 
 const StoredPos = z.object({ x: z.number(), y: z.number(), z: z.number() })
 const StoredForward = z.object({ x: z.number(), z: z.number() })
+const StoredVehicle = z.object({ kind: z.string(), pos: StoredPos, heading: z.number() })
 
 /**
  * Not `z.coerce`, unlike the Mission Control schemas. Those parse a foreign
@@ -183,10 +199,10 @@ type Migration = (payload: unknown) => unknown
 export type MigrationResult = { ok: true; payload: unknown } | { ok: false }
 
 /**
- * How to add version 2.
+ * How to add version 3.
  *
- * Write the v1 → v2 upgrade as `MIGRATIONS[1]`, bump `SAVE_VERSION` to 2, and
- * leave the v1 writer deleted but its shape documented in the migration. Steps
+ * Write the v2 → v3 upgrade as `MIGRATIONS[2]`, bump `SAVE_VERSION` to 3, and
+ * leave the v2 writer deleted but its shape documented in the migration. Steps
  * run in sequence from whatever is on disk up to the current version, so a save
  * written by any earlier build still loads.
  *
@@ -194,7 +210,13 @@ export type MigrationResult = { ok: true; payload: unknown } | { ok: false }
  * one — is refused rather than guessed at. Half-applying a shape we have never
  * seen is how a save file teleports someone into a wall.
  */
-const MIGRATIONS: Readonly<Record<number, Migration | undefined>> = {}
+const MIGRATIONS: Readonly<Record<number, Migration | undefined>> = {
+  // v1 → v2 (Phase 3A): v1 had no vehicle section; the player owned nothing.
+  1: (payload) => ({
+    ...(payload as Record<string, unknown>),
+    vehicle: (payload as Record<string, unknown>)?.vehicle ?? null,
+  }),
+}
 
 export function runMigrations(
   payload: unknown,
@@ -234,6 +256,13 @@ export function encodeSave(data: SaveData): string {
       fov: data.settings.fov,
       volume: data.settings.volume,
     },
+    vehicle: data.vehicle
+      ? {
+          kind: data.vehicle.kind,
+          pos: { x: data.vehicle.pos.x, y: data.vehicle.pos.y, z: data.vehicle.pos.z },
+          heading: data.vehicle.heading,
+        }
+      : null,
   })
 }
 
@@ -261,6 +290,7 @@ export function decodeSave(raw: string | null | undefined): LoadResult {
     pos: readPos(section(payload, 'pos'), repaired),
     forward: readForward(section(payload, 'forward'), repaired),
     settings: readSettings(section(payload, 'settings'), repaired),
+    vehicle: readVehicle(section(payload, 'vehicle'), repaired),
   }
   return { data, fault: null, repaired }
 }
@@ -292,6 +322,38 @@ function readForward(input: unknown, repaired: string[]): { x: number; z: number
   }
   repaired.push('forward')
   return { ...FALLBACK_FORWARD }
+}
+
+/**
+ * A saved car is optional and never critical: a bad vehicle costs the car,
+ * not the session. The kind must be a family the build knows and the pose
+ * must be a restorable position with a finite heading — anything else
+ * restores with no vehicle.
+ */
+function readVehicle(input: unknown, repaired: string[]): SaveData['vehicle'] {
+  // A v1 save carries no vehicle key at all; the migration writes an explicit
+  // null for it, so a missing key means a writer older than the feature and
+  // counts as repaired, while null remains the legitimate "no car" state.
+  if (input === undefined) {
+    repaired.push('vehicle')
+    return null
+  }
+  if (input === null) return null
+  const parsed = StoredVehicle.safeParse(input)
+  if (!parsed.success) {
+    repaired.push('vehicle')
+    return null
+  }
+  const { kind, pos, heading } = parsed.data
+  if (!Number.isFinite(heading)) {
+    repaired.push('vehicle')
+    return null
+  }
+  if (!isRestorablePosition(pos)) {
+    repaired.push('vehicle')
+    return null
+  }
+  return { kind, pos, heading }
 }
 
 function readSettings(input: unknown, repaired: string[]): SavedSettings {

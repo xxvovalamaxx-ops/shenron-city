@@ -1,4 +1,4 @@
-import { readFileSync, readdirSync, statSync } from 'node:fs'
+import { existsSync, readFileSync, readdirSync, statSync } from 'node:fs'
 import { dirname, isAbsolute, join, relative } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
@@ -101,7 +101,20 @@ for (const path of publicFiles.filter((candidate) => candidate.endsWith('.html')
 // Vite copies public/ byte-for-byte. Every shipped binary must be referenced
 // from executable source; otherwise a forgotten download silently bloats every
 // build even when tree-shaking removes the code that once used it.
-const sourceText = sourceFiles.map((path) => readFileSync(path, 'utf8')).join('\n')
+//
+// The ported city-life engine (src/city) is plain JS on purpose, but it ships
+// in the bundle and drives real asset loads, so its references count too.
+// Its `fetch` data calls stay out of the network scan above (which covers the
+// TS/TSX boundary); only asset-path references are read from it here.
+const tsSource = sourceFiles.map((path) => readFileSync(path, 'utf8')).join('\n')
+const cityDir = join(root, 'src', 'city')
+const engineSource = existsSync(cityDir)
+  ? filesUnder(cityDir)
+      .filter((path) => path.endsWith('.js'))
+      .map((path) => readFileSync(path, 'utf8'))
+      .join('\n')
+  : ''
+const sourceText = `${tsSource}\n${engineSource}`
 const assetExtensions = /\.(?:fbx|glb|gltf|hdr|jpeg|jpg|ktx2|mp3|ogg|png|vrm|webp)$/i
 const glbDependencies = new Set()
 for (const path of publicFiles.filter((candidate) => candidate.endsWith('.glb'))) {
@@ -140,6 +153,23 @@ for (const path of publicFiles.filter((candidate) => candidate.endsWith('.glb'))
       continue
     }
     glbDependencies.add(`/${dependencyRelative.replace(/\\/g, '/')}`)
+  }
+}
+
+// The far-tier LOD files load dynamically as `/models/manhattan/lod/<file>`
+// (the ported engine resolves them through lod_manifest.json at runtime), so
+// no literal path exists to scan. The manifest is the executable mapping:
+// every file it lists is a live reference, and anything in the lod directory
+// it does not list is a forgotten export.
+const lodManifestPath = join(publicRoot, 'models', 'manhattan', 'lod', 'lod_manifest.json')
+if (existsSync(lodManifestPath)) {
+  const lodManifest = JSON.parse(readFileSync(lodManifestPath, 'utf8'))
+  for (const tier of ['L2', 'L3', 'L4']) {
+    for (const rec of Object.values(lodManifest[tier] ?? {})) {
+      if (rec && typeof rec.file === 'string') {
+        glbDependencies.add(`/models/manhattan/lod/${rec.file}`)
+      }
+    }
   }
 }
 

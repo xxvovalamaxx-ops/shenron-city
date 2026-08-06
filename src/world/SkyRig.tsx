@@ -47,7 +47,10 @@ export function SkyRig({ quality }: { quality: QualitySettings }) {
     if (rt.paused) return
     const dt = Math.min(rawDt, 1 / 20)
 
-    rt.clock.hour = (rt.clock.hour + dt / SECONDS_PER_HOUR) % 24
+    // Deterministic captures keep the clock pinned at the capture hour.
+    if (!rt.captureFrozen) {
+      rt.clock.hour = (rt.clock.hour + dt / SECONDS_PER_HOUR) % 24
+    }
 
     nextChange.current -= dt
     if (nextChange.current <= 0) {

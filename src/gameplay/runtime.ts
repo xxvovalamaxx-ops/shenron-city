@@ -49,6 +49,11 @@ export interface Runtime {
   pauseEpoch: number
   /** Camera mode. Toggled with V; third person is the default. */
   thirdPerson: boolean
+  /**
+   * Deterministic capture mode: the clock is frozen at the capture hour so
+   * repeated runs of the same scene produce identical frames.
+   */
+  captureFrozen: boolean
   /** Keyboard state, populated by useKeys. */
   keys: {
     forward: boolean
@@ -112,11 +117,15 @@ export const rt: Runtime = {
   paused: true,
   pauseEpoch: 0,
   thirdPerson: true,
+  captureFrozen: false,
   keys: { forward: false, back: false, left: false, right: false, sprint: false, jump: false, crouch: false },
   introSeconds: Number.POSITIVE_INFINITY,
   devSpeed: 1,
   spawns: [],
-  clock: { elapsed: 0, hour: 21, weather: { rain: 0, wetness: 0 }, rainTarget: 0 },
+  // Late afternoon: the hour the Phase 2 references were shot at, so the
+  // first thing the player sees is the city in its best light rather than at
+  // a dead hour. DayCycle advances it from here.
+  clock: { elapsed: 0, hour: 17, weather: { rain: 0, wetness: 0 }, rainTarget: 0 },
   perf: {
     frames: 0,
     accum: 0,

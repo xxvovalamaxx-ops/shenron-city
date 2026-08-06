@@ -14,6 +14,8 @@ export interface Keys {
   sprint: boolean
   jump: boolean
   crouch: boolean
+  /** Enter/exit vehicles and future world interactions. */
+  interact: boolean
 }
 
 const MAP: Record<string, keyof Keys> = {
@@ -31,6 +33,7 @@ const MAP: Record<string, keyof Keys> = {
   ControlLeft: 'crouch',
   ControlRight: 'crouch',
   KeyC: 'crouch',
+  KeyE: 'interact',
 }
 
 export function useKeys() {
@@ -42,6 +45,7 @@ export function useKeys() {
     sprint: false,
     jump: false,
     crouch: false,
+    interact: false,
   })
 
   useEffect(() => {

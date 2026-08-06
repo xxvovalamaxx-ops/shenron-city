@@ -11,13 +11,15 @@ export type Screen = 'loading' | 'title' | 'playing' | 'paused'
 
 export interface HudState {
   screen: Screen
-  /** Transient prompt text (fly-mode hints, future interactions). */
+  /** Transient prompt text (interaction prompts, mode hints). */
   promptLabel: string | null
   fps: number
   frameMs: number
   mapPlayerX: number
   mapPlayerZ: number
   mapHeading: number
+  /** Ground speed while driving, km/h. Zero on foot. */
+  vehicleSpeedKmh: number
   showPerf: boolean
   /** Camera mode. Lives here, not on rt, so components re-render on toggle. */
   thirdPerson: boolean
@@ -39,6 +41,7 @@ export const useHud = create<HudState>((set) => ({
   mapPlayerX: 0,
   mapPlayerZ: 0,
   mapHeading: 0,
+  vehicleSpeedKmh: 0,
   showPerf: false,
   thirdPerson: true,
   devToolsOpen: false,

@@ -55,6 +55,9 @@ export function AtmosphericDust() {
 
   useFrame(({ camera }) => {
     if (rt.paused) return
+    // Deterministic captures: the dust cloud must sit still, or every frame
+    // drifts a handful of pixels and repeated captures stop being identical.
+    if (rt.captureFrozen) return
     const pts = ref.current
     if (!pts) return
     const geo = pts.geometry

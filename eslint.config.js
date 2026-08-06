@@ -14,8 +14,14 @@ export default tseslint.config(
       '.playwright-cli/**',
       'Made assets/**',
       'ds/**',
+      // Ported, tested city-life engine from the Phase 2 reference app. Plain
+      // JS on purpose: it ships types via the sibling .d.ts files, and linting
+      // the ported GLSL-injected shader code adds no signal.
+      'src/city/**',
       'check-sketchfab-login.cjs',
       'download-vehicles-robust.cjs',
+      // Throwaway phase-3C probes (never committed) — see the files' headers.
+      'scripts/_probe-*.mjs',
       'scripts/**/*.cjs',
       'scripts/sketchfab-download.cjs',
     ],

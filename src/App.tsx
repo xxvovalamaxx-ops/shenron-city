@@ -14,7 +14,7 @@ import {
   useRef,
   useState,
 } from 'react'
-import { Canvas, useThree } from '@react-three/fiber'
+import { Canvas, useFrame, useThree } from '@react-three/fiber'
 import { PointerLockControls, useProgress } from '@react-three/drei'
 import * as THREE from 'three'
 
@@ -24,9 +24,11 @@ import { ResilientResizeObserver } from './lib/resize'
 import { GameLoop } from './gameplay/GameLoop'
 import { rt, setRuntimePaused } from './gameplay/runtime'
 import { PlayerAvatar } from './character/PlayerAvatar'
+import { VehicleRig } from './world/VehicleRig'
 import { NightEnvironment } from './world/NightEnvironment'
 import { ManhattanCity } from './world/ManhattanCity'
-import { SkyRig } from './world/SkyRig'
+import { DayCycle } from './world/DayCycleRig'
+import { CityLightingRig } from './world/CityLightingRig'
 import { ShadowBudget } from './world/ShadowBudget'
 import { AtmosphericDust } from './world/AtmosphericDust'
 import { resolveManhattanSpawn } from './world/manhattan-collision'
@@ -35,17 +37,19 @@ import { Hud } from './ui/Hud'
 import { DevMenu } from './ui/DevMenu'
 import { DevSpawns } from './ui/DevSpawns'
 import { IntroCamera, IntroSequence } from './ui/IntroSequence'
-import { DEFAULT_SETTINGS, LoadingScreen, PauseMenu, TitleScreen, type Settings } from './ui/Screens'
+import { LoadingScreen, PauseMenu, TitleScreen, type Settings } from './ui/Screens'
 import { loadGame, saveGame, type SaveData } from './gameplay/save'
 import { cityAudio } from './audio'
 import { isDevInspection } from './gameplay/dev-view'
-import { visionCaptureSpec, visionFeet } from './gameplay/vision-capture'
+import { visionCaptureSpec, visionFeet, VISION_CAMERA_DATASET_KEY, VISION_READY_DATASET_KEY, type VisionCaptureSpec } from './gameplay/vision-capture'
+import { snapshotOwnedVehicle, restoreOwnedVehicle, vehicleSim } from './gameplay/vehicles/vehicle-session'
 
 function currentSaveData(settings: Settings): SaveData {
   return {
     pos: { ...rt.player.pos },
     forward: { ...rt.player.forward },
     settings: { quality: settings.quality, sensitivity: settings.sensitivity, fov: settings.fov, volume: settings.volume },
+    vehicle: snapshotOwnedVehicle(vehicleSim),
   }
 }
 
@@ -53,6 +57,7 @@ function applySave(data: SaveData): void {
   rt.player.pos = { ...data.pos }
   rt.player.forward = { ...data.forward }
   rt.player.velocityY = 0
+  restoreOwnedVehicle(vehicleSim, data.vehicle)
 }
 
 const PostProcessing = lazy(() => import('./world/PostProcessing'))
@@ -85,6 +90,7 @@ function Scene({
   settings: Settings
   onBaseRegistered(): void
 }) {
+
   const quality = QUALITY[settings.quality]
 
   return (
@@ -94,13 +100,15 @@ function Scene({
       <NightEnvironment />
 
       <RendererBridge maxDpr={quality.maxDpr} shadows={quality.shadows} />
-      <SkyRig quality={quality} />
+      <DayCycle />
+      <CityLightingRig quality={settings.quality} />
       <ShadowBudget enabled={quality.shadows} mapSize={quality.shadowMapSize} />
 
       {/* The one world: the streamed Manhattan island. */}
-      <ManhattanCity mode="tiles" onBaseRegistered={onBaseRegistered} />
+      <ManhattanCity mode="tiles" quality={settings.quality} onBaseRegistered={onBaseRegistered} />
 
       <PlayerAvatar />
+      <VehicleRig />
       <DevSpawns />
       <AtmosphericDust />
       <IntroCamera />
@@ -114,6 +122,34 @@ function Scene({
       )}
     </>
   )
+}
+
+/**
+ * Capture-bridge instrumentation for the visual QA pipeline.
+ *
+ * In a ?visionCapture session the runner needs two facts from the page: that
+ * the world is mounted and the settled camera pose. Both are published as DOM
+ * dataset attributes (the same channel the perf/avatar overlays use); in a
+ * normal session this component renders null and changes nothing.
+ */
+function VisionBridge({ vision }: { vision: VisionCaptureSpec | null }) {
+  const camera = useThree((s) => s.camera)
+  const lastPublish = useRef(0)
+  const dir = useRef(new THREE.Vector3())
+
+  useFrame(() => {
+    if (!vision) return
+    const now = performance.now()
+    if (now - lastPublish.current < 500) return
+    lastPublish.current = now
+    camera.getWorldDirection(dir.current)
+    const p = camera.position
+    document.documentElement.dataset[VISION_CAMERA_DATASET_KEY] =
+      `${p.x.toFixed(2)},${p.y.toFixed(2)},${p.z.toFixed(2)},` +
+      `${dir.current.x.toFixed(4)},${dir.current.y.toFixed(4)},${dir.current.z.toFixed(4)}`
+  })
+
+  return null
 }
 
 /**
@@ -160,12 +196,17 @@ export default function App() {
 
   const [settings, setSettings] = useState<Settings>(() => ({
     ...restored.data.settings,
-    quality: DEFAULT_SETTINGS.quality,
   }))
   const vision = useMemo(
     () => visionCaptureSpec(typeof location === 'undefined' ? '' : location.search),
     [],
   )
+
+  // Deterministic captures: the life sims must never run, so the freeze goes
+  // in before anything mounts, not when the base happens to register.
+  useEffect(() => {
+    if (vision) rt.captureFrozen = true
+  }, [vision])
   const [ready, setReady] = useState(false)
   const [baseReady, setBaseReady] = useState(false)
   const [progress, setProgress] = useState(0)
@@ -177,8 +218,9 @@ export default function App() {
     document.documentElement.dataset.initialLoadMs = (
       window.performance.now() - bootStartedAt
     ).toFixed(1)
+    if (vision) document.documentElement.dataset[VISION_READY_DATASET_KEY] = '1'
     setReady(true)
-  }, [bootStartedAt])
+  }, [bootStartedAt, vision])
 
   // Resolve the player's spawn the moment the island surface is registered,
   // so the camera and avatar never stand on water.
@@ -196,6 +238,10 @@ export default function App() {
       rt.clock.hour = vision.time
       rt.clock.rainTarget = vision.rain
       rt.clock.weather = { rain: vision.rain, wetness: vision.rain >= 0.5 ? 1 : 0 }
+      // Pinned clock: repeated captures of the same scene must be identical.
+      // (captureFrozen is also set at mount, before any sim can run, so the
+      // traffic and crowd start frozen rather than freezing mid-drive.)
+      rt.captureFrozen = true
       document.documentElement.classList.add('vision-capture')
     }
     setBaseReady(true)
@@ -235,10 +281,11 @@ export default function App() {
     }
   }, [settings.quality])
 
-  // Apply the restored world state once (unless a capture/QA mode overrode it).
+  // Apply the restored world state once the spawn has resolved (the base
+  // registration is async, so this effect re-runs when baseReady flips).
   useEffect(() => {
     if (vision || visualInspection) return
-    if (!spawnResolved.current) return
+    if (!baseReady || !spawnResolved.current) return
     if (restored.fault && restored.fault !== 'empty') {
       console.warn(`[save] ${restored.fault} — starting a fresh run`)
     } else if (restored.repaired.length > 0) {
@@ -246,7 +293,7 @@ export default function App() {
     }
     if (!restored.data.forward.x && !restored.data.forward.z) return
     applySave(restored.data)
-  }, [restored, visualInspection, vision])
+  }, [restored, baseReady, visualInspection, vision])
 
   useEffect(() => {
     if (visualInspection || vision) return
@@ -295,6 +342,7 @@ export default function App() {
       >
         <Suspense fallback={null}>
           <Scene settings={settings} onBaseRegistered={handleBaseRegistered} />
+          <VisionBridge vision={vision} />
           <LoadGate baseReady={baseReady} onReady={markSceneReady} />
         </Suspense>
         {pointerLockEnabled && (

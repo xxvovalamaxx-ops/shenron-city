@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'vitest'
+﻿import { describe, expect, it } from 'vitest'
 import {
   clearSave,
   decodeSave,
@@ -37,9 +37,10 @@ function hostileStorage(): SaveStorage {
 
 /** A player standing on a midtown street. */
 const SAMPLE: SaveData = {
-  pos: { x: 400, y: 12.4, z: 400 },
+  pos: { x: 1000, y: 12.4, z: -3000 },
   forward: { x: 0, z: -1 },
   settings: { quality: 'medium', sensitivity: 1.5, fov: 90, volume: 0.7 },
+  vehicle: null,
 }
 
 /** Build a stored payload with one section replaced by something unusable. */
@@ -97,11 +98,20 @@ describe('unusable saves fall back to defaults', () => {
   })
 
   it('refuses versions it has no migration path from', () => {
-    for (const version of [0, -1, 1.5, 2, 99]) {
+    for (const version of [0, -1, 1.5, 3, 99]) {
       const result = decodeSave(JSON.stringify({ v: version, ...SAMPLE }))
       expect(result.fault).toBe('unsupported')
       expect(result.data).toEqual(defaultSave())
     }
+  })
+
+  it('migrates a version-1 save by adding the vehicle section', () => {
+    const legacy = JSON.stringify({ v: 1, pos: { x: 1000, y: 12.4, z: -3000 }, forward: { x: 0, z: -1 }, settings: SAMPLE.settings })
+    const result = decodeSave(legacy)
+
+    expect(result.fault).toBeNull()
+    expect(result.repaired).toEqual([])
+    expect(result.data).toEqual(SAMPLE)
   })
 
   it('treats a future save as unsupported rather than guessing its shape', () => {
@@ -114,7 +124,7 @@ describe('unusable saves fall back to defaults', () => {
 
     expect(result.fault).toBeNull()
     expect(result.data).toEqual(defaultSave())
-    expect(result.repaired).toEqual(['pos', 'forward', 'settings'])
+    expect(result.repaired).toEqual(['pos', 'forward', 'settings', 'vehicle'])
   })
 
   it('accepts a payload whose every section is the wrong type', () => {
@@ -123,12 +133,13 @@ describe('unusable saves fall back to defaults', () => {
       pos: [],
       forward: 'north',
       settings: [1, 2, 3],
+      vehicle: 'mine',
     })
     const result = decodeSave(garbage)
 
     expect(result.fault).toBeNull()
     expect(result.data).toEqual(defaultSave())
-    expect(result.repaired).toEqual(['pos', 'forward', 'settings'])
+    expect(result.repaired).toEqual(['pos', 'forward', 'settings', 'vehicle'])
   })
 })
 
@@ -138,7 +149,7 @@ describe('damaged fields degrade one at a time', () => {
 
     expect(result.fault).toBeNull()
     expect(result.repaired).toEqual(['pos'])
-    expect(result.data.pos).toEqual({ x: 400, y: 12.4, z: 400 })
+    expect(result.data.pos).toEqual({ x: 1000, y: 12.4, z: -3000 })
     expect(result.data.settings).toEqual(SAMPLE.settings)
   })
 
@@ -153,7 +164,7 @@ describe('damaged fields degrade one at a time', () => {
     for (const pos of partial) {
       const result = decodeSave(withSection('pos', pos))
       expect(result.repaired).toContain('pos')
-      expect(result.data.pos).toEqual({ x: 400, y: 12.4, z: 400 })
+      expect(result.data.pos).toEqual({ x: 1000, y: 12.4, z: -3000 })
     }
   })
 
@@ -164,7 +175,7 @@ describe('damaged fields degrade one at a time', () => {
     expect(encoded).toContain('null') // JSON cannot hold NaN or Infinity
     const result = decodeSave(encoded)
     expect(result.repaired).toEqual(['pos'])
-    expect(result.data.pos).toEqual({ x: 400, y: 12.4, z: 400 })
+    expect(result.data.pos).toEqual({ x: 1000, y: 12.4, z: -3000 })
   })
 
   it('normalises a stored forward vector and defaults a degenerate one', () => {
@@ -207,7 +218,7 @@ describe('damaged fields degrade one at a time', () => {
 
 describe('restorable positions', () => {
   it('accepts street, park and aerial positions inside the island', () => {
-    expect(isRestorablePosition({ x: 400, y: 12.4, z: 400 })).toBe(true) // spawn
+    expect(isRestorablePosition({ x: 1000, y: 12.4, z: -3000 })).toBe(true) // spawn
     expect(isRestorablePosition({ x: 300, y: 12.4, z: 100 })).toBe(true) // times square
     expect(isRestorablePosition({ x: -6447, y: 12.4, z: -10034 })).toBe(true) // statue
     expect(isRestorablePosition({ x: 0, y: 300, z: 0 })).toBe(true) // aerial

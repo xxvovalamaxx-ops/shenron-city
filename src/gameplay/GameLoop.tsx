@@ -18,6 +18,11 @@ import { cityAudio } from '../audio'
 import { debugInspectionView } from './dev-view'
 import { visionCaptureSpec } from './vision-capture'
 import { manhattanCollision } from '../world/manhattan-collision'
+import { cityWorld } from '../city/registry.js'
+import { vehicleSim, stepVehicleSession } from './vehicles/vehicle-session'
+import { manhattanVehicleWorld } from '../world/manhattan-vehicle-world'
+import { speedKmh } from './vehicles/vehicle-model'
+import { NO_VEHICLE_INPUT, type PlayerVehicleInput } from './vehicles/vehicle-control'
 
 const WALK_SPEED = 4.3
 const SPRINT_SPEED = 7.1
@@ -38,8 +43,12 @@ export function GameLoop() {
   const keys = useKeys()
   const hudTimer = useRef(0)
   const boom = useRef(0)
+  const softFloorUntil = useRef(0)
   const forwardVec = useRef(new Vector3())
   const lastSpacePress = useRef(0)
+  const lastJump = useRef(false)
+  const lastInteract = useRef(false)
+  const transientPrompt = useRef<{ label: string; until: number } | null>(null)
 
   const vision = useMemo(
     () => visionCaptureSpec(typeof location === 'undefined' ? '' : location.search),
@@ -83,6 +92,8 @@ export function GameLoop() {
       }
       if (e.code === 'Space') {
         if (!inputLocked(useHud.getState().screen)) {
+          // Space is the horn while driving; the fly toggle is for feet.
+          if (vehicleSim.registry.playerVehicleId !== null) return
           const now = performance.now()
           if (now - lastSpacePress.current < 350) {
             rt.player.flying = !rt.player.flying
@@ -134,104 +145,236 @@ export function GameLoop() {
       return
     }
 
-    // ── Ground height under the player ────────────────────────────────────
-    const ground = manhattanCollision.groundHeightAt(p.pos.x, p.pos.z)
+    const driving = vehicleSim.registry.playerVehicleId !== null
 
-    // ── Input → motion ────────────────────────────────────────────────────
-    let dx = 0
-    let dz = 0
+    // ── Vehicle session ────────────────────────────────────────────────────
+    // The vehicle world steps every frame — AI traffic circulates and
+    // pedestrians cross even while the player is on foot. Player input is
+    // fed only while driving; the walk branch below copies the player's
+    // feet into the sim so prompts track the walker.
     const k = keys.current
-    const fwd = (k.forward ? 1 : 0) - (k.back ? 1 : 0)
-    const strafe = (k.right ? 1 : 0) - (k.left ? 1 : 0)
+    const simInput: PlayerVehicleInput = driving
+      ? {
+          throttle: k.forward ? 1 : 0,
+          brake: k.back ? 1 : 0,
+          steer: (k.right ? 1 : 0) - (k.left ? 1 : 0),
+          handbrake: k.sprint,
+          horn: k.jump && !lastJump.current,
+          interact: k.interact && !lastInteract.current,
+        }
+      : NO_VEHICLE_INPUT
+    lastJump.current = k.jump
+    lastInteract.current = k.interact
+    vehicleSim.cameraMode = rt.thirdPerson ? 'chase' : 'cockpit'
 
-    if (fwd !== 0 || strafe !== 0) {
-      camera.getWorldDirection(forwardVec.current)
-      const f = forwardVec.current
-      f.y = 0
-      f.normalize()
-      const rx = -f.z
-      const rz = f.x
-      let mx = f.x * fwd + rx * strafe
-      let mz = f.z * fwd + rz * strafe
-      const len = Math.hypot(mx, mz) || 1
-      mx /= len
-      mz /= len
+    const events =
+      !vision && !inspection
+        ? stepVehicleSession(manhattanVehicleWorld, simInput, dt, rt.clock.hour)
+        : []
 
-      const speed =
-        (p.flying ? (k.sprint ? FLY_SPRINT_SPEED : FLY_SPEED) : k.sprint ? SPRINT_SPEED : WALK_SPEED) *
-        rt.devSpeed
-      dx = mx * speed * dt
-      dz = mz * speed * dt
+    // Mirror the authoritative simulation pose back onto the runtime so the
+    // save, the audio listener and the HUD all read one position.
+    if (driving) {
+      const sp = vehicleSim.player
+      p.pos.x = sp.pos.x
+      p.pos.y = sp.pos.y
+      p.pos.z = sp.pos.z
+      p.velocityY = sp.velocityY
+      p.grounded = sp.grounded
+      p.forward.x = sp.forward.x
+      p.forward.z = sp.forward.z
     }
 
-    if (p.flying) {
-      const flySpeed = (k.sprint ? FLY_SPRINT_SPEED : FLY_SPEED) * rt.devSpeed
-      let dy = 0
-      if (k.jump) dy += flySpeed * dt
-      if (k.crouch) dy -= flySpeed * dt
-      const moved = manhattanCollision.move(p.pos, dx, dz)
-      p.pos.x = moved.x
-      p.pos.z = moved.z
-      p.pos.y += dy
-      p.velocityY = 0
-      p.grounded = false
-      if (ground !== null && p.pos.y < ground + 0.1) {
-        p.pos.y = ground + 0.1
-        p.grounded = true
+    for (const event of events) {
+      const vehicle = 'vehicleId' in event
+        ? vehicleSim.registry.vehicles.get(event.vehicleId)
+        : null
+      const at = vehicle
+        ? { x: vehicle.pose.pos.x, y: vehicle.pose.pos.y + 1, z: vehicle.pose.pos.z }
+        : { x: p.pos.x, y: p.pos.y + 1, z: p.pos.z }
+      switch (event.type) {
+        case 'prompt':
+          useHud.getState().set('promptLabel', event.label)
+          break
+        case 'horn':
+          cityAudio.play('horn', at)
+          break
+        case 'enter':
+          cityAudio.play('doorClose', at)
+          break
+        case 'exit':
+          cityAudio.play('doorOpen', at)
+          break
+        case 'exit-blocked':
+          useHud.getState().set('promptLabel', 'No room to exit here')
+          transientPrompt.current = {
+            label: 'No room to exit here',
+            until: performance.now() + 2500,
+          }
+          break
+          default:
+            break
+        }
       }
-    } else {
-      if (k.jump && p.grounded) {
-        p.velocityY = JUMP_VELOCITY
-        p.grounded = false
-      }
-      // Horizontal move, sliding along building walls.
-      const moved = manhattanCollision.move(p.pos, dx, dz)
-      p.pos.x = moved.x
-      p.pos.z = moved.z
 
-      // Vertical integration against the island surface.
-      let vy = p.velocityY + GRAVITY * dt
-      let ny = p.pos.y + vy * dt
-      if (ground !== null) {
-        if (ny <= ground) {
-          ny = ground
-          vy = 0
-          p.grounded = true
+    if (!driving) {
+      // The sim needs the walker's feet for prompts while the player walks.
+      vehicleSim.player.pos.x = p.pos.x
+      vehicleSim.player.pos.y = p.pos.y
+      vehicleSim.player.pos.z = p.pos.z
+
+      // ── Ground height under the player ──────────────────────────────────
+      const ground = manhattanCollision.groundHeightAt(p.pos.x, p.pos.z)
+      // The street tiles stream toward the camera; at spawn the surface may
+      // not have arrived yet. Hold the player on the data land level for a
+      // short grace after the base registers — long enough for the tiles to
+      // stream in, short enough that walking off the island into the harbor
+      // still falls instead of walking on an invisible floor.
+      const dataLand = (cityWorld.city?.meta?.land_level_m as number | undefined) ?? 12
+      let effectiveGround: number | null = ground
+      if (ground === null && p.pos.y > dataLand - 0.5) {
+        if (softFloorUntil.current === 0 && manhattanCollision.baseReady) {
+          softFloorUntil.current = performance.now() + 15000
+        }
+        if (performance.now() < softFloorUntil.current) effectiveGround = dataLand
+      } else if (ground !== null) {
+        softFloorUntil.current = 0
+      }
+
+      // ── Input → motion ──────────────────────────────────────────────────
+      let dx = 0
+      let dz = 0
+      const k = keys.current
+      const fwd = (k.forward ? 1 : 0) - (k.back ? 1 : 0)
+      const strafe = (k.right ? 1 : 0) - (k.left ? 1 : 0)
+
+      if (fwd !== 0 || strafe !== 0) {
+        camera.getWorldDirection(forwardVec.current)
+        const f = forwardVec.current
+        // Looking straight up or down leaves a near-zero horizontal
+        // projection; normalising that would turn float noise into a
+        // movement direction, so move nothing instead.
+        const flatLen = Math.hypot(f.x, f.z)
+        if (flatLen < 1e-4) {
+          dx = 0
+          dz = 0
         } else {
+          f.y = 0
+          f.normalize()
+          const rx = -f.z
+          const rz = f.x
+          let mx = f.x * fwd + rx * strafe
+          let mz = f.z * fwd + rz * strafe
+          const len = Math.hypot(mx, mz) || 1
+          mx /= len
+          mz /= len
+
+          const speed =
+            (p.flying ? (k.sprint ? FLY_SPRINT_SPEED : FLY_SPEED) : k.sprint ? SPRINT_SPEED : WALK_SPEED) *
+            rt.devSpeed
+          dx = mx * speed * dt
+          dz = mz * speed * dt
+        }
+      }
+
+      if (p.flying) {
+        const flySpeed = (k.sprint ? FLY_SPRINT_SPEED : FLY_SPEED) * rt.devSpeed
+        let dy = 0
+        if (k.jump) dy += flySpeed * dt
+        if (k.crouch) dy -= flySpeed * dt
+        const moved = manhattanCollision.move(p.pos, dx, dz)
+        p.pos.x = moved.x
+        p.pos.z = moved.z
+        // Descending onto a tower lands on the roof rather than dropping
+        // through it into the building.
+        if (dy < 0) {
+          const roof = manhattanCollision.buildingTopAt(p.pos.x, p.pos.z)
+          if (roof !== null && p.pos.y + dy <= roof + 1) {
+            p.pos.y = roof + 1
+            dy = 0
+            p.grounded = true
+          }
+        }
+        p.pos.y += dy
+        p.velocityY = 0
+        p.grounded = p.grounded || (dy === 0 && p.pos.y <= (ground ?? 0) + 1)
+        if (ground !== null && p.pos.y < ground + 0.1) {
+          p.pos.y = ground + 0.1
+          p.grounded = true
+        }
+      } else {
+        if (k.jump && p.grounded) {
+          p.velocityY = JUMP_VELOCITY
           p.grounded = false
         }
-      } else if (ny < -200) {
-        // Fell off the island edge — pull back to the last surface.
-        ny = 12.4
-        vy = 0
-        p.grounded = true
+        // Horizontal move, sliding along building walls.
+        const moved = manhattanCollision.move(p.pos, dx, dz)
+        p.pos.x = moved.x
+        p.pos.z = moved.z
+
+        // Vertical integration against the island surface.
+        let vy = p.velocityY + GRAVITY * dt
+        let ny = p.pos.y + vy * dt
+        if (effectiveGround !== null) {
+          if (ny <= effectiveGround) {
+            ny = effectiveGround
+            vy = 0
+            p.grounded = true
+          } else {
+            p.grounded = false
+          }
+        } else if (ny < -200) {
+          // Fell off the island edge — pull back to the last surface.
+          ny = 12.4
+          vy = 0
+          p.grounded = true
+        }
+        p.pos.y = ny
+        p.velocityY = vy
       }
-      p.pos.y = ny
-      p.velocityY = vy
     }
 
     // ── Footsteps ─────────────────────────────────────────────────────────
-    cityAudio.update(p, dt)
+    if (!driving) cityAudio.update(p, dt)
 
     // ── Camera ────────────────────────────────────────────────────────────
     if (!vision && !inspection) {
-      camera.position.set(p.pos.x, p.pos.y + EYE_HEIGHT, p.pos.z)
-      if (rt.thirdPerson) {
-        camera.getWorldDirection(forwardVec.current)
-        const eye = { x: p.pos.x, y: p.pos.y + EYE_HEIGHT, z: p.pos.z }
-        const wanted = boomDistance(eye, forwardVec.current, [])
-        boom.current = smoothBoom(boom.current, wanted, dt)
-        camera.position.addScaledVector(forwardVec.current, -boom.current)
-      } else if (boom.current !== 0) {
-        boom.current = 0
+      if (driving) {
+        // The vehicle camera (chase/cockpit) is computed by the simulation
+        // with its own collision sweep; the pointer-lock camera stands down.
+        camera.position.set(vehicleSim.camera.pos.x, vehicleSim.camera.pos.y, vehicleSim.camera.pos.z)
+        camera.lookAt(vehicleSim.camera.target.x, vehicleSim.camera.target.y, vehicleSim.camera.target.z)
+      } else {
+        camera.position.set(p.pos.x, p.pos.y + EYE_HEIGHT, p.pos.z)
+        if (rt.thirdPerson) {
+          camera.getWorldDirection(forwardVec.current)
+          const eye = { x: p.pos.x, y: p.pos.y + EYE_HEIGHT, z: p.pos.z }
+          const wanted = boomDistance(eye, forwardVec.current, [])
+          boom.current = smoothBoom(boom.current, wanted, dt)
+          camera.position.addScaledVector(forwardVec.current, -boom.current)
+        } else if (boom.current !== 0) {
+          boom.current = 0
+        }
       }
     }
 
-    p.forward.x = forwardVec.current.x
-    p.forward.z = forwardVec.current.z
-    const flen = Math.hypot(p.forward.x, p.forward.z) || 1
-    p.forward.x /= flen
-    p.forward.z /= flen
+    if (!driving) {
+      p.forward.x = forwardVec.current.x
+      p.forward.z = forwardVec.current.z
+      const flen = Math.hypot(p.forward.x, p.forward.z) || 1
+      p.forward.x /= flen
+      p.forward.z /= flen
+    }
+
+    // A transient prompt (e.g. "No room to exit") clears on its own.
+    if (
+      transientPrompt.current &&
+      performance.now() > transientPrompt.current.until &&
+      useHud.getState().promptLabel === transientPrompt.current.label
+    ) {
+      transientPrompt.current = null
+      useHud.getState().set('promptLabel', null)
+    }
 
     // ── Perf sampling + throttled HUD mirror ──────────────────────────────
     const perf = rt.perf
@@ -282,19 +425,22 @@ export function GameLoop() {
         .map((value) => value.toFixed(3))
         .join(',')
 
+      const playerVehicle = driving ? vehicleSim.registry.vehicles.get(vehicleSim.registry.playerVehicleId!) : null
       const next = {
         fps: Math.round(perf.fps),
         frameMs: Math.round(perf.frameMs * 10) / 10,
         mapPlayerX: Math.round(p.pos.x * 4) / 4,
         mapPlayerZ: Math.round(p.pos.z * 4) / 4,
         mapHeading: Math.round((Math.atan2(p.forward.x, p.forward.z) * 180) / Math.PI),
+        vehicleSpeedKmh: playerVehicle ? Math.round(speedKmh(playerVehicle.motion.speed)) : 0,
       }
       const changed =
         next.fps !== hud.fps ||
         next.frameMs !== hud.frameMs ||
         next.mapPlayerX !== hud.mapPlayerX ||
         next.mapPlayerZ !== hud.mapPlayerZ ||
-        next.mapHeading !== hud.mapHeading
+        next.mapHeading !== hud.mapHeading ||
+        next.vehicleSpeedKmh !== hud.vehicleSpeedKmh
       if (changed) {
         useHud.setState(next)
       }

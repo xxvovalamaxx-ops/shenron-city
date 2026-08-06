@@ -433,6 +433,7 @@ export type AudioEvent =
   | 'elevatorStop'
   | 'elevatorArrive'
   | 'footstep'
+  | 'horn'
 
 /**
  * The voices behind those events.
@@ -441,7 +442,7 @@ export type AudioEvent =
  * a sustained motor, so they ramp `MOTOR` instead. `elevatorSettle` is the
  * thunk the stop ramp leaves behind, and is not triggerable on its own.
  */
-export type ShotId = 'doorOpen' | 'doorClose' | 'elevatorArrive' | 'elevatorSettle' | 'footstep'
+export type ShotId = 'doorOpen' | 'doorClose' | 'elevatorArrive' | 'elevatorSettle' | 'footstep' | 'horn'
 
 export interface ShotPartial {
   hz: number
@@ -517,6 +518,19 @@ export const ONE_SHOTS: Record<ShotId, OneShotSpec> = {
     noise: { filter: 'bandpass', fromHz: 420, toHz: 190, q: 1.1, level: 0.5 },
     tone: { wave: 'sine', fromHz: 78, toHz: 58, level: 0.22 },
     partials: [],
+  },
+  // Two-note city horn: the sawtooth gives it the nasal quality of a real
+  // car horn without sampling anything.
+  horn: {
+    level: 0.4,
+    attack: 0.012,
+    duration: 0.5,
+    noise: null,
+    tone: { wave: 'sawtooth', fromHz: 430, toHz: 430, level: 0.5 },
+    partials: [
+      { hz: 215, level: 0.28, delay: 0.26, decay: 0.22 },
+      { hz: 860, level: 0.08, delay: 0, decay: 0.4 },
+    ],
   },
 }
 
