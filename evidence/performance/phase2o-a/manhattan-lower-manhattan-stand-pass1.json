@@ -4,35 +4,43 @@
   "location": "lower-manhattan",
   "scenario": "stand",
   "quality": null,
-  "startedAtUtc": "2026-08-06T00:27:15.834Z",
-  "measuredMs": 8004,
+  "startedAtUtc": "2026-08-06T15:15:50.782Z",
+  "measuredMs": 8017.39999999851,
   "stats": {
-    "frames": 334,
+    "frames": 332,
     "deadFrames": 0,
     "frameMs": {
-      "avg": 23.963772455107666,
+      "avg": 24.14849397591708,
       "median": 23.799999997019768,
       "p1": 19,
-      "p01": 18.69999998807907,
-      "min": 18.69999998807907,
-      "max": 33.6000000089407
+      "p01": 18.80000000447035,
+      "min": 18.80000000447035,
+      "max": 37.29999999701977
     },
     "fps": {
-      "avg": 41.72965679228267,
+      "avg": 41.41044990206365,
       "median": 42.01680672795041,
       "p1": 52.63157894736842,
-      "p01": 53.475935862967,
-      "min": 29.761904753985352
+      "p01": 53.19148934905402,
+      "min": 26.809651476672894
     }
   },
   "longTasks": [],
-  "heapUsedMB": 333.0788278579712,
-  "heapTotalMB": 388.7211084365845,
-  "loadMs": 99,
+  "heapUsedMB": [
+    {
+      "ts": 22.100000001490116,
+      "mb": 309.44754695892334
+    },
+    {
+      "ts": 5001.30000000447,
+      "mb": 309.3455448150635
+    }
+  ],
+  "loadMs": 98,
   "appStats": {
     "ok": true,
     "drawCalls": 93,
-    "triangles": 796587,
+    "triangles": 796895,
     "tilesResident": 21,
     "tilesLoading": 0,
     "tilesQueued": 0,
@@ -60,10 +68,71 @@
       "y": 13.9,
       "z": 8093.6
     },
-    "district": "Financial District-Battery Park City"
+    "district": "Financial District-Battery Park City",
+    "actors": {
+      "skinnedMeshes": 0,
+      "morphTargetMeshes": 0,
+      "totalMeshes": 316
+    },
+    "renderMs": {
+      "avg": 0.736,
+      "max": 15.2,
+      "frames": 520
+    }
   },
   "gpu": {
     "renderer": "ANGLE (NVIDIA, NVIDIA GeForce RTX 5070 (0x00002F04) Direct3D11 vs_5_0 ps_5_0, D3D11)",
     "vendor": "Google Inc. (NVIDIA)"
+  },
+  "transition": null,
+  "buckets": null,
+  "integrity": {
+    "sha256": "e83915b54d9be11d16f7bedebeebf3e806c4c531934bcf11fd37f8ff8aec43f0",
+    "luminanceBands4x4": [
+      [
+        39,
+        93,
+        115,
+        5
+      ],
+      [
+        55,
+        91,
+        68,
+        5
+      ],
+      [
+        55,
+        83,
+        51,
+        13
+      ],
+      [
+        47,
+        73,
+        57,
+        40
+      ]
+    ],
+    "pngBytes": 359697
+  },
+  "cpu": {
+    "taskMsPerSec": 1.24,
+    "scriptMsPerSec": 1.14,
+    "layoutMsPerSec": 0,
+    "recalcStyleMsPerSec": 0,
+    "layoutsPerSec": 10.25,
+    "recalcStylesPerSec": 16.38,
+    "nodesDelta": 421,
+    "heapDeltaMB": 79.08
+  },
+  "errors": {
+    "consoleErrors": 1,
+    "exceptions": 0,
+    "consoleWarnings": 0,
+    "networkFailures": 0,
+    "samples": [
+      "log: Failed to load resource: the server responded with a status of 404 (Not Found)"
+    ]
   }
 }

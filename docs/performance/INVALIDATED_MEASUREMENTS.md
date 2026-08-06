@@ -66,8 +66,8 @@ RTX 5070 via ANGLE/D3D11, 1280x720 DPR 1, 3 passes × 8 s):
 
 | location | avg fps | p1 fps | draw calls | triangles | tiles resident |
 |---|---|---|---|---|---|
-| **times-square** (true) | 27.1 | 34.5 | 94 | 972,719 | 19/119 |
-| **lincoln-square** (old mislabel) | 49.3 | 62.9 | 65 | 402,109 | — |
+| **times-square** (true) | 31.7 | 36.2 | 94 | 972,867 | 19/119 |
+| **lincoln-square** (old mislabel) | 58.5 | 71.3 | 65 | 402,157 | — |
 
 Full numbers: `docs/performance/PHASE2O_BASELINE.md` / `.json`;
 raw passes and screenshots: `evidence/performance/phase2o-a/`.

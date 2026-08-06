@@ -23,9 +23,12 @@
         "harness": "scripts/benchmarks/run.cjs (CDP, zero deps; targets both Manhattan app and shenron game)",
         "p2_075": "verified + reconciled; true Times Square (-1476,-2433); old START (-1900,-600) = Lincoln Square",
         "evidence": "docs/performance/ + evidence/performance/phase2o-a/ (per-pass JSON, screenshots git-ignored)",
-        "tests": "tests/performance/camera-math.test.ts (9 tests, incl. registry-district regression)",
+        "tests": "tests/performance/ (camera-math 9 + png integrity 6 = 15 tests)",
         "invalidated": "P2-044 + HANDOFF 'Times Square' numbers (939,647 tris / 89 draws / 0.27 ms) were measured at Lincoln Square",
-        "variance": "3 passes x 8 s per run; spread % reported; cold-pass stalls re-sampled"
+        "variance": "3 passes x 8 s per run; spread % reported; cold-pass stalls re-sampled",
+        "scenarios": "stand, walk, sprint, rain, night, zone, maxpeds, maxtraffic, elevator transition (corridor ascend 8,456 ms), soak 10 min x2 apps",
+        "metrics": "avg/median/1%/0.1% fps, stall frames, render() ms, CPU counters, long tasks, heap, load time, draw calls/tris/textures/geometries, actors, console/network errors, screenshot sha256 + luminance bands + frame diff",
+        "key_numbers": "Times Sq 31.7 avg fps / 94 draws / 972,867 tris vs Lincoln Sq 58.5 / 65 / 402,157; soak flat over 10 min both apps"
       }
     },
     {

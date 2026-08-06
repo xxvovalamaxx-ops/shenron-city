@@ -2,125 +2,150 @@
 
 Task 2O-A-001. Harness: `scripts/benchmarks/run.cjs` (zero-dependency CDP
 driver, Chrome headless). Evidence: `evidence/performance/phase2o-a/`
-(per-pass JSON + screenshots). Machine renderer: **NVIDIA GeForce RTX 5070**
-via ANGLE/D3D11 (verified from the live WebGL context, not assumed).
+(per-pass JSON + screenshots, 3 passes per run unless noted). Machine
+renderer: **NVIDIA GeForce RTX 5070** via ANGLE/D3D11 (verified from the live
+WebGL context, not assumed).
 
 ## Rule
 
 > A number you can diff is worth more than a picture.
 
-Every claim below comes from 3 passes per run at the same camera, same
-resolution, same settings. No optimization claim may be made against this
-baseline unless it is measured the same way (see "Comparing later" below).
+Every claim below comes from repeated passes at the same camera, same
+resolution, same settings, with pass-to-pass spread reported. No optimization
+claim may be made against this baseline unless it is measured the same way
+(see "Comparing later").
 
 ## Method
 
-- **Resolution**: 1280x720, device scale factor 1 (pinned by CDP
-  `Emulation.setDeviceMetricsOverride`; window size 1280x720).
+- **Resolution**: 1280x720, device scale factor 1 (pinned by CDP).
 - **Browser**: headless Chrome, `--headless=new`, remote debugging, synthetic
   key input for walk/sprint scenarios.
-- **Metric**: rAF inter-frame deltas in the page (`performance.now()`),
-  sampled for 8 s per pass, 3 passes per run. avg/median/1%-low/0.1%-low in
-  fps and ms; frames > 1000 ms counted as stalls and reported (`deadFrames`).
+- **Frame metric**: rAF inter-frame deltas in the page, 8 s per pass, 3
+  passes per run. avg/median/1%-low/0.1%-low in fps and ms; frames > 1 s
+  counted as stalls (`deadFrames`). Cold passes (asset streaming + shader
+  compile) are discarded and re-sampled so every pass measures steady state.
+- **CPU**: CDP `Performance.getMetrics` deltas over the sample window
+  (task/script/layout ms per second). Noisy on short windows — treat as
+  indicative, not precise.
+- **Render time**: `renderer.render()` wall time accumulated in-page (CPU
+  submit cost; GPU time is not directly readable from the app — the 
+  `render()+gl.finish()` method in the phase-2 evidence is a GPU stall proxy
+  with all tiles resident, a different methodology).
+- **Errors**: per-pass console errors, uncaught exceptions, and failed
+  network loads, collected from CDP events (includes page load).
 - **Manhattan app extra**: `renderer.info` (draw calls, triangles,
   geometries, textures), streamer tile counts, traffic/crowd/weather stats,
-  `city.nearest` district proof for every camera (the "where is the camera
-  really" check).
-- **Determinism**: street/walk graphs are fetched and awaited before placing
-  the camera (first attempt measured a ~40 m camera jitter between passes;
-  fixed). Shenron waits 8 s for asset streaming/shaders and re-samples if a
-  pass contains a > 1 s stall (a ~4.5 s postprocessing compile was measured
-  in the warmup window).
-- **Variance**: pass-to-pass spread % reported per run. Wide spread marks
-  runs that are not trustworthy for small deltas (e.g. midtown-dense 10.2%).
+  scene actor counts (skinned/morph-target meshes), `city.nearest` district
+  proof for every camera.
+- **Integrity**: every screenshot is sha256-hashed with 4x4 luminance bands;
+  passes 2+ are pixel-diffed against pass 1 (`meanAbsDiff`,
+  `pctPixelsChanged`, `maxBandLuminanceDrift`). A "same camera" claim needs a
+  small diff (dynamic content — cars, people — moves anyway; drift is
+  reported, not hidden).
+- **Determinism**: street/walk graphs fetched before placing the camera
+  (without this, the camera jittered ~40 m between passes); stalls
+  re-sampled; lift/drive corridor legs auto-complete while room legs are
+  advanced with the game's own C key.
+- **Environment caveat**: the first measurement batch ran while another
+  session's QA process competed for CPU (hero-corridor measured 82 fps).
+  The final numbers below were taken on an idle machine. Any comparison
+  across batches must re-run both sides on the same machine state.
 
-## Results (means across 3 passes × 8 s)
+## Results (means across 3 passes x 8 s unless noted)
 
-### Manhattan (phase-2 city app, real addresses, high preset, weather default)
+### Manhattan (phase-2 city app, real addresses, high preset)
 
-| location | scenario | avg fps | 1% low | 0.1% low | draw calls | triangles | tiles res | spread % |
+| location | scenario | avg fps | 1% low | 0.1% low | draws | triangles | render ms | spread % |
 |---|---|---|---|---|---|---|---|---|
-| times-square | stand | **27.1** | 34.5 | 35.5 | 94 | 972,719 | 19/119 | 3.0 |
-| times-square | rain | **25.9** | 34.7 | 34.9 | 98 | 1,026,279 | 19/119 | 0.5 |
-| times-square | night | **28.1** | 34.1 | 34.6 | 94 | 972,619 | 19/119 | 1.3 |
-| times-square | zone (Harlem cold) | **23.6** | 29.1 | 29.4 | 94 | 889,313 | — | 3.0 |
-| lincoln-square | stand | **49.3** | 62.9 | 66.5 | 65 | 402,380 | — | 13.7 |
-| midtown-dense | stand | **26.7** | 33.4 | 33.5 | 109 | 926,689 | — | 10.2 |
-| lower-manhattan | stand | **41.7** | 51.5 | 52.0 | 93 | 796,883 | — | 4.0 |
-| manhattan-aerial | stand | **100.0** | 108.3 | 108.3* | 100 | 907,431 | — | 0.1 |
+| times-square | stand | **31.7** | 36.2 | 36.5 | 94 | 972,867 | 0.63 | 7.1 |
+| times-square | rain | **31.8** | 36.5 | 37.0 | 98 | 1,025,319 | 0.60 | 3.8 |
+| times-square | night | **31.5** | 36.3 | 36.6 | 94 | 972,446 | 0.64 | 6.7 |
+| times-square | maxpeds | **30.7** | 36.0 | 36.2 | 94 | 972,388 | 0.67 | 0.9 |
+| times-square | maxtraffic | **30.8** | 37.3 | 37.4 | 94 | 1,012,871 | 0.73 | 12.3 |
+| times-square | zone (Harlem cold) | **23.6** | 29.1 | 29.4 | 94 | 889,206 | — | 3.0 |
+| times-square | elevator ride | **44.4** | 166.6 | 327.6 | 140 | 1,138,065 | 0.66 | 12.4 |
+| times-square | **soak 10 min** | **33.1** | 36.4 | 37.6 | 94 | 971,799 | 0.45 | — |
+| lincoln-square | stand | **58.5** | 71.3 | 71.8 | 65 | 402,157 | 0.54 | 7.3 |
+| midtown-dense | stand | **27.7** | 34.6 | 34.7 | 109 | 926,612 | 0.89 | 4.4 |
+| lower-manhattan | stand | **42.8** | 52.9 | 53.4 | 93 | 796,586 | 0.74 | 5.3 |
+| manhattan-aerial | stand | **100.0** | 108.3 | 123.0 | 100 | 908,105 | 0.64 | 0.0 |
 
-\* aerial sits at the headless 100 fps cap; 0.1% low includes a settle hiccup
-(see raw passes).
+**Elevator transition (corridor ascend, HQ lobby → Floor 45)**: **8,456 ms**
+per ride (3 rides: 8,456 / 8,473 / 8,469 — 0.2% spread). Full corridor leg
+timeline in evidence: Penthouse → Lift → Lobby → Street → Driving → Corner
+market → Driving → HQ lobby → Lift → Mission Control.
 
-Reading the numbers: Times Square is the heaviest street scene (~27 avg fps
-in headless at 1280x720), midtown-dense is comparable with more draw calls
-(109). Rain costs ~1.2 fps over stand at Times Square and adds ~54k triangles
-(drops). Lincoln Square — where the old P2-044 numbers were actually
-measured — is far cheaper (49.3 fps, 65 draws, 402k tris): the invalidated
-"939,647 tris / 89 draws / 0.27 ms at Times Square" claim did not describe
-Times Square at all.
+**Soak (10 min, 1-minute buckets)**: 32.8 → 33.4 avg fps across all ten
+minutes (flat), heap 224 → 209 MB (no growth), 0 long tasks, 1 console error
+(a 404 during page load — favicon).
+
+**Max presets**: pinning pedestrian demand to its ceiling costs ~1.0 fps
+over stand (30.7 vs 31.7); pinning every lane's traffic weight near-max adds
+~40k triangles and costs ~0.9 fps (30.8). Both are within the stand spread —
+crowd/traffic caps are not the render bottleneck at Times Square; the tile
+streamer working set is.
 
 ### Shenron (production game, dev-view cameras)
 
 | location | scenario | preset | avg fps | 1% low | 0.1% low | spread % |
 |---|---|---|---|---|---|---|
-| hero-corridor-exterior | stand | high | **82.2** | 122.0 | 134.9 | 11.4 |
-| hero-corridor-exterior | walk | high | **86.8** | 123.6 | 137.3 | 9.4 |
-| hero-corridor-exterior | sprint | high | **89.0** | 128.4 | 145.2 | 14.7 |
-| hero-corridor-exterior | stand | medium | **94.5** | 133.3 | 146.4 | 11.3 |
-| hero-corridor-exterior | stand | low | **92.4** | 131.1 | 147.5 | 4.6 |
-| hq-plaza | stand | high | **99.5** | 145.7 | 165.0 | 0.1 |
-| hq-lobby | stand | high | **99.6** | 144.3 | 197.5 | 0.4 |
-| elevator-interior | stand | high | **99.9** | 159.4 | 260.4 | 0.2 |
-| floor45-arrival | stand | high | **100.0** | 130.0 | 250.0* | 0.2 |
+| hero-corridor-exterior | stand | high | **98.5** | 128.8 | 138.9 | 0.5 |
+| hero-corridor-exterior | walk | high | **95.4** | 127.2 | 137.5 | 7.6 |
+| hero-corridor-exterior | sprint | high | **96.9** | 127.2 | 157.1 | 1.3 |
+| hero-corridor-exterior | stand | medium | **99.4** | 131.1 | 145.2 | 0.2 |
+| hero-corridor-exterior | stand | low | **98.9** | 133.9 | 154.0 | 0.5 |
+| hero-corridor-exterior | **soak 10 min** | high | **98.5** | 129.9 | 144.9 | — |
+| hq-plaza | stand | high | **99.8** | 151.6 | 193.7 | 0.0 |
+| hq-lobby | stand | high | **99.8** | 148.7 | 189.9 | 0.2 |
+| elevator-interior | stand | high | **99.9** | 142.9 | 240.6 | 0.1 |
+| floor45-arrival | stand | high | **99.9** | 135.3 | 319.7 | 0.2 |
 
-\* p0.1 is inflated by a single >200 ms frame in the headless compositor; see
-raw passes.
+**Soak (10 min, 1-minute buckets)**: 98.2 → 98.9 avg fps across all ten
+minutes (flat), heap 480 → 453 MB (no growth), 0 long tasks.
 
-Reading the numbers: the hero corridor (city + traffic + crowd visible) is
-the only Shenron scene that drops below the 100 fps headless cap. The low
-preset does **not** beat medium here (92.4 vs 94.5 avg) within noise — a
-claim that low is faster needs the same camera under the same spread before
-it is repeated. Interiors sit at the cap with ~0.2% spread: any future
-"lobby is faster/slower" claim within ±1 fps is noise, not a change.
+Reading the numbers: every Shenron scene sits at the headless 100 fps cap
+with <1% spread (the first batch measured hero-corridor at 82 fps while a
+concurrent QA process competed for CPU — environmental, not a code change).
+At the cap, preset differences (low 98.9 vs medium 99.4 vs high 98.5) are
+within noise: **no preset claim may be made from these**. Interiors at
+±0.2% spread: any interior "optimization" within ±1 fps is noise.
 
-## Comparison targets (from the existing budget docs)
+Manhattan render cost per frame is 0.45–0.89 ms CPU-side (submit); frame
+time is dominated by the renderer's own pacing and the streamer, not the
+submitted draw work.
 
-- `docs/Production/PERFORMANCE_BUDGETS.md` target: 60 fps avg / 45 fps 1% low
-  at 2560x1080 on RTX 5070. **Not comparable directly**: this baseline is
-  1280x720, headless, dev server (not the production build). The prior
-  production-pass-02 evidence (`docs/Production/evidence/production-pass-02/
-  performance.json`) measured 5–46 fps at 2560x889 in a **headed** browser —
-  also not comparable 1:1, and its numbers predate the P2-075 correction.
-- A proper production-build comparison is a follow-up run of the same harness
-  against `vite preview` at 2560x1080 with the identical camera registry.
+## P2-075 / invalidated historical measurements
 
-## Invalidated historical measurements
-
-See `docs/performance/INVALIDATED_MEASUREMENTS.md` (P2-075). In short: all
-"Times Square" figures measured from the default camera (-1900,-600) were
-Lincoln Square figures and are invalid as Times Square evidence; this
-baseline re-measures the true coordinates.
+See `docs/performance/INVALIDATED_MEASUREMENTS.md`. All "Times Square"
+figures measured from the old default camera (-1900,-600) were **Lincoln
+Square** figures (P2-044 and HANDOFF line ~184: 939,647 tris / 89 draws /
+0.27 ms). Re-measured at the true coordinates: **Times Square = 94 draws /
+972,867 tris / ~0.63 ms render**; **Lincoln Square = 65 draws / 402,157
+tris / ~0.54 ms** — the two are different scenes and were never comparable.
 
 ## Reproduce
 
 ```
 node scripts/benchmarks/run.cjs --app manhattan --location times-square --passes 3 --seconds 8
+node scripts/benchmarks/run.cjs --app manhattan --location times-square --scenario elevator
+node scripts/benchmarks/run.cjs --app manhattan --location times-square --scenario soak
 node scripts/benchmarks/run.cjs --app shenron --location hero-corridor-exterior --scenario walk
 node scripts/benchmarks/aggregate.cjs   # regenerates docs/performance/PHASE2O_BASELINE.json
 ```
 
-Dev servers are started and stopped by the harness (ports 5176/9132, pinned
+Dev servers are started/stopped by the harness (ports 5176/9132, pinned
 IPv4, `--strictPort`). Screenshots land in `evidence/performance/phase2o-a/`
-(git-ignored; JSON is the source of truth).
+(git-ignored; JSON is the source of truth, including per-frame PNG hashes).
 
 ## Comparing later
 
 A claim like "X made Times Square faster" must, at minimum:
 
 1. re-run `--app manhattan --location times-square --passes 3 --seconds 8`
-   before and after the change on the same machine;
+   before and after the change on the same machine state (no concurrent
+   benchmark/QA processes);
 2. report avg **and** 1%/0.1% lows **and** spread % for both runs;
-3. show the diff is larger than the baseline spread (3.0% for times-square);
-4. attach the screenshot diff / hash to prove the camera did not move;
+3. show the diff is larger than the baseline spread (7.1% for times-square;
+   note several scenarios spread >10% — e.g. maxtraffic 12.3%);
+4. attach the screenshot hashes/diff to prove the camera did not move;
 5. keep the same resolution, DPR, browser, and preset.

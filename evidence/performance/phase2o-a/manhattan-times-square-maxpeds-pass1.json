@@ -1,0 +1,138 @@
+{
+  "pass": 1,
+  "app": "manhattan",
+  "location": "times-square",
+  "scenario": "maxpeds",
+  "quality": null,
+  "startedAtUtc": "2026-08-06T15:13:09.988Z",
+  "measuredMs": 8008.29999999702,
+  "stats": {
+    "frames": 246,
+    "deadFrames": 0,
+    "frameMs": {
+      "avg": 32.55365853656719,
+      "median": 29.799999997019768,
+      "p1": 27.399999998509884,
+      "p01": 27.30000000447035,
+      "min": 27.30000000447035,
+      "max": 47.400000005960464
+    },
+    "fps": {
+      "avg": 30.71851352365542,
+      "median": 33.55704698322174,
+      "p1": 36.49635036694831,
+      "p01": 36.630036624038496,
+      "min": 21.097046410849195
+    }
+  },
+  "longTasks": [],
+  "heapUsedMB": [
+    {
+      "ts": 40.29999999701977,
+      "mb": 221.50182723999023
+    },
+    {
+      "ts": 5013.89999999851,
+      "mb": 223.59839630126953
+    }
+  ],
+  "loadMs": 92,
+  "appStats": {
+    "ok": true,
+    "drawCalls": 94,
+    "triangles": 973155,
+    "tilesResident": 19,
+    "tilesLoading": 0,
+    "tilesQueued": 0,
+    "tilesTotal": 119,
+    "vehicles": 430,
+    "pedestrians": 359,
+    "demand": 1,
+    "lod": {
+      "full": 4,
+      "L2": 14,
+      "L3": 57,
+      "L4": 27,
+      "off": 0,
+      "tris": 515746,
+      "files": 98
+    },
+    "weather": {
+      "hour": 17,
+      "clouds": 77,
+      "drops": 0,
+      "wet": 0
+    },
+    "camera": {
+      "x": -1505.6,
+      "y": 13.9,
+      "z": 2466.2
+    },
+    "district": "Midtown-Times Square",
+    "actors": {
+      "skinnedMeshes": 0,
+      "morphTargetMeshes": 0,
+      "totalMeshes": 293
+    },
+    "renderMs": {
+      "avg": 0.67,
+      "max": 14.3,
+      "frames": 402
+    }
+  },
+  "gpu": {
+    "renderer": "ANGLE (NVIDIA, NVIDIA GeForce RTX 5070 (0x00002F04) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+    "vendor": "Google Inc. (NVIDIA)"
+  },
+  "transition": null,
+  "buckets": null,
+  "integrity": {
+    "sha256": "1069e0db41fdd423ee4cc1fba436bf1ec1c717f967ce6641eee17b349eabe63e",
+    "luminanceBands4x4": [
+      [
+        22,
+        76,
+        64,
+        18
+      ],
+      [
+        27,
+        55,
+        57,
+        18
+      ],
+      [
+        30,
+        55,
+        64,
+        31
+      ],
+      [
+        71,
+        85,
+        68,
+        42
+      ]
+    ],
+    "pngBytes": 380115
+  },
+  "cpu": {
+    "taskMsPerSec": 1.15,
+    "scriptMsPerSec": 1.06,
+    "layoutMsPerSec": 0,
+    "recalcStyleMsPerSec": 0,
+    "layoutsPerSec": 9.75,
+    "recalcStylesPerSec": 16,
+    "nodesDelta": 549,
+    "heapDeltaMB": 77.08
+  },
+  "errors": {
+    "consoleErrors": 1,
+    "exceptions": 0,
+    "consoleWarnings": 0,
+    "networkFailures": 0,
+    "samples": [
+      "log: Failed to load resource: the server responded with a status of 404 (Not Found)"
+    ]
+  }
+}

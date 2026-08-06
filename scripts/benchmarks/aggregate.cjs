@@ -14,7 +14,6 @@ const OUT = path.join(REPO, 'docs', 'performance', 'PHASE2O_BASELINE.json')
 
 const files = fs.readdirSync(EVIDENCE)
   .filter((f) => f.endsWith('.json') && !f.includes('-pass'))
-  .filter((f) => !['vite-manh.log'].includes(f))
 
 const runs = []
 for (const f of files) {
@@ -27,30 +26,52 @@ for (const f of files) {
 
 runs.sort((a, b) => `${a.app}-${a.location}-${a.scenario}`.localeCompare(`${b.app}-${b.location}-${b.scenario}`))
 
-const rows = runs.map((r) => ({
-  app: r.app,
-  location: r.location,
-  scenario: r.scenario,
-  quality: r.quality ?? null,
-  passes: r.passes,
-  cameraAsserted: r.notes?.cameraAsserted ?? null,
-  manhattanProjection: r.notes?.manhattanProjection ?? null,
-  fpsAvg: r.variance.fpsAvg?.mean ?? null,
-  fpsP1: r.variance.fpsP1?.mean ?? null,
-  fpsP01: r.variance.fpsP01?.mean ?? null,
-  spreadPct: r.variance.fpsAvg?.spreadPct ?? null,
-  appStats: r.variance.appStats ?? null,
-}))
+// pull the first pass's deep metrics for reference (render time, errors,
+// integrity, transition, CPU)
+function firstPass(tag) {
+  const f = path.join(EVIDENCE, `${tag}-pass1.json`)
+  try { return JSON.parse(fs.readFileSync(f, 'utf8')) } catch { return null }
+}
+
+const rows = runs.map((r) => {
+  const tag = `${r.app}-${r.location}-${r.scenario}` +
+    (r.app === 'shenron' ? `-${r.quality}` : '')
+  const p1 = firstPass(tag)
+  return {
+    app: r.app,
+    location: r.location,
+    scenario: r.scenario,
+    quality: r.quality ?? null,
+    passes: r.passes,
+    seconds: r.seconds,
+    cameraAsserted: r.notes?.cameraAsserted ?? null,
+    manhattanProjection: r.notes?.manhattanProjection ?? null,
+    fpsAvg: r.variance.fpsAvg?.mean ?? null,
+    fpsP1: r.variance.fpsP1?.mean ?? null,
+    fpsP01: r.variance.fpsP01?.mean ?? null,
+    spreadPct: r.variance.fpsAvg?.spreadPct ?? null,
+    appStats: p1?.appStats ?? null,
+    transition: p1?.transition ?? null,
+    cpu: p1?.cpu ?? null,
+    errors: p1?.errors ?? null,
+    integrity: p1?.integrity ?? null,
+    soakBuckets: p1?.buckets ?? null,
+    loadMs: p1?.loadMs ?? null,
+    gpu: p1?.gpu ?? null,
+  }
+})
 
 const out = {
-  schemaVersion: 1,
+  schemaVersion: 2,
   generatedAtUtc: new Date().toISOString(),
   harness: {
     url: 'scripts/benchmarks/run.cjs',
-    sampleSeconds: runs[0]?.seconds ?? null,
     resolution: '1280x720, DPR 1',
-    browser: 'headless Chrome (CDP), ANGLE/D3D11 GPU',
+    browser: 'headless Chrome (CDP)',
+    gpu: rows.find((r) => r.gpu)?.gpu ?? null,
     passesPerRun: 3,
+    integrity: 'per-pass sha256 + 4x4 luminance bands + frame diff vs pass 1',
+    cpu: 'CDP Performance.getMetrics deltas (noisy on short windows; treat as indicative)',
   },
   count: rows.length,
   runs: rows,

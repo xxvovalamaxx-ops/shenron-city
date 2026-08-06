@@ -1,0 +1,176 @@
+{
+  "pass": 3,
+  "app": "manhattan",
+  "location": "times-square",
+  "scenario": "elevator",
+  "quality": null,
+  "startedAtUtc": "2026-08-06T15:12:56.961Z",
+  "measuredMs": 9868,
+  "stats": {
+    "frames": 413,
+    "deadFrames": 0,
+    "frameMs": {
+      "avg": 23.89225181598063,
+      "median": 21.5,
+      "p1": 6.0999999940395355,
+      "p01": 4.199999995529652,
+      "min": 4.199999995529652,
+      "max": 54
+    },
+    "fps": {
+      "avg": 41.854573093488725,
+      "median": 46.51162790697674,
+      "p1": 163.93442638969267,
+      "p01": 238.0952383486592,
+      "min": 18.51851851851852
+    }
+  },
+  "appStats": {
+    "ok": true,
+    "drawCalls": 140,
+    "triangles": 1138021,
+    "tilesResident": 23,
+    "tilesLoading": 0,
+    "tilesQueued": 0,
+    "tilesTotal": 119,
+    "vehicles": 531,
+    "pedestrians": 63,
+    "demand": 0.126,
+    "lod": {
+      "full": 6,
+      "L2": 15,
+      "L3": 55,
+      "L4": 26,
+      "off": 0,
+      "tris": 527126,
+      "files": 96
+    },
+    "weather": {
+      "hour": 17,
+      "clouds": 77,
+      "drops": 0,
+      "wet": 0
+    },
+    "camera": {
+      "x": -2333.4,
+      "y": 198.2,
+      "z": 1820.5
+    },
+    "district": "Hell's Kitchen",
+    "actors": {
+      "skinnedMeshes": 0,
+      "morphTargetMeshes": 0,
+      "totalMeshes": 347
+    },
+    "renderMs": {
+      "avg": 0.689,
+      "max": 6.1,
+      "frames": 415
+    }
+  },
+  "gpu": {
+    "renderer": "ANGLE (NVIDIA, NVIDIA GeForce RTX 5070 (0x00002F04) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+    "vendor": "Google Inc. (NVIDIA)"
+  },
+  "transition": {
+    "rideMs": 8469,
+    "legs": [
+      {
+        "title": "Penthouse",
+        "at": 8
+      },
+      {
+        "title": "Lift",
+        "at": 62
+      },
+      {
+        "title": "Lobby",
+        "at": 244
+      },
+      {
+        "title": "Street",
+        "at": 432
+      },
+      {
+        "title": "Driving",
+        "at": 640
+      },
+      {
+        "title": "Corner market",
+        "at": 832
+      },
+      {
+        "title": "Driving",
+        "at": 1017
+      },
+      {
+        "title": "HQ lobby",
+        "at": 1203
+      },
+      {
+        "title": "Lift",
+        "at": 1399
+      },
+      {
+        "title": "Mission Control",
+        "at": 9868
+      }
+    ],
+    "ended": "Mission Control"
+  },
+  "buckets": null,
+  "integrity": {
+    "sha256": "2201e166a67ef727e6309f6b913d03dafe2da56bc8677d3df470d797d5762738",
+    "luminanceBands4x4": [
+      [
+        29,
+        43,
+        53,
+        59
+      ],
+      [
+        78,
+        86,
+        62,
+        98
+      ],
+      [
+        91,
+        81,
+        64,
+        54
+      ],
+      [
+        82,
+        77,
+        74,
+        74
+      ]
+    ],
+    "pngBytes": 155217,
+    "diffVsPass1": {
+      "meanAbsDiff": 1.256,
+      "pctPixelsChanged": 1.23,
+      "maxBandLuminanceDrift": 211.42119999999997
+    }
+  },
+  "cpu": {
+    "taskMsPerSec": -0.01,
+    "scriptMsPerSec": -0.01,
+    "layoutMsPerSec": 0,
+    "recalcStyleMsPerSec": 0,
+    "layoutsPerSec": -1.25,
+    "recalcStylesPerSec": -2,
+    "nodesDelta": 12,
+    "heapDeltaMB": -17.51
+  },
+  "errors": {
+    "consoleErrors": 1,
+    "exceptions": 0,
+    "consoleWarnings": 0,
+    "networkFailures": 0,
+    "samples": [
+      "log: Failed to load resource: the server responded with a status of 404 (Not Found)"
+    ]
+  }
+}

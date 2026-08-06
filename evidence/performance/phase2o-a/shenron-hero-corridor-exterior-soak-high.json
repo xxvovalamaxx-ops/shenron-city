@@ -1,0 +1,60 @@
+{
+  "app": "shenron",
+  "location": "hero-corridor-exterior",
+  "scenario": "soak",
+  "passes": 1,
+  "seconds": 600,
+  "quality": "high",
+  "dateUtc": "2026-08-06T15:49:56.776Z",
+  "locations": {
+    "app": "shenron",
+    "view": "hero-boulevard",
+    "note": "Dragon Boulevard exterior (dev-view)"
+  },
+  "variance": {
+    "fpsAvg": {
+      "values": [
+        98.49997575041678
+      ],
+      "mean": 98.49997575041678,
+      "stdev": 0,
+      "spreadPct": 0
+    },
+    "fpsP1": {
+      "values": [
+        129.87012981986453
+      ],
+      "mean": 129.87012981986453,
+      "stdev": 0,
+      "spreadPct": 0
+    },
+    "fpsP01": {
+      "values": [
+        144.92753610669052
+      ],
+      "mean": 144.92753610669052,
+      "stdev": 0,
+      "spreadPct": 0
+    },
+    "frameAvgMs": {
+      "values": [
+        10.152286763337287
+      ],
+      "mean": 10.152286763337287,
+      "stdev": 0,
+      "spreadPct": 0
+    },
+    "heapUsedMB": {
+      "values": [
+        452.64860248565674
+      ],
+      "mean": 452.64860248565674,
+      "stdev": 0,
+      "spreadPct": 0
+    }
+  },
+  "notes": {
+    "cameraAsserted": "Dragon Boulevard exterior (dev-view)",
+    "manhattanProjection": null
+  }
+}

@@ -4,35 +4,43 @@
   "location": "times-square",
   "scenario": "rain",
   "quality": null,
-  "startedAtUtc": "2026-08-06T00:29:15.979Z",
-  "measuredMs": 8002.5,
+  "startedAtUtc": "2026-08-06T15:11:21.566Z",
+  "measuredMs": 8006.19999999553,
   "stats": {
-    "frames": 207,
+    "frames": 252,
     "deadFrames": 0,
     "frameMs": {
-      "avg": 38.65845410626579,
-      "median": 39.599999994039536,
-      "p1": 28.69999998807907,
-      "p01": 28.299999997019768,
-      "min": 28.299999997019768,
-      "max": 46.1000000089407
+      "avg": 31.76984126984127,
+      "median": 29.399999998509884,
+      "p1": 26.799999997019768,
+      "p01": 26.399999998509884,
+      "min": 26.399999998509884,
+      "max": 46.899999998509884
     },
     "fps": {
-      "avg": 25.867563075625394,
-      "median": 25.25252525632618,
-      "p1": 34.843205589385484,
-      "p01": 35.335689049657546,
-      "min": 21.691973965424264
+      "avg": 31.476392705470897,
+      "median": 34.01360544390082,
+      "p1": 37.31343283997025,
+      "p01": 37.8787878809259,
+      "min": 21.321961621146528
     }
   },
   "longTasks": [],
-  "heapUsedMB": 235.33578777313232,
-  "heapTotalMB": 281.8149290084839,
-  "loadMs": 101,
+  "heapUsedMB": [
+    {
+      "ts": 40.399999998509884,
+      "mb": 226.85007095336914
+    },
+    {
+      "ts": 5035.0999999940395,
+      "mb": 223.28254318237305
+    }
+  ],
+  "loadMs": 82,
   "appStats": {
     "ok": true,
     "drawCalls": 98,
-    "triangles": 1025379,
+    "triangles": 1025263,
     "tilesResident": 19,
     "tilesLoading": 0,
     "tilesQueued": 0,
@@ -60,10 +68,71 @@
       "y": 13.9,
       "z": 2466.2
     },
-    "district": "Midtown-Times Square"
+    "district": "Midtown-Times Square",
+    "actors": {
+      "skinnedMeshes": 0,
+      "morphTargetMeshes": 0,
+      "totalMeshes": 293
+    },
+    "renderMs": {
+      "avg": 0.602,
+      "max": 14.4,
+      "frames": 406
+    }
   },
   "gpu": {
     "renderer": "ANGLE (NVIDIA, NVIDIA GeForce RTX 5070 (0x00002F04) Direct3D11 vs_5_0 ps_5_0, D3D11)",
     "vendor": "Google Inc. (NVIDIA)"
+  },
+  "transition": null,
+  "buckets": null,
+  "integrity": {
+    "sha256": "35e2d2af22fffa5e3920e0cbc30f2f074e799b5cf21d0c7eed903b11ab7423ff",
+    "luminanceBands4x4": [
+      [
+        21,
+        60,
+        40,
+        6
+      ],
+      [
+        23,
+        38,
+        32,
+        5
+      ],
+      [
+        15,
+        30,
+        48,
+        16
+      ],
+      [
+        32,
+        38,
+        47,
+        27
+      ]
+    ],
+    "pngBytes": 346154
+  },
+  "cpu": {
+    "taskMsPerSec": 1.14,
+    "scriptMsPerSec": 1.05,
+    "layoutMsPerSec": 0,
+    "recalcStyleMsPerSec": 0,
+    "layoutsPerSec": 10.25,
+    "recalcStylesPerSec": 16.38,
+    "nodesDelta": 549,
+    "heapDeltaMB": 74.47
+  },
+  "errors": {
+    "consoleErrors": 1,
+    "exceptions": 0,
+    "consoleWarnings": 0,
+    "networkFailures": 0,
+    "samples": [
+      "log: Failed to load resource: the server responded with a status of 404 (Not Found)"
+    ]
   }
 }

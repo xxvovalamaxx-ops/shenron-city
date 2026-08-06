@@ -4,34 +4,95 @@
   "location": "hero-corridor-exterior",
   "scenario": "walk",
   "quality": "high",
-  "startedAtUtc": "2026-08-06T00:56:25.750Z",
-  "measuredMs": 8000.4000000059605,
+  "startedAtUtc": "2026-08-06T15:18:57.186Z",
+  "measuredMs": 8006.30000000447,
   "stats": {
-    "frames": 659,
+    "frames": 729,
     "deadFrames": 0,
     "frameMs": {
-      "avg": 12.139908952963552,
-      "median": 11.899999991059303,
-      "p1": 8.399999991059303,
-      "p01": 7.799999997019768,
-      "min": 7.799999997019768,
-      "max": 36.70000000298023
+      "avg": 10.9825788751776,
+      "median": 10.100000001490116,
+      "p1": 8.100000001490116,
+      "p01": 7.5,
+      "min": 7.5,
+      "max": 496.6000000014901
     },
     "fps": {
-      "avg": 82.3729406764524,
-      "median": 84.03361350851421,
-      "p1": 119.0476191743296,
-      "p01": 128.20512825411296,
-      "min": 27.247956401057078
+      "avg": 91.05329552971946,
+      "median": 99.00990097549146,
+      "p1": 123.45679010074507,
+      "p01": 133.33333333333334,
+      "min": 2.0136931131635105
     }
   },
-  "longTasks": [],
-  "heapUsedMB": 437.77483654022217,
-  "heapTotalMB": 503.9866056442261,
-  "loadMs": 908,
+  "longTasks": [
+    496
+  ],
+  "heapUsedMB": [
+    {
+      "ts": 496.6000000014901,
+      "mb": 450.57343769073486
+    },
+    {
+      "ts": 5004.60000000149,
+      "mb": 467.22893238067627
+    }
+  ],
+  "loadMs": 1267,
   "appStats": null,
   "gpu": {
     "renderer": "ANGLE (NVIDIA, NVIDIA GeForce RTX 5070 (0x00002F04) Direct3D11 vs_5_0 ps_5_0, D3D11)",
     "vendor": "Google Inc. (NVIDIA)"
+  },
+  "transition": null,
+  "buckets": null,
+  "integrity": {
+    "sha256": "e9a48d13dd55b678028d4039083d5863a86ecdbec335ef3dfb81a1522d9e4223",
+    "luminanceBands4x4": [
+      [
+        49,
+        126,
+        130,
+        101
+      ],
+      [
+        77,
+        115,
+        109,
+        98
+      ],
+      [
+        65,
+        79,
+        101,
+        55
+      ],
+      [
+        34,
+        104,
+        106,
+        55
+      ]
+    ],
+    "pngBytes": 481717
+  },
+  "cpu": {
+    "taskMsPerSec": 4.22,
+    "scriptMsPerSec": 4.12,
+    "layoutMsPerSec": 0.01,
+    "recalcStyleMsPerSec": 0,
+    "layoutsPerSec": 1.25,
+    "recalcStylesPerSec": 1.63,
+    "nodesDelta": 192,
+    "heapDeltaMB": 102.63
+  },
+  "errors": {
+    "consoleErrors": 1,
+    "exceptions": 0,
+    "consoleWarnings": 2,
+    "networkFailures": 0,
+    "samples": [
+      "log: Failed to load resource: the server responded with a status of 404 (Not Found)"
+    ]
   }
 }

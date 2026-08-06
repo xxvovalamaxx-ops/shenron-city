@@ -4,35 +4,43 @@
   "location": "midtown-dense",
   "scenario": "stand",
   "quality": null,
-  "startedAtUtc": "2026-08-06T00:26:59.517Z",
-  "measuredMs": 8024.5,
+  "startedAtUtc": "2026-08-06T15:15:37.073Z",
+  "measuredMs": 8006.70000000298,
   "stats": {
-    "frames": 216,
+    "frames": 223,
     "deadFrames": 0,
     "frameMs": {
-      "avg": 37.150000000027596,
-      "median": 37.70000000298023,
-      "p1": 29.900000005960464,
-      "p01": 29.899999991059303,
-      "min": 29.899999991059303,
-      "max": 48.29999999701977
+      "avg": 35.9044843049461,
+      "median": 34.79999999701977,
+      "p1": 29.100000001490116,
+      "p01": 29.099999994039536,
+      "min": 29.099999994039536,
+      "max": 54.20000000298023
     },
     "fps": {
-      "avg": 26.91790040374851,
-      "median": 26.525198936895194,
-      "p1": 33.44481604684459,
-      "p01": 33.44481606351237,
-      "min": 20.703933748689494
+      "avg": 27.851674222828002,
+      "median": 28.73563218636893,
+      "p1": 34.3642611666252,
+      "p01": 34.36426117542361,
+      "min": 18.45018450083052
     }
   },
   "longTasks": [],
-  "heapUsedMB": 244.84466743469238,
-  "heapTotalMB": 315.97986793518066,
-  "loadMs": 79,
+  "heapUsedMB": [
+    {
+      "ts": 54.20000000298023,
+      "mb": 229.39215564727783
+    },
+    {
+      "ts": 5016.79999999702,
+      "mb": 280.3066453933716
+    }
+  ],
+  "loadMs": 101,
   "appStats": {
     "ok": true,
     "drawCalls": 109,
-    "triangles": 926496,
+    "triangles": 927292,
     "tilesResident": 21,
     "tilesLoading": 0,
     "tilesQueued": 0,
@@ -60,10 +68,74 @@
       "y": 13.9,
       "z": 3460.2
     },
-    "district": "Midtown South-Flatiron-Union Square"
+    "district": "Midtown South-Flatiron-Union Square",
+    "actors": {
+      "skinnedMeshes": 0,
+      "morphTargetMeshes": 0,
+      "totalMeshes": 332
+    },
+    "renderMs": {
+      "avg": 0.668,
+      "max": 3,
+      "frames": 375
+    }
   },
   "gpu": {
     "renderer": "ANGLE (NVIDIA, NVIDIA GeForce RTX 5070 (0x00002F04) Direct3D11 vs_5_0 ps_5_0, D3D11)",
     "vendor": "Google Inc. (NVIDIA)"
+  },
+  "transition": null,
+  "buckets": null,
+  "integrity": {
+    "sha256": "4356967c3f85a372d96339f92c25a344f236227666a4245395be33c490a48713",
+    "luminanceBands4x4": [
+      [
+        28,
+        53,
+        139,
+        57
+      ],
+      [
+        33,
+        47,
+        75,
+        50
+      ],
+      [
+        35,
+        51,
+        43,
+        50
+      ],
+      [
+        93,
+        89,
+        81,
+        36
+      ]
+    ],
+    "pngBytes": 283775,
+    "diffVsPass1": {
+      "meanAbsDiff": 5.819,
+      "pctPixelsChanged": 10.05,
+      "maxBandLuminanceDrift": 204.0894
+    }
+  },
+  "cpu": {
+    "taskMsPerSec": -0.01,
+    "scriptMsPerSec": -0.01,
+    "layoutMsPerSec": 0,
+    "recalcStyleMsPerSec": 0,
+    "layoutsPerSec": 0.25,
+    "recalcStylesPerSec": 0.13,
+    "nodesDelta": 35,
+    "heapDeltaMB": 11.89
+  },
+  "errors": {
+    "consoleErrors": 0,
+    "exceptions": 0,
+    "consoleWarnings": 0,
+    "networkFailures": 0,
+    "samples": []
   }
 }

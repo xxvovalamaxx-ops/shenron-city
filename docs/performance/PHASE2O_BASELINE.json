@@ -1,14 +1,19 @@
 {
-  "schemaVersion": 1,
-  "generatedAtUtc": "2026-08-06T01:00:27.787Z",
+  "schemaVersion": 2,
+  "generatedAtUtc": "2026-08-06T15:50:58.310Z",
   "harness": {
     "url": "scripts/benchmarks/run.cjs",
-    "sampleSeconds": 8,
     "resolution": "1280x720, DPR 1",
-    "browser": "headless Chrome (CDP), ANGLE/D3D11 GPU",
-    "passesPerRun": 3
+    "browser": "headless Chrome (CDP)",
+    "gpu": {
+      "renderer": "ANGLE (NVIDIA, NVIDIA GeForce RTX 5070 (0x00002F04) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+      "vendor": "Google Inc. (NVIDIA)"
+    },
+    "passesPerRun": 3,
+    "integrity": "per-pass sha256 + 4x4 luminance bands + frame diff vs pass 1",
+    "cpu": "CDP Performance.getMetrics deltas (noisy on short windows; treat as indicative)"
   },
-  "count": 17,
+  "count": 22,
   "runs": [
     {
       "app": "manhattan",
@@ -16,16 +21,115 @@
       "scenario": "stand",
       "quality": "high",
       "passes": 3,
+      "seconds": 8,
       "cameraAsserted": "the old mislabelled START (-1900,-600); registry \"Upper West Side\"",
       "manhattanProjection": {
         "x": -1896.6166894201765,
         "y": -597.0996000001797
       },
-      "fpsAvg": 49.32088140871459,
-      "fpsP1": 62.921552147494445,
-      "fpsP01": 66.49660611624667,
-      "spreadPct": 13.674434464458256,
-      "appStats": null
+      "fpsAvg": 58.4572028606482,
+      "fpsP1": 71.28355287803323,
+      "fpsP01": 71.81254144662374,
+      "spreadPct": 7.284310988087291,
+      "appStats": {
+        "ok": true,
+        "drawCalls": 65,
+        "triangles": 401841,
+        "tilesResident": 22,
+        "tilesLoading": 0,
+        "tilesQueued": 0,
+        "tilesTotal": 119,
+        "vehicles": 308,
+        "pedestrians": 25,
+        "demand": 0.029,
+        "lod": {
+          "full": 6,
+          "L2": 12,
+          "L3": 51,
+          "L4": 33,
+          "off": 0,
+          "tris": 479390,
+          "files": 96
+        },
+        "weather": {
+          "hour": 17,
+          "clouds": 77,
+          "drops": 0,
+          "wet": 0
+        },
+        "camera": {
+          "x": -1878.7,
+          "y": 13.9,
+          "z": 580.7
+        },
+        "district": "Upper West Side-Lincoln Square",
+        "actors": {
+          "skinnedMeshes": 0,
+          "morphTargetMeshes": 0,
+          "totalMeshes": 319
+        },
+        "renderMs": {
+          "avg": 0.539,
+          "max": 15.1,
+          "frames": 652
+        }
+      },
+      "transition": null,
+      "cpu": {
+        "taskMsPerSec": 1.17,
+        "scriptMsPerSec": 1.07,
+        "layoutMsPerSec": 0,
+        "recalcStyleMsPerSec": 0,
+        "layoutsPerSec": 10,
+        "recalcStylesPerSec": 16.25,
+        "nodesDelta": 456,
+        "heapDeltaMB": 47.98
+      },
+      "errors": {
+        "consoleErrors": 1,
+        "exceptions": 0,
+        "consoleWarnings": 0,
+        "networkFailures": 0,
+        "samples": [
+          "log: Failed to load resource: the server responded with a status of 404 (Not Found)"
+        ]
+      },
+      "integrity": {
+        "sha256": "4444ce9bbe2b3939f0038cd59e4bd4160058bbc1587f4d280facf93b1b4aeb28",
+        "luminanceBands4x4": [
+          [
+            25,
+            34,
+            160,
+            164
+          ],
+          [
+            23,
+            36,
+            159,
+            156
+          ],
+          [
+            20,
+            24,
+            79,
+            102
+          ],
+          [
+            25,
+            59,
+            68,
+            59
+          ]
+        ],
+        "pngBytes": 140854
+      },
+      "soakBuckets": null,
+      "loadMs": 80,
+      "gpu": {
+        "renderer": "ANGLE (NVIDIA, NVIDIA GeForce RTX 5070 (0x00002F04) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+        "vendor": "Google Inc. (NVIDIA)"
+      }
     },
     {
       "app": "manhattan",
@@ -33,16 +137,115 @@
       "scenario": "stand",
       "quality": "high",
       "passes": 3,
+      "seconds": 8,
       "cameraAsserted": "Financial District canyon",
       "manhattanProjection": {
         "x": -3540.3511535854473,
         "y": -8082.959400000411
       },
-      "fpsAvg": 41.69469196437167,
-      "fpsP1": 51.471136133159355,
-      "fpsP01": 51.92613177459972,
-      "spreadPct": 4.038997852158642,
-      "appStats": null
+      "fpsAvg": 42.79228721734987,
+      "fpsP1": 52.91104041057569,
+      "fpsP01": 53.382139858365356,
+      "spreadPct": 5.312822250496893,
+      "appStats": {
+        "ok": true,
+        "drawCalls": 93,
+        "triangles": 796895,
+        "tilesResident": 21,
+        "tilesLoading": 0,
+        "tilesQueued": 0,
+        "tilesTotal": 119,
+        "vehicles": 553,
+        "pedestrians": 595,
+        "demand": 1,
+        "lod": {
+          "full": 6,
+          "L2": 14,
+          "L3": 41,
+          "L4": 41,
+          "off": 0,
+          "tris": 375618,
+          "files": 96
+        },
+        "weather": {
+          "hour": 17,
+          "clouds": 77,
+          "drops": 0,
+          "wet": 0
+        },
+        "camera": {
+          "x": -3545.7,
+          "y": 13.9,
+          "z": 8093.6
+        },
+        "district": "Financial District-Battery Park City",
+        "actors": {
+          "skinnedMeshes": 0,
+          "morphTargetMeshes": 0,
+          "totalMeshes": 316
+        },
+        "renderMs": {
+          "avg": 0.736,
+          "max": 15.2,
+          "frames": 520
+        }
+      },
+      "transition": null,
+      "cpu": {
+        "taskMsPerSec": 1.24,
+        "scriptMsPerSec": 1.14,
+        "layoutMsPerSec": 0,
+        "recalcStyleMsPerSec": 0,
+        "layoutsPerSec": 10.25,
+        "recalcStylesPerSec": 16.38,
+        "nodesDelta": 421,
+        "heapDeltaMB": 79.08
+      },
+      "errors": {
+        "consoleErrors": 1,
+        "exceptions": 0,
+        "consoleWarnings": 0,
+        "networkFailures": 0,
+        "samples": [
+          "log: Failed to load resource: the server responded with a status of 404 (Not Found)"
+        ]
+      },
+      "integrity": {
+        "sha256": "e83915b54d9be11d16f7bedebeebf3e806c4c531934bcf11fd37f8ff8aec43f0",
+        "luminanceBands4x4": [
+          [
+            39,
+            93,
+            115,
+            5
+          ],
+          [
+            55,
+            91,
+            68,
+            5
+          ],
+          [
+            55,
+            83,
+            51,
+            13
+          ],
+          [
+            47,
+            73,
+            57,
+            40
+          ]
+        ],
+        "pngBytes": 359697
+      },
+      "soakBuckets": null,
+      "loadMs": 98,
+      "gpu": {
+        "renderer": "ANGLE (NVIDIA, NVIDIA GeForce RTX 5070 (0x00002F04) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+        "vendor": "Google Inc. (NVIDIA)"
+      }
     },
     {
       "app": "manhattan",
@@ -50,16 +253,115 @@
       "scenario": "stand",
       "quality": "high",
       "passes": 3,
+      "seconds": 8,
       "cameraAsserted": "midtown from 500 m",
       "manhattanProjection": {
         "x": -1475.1463139937368,
         "y": -2543.202000000358
       },
-      "fpsAvg": 100.00790235448073,
-      "fpsP1": 108.30606212813306,
-      "fpsP01": 274.72527501918324,
-      "spreadPct": 0.06745263879790298,
-      "appStats": null
+      "fpsAvg": 99.96334700522088,
+      "fpsP1": 108.30606204010637,
+      "fpsP01": 122.96747968218381,
+      "spreadPct": 0.01124611061653267,
+      "appStats": {
+        "ok": true,
+        "drawCalls": 100,
+        "triangles": 908574,
+        "tilesResident": 19,
+        "tilesLoading": 0,
+        "tilesQueued": 0,
+        "tilesTotal": 119,
+        "vehicles": 430,
+        "pedestrians": 359,
+        "demand": 1,
+        "lod": {
+          "full": 4,
+          "L2": 14,
+          "L3": 57,
+          "L4": 27,
+          "off": 0,
+          "tris": 515746,
+          "files": 98
+        },
+        "weather": {
+          "hour": 17,
+          "clouds": 77,
+          "drops": 0,
+          "wet": 0
+        },
+        "camera": {
+          "x": -1475.1,
+          "y": 512,
+          "z": 2543.2
+        },
+        "district": "Midtown-Times Square",
+        "actors": {
+          "skinnedMeshes": 0,
+          "morphTargetMeshes": 0,
+          "totalMeshes": 293
+        },
+        "renderMs": {
+          "avg": 0.637,
+          "max": 21.3,
+          "frames": 954
+        }
+      },
+      "transition": null,
+      "cpu": {
+        "taskMsPerSec": 0.27,
+        "scriptMsPerSec": 0.15,
+        "layoutMsPerSec": 0,
+        "recalcStyleMsPerSec": 0,
+        "layoutsPerSec": 10,
+        "recalcStylesPerSec": 15.63,
+        "nodesDelta": 548,
+        "heapDeltaMB": 65.3
+      },
+      "errors": {
+        "consoleErrors": 1,
+        "exceptions": 0,
+        "consoleWarnings": 0,
+        "networkFailures": 0,
+        "samples": [
+          "log: Failed to load resource: the server responded with a status of 404 (Not Found)"
+        ]
+      },
+      "integrity": {
+        "sha256": "3ae6f579a49ec9e77145347b31f29c94bd1c13e46e37344a78cd4c0abd15e2f6",
+        "luminanceBands4x4": [
+          [
+            64,
+            128,
+            126,
+            127
+          ],
+          [
+            27,
+            33,
+            31,
+            40
+          ],
+          [
+            44,
+            53,
+            50,
+            67
+          ],
+          [
+            66,
+            59,
+            55,
+            56
+          ]
+        ],
+        "pngBytes": 914848
+      },
+      "soakBuckets": null,
+      "loadMs": 92,
+      "gpu": {
+        "renderer": "ANGLE (NVIDIA, NVIDIA GeForce RTX 5070 (0x00002F04) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+        "vendor": "Google Inc. (NVIDIA)"
+      }
     },
     {
       "app": "manhattan",
@@ -67,16 +369,509 @@
       "scenario": "stand",
       "quality": "high",
       "passes": 3,
+      "seconds": 8,
       "cameraAsserted": "5th Ave & 34th St",
       "manhattanProjection": {
         "x": -1492.0051290101715,
         "y": -3494.138400000499
       },
-      "fpsAvg": 26.713033836474818,
-      "fpsP1": 33.407655142340836,
-      "fpsP01": 33.51963667105867,
-      "spreadPct": 10.17729231509282,
-      "appStats": null
+      "fpsAvg": 27.73596338218195,
+      "fpsP1": 34.5645190988212,
+      "fpsP01": 34.683839457853615,
+      "spreadPct": 4.4055724596752155,
+      "appStats": {
+        "ok": true,
+        "drawCalls": 109,
+        "triangles": 926464,
+        "tilesResident": 21,
+        "tilesLoading": 0,
+        "tilesQueued": 0,
+        "tilesTotal": 119,
+        "vehicles": 477,
+        "pedestrians": 455,
+        "demand": 0.993,
+        "lod": {
+          "full": 6,
+          "L2": 14,
+          "L3": 62,
+          "L4": 20,
+          "off": 0,
+          "tris": 505138,
+          "files": 96
+        },
+        "weather": {
+          "hour": 17,
+          "clouds": 77,
+          "drops": 0,
+          "wet": 0
+        },
+        "camera": {
+          "x": -1468.8,
+          "y": 13.9,
+          "z": 3460.2
+        },
+        "district": "Midtown South-Flatiron-Union Square",
+        "actors": {
+          "skinnedMeshes": 0,
+          "morphTargetMeshes": 0,
+          "totalMeshes": 332
+        },
+        "renderMs": {
+          "avg": 0.887,
+          "max": 15.2,
+          "frames": 372
+        }
+      },
+      "transition": null,
+      "cpu": {
+        "taskMsPerSec": 1.16,
+        "scriptMsPerSec": 1.06,
+        "layoutMsPerSec": 0,
+        "recalcStyleMsPerSec": 0,
+        "layoutsPerSec": 9.75,
+        "recalcStylesPerSec": 15.88,
+        "nodesDelta": 422,
+        "heapDeltaMB": 55.1
+      },
+      "errors": {
+        "consoleErrors": 1,
+        "exceptions": 0,
+        "consoleWarnings": 0,
+        "networkFailures": 0,
+        "samples": [
+          "log: Failed to load resource: the server responded with a status of 404 (Not Found)"
+        ]
+      },
+      "integrity": {
+        "sha256": "a0676c4e2a6a63319bfb9519b4508495af310862b09fc4059398752c39064b71",
+        "luminanceBands4x4": [
+          [
+            28,
+            53,
+            139,
+            57
+          ],
+          [
+            33,
+            47,
+            75,
+            50
+          ],
+          [
+            35,
+            55,
+            53,
+            50
+          ],
+          [
+            93,
+            91,
+            64,
+            32
+          ]
+        ],
+        "pngBytes": 283630
+      },
+      "soakBuckets": null,
+      "loadMs": 92,
+      "gpu": {
+        "renderer": "ANGLE (NVIDIA, NVIDIA GeForce RTX 5070 (0x00002F04) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+        "vendor": "Google Inc. (NVIDIA)"
+      }
+    },
+    {
+      "app": "manhattan",
+      "location": "times-square",
+      "scenario": "elevator",
+      "quality": "high",
+      "passes": 3,
+      "seconds": 8,
+      "cameraAsserted": "true Times Square (P2-075 corrected: -1476,-2433; registry \"Midtown West / Times Sq\")",
+      "manhattanProjection": {
+        "x": -1475.1463139937368,
+        "y": -2432.62799999983
+      },
+      "fpsAvg": 44.36876526314552,
+      "fpsP1": 166.55749836914364,
+      "fpsP01": 327.6409415775799,
+      "spreadPct": 12.377861215470826,
+      "appStats": {
+        "ok": true,
+        "drawCalls": 140,
+        "triangles": 1138197,
+        "tilesResident": 23,
+        "tilesLoading": 0,
+        "tilesQueued": 0,
+        "tilesTotal": 119,
+        "vehicles": 531,
+        "pedestrians": 63,
+        "demand": 0.126,
+        "lod": {
+          "full": 6,
+          "L2": 15,
+          "L3": 55,
+          "L4": 26,
+          "off": 0,
+          "tris": 527126,
+          "files": 96
+        },
+        "weather": {
+          "hour": 17,
+          "clouds": 77,
+          "drops": 0,
+          "wet": 0
+        },
+        "camera": {
+          "x": -2333.4,
+          "y": 198.2,
+          "z": 1820.5
+        },
+        "district": "Hell's Kitchen",
+        "actors": {
+          "skinnedMeshes": 0,
+          "morphTargetMeshes": 0,
+          "totalMeshes": 347
+        },
+        "renderMs": {
+          "avg": 0.663,
+          "max": 13.9,
+          "frames": 471
+        }
+      },
+      "transition": {
+        "rideMs": 8456,
+        "legs": [
+          {
+            "title": "Penthouse",
+            "at": 7
+          },
+          {
+            "title": "Lift",
+            "at": 68
+          },
+          {
+            "title": "Lobby",
+            "at": 246
+          },
+          {
+            "title": "Street",
+            "at": 442
+          },
+          {
+            "title": "Driving",
+            "at": 659
+          },
+          {
+            "title": "Corner market",
+            "at": 846
+          },
+          {
+            "title": "Driving",
+            "at": 1059
+          },
+          {
+            "title": "HQ lobby",
+            "at": 1245
+          },
+          {
+            "title": "Lift",
+            "at": 1450
+          },
+          {
+            "title": "Mission Control",
+            "at": 9906
+          }
+        ],
+        "ended": "Mission Control"
+      },
+      "cpu": {
+        "taskMsPerSec": 1.28,
+        "scriptMsPerSec": 1.19,
+        "layoutMsPerSec": 0,
+        "recalcStyleMsPerSec": 0,
+        "layoutsPerSec": 13,
+        "recalcStylesPerSec": 16.75,
+        "nodesDelta": 433,
+        "heapDeltaMB": 62.01
+      },
+      "errors": {
+        "consoleErrors": 2,
+        "exceptions": 0,
+        "consoleWarnings": 0,
+        "networkFailures": 0,
+        "samples": [
+          "log: Failed to load resource: the server responded with a status of 404 (Not Found)",
+          "log: Failed to load resource: the server responded with a status of 404 (Not Found)"
+        ]
+      },
+      "integrity": {
+        "sha256": "9b8dee3ad0efffc1f6697a1bd6ca237af38ad568cd19952d91ce4d3eed0f8824",
+        "luminanceBands4x4": [
+          [
+            27,
+            43,
+            53,
+            59
+          ],
+          [
+            74,
+            86,
+            62,
+            98
+          ],
+          [
+            91,
+            81,
+            64,
+            54
+          ],
+          [
+            82,
+            77,
+            74,
+            74
+          ]
+        ],
+        "pngBytes": 158075
+      },
+      "soakBuckets": null,
+      "loadMs": null,
+      "gpu": {
+        "renderer": "ANGLE (NVIDIA, NVIDIA GeForce RTX 5070 (0x00002F04) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+        "vendor": "Google Inc. (NVIDIA)"
+      }
+    },
+    {
+      "app": "manhattan",
+      "location": "times-square",
+      "scenario": "maxpeds",
+      "quality": "high",
+      "passes": 3,
+      "seconds": 8,
+      "cameraAsserted": "true Times Square (P2-075 corrected: -1476,-2433; registry \"Midtown West / Times Sq\")",
+      "manhattanProjection": {
+        "x": -1475.1463139937368,
+        "y": -2432.62799999983
+      },
+      "fpsAvg": 30.661073196845958,
+      "fpsP1": 35.98256867627677,
+      "fpsP01": 36.24722441106027,
+      "spreadPct": 0.9453621852940007,
+      "appStats": {
+        "ok": true,
+        "drawCalls": 94,
+        "triangles": 973155,
+        "tilesResident": 19,
+        "tilesLoading": 0,
+        "tilesQueued": 0,
+        "tilesTotal": 119,
+        "vehicles": 430,
+        "pedestrians": 359,
+        "demand": 1,
+        "lod": {
+          "full": 4,
+          "L2": 14,
+          "L3": 57,
+          "L4": 27,
+          "off": 0,
+          "tris": 515746,
+          "files": 98
+        },
+        "weather": {
+          "hour": 17,
+          "clouds": 77,
+          "drops": 0,
+          "wet": 0
+        },
+        "camera": {
+          "x": -1505.6,
+          "y": 13.9,
+          "z": 2466.2
+        },
+        "district": "Midtown-Times Square",
+        "actors": {
+          "skinnedMeshes": 0,
+          "morphTargetMeshes": 0,
+          "totalMeshes": 293
+        },
+        "renderMs": {
+          "avg": 0.67,
+          "max": 14.3,
+          "frames": 402
+        }
+      },
+      "transition": null,
+      "cpu": {
+        "taskMsPerSec": 1.15,
+        "scriptMsPerSec": 1.06,
+        "layoutMsPerSec": 0,
+        "recalcStyleMsPerSec": 0,
+        "layoutsPerSec": 9.75,
+        "recalcStylesPerSec": 16,
+        "nodesDelta": 549,
+        "heapDeltaMB": 77.08
+      },
+      "errors": {
+        "consoleErrors": 1,
+        "exceptions": 0,
+        "consoleWarnings": 0,
+        "networkFailures": 0,
+        "samples": [
+          "log: Failed to load resource: the server responded with a status of 404 (Not Found)"
+        ]
+      },
+      "integrity": {
+        "sha256": "1069e0db41fdd423ee4cc1fba436bf1ec1c717f967ce6641eee17b349eabe63e",
+        "luminanceBands4x4": [
+          [
+            22,
+            76,
+            64,
+            18
+          ],
+          [
+            27,
+            55,
+            57,
+            18
+          ],
+          [
+            30,
+            55,
+            64,
+            31
+          ],
+          [
+            71,
+            85,
+            68,
+            42
+          ]
+        ],
+        "pngBytes": 380115
+      },
+      "soakBuckets": null,
+      "loadMs": 92,
+      "gpu": {
+        "renderer": "ANGLE (NVIDIA, NVIDIA GeForce RTX 5070 (0x00002F04) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+        "vendor": "Google Inc. (NVIDIA)"
+      }
+    },
+    {
+      "app": "manhattan",
+      "location": "times-square",
+      "scenario": "maxtraffic",
+      "quality": "high",
+      "passes": 3,
+      "seconds": 8,
+      "cameraAsserted": "true Times Square (P2-075 corrected: -1476,-2433; registry \"Midtown West / Times Sq\")",
+      "manhattanProjection": {
+        "x": -1475.1463139937368,
+        "y": -2432.62799999983
+      },
+      "fpsAvg": 30.798743102586286,
+      "fpsP1": 37.2706247850145,
+      "fpsP01": 37.41006767285494,
+      "spreadPct": 12.310385340575355,
+      "appStats": {
+        "ok": true,
+        "drawCalls": 94,
+        "triangles": 1013127,
+        "tilesResident": 19,
+        "tilesLoading": 0,
+        "tilesQueued": 0,
+        "tilesTotal": 119,
+        "vehicles": 612,
+        "pedestrians": 359,
+        "demand": 1,
+        "lod": {
+          "full": 4,
+          "L2": 14,
+          "L3": 57,
+          "L4": 27,
+          "off": 0,
+          "tris": 515746,
+          "files": 98
+        },
+        "weather": {
+          "hour": 17,
+          "clouds": 77,
+          "drops": 0,
+          "wet": 0
+        },
+        "camera": {
+          "x": -1505.6,
+          "y": 13.9,
+          "z": 2466.2
+        },
+        "district": "Midtown-Times Square",
+        "actors": {
+          "skinnedMeshes": 0,
+          "morphTargetMeshes": 0,
+          "totalMeshes": 293
+        },
+        "renderMs": {
+          "avg": 0.733,
+          "max": 20.4,
+          "frames": 388
+        }
+      },
+      "transition": null,
+      "cpu": {
+        "taskMsPerSec": 1.15,
+        "scriptMsPerSec": 1.06,
+        "layoutMsPerSec": 0,
+        "recalcStyleMsPerSec": 0,
+        "layoutsPerSec": 9.75,
+        "recalcStylesPerSec": 15.75,
+        "nodesDelta": 549,
+        "heapDeltaMB": 62.71
+      },
+      "errors": {
+        "consoleErrors": 1,
+        "exceptions": 0,
+        "consoleWarnings": 0,
+        "networkFailures": 0,
+        "samples": [
+          "log: Failed to load resource: the server responded with a status of 404 (Not Found)"
+        ]
+      },
+      "integrity": {
+        "sha256": "e47cfea0e70843ee574d6d6c4f1b09b14ab6641f6a57d426c09ea63b3e3f842d",
+        "luminanceBands4x4": [
+          [
+            22,
+            76,
+            64,
+            18
+          ],
+          [
+            27,
+            55,
+            57,
+            18
+          ],
+          [
+            20,
+            54,
+            66,
+            36
+          ],
+          [
+            69,
+            85,
+            68,
+            45
+          ]
+        ],
+        "pngBytes": 369686
+      },
+      "soakBuckets": null,
+      "loadMs": 91,
+      "gpu": {
+        "renderer": "ANGLE (NVIDIA, NVIDIA GeForce RTX 5070 (0x00002F04) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+        "vendor": "Google Inc. (NVIDIA)"
+      }
     },
     {
       "app": "manhattan",
@@ -84,16 +879,115 @@
       "scenario": "night",
       "quality": "high",
       "passes": 3,
+      "seconds": 8,
       "cameraAsserted": "true Times Square (P2-075 corrected: -1476,-2433; registry \"Midtown West / Times Sq\")",
       "manhattanProjection": {
         "x": -1475.1463139937368,
         "y": -2432.62799999983
       },
-      "fpsAvg": 28.058904982997376,
-      "fpsP1": 34.137051119180136,
-      "fpsP01": 34.645456918215686,
-      "spreadPct": 1.320842758885366,
-      "appStats": null
+      "fpsAvg": 31.532996377643244,
+      "fpsP1": 36.303709228104104,
+      "fpsP01": 36.565953518978,
+      "spreadPct": 6.6974689371926575,
+      "appStats": {
+        "ok": true,
+        "drawCalls": 94,
+        "triangles": 972579,
+        "tilesResident": 19,
+        "tilesLoading": 0,
+        "tilesQueued": 0,
+        "tilesTotal": 119,
+        "vehicles": 430,
+        "pedestrians": 359,
+        "demand": 1,
+        "lod": {
+          "full": 4,
+          "L2": 14,
+          "L3": 57,
+          "L4": 27,
+          "off": 0,
+          "tris": 515746,
+          "files": 98
+        },
+        "weather": {
+          "hour": 23.5,
+          "clouds": 77,
+          "drops": 0,
+          "wet": 0
+        },
+        "camera": {
+          "x": -1505.6,
+          "y": 13.9,
+          "z": 2466.2
+        },
+        "district": "Midtown-Times Square",
+        "actors": {
+          "skinnedMeshes": 0,
+          "morphTargetMeshes": 0,
+          "totalMeshes": 293
+        },
+        "renderMs": {
+          "avg": 0.64,
+          "max": 15.7,
+          "frames": 417
+        }
+      },
+      "transition": null,
+      "cpu": {
+        "taskMsPerSec": 1.14,
+        "scriptMsPerSec": 1.05,
+        "layoutMsPerSec": 0,
+        "recalcStyleMsPerSec": 0,
+        "layoutsPerSec": 10,
+        "recalcStylesPerSec": 16.25,
+        "nodesDelta": 549,
+        "heapDeltaMB": 68.43
+      },
+      "errors": {
+        "consoleErrors": 1,
+        "exceptions": 0,
+        "consoleWarnings": 0,
+        "networkFailures": 0,
+        "samples": [
+          "log: Failed to load resource: the server responded with a status of 404 (Not Found)"
+        ]
+      },
+      "integrity": {
+        "sha256": "ac5f60d44a9a33f90f7f79fe60dea851b77b79d5c49ef28e8f0b63aace708aaf",
+        "luminanceBands4x4": [
+          [
+            15,
+            34,
+            14,
+            0
+          ],
+          [
+            15,
+            14,
+            9,
+            0
+          ],
+          [
+            6,
+            11,
+            28,
+            8
+          ],
+          [
+            17,
+            21,
+            32,
+            18
+          ]
+        ],
+        "pngBytes": 199551
+      },
+      "soakBuckets": null,
+      "loadMs": 92,
+      "gpu": {
+        "renderer": "ANGLE (NVIDIA, NVIDIA GeForce RTX 5070 (0x00002F04) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+        "vendor": "Google Inc. (NVIDIA)"
+      }
     },
     {
       "app": "manhattan",
@@ -101,16 +995,331 @@
       "scenario": "rain",
       "quality": "high",
       "passes": 3,
+      "seconds": 8,
       "cameraAsserted": "true Times Square (P2-075 corrected: -1476,-2433; registry \"Midtown West / Times Sq\")",
       "manhattanProjection": {
         "x": -1475.1463139937368,
         "y": -2432.62799999983
       },
-      "fpsAvg": 25.937219689208373,
-      "fpsP1": 34.682452608082485,
-      "fpsP01": 34.96703894892253,
-      "spreadPct": 0.5388157138948192,
-      "appStats": null
+      "fpsAvg": 31.825373350726863,
+      "fpsP1": 36.46815412601982,
+      "fpsP01": 37.00237671098585,
+      "spreadPct": 3.8440024346296995,
+      "appStats": {
+        "ok": true,
+        "drawCalls": 98,
+        "triangles": 1025263,
+        "tilesResident": 19,
+        "tilesLoading": 0,
+        "tilesQueued": 0,
+        "tilesTotal": 119,
+        "vehicles": 430,
+        "pedestrians": 359,
+        "demand": 1,
+        "lod": {
+          "full": 4,
+          "L2": 14,
+          "L3": 57,
+          "L4": 27,
+          "off": 0,
+          "tris": 515746,
+          "files": 98
+        },
+        "weather": {
+          "hour": 17,
+          "clouds": 209,
+          "drops": 3000,
+          "wet": 1
+        },
+        "camera": {
+          "x": -1505.6,
+          "y": 13.9,
+          "z": 2466.2
+        },
+        "district": "Midtown-Times Square",
+        "actors": {
+          "skinnedMeshes": 0,
+          "morphTargetMeshes": 0,
+          "totalMeshes": 293
+        },
+        "renderMs": {
+          "avg": 0.602,
+          "max": 14.4,
+          "frames": 406
+        }
+      },
+      "transition": null,
+      "cpu": {
+        "taskMsPerSec": 1.14,
+        "scriptMsPerSec": 1.05,
+        "layoutMsPerSec": 0,
+        "recalcStyleMsPerSec": 0,
+        "layoutsPerSec": 10.25,
+        "recalcStylesPerSec": 16.38,
+        "nodesDelta": 549,
+        "heapDeltaMB": 74.47
+      },
+      "errors": {
+        "consoleErrors": 1,
+        "exceptions": 0,
+        "consoleWarnings": 0,
+        "networkFailures": 0,
+        "samples": [
+          "log: Failed to load resource: the server responded with a status of 404 (Not Found)"
+        ]
+      },
+      "integrity": {
+        "sha256": "35e2d2af22fffa5e3920e0cbc30f2f074e799b5cf21d0c7eed903b11ab7423ff",
+        "luminanceBands4x4": [
+          [
+            21,
+            60,
+            40,
+            6
+          ],
+          [
+            23,
+            38,
+            32,
+            5
+          ],
+          [
+            15,
+            30,
+            48,
+            16
+          ],
+          [
+            32,
+            38,
+            47,
+            27
+          ]
+        ],
+        "pngBytes": 346154
+      },
+      "soakBuckets": null,
+      "loadMs": 82,
+      "gpu": {
+        "renderer": "ANGLE (NVIDIA, NVIDIA GeForce RTX 5070 (0x00002F04) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+        "vendor": "Google Inc. (NVIDIA)"
+      }
+    },
+    {
+      "app": "manhattan",
+      "location": "times-square",
+      "scenario": "soak",
+      "quality": "high",
+      "passes": 1,
+      "seconds": 600,
+      "cameraAsserted": "true Times Square (P2-075 corrected: -1476,-2433; registry \"Midtown West / Times Sq\")",
+      "manhattanProjection": {
+        "x": -1475.1463139937368,
+        "y": -2432.62799999983
+      },
+      "fpsAvg": 33.08466915330847,
+      "fpsP1": 36.36363636363637,
+      "fpsP01": 37.59398496030002,
+      "spreadPct": 0,
+      "appStats": {
+        "ok": true,
+        "drawCalls": 94,
+        "triangles": 971799,
+        "tilesResident": 19,
+        "tilesLoading": 0,
+        "tilesQueued": 0,
+        "tilesTotal": 119,
+        "vehicles": 430,
+        "pedestrians": 359,
+        "demand": 1,
+        "lod": {
+          "full": 4,
+          "L2": 14,
+          "L3": 57,
+          "L4": 27,
+          "off": 0,
+          "tris": 515746,
+          "files": 98
+        },
+        "weather": {
+          "hour": 17,
+          "clouds": 77,
+          "drops": 0,
+          "wet": 0
+        },
+        "camera": {
+          "x": -1505.6,
+          "y": 13.9,
+          "z": 2466.2
+        },
+        "district": "Midtown-Times Square",
+        "actors": {
+          "skinnedMeshes": 0,
+          "morphTargetMeshes": 0,
+          "totalMeshes": 293
+        },
+        "renderMs": {
+          "avg": 0.454,
+          "max": 14.7,
+          "frames": 20005
+        }
+      },
+      "transition": null,
+      "cpu": {
+        "taskMsPerSec": 1,
+        "scriptMsPerSec": 1,
+        "layoutMsPerSec": 0,
+        "recalcStyleMsPerSec": 0,
+        "layoutsPerSec": 3.08,
+        "recalcStylesPerSec": 3.16,
+        "nodesDelta": 1208,
+        "heapDeltaMB": 51.7
+      },
+      "errors": {
+        "consoleErrors": 1,
+        "exceptions": 0,
+        "consoleWarnings": 0,
+        "networkFailures": 0,
+        "samples": [
+          "log: Failed to load resource: the server responded with a status of 404 (Not Found)"
+        ]
+      },
+      "integrity": {
+        "sha256": "3bc1c8b1439d67365e8521f19af3d40cc44d05ab19ec1a8efea8c16652e9c850",
+        "luminanceBands4x4": [
+          [
+            22,
+            71,
+            64,
+            18
+          ],
+          [
+            27,
+            56,
+            57,
+            18
+          ],
+          [
+            20,
+            53,
+            65,
+            32
+          ],
+          [
+            69,
+            83,
+            67,
+            42
+          ]
+        ],
+        "pngBytes": 377301
+      },
+      "soakBuckets": [
+        {
+          "bucket": 0,
+          "seconds": 60,
+          "avg": 32.83231673764576,
+          "median": 35.2112676074813,
+          "p1": 36.49635036694831,
+          "p01": 37.59398496030002,
+          "min": 20.576131686611916
+        },
+        {
+          "bucket": 1,
+          "seconds": 120,
+          "avg": 32.770708387366966,
+          "median": 34.96503496321322,
+          "p1": 36.36363636363637,
+          "p01": 36.630036624038496,
+          "min": 21.73913043478261
+        },
+        {
+          "bucket": 2,
+          "seconds": 180,
+          "avg": 32.85188331917304,
+          "median": 34.843205571294746,
+          "p1": 37.59398496030002,
+          "p01": 38.02281369252155,
+          "min": 21.691973968930075
+        },
+        {
+          "bucket": 3,
+          "seconds": 240,
+          "avg": 33.002035125501045,
+          "median": 35.21126759824382,
+          "p1": 36.36363636363637,
+          "p01": 36.90036900166104,
+          "min": 21.73913043478261
+        },
+        {
+          "bucket": 4,
+          "seconds": 300,
+          "avg": 33.26234256213111,
+          "median": 35.21126759824382,
+          "p1": 36.36363636363637,
+          "p01": 37.31343282959686,
+          "min": 21.691973968930075
+        },
+        {
+          "bucket": 5,
+          "seconds": 360,
+          "avg": 33.23898396060829,
+          "median": 35.46099290405383,
+          "p1": 36.36363636363637,
+          "p01": 36.90036900166104,
+          "min": 21.691973972435882
+        },
+        {
+          "bucket": 6,
+          "seconds": 420,
+          "avg": 33.222203700616774,
+          "median": 35.335689049657546,
+          "p1": 36.36363636363637,
+          "p01": 37.03703703703704,
+          "min": 21.691973968930075
+        },
+        {
+          "bucket": 7,
+          "seconds": 480,
+          "avg": 33.10678980770819,
+          "median": 34.843205571294746,
+          "p1": 36.23188405601486,
+          "p01": 36.90036901180603,
+          "min": 21.50537634408602
+        },
+        {
+          "bucket": 8,
+          "seconds": 540,
+          "avg": 33.4060687691589,
+          "median": 35.21126759824382,
+          "p1": 36.36363636363637,
+          "p01": 36.90036900166104,
+          "min": 21.59827213614359
+        },
+        {
+          "bucket": 9,
+          "seconds": 600,
+          "avg": 33.15204437606739,
+          "median": 35.335689049657546,
+          "p1": 36.36363636363637,
+          "p01": 37.17472118135395,
+          "min": 21.645021647116035
+        },
+        {
+          "bucket": 10,
+          "seconds": 660,
+          "avg": 35.971223025438945,
+          "median": 35.971223025438945,
+          "p1": 35.971223025438945,
+          "p01": 35.971223025438945,
+          "min": 35.971223025438945
+        }
+      ],
+      "loadMs": 114,
+      "gpu": {
+        "renderer": "ANGLE (NVIDIA, NVIDIA GeForce RTX 5070 (0x00002F04) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+        "vendor": "Google Inc. (NVIDIA)"
+      }
     },
     {
       "app": "manhattan",
@@ -118,16 +1327,115 @@
       "scenario": "stand",
       "quality": "high",
       "passes": 3,
+      "seconds": 8,
       "cameraAsserted": "true Times Square (P2-075 corrected: -1476,-2433; registry \"Midtown West / Times Sq\")",
       "manhattanProjection": {
         "x": -1475.1463139937368,
         "y": -2432.62799999983
       },
-      "fpsAvg": 27.11041829960618,
-      "fpsP1": 34.494459133601616,
-      "fpsP01": 35.09144555201494,
-      "spreadPct": 3.010278163051304,
-      "appStats": null
+      "fpsAvg": 31.66258893796906,
+      "fpsP1": 36.246734703430114,
+      "fpsP01": 36.509218821022934,
+      "spreadPct": 7.142964287895234,
+      "appStats": {
+        "ok": true,
+        "drawCalls": 94,
+        "triangles": 973131,
+        "tilesResident": 19,
+        "tilesLoading": 0,
+        "tilesQueued": 0,
+        "tilesTotal": 119,
+        "vehicles": 430,
+        "pedestrians": 359,
+        "demand": 1,
+        "lod": {
+          "full": 4,
+          "L2": 14,
+          "L3": 57,
+          "L4": 27,
+          "off": 0,
+          "tris": 515746,
+          "files": 98
+        },
+        "weather": {
+          "hour": 17,
+          "clouds": 77,
+          "drops": 0,
+          "wet": 0
+        },
+        "camera": {
+          "x": -1505.6,
+          "y": 13.9,
+          "z": 2466.2
+        },
+        "district": "Midtown-Times Square",
+        "actors": {
+          "skinnedMeshes": 0,
+          "morphTargetMeshes": 0,
+          "totalMeshes": 293
+        },
+        "renderMs": {
+          "avg": 0.632,
+          "max": 17.4,
+          "frames": 420
+        }
+      },
+      "transition": null,
+      "cpu": {
+        "taskMsPerSec": 1.15,
+        "scriptMsPerSec": 1.06,
+        "layoutMsPerSec": 0,
+        "recalcStyleMsPerSec": 0,
+        "layoutsPerSec": 9.88,
+        "recalcStylesPerSec": 15.88,
+        "nodesDelta": 549,
+        "heapDeltaMB": 78.96
+      },
+      "errors": {
+        "consoleErrors": 1,
+        "exceptions": 0,
+        "consoleWarnings": 0,
+        "networkFailures": 0,
+        "samples": [
+          "log: Failed to load resource: the server responded with a status of 404 (Not Found)"
+        ]
+      },
+      "integrity": {
+        "sha256": "bc1b7a6042850990655622419baf2518cd71b52ba01e5a5c97ee54db555e1023",
+        "luminanceBands4x4": [
+          [
+            22,
+            76,
+            64,
+            18
+          ],
+          [
+            27,
+            55,
+            57,
+            18
+          ],
+          [
+            21,
+            55,
+            62,
+            32
+          ],
+          [
+            47,
+            85,
+            68,
+            42
+          ]
+        ],
+        "pngBytes": 385055
+      },
+      "soakBuckets": null,
+      "loadMs": 95,
+      "gpu": {
+        "renderer": "ANGLE (NVIDIA, NVIDIA GeForce RTX 5070 (0x00002F04) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+        "vendor": "Google Inc. (NVIDIA)"
+      }
     },
     {
       "app": "manhattan",
@@ -135,6 +1443,7 @@
       "scenario": "zone",
       "quality": "high",
       "passes": 3,
+      "seconds": 8,
       "cameraAsserted": "true Times Square (P2-075 corrected: -1476,-2433; registry \"Midtown West / Times Sq\")",
       "manhattanProjection": {
         "x": -1475.1463139937368,
@@ -144,7 +1453,49 @@
       "fpsP1": 29.07319293171102,
       "fpsP01": 29.383692691416282,
       "spreadPct": 3.048742479623814,
-      "appStats": null
+      "appStats": {
+        "ok": true,
+        "drawCalls": 94,
+        "triangles": 889206,
+        "tilesResident": 20,
+        "tilesLoading": 0,
+        "tilesQueued": 0,
+        "tilesTotal": 119,
+        "vehicles": 364,
+        "pedestrians": 88,
+        "demand": 0.154,
+        "lod": {
+          "full": 4,
+          "L2": 11,
+          "L3": 33,
+          "L4": 54,
+          "off": 0,
+          "tris": 343098,
+          "files": 98
+        },
+        "weather": {
+          "hour": 17,
+          "clouds": 77,
+          "drops": 0,
+          "wet": 0
+        },
+        "camera": {
+          "x": 1695.7,
+          "y": 13.9,
+          "z": -3235.1
+        },
+        "district": "Harlem (South)"
+      },
+      "transition": null,
+      "cpu": null,
+      "errors": null,
+      "integrity": null,
+      "soakBuckets": null,
+      "loadMs": 101,
+      "gpu": {
+        "renderer": "ANGLE (NVIDIA, NVIDIA GeForce RTX 5070 (0x00002F04) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+        "vendor": "Google Inc. (NVIDIA)"
+      }
     },
     {
       "app": "shenron",
@@ -152,13 +1503,70 @@
       "scenario": "stand",
       "quality": "high",
       "passes": 3,
+      "seconds": 8,
       "cameraAsserted": "elevator car (dev-view)",
       "manhattanProjection": null,
-      "fpsAvg": 99.92670494711814,
-      "fpsP1": 159.42028981334127,
-      "fpsP01": 251.4127854754257,
-      "spreadPct": 0.17001861597143111,
-      "appStats": null
+      "fpsAvg": 99.90588441958774,
+      "fpsP1": 142.9146537337576,
+      "fpsP01": 240.59274057224457,
+      "spreadPct": 0.14005079295175163,
+      "appStats": null,
+      "transition": null,
+      "cpu": {
+        "taskMsPerSec": 2.82,
+        "scriptMsPerSec": 2.71,
+        "layoutMsPerSec": 0.01,
+        "recalcStyleMsPerSec": 0,
+        "layoutsPerSec": 1.38,
+        "recalcStylesPerSec": 1.63,
+        "nodesDelta": 179,
+        "heapDeltaMB": 112.83
+      },
+      "errors": {
+        "consoleErrors": 1,
+        "exceptions": 0,
+        "consoleWarnings": 2,
+        "networkFailures": 0,
+        "samples": [
+          "log: Failed to load resource: the server responded with a status of 404 (Not Found)"
+        ]
+      },
+      "integrity": {
+        "sha256": "19cff03d00b991c0aba51fa3e17a1e5edb070e026843d8c688b9ba5088d5dc2b",
+        "luminanceBands4x4": [
+          [
+            79,
+            113,
+            119,
+            128
+          ],
+          [
+            74,
+            69,
+            98,
+            118
+          ],
+          [
+            35,
+            31,
+            59,
+            82
+          ],
+          [
+            17,
+            39,
+            79,
+            90
+          ]
+        ],
+        "pngBytes": 641635
+      },
+      "soakBuckets": null,
+      "loadMs": 873,
+      "gpu": {
+        "renderer": "ANGLE (NVIDIA, NVIDIA GeForce RTX 5070 (0x00002F04) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+        "vendor": "Google Inc. (NVIDIA)"
+      }
     },
     {
       "app": "shenron",
@@ -166,13 +1574,241 @@
       "scenario": "stand",
       "quality": "high",
       "passes": 3,
+      "seconds": 8,
       "cameraAsserted": "floor 45 arrival (dev-view)",
       "manhattanProjection": null,
-      "fpsAvg": 99.95499716369322,
-      "fpsP1": 129.970760268316,
-      "fpsP01": 286.16852147600963,
-      "spreadPct": 0.1650352991919658,
-      "appStats": null
+      "fpsAvg": 99.92503418146605,
+      "fpsP1": 135.3479515703241,
+      "fpsP01": 319.6480938811782,
+      "spreadPct": 0.15628087467459026,
+      "appStats": null,
+      "transition": null,
+      "cpu": {
+        "taskMsPerSec": 1.78,
+        "scriptMsPerSec": 1.68,
+        "layoutMsPerSec": 0.01,
+        "recalcStyleMsPerSec": 0,
+        "layoutsPerSec": 1.5,
+        "recalcStylesPerSec": 1.75,
+        "nodesDelta": 177,
+        "heapDeltaMB": 104.04
+      },
+      "errors": {
+        "consoleErrors": 1,
+        "exceptions": 0,
+        "consoleWarnings": 2,
+        "networkFailures": 0,
+        "samples": [
+          "log: Failed to load resource: the server responded with a status of 404 (Not Found)"
+        ]
+      },
+      "integrity": {
+        "sha256": "b712c9ede36e9ac450fb825316a7c3279b1e56227db42c270faf1bf13b19b6bc",
+        "luminanceBands4x4": [
+          [
+            29,
+            82,
+            87,
+            46
+          ],
+          [
+            42,
+            90,
+            100,
+            46
+          ],
+          [
+            36,
+            81,
+            80,
+            37
+          ],
+          [
+            37,
+            60,
+            62,
+            42
+          ]
+        ],
+        "pngBytes": 712808
+      },
+      "soakBuckets": null,
+      "loadMs": 1220,
+      "gpu": {
+        "renderer": "ANGLE (NVIDIA, NVIDIA GeForce RTX 5070 (0x00002F04) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+        "vendor": "Google Inc. (NVIDIA)"
+      }
+    },
+    {
+      "app": "shenron",
+      "location": "hero-corridor-exterior",
+      "scenario": "soak",
+      "quality": "high",
+      "passes": 1,
+      "seconds": 600,
+      "cameraAsserted": "Dragon Boulevard exterior (dev-view)",
+      "manhattanProjection": null,
+      "fpsAvg": 98.49997575041678,
+      "fpsP1": 129.87012981986453,
+      "fpsP01": 144.92753610669052,
+      "spreadPct": 0,
+      "appStats": null,
+      "transition": null,
+      "cpu": {
+        "taskMsPerSec": 0.96,
+        "scriptMsPerSec": 0.94,
+        "layoutMsPerSec": 0,
+        "recalcStyleMsPerSec": 0,
+        "layoutsPerSec": 0.02,
+        "recalcStylesPerSec": 0.02,
+        "nodesDelta": 192,
+        "heapDeltaMB": 118.36
+      },
+      "errors": {
+        "consoleErrors": 1,
+        "exceptions": 0,
+        "consoleWarnings": 2,
+        "networkFailures": 0,
+        "samples": [
+          "log: Failed to load resource: the server responded with a status of 404 (Not Found)"
+        ]
+      },
+      "integrity": {
+        "sha256": "701e18fae7d2c9efe3e601897134bf4995bec99f29452728f459066492927bb1",
+        "luminanceBands4x4": [
+          [
+            48,
+            125,
+            129,
+            100
+          ],
+          [
+            75,
+            114,
+            109,
+            96
+          ],
+          [
+            62,
+            77,
+            91,
+            41
+          ],
+          [
+            33,
+            101,
+            93,
+            23
+          ]
+        ],
+        "pngBytes": 521521
+      },
+      "soakBuckets": [
+        {
+          "bucket": 0,
+          "seconds": 60,
+          "avg": 98.18496974949583,
+          "median": 99.00990097549146,
+          "p1": 128.20512825411296,
+          "p01": 140.8450703929753,
+          "min": 29.76190476718437
+        },
+        {
+          "bucket": 1,
+          "seconds": 120,
+          "avg": 98.52389175205937,
+          "median": 100,
+          "p1": 129.87012981986453,
+          "p01": 142.85714285714286,
+          "min": 31.948881784574358
+        },
+        {
+          "bucket": 2,
+          "seconds": 180,
+          "avg": 98.42496721111794,
+          "median": 99.0099010485292,
+          "p1": 128.20512825411296,
+          "p01": 144.92753626318245,
+          "min": 30.959752317696566
+        },
+        {
+          "bucket": 3,
+          "seconds": 240,
+          "avg": 98.44284947545663,
+          "median": 99.0099010485292,
+          "p1": 129.87012981986453,
+          "p01": 147.05882359386317,
+          "min": 30.120481931766538
+        },
+        {
+          "bucket": 4,
+          "seconds": 300,
+          "avg": 98.7095924791983,
+          "median": 100,
+          "p1": 129.87012981986453,
+          "p01": 142.85714285714286,
+          "min": 30.67484662436475
+        },
+        {
+          "bucket": 5,
+          "seconds": 360,
+          "avg": 98.45557914949492,
+          "median": 100,
+          "p1": 129.87012994552788,
+          "p01": 144.92753626318245,
+          "min": 31.6455696187609
+        },
+        {
+          "bucket": 6,
+          "seconds": 420,
+          "avg": 98.2254752953024,
+          "median": 99.00990097549146,
+          "p1": 128.20512825411296,
+          "p01": 142.85714285714286,
+          "min": 31.25
+        },
+        {
+          "bucket": 7,
+          "seconds": 480,
+          "avg": 98.46378492988774,
+          "median": 99.00990097549146,
+          "p1": 128.20512825411296,
+          "p01": 140.84507054077494,
+          "min": 31.25
+        },
+        {
+          "bucket": 8,
+          "seconds": 540,
+          "avg": 98.86007599493367,
+          "median": 100,
+          "p1": 129.87012994552788,
+          "p01": 147.05882359386317,
+          "min": 28.65329513016323
+        },
+        {
+          "bucket": 9,
+          "seconds": 600,
+          "avg": 98.70876996507437,
+          "median": 100,
+          "p1": 129.87012981986453,
+          "p01": 144.92753626318245,
+          "min": 33.78378378208305
+        },
+        {
+          "bucket": 10,
+          "seconds": 660,
+          "avg": 97.08737866886824,
+          "median": 97.08737866886824,
+          "p1": 97.08737866886824,
+          "p01": 97.08737866886824,
+          "min": 97.08737866886824
+        }
+      ],
+      "loadMs": 952,
+      "gpu": {
+        "renderer": "ANGLE (NVIDIA, NVIDIA GeForce RTX 5070 (0x00002F04) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+        "vendor": "Google Inc. (NVIDIA)"
+      }
     },
     {
       "app": "shenron",
@@ -180,13 +1816,70 @@
       "scenario": "sprint",
       "quality": "high",
       "passes": 3,
+      "seconds": 8,
       "cameraAsserted": "Dragon Boulevard exterior (dev-view)",
       "manhattanProjection": null,
-      "fpsAvg": 88.95458142430725,
-      "fpsP1": 128.4304942494246,
-      "fpsP01": 145.18675889054532,
-      "spreadPct": 14.706129837826529,
-      "appStats": null
+      "fpsAvg": 96.85309775103276,
+      "fpsP1": 127.19298244754089,
+      "fpsP01": 157.128825526491,
+      "spreadPct": 1.3197945579782797,
+      "appStats": null,
+      "transition": null,
+      "cpu": {
+        "taskMsPerSec": 5.37,
+        "scriptMsPerSec": 5.26,
+        "layoutMsPerSec": 0.01,
+        "recalcStyleMsPerSec": 0,
+        "layoutsPerSec": 1.38,
+        "recalcStylesPerSec": 1.75,
+        "nodesDelta": 192,
+        "heapDeltaMB": 107.25
+      },
+      "errors": {
+        "consoleErrors": 1,
+        "exceptions": 0,
+        "consoleWarnings": 2,
+        "networkFailures": 0,
+        "samples": [
+          "log: Failed to load resource: the server responded with a status of 404 (Not Found)"
+        ]
+      },
+      "integrity": {
+        "sha256": "394faaba7f1ef15f92c28dd1b1938162b89ab607156d1eaee59bfa0701d0340e",
+        "luminanceBands4x4": [
+          [
+            48,
+            125,
+            129,
+            100
+          ],
+          [
+            76,
+            114,
+            109,
+            97
+          ],
+          [
+            63,
+            78,
+            98,
+            54
+          ],
+          [
+            33,
+            101,
+            103,
+            54
+          ]
+        ],
+        "pngBytes": 483825
+      },
+      "soakBuckets": null,
+      "loadMs": 1021,
+      "gpu": {
+        "renderer": "ANGLE (NVIDIA, NVIDIA GeForce RTX 5070 (0x00002F04) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+        "vendor": "Google Inc. (NVIDIA)"
+      }
     },
     {
       "app": "shenron",
@@ -194,13 +1887,70 @@
       "scenario": "stand",
       "quality": "high",
       "passes": 3,
+      "seconds": 8,
       "cameraAsserted": "Dragon Boulevard exterior (dev-view)",
       "manhattanProjection": null,
-      "fpsAvg": 82.2129212845038,
-      "fpsP1": 121.9633124787602,
-      "fpsP01": 131.68718649992178,
-      "spreadPct": 11.399755589807189,
-      "appStats": null
+      "fpsAvg": 98.4887496763428,
+      "fpsP1": 128.76012881791794,
+      "fpsP01": 140.21164026912925,
+      "spreadPct": 0.5273597609512243,
+      "appStats": null,
+      "transition": null,
+      "cpu": {
+        "taskMsPerSec": 5.4,
+        "scriptMsPerSec": 5.28,
+        "layoutMsPerSec": 0.01,
+        "recalcStyleMsPerSec": 0,
+        "layoutsPerSec": 1,
+        "recalcStylesPerSec": 1.25,
+        "nodesDelta": 192,
+        "heapDeltaMB": 111.71
+      },
+      "errors": {
+        "consoleErrors": 1,
+        "exceptions": 0,
+        "consoleWarnings": 2,
+        "networkFailures": 0,
+        "samples": [
+          "log: Failed to load resource: the server responded with a status of 404 (Not Found)"
+        ]
+      },
+      "integrity": {
+        "sha256": "8f48fe2334be742f072b29cbba32b55d06395588c9580e65b5d20b5f53d71cef",
+        "luminanceBands4x4": [
+          [
+            48,
+            125,
+            130,
+            100
+          ],
+          [
+            76,
+            114,
+            109,
+            97
+          ],
+          [
+            63,
+            78,
+            97,
+            54
+          ],
+          [
+            33,
+            102,
+            104,
+            54
+          ]
+        ],
+        "pngBytes": 482968
+      },
+      "soakBuckets": null,
+      "loadMs": 912,
+      "gpu": {
+        "renderer": "ANGLE (NVIDIA, NVIDIA GeForce RTX 5070 (0x00002F04) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+        "vendor": "Google Inc. (NVIDIA)"
+      }
     },
     {
       "app": "shenron",
@@ -208,13 +1958,70 @@
       "scenario": "stand",
       "quality": "low",
       "passes": 3,
+      "seconds": 8,
       "cameraAsserted": "Dragon Boulevard exterior (dev-view)",
       "manhattanProjection": null,
-      "fpsAvg": 92.39940242940878,
-      "fpsP1": 131.07013104248648,
-      "fpsP01": 143.81589672628473,
-      "spreadPct": 4.617528029167995,
-      "appStats": null
+      "fpsAvg": 98.87009533044454,
+      "fpsP1": 133.9497392224388,
+      "fpsP01": 154.06509999194262,
+      "spreadPct": 0.5455038182634637,
+      "appStats": null,
+      "transition": null,
+      "cpu": {
+        "taskMsPerSec": 5.55,
+        "scriptMsPerSec": 5.43,
+        "layoutMsPerSec": 0.01,
+        "recalcStyleMsPerSec": 0,
+        "layoutsPerSec": 1.13,
+        "recalcStylesPerSec": 1.38,
+        "nodesDelta": 179,
+        "heapDeltaMB": 114.34
+      },
+      "errors": {
+        "consoleErrors": 1,
+        "exceptions": 0,
+        "consoleWarnings": 2,
+        "networkFailures": 0,
+        "samples": [
+          "log: Failed to load resource: the server responded with a status of 404 (Not Found)"
+        ]
+      },
+      "integrity": {
+        "sha256": "0c6bafdc4c0db182ff35befdc1773248e7a4adce053dbc8d21ae14d184105e41",
+        "luminanceBands4x4": [
+          [
+            57,
+            129,
+            134,
+            120
+          ],
+          [
+            78,
+            112,
+            105,
+            98
+          ],
+          [
+            66,
+            77,
+            95,
+            52
+          ],
+          [
+            43,
+            106,
+            108,
+            62
+          ]
+        ],
+        "pngBytes": 415395
+      },
+      "soakBuckets": null,
+      "loadMs": 1082,
+      "gpu": {
+        "renderer": "ANGLE (NVIDIA, NVIDIA GeForce RTX 5070 (0x00002F04) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+        "vendor": "Google Inc. (NVIDIA)"
+      }
     },
     {
       "app": "shenron",
@@ -222,13 +2029,70 @@
       "scenario": "stand",
       "quality": "medium",
       "passes": 3,
+      "seconds": 8,
       "cameraAsserted": "Dragon Boulevard exterior (dev-view)",
       "manhattanProjection": null,
-      "fpsAvg": 94.52319531138971,
-      "fpsP1": 133.34913861041204,
-      "fpsP01": 146.4332769762674,
-      "spreadPct": 11.306992123721034,
-      "appStats": null
+      "fpsAvg": 99.35582578635133,
+      "fpsP1": 131.09878700328616,
+      "fpsP01": 145.16458799319187,
+      "spreadPct": 0.17072339131422842,
+      "appStats": null,
+      "transition": null,
+      "cpu": {
+        "taskMsPerSec": 4.66,
+        "scriptMsPerSec": 4.55,
+        "layoutMsPerSec": 0.01,
+        "recalcStyleMsPerSec": 0,
+        "layoutsPerSec": 1.5,
+        "recalcStylesPerSec": 1.75,
+        "nodesDelta": 192,
+        "heapDeltaMB": 108.08
+      },
+      "errors": {
+        "consoleErrors": 1,
+        "exceptions": 0,
+        "consoleWarnings": 2,
+        "networkFailures": 0,
+        "samples": [
+          "log: Failed to load resource: the server responded with a status of 404 (Not Found)"
+        ]
+      },
+      "integrity": {
+        "sha256": "c438a4b81ccd32e83bd99faf499f2e49752f021521b1b2934965328fa86031e3",
+        "luminanceBands4x4": [
+          [
+            48,
+            125,
+            130,
+            100
+          ],
+          [
+            76,
+            114,
+            109,
+            97
+          ],
+          [
+            64,
+            79,
+            90,
+            37
+          ],
+          [
+            33,
+            102,
+            92,
+            23
+          ]
+        ],
+        "pngBytes": 514329
+      },
+      "soakBuckets": null,
+      "loadMs": 828,
+      "gpu": {
+        "renderer": "ANGLE (NVIDIA, NVIDIA GeForce RTX 5070 (0x00002F04) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+        "vendor": "Google Inc. (NVIDIA)"
+      }
     },
     {
       "app": "shenron",
@@ -236,13 +2100,70 @@
       "scenario": "walk",
       "quality": "high",
       "passes": 3,
+      "seconds": 8,
       "cameraAsserted": "Dragon Boulevard exterior (dev-view)",
       "manhattanProjection": null,
-      "fpsAvg": 86.80703657354842,
-      "fpsP1": 123.62298948735565,
-      "fpsP01": 137.3024471188105,
-      "spreadPct": 9.354394128626636,
-      "appStats": null
+      "fpsAvg": 95.38990050841532,
+      "fpsP1": 127.1773493915742,
+      "fpsP01": 137.6890975671437,
+      "spreadPct": 7.640760783525158,
+      "appStats": null,
+      "transition": null,
+      "cpu": {
+        "taskMsPerSec": 4.22,
+        "scriptMsPerSec": 4.12,
+        "layoutMsPerSec": 0.01,
+        "recalcStyleMsPerSec": 0,
+        "layoutsPerSec": 1.25,
+        "recalcStylesPerSec": 1.63,
+        "nodesDelta": 192,
+        "heapDeltaMB": 102.63
+      },
+      "errors": {
+        "consoleErrors": 1,
+        "exceptions": 0,
+        "consoleWarnings": 2,
+        "networkFailures": 0,
+        "samples": [
+          "log: Failed to load resource: the server responded with a status of 404 (Not Found)"
+        ]
+      },
+      "integrity": {
+        "sha256": "e9a48d13dd55b678028d4039083d5863a86ecdbec335ef3dfb81a1522d9e4223",
+        "luminanceBands4x4": [
+          [
+            49,
+            126,
+            130,
+            101
+          ],
+          [
+            77,
+            115,
+            109,
+            98
+          ],
+          [
+            65,
+            79,
+            101,
+            55
+          ],
+          [
+            34,
+            104,
+            106,
+            55
+          ]
+        ],
+        "pngBytes": 481717
+      },
+      "soakBuckets": null,
+      "loadMs": 1267,
+      "gpu": {
+        "renderer": "ANGLE (NVIDIA, NVIDIA GeForce RTX 5070 (0x00002F04) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+        "vendor": "Google Inc. (NVIDIA)"
+      }
     },
     {
       "app": "shenron",
@@ -250,13 +2171,70 @@
       "scenario": "stand",
       "quality": "high",
       "passes": 3,
+      "seconds": 8,
       "cameraAsserted": "HQ lobby (dev-view)",
       "manhattanProjection": null,
-      "fpsAvg": 99.62515697548633,
-      "fpsP1": 144.31864822493725,
-      "fpsP01": 197.462428992457,
-      "spreadPct": 0.37874571933216455,
-      "appStats": null
+      "fpsAvg": 99.83595171578854,
+      "fpsP1": 148.72198877541913,
+      "fpsP01": 189.88872765856868,
+      "spreadPct": 0.22655644223401777,
+      "appStats": null,
+      "transition": null,
+      "cpu": {
+        "taskMsPerSec": 3.46,
+        "scriptMsPerSec": 3.35,
+        "layoutMsPerSec": 0.01,
+        "recalcStyleMsPerSec": 0,
+        "layoutsPerSec": 1.5,
+        "recalcStylesPerSec": 1.75,
+        "nodesDelta": 168,
+        "heapDeltaMB": 89.74
+      },
+      "errors": {
+        "consoleErrors": 1,
+        "exceptions": 0,
+        "consoleWarnings": 2,
+        "networkFailures": 0,
+        "samples": [
+          "log: Failed to load resource: the server responded with a status of 404 (Not Found)"
+        ]
+      },
+      "integrity": {
+        "sha256": "c3c132c69b74b3bc4f34742d9e08f58b81567c179d5b03f444a3c3bf8cc439ec",
+        "luminanceBands4x4": [
+          [
+            67,
+            77,
+            114,
+            95
+          ],
+          [
+            112,
+            123,
+            74,
+            86
+          ],
+          [
+            125,
+            159,
+            138,
+            121
+          ],
+          [
+            172,
+            176,
+            153,
+            120
+          ]
+        ],
+        "pngBytes": 734648
+      },
+      "soakBuckets": null,
+      "loadMs": 1060,
+      "gpu": {
+        "renderer": "ANGLE (NVIDIA, NVIDIA GeForce RTX 5070 (0x00002F04) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+        "vendor": "Google Inc. (NVIDIA)"
+      }
     },
     {
       "app": "shenron",
@@ -264,13 +2242,70 @@
       "scenario": "stand",
       "quality": "high",
       "passes": 3,
+      "seconds": 8,
       "cameraAsserted": "HQ plaza (dev-view)",
       "manhattanProjection": null,
-      "fpsAvg": 99.54186107118073,
-      "fpsP1": 145.65826334828975,
-      "fpsP01": 165.02612612899313,
-      "spreadPct": 0.14301473443631008,
-      "appStats": null
+      "fpsAvg": 99.82758303106914,
+      "fpsP1": 151.58582085808095,
+      "fpsP01": 193.66231253229697,
+      "spreadPct": 0.023740207187927086,
+      "appStats": null,
+      "transition": null,
+      "cpu": {
+        "taskMsPerSec": 4.18,
+        "scriptMsPerSec": 4.06,
+        "layoutMsPerSec": 0.01,
+        "recalcStyleMsPerSec": 0,
+        "layoutsPerSec": 1.5,
+        "recalcStylesPerSec": 1.75,
+        "nodesDelta": 200,
+        "heapDeltaMB": 109.97
+      },
+      "errors": {
+        "consoleErrors": 1,
+        "exceptions": 0,
+        "consoleWarnings": 2,
+        "networkFailures": 0,
+        "samples": [
+          "log: Failed to load resource: the server responded with a status of 404 (Not Found)"
+        ]
+      },
+      "integrity": {
+        "sha256": "b9f613d94cbfc63a8d790a0093926d4254e9bab3ba8254fbcafed6d9b733b38a",
+        "luminanceBands4x4": [
+          [
+            48,
+            112,
+            115,
+            100
+          ],
+          [
+            115,
+            115,
+            100,
+            113
+          ],
+          [
+            82,
+            69,
+            52,
+            41
+          ],
+          [
+            24,
+            27,
+            26,
+            23
+          ]
+        ],
+        "pngBytes": 610478
+      },
+      "soakBuckets": null,
+      "loadMs": 883,
+      "gpu": {
+        "renderer": "ANGLE (NVIDIA, NVIDIA GeForce RTX 5070 (0x00002F04) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+        "vendor": "Google Inc. (NVIDIA)"
+      }
     }
   ]
 }

@@ -4,37 +4,43 @@
   "location": "times-square",
   "scenario": "night",
   "quality": null,
-  "startedAtUtc": "2026-08-06T00:30:26.201Z",
-  "measuredMs": 8027,
+  "startedAtUtc": "2026-08-06T15:12:16.706Z",
+  "measuredMs": 8020.5,
   "stats": {
-    "frames": 227,
+    "frames": 249,
     "deadFrames": 0,
     "frameMs": {
-      "avg": 35.36079295156811,
-      "median": 34.900000005960464,
-      "p1": 28.899999991059303,
-      "p01": 28.5,
-      "min": 28.5,
-      "max": 55
+      "avg": 32.21084337349398,
+      "median": 29.799999997019768,
+      "p1": 28,
+      "p01": 27.599999994039536,
+      "min": 27.599999994039536,
+      "max": 46.29999999701977
     },
     "fps": {
-      "avg": 28.27990880661668,
-      "median": 28.65329512404622,
-      "p1": 34.602076135272206,
-      "p01": 35.08771929824562,
-      "min": 18.181818181818183
+      "avg": 31.04544604451094,
+      "median": 33.55704698322174,
+      "p1": 35.714285714285715,
+      "p01": 36.23188406579561,
+      "min": 21.598272139619176
     }
   },
-  "longTasks": [
-    55
+  "longTasks": [],
+  "heapUsedMB": [
+    {
+      "ts": 42.899999998509884,
+      "mb": 415.97571754455566
+    },
+    {
+      "ts": 5025.79999999702,
+      "mb": 434.6254367828369
+    }
   ],
-  "heapUsedMB": 203.94146633148193,
-  "heapTotalMB": 207.5595006942749,
-  "loadMs": 88,
+  "loadMs": 97,
   "appStats": {
     "ok": true,
     "drawCalls": 94,
-    "triangles": 972763,
+    "triangles": 972455,
     "tilesResident": 19,
     "tilesLoading": 0,
     "tilesQueued": 0,
@@ -62,10 +68,74 @@
       "y": 13.9,
       "z": 2466.2
     },
-    "district": "Midtown-Times Square"
+    "district": "Midtown-Times Square",
+    "actors": {
+      "skinnedMeshes": 0,
+      "morphTargetMeshes": 0,
+      "totalMeshes": 293
+    },
+    "renderMs": {
+      "avg": 0.599,
+      "max": 6.5,
+      "frames": 404
+    }
   },
   "gpu": {
     "renderer": "ANGLE (NVIDIA, NVIDIA GeForce RTX 5070 (0x00002F04) Direct3D11 vs_5_0 ps_5_0, D3D11)",
     "vendor": "Google Inc. (NVIDIA)"
+  },
+  "transition": null,
+  "buckets": null,
+  "integrity": {
+    "sha256": "cd72ac1b0042474a05f59f8f4e724427b58248711d3768731733f5ac40e5784c",
+    "luminanceBands4x4": [
+      [
+        15,
+        34,
+        14,
+        0
+      ],
+      [
+        15,
+        14,
+        9,
+        0
+      ],
+      [
+        5,
+        9,
+        29,
+        8
+      ],
+      [
+        16,
+        19,
+        31,
+        18
+      ]
+    ],
+    "pngBytes": 197505,
+    "diffVsPass1": {
+      "meanAbsDiff": 1.105,
+      "pctPixelsChanged": 3.87,
+      "maxBandLuminanceDrift": 211.08540000000002
+    }
+  },
+  "cpu": {
+    "taskMsPerSec": -0.01,
+    "scriptMsPerSec": -0.01,
+    "layoutMsPerSec": 0,
+    "recalcStyleMsPerSec": 0,
+    "layoutsPerSec": -0.5,
+    "recalcStylesPerSec": -0.5,
+    "nodesDelta": -151,
+    "heapDeltaMB": 26.55
+  },
+  "errors": {
+    "consoleErrors": 0,
+    "exceptions": 0,
+    "consoleWarnings": 0,
+    "networkFailures": 0,
+    "samples": []
   }
 }

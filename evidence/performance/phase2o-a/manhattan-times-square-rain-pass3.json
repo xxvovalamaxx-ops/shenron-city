@@ -4,35 +4,43 @@
   "location": "times-square",
   "scenario": "rain",
   "quality": null,
-  "startedAtUtc": "2026-08-06T00:29:43.188Z",
-  "measuredMs": 8036.29999999702,
+  "startedAtUtc": "2026-08-06T15:11:42.719Z",
+  "measuredMs": 8003.29999999702,
   "stats": {
-    "frames": 209,
+    "frames": 261,
     "deadFrames": 0,
     "frameMs": {
-      "avg": 38.450717703363544,
-      "median": 40.19999998807907,
-      "p1": 28.900000005960464,
-      "p01": 28.799999997019768,
-      "min": 28.799999997019768,
-      "max": 47.70000000298023
+      "avg": 30.663984674318083,
+      "median": 28.5,
+      "p1": 27.299999997019768,
+      "p01": 27.19999999552965,
+      "min": 27.19999999552965,
+      "max": 44.899999998509884
     },
     "fps": {
-      "avg": 26.00731689105827,
-      "median": 24.875621897923892,
-      "p1": 34.60207611743099,
-      "p01": 34.72222222581529,
-      "min": 20.964360585692273
+      "avg": 32.61154773657081,
+      "median": 35.08771929824562,
+      "p1": 36.630036634035385,
+      "p01": 36.76470588839526,
+      "min": 22.27171492278814
     }
   },
   "longTasks": [],
-  "heapUsedMB": 235.5375337600708,
-  "heapTotalMB": 283.9453020095825,
-  "loadMs": 78,
+  "heapUsedMB": [
+    {
+      "ts": 44.5,
+      "mb": 218.60403537750244
+    },
+    {
+      "ts": 5019.79999999702,
+      "mb": 230.45281410217285
+    }
+  ],
+  "loadMs": 92,
   "appStats": {
     "ok": true,
     "drawCalls": 98,
-    "triangles": 1026851,
+    "triangles": 1025327,
     "tilesResident": 19,
     "tilesLoading": 0,
     "tilesQueued": 0,
@@ -60,10 +68,74 @@
       "y": 13.9,
       "z": 2466.2
     },
-    "district": "Midtown-Times Square"
+    "district": "Midtown-Times Square",
+    "actors": {
+      "skinnedMeshes": 0,
+      "morphTargetMeshes": 0,
+      "totalMeshes": 293
+    },
+    "renderMs": {
+      "avg": 0.574,
+      "max": 6.1,
+      "frames": 416
+    }
   },
   "gpu": {
     "renderer": "ANGLE (NVIDIA, NVIDIA GeForce RTX 5070 (0x00002F04) Direct3D11 vs_5_0 ps_5_0, D3D11)",
     "vendor": "Google Inc. (NVIDIA)"
+  },
+  "transition": null,
+  "buckets": null,
+  "integrity": {
+    "sha256": "6165ca29d33ac539aff0f7cab79cfb66c31bc746226ea81583a1046655513d95",
+    "luminanceBands4x4": [
+      [
+        20,
+        60,
+        40,
+        6
+      ],
+      [
+        23,
+        38,
+        32,
+        6
+      ],
+      [
+        15,
+        28,
+        48,
+        20
+      ],
+      [
+        31,
+        36,
+        46,
+        27
+      ]
+    ],
+    "pngBytes": 347362,
+    "diffVsPass1": {
+      "meanAbsDiff": 2.086,
+      "pctPixelsChanged": 3.8,
+      "maxBandLuminanceDrift": 210.22580000000002
+    }
+  },
+  "cpu": {
+    "taskMsPerSec": -0.02,
+    "scriptMsPerSec": -0.02,
+    "layoutMsPerSec": 0,
+    "recalcStyleMsPerSec": 0,
+    "layoutsPerSec": null,
+    "recalcStylesPerSec": null,
+    "nodesDelta": -94,
+    "heapDeltaMB": -12.81
+  },
+  "errors": {
+    "consoleErrors": 0,
+    "exceptions": 0,
+    "consoleWarnings": 0,
+    "networkFailures": 0,
+    "samples": []
   }
 }
