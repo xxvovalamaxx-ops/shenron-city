@@ -7,17 +7,14 @@
  * under node, where `AudioContext` does not exist. `engine.ts` is the only file
  * that touches the browser API and is deliberately a thin shell over this one.
  *
- * Zone bounds are borrowed rather than invented. The lobby, shaft and floor
- * plate derive from `src/world/layout.ts`; the market volume and the two
- * interior insets are the ones `cityTourLocationEvents` already uses in
- * `src/gameplay/city-tour.ts`. Authoring a second set of bounds here would
- * guarantee that the sound and the walls drift apart the first time a wall
- * moves.
+ * The Manhattan build is one continuous city: the boulevard bed is the whole
+ * island. The named interior beds (lobby, hq) and district beds (market, park)
+ * are retained as empty shapes so the crossfade machinery stays intact and
+ * verifiable, but no geometry fills them.
  *
  * Units are metres and seconds, matching the rest of the simulation.
  */
 import type { Vec3 } from '../gameplay/collision'
-import { ENTRANCE, HQ, LOBBY, SHAFT } from '../world/layout'
 
 // ── Zones ────────────────────────────────────────────────────────────────────
 
@@ -45,62 +42,18 @@ interface ZoneShape {
   feather: number
 }
 
-function box(
-  minX: number,
-  maxX: number,
-  minY: number,
-  maxY: number,
-  minZ: number,
-  maxZ: number,
-): Box {
-  return { minX, maxX, minY, maxY, minZ, maxZ }
-}
-
-/** Ground level is a touch below zero so a player standing on it is inside. */
-const FLOOR = -1
-
 /**
  * Everywhere except the boulevard, which is the fallback bed.
  *
- * Feathers are wider outdoors than indoors on purpose: in open air a district
- * fades in over several metres, whereas a wall is meant to be an abrupt-ish
- * change you can still walk through without a click.
+ * All shapes are empty in the Manhattan build — the whole island is one
+ * continuous city ambience, so the fallback bed always wins and every other
+ * bed sits at zero.
  */
 const ZONE_SHAPES: Record<Exclude<ZoneId, 'boulevard'>, ZoneShape> = {
-  // Stall row on the east side of Dragon Boulevard, as authored for the tour.
-  market: { boxes: [box(9, 20, FLOOR, 4, 71, 107)], feather: 7 },
-  // The green pocket slab laid down by CityDistrict at (-20, 49), 15.5 x 20 m.
-  park: { boxes: [box(-27.75, -12.25, FLOOR, 5, 39, 59)], feather: 7 },
-  lobby: {
-    boxes: [
-      box(
-        -(LOBBY.halfWidth - 0.5),
-        LOBBY.halfWidth - 0.5,
-        FLOOR,
-        8,
-        LOBBY.backZ + 0.5,
-        LOBBY.frontZ - 0.5,
-      ),
-      // The shaft column. Without it a rider hears open-street traffic at floor
-      // 30, because the car sits behind the lobby's back wall and 180 m of
-      // travel passes through no authored volume at all.
-      box(-SHAFT.halfWidth, SHAFT.halfWidth, FLOOR, HQ.y - 0.5, SHAFT.backZ, SHAFT.doorZ),
-    ],
-    feather: 3,
-  },
-  hq: {
-    boxes: [
-      box(
-        -(HQ.halfWidth - 0.2),
-        HQ.halfWidth - 0.2,
-        HQ.y - 0.5,
-        HQ.y + HQ.ceiling,
-        HQ.backZ + 0.2,
-        HQ.frontZ - 0.2,
-      ),
-    ],
-    feather: 4,
-  },
+  market: { boxes: [], feather: 7 },
+  park: { boxes: [], feather: 7 },
+  lobby: { boxes: [], feather: 3 },
+  hq: { boxes: [], feather: 4 },
 }
 
 function distanceOutside(p: Vec3, b: Box): number {
@@ -603,13 +556,13 @@ export const MOTOR: MotorSpec = {
 export const SILENCE = 0.0001
 
 /**
- * Where the world's own sounds come from, so the integrator does not have to
- * re-derive the geometry it already has.
+ * Where the world's own sounds come from. The Manhattan build triggers no
+ * fixed-anchor sounds — footsteps and the one-shots all play at the player.
  */
 export const AUDIO_ANCHORS = {
-  entranceDoor: { x: 0, y: 1.6, z: ENTRANCE.z } as Vec3,
+  entranceDoor: { x: 0, y: 1.6, z: 0 } as Vec3,
   /** The car doors travel with the car, so this needs the current car height. */
-  elevatorDoor: (carY: number): Vec3 => ({ x: 0, y: carY + 1.6, z: SHAFT.doorZ }),
+  elevatorDoor: (carY: number): Vec3 => ({ x: 0, y: carY + 1.6, z: 0 }),
 } as const
 
 // ── Helpers ──────────────────────────────────────────────────────────────────

@@ -4,7 +4,6 @@ import {
   decodeSave,
   defaultSave,
   encodeSave,
-  floorAtPosition,
   isRestorablePosition,
   loadGame,
   runMigrations,
@@ -14,8 +13,6 @@ import {
   type SaveData,
   type SaveStorage,
 } from './save'
-import { CITY_TOUR_STEPS } from './city-tour'
-import { SPAWN } from '../world/layout'
 
 /** In-memory stand-in for Web Storage, which the node environment lacks. */
 function fakeStorage(seed: Record<string, string> = {}): SaveStorage & {
@@ -38,11 +35,10 @@ function hostileStorage(): SaveStorage {
   return { getItem: boom, setItem: boom, removeItem: boom }
 }
 
-/** A player standing in the headquarters lobby, part way through the tour. */
+/** A player standing on a midtown street. */
 const SAMPLE: SaveData = {
-  pos: { x: 0, y: 0, z: -12 },
+  pos: { x: 400, y: 12.4, z: 400 },
   forward: { x: 0, z: -1 },
-  tour: { completed: 3 },
   settings: { quality: 'medium', sensitivity: 1.5, fov: 90, volume: 0.7 },
 }
 
@@ -70,10 +66,10 @@ describe('encode and decode', () => {
     const first = decodeSave(null).data
     const second = decodeSave(null).data
 
-    first.pos.y += 180 // GameLoop does exactly this while the lift moves
+    first.pos.y += 180
 
-    expect(second.pos.y).toBe(SPAWN.y)
-    expect(defaultSave().pos.y).toBe(SPAWN.y)
+    expect(second.pos.y).toBe(12.4)
+    expect(defaultSave().pos.y).toBe(12.4)
   })
 })
 
@@ -118,7 +114,7 @@ describe('unusable saves fall back to defaults', () => {
 
     expect(result.fault).toBeNull()
     expect(result.data).toEqual(defaultSave())
-    expect(result.repaired).toEqual(['pos', 'forward', 'tour', 'settings'])
+    expect(result.repaired).toEqual(['pos', 'forward', 'settings'])
   })
 
   it('accepts a payload whose every section is the wrong type', () => {
@@ -126,14 +122,13 @@ describe('unusable saves fall back to defaults', () => {
       v: SAVE_VERSION,
       pos: [],
       forward: 'north',
-      tour: 5,
       settings: [1, 2, 3],
     })
     const result = decodeSave(garbage)
 
     expect(result.fault).toBeNull()
     expect(result.data).toEqual(defaultSave())
-    expect(result.repaired).toEqual(['pos', 'forward', 'tour', 'settings'])
+    expect(result.repaired).toEqual(['pos', 'forward', 'settings'])
   })
 })
 
@@ -143,8 +138,7 @@ describe('damaged fields degrade one at a time', () => {
 
     expect(result.fault).toBeNull()
     expect(result.repaired).toEqual(['pos'])
-    expect(result.data.pos).toEqual({ x: SPAWN.x, y: SPAWN.y, z: SPAWN.z })
-    expect(result.data.tour).toEqual(SAMPLE.tour)
+    expect(result.data.pos).toEqual({ x: 400, y: 12.4, z: 400 })
     expect(result.data.settings).toEqual(SAMPLE.settings)
   })
 
@@ -159,7 +153,7 @@ describe('damaged fields degrade one at a time', () => {
     for (const pos of partial) {
       const result = decodeSave(withSection('pos', pos))
       expect(result.repaired).toContain('pos')
-      expect(result.data.pos).toEqual({ x: SPAWN.x, y: SPAWN.y, z: SPAWN.z })
+      expect(result.data.pos).toEqual({ x: 400, y: 12.4, z: 400 })
     }
   })
 
@@ -170,7 +164,7 @@ describe('damaged fields degrade one at a time', () => {
     expect(encoded).toContain('null') // JSON cannot hold NaN or Infinity
     const result = decodeSave(encoded)
     expect(result.repaired).toEqual(['pos'])
-    expect(result.data.pos).toEqual({ x: SPAWN.x, y: SPAWN.y, z: SPAWN.z })
+    expect(result.data.pos).toEqual({ x: 400, y: 12.4, z: 400 })
   })
 
   it('normalises a stored forward vector and defaults a degenerate one', () => {
@@ -184,18 +178,6 @@ describe('damaged fields degrade one at a time', () => {
       expect(result.repaired).toContain('forward')
       expect(result.data.forward).toEqual({ x: 0, z: -1 })
     }
-  })
-
-  it('refuses a tour count outside the route rather than granting progress', () => {
-    for (const completed of [-1, CITY_TOUR_STEPS.length + 1, 999, 'three', null]) {
-      const result = decodeSave(withSection('tour', { completed }))
-      expect(result.repaired).toContain('tour')
-      expect(result.data.tour).toEqual({ completed: 0 })
-    }
-
-    const complete = decodeSave(withSection('tour', { completed: CITY_TOUR_STEPS.length }))
-    expect(complete.repaired).toEqual([])
-    expect(complete.data.tour).toEqual({ completed: CITY_TOUR_STEPS.length })
   })
 
   it('defaults each bad setting independently of the good ones', () => {
@@ -224,63 +206,34 @@ describe('damaged fields degrade one at a time', () => {
 })
 
 describe('restorable positions', () => {
-  it('accepts positions on the street, in the lobby and on floor 45', () => {
-    expect(isRestorablePosition({ x: SPAWN.x, y: SPAWN.y, z: SPAWN.z })).toBe(true)
-    expect(isRestorablePosition({ x: 12, y: 0, z: 86 })).toBe(true) // night market
-    expect(isRestorablePosition({ x: 0, y: 0, z: -12 })).toBe(true) // lobby
-    expect(isRestorablePosition({ x: -11.5, y: 180, z: -6 })).toBe(true) // office
+  it('accepts street, park and aerial positions inside the island', () => {
+    expect(isRestorablePosition({ x: 400, y: 12.4, z: 400 })).toBe(true) // spawn
+    expect(isRestorablePosition({ x: 300, y: 12.4, z: 100 })).toBe(true) // times square
+    expect(isRestorablePosition({ x: -6447, y: 12.4, z: -10034 })).toBe(true) // statue
+    expect(isRestorablePosition({ x: 0, y: 300, z: 0 })).toBe(true) // aerial
   })
 
-  it('rejects non-finite, absurd and off-map coordinates', () => {
+  it('rejects non-finite, absurd and off-island coordinates', () => {
     const outside = [
       { x: Number.NaN, y: 0, z: 0 },
       { x: 0, y: Number.NaN, z: 0 },
       { x: 0, y: 0, z: Number.POSITIVE_INFINITY },
       { x: 1e9, y: 0, z: 0 },
       { x: 0, y: 0, z: -1e9 },
-      { x: -400, y: 0, z: 100 },
-      { x: 0, y: 0, z: 400 },
+      { x: -20000, y: 12.4, z: 0 }, // west of the island
+      { x: 0, y: 12.4, z: 25000 }, // north of the island
+      { x: 0, y: -1000, z: 0 }, // below the sea floor
+      { x: 0, y: 5000, z: 0 }, // above the skyline
     ]
     for (const pos of outside) expect(isRestorablePosition(pos)).toBe(false)
   })
 
-  it('rejects the void between the two floors', () => {
-    for (const y of [-50, 20, 90, 179, 400]) {
-      expect(isRestorablePosition({ x: 0, y, z: 40 })).toBe(false)
-    }
-  })
-
-  it('rejects the elevator shaft, whose only floor is the unsaved car', () => {
-    expect(isRestorablePosition({ x: 0, y: 0, z: -32 })).toBe(false)
-    expect(isRestorablePosition({ x: 0, y: 180, z: -32 })).toBe(false)
-    expect(isRestorablePosition({ x: 2, y: 0, z: -34 })).toBe(false)
-    // Just outside the car doors is still the lobby, and still restorable.
-    expect(isRestorablePosition({ x: 0, y: 0, z: -29 })).toBe(true)
-  })
-
-  it('rejects positions embedded in visible world geometry', () => {
-    expect(isRestorablePosition({ x: -37, y: 0, z: 83 })).toBe(false) // storefront
-    expect(isRestorablePosition({ x: -6.5, y: 0, z: -13 })).toBe(false) // reception desk
-    expect(isRestorablePosition({ x: 8.1, y: 0, z: 42 })).toBe(false) // bench
-    expect(isRestorablePosition({ x: -14.2, y: 180, z: -3.6 })).toBe(false) // office glass
-  })
-
-  it('derives the floor from a restored position', () => {
-    expect(floorAtPosition({ x: SPAWN.x, y: SPAWN.y, z: SPAWN.z })).toBe('lobby')
-    expect(floorAtPosition({ x: 0, y: 0, z: -12 })).toBe('lobby')
-    expect(floorAtPosition({ x: -10, y: 180, z: -6 })).toBe('hq')
-    // Anything unrestorable is replaced by the spawn, so lobby is the only
-    // answer the integrator can ever act on.
-    expect(floorAtPosition({ x: 0, y: 90, z: 0 })).toBe('lobby')
-  })
-
-  it('restores a floor 45 save intact', () => {
-    const upstairs: SaveData = { ...SAMPLE, pos: { x: -11.5, y: 180, z: -6 } }
-    const result = decodeSave(encodeSave(upstairs))
+  it('restores an aerial save intact', () => {
+    const aerial: SaveData = { ...SAMPLE, pos: { x: 0, y: 300, z: 0 } }
+    const result = decodeSave(encodeSave(aerial))
 
     expect(result.repaired).toEqual([])
-    expect(result.data.pos).toEqual(upstairs.pos)
-    expect(floorAtPosition(result.data.pos)).toBe('hq')
+    expect(result.data.pos).toEqual(aerial.pos)
   })
 })
 

@@ -86,8 +86,10 @@ if (!/connect-src 'self'/.test(html)) {
   findings.push("index.html: connect-src must be exactly 'self'")
 }
 const connectPolicy = html.match(/connect-src\s+([^;"]+)/)?.[1]?.trim()
-if (connectPolicy !== "'self'") {
-  findings.push("index.html: connect-src may allow same-origin assets only")
+if (connectPolicy !== "'self' blob:") {
+  // `blob:` is required: GLTFLoader decodes embedded textures through blob
+  // URLs even with the TextureLoader fallback registered.
+  findings.push("index.html: connect-src must be exactly 'self' blob:")
 }
 
 const publicRoot = join(root, 'public')

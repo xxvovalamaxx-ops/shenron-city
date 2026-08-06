@@ -3,7 +3,18 @@ import * as THREE from 'three'
 import { useFrame } from '@react-three/fiber'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
 import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js'
+import {
+  acceleratedRaycast,
+  computeBoundsTree,
+  disposeBoundsTree,
+} from 'three-mesh-bvh'
 import { MANHATTAN_BASE_URL, MANHATTAN_TILES } from './manhattan-tiles'
+import { manhattanCollision } from './manhattan-collision'
+
+// three-mesh-bvh extends BufferGeometry/Mesh only when asked; wire it up once.
+THREE.BufferGeometry.prototype.computeBoundsTree = computeBoundsTree
+THREE.BufferGeometry.prototype.disposeBoundsTree = disposeBoundsTree
+THREE.Mesh.prototype.raycast = acceleratedRaycast
 
 let sharedLoader: GLTFLoader | null = null
 
@@ -52,6 +63,24 @@ function prepareMaterials(root: THREE.Group) {
   })
 }
 
+function computeTileBvh(root: THREE.Group) {
+  root.traverse((obj) => {
+    if (!(obj instanceof THREE.Mesh)) return
+    if (obj.geometry.boundsTree) return
+    const count = obj.geometry.attributes.position?.count ?? 0
+    if (count < 3) return
+    obj.geometry.computeBoundsTree()
+  })
+}
+
+function disposeTileBvh(root: THREE.Group) {
+  root.traverse((obj) => {
+    if (obj instanceof THREE.Mesh && obj.geometry.boundsTree) {
+      obj.geometry.disposeBoundsTree()
+    }
+  })
+}
+
 function disposeScene(root: THREE.Group) {
   root.traverse((obj) => {
     if (obj instanceof THREE.Mesh) {
@@ -76,16 +105,28 @@ export function ManhattanCity({
   mode = 'full',
   position = [0, 0, 0],
   scale = 1,
+  onBaseRegistered,
+  onTileRegistered,
+  onTileUnregistered,
 }: {
   mode?: 'full' | 'tiles'
   position?: [number, number, number]
   scale?: number
+  onBaseRegistered?: (root: THREE.Group) => void
+  onTileRegistered?: (url: string, root: THREE.Group) => void
+  onTileUnregistered?: (url: string, root: THREE.Group) => void
 }) {
   const groupRef = useRef<THREE.Group>(null)
   const tileRootRef = useRef<THREE.Group>(null)
   const loadedTiles = useRef(new Map<string, THREE.Group>())
   const inFlightTiles = useRef(new Set<string>())
   const baseLoaded = useRef(false)
+  const onBase = useRef(onBaseRegistered)
+  const onTile = useRef(onTileRegistered)
+  const onTileOut = useRef(onTileUnregistered)
+  onBase.current = onBaseRegistered
+  onTile.current = onTileRegistered
+  onTileOut.current = onTileUnregistered
 
   // Full mode: a single combined GLB. Simple, and the safest fallback when
   // tile streaming misbehaves in an unexpected browser.
@@ -128,6 +169,15 @@ export function ManhattanCity({
         const base = gltf.scene
         base.name = 'manhattan-base'
         groupRef.current.add(base)
+        // Island surface meshes feed ground-height raycasts.
+        base.traverse((obj) => {
+          if (obj instanceof THREE.Mesh && obj.name.toUpperCase().startsWith('LAND_')) {
+            if (!obj.geometry.boundsTree) obj.geometry.computeBoundsTree()
+            manhattanCollision.registerGround(obj)
+          }
+        })
+        manhattanCollision.baseReady = true
+        onBase.current?.(base)
       },
       undefined,
       (err) => console.warn('[ManhattanCity] Failed to load manhattan_base.glb:', err),
@@ -144,8 +194,11 @@ export function ManhattanCity({
     return () => {
       baseLoaded.current = false
       tileRootRef.current = null
+      manhattanCollision.clearBase()
       for (const tileGroup of loaded.values()) {
         tileGroup.removeFromParent()
+        disposeTileBvh(tileGroup)
+        manhattanCollision.unregisterTileBuildings(tileGroup)
         disposeScene(tileGroup)
       }
       loaded.clear()
@@ -171,11 +224,14 @@ export function ManhattanCity({
             inFlightTiles.current.delete(tile.url)
             if (!tileRootRef.current) return
             prepareMaterials(gltf.scene)
+            computeTileBvh(gltf.scene)
             const tileGroup = new THREE.Group()
             tileGroup.name = tile.url
             tileGroup.add(gltf.scene)
             tileRootRef.current.add(tileGroup)
             loadedTiles.current.set(tile.url, tileGroup)
+            manhattanCollision.registerTileBuildings(tileGroup)
+            onTile.current?.(tile.url, tileGroup)
           },
           undefined,
           (err) => {
@@ -186,6 +242,9 @@ export function ManhattanCity({
       } else if (group && distance > TILE_UNLOAD_RADIUS) {
         loadedTiles.current.delete(tile.url)
         tileRoot.remove(group)
+        disposeTileBvh(group)
+        manhattanCollision.unregisterTileBuildings(group)
+        onTileOut.current?.(tile.url, group)
         disposeScene(group)
       }
     }

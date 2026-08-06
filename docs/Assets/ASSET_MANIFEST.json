@@ -3,136 +3,6 @@
   "generatedFor": "Shenzhen City Production Pass 02",
   "assets": [
     {
-      "id": "architecture.hero-district.v1",
-      "name": "Hero district architectural and street kit",
-      "source": "Original Blender production in SourceAssets/Models/Environment/Working/Shenzhen_City_Production_Pass_02.blend",
-      "creator": "xxvovalamaxx-ops with OpenAI Codex production tooling",
-      "license": "Project-owned",
-      "redistribution": "Permitted only as part of the Shenzhen City repository/build under project terms",
-      "runtimePath": "public/assets/production/architecture/hero-district.glb",
-      "modifications": "Original modular architecture, market, headquarters exterior, roadway and street props; runtime PBR overrides use separately manifested CC0 textures"
-    },
-    {
-      "id": "architecture.distant-skyline.lod0.v1",
-      "name": "Distant skyline near LOD",
-      "source": "Original Blender production in SourceAssets/Models/Environment/Working/Shenzhen_City_Production_Pass_02.blend",
-      "creator": "xxvovalamaxx-ops with OpenAI Codex production tooling",
-      "license": "Project-owned",
-      "redistribution": "Permitted only as part of the Shenzhen City repository/build under project terms",
-      "runtimePath": "public/assets/production/architecture/distant-skyline-lod0.glb",
-      "modifications": "Five original tower families with setbacks, recessed facade ribbons, mullions, fins, podium glazing, rooftop equipment, crowns and aviation lights; evaluated and batched by material"
-    },
-    {
-      "id": "architecture.distant-skyline.lod1.v1",
-      "name": "Distant skyline middle LOD",
-      "source": "Original Blender production in SourceAssets/Models/Environment/Working/Shenzhen_City_Production_Pass_02.blend",
-      "creator": "xxvovalamaxx-ops with OpenAI Codex production tooling",
-      "license": "Project-owned",
-      "redistribution": "Permitted only as part of the Shenzhen City repository/build under project terms",
-      "runtimePath": "public/assets/production/architecture/distant-skyline-lod1.glb",
-      "modifications": "Reduced facade cadence and rooftop detail derived from the same original tower specification; evaluated and batched by material"
-    },
-    {
-      "id": "architecture.distant-skyline.lod2.v1",
-      "name": "Distant skyline far LOD",
-      "source": "Original Blender production in SourceAssets/Models/Environment/Working/Shenzhen_City_Production_Pass_02.blend",
-      "creator": "xxvovalamaxx-ops with OpenAI Codex production tooling",
-      "license": "Project-owned",
-      "redistribution": "Permitted only as part of the Shenzhen City repository/build under project terms",
-      "runtimePath": "public/assets/production/architecture/distant-skyline-lod2.glb",
-      "modifications": "Optimized setback silhouettes with sparse real facade geometry, crowns and navigation lights; evaluated and batched by material"
-    },
-    {
-      "id": "interior.hq-lobby.v1",
-      "name": "Headquarters lobby",
-      "source": "Original Blender production in SourceAssets/Models/Environment/Working/Shenzhen_City_Production_Pass_02.blend",
-      "creator": "xxvovalamaxx-ops with OpenAI Codex production tooling",
-      "license": "Project-owned",
-      "redistribution": "Permitted only as part of the Shenzhen City repository/build under project terms",
-      "runtimePath": "public/assets/production/interiors/hq-lobby.glb",
-      "modifications": "Original envelope, reception, seating, security gates, elevator bank, ceiling grid, planters and office props"
-    },
-    {
-      "id": "interior.floor45.v1",
-      "name": "Floor 45 Mission Control interior",
-      "source": "Original Blender production in SourceAssets/Models/Environment/Working/Shenzhen_City_Production_Pass_02.blend",
-      "creator": "xxvovalamaxx-ops with OpenAI Codex production tooling",
-      "license": "Project-owned",
-      "redistribution": "Permitted only as part of the Shenzhen City repository/build under project terms",
-      "runtimePath": "public/assets/production/interiors/floor45.glb",
-      "modifications": "Original floor, ceiling, curtain wall, offices, desks, monitors, partitions and lighting fixtures"
-    },
-    {
-      "id": "prop.automatic-door-leaf.v1",
-      "name": "Automatic door leaf",
-      "source": "Original Blender production in SourceAssets/Models/Environment/Working/Shenzhen_City_Production_Pass_02.blend",
-      "creator": "xxvovalamaxx-ops with OpenAI Codex production tooling",
-      "license": "Project-owned",
-      "redistribution": "Permitted only as part of the Shenzhen City repository/build under project terms",
-      "runtimePath": "public/assets/production/props/automatic-door-leaf.glb",
-      "modifications": "Original glass, stiles, rails and handle with gameplay-owned motion"
-    },
-    {
-      "id": "vehicle.premium-sedan.v1",
-      "name": "Unbranded premium sedan",
-      "source": "Original Blender production in SourceAssets/Models/Environment/Working/Shenzhen_City_Production_Pass_02.blend",
-      "creator": "xxvovalamaxx-ops with OpenAI Codex production tooling",
-      "license": "Project-owned",
-      "redistribution": "Permitted only as part of the Shenzhen City repository/build under project terms",
-      "runtimePath": "public/assets/production/vehicles/premium-sedan.glb",
-      "modifications": "Original unbranded design with separate wheels, paired lights, roof, beltlines, A/C pillars, windshield headers, mirrors, handles, glazing and basic interior"
-    },
-    {
-      "id": "vehicle.suv-crossover.v1",
-      "name": "Unbranded SUV crossover",
-      "source": "Original Blender production in SourceAssets/Models/Environment/Working/Shenzhen_City_Production_Pass_02.blend",
-      "creator": "xxvovalamaxx-ops with OpenAI Codex production tooling",
-      "license": "Project-owned",
-      "redistribution": "Permitted only as part of the Shenzhen City repository/build under project terms",
-      "runtimePath": "public/assets/production/vehicles/suv-crossover.glb",
-      "modifications": "Original unbranded design with separate wheels, paired lights, roof, beltlines, A/C pillars, windshield headers, mirrors, handles, glazing and basic interior"
-    },
-    {
-      "id": "vehicle.compact-city.v1",
-      "name": "Unbranded compact city car",
-      "source": "Original Blender production in SourceAssets/Models/Environment/Working/Shenzhen_City_Production_Pass_02.blend",
-      "creator": "xxvovalamaxx-ops with OpenAI Codex production tooling",
-      "license": "Project-owned",
-      "redistribution": "Permitted only as part of the Shenzhen City repository/build under project terms",
-      "runtimePath": "public/assets/production/vehicles/compact-city.glb",
-      "modifications": "Original unbranded design with separate wheels, paired lights, roof, beltlines, A/C pillars, windshield headers, mirrors, handles, glazing and basic interior"
-    },
-    {
-      "id": "vehicle.delivery-van.v1",
-      "name": "Unbranded delivery van",
-      "source": "Original Blender production in SourceAssets/Models/Environment/Working/Shenzhen_City_Production_Pass_02.blend",
-      "creator": "xxvovalamaxx-ops with OpenAI Codex production tooling",
-      "license": "Project-owned",
-      "redistribution": "Permitted only as part of the Shenzhen City repository/build under project terms",
-      "runtimePath": "public/assets/production/vehicles/delivery-van.glb",
-      "modifications": "Original unbranded utility design with separate wheels, paired lights, roof, beltlines, A/C pillars, windshield headers, mirrors, handles, glazing and basic interior"
-    },
-    {
-      "id": "interior.elevator-static.v1",
-      "name": "Elevator shaft and lobby portal",
-      "source": "Original Blender production in SourceAssets/Models/Environment/Working/Shenzhen_City_Production_Pass_02.blend",
-      "creator": "xxvovalamaxx-ops with OpenAI Codex production tooling",
-      "license": "Project-owned",
-      "redistribution": "Permitted only as part of the Shenzhen City repository/build under project terms",
-      "runtimePath": "public/assets/production/interiors/elevator-static.glb",
-      "modifications": "Original fire-rated shaft, guide rails, structural ribs, portal cladding, reveal, transom and call station"
-    },
-    {
-      "id": "interior.elevator-car.v1",
-      "name": "Elevator cabin",
-      "source": "Original Blender production in SourceAssets/Models/Environment/Working/Shenzhen_City_Production_Pass_02.blend",
-      "creator": "xxvovalamaxx-ops with OpenAI Codex production tooling",
-      "license": "Project-owned",
-      "redistribution": "Permitted only as part of the Shenzhen City repository/build under project terms",
-      "runtimePath": "public/assets/production/interiors/elevator-car.glb",
-      "modifications": "Original layered cabin, segmented wall panels, mirror band, handrails, physical control panel and practical lighting surfaces"
-    },
-    {
       "id": "environment.japanese-forest-shrine.realistic.v2",
       "name": "Realistic Japanese forest shrine Blender scene",
       "source": "SourceAssets/Models/Environment/Working/Japanese_Forest_Shrine_Realistic.blend",
@@ -151,6 +21,87 @@
       "redistribution": "Permitted with attribution, license link, and modification notice",
       "runtimePath": "SourceAssets/Models/Environment/External/Zgon/Komainu_Statue/komainu_statue_1k.glb",
       "modifications": "Untouched official 1K GLB retained; generated shrine uses both guardian meshes, the moss material, smooth shading, and altered scale, rotation and placement"
+    },
+    {
+      "id": "manhattan.base.v1",
+      "runtimePath": "public/models/manhattan/manhattan_base.glb",
+      "purpose": "island ground, land, landmarks, bridges",
+      "source": "Blender export (Shenzhen City Manhattan island)",
+      "creator": "Shenzhen City team",
+      "license": "CC0-1.0",
+      "redistribution": "allowed"
+    },
+    {
+      "id": "character.player.v1",
+      "runtimePath": "public/models/characters/player/player.glb",
+      "purpose": "realistic CC3 player character (Eric, Sketchfab CC-BY)",
+      "source": "Sketchfab — Eric_Rigged_Business_Man.glb (CC-BY)",
+      "creator": "Sketchfab CC-BY creator (Eric rigged business man)",
+      "license": "CC-BY-4.0",
+      "redistribution": "attribution"
+    },
+    {
+      "id": "character.player.clips.v1",
+      "runtimePath": "public/models/characters/player/player-clips.glb",
+      "purpose": "retargeted locomotion clips",
+      "source": "Retargeted from Quaternius 65-joint CC0 clips",
+      "creator": "Quaternius + Shenzhen City retarget pipeline",
+      "license": "CC0-1.0",
+      "redistribution": "allowed"
+    },
+    {
+      "id": "dev.sedan.v1",
+      "runtimePath": "public/models/dev/sedan.glb",
+      "purpose": "dev-tool spawn",
+      "source": "Kenney Car Kit (CC0)",
+      "creator": "Kenney",
+      "license": "CC0-1.0",
+      "redistribution": "allowed"
+    },
+    {
+      "id": "dev.taxi.v1",
+      "runtimePath": "public/models/dev/taxi.glb",
+      "purpose": "dev-tool spawn",
+      "source": "Kenney Car Kit (CC0)",
+      "creator": "Kenney",
+      "license": "CC0-1.0",
+      "redistribution": "allowed"
+    },
+    {
+      "id": "dev.police.v1",
+      "runtimePath": "public/models/dev/police.glb",
+      "purpose": "dev-tool spawn",
+      "source": "Kenney Car Kit (CC0)",
+      "creator": "Kenney",
+      "license": "CC0-1.0",
+      "redistribution": "allowed"
+    },
+    {
+      "id": "dev.ambulance.v1",
+      "runtimePath": "public/models/dev/ambulance.glb",
+      "purpose": "dev-tool spawn",
+      "source": "Kenney Car Kit (CC0)",
+      "creator": "Kenney",
+      "license": "CC0-1.0",
+      "redistribution": "allowed"
+    },
+    {
+      "id": "dev.ped.v1",
+      "runtimePath": "public/models/dev/ped.glb",
+      "purpose": "dev-tool spawn",
+      "source": "Kenney Mini Characters (CC0)",
+      "creator": "Kenney",
+      "license": "CC0-1.0",
+      "redistribution": "allowed"
+    },
+    {
+      "id": "dev.tree.v1",
+      "runtimePath": "public/models/dev/tree.glb",
+      "purpose": "dev-tool spawn",
+      "source": "Kenney Nature Kit (CC0)",
+      "creator": "Kenney",
+      "license": "CC0-1.0",
+      "redistribution": "allowed"
     }
   ]
 }

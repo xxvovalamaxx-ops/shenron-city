@@ -1,131 +1,74 @@
 /**
- * The one place the simulation advances.
+ * The one place the simulation advances — Manhattan edition.
  *
- * Every mutable thing — elevator, doors, player, camera, the car's transform —
- * is updated here, in a fixed order, once per frame. Scattering this across
- * component-level useFrame calls would make the ordering depend on React's
- * render order, and the first symptom would be the player sinking through the
- * lift floor on the frame the car moved first.
+ * A much smaller loop than the original headquarters build: walk/sprint/jump,
+ * fly mode, ground-height tracking against the island surface, building
+ * collision through the per-tile BVHs, first/third person camera, footsteps
+ * and the perf overlay. No elevator, no car, no scripted NPCs.
  */
 import { useEffect, useMemo, useRef } from 'react'
 import { useFrame, useThree } from '@react-three/fiber'
-import { Matrix4, Object3D, PerspectiveCamera, Quaternion, Vector3 } from 'three'
+import { PerspectiveCamera, Vector3 } from 'three'
 import { advanceRuntimeTime, rt, setRuntimePaused } from './runtime'
-import { advanceTraffic, vehicleColliders, vehiclePose } from './traffic'
 import { boomDistance, smoothBoom } from './camera-boom'
-import { buildCityCollision } from './city-colliders'
-import { generateCityPlan } from '../world/city-plan'
-import { VEHICLE } from '../world/city-data'
 import { useKeys } from './input'
-import { EYE_HEIGHT, moveWithCollisions, type AABB } from './collision'
-import { npcColliders } from '../agents/ambient-routes'
-import { carHeight, currentFloor, doorOpenness, step, FLOORS } from './elevator'
-import { leafOffset, stepDoor } from './doors'
-import { shaftGuards } from './shaft'
-import { pickTarget, placeMovingTargets, type Interactable } from './interact'
-import { hudMirrorChanged } from './hud-mirror'
-import { cityTourLocationEvents } from './city-tour'
-import { cityTourTarget, cityTourWayfinding } from './wayfinding'
-import { minimapHeading } from './minimap'
-import {
-  ENTRANCE,
-  SHAFT,
-  carColliders,
-  hqColliders,
-  slidingDoorColliders,
-  staticColliders,
-} from '../world/layout'
+import { EYE_HEIGHT } from './collision'
 import { useHud, inputLocked } from '../ui/hud-store'
-import { AUDIO_ANCHORS, cityAudio } from '../audio'
-import { useLaser } from '../weapons/useLaser'
-import { capybaraCollider, capybaraPose } from '../animals/capybara'
-import { residentColliders } from './residents'
-import { breakableColliders } from '../destruction/collision'
+import { cityAudio } from '../audio'
 import { debugInspectionView } from './dev-view'
-import {
-  VISION_CAMERA_DATASET_KEY,
-  VISION_READY_DATASET_KEY,
-  visionCaptureSpec,
-} from './vision-capture'
-import { gameplayZoneAt, outdoorSimulationActive } from './zone'
+import { visionCaptureSpec } from './vision-capture'
+import { manhattanCollision } from '../world/manhattan-collision'
 
 const WALK_SPEED = 4.3
 const SPRINT_SPEED = 7.1
 const JUMP_VELOCITY = 6.2
-
-/** Longest frame the simulation will integrate. Beyond this we slow down time
- *  rather than let one stalled frame teleport the player through the world. */
+const FLY_SPEED = 18
+const FLY_SPRINT_SPEED = 42
+const GRAVITY = -22
 const MAX_DT = 1 / 20
-
 const HUD_INTERVAL = 0.1
 
-const CAR_DOOR_HEIGHT = SHAFT.carHeight - 0.2
-
-/** Openness above which a door counts as "moving", for audio edge detection. */
-const DOOR_EVENT_EPS = 0.02
-
 export interface GameLoopProps {
-  interactables: Interactable[]
-  /** Same quality-scaled count rendered by AmbientCrowd. */
-  ambientPedestrians: number
-  onInteract(target: Interactable): void
+  interactables?: unknown[]
+  ambientPedestrians?: number
 }
 
-export function GameLoop({ interactables, ambientPedestrians, onInteract }: GameLoopProps) {
+export function GameLoop() {
   const { camera } = useThree()
   const keys = useKeys()
   const hudTimer = useRef(0)
-  const prevCarY = useRef(carHeight(rt.elevator))
+  const boom = useRef(0)
   const forwardVec = useRef(new Vector3())
+  const lastSpacePress = useRef(0)
 
-  // Fixed-camera capture mode for the QA bridge. While active the simulation
-  // still runs (traffic, crowd, weather) but the camera never follows the
-  // player, so consecutive screenshots are comparable.
   const vision = useMemo(
     () => visionCaptureSpec(typeof location === 'undefined' ? '' : location.search),
     [],
   )
 
-  // Static geometry never changes; rebuilding it per frame would dominate the
-  // frame budget for no reason.
-  const staticWorld = useMemo<AABB[]>(() => [...staticColliders(), ...hqColliders()], [])
-
-  // 331 generated buildings, bucketed once. Feeding them all to the sweep
-  // every frame would cost more than the rest of the loop put together.
-  const city = useMemo(() => buildCityCollision(generateCityPlan().lots), [])
-  const stationaryResidents = useMemo<AABB[]>(
-    () => residentColliders(interactables),
-    [interactables],
+  // Dev inspection camera: ?spawn=<viewpoint> in dev builds parks the camera
+  // at a named Manhattan viewpoint instead of following the player.
+  const inspection = useMemo(
+    () =>
+      !vision && import.meta.env.DEV && typeof location !== 'undefined'
+        ? debugInspectionView(location.search, true)
+        : null,
+    [vision],
   )
-
-  useEffect(() => {
-    rt.interactables = interactables
-  }, [interactables])
 
   useEffect(() => {
     if (typeof location === 'undefined') return
     const spec = visionCaptureSpec(location.search)
     if (spec) {
-      // Fixed camera for the QA bridge. The runner passes the pose through
-      // the query; the pure parser keeps every number validated.
       camera.position.set(spec.position.x, spec.position.y, spec.position.z)
       camera.lookAt(spec.target.x, spec.target.y, spec.target.z)
       ;(camera as unknown as PerspectiveCamera).fov = spec.fov
       ;(camera as unknown as PerspectiveCamera).updateProjectionMatrix()
-      const pose = `${spec.position.x},${spec.position.y},${spec.position.z}|${spec.target.x},${spec.target.y},${spec.target.z}|${spec.fov}`
-      document.documentElement.dataset[VISION_CAMERA_DATASET_KEY] = pose
-      document.documentElement.dataset[VISION_READY_DATASET_KEY] = '1'
       return
     }
-    const view = debugInspectionView(location.search, import.meta.env.DEV)
-    if (!view) return
-    camera.position.set(view.position.x, view.position.y + EYE_HEIGHT, view.position.z)
-    camera.lookAt(view.target.x, view.target.y, view.target.z)
-  }, [camera])
+  }, [camera, vision])
 
-  const lastSpacePress = useRef(0)
-
-  // ── Interact key ───────────────────────────────────────────────────────────
+  // ── Keyboard shortcuts: V third person, F3 perf, double-Space fly ──────
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if (e.code === 'KeyV') {
@@ -155,315 +98,128 @@ export function GameLoop({ interactables, ambientPedestrians, onInteract }: Game
           }
           lastSpacePress.current = now
         }
+        return
       }
-      if (e.code !== 'KeyE') return
-      if (inputLocked(useHud.getState().screen)) return
-      const target = rt.target
-      if (target) onInteract(target)
+      if (e.code === 'F2') {
+        e.preventDefault()
+        if (!inputLocked(useHud.getState().screen)) useHud.getState().toggleDevTools()
+        return
+      }
     }
     window.addEventListener('keydown', onKey)
     return () => window.removeEventListener('keydown', onKey)
-  }, [onInteract])
-
-  // Scratch transforms, reused so the frame loop allocates nothing.
-  const scratch = useRef({ node: new Object3D(), matrix: new Matrix4(), spin: new Quaternion() })
-
-  // Last frame's continuous values, so audio can fire on transitions.
-  const audioEdges = useRef({ entrance: 0, carDoor: 0, travelling: false })
-  const rendererInfoReady = useRef(false)
-
-  /** Current boom length, eased between frames. Zero in first person. */
-  const boom = useRef(0)
-
-  // Laser weapon — raycasts against breakable meshes via Raycaster.intersectObjects().
-  const { update: updateLaser } = useLaser()
-
-  /**
-   * Push vehicle poses into the instance buffers.
-   *
-   * Body geometry is authored facing +z, which is also sampleLoop's zero
-   * heading, so the yaw is the heading with no correction.
-   */
-  function writeTrafficInstances(dt: number): void {
-    const { trafficModels, trafficLamps, trafficSpill } = rt.refs
-    if (!trafficLamps || !trafficSpill) return
-
-    const node = scratch.current.node
-    const cars = rt.vehicles
-
-    for (let i = 0; i < cars.length; i++) {
-      const pose = vehiclePose(cars[i])
-      const fx = Math.sin(pose.heading)
-      const fz = Math.cos(pose.heading)
-      const rx = Math.cos(pose.heading)
-      const rz = -Math.sin(pose.heading)
-
-      const model = trafficModels[i]
-      if (model) {
-        model.position.set(pose.x, 0.025, pose.z)
-        model.rotation.set(0, pose.heading, 0)
-        model.updateMatrix()
-
-        // Blender exports stable wheel node names. Discover them once per
-        // vehicle instance, then advance rotation from real travelled speed so
-        // wheel contact stays synchronized with the simulation.
-        let wheels = model.userData.productionWheelNodes as Object3D[] | undefined
-        if (!wheels) {
-          wheels = []
-          model.traverse((object) => {
-            if (object.name.startsWith('wheel_')) wheels?.push(object)
-          })
-          model.userData.productionWheelNodes = wheels
-        }
-        const wheelTurn = (cars[i].speed * dt) / 0.36
-        for (const wheel of wheels) wheel.rotateZ(-wheelTurn)
-      }
-
-      node.rotation.set(0, pose.heading, 0)
-
-      // Four compact practical lamps per car. The old full-width bars read as
-      // toy bumpers; paired fixtures align with the authored housings.
-      const nose = VEHICLE.length * 0.48
-      const lampOffset = VEHICLE.width * 0.29
-      node.scale.set(1, 1, 1)
-      for (const side of [-1, 1]) {
-        node.position.set(
-          pose.x + fx * nose + rx * lampOffset * side,
-          VEHICLE.height * 0.42,
-          pose.z + fz * nose + rz * lampOffset * side,
-        )
-        node.updateMatrix()
-        trafficLamps.setMatrixAt(i * 4 + (side < 0 ? 0 : 1), node.matrix)
-      }
-
-      const braking = cars[i].speed < cars[i].cruise - 0.2
-      node.scale.set(braking ? 1.28 : 1, braking ? 1.4 : 1, 1)
-      for (const side of [-1, 1]) {
-        node.position.set(
-          pose.x - fx * nose + rx * lampOffset * side,
-          VEHICLE.height * 0.46,
-          pose.z - fz * nose + rz * lampOffset * side,
-        )
-        node.updateMatrix()
-        trafficLamps.setMatrixAt(i * 4 + (side < 0 ? 2 : 3), node.matrix)
-      }
-      node.scale.set(1, 1, 1)
-
-      // Headlight spill, laid flat on the tarmac just ahead of the car.
-      // YXZ so the plane is tipped flat first and then yawed about world up.
-      const spillAhead = VEHICLE.length * 0.55 + 2.6
-      node.rotation.order = 'YXZ'
-      node.rotation.set(-Math.PI / 2, pose.heading, 0)
-      node.position.set(pose.x + fx * spillAhead, 0.02, pose.z + fz * spillAhead)
-      node.updateMatrix()
-      trafficSpill.setMatrixAt(i, node.matrix)
-      node.rotation.order = 'XYZ'
-    }
-
-    trafficLamps.instanceMatrix.needsUpdate = true
-    trafficSpill.instanceMatrix.needsUpdate = true
-  }
+  }, [])
 
   useFrame((state, rawDt) => {
     const dt = Math.min(rawDt, MAX_DT)
     const p = rt.player
     const hudNow = useHud.getState()
     const locked = inputLocked(hudNow.screen)
-    // Mirrored each frame so the camera step reads it without a store lookup.
     rt.thirdPerson = hudNow.thirdPerson
 
-    // Sync key state so other components can read it from rt.keys.
     Object.assign(rt.keys, keys.current)
     setRuntimePaused(locked)
     if (locked) {
-      // Clear the hook's latch too. Otherwise a key held while Esc opens the
-      // menu becomes movement again on resume without a fresh keydown.
       Object.assign(keys.current, rt.keys)
       return
     }
 
-    // R3F's clock keeps advancing behind menus. Every deterministic actor uses
-    // this clock instead so pause/resume cannot teleport it along its route.
     const simulationTime = advanceRuntimeTime(dt)
+    void simulationTime
 
-    // ── 1. Entrance doors ────────────────────────────────────────────────────
-    rt.entranceDoor = stepDoor(rt.entranceDoor, {
-      dx: p.pos.x,
-      dz: p.pos.z - ENTRANCE.z,
-      dt,
-    })
-
-    // ── 2. Elevator, with the obstruction check before the tick ─────────────
-    const carYBefore = carHeight(rt.elevator)
-    const inDoorway =
-      Math.abs(p.pos.x) < SHAFT.halfWidth + 0.35 &&
-      Math.abs(p.pos.z - SHAFT.doorZ) < 1.15 &&
-      Math.abs(p.pos.y - carYBefore) < 2.2
-
-    if (inDoorway) rt.elevator = step(rt.elevator, { type: 'OBSTRUCT' })
-    rt.elevator = step(rt.elevator, { type: 'TICK', dt })
-
-    const carY = carHeight(rt.elevator)
-    const carOpen = doorOpenness(rt.elevator)
-    rt.zone = gameplayZoneAt(p.pos, carY)
-    const outdoorActive = outdoorSimulationActive(rt.zone)
-
-    // ── 2b. Audio events, fired on edges rather than on state ────────────────
-    // The doors and the lift expose continuous values, so a level test would
-    // retrigger every frame the door is ajar. Compare against last frame.
-    const audio = audioEdges.current
-    const entranceOpen = rt.entranceDoor.openness
-    if (entranceOpen > DOOR_EVENT_EPS && audio.entrance <= DOOR_EVENT_EPS) {
-      cityAudio.play('doorOpen', AUDIO_ANCHORS.entranceDoor)
-    } else if (entranceOpen <= DOOR_EVENT_EPS && audio.entrance > DOOR_EVENT_EPS) {
-      cityAudio.play('doorClose', AUDIO_ANCHORS.entranceDoor)
-    }
-    audio.entrance = entranceOpen
-
-    if (carOpen > DOOR_EVENT_EPS && audio.carDoor <= DOOR_EVENT_EPS) {
-      cityAudio.play('doorOpen', AUDIO_ANCHORS.elevatorDoor(carY))
-    } else if (carOpen <= DOOR_EVENT_EPS && audio.carDoor > DOOR_EVENT_EPS) {
-      cityAudio.play('doorClose', AUDIO_ANCHORS.elevatorDoor(carY))
-    }
-    audio.carDoor = carOpen
-
-    const travelling = rt.elevator.phase === 'travelling'
-    if (travelling) {
-      // Re-issued while moving so the motor source tracks the rising car; the
-      // engine treats a repeat as a move, not as a restart.
-      cityAudio.play('elevatorStart', AUDIO_ANCHORS.elevatorDoor(carY))
-    } else if (audio.travelling) {
-      cityAudio.play('elevatorStop', AUDIO_ANCHORS.elevatorDoor(carY))
-      cityAudio.play('elevatorArrive', AUDIO_ANCHORS.elevatorDoor(carY))
-    }
-    audio.travelling = travelling
-
-    // ── 3. Traffic, before collision so the boxes match the visible cars ─────
-    if (outdoorActive) {
-      advanceTraffic(rt.vehicles, dt, p.pos)
-      writeTrafficInstances(dt)
+    // ── Cinematic intro: advance the clock, freeze the player, let
+    //    IntroCamera own the camera until the handover. ─────────────────────
+    if (rt.introSeconds < 4.6) {
+      rt.introSeconds += dt
+      return
     }
 
-    // Sample once so the visible animal and its moving collision box share the
-    // exact same route state.
-    if (outdoorActive) rt.capybara = capybaraPose(simulationTime)
+    // ── Ground height under the player ────────────────────────────────────
+    const ground = manhattanCollision.groundHeightAt(p.pos.x, p.pos.z)
 
-    // ── 4. Dynamic collision ─────────────────────────────────────────────────
-    const colliders: AABB[] = [
-      ...staticWorld,
-      ...stationaryResidents,
-      ...breakableColliders(rt.destroyed),
-      ...city.near(p.pos),
-      ...(outdoorActive ? vehicleColliders(rt.vehicles) : []),
-      ...(outdoorActive ? npcColliders(simulationTime, ambientPedestrians) : []),
-      ...(outdoorActive ? [capybaraCollider(rt.capybara)] : []),
-      ...carColliders(carY),
-      ...shaftGuards(carY, carOpen),
-      ...slidingDoorColliders(
-        0,
-        0,
-        ENTRANCE.z,
-        ENTRANCE.halfWidth,
-        ENTRANCE.height,
-        rt.entranceDoor.openness,
-      ),
-      ...slidingDoorColliders(0, carY, SHAFT.doorZ, SHAFT.halfWidth, CAR_DOOR_HEIGHT, carOpen),
-    ]
-
-    // ── 5. Input → desired horizontal & vertical motion ──────────────────────
+    // ── Input → motion ────────────────────────────────────────────────────
     let dx = 0
     let dz = 0
-    if (!locked) {
-      const k = keys.current
-      const fwd = (k.forward ? 1 : 0) - (k.back ? 1 : 0)
-      const strafe = (k.right ? 1 : 0) - (k.left ? 1 : 0)
+    const k = keys.current
+    const fwd = (k.forward ? 1 : 0) - (k.back ? 1 : 0)
+    const strafe = (k.right ? 1 : 0) - (k.left ? 1 : 0)
 
-      if (fwd !== 0 || strafe !== 0) {
-        camera.getWorldDirection(forwardVec.current)
-        const f = forwardVec.current
-        f.y = 0
-        f.normalize()
-        // Right-hand vector on the ground plane.
-        const rx = -f.z
-        const rz = f.x
+    if (fwd !== 0 || strafe !== 0) {
+      camera.getWorldDirection(forwardVec.current)
+      const f = forwardVec.current
+      f.y = 0
+      f.normalize()
+      const rx = -f.z
+      const rz = f.x
+      let mx = f.x * fwd + rx * strafe
+      let mz = f.z * fwd + rz * strafe
+      const len = Math.hypot(mx, mz) || 1
+      mx /= len
+      mz /= len
 
-        let mx = f.x * fwd + rx * strafe
-        let mz = f.z * fwd + rz * strafe
-        const len = Math.hypot(mx, mz) || 1
-        mx /= len
-        mz /= len
+      const speed =
+        (p.flying ? (k.sprint ? FLY_SPRINT_SPEED : FLY_SPEED) : k.sprint ? SPRINT_SPEED : WALK_SPEED) *
+        rt.devSpeed
+      dx = mx * speed * dt
+      dz = mz * speed * dt
+    }
 
-        const speed = p.flying ? (k.sprint ? 36 : 18) : k.sprint ? SPRINT_SPEED : WALK_SPEED
-        dx = mx * speed * dt
-        dz = mz * speed * dt
+    if (p.flying) {
+      const flySpeed = (k.sprint ? FLY_SPRINT_SPEED : FLY_SPEED) * rt.devSpeed
+      let dy = 0
+      if (k.jump) dy += flySpeed * dt
+      if (k.crouch) dy -= flySpeed * dt
+      const moved = manhattanCollision.move(p.pos, dx, dz)
+      p.pos.x = moved.x
+      p.pos.z = moved.z
+      p.pos.y += dy
+      p.velocityY = 0
+      p.grounded = false
+      if (ground !== null && p.pos.y < ground + 0.1) {
+        p.pos.y = ground + 0.1
+        p.grounded = true
       }
-
-      if (p.flying) {
-        const flySpeed = k.sprint ? 36 : 18
-        let dy = 0
-        if (k.jump) dy += flySpeed * dt     // Space = ascend
-        if (k.crouch) dy -= flySpeed * dt    // Ctrl/C = descend
-        p.pos.x += dx
-        p.pos.y += dy
-        p.pos.z += dz
-        // Clamp to ground — never clip below terrain
-        if (p.pos.y < 0.1) p.pos.y = 0.1
-        p.velocityY = 0
+    } else {
+      if (k.jump && p.grounded) {
+        p.velocityY = JUMP_VELOCITY
         p.grounded = false
-      } else {
-        if (k.jump && p.grounded) {
-          p.velocityY = JUMP_VELOCITY
+      }
+      // Horizontal move, sliding along building walls.
+      const moved = manhattanCollision.move(p.pos, dx, dz)
+      p.pos.x = moved.x
+      p.pos.z = moved.z
+
+      // Vertical integration against the island surface.
+      let vy = p.velocityY + GRAVITY * dt
+      let ny = p.pos.y + vy * dt
+      if (ground !== null) {
+        if (ny <= ground) {
+          ny = ground
+          vy = 0
+          p.grounded = true
+        } else {
           p.grounded = false
         }
-
-        // ── 6. Move ──────────────────────────────────────────────────────────────
-        const result = moveWithCollisions(p.pos, { x: dx, z: dz }, p.velocityY, dt, colliders)
-        p.pos = result.position
-        p.velocityY = result.velocityY
-        p.grounded = result.grounded
+      } else if (ny < -200) {
+        // Fell off the island edge — pull back to the last surface.
+        ny = 12.4
+        vy = 0
+        p.grounded = true
       }
+      p.pos.y = ny
+      p.velocityY = vy
     }
 
-    // Location objectives are pure and idempotent. Once a step advances,
-    // repeated frames in the same zone return the exact same tour object.
-    const hud = useHud.getState()
-    for (const event of cityTourLocationEvents(p.pos)) hud.advanceCityTour(event)
+    // ── Footsteps ─────────────────────────────────────────────────────────
+    cityAudio.update(p, dt)
 
-    // ── 7. Carry the player with the car ─────────────────────────────────────
-    // Explicit rather than relying on the floor collider to push: at 25 m/s the
-    // car rises further per frame than the step height, so support alone would
-    // drop the player through the floor.
-    const insideCar =
-      Math.abs(p.pos.x) < SHAFT.halfWidth &&
-      p.pos.z < SHAFT.doorZ &&
-      p.pos.z > SHAFT.doorZ - SHAFT.carDepth &&
-      p.pos.y >= carYBefore - 0.6 &&
-      p.pos.y < carYBefore + SHAFT.carHeight
-
-    if (insideCar) {
-      const lift = carY - prevCarY.current
-      if (lift !== 0) {
-        p.pos.y += lift
-        // Cancel accumulated fall speed, or the player "lands" hard on arrival.
-        if (lift > 0) p.velocityY = 0
-      }
-    }
-    prevCarY.current = carY
-    rt.zone = gameplayZoneAt(p.pos, carY)
-
-    // ── 8. Camera follows the body ───────────────────────────────────────────
-    if (!vision) {
+    // ── Camera ────────────────────────────────────────────────────────────
+    if (!vision && !inspection) {
       camera.position.set(p.pos.x, p.pos.y + EYE_HEIGHT, p.pos.z)
-
       if (rt.thirdPerson) {
-        // PointerLockControls owns rotation; the boom only moves the camera back
-        // along the direction it is already looking, so both modes share one
-        // aiming model and switching does not change where you are pointing.
         camera.getWorldDirection(forwardVec.current)
         const eye = { x: p.pos.x, y: p.pos.y + EYE_HEIGHT, z: p.pos.z }
-        // Swept against the same colliders that stop the player — a boom tested
-        // against a different set will eventually disagree with the world.
-        const wanted = boomDistance(eye, forwardVec.current, colliders)
+        const wanted = boomDistance(eye, forwardVec.current, [])
         boom.current = smoothBoom(boom.current, wanted, dt)
         camera.position.addScaledVector(forwardVec.current, -boom.current)
       } else if (boom.current !== 0) {
@@ -471,65 +227,21 @@ export function GameLoop({ interactables, ambientPedestrians, onInteract }: Game
       }
     }
 
-    // ── 8b. Laser weapon raycasting + heat ───────────────────────────────────
-    updateLaser(camera, dt)
+    p.forward.x = forwardVec.current.x
+    p.forward.z = forwardVec.current.z
+    const flen = Math.hypot(p.forward.x, p.forward.z) || 1
+    p.forward.x /= flen
+    p.forward.z /= flen
 
-    // ── 9. Interaction targeting ─────────────────────────────────────────────
-    camera.getWorldDirection(forwardVec.current)
-    const fx = forwardVec.current.x
-    const fz = forwardVec.current.z
-    const flen = Math.hypot(fx, fz) || 1
-    p.forward.x = fx / flen
-    p.forward.z = fz / flen
-
-    placeMovingTargets(rt.interactables, carY)
-    rt.target = locked
-      ? null
-      : pickTarget(rt.interactables, {
-          px: p.pos.x,
-          py: p.pos.y + EYE_HEIGHT,
-          pz: p.pos.z,
-          fx: p.forward.x,
-          fz: p.forward.z,
-        })
-
-    // ── 10. Drive the meshes the simulation owns ──────────────────────────────
-    const refs = rt.refs
-    if (refs.car) refs.car.position.y = carY
-    if (refs.capybara) {
-      refs.capybara.position.set(rt.capybara.x, 0, rt.capybara.z)
-      refs.capybara.rotation.y = rt.capybara.heading
-    }
-
-    // leafOffset is the shared source of truth with slidingDoorColliders, so
-    // what you see and what blocks you cannot disagree.
-    const carLeaf = leafOffset(SHAFT.halfWidth, carOpen)
-    if (refs.carDoorLeft) refs.carDoorLeft.position.x = -carLeaf
-    if (refs.carDoorRight) refs.carDoorRight.position.x = carLeaf
-
-    const entLeaf = leafOffset(ENTRANCE.halfWidth, rt.entranceDoor.openness)
-    if (refs.entranceLeft) refs.entranceLeft.position.x = -entLeaf
-    if (refs.entranceRight) refs.entranceRight.position.x = entLeaf
-
-    // ── 11. Audio listener ───────────────────────────────────────────────────
-    // Must run after the move resolves: footstep cadence is derived from the
-    // position delta, so an earlier call would step to last frame's position.
-    cityAudio.update(p, dt)
-
-    // ── 12. Perf sampling + throttled HUD mirror ─────────────────────────────
+    // ── Perf sampling + throttled HUD mirror ──────────────────────────────
     const perf = rt.perf
     const rendererInfo = state.gl.info
-    let frameCalls = 0
-    let frameTriangles = 0
-    if (!rendererInfoReady.current) {
+    if (rendererInfo.autoReset) {
       rendererInfo.autoReset = false
-      rendererInfo.reset()
-      rendererInfoReady.current = true
-    } else {
-      frameCalls = rendererInfo.render.calls
-      frameTriangles = rendererInfo.render.triangles
-      rendererInfo.reset()
     }
+    const frameCalls = rendererInfo.render.calls
+    const frameTriangles = rendererInfo.render.triangles
+    rendererInfo.reset()
     perf.frames += 1
     perf.accum += rawDt
     perf.frameTimes.push(rawDt * 1000)
@@ -538,14 +250,11 @@ export function GameLoop({ interactables, ambientPedestrians, onInteract }: Game
       perf.fps = perf.frames / perf.accum
       perf.frameMs = (perf.accum / perf.frames) * 1000
       const sortedFrameTimes = [...perf.frameTimes].sort((left, right) => left - right)
-      const percentile99 = sortedFrameTimes[
-        Math.min(sortedFrameTimes.length - 1, Math.floor(sortedFrameTimes.length * 0.99))
-      ] ?? 0
+      const percentile99 =
+        sortedFrameTimes[Math.min(sortedFrameTimes.length - 1, Math.floor(sortedFrameTimes.length * 0.99))] ?? 0
       perf.low1Fps = percentile99 > 0 ? 1000 / percentile99 : 0
       perf.frames = 0
       perf.accum = 0
-
-      // Read the renderer that is actually drawing this frame.
       perf.calls = frameCalls
       perf.triangles = frameTriangles
       perf.geometries = rendererInfo.memory.geometries
@@ -557,14 +266,6 @@ export function GameLoop({ interactables, ambientPedestrians, onInteract }: Game
     if (hudTimer.current >= HUD_INTERVAL) {
       hudTimer.current = 0
       const hud = useHud.getState()
-      const floor = currentFloor(rt.elevator)
-      const label = floor
-        ? FLOORS[floor].label
-        : rt.elevator.phase === 'travelling'
-          ? '··'
-          : hud.floorLabel
-      const tourGuidance = cityTourWayfinding(hud.cityTour, p.pos, p.forward)
-      const tourTarget = cityTourTarget(hud.cityTour, p.pos)
       const documentRoot = document.documentElement
       documentRoot.dataset.perfFps = perf.fps.toFixed(2)
       documentRoot.dataset.perfLow1Fps = perf.low1Fps.toFixed(2)
@@ -573,31 +274,28 @@ export function GameLoop({ interactables, ambientPedestrians, onInteract }: Game
       documentRoot.dataset.perfGeometries = String(perf.geometries)
       documentRoot.dataset.perfTextures = String(perf.textures)
       documentRoot.dataset.perfPrograms = String(perf.programs)
+      documentRoot.dataset.runtimePlayerPosition = [
+        p.pos.x,
+        p.pos.y,
+        p.pos.z,
+      ]
+        .map((value) => value.toFixed(3))
+        .join(',')
 
       const next = {
-        promptLabel: rt.target?.label ?? null,
-        promptKind: rt.target?.kind ?? null,
-        promptPayload: rt.target?.payload ?? null,
-        floorLabel: label,
-        elevatorPhase: rt.elevator.phase,
-        gameplayZone: rt.zone,
         fps: Math.round(perf.fps),
         frameMs: Math.round(perf.frameMs * 10) / 10,
-        tourBearing: tourGuidance?.bearing ?? null,
-        tourDistance: tourGuidance?.distance ?? null,
         mapPlayerX: Math.round(p.pos.x * 4) / 4,
         mapPlayerZ: Math.round(p.pos.z * 4) / 4,
-        mapHeading: Math.round(minimapHeading(p.forward) / 5) * 5,
-        mapTargetX: tourTarget?.x ?? null,
-        mapTargetZ: tourTarget?.z ?? null,
-        weaponHeat: Math.round(p.heat * 10) / 10,
-        weaponOverheated: p.overheated,
-        weaponFiring: p.firing,
+        mapHeading: Math.round((Math.atan2(p.forward.x, p.forward.z) * 180) / Math.PI),
       }
-
-      // Only write when something actually changed — zustand notifies on every
-      // set, and at 10 Hz an unconditional write re-renders the HUD forever.
-      if (hudMirrorChanged(next, hud)) {
+      const changed =
+        next.fps !== hud.fps ||
+        next.frameMs !== hud.frameMs ||
+        next.mapPlayerX !== hud.mapPlayerX ||
+        next.mapPlayerZ !== hud.mapPlayerZ ||
+        next.mapHeading !== hud.mapHeading
+      if (changed) {
         useHud.setState(next)
       }
     }

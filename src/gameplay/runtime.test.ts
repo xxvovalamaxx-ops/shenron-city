@@ -14,26 +14,11 @@ describe('authoritative runtime pause', () => {
       sprint: true,
       jump: true,
     })
-    rt.player.firing = true
-    rt.player.aimPoint = { x: 1, y: 2, z: 3 }
-    rt.player.heat = 47
-    rt.player.overheated = true
-    rt.target = {
-      id: 'test-target',
-      kind: 'secretary',
-      x: 0,
-      y: 0,
-      z: 0,
-      label: 'Test',
-      range: 1,
-    }
   })
 
   afterEach(() => {
     setRuntimePaused(true)
     rt.clock.elapsed = 0
-    rt.player.heat = 0
-    rt.player.overheated = false
   })
 
   it('clears every latched action on the transition into pause', () => {
@@ -42,31 +27,47 @@ describe('authoritative runtime pause', () => {
     expect(rt.paused).toBe(true)
     expect(rt.pauseEpoch).toBe(21)
     expect(Object.values(rt.keys).every((pressed) => !pressed)).toBe(true)
-    expect(rt.player.firing).toBe(false)
-    expect(rt.player.aimPoint).toBeNull()
-    expect(rt.target).toBeNull()
-    expect(rt.player.heat).toBe(47)
-    expect(rt.player.overheated).toBe(true)
   })
 
   it('increments the pause epoch once per transition rather than once per frame', () => {
     setRuntimePaused(true)
     setRuntimePaused(true)
     expect(rt.pauseEpoch).toBe(21)
-
-    setRuntimePaused(false)
-    setRuntimePaused(true)
-    expect(rt.pauseEpoch).toBe(22)
   })
 
-  it('advances only during active simulation and never catches up paused time', () => {
-    expect(advanceRuntimeTime(0.25)).toBe(12.25)
-
+  it('does not clear keys or bump the epoch for the resume transition', () => {
     setRuntimePaused(true)
-    expect(advanceRuntimeTime(60)).toBe(12.25)
-
+    rt.keys.forward = true
     setRuntimePaused(false)
-    expect(advanceRuntimeTime(0.5)).toBe(12.75)
-    expect(advanceRuntimeTime(Number.POSITIVE_INFINITY)).toBe(12.75)
+
+    expect(rt.paused).toBe(false)
+    expect(rt.pauseEpoch).toBe(21)
+    expect(rt.keys.forward).toBe(true)
+  })
+})
+
+describe('runtime clock', () => {
+  it('advances while running and freezes while paused', () => {
+    rt.paused = false
+    rt.clock.elapsed = 5
+    expect(advanceRuntimeTime(0.25)).toBe(5.25)
+    setRuntimePaused(true)
+    expect(advanceRuntimeTime(0.25)).toBe(5.25)
+  })
+
+  it('refuses non-finite and non-positive steps', () => {
+    rt.paused = false
+    rt.clock.elapsed = 1
+    expect(advanceRuntimeTime(Number.NaN)).toBe(1)
+    expect(advanceRuntimeTime(-1)).toBe(1)
+    expect(advanceRuntimeTime(0)).toBe(1)
+  })
+})
+
+describe('dev state', () => {
+  it('starts with the intro closed and normal speed', () => {
+    expect(rt.introSeconds).toBeGreaterThanOrEqual(100)
+    expect(rt.devSpeed).toBe(1)
+    expect(rt.spawns).toEqual([])
   })
 })

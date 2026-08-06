@@ -20,11 +20,7 @@
  * So scalars degrade individually and the position degrades whole.
  */
 import { z } from 'zod'
-import { CITY_TOUR_STEPS, INITIAL_CITY_TOUR, type CityTourState } from './city-tour'
-import { PLAYER_RADIUS, collidesAt, type Vec3 } from './collision'
-import { FLOORS, type FloorId } from './elevator'
-import { CITY_GROUND } from '../world/city-data'
-import { HQ, LOBBY, SHAFT, SPAWN, hqColliders, staticColliders } from '../world/layout'
+import type { Vec3 } from './collision'
 import type { QualityPreset } from '../world/palette'
 
 // ── Public shape ─────────────────────────────────────────────────────────────
@@ -47,7 +43,6 @@ export interface SaveData {
   pos: Vec3
   /** Camera forward on the horizontal plane, normalised. */
   forward: { x: number; z: number }
-  tour: CityTourState
   settings: SavedSettings
 }
 
@@ -94,93 +89,45 @@ const FALLBACK_SETTINGS: SavedSettings = { quality: 'high', sensitivity: 1, fov:
 /** Spawn faces -Z, matching `rt.player.forward` in runtime.ts. */
 const FALLBACK_FORWARD = { x: 0, z: -1 } as const
 
+/** Default spawn in midtown Manhattan. Kept in sync with manhattan-collision.ts. */
+const MANHATTAN_FALLBACK_POS = { x: 400, y: 12.4, z: 400 } as const
+
 /**
  * A fresh, always-safe starting state.
- *
- * A function rather than an exported constant because the frame loop mutates
- * the position it is handed in place — GameLoop does `p.pos.y += lift` while
- * the car moves — so a shared default object would be silently corrupted by the
- * first lift ride and every later "default" would start 180 m up.
  */
 export function defaultSave(): SaveData {
   return {
-    pos: { x: SPAWN.x, y: SPAWN.y, z: SPAWN.z },
+    pos: { ...MANHATTAN_FALLBACK_POS },
     forward: { ...FALLBACK_FORWARD },
-    tour: { ...INITIAL_CITY_TOUR },
     settings: { ...FALLBACK_SETTINGS },
   }
 }
 
 // ── Where a save may put the player ──────────────────────────────────────────
 
-interface FloorBand {
-  readonly floor: FloorId
-  readonly min: number
-  readonly max: number
-}
-
 /**
- * The habitable vertical bands, with 170 m of elevator shaft between them.
- *
- * The lobby band's ceiling is a sanity bound rather than a physical one: the
- * plaza is open sky, but nothing outdoors is climbable at step height, so a
- * position above the tallest interior ceiling plus a jump did not come from
- * walking there.
+ * The island extents (LAND_context bounds, padded). A restored position must
+ * sit inside the playable world or the player would spawn over open water.
  */
-const FLOOR_BANDS: readonly FloorBand[] = [
-  { floor: 'lobby', min: FLOORS.lobby.y - 0.6, max: FLOORS.lobby.y + LOBBY.ceiling + 2.5 },
-  { floor: 'hq', min: FLOORS.hq.y - 0.6, max: FLOORS.hq.y + HQ.ceiling },
-]
-
-/**
- * The car is the only floor inside the shaft, and the elevator is not
- * persisted. Restoring a position saved mid-ride would drop the player down a
- * 180 m hole, so the whole footprint is refused and the spawn is used instead —
- * far cheaper than persisting the lift state machine and re-deriving whether
- * the car is where the player left it.
- */
-function inElevatorShaft(pos: Vec3): boolean {
-  return (
-    Math.abs(pos.x) <= SHAFT.halfWidth + PLAYER_RADIUS &&
-    pos.z <= SHAFT.doorZ + PLAYER_RADIUS &&
-    pos.z >= SHAFT.backZ - PLAYER_RADIUS
-  )
-}
+const ISLAND_BOUNDS = { minX: -14000, maxX: 17000, minZ: -23000, maxZ: 17000 } as const
+/** Walkable or flyable vertical range — the island surface to above the skyline. */
+const ISLAND_Y_RANGE = { min: -40, max: 800 } as const
 
 /**
  * May this position be restored?
  *
  * Rejects rather than clamps. Clamping an absurd coordinate to the world edge
  * produces a plausible-looking number that is just as likely to be inside a
- * storefront; the spawn point is the only position known to be safe.
+ * building; the spawn point is the only position known to be safe.
  */
 export function isRestorablePosition(pos: Vec3): boolean {
   if (!Number.isFinite(pos.x) || !Number.isFinite(pos.y) || !Number.isFinite(pos.z)) {
     return false
   }
-  if (Math.abs(pos.x - CITY_GROUND.x) > CITY_GROUND.width / 2) return false
-  if (Math.abs(pos.z - CITY_GROUND.z) > CITY_GROUND.depth / 2) return false
-  if (!FLOOR_BANDS.some((band) => pos.y >= band.min && pos.y <= band.max)) return false
-  if (inElevatorShaft(pos)) return false
-
-  // A valid coordinate is still unsafe if it restores inside authored world
-  // geometry. Reject the whole position rather than leaving the player wedged
-  // in a storefront, desk, wall, or prop on the first frame.
-  const solids = floorAtPosition(pos) === 'hq' ? hqColliders() : staticColliders()
-  return !collidesAt(pos, solids)
-}
-
-/**
- * Which elevator floor a restored position stands on.
- *
- * Derived, not persisted. A stored floor could contradict the stored position,
- * and that pair is exactly the sort of thing that half-applies. The bands are
- * disjoint and shaft positions are already refused, so this is unambiguous for
- * anything that passes `isRestorablePosition`.
- */
-export function floorAtPosition(pos: Vec3): FloorId {
-  const band = FLOOR_BANDS.find((b) => pos.y >= b.min && pos.y <= b.max)
-  return band ? band.floor : 'lobby'
+  if (pos.x < ISLAND_BOUNDS.minX || pos.x > ISLAND_BOUNDS.maxX) return false
+  if (pos.z < ISLAND_BOUNDS.minZ || pos.z > ISLAND_BOUNDS.maxZ) return false
+  if (pos.y < ISLAND_Y_RANGE.min || pos.y > ISLAND_Y_RANGE.max) return false
+  return true
 }
 
 // ── Stored payload ───────────────────────────────────────────────────────────
@@ -203,7 +150,6 @@ function section(payload: unknown, key: string): unknown {
 
 const StoredPos = z.object({ x: z.number(), y: z.number(), z: z.number() })
 const StoredForward = z.object({ x: z.number(), z: z.number() })
-const StoredTour = z.object({ completed: z.number() })
 
 /**
  * Not `z.coerce`, unlike the Mission Control schemas. Those parse a foreign
@@ -282,7 +228,6 @@ export function encodeSave(data: SaveData): string {
     v: SAVE_VERSION,
     pos: { x: data.pos.x, y: data.pos.y, z: data.pos.z },
     forward: { x: data.forward.x, z: data.forward.z },
-    tour: { completed: data.tour.completed },
     settings: {
       quality: data.settings.quality,
       sensitivity: data.settings.sensitivity,
@@ -315,7 +260,6 @@ export function decodeSave(raw: string | null | undefined): LoadResult {
   const data: SaveData = {
     pos: readPos(section(payload, 'pos'), repaired),
     forward: readForward(section(payload, 'forward'), repaired),
-    tour: readTour(section(payload, 'tour'), repaired),
     settings: readSettings(section(payload, 'settings'), repaired),
   }
   return { data, fault: null, repaired }
@@ -332,7 +276,7 @@ function readPos(input: unknown, repaired: string[]): Vec3 {
     return { x, y, z }
   }
   repaired.push('pos')
-  return { x: SPAWN.x, y: SPAWN.y, z: SPAWN.z }
+  return { ...MANHATTAN_FALLBACK_POS }
 }
 
 function readForward(input: unknown, repaired: string[]): { x: number; z: number } {
@@ -348,18 +292,6 @@ function readForward(input: unknown, repaired: string[]): { x: number; z: number
   }
   repaired.push('forward')
   return { ...FALLBACK_FORWARD }
-}
-
-function readTour(input: unknown, repaired: string[]): CityTourState {
-  const parsed = StoredTour.safeParse(input)
-  const completed = parsed.success ? Math.floor(parsed.data.completed) : Number.NaN
-  // Refused rather than clamped: clamping an oversized count to the route
-  // length would hand the player a completed tour they never walked.
-  if (!Number.isFinite(completed) || completed < 0 || completed > CITY_TOUR_STEPS.length) {
-    repaired.push('tour')
-    return { ...INITIAL_CITY_TOUR }
-  }
-  return { completed }
 }
 
 function readSettings(input: unknown, repaired: string[]): SavedSettings {

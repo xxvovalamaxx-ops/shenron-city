@@ -1,5 +1,5 @@
 /**
- * Title and pause/settings menus for the standalone game.
+ * Title, loading and pause screens for the Manhattan build.
  */
 import { useEffect } from 'react'
 import { useGame } from '../adapter/store'
@@ -13,11 +13,6 @@ export interface Settings {
   volume: number
 }
 
-/**
- * `?quality=low|medium|high` overrides the default preset. Used for measuring
- * each preset on the target machine, and as an escape hatch when a driver
- * chokes on postprocessing.
- */
 function initialQuality(): QualityPreset {
   const q = new URLSearchParams(location.search).get('quality')
   return q === 'low' || q === 'medium' || q === 'high' ? q : 'high'
@@ -35,48 +30,44 @@ const CONTROLS: [string, string][] = [
   ['Mouse', 'Look'],
   ['Shift', 'Sprint'],
   ['Space', 'Jump'],
-  ['E', 'Interact'],
-  ['Esc', 'Release cursor / menu'],
+  ['Double-Space', 'Fly / land'],
+  ['V', 'First / third person'],
+  ['F2', 'Dev tools'],
   ['F3', 'Performance overlay'],
+  ['Esc', 'Release cursor / menu'],
 ]
 
 export function TitleScreen({ onStart }: { onStart(): void }) {
   const snapshot = useGame((s) => s.snapshot)
 
   return (
-    <div className="modal">
+    <div className="modal title-backdrop">
       <div className="card title-card">
-        <h1>Shenzhen City</h1>
+        <div className="logo-row">
+          <span className="title-logo">SHENZHEN</span>
+          <span className="title-logo-accent">CITY</span>
+        </div>
         <p className="sub">
-          A living Los Angeles-inspired district after dark. Walk Dragon Boulevard,
-          visit the night market, meet the locals, then enter Shenron headquarters.
+          A streamed Manhattan after dark. Walk the grid, take in the skyline, and
+          make the city yours — thousands of buildings, one island, no limits.
         </p>
 
-        <div
-          className="chip"
-          style={{ display: 'inline-flex', marginBottom: 4 }}
-          role="status"
-        >
+        <div className="chip" style={{ display: 'inline-flex', marginBottom: 4 }} role="status">
           <i className="dot standalone" />
           Offline city · {snapshot.agents.length} local characters · no PC connection
         </div>
 
-        <p className="notice safe" style={{ textAlign: 'left' }}>
-          This build does not contact Mission Control, your filesystem, local services,
-          model providers, telemetry, or any external host.
-        </p>
-
         <div className="controls">
           {CONTROLS.map(([key, what]) => (
             <div key={key}>
-              <span>{key.padEnd(9, ' ')}</span> {what}
+              <span>{key.padEnd(13, ' ')}</span> {what}
             </div>
           ))}
         </div>
 
         <div className="actions">
-          <button className="primary" onClick={onStart}>
-            Enter Shenzhen City
+          <button className="primary enter-button" onClick={onStart}>
+            ENTER MANHATTAN
           </button>
         </div>
       </div>
@@ -179,11 +170,16 @@ export function PauseMenu({
 
 export function LoadingScreen({ progress }: { progress: number }) {
   return (
-    <div className="modal">
-      <div className="card title-card">
-        <h1>Shenzhen City</h1>
-        <p className="sub">Lighting the city…</p>
-        <div className="bar" style={{ height: 4 }}>
+    <div className="modal loading-backdrop">
+      <div className="loading-center">
+        <div className="loading-logo-wrap">
+          <div className="loading-logo" aria-hidden="true">
+            <span className="loading-logo-inner">SH</span>
+          </div>
+        </div>
+        <h1 className="loading-title">SHENZHEN CITY</h1>
+        <p className="sub">Streaming Manhattan…</p>
+        <div className="bar" style={{ height: 4, width: 320 }}>
           <i style={{ width: `${Math.round(progress * 100)}%` }} />
         </div>
       </div>

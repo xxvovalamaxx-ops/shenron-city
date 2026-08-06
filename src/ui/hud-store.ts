@@ -6,93 +6,48 @@
  * split exists so React never re-renders at frame rate.
  */
 import { create } from 'zustand'
-import type { InteractKind } from '../gameplay/interact'
-import type { GameplayZone } from '../gameplay/zone'
-import { rt } from '../gameplay/runtime'
-import type { CharacterId } from '../agents/dialogue'
-import {
-  advanceCityTour,
-  INITIAL_CITY_TOUR,
-  type CityTourEvent,
-  type CityTourState,
-} from '../gameplay/city-tour'
 
-export type Screen = 'loading' | 'title' | 'playing' | 'paused' | 'dialogue' | 'office'
+export type Screen = 'loading' | 'title' | 'playing' | 'paused'
 
 export interface HudState {
   screen: Screen
-  /** Prompt text for the thing currently in front of the player. */
+  /** Transient prompt text (fly-mode hints, future interactions). */
   promptLabel: string | null
-  promptKind: InteractKind | null
-  promptPayload: string | null
-  floorLabel: string
-  elevatorPhase: string
-  gameplayZone: GameplayZone
   fps: number
   frameMs: number
-  tourBearing: number | null
-  tourDistance: number | null
   mapPlayerX: number
   mapPlayerZ: number
   mapHeading: number
-  mapTargetX: number | null
-  mapTargetZ: number | null
   showPerf: boolean
   /** Camera mode. Lives here, not on rt, so components re-render on toggle. */
   thirdPerson: boolean
-  /** Which agent's office panel is open. */
-  openAgentId: string | null
-  /** Which local scripted character owns the dialogue panel. */
-  openCharacterId: CharacterId
-  /** Progress through the first complete playable route. */
-  cityTour: CityTourState
-  /** Laser weapon HUD state. */
-  weaponHeat: number
-  weaponOverheated: boolean
-  weaponFiring: boolean
+  /** Dev tools overlay. */
+  devToolsOpen: boolean
 
   set<K extends keyof HudState>(key: K, value: HudState[K]): void
   setScreen(s: Screen): void
   togglePerf(): void
   toggleThirdPerson(): void
-  advanceCityTour(event: CityTourEvent): void
+  toggleDevTools(): void
 }
 
 export const useHud = create<HudState>((set) => ({
   screen: 'loading',
   promptLabel: null,
-  promptKind: null,
-  promptPayload: null,
-  floorLabel: 'L',
-  elevatorPhase: 'open',
-  gameplayZone: rt.zone,
   fps: 0,
   frameMs: 0,
-  tourBearing: null,
-  tourDistance: null,
   mapPlayerX: 0,
   mapPlayerZ: 0,
   mapHeading: 0,
-  mapTargetX: null,
-  mapTargetZ: null,
   showPerf: false,
-  thirdPerson: false,
-  openAgentId: null,
-  openCharacterId: 'iris',
-  cityTour: INITIAL_CITY_TOUR,
-  weaponHeat: 0,
-  weaponOverheated: false,
-  weaponFiring: false,
+  thirdPerson: true,
+  devToolsOpen: false,
 
   set: (key, value) => set({ [key]: value } as Pick<HudState, typeof key>),
   setScreen: (screen) => set({ screen }),
   togglePerf: () => set((s) => ({ showPerf: !s.showPerf })),
   toggleThirdPerson: () => set((s) => ({ thirdPerson: !s.thirdPerson })),
-  advanceCityTour: (event) =>
-    set((state) => {
-      const next = advanceCityTour(state.cityTour, event)
-      return next === state.cityTour ? state : { cityTour: next }
-    }),
+  toggleDevTools: () => set((s) => ({ devToolsOpen: !s.devToolsOpen })),
 }))
 
 /** Screens during which the world must not accept movement input. */

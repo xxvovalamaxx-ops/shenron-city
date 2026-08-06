@@ -15,7 +15,7 @@
     "typecheck": "tsc --noEmit",
     "build": "tsc --noEmit && vite build",
     "verify:standalone": "node scripts/verify-standalone-build.mjs",
-    "verify:assets": "node scripts/verify-capybara-asset.mjs && node scripts/verify-service-android-asset.mjs && node scripts/verify-kenney-citizen-asset.mjs && node scripts/verify-quaternius-hero-asset.mjs && node scripts/verify-city-assets.mjs && node scripts/verify-environment-authoring.mjs && node scripts/verify-runtime-meadow-assets.mjs && node scripts/verify-night-environment-asset.mjs && node scripts/verify-japanese-forest-shrine-source.mjs",
+    "verify:assets": "node scripts/verify-manhattan-assets.mjs && node scripts/verify-environment-authoring.mjs && node scripts/verify-night-environment-asset.mjs && node scripts/verify-japanese-forest-shrine-source.mjs",
     "catalog:public-library": "node scripts/assets/catalog-public-library.mjs",
     "verify:public-library": "node scripts/assets/verify-public-library.mjs",
     "inspect:production-assets": "node scripts/assets/inspect-gltf.mjs",
@@ -24,6 +24,7 @@
     "report:production-assets": "node scripts/assets/report-scene-assets.mjs",
     "check": "npm run lint && npm run typecheck && npm test && npm run verify:assets && npm run verify:production-manifest && npm run verify:public-library && npm run audit:production-scene && npm run build && npm run verify:standalone && npm audit --audit-level=high",
     "preview": "vite preview",
+    "smoke": "node scripts/smoke-manhattan.mjs",
     "test": "vitest run",
     "test:watch": "vitest"
   },
@@ -35,6 +36,7 @@
     "react": "~19.2.8",
     "react-dom": "~19.2.8",
     "three": "^0.185.1",
+    "three-mesh-bvh": "^0.8.3",
     "zod": "^4.4.3",
     "zustand": "^5.0.14"
   },

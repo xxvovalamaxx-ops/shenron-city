@@ -23,8 +23,6 @@ import {
   type FootstepState,
   type ZoneMix,
 } from './mix'
-import { ENTRANCE, HQ, SHAFT, SPAWN } from '../world/layout'
-import { MARKET_KEEPER } from '../world/city-data'
 import type { Vec3 } from '../gameplay/collision'
 
 const at = (x: number, y: number, z: number): Vec3 => ({ x, y, z })
@@ -41,58 +39,28 @@ function total(mix: ZoneMix): number {
 describe('ambience zones', () => {
   it('always describes the whole city, wherever the player stands', () => {
     const samples: Vec3[] = [
-      at(SPAWN.x, SPAWN.y, SPAWN.z),
-      at(MARKET_KEEPER.x, GROUND_Y, MARKET_KEEPER.z),
-      at(-20, GROUND_Y, 49),
-      at(0, GROUND_Y, -15),
-      at(0, HQ.y, -15),
-      at(0, 90, SHAFT.doorZ - SHAFT.carDepth / 2),
+      at(400, 12.4, 400),
+      at(0, 300, 0),
+      at(-6447, 12.4, -10034),
       at(500, 40, -500),
     ]
     for (const p of samples) expect(total(zoneWeights(p))).toBeCloseTo(1, 9)
   })
 
-  it('picks the bed the player is actually standing in', () => {
-    expect(dominantZone(zoneWeights(at(SPAWN.x, SPAWN.y, SPAWN.z)))).toBe('boulevard')
-    expect(dominantZone(zoneWeights(at(MARKET_KEEPER.x, GROUND_Y, MARKET_KEEPER.z)))).toBe('market')
-    expect(dominantZone(zoneWeights(at(-20, GROUND_Y, 49)))).toBe('park')
-    expect(dominantZone(zoneWeights(at(0, GROUND_Y, -15)))).toBe('lobby')
-    expect(dominantZone(zoneWeights(at(0, HQ.y, -15)))).toBe('hq')
-  })
-
-  it('keeps the street out of the interiors and vice versa', () => {
-    // Floor 45 is 180 m up and sealed; hearing traffic there would be absurd.
-    expect(zoneWeights(at(0, HQ.y, -15)).boulevard).toBeCloseTo(0, 6)
-    expect(interiorAmount(zoneWeights(at(0, HQ.y, -15)))).toBeCloseTo(1, 6)
-    expect(interiorAmount(zoneWeights(at(0, GROUND_Y, -15)))).toBeCloseTo(1, 6)
-    // Out on the plaza, neither interior nor the market leaks.
-    const plaza = zoneWeights(at(0, GROUND_Y, 12))
-    expect(plaza.boulevard).toBeCloseTo(1, 6)
-    expect(interiorAmount(plaza)).toBeCloseTo(0, 6)
-  })
-
-  it('holds an interior bed for the whole lift ride', () => {
-    // The car sits behind the lobby's back wall, so without the shaft volume the
-    // rider would hear open-street traffic somewhere around floor 30.
-    const carZ = SHAFT.doorZ - SHAFT.carDepth / 2
-    for (const y of [1, 20, 60, 120, 175]) {
-      expect(interiorAmount(zoneWeights(at(0, y, carZ)))).toBeGreaterThan(0.95)
+  it('plays the city bed everywhere on the island', () => {
+    for (const p of [at(400, GROUND_Y, 400), at(0, 300, 0), at(-6447, GROUND_Y, -10034)]) {
+      expect(dominantZone(zoneWeights(p))).toBe('boulevard')
+      expect(zoneWeights(p).boulevard).toBeCloseTo(1, 6)
+      expect(interiorAmount(zoneWeights(p))).toBeCloseTo(0, 6)
     }
   })
 
-  it('crossfades rather than cutting, all the way along the playable route', () => {
-    // Spawn, market, park, plaza, lobby, into the car, up the shaft, onto 45.
+  it('crossfades without jumping anywhere on the island', () => {
     const route: Vec3[] = [
-      at(SPAWN.x, GROUND_Y, SPAWN.z),
-      at(SPAWN.x, GROUND_Y, 100),
-      at(MARKET_KEEPER.x, GROUND_Y, MARKET_KEEPER.z),
-      at(10, GROUND_Y, 60),
-      at(-20, GROUND_Y, 49),
-      at(0, GROUND_Y, 20),
-      at(0, GROUND_Y, -15),
-      at(0, GROUND_Y, SHAFT.doorZ - SHAFT.carDepth / 2),
-      at(0, HQ.y, SHAFT.doorZ - SHAFT.carDepth / 2),
-      at(0, HQ.y, -15),
+      at(400, GROUND_Y, 400),
+      at(0, 300, 0),
+      at(-6447, GROUND_Y, -10034),
+      at(1500, GROUND_Y, 300),
     ]
 
     const STEP = 0.05
@@ -118,12 +86,12 @@ describe('ambience zones', () => {
     expect(worst).toBeLessThan(0.05)
   })
 
-  it('crossfades at constant power so doorways do not dip', () => {
+  it('crossfades at constant power everywhere on the island', () => {
     for (const p of [
-      at(0, GROUND_Y, ENTRANCE.z),
-      at(0, GROUND_Y, ENTRANCE.z - 1),
-      at(0, GROUND_Y, ENTRANCE.z + 2),
-      at(MARKET_KEEPER.x, GROUND_Y, 70),
+      at(400, GROUND_Y, 400),
+      at(0, GROUND_Y, 0),
+      at(-6447, GROUND_Y, -10034),
+      at(1500, GROUND_Y, 300),
     ]) {
       const gains = zoneGains(zoneWeights(p))
       const power = ZONE_IDS.reduce((sum, id) => sum + gains[id] * gains[id], 0)
@@ -360,12 +328,9 @@ describe('voice tables', () => {
 })
 
 describe('anchors', () => {
-  it('sit on the geometry they belong to', () => {
-    expect(AUDIO_ANCHORS.entranceDoor.z).toBe(ENTRANCE.z)
-    expect(AUDIO_ANCHORS.entranceDoor.y).toBeLessThan(ENTRANCE.height)
-
-    expect(AUDIO_ANCHORS.elevatorDoor(0).z).toBe(SHAFT.doorZ)
-    // The car doors travel with the car, so the anchor has to as well.
-    expect(AUDIO_ANCHORS.elevatorDoor(HQ.y).y - AUDIO_ANCHORS.elevatorDoor(0).y).toBe(HQ.y)
+  it('keeps stable neutral anchors for the Manhattan build', () => {
+    expect(AUDIO_ANCHORS.entranceDoor.y).toBeGreaterThan(1)
+    // The elevator-door helper still tracks a height argument.
+    expect(AUDIO_ANCHORS.elevatorDoor(10).y - AUDIO_ANCHORS.elevatorDoor(0).y).toBe(10)
   })
 })

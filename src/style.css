@@ -818,3 +818,227 @@ html.vision-capture .overlay {
   display: none !important;
 }
 
+
+/* -- Manhattan build: title / loading / intro / dev tools ------------------ */
+
+.title-backdrop {
+  background: radial-gradient(ellipse at 50% 30%, #141b2e 0%, #06070d 70%);
+}
+.title-logo-row {
+  display: flex;
+  gap: 10px;
+  align-items: baseline;
+  justify-content: center;
+  margin-bottom: 10px;
+}
+.title-logo {
+  font-size: 34px;
+  font-weight: 800;
+  letter-spacing: 6px;
+  color: #eef2ff;
+}
+.title-logo-accent {
+  font-size: 30px;
+  font-weight: 800;
+  letter-spacing: 4px;
+  color: #e5484d;
+}
+.enter-button {
+  font-size: 15px;
+  letter-spacing: 3px;
+  padding: 12px 34px;
+  background: linear-gradient(180deg, #d94648 0%, #b02a2f 100%);
+  border: none;
+  border-radius: 4px;
+  color: #fff;
+  cursor: pointer;
+  font-weight: 700;
+}
+.enter-button:hover {
+  filter: brightness(1.12);
+}
+
+.loading-backdrop {
+  background: radial-gradient(ellipse at 50% 40%, #0d1322 0%, #04050a 75%);
+}
+.loading-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+}
+.loading-logo-wrap {
+  width: 96px;
+  height: 96px;
+  perspective: 500px;
+}
+.loading-logo {
+  width: 96px;
+  height: 96px;
+  border-radius: 18px;
+  background: linear-gradient(135deg, #e5484d 0%, #7a1020 60%, #2b0510 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 60px rgba(229, 72, 77, 0.55);
+  animation: logo-spin 2.4s linear infinite;
+  transform-style: preserve-3d;
+}
+.loading-logo-inner {
+  font-size: 40px;
+  font-weight: 900;
+  color: #fff;
+  letter-spacing: 2px;
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.6);
+}
+@keyframes logo-spin {
+  from { transform: rotateY(0deg) rotateX(0deg); }
+  50%  { transform: rotateY(180deg) rotateX(10deg); }
+  to   { transform: rotateY(360deg) rotateX(0deg); }
+}
+.loading-title {
+  margin: 0;
+  font-size: 30px;
+  letter-spacing: 10px;
+  color: #eef2ff;
+}
+
+/* -- Cinematic intro ------------------------------------------------------- */
+
+.intro-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  background: #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  overflow: hidden;
+}
+.intro-wordmark {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  font-weight: 900;
+  transform-origin: 50% 50%;
+}
+.intro-word-1 {
+  font-size: 64px;
+  letter-spacing: 18px;
+  color: #fff;
+  text-shadow: 0 0 40px rgba(229, 72, 77, 0.9), 0 4px 24px rgba(0, 0, 0, 0.8);
+}
+.intro-word-2 {
+  font-size: 52px;
+  letter-spacing: 30px;
+  color: #e5484d;
+  text-shadow: 0 0 34px rgba(229, 72, 77, 0.8);
+}
+.intro-phase-spin .intro-wordmark {
+  animation: intro-spin-in 1.5s cubic-bezier(0.2, 0.8, 0.25, 1) both;
+}
+.intro-phase-expand .intro-wordmark {
+  animation: intro-expand 1.3s cubic-bezier(0.55, 0.06, 0.68, 0.19) both;
+}
+.intro-phase-shrink .intro-overlay {
+  animation: intro-shrink 1.6s cubic-bezier(0.65, 0, 0.35, 1) both;
+}
+.intro-phase-shrink .intro-wordmark {
+  animation: intro-sink 1.6s cubic-bezier(0.65, 0, 0.35, 1) both;
+}
+@keyframes intro-spin-in {
+  0%   { transform: rotateX(70deg) rotateY(0deg) scale(0.15); opacity: 0; }
+  55%  { opacity: 1; }
+  100% { transform: rotateX(0deg) rotateY(360deg) scale(1); opacity: 1; }
+}
+@keyframes intro-expand {
+  0%   { transform: scale(1); opacity: 1; }
+  100% { transform: scale(4.6); opacity: 1; }
+}
+@keyframes intro-shrink {
+  0%   { transform: scale(1); opacity: 1; }
+  100% { transform: scale(1); opacity: 0; }
+}
+@keyframes intro-sink {
+  0%   { transform: scale(4.6) translateY(0); opacity: 1; }
+  100% { transform: scale(2.2) translateY(60vh); opacity: 0; }
+}
+.intro-vignette {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 50% 45%, transparent 40%, rgba(0, 0, 0, 0.85) 100%);
+}
+
+/* -- Dev tools ------------------------------------------------------------- */
+
+.dev-menu {
+  position: fixed;
+  left: 16px;
+  bottom: 16px;
+  z-index: 30;
+  width: 300px;
+  max-height: 70vh;
+  overflow-y: auto;
+  background: rgba(10, 12, 20, 0.92);
+  border: 1px solid rgba(120, 140, 200, 0.35);
+  border-radius: 8px;
+  padding: 10px 12px;
+  color: #dfe4f0;
+  font-size: 12px;
+  backdrop-filter: blur(6px);
+}
+.dev-menu-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+  color: #9fb2ff;
+  letter-spacing: 2px;
+}
+.dev-menu-section {
+  border-top: 1px solid rgba(120, 140, 200, 0.18);
+  padding-top: 8px;
+  margin-top: 8px;
+}
+.dev-menu-title {
+  color: #7d8bb0;
+  margin-bottom: 6px;
+  font-weight: 600;
+}
+.dev-menu-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 5px;
+}
+.dev-menu-grid button,
+.dev-menu-row button {
+  background: #1a2036;
+  border: 1px solid #2c3554;
+  color: #dfe4f0;
+  border-radius: 4px;
+  padding: 5px 6px;
+  font-size: 11px;
+  cursor: pointer;
+}
+.dev-menu-grid button:hover,
+.dev-menu-row button:hover {
+  background: #24305a;
+}
+.dev-menu-grid button.on,
+.dev-menu-row button.on {
+  background: #31427c;
+  border-color: #5a74c9;
+}
+.dev-menu-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  margin: 5px 0;
+}
+.dev-menu-row input[type='range'] {
+  flex: 1;
+  min-width: 0;
+}

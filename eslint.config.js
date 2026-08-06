@@ -45,6 +45,13 @@ export default tseslint.config(
     },
   },
   {
+    // Puppeteer runners touch the page through evaluate() callbacks.
+    files: ['scripts/smoke-manhattan.mjs', 'scripts/probe-game.mjs', 'scripts/probe-game2.mjs'],
+    languageOptions: {
+      globals: { ...globals.node, ...globals.browser },
+    },
+  },
+  {
     rules: {
       'no-empty': ['error', { allowEmptyCatch: true }],
       '@typescript-eslint/no-unused-vars': [

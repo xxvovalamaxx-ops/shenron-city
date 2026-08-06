@@ -1,6 +1,8 @@
 /**
- * Assembly: canvas, scene graph, overlays, and the screen state machine that
- * decides who owns the mouse.
+ * Assembly: canvas, scene graph, overlays, and the screen state machine.
+ *
+ * One world now: the streamed Manhattan island. The old headquarters build
+ * (lobby, elevator, office floors, plaza) is retired — this is the whole game.
  */
 import {
   lazy,
@@ -20,56 +22,29 @@ import { useGame } from './adapter/store'
 import { inputLocked, useHud } from './ui/hud-store'
 import { ResilientResizeObserver } from './lib/resize'
 import { GameLoop } from './gameplay/GameLoop'
-import type { Interactable } from './gameplay/interact'
 import { rt, setRuntimePaused } from './gameplay/runtime'
-import { carHeight, initialElevator, step as stepElevator } from './gameplay/elevator'
-import { Exterior } from './world/Exterior'
-import { Lobby } from './world/Lobby'
-import { Elevator } from './world/Elevator'
-import { Floor45 } from './world/Floor45'
-import { DoorPair } from './world/Doors'
-import { Secretary, SECRETARY_NAME } from './agents/Secretary'
-import { AmbientCrowd } from './agents/AmbientCrowd'
-import { MarketKeeper } from './agents/MarketKeeper'
-import { PlazaWarden } from './agents/PlazaWarden'
-import type { CharacterId } from './agents/dialogue'
-import { ENTRANCE, HQ, OFFICE_SLOTS, PANEL, SECRETARY as SEC_POS, SPAWN } from './world/layout'
-import { MARKET_KEEPER, PLAZA_WARDEN } from './world/city-data'
-import { PALETTE, QUALITY } from './world/palette'
-import { Hud } from './ui/Hud'
-import { Dialogue } from './ui/Dialogue'
 import { PlayerAvatar } from './character/PlayerAvatar'
-import { LaserBeam } from './weapons/LaserBeam'
-import { DestructionSystem } from './destruction/DestructionSystem'
 import { NightEnvironment } from './world/NightEnvironment'
 import { ManhattanCity } from './world/ManhattanCity'
 import { SkyRig } from './world/SkyRig'
 import { ShadowBudget } from './world/ShadowBudget'
 import { AtmosphericDust } from './world/AtmosphericDust'
-import { Capybara } from './animals/CapybaraActor'
-
-import { OfficePanel } from './ui/OfficePanel'
+import { resolveManhattanSpawn } from './world/manhattan-collision'
+import { PALETTE, QUALITY } from './world/palette'
+import { Hud } from './ui/Hud'
+import { DevMenu } from './ui/DevMenu'
+import { DevSpawns } from './ui/DevSpawns'
+import { IntroCamera, IntroSequence } from './ui/IntroSequence'
 import { DEFAULT_SETTINGS, LoadingScreen, PauseMenu, TitleScreen, type Settings } from './ui/Screens'
-import { floorAtPosition, loadGame, saveGame, type SaveData } from './gameplay/save'
+import { loadGame, saveGame, type SaveData } from './gameplay/save'
 import { cityAudio } from './audio'
 import { isDevInspection } from './gameplay/dev-view'
-import { gameplayZoneAt, sceneVisibilityForZone } from './gameplay/zone'
 import { visionCaptureSpec, visionFeet } from './gameplay/vision-capture'
 
-/** Slow enough to be free, often enough that a crash costs little progress. */
-const SAVE_INTERVAL_MS = 5000
-
-/**
- * Bridge between the save file and live state.
- *
- * Lives here rather than in gameplay/save.ts because it needs the HUD store,
- * and gameplay/ deliberately depends on nothing from the UI layer.
- */
 function currentSaveData(settings: Settings): SaveData {
   return {
     pos: { ...rt.player.pos },
     forward: { ...rt.player.forward },
-    tour: useHud.getState().cityTour,
     settings: { quality: settings.quality, sensitivity: settings.sensitivity, fov: settings.fov, volume: settings.volume },
   }
 }
@@ -78,11 +53,6 @@ function applySave(data: SaveData): void {
   rt.player.pos = { ...data.pos }
   rt.player.forward = { ...data.forward }
   rt.player.velocityY = 0
-  // Derived, never stored: a persisted floor could contradict the position and
-  // drop the player down the shaft.
-  rt.elevator = initialElevator(floorAtPosition(data.pos))
-  rt.zone = gameplayZoneAt(rt.player.pos, carHeight(rt.elevator))
-  useHud.setState({ cityTour: data.tour, gameplayZone: rt.zone })
 }
 
 const PostProcessing = lazy(() => import('./world/PostProcessing'))
@@ -90,136 +60,32 @@ const PostProcessing = lazy(() => import('./world/PostProcessing'))
 /** Hands the renderer to the perf overlay and applies quality settings. */
 function RendererBridge({ maxDpr, shadows }: { maxDpr: number; shadows: boolean }) {
   const gl = useThree((s) => s.gl)
+  const scene = useThree((s) => s.scene)
   const setDpr = useThree((s) => s.setDpr)
 
   useEffect(() => {
     ;(window as { __gameRenderer?: THREE.WebGLRenderer }).__gameRenderer = gl
+    ;(window as { __gameScene?: THREE.Scene }).__gameScene = scene
     gl.shadowMap.enabled = shadows
     gl.shadowMap.type = THREE.PCFShadowMap
     setDpr(Math.min(window.devicePixelRatio, maxDpr))
     return () => {
       delete (window as { __gameRenderer?: THREE.WebGLRenderer }).__gameRenderer
+      delete (window as { __gameScene?: THREE.Scene }).__gameScene
     }
-  }, [gl, maxDpr, shadows, setDpr])
+  }, [gl, scene, maxDpr, shadows, setDpr])
 
   return null
 }
 
-/**
- * Three layers: ambient so nothing is ever pure black, a moon key for the
- * plaza's shadows, and practicals inside.
- *
- * Point-light intensities are candela with 1/d² falloff. The first pass used
- * values in the tens and the entire building rendered near-black — at 8 m a
- * light of intensity 26 contributes almost nothing. Anything lighting a room
- * belongs in the hundreds.
- */
-function Lighting() {
-  return (
-    <>
-      {/*
-        Sun, hemisphere, ambient and fog now live in world/DayCycle.tsx, which
-        drives them from the clock and the weather. What is left here is the
-        lobby practicals, which are fixtures in the building and do not change
-        with the time of day.
-      */}
-
-      {/* Warm spill from the lobby, out through the glass onto the plaza —
-          this is what makes the entrance read as somewhere worth walking in. */}
-      <pointLight
-        position={[0, 4.2, -4]}
-        color={PALETTE.warmLight}
-        intensity={185}
-        distance={34}
-        decay={2}
-      />
-      <pointLight
-        position={[0, 3.4, 7]}
-        color={PALETTE.warmLight}
-        intensity={80}
-        distance={22}
-        decay={2}
-      />
-    </>
-  )
-}
-
 function Scene({
   settings,
-  onInteract,
+  onBaseRegistered,
 }: {
   settings: Settings
-  onInteract(t: Interactable): void
+  onBaseRegistered(): void
 }) {
-  const snapshot = useGame((s) => s.snapshot)
-  const gameplayZone = useHud((s) => s.gameplayZone)
   const quality = QUALITY[settings.quality]
-  const agents = useMemo(() => snapshot?.agents ?? [], [snapshot?.agents])
-  const zoneVisibility = sceneVisibilityForZone(gameplayZone)
-
-  // Interaction points. Rebuilt only when the agent roster changes — this is
-  // not per-frame data.
-  const interactables = useMemo<Interactable[]>(() => {
-    const list: Interactable[] = [
-      {
-        id: 'secretary',
-        kind: 'secretary',
-        x: SEC_POS.x,
-        y: 1.5,
-        z: SEC_POS.z + 1.2,
-        label: `Talk to ${SECRETARY_NAME}`,
-        range: 3.6,
-      },
-      {
-        id: 'panel',
-        kind: 'elevator-panel',
-        x: PANEL.x,
-        y: PANEL.y,
-        z: PANEL.z,
-        label: 'Use the elevator',
-        range: 2.4,
-        payload: 'car',
-        movingY: PANEL.y,
-      },
-      {
-        id: 'city-character-mira',
-        kind: 'city-character',
-        x: MARKET_KEEPER.x,
-        y: 1.45,
-        z: MARKET_KEEPER.z,
-        label: `Talk to ${MARKET_KEEPER.name}`,
-        range: 3.4,
-        payload: MARKET_KEEPER.id,
-      },
-      {
-        id: 'city-character-kai',
-        kind: 'city-character',
-        x: PLAZA_WARDEN.x,
-        y: 1.45,
-        z: PLAZA_WARDEN.z,
-        label: `Talk to ${PLAZA_WARDEN.name}`,
-        range: 3.4,
-        payload: PLAZA_WARDEN.id,
-      },
-    ]
-
-    for (const slot of OFFICE_SLOTS) {
-      const agent = agents[slot.index]
-      if (!agent) continue
-      list.push({
-        id: `office-${agent.id}`,
-        kind: 'agent-office',
-        x: slot.x,
-        y: HQ.y + 1.5,
-        z: slot.z,
-        label: `Inspect ${agent.name}`,
-        range: 4.2,
-        payload: agent.id,
-      })
-    }
-
-    return list
-  }, [agents])
 
   return (
     <>
@@ -228,60 +94,18 @@ function Scene({
       <NightEnvironment />
 
       <RendererBridge maxDpr={quality.maxDpr} shadows={quality.shadows} />
-      {/* Sun, sky, fog and weather. Replaces the fixed night rig. */}
       <SkyRig quality={quality} />
-      <Lighting />
       <ShadowBudget enabled={quality.shadows} mapSize={quality.shadowMapSize} />
 
-      {/* Streamed Blender Manhattan City island */}
-      <ManhattanCity mode="tiles" />
-      <group visible={zoneVisibility.exterior} name="zone-exterior-visibility">
-        <Exterior quality={quality} />
-        <MarketKeeper />
-        <PlazaWarden />
-        <AmbientCrowd count={quality.ambientPedestrians} />
-      </group>
-      <group visible={zoneVisibility.lobby} name="zone-lobby-visibility">
-        <Lobby quality={quality} />
-        <Secretary />
-      </group>
-      <Elevator />
-      <group visible={zoneVisibility.floor45} name="zone-floor45-visibility">
-        <Floor45 agents={agents} quality={quality} source={snapshot?.source ?? 'standalone'} />
-      </group>
-      {/* The high-detail animal starts loading with the scene but does not
-          hold the title screen hostage on a cold cache. */}
-      <group visible={zoneVisibility.exterior} name="zone-exterior-effects">
-        <Suspense fallback={null}>
-          <Capybara shadows={quality.shadows} />
-        </Suspense>
-        <AtmosphericDust />
-      </group>
+      {/* The one world: the streamed Manhattan island. */}
+      <ManhattanCity mode="tiles" onBaseRegistered={onBaseRegistered} />
 
       <PlayerAvatar />
-      <LaserBeam />
-      <DestructionSystem />
+      <DevSpawns />
+      <AtmosphericDust />
+      <IntroCamera />
 
-      {/* Entrance doors live outside the car group — they do not travel */}
-      <group visible={zoneVisibility.lobby} name="zone-entrance-visibility">
-        <DoorPair
-          halfWidth={ENTRANCE.halfWidth}
-          height={ENTRANCE.height}
-          z={ENTRANCE.z}
-          leftRef={(group) => {
-            rt.refs.entranceLeft = group
-          }}
-          rightRef={(group) => {
-            rt.refs.entranceRight = group
-          }}
-        />
-      </group>
-
-      <GameLoop
-        interactables={interactables}
-        ambientPedestrians={quality.ambientPedestrians}
-        onInteract={onInteract}
-      />
+      <GameLoop />
 
       {quality.postprocessing && (
         <Suspense fallback={null}>
@@ -293,36 +117,29 @@ function Scene({
 }
 
 /**
- * Decides when the world is ready to enter.
- *
- * `useProgress` tracks both route-critical files and optional models behind
- * nested Suspense boundaries. Waiting for every optional high-detail model
- * would make a 4–6 MB character hold the title screen hostage even though its
- * reviewed fallback can already render.
- *
- * The outer Suspense boundary guarantees this component does not mount until
- * route-critical files are ready. Once mounted, finish immediately if the
- * loader is idle or after a short settlement window while optional assets
- * continue in their local boundaries.
+ * Decides when the world is ready to enter: the loader must be idle AND the
+ * Manhattan base (the island surface we spawn on) must be registered.
  */
-function LoadGate({ onReady }: { onReady(): void }) {
+function LoadGate({ baseReady, onReady }: { baseReady: boolean; onReady(): void }) {
   const { progress, active } = useProgress()
   const fired = useRef(false)
 
   const fire = useCallback(() => {
     if (fired.current) return
     fired.current = true
-    onReady()
+    // Deferred so a component that resolves from Suspense in the same frame
+    // (the player model, say) never sees a setState during its own render.
+    setTimeout(onReady, 0)
   }, [onReady])
 
   useEffect(() => {
-    if (!active && progress >= 100) {
+    if (baseReady && !active && progress >= 100) {
       fire()
       return
     }
-    const id = setTimeout(fire, 700)
+    const id = setTimeout(fire, 1200)
     return () => clearTimeout(id)
-  }, [active, progress, fire])
+  }, [baseReady, active, progress, fire])
 
   return null
 }
@@ -335,32 +152,27 @@ export default function App() {
     new URLSearchParams(location.search).get('no-pointer-lock') !== '1'
   const screen = useHud((s) => s.screen)
   const setScreen = useHud((s) => s.setScreen)
-  const openAgentId = useHud((s) => s.openAgentId)
-  const openCharacterId = useHud((s) => s.openCharacterId)
   const start = useGame((s) => s.start)
   const dispose = useGame((s) => s.dispose)
   const setGamePaused = useGame((s) => s.setPaused)
 
-  // Read the save once, before first paint, so the world is never built at the
-  // spawn and then visibly snapped to the restored position a frame later.
   const restored = useRef(loadGame()).current
 
   const [settings, setSettings] = useState<Settings>(() => ({
     ...restored.data.settings,
-    // A ?quality= in the URL is an explicit instruction for this run and
-    // outranks whatever the last session happened to be playing at.
     quality: DEFAULT_SETTINGS.quality,
   }))
-  // Opt-in fixed-camera mode for the visual QA bridge. Null in every normal
-  // session; the page performs no network I/O and exposes no global.
   const vision = useMemo(
     () => visionCaptureSpec(typeof location === 'undefined' ? '' : location.search),
     [],
   )
   const [ready, setReady] = useState(false)
+  const [baseReady, setBaseReady] = useState(false)
   const [progress, setProgress] = useState(0)
+  const [introActive, setIntroActive] = useState(false)
   const controls = useRef<{ lock(): void; unlock(): void } | null>(null)
   const bootStartedAt = useRef(window.performance.now()).current
+  const spawnResolved = useRef(false)
   const markSceneReady = useCallback(() => {
     document.documentElement.dataset.initialLoadMs = (
       window.performance.now() - bootStartedAt
@@ -368,18 +180,32 @@ export default function App() {
     setReady(true)
   }, [bootStartedAt])
 
-  // One screen state owns every pause boundary. A layout effect applies it
-  // before the next rendered frame, so world components mounted before the
-  // central GameLoop cannot advance once a modal or menu takes control.
+  // Resolve the player's spawn the moment the island surface is registered,
+  // so the camera and avatar never stand on water.
+  const handleBaseRegistered = useCallback(() => {
+    if (spawnResolved.current) return
+    spawnResolved.current = true
+    const spawn = resolveManhattanSpawn()
+    rt.player.pos = spawn
+    rt.player.velocityY = 0
+    rt.player.grounded = true
+    if (vision) {
+      rt.player.pos = visionFeet(vision)
+      rt.player.velocityY = 0
+      rt.player.forward = { x: 0, z: -1 }
+      rt.clock.hour = vision.time
+      rt.clock.rainTarget = vision.rain
+      rt.clock.weather = { rain: vision.rain, wetness: vision.rain >= 0.5 ? 1 : 0 }
+      document.documentElement.classList.add('vision-capture')
+    }
+    setBaseReady(true)
+  }, [vision])
+
   useLayoutEffect(() => {
     const paused = inputLocked(screen)
     setRuntimePaused(paused)
     setGamePaused(paused)
-
-    // Dialogue and office panels may play positional voice/UI audio while the
-    // simulation is frozen. Loading, title, and the actual pause menu suspend
-    // the audio thread outright.
-    const audioEnabled = screen === 'playing' || screen === 'dialogue' || screen === 'office'
+    const audioEnabled = screen === 'playing'
     cityAudio.setEnabled(audioEnabled)
   }, [screen, setGamePaused])
 
@@ -394,65 +220,10 @@ export default function App() {
   }, [setScreen])
 
   useEffect(() => {
-    const target = window as Window & {
-      __cityAudioDiagnostics?: typeof cityAudio.diagnostics
-    }
-    target.__cityAudioDiagnostics = () => cityAudio.diagnostics()
-    const publish = () => {
-      const diagnostics = cityAudio.diagnostics()
-      const root = document.documentElement
-      root.dataset.audioState = diagnostics.state
-      root.dataset.audioSampleRate = String(diagnostics.sampleRate)
-      root.dataset.audioLeftRms = diagnostics.leftRms.toFixed(6)
-      root.dataset.audioRightRms = diagnostics.rightRms.toFixed(6)
-      root.dataset.audioStereoDifference = diagnostics.stereoDifference.toFixed(6)
-      root.dataset.runtimePaused = String(rt.paused)
-      root.dataset.runtimePauseEpoch = String(rt.pauseEpoch)
-      root.dataset.runtimeElapsedSeconds = rt.clock.elapsed.toFixed(3)
-      root.dataset.runtimePlayerPosition = [
-        rt.player.pos.x,
-        rt.player.pos.y,
-        rt.player.pos.z,
-      ]
-        .map((value) => value.toFixed(3))
-        .join(',')
-      root.dataset.runtimeElevatorState =
-        rt.elevator.phase === 'travelling'
-          ? `${rt.elevator.from}->${rt.elevator.target}:${rt.elevator.phase}`
-          : `${rt.elevator.floor}:${rt.elevator.phase}`
-      root.dataset.runtimeZone = rt.zone
-      root.dataset.scenarioPaused = String(useGame.getState().paused)
-    }
-    publish()
-    const interval = window.setInterval(publish, 250)
-    return () => {
-      window.clearInterval(interval)
-      delete target.__cityAudioDiagnostics
-      for (const key of [
-        'audioState',
-        'audioSampleRate',
-        'audioLeftRms',
-        'audioRightRms',
-        'audioStereoDifference',
-        'runtimePaused',
-        'runtimePauseEpoch',
-        'runtimeElapsedSeconds',
-        'runtimePlayerPosition',
-        'runtimeElevatorState',
-        'runtimeZone',
-        'scenarioPaused',
-      ] as const) {
-        delete document.documentElement.dataset[key]
-      }
-    }
-  }, [])
-
-  useEffect(() => {
     start()
     return () => dispose()
   }, [start, dispose])
 
-  // Apply volume changes to the audio engine.
   useEffect(() => {
     cityAudio.setMasterVolume(settings.volume)
   }, [settings.volume])
@@ -464,45 +235,23 @@ export default function App() {
     }
   }, [settings.quality])
 
-  // Apply the restored world state once. The elevator floor is derived from
-  // the position rather than stored, so the two can never contradict.
+  // Apply the restored world state once (unless a capture/QA mode overrode it).
   useEffect(() => {
-    if (vision) {
-      // Fixed-camera capture: anchor the simulated body beneath the capture
-      // camera so zone visibility and collision resolve exactly as they would
-      // for a player standing there, and pin the sky/weather to the scene spec.
-      rt.player.pos = visionFeet(vision)
-      rt.player.velocityY = 0
-      rt.player.forward = { x: 0, z: -1 }
-      rt.clock.hour = vision.time
-      rt.clock.rainTarget = vision.rain
-      rt.clock.weather = {
-        rain: vision.rain,
-        wetness: vision.rain >= 0.5 ? 1 : 0,
-      }
-      rt.elevator = initialElevator(floorAtPosition(rt.player.pos))
-      rt.zone = gameplayZoneAt(rt.player.pos, carHeight(rt.elevator))
-      useHud.setState({ gameplayZone: rt.zone })
-      document.documentElement.classList.add('vision-capture')
-    } else if (visualInspection) {
-      rt.elevator = initialElevator(floorAtPosition(rt.player.pos))
-      rt.zone = gameplayZoneAt(rt.player.pos, carHeight(rt.elevator))
-      useHud.setState({ gameplayZone: rt.zone })
-    } else {
-      applySave(restored.data)
-    }
+    if (vision || visualInspection) return
+    if (!spawnResolved.current) return
     if (restored.fault && restored.fault !== 'empty') {
       console.warn(`[save] ${restored.fault} — starting a fresh run`)
     } else if (restored.repaired.length > 0) {
       console.warn(`[save] repaired: ${restored.repaired.join(', ')}`)
     }
+    if (!restored.data.forward.x && !restored.data.forward.z) return
+    applySave(restored.data)
   }, [restored, visualInspection, vision])
 
-  // Persist on a slow timer and on the way out. One small JSON.stringify.
   useEffect(() => {
     if (visualInspection || vision) return
     const snapshot = () => saveGame(currentSaveData(settings))
-    const id = setInterval(snapshot, SAVE_INTERVAL_MS)
+    const id = setInterval(snapshot, 5000)
     window.addEventListener('pagehide', snapshot)
     return () => {
       clearInterval(id)
@@ -511,9 +260,7 @@ export default function App() {
     }
   }, [settings, visualInspection, vision])
 
-
-  // Fake a little progress so the loading card is not a frozen empty bar on a
-  // fast machine; the real gate is LoadGate.
+  // Fake progress so the loading card never sits frozen on a fast machine.
   useEffect(() => {
     if (ready) return
     const id = setInterval(() => setProgress((p) => Math.min(0.92, p + 0.08)), 90)
@@ -521,62 +268,17 @@ export default function App() {
   }, [ready])
 
   useEffect(() => {
-    if (ready && screen === 'loading') {
+    if (ready && baseReady && screen === 'loading') {
       setScreen(visualInspection || vision ? 'playing' : 'title')
     }
-  }, [ready, screen, setScreen, visualInspection, vision])
+  }, [ready, baseReady, screen, setScreen, visualInspection, vision])
 
   const enterWorld = useCallback(() => {
     setScreen('playing')
-    // Both of these need the user gesture we are currently inside: browsers
-    // refuse pointer lock without one, and refuse to start an AudioContext.
-    // A remote/non-focused validation tab can deliver the click while its
-    // document is not eligible for pointer lock. In that case keep the world
-    // running and avoid turning an expected host limitation into a console
-    // error; a real focused gameplay click still locks normally.
+    setIntroActive(true)
     if (pointerLockEnabled && document.hasFocus()) controls.current?.lock()
     void cityAudio.start()
   }, [pointerLockEnabled, setScreen])
-
-  const onInteract = useCallback(
-    (target: Interactable) => {
-      switch (target.kind) {
-        case 'secretary':
-          controls.current?.unlock()
-          useHud.setState({ openCharacterId: 'iris' })
-          useHud.getState().advanceCityTour('TALK_IRIS')
-          setScreen('dialogue')
-          break
-        case 'city-character': {
-          // Only characters with a dialogue profile are talkable.
-          const who = target.payload
-          if (who !== 'mira' && who !== 'kai') break
-          controls.current?.unlock()
-          useHud.setState({ openCharacterId: who as CharacterId })
-          // Kai is optional colour on the route; only Mira advances the tour.
-          if (who === 'mira') useHud.getState().advanceCityTour('TALK_MIRA')
-          setScreen('dialogue')
-          break
-        }
-        case 'elevator-panel': {
-          // Pressing the panel calls the floor you are not on. The machine
-          // itself decides whether that is legal right now.
-          const here = rt.elevator.phase === 'travelling' ? null : rt.elevator.floor
-          const wanted = here === 'hq' ? 'lobby' : 'hq'
-          rt.elevator = stepElevator(rt.elevator, { type: 'CALL', floor: wanted })
-          break
-        }
-        case 'agent-office':
-          if (!target.payload) break
-          controls.current?.unlock()
-          useHud.setState({ openAgentId: target.payload })
-          useHud.getState().advanceCityTour('INSPECT_OFFICE')
-          setScreen('office')
-          break
-      }
-    },
-    [setScreen],
-  )
 
   return (
     <>
@@ -584,37 +286,22 @@ export default function App() {
         shadows={{ type: THREE.PCFShadowMap }}
         dpr={[1, 2]}
         gl={{ antialias: false, powerPreference: 'high-performance' }}
-        camera={{
-          fov: vision?.fov ?? settings.fov,
-          near: 0.1,
-          far: 900,
-          position: [SPAWN.x, SPAWN.y + 1.65, SPAWN.z],
-        }}
-        // See lib/resize.ts — without this the canvas never gets measured on
-        // hosts whose ResizeObserver never fires, and the game hangs on the
-        // loading screen with no error.
+        camera={{ fov: vision?.fov ?? settings.fov, near: 0.1, far: 30000, position: [400, 433, 660] }}
         resize={{ polyfill: ResilientResizeObserver as unknown as typeof ResizeObserver }}
         onCreated={({ gl }) => {
           gl.toneMapping = THREE.ACESFilmicToneMapping
-          // Applies on the low preset only. From medium up, EffectComposer
-          // takes tone mapping off the renderer (gl.toneMapping reads back as
-          // NoToneMapping) and world/PostProcessing.tsx runs ACES itself, so
-          // this value is inert there. Grading therefore lives in the light
-          // rig, which every preset shares — changing it here would only make
-          // low darker than high.
           gl.toneMappingExposure = 0.72
         }}
       >
         <Suspense fallback={null}>
-          <Scene settings={settings} onInteract={onInteract} />
-          <LoadGate onReady={markSceneReady} />
+          <Scene settings={settings} onBaseRegistered={handleBaseRegistered} />
+          <LoadGate baseReady={baseReady} onReady={markSceneReady} />
         </Suspense>
         {pointerLockEnabled && (
           <PointerLockControls
             ref={controls as never}
             pointerSpeed={settings.sensitivity}
             onUnlock={() => {
-              // Esc during play means "pause", not "silently lose control".
               if (useHud.getState().screen === 'playing') setScreen('paused')
             }}
           />
@@ -622,16 +309,18 @@ export default function App() {
       </Canvas>
 
       {screen === 'playing' && <Hud />}
+      {introActive && screen === 'playing' && !vision && !visualInspection && (
+        <IntroSequence
+          onDone={() => {
+            setIntroActive(false)
+          }}
+        />
+      )}
+      {screen === 'playing' && <DevMenu />}
       {screen === 'loading' && <LoadingScreen progress={progress} />}
       {screen === 'title' && <TitleScreen onStart={enterWorld} />}
       {screen === 'paused' && (
         <PauseMenu settings={settings} onChange={setSettings} onResume={enterWorld} />
-      )}
-      {screen === 'dialogue' && (
-        <Dialogue key={openCharacterId} characterId={openCharacterId} onClose={enterWorld} />
-      )}
-      {screen === 'office' && openAgentId && (
-        <OfficePanel agentId={openAgentId} onClose={enterWorld} />
       )}
     </>
   )
