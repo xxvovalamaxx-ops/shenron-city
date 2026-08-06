@@ -75,6 +75,12 @@ would make behavior depend on React render order.
 - In-world text is generated from browser canvas textures and never resolves a
   remote font.
 - Save data is validated browser `localStorage`, not filesystem access.
+- Destructible-prop simulation lives in the renderer-free runtime
+  (`rt.destruction`) and is stepped by GameLoop with the same real dt as
+  everything else; React renders it but owns no destruction state, so
+  time-to-destroy is identical at 30, 60 or 120 fps and StrictMode cannot
+  double-apply damage. Destroyed ids persist through the validated save
+  (v2+).
 
 ## Reintroducing integrations later
 
