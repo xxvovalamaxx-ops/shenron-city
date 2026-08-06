@@ -1,33 +1,33 @@
 {
-  "scene_id": "hq-lobby",
-  "captured_at": "2026-08-06T16:17:53.766Z",
+  "scene_id": "shenron-agent-station",
+  "captured_at": "2026-08-06T16:18:53.277Z",
   "git_rev": "0993f318ada22eb2cb3d659199012d77c209f306",
   "commit_repo_workspace": "E:\\temp projects\\shenron-city",
-  "url": "http://127.0.0.1:9122/?visionCapture=1&visionX=6.4&visionY=1.71&visionZ=-4&visionTX=-6.5&visionTY=1.35&visionTZ=-13.8&visionFov=60&visionTime=15.5&visionRain=0&visionSeed=vision-bridge-v1",
+  "url": "http://127.0.0.1:9122/?visionCapture=1&visionX=6.3&visionY=181.71&visionZ=-22&visionTX=11&visionTY=181.35&visionTZ=-22&visionFov=60&visionTime=15.5&visionRain=0&visionSeed=vision-bridge-v1",
   "settled": true,
   "fps": 100,
-  "camera_pose_readback": "6.4,1.71,-4|-6.5,1.35,-13.8|60",
+  "camera_pose_readback": "6.3,181.71,-22|11,181.35,-22|60",
   "resolution": {
     "width": 1920,
     "height": 1080
   },
   "frame_diff": {
-    "value": 0.13377554861113372,
+    "value": 0.09024477121909168,
     "pass": true,
     "threshold": "0.05 <= diff <= 12"
   },
   "checks": {
     "frame-not-black": {
       "pass": true,
-      "metric": 86.7769842222202,
+      "metric": 52.035371537029135,
       "threshold": "> 6 mean luma",
       "severity": "P0"
     },
     "frame-not-flat": {
       "pass": true,
       "metric": {
-        "lumaStddev": 38.23273482612691,
-        "distinctColors": 29746
+        "lumaStddev": 44.784342129710176,
+        "distinctColors": 7009
       },
       "threshold": "lumaStddev > 2 and > 400 distinct colours",
       "severity": "P0"
@@ -40,52 +40,52 @@
     },
     "no-full-black-corner": {
       "pass": true,
-      "metric": 66.18569564240958,
+      "metric": 27.350450487855003,
       "threshold": "all 9 bands > 1 mean luma",
       "severity": "P1"
     },
     "no-void": {
       "pass": true,
-      "metric": 35.35211261893194,
+      "metric": 97.8568760962586,
       "threshold": "band spread > 4 (not a solid fill)",
       "severity": "P0"
     },
     "overexposure-budget": {
       "pass": true,
-      "metric": 0.00016975308641975308,
+      "metric": 0,
       "threshold": "< 0.15 pixels above luma 250",
       "severity": "P2"
     },
     "near-black-budget": {
       "pass": true,
-      "metric": 0.0027237654320987656,
+      "metric": 0.016712962962962964,
       "threshold": "< 0.85 pixels below luma 8 (night scenes loosen)",
       "severity": "P2"
     },
     "band-uniformity": {
       "pass": true,
-      "metric": 10.023692788420101,
+      "metric": 30.844652345462872,
       "threshold": "band luma stddev > 1 (varied framing)",
       "severity": "P2"
     },
     "silhouette-coverage": {
       "pass": true,
-      "metric": 0.08333333333333333,
+      "metric": 0.6666666666666666,
       "threshold": "> 0.05 grid edges (geometry present, not fog wall)",
       "severity": "P1"
     },
     "ground-present": {
       "pass": true,
       "metric": {
-        "mean": 66.18569564240958,
-        "stddev": 9.155531572917614
+        "mean": 32.8131574644178,
+        "stddev": 14.757108754903038
       },
       "threshold": "bottom band non-black with texture variance",
       "severity": "P2"
     },
     "color-palette-present": {
       "pass": true,
-      "metric": 0.059506674983908374,
+      "metric": 0.16697057538406004,
       "threshold": "bright-pixel saturation > 0.01",
       "severity": "P2"
     }

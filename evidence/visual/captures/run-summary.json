@@ -1,17 +1,161 @@
 {
   "pipeline": "shenron-city visual QA bridge",
-  "generated_at": "2026-08-05T19:07:03.825Z",
-  "git_rev": "d1e5c2ce02019f192c06cd7a62df37efa63429f6",
+  "generated_at": "2026-08-06T16:19:26.629Z",
+  "git_rev": "0993f318ada22eb2cb3d659199012d77c209f306",
   "server": "http://127.0.0.1:9122",
   "results": [
+    {
+      "scene_id": "hero-vehicle-exterior",
+      "ok": true,
+      "failed": [],
+      "p0Failed": false,
+      "fps": 89,
+      "settled": false,
+      "diff": 3.3690700327912775
+    },
+    {
+      "scene_id": "hero-street",
+      "ok": true,
+      "failed": [],
+      "p0Failed": false,
+      "fps": 95,
+      "settled": true,
+      "diff": 1.4279597519291833
+    },
+    {
+      "scene_id": "market",
+      "ok": true,
+      "failed": [],
+      "p0Failed": false,
+      "fps": 99,
+      "settled": true,
+      "diff": 1.0426716195985986
+    },
+    {
+      "scene_id": "hq-exterior",
+      "ok": true,
+      "failed": [],
+      "p0Failed": false,
+      "fps": 100,
+      "settled": true,
+      "diff": 0.49980408487669153
+    },
+    {
+      "scene_id": "hq-entrance",
+      "ok": true,
+      "failed": [],
+      "p0Failed": false,
+      "fps": 100,
+      "settled": true,
+      "diff": 0.6149097824066625
+    },
     {
       "scene_id": "hq-lobby",
       "ok": true,
       "failed": [],
       "p0Failed": false,
-      "fps": 30,
-      "settled": false,
-      "diff": 0.11787227083331983
+      "fps": 100,
+      "settled": true,
+      "diff": 0.13377554861113372
+    },
+    {
+      "scene_id": "elevator",
+      "ok": true,
+      "failed": [],
+      "p0Failed": false,
+      "fps": 99,
+      "settled": true,
+      "diff": 0.08054991010799599
+    },
+    {
+      "scene_id": "floor-45-wide",
+      "ok": true,
+      "failed": [],
+      "p0Failed": false,
+      "fps": 100,
+      "settled": true,
+      "diff": 0.06473698533943623
+    },
+    {
+      "scene_id": "floor-45-workstation",
+      "ok": true,
+      "failed": [],
+      "p0Failed": false,
+      "fps": 100,
+      "settled": true,
+      "diff": 0.10243044791668057
+    },
+    {
+      "scene_id": "shenron-agent-station",
+      "ok": true,
+      "failed": [],
+      "p0Failed": false,
+      "fps": 100,
+      "settled": true,
+      "diff": 0.09024477121909168
+    },
+    {
+      "scene_id": "manhattan-aerial",
+      "ok": true,
+      "failed": [],
+      "p0Failed": false,
+      "fps": 99,
+      "settled": true,
+      "diff": 1.0203651261590925
+    },
+    {
+      "scene_id": "hero-street-night",
+      "ok": true,
+      "failed": [],
+      "p0Failed": false,
+      "fps": 76,
+      "settled": true,
+      "diff": 0.44777331867284526
+    },
+    {
+      "scene_id": "hero-street-rain",
+      "ok": true,
+      "failed": [],
+      "p0Failed": false,
+      "fps": 74,
+      "settled": true,
+      "diff": 5.698991963347388
+    },
+    {
+      "scene_id": "penthouse-bedroom",
+      "ok": false,
+      "failed": [
+        "not-built (skipped)"
+      ],
+      "p0Failed": true,
+      "note": "No penthouse content exists in the world build. Capture is skipped; ledger entry pending art."
+    },
+    {
+      "scene_id": "penthouse-living-room",
+      "ok": false,
+      "failed": [
+        "not-built (skipped)"
+      ],
+      "p0Failed": true,
+      "note": "No penthouse content exists in the world build. Capture is skipped; ledger entry pending art."
+    },
+    {
+      "scene_id": "residential-lobby",
+      "ok": false,
+      "failed": [
+        "not-built (skipped)"
+      ],
+      "p0Failed": true,
+      "note": "The only authored lobby is the HQ lobby. Capture is skipped; ledger entry pending art."
+    },
+    {
+      "scene_id": "hero-vehicle-interior",
+      "ok": false,
+      "failed": [
+        "not-built (skipped)"
+      ],
+      "p0Failed": true,
+      "note": "No drivable-vehicle interior rig exists. Capture is skipped; ledger entry pending art."
     }
   ]
 }

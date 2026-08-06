@@ -64,7 +64,7 @@ function resolveExecutablePath() {
  */
 
 function parseArgs(argv) {
-  const args = { scenes: null, out: join(REPO_ROOT, 'evidence', 'visual', 'captures'), settleMs: 12000, diffWaitMs: 3000, fpsSampleMs: 1500, server: 'http://127.0.0.1:9122', headless: true }
+  const args = { scenes: null, out: join(REPO_ROOT, 'evidence', 'visual', 'captures'), settleMs: 20000, diffWaitMs: 3000, fpsSampleMs: 1500, server: 'http://127.0.0.1:9122', headless: true }
   for (let i = 0; i < argv.length; i++) {
     const flag = argv[i]
     const value = () => argv[++i]
@@ -139,7 +139,8 @@ async function screenshotToFrame(page) {
  * Streaming (manhattan tiles, GLBs) shows up as large-scale luminance drift;
  * once two consecutive coarse luma-grid signatures agree we consider the
  * scene settled. Pixel-level frameDiff is deliberately not used here —
- * moving traffic keeps pixel diffs permanently above zero.
+ * moving traffic keeps pixel diffs permanently above zero. Settle probes use
+ * a half-resolution clip screenshot so each probe stays fast at 1080p.
  */
 async function waitSettled(page, settleMs) {
   await page.waitForFunction(
@@ -150,10 +151,10 @@ async function waitSettled(page, settleMs) {
   let previous = null
   let agreed = 0
   while (Date.now() - start < settleMs) {
-    const frame = await screenshotToFrame(page)
+    const probe = await probeFrame(page)
     if (previous) {
-      const gridA = lumaGrid(previous.frame.data, previous.frame.width, previous.frame.height, 8, 8)
-      const gridB = lumaGrid(frame.frame.data, frame.frame.width, frame.frame.height, 8, 8)
+      const gridA = lumaGrid(previous.data, previous.width, previous.height, 8, 8)
+      const gridB = lumaGrid(probe.data, probe.width, probe.height, 8, 8)
       let drift = 0
       for (let i = 0; i < gridA.length; i++) drift += Math.abs(gridA[i] - gridB[i])
       drift /= gridA.length
@@ -164,10 +165,17 @@ async function waitSettled(page, settleMs) {
         agreed = 0
       }
     }
-    previous = frame
+    previous = probe
     await new Promise((resolve) => setTimeout(resolve, 750))
   }
   return agreed >= 2
+}
+
+/** Cheap half-resolution screenshot for settle probes (no PNG kept). */
+async function probeFrame(page) {
+  const clip = { x: 0, y: 0, width: 960, height: 540 }
+  const buffer = await page.screenshot({ encoding: 'binary', clip })
+  return decodePngToRgba(buffer)
 }
 
 function gitRev() {
@@ -205,7 +213,7 @@ async function captureScene(browser, scene, args) {
   const frameB = await screenshotToFrame(page)
   await page.close()
 
-  const analysisA = runChecks(frameA.frame)
+  const analysisA = runChecks(frameA.frame, { thresholds: scene.thresholdOverrides ?? {} })
   const diff = runFrameDiffCheck(frameA.frame, frameB.frame)
   const checks = Object.fromEntries(
     Object.entries(analysisA.results).map(([id, r]) => [id, { pass: r.pass, metric: r.metric, threshold: r.threshold, severity: r.severity }]),

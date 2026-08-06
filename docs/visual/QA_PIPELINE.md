@@ -35,12 +35,18 @@ The runner opens `http://127.0.0.1:9122/?visionCapture=1&visionX=...&visionY=...
 
 Runner behaviour per scene:
 1. Wait for `visionReady=1`.
-2. Settle wait: poll a coarse 8×8 luma grid until two consecutive samples
-   agree (drift < 1.5) — streaming GLBs/tiles show up as large-scale drift
-   while moving traffic does not, so settle and dynamism don't fight.
+2. Settle wait: poll a coarse 8×8 luma grid (half-resolution probes) until
+   two consecutive samples agree (drift < 1.5) — streaming GLBs/tiles show
+   up as large-scale drift while moving traffic does not, so settle and
+   dynamism don't fight. Caveat: scenes where dynamic content moves through
+   the middle of the frame (e.g. `hero-vehicle-exterior`, where traffic
+   passes right in front of the camera) may never report `settled: true`
+   even though streaming finished; the frame-diff check still bounds the
+   dynamic content, so this is informational, not a failure.
 3. Sample FPS via a rAF counter.
 4. Capture frame A, wait `--diff-wait-ms` (default 3000), capture frame B.
-5. Run `runChecks` on A and `runFrameDiffCheck(A, B)`; collect console
+5. Run `runChecks` on A (with per-scene `thresholdOverrides` from the
+   manifest) and `runFrameDiffCheck(A, B)`; collect console
    errors/warnings, page errors, and failed requests.
 6. Write `evidence/visual/captures/<scene_id>/{frame-a.png, frame-b.png, metadata.json}`
    including `git_rev` provenance.

@@ -209,7 +209,10 @@
         "/models/manhattan/manhattan_world.glb",
         "/models/manhattan/manhattan_base.glb"
       ],
-      "note": "Camera above the island's x=1300 column; tiles load within TILE_LOAD_RADIUS=5200. Far plane is 900 so altitude 500 keeps the ground inside."
+      "thresholdOverrides": {
+        "color-palette-present": 0.001
+      },
+      "note": "Camera above the island's x=1300 column; tiles load within TILE_LOAD_RADIUS=5200. Far plane is 900 so altitude 500 keeps the ground inside. color-palette-present is overridden to 0.001: an aerial mid-afternoon grade exposes no pixels above luma 200 (0 blown highlights), so bright-pixel saturation has no sample; the metric would otherwise false-fail a well-exposed frame."
     },
     {
       "scene_id": "hero-street-night",
