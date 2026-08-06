@@ -50,6 +50,11 @@
 **Rationale**: The first destruction pass duplicated lobby, market, and office geometry at unrelated coordinates; it placed a desk in the critical lobby route while every breakable remained walk-through. One small registry now owns rendering, damage, and active solid bounds, and destroyed props leave collision immediately.
 **Trade-off**: Only a reviewed set of supply crates and one side-bay desk are destructible until existing architectural meshes can opt into the same authority without duplicate rendering.
 
+## 2026-08-05: Destruction simulation moves off React
+**Decision**: The destructible-prop simulation lives on the runtime (`rt.destruction`) and is stepped by GameLoop with the same real dt as everything else; React renders it but owns no sim state.
+**Rationale**: The first pass applied damage from a React state updater at a fixed 1/60 s, so time-to-destroy scaled with frame rate, StrictMode could duplicate fragments and scorches, and destroyed props did not survive save/load. A renderer-free, deterministic sim with a revision counter removes all three failure modes at once.
+**Trade-off**: React no longer drives destruction visuals with its own clock; the presentation layer polls the sim's revision counter in useFrame, which is one extra read per frame while destruction is active.
+
 ## 2026-07-28: Mission Control
 **Decision**: Removed entirely — standalone game only
 **Rationale**: User requested no external connections
