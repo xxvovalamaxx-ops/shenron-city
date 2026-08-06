@@ -1,7 +1,9 @@
-import { existsSync, writeFileSync } from 'node:fs'
+import { existsSync } from 'node:fs'
 import puppeteer from 'puppeteer-core'
 import { lumaGrid } from './frame-analysis.mjs'
 import { decodePngToRgba } from './png-decode.mjs'
+
+/* global document */
 
 const exe = [
   'C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe',

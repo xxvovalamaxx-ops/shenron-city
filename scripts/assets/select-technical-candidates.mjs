@@ -93,7 +93,6 @@ for (const c of candidates) {
   copiedBytes += c.bytes;
   copiedFiles++;
   const dir = path.dirname(src);
-  const modelBase = path.basename(src, path.extname(src));
   for (const entry of fs.readdirSync(dir)) {
     const ext = path.extname(entry).toLowerCase();
     if (!TEXTURE_EXTS.has(ext)) continue;

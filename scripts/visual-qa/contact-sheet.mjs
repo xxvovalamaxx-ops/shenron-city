@@ -30,12 +30,6 @@ function parseArgs(argv) {
   return args
 }
 
-const severityColor = {
-  P0: '#d33',
-  P1: '#e8a33d',
-  P2: '#8a8a8a',
-}
-
 const args = parseArgs(process.argv.slice(2))
 const summaryPath = join(args.captures, 'run-summary.json')
 if (!existsSync(summaryPath)) {

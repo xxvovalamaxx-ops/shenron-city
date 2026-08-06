@@ -508,8 +508,6 @@ license text must be included when fonts are redistributed. Bundled \`License.tx
   fs.writeFileSync(path.join(outDir, 'ATTRIBUTION_GENERATED.md'), att, 'utf8');
 
   // ---- 8. LEGAL_SHORTLIST.md ----
-  const licenseRecs = registryRecords.filter((r) => r.kind === 'license');
-  const licFileRows = licenseRecs.slice(0, 60).map((r) => [r.path, r.license, r.classification]);
   const shortlist = `# Legal Shortlist — Publishable Asset Sources
 
 - **Snapshot:** ${SNAPSHOT_UTC}

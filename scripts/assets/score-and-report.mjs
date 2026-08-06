@@ -20,7 +20,7 @@ for (const f of fs.readdirSync(REPORTS)) {
 
 const clamp = (v, lo, hi) => Math.max(lo, Math.min(hi, v));
 
-function expectedScale(cat, ext) {
+function expectedScale(cat) {
   if (cat.startsWith("Characters")) return { min: 1.2, max: 2.6, note: "character 1.2-2.6m" };
   if (cat.startsWith("Vehicles")) return { min: 2.5, max: 9, note: "vehicle 2.5-9m" };
   if (cat.startsWith("Buildings")) return { min: 3, max: 200, note: "building 3-200m" };
@@ -202,9 +202,9 @@ fs.writeFileSync(
 console.log("registry:", entries.length, "entries, OK:", entries.filter((e) => e.status === "OK").length);
 
 function mdTable(rows) {
-  const w = rows.map((r) => r.map((x) => String(x).length));
+  const w = rows    .map((r) => r.map((x) => String(x).length));
   return rows
-    .map((r, i) =>
+    .map((r) =>
       r
         .map((x, j) => String(x).padEnd(Math.max(...w.map((row) => row[j]))))
         .join(" | ")
@@ -223,7 +223,6 @@ const shortlist = [];
 for (const [cat, list] of Object.entries(byCat)) {
   list.sort((a, b) => b.total - a.total);
   const top = list.slice(0, 5);
-  const anchors = list.findIndex((e) => e.total >= 80);
   shortlist.push({ cat, top });
 }
 
@@ -250,7 +249,7 @@ const flagships = [
   ["Nature (rock)", (e) => e.id.includes("boulder") || e.id.includes("rock"), "Environment/Nature"],
   ["Environment prop (PBR)", (e) => e.id.includes("polyhaven"), "Environment/Models"],
 ];
-for (const [label, match, cat] of flagships) {
+for (const [label, match] of flagships) {
   const hit = ok.filter((e) => match(e)).sort((a, b) => b.total - a.total)[0];
   if (hit) {
     const m = hit.metrics || {};

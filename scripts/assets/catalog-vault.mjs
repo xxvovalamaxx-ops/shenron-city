@@ -9,8 +9,8 @@
  * Usage: node scripts/assets/catalog-vault.mjs <vault-root> <out-jsonl> <out-summary>
  */
 import { createHash } from 'node:crypto'
-import { createReadStream, createWriteStream, existsSync, readdirSync, statSync } from 'node:fs'
-import { join, relative, extname, dirname, basename } from 'node:path'
+import { createReadStream, createWriteStream, readdirSync, statSync } from 'node:fs'
+import { join, relative, extname, basename } from 'node:path'
 
 const VAULT = process.argv[2]
 const OUT_JSONL = process.argv[3]
