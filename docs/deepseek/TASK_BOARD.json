@@ -1,0 +1,82 @@
+{
+  "generated": "2026-08-05",
+  "handoff_commit": { "expected": "e6303ba", "found": true, "location": "Made assets/Manhattan City (nested git repo, parent of HEAD 4de0874)" },
+  "handoff_doc": { "expected": "docs/phase2/HANDOFF.md", "found": true, "location": "Made assets/Manhattan City/docs/phase2/HANDOFF.md" },
+  "phase2o_target_repo": "E:\\temp projects\\shenron-city\\Made assets\\Manhattan City",
+  "note": "Outer shenron-city repo = assets/production/LFS. Manhattan nested repo = the actual Phase 2O build. Worker branches split across both: 2o-baseline/qa-integrity/vision-bridge in Manhattan worktrees; asset-catalog/asset-technical in outer repo worktrees.",
+  "tasks": [
+    {
+      "id": "2O-A-001",
+      "title": "Honest benchmark harness (camera identity + metrics)",
+      "branch": "ds/2o-baseline",
+      "repo": "Manhattan",
+      "status": "worktree_ready_awaiting_dispatch",
+      "depends_on": [],
+      "acceptance": [
+        "Programmatic fixed-camera rig keyed to documented world coordinates (START/Times Square, 620 m alt, Floor 45, corridor, Battery, street level)",
+        "P2-075 reconciliation record: confirm START = TIMES_SQUARE in main.js; measure at the real location",
+        "Re-measure every 'optimistic and unverified' claim from HANDOFF/BASELINE/ledger at real locations; measured vs claimed table",
+        "JSON evidence committed under docs/qa/evidence/"
+      ]
+    },
+    {
+      "id": "2O-A-002",
+      "title": "Visual-evidence pipeline (structural/numerical checks)",
+      "branch": "ds/qa-integrity",
+      "repo": "Manhattan",
+      "status": "worktree_ready_awaiting_dispatch",
+      "depends_on": ["2O-A-001"],
+      "acceptance": [
+        "Fixed-camera capture with reproducible frames (works with baseline cameras)",
+        "Checks: stddev, distinct colors, luminance bands, occlusion fraction, near geometry coverage, black-ceiling/interior, winding, culled raycasts, frame diff, audio RMS/asymmetry, missing-asset errors",
+        "Contact sheets produced",
+        "JSON defect output schema; node:test unit tests for pure math"
+      ]
+    },
+    {
+      "id": "2O-A-003",
+      "title": "Public library catalog (families, licenses, classes)",
+      "branch": "ds/asset-catalog",
+      "repo": "shenron",
+      "status": "exists_locked",
+      "depends_on": [],
+      "acceptance": [
+        "Per-family license class (eval/game/repo/source/transformed/attribution/quarantine)",
+        "Manifest + receipts reconciled",
+        "Preview contact sheets",
+        "No runtime integration"
+      ]
+    },
+    {
+      "id": "2O-A-004",
+      "title": "Technical asset validation + quarantine list",
+      "branch": "ds/asset-technical",
+      "repo": "shenron",
+      "status": "worktree_exists_sparse_unfinished",
+      "depends_on": ["2O-A-003"],
+      "acceptance": [
+        "Poly/hierarchy/LOD/texture/Draco/KTX2 checks per candidate family",
+        "Quarantine list for unknown licenses",
+        "JSON evidence"
+      ]
+    },
+    {
+      "id": "2O-A-005",
+      "title": "Vision bridge + defect-to-test conversion",
+      "branch": "ds/vision-bridge",
+      "repo": "Manhattan",
+      "status": "worktree_ready_awaiting_dispatch",
+      "depends_on": ["2O-A-002"],
+      "acceptance": [
+        "Contact sheets feed external vision critic",
+        "JSON defect output",
+        "Repeatable defects become regression tests"
+      ]
+    }
+  ],
+  "phase_2o": {
+    "2O_A_honest_baseline": "in_progress",
+    "2O_B_structural_optimization": "not_started",
+    "2O_C_final_optimization": "not_started"
+  }
+}

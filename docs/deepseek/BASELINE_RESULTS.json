@@ -1,0 +1,68 @@
+{
+  "captured_at": "2026-08-05",
+  "repo": {
+    "branch": "main",
+    "head": "d1e5c2ce0",
+    "head_message": "fix: lint - add .cjs scripts to eslint node globals and ignore sketchfab-download.cjs",
+    "handoff_commit_expected": "e6303ba",
+    "handoff_commit_present": false,
+    "handoff_doc_present": "docs/phase2/HANDOFF.md -> false",
+    "remote": "origin/main"
+  },
+  "environment": {
+    "node": "v24.18.0",
+    "npm": "11.16.0",
+    "os": "win32",
+    "git": "2.54.0.windows.1",
+    "git_lfs": "3.7.1"
+  },
+  "checks": {
+    "typecheck": { "command": "npm run typecheck", "exit": 0, "pass": true },
+    "lint_tracked": { "command": "npx eslint (172 tracked files)", "exit": 0, "pass": true, "notes": "1 ignored-file notice for scripts/sketchfab-download.cjs" },
+    "lint_full": { "command": "npm run lint", "exit": 1, "pass": false, "errors": 291, "warnings": 0, "cause": "all 291 errors in untracked scratch files" },
+    "test": { "command": "npm test", "exit": 0, "pass": true, "files": 45, "tests": 374, "failures": 0, "duration_s": 1.64 },
+    "build": { "command": "npm run build", "exit": 0, "pass": true, "duration_s": 0.92, "warnings": ["Tree chunk 4000.52 kB (gzip 2986.88 kB)"] }
+  },
+  "working_tree": {
+    "total_changed_paths": 3608,
+    "deletions": 2084,
+    "modifications": 1408,
+    "untracked": 116,
+    "deletion_focus": "SourceAssets/PublicLibrary (Renderpeople posed_plus/rigged, 38 Sketchfab GLBs, Kenney foliage-sprites, Kenney particle-pack)",
+    "note": "Deletions pre-existed at capture time; not made and not committed by this session."
+  },
+  "security": {
+    "cookies_file": "scripts/.cookies.txt",
+    "exists": true,
+    "size_bytes": 952,
+    "tracked": false,
+    "contents_inspected": false,
+    "recommendation": "add to .gitignore; leave file on disk"
+  },
+  "phase2o": {
+    "p2_075_claim": "camera labelled Times Square located in Lincoln Square",
+    "p2_075_verifiable": false,
+    "reason": "no P2-* ledger, no benchmark camera system, no src/docs matches; only real-world building names in manhattan building_manifest.csv"
+  },
+  "disk": {
+    "c_free_gb": 552.7,
+    "d_free_gb": 85.7,
+    "e_free_gb": 262.0,
+    "repo_total_mb": 49253.8,
+    "source_assets_mb": 44634.5,
+    "git_dir_mb": 18663.7,
+    "git_lfs_mb": 17387.9,
+    "git_objects_mb": 1264.8,
+    "tracked_blobs_mb": 2615.9,
+    "tracked_files": 72666,
+    "lfs_pointers": 8017,
+    "lfs_materialized_gb": 8.3
+  },
+  "worktrees": {
+    "ds/2o-baseline": "missing",
+    "ds/qa-integrity": "missing",
+    "ds/asset-catalog": "exists, locked, d1e5c2ce0",
+    "ds/asset-technical": "missing",
+    "ds/vision-bridge": "missing"
+  }
+}

@@ -808,3 +808,13 @@ button.small {
     width: 130px;
   }
 }
+
+/*
+ * Visual QA capture mode (opt-in: ?visionCapture=1). The external capture
+ * runner hides every DOM overlay so screenshots are clean game evidence;
+ * the DOM-leakage check verifies these rules are in effect.
+ */
+html.vision-capture .overlay {
+  display: none !important;
+}
+

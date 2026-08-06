@@ -1,12 +1,12 @@
 #!/usr/bin/env node
-// run.cjs — Phase 2O-A deterministic benchmark harness.
+// run.js — Phase 2O-A deterministic benchmark harness.
 //
 // Usage:
-//   node scripts/benchmarks/run.cjs --app manhattan --location times-square
-//   node scripts/benchmarks/run.cjs --app shenron --location hq-lobby --scenario walk
-//   node scripts/benchmarks/run.cjs --app manhattan --location lincoln-square --scenario night
-//   node scripts/benchmarks/run.cjs --app manhattan --location harlem --scenario zone
-//   node scripts/benchmarks/run.cjs --app shenron --location city-entry --scenario soak
+//   node scripts/benchmarks/run.js --app manhattan --location times-square
+//   node scripts/benchmarks/run.js --app shenron --location hq-lobby --scenario walk
+//   node scripts/benchmarks/run.js --app manhattan --location lincoln-square --scenario night
+//   node scripts/benchmarks/run.js --app manhattan --location harlem --scenario zone
+//   node scripts/benchmarks/run.js --app shenron --location city-entry --scenario soak
 //
 // Options: --passes N (default 3), --seconds S (sample length, default 10),
 //          --chrome PATH, --port P (CDP, default 9222), --out DIR,
@@ -86,9 +86,8 @@ async function ensureDevServer(url, cwd, viteBin) {
   }
   console.log(`[dev] starting vite in ${cwd}`)
   // Run the vite node process directly (not npm, whose wrapper shell orphans
-  // the server when the harness is killed on Windows). --host pins IPv4:
-  // without it vite binds localhost/::1 and our 127.0.0.1 probes fail.
-  const child = spawn(process.execPath, [viteBin, '--host', '127.0.0.1'], { cwd, stdio: 'ignore' })
+  // the server when the harness is killed on Windows).
+  const child = spawn(process.execPath, [viteBin], { cwd, stdio: 'ignore' })
   for (let i = 0; i < 120; i++) {
     await sleep(500)
     if (await urlReachable(url)) return { started: true, child }

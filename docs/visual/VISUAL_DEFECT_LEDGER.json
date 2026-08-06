@@ -1,0 +1,57 @@
+{
+  "schema_version": 1,
+  "pipeline": "shenron-city visual QA bridge",
+  "updated_at": "2026-08-05",
+  "notes": [
+    "Ledger is seeded with P0 content gaps (scenes marked not-built in scene-manifest.json): the bridge records evidence, it never fabricates evidence for content that does not exist.",
+    "Accepted vision-model reviews are appended under reviews and their unique defect ids are added under defects.",
+    "Severity: P0 = blocker (frame is unusable evidence or content missing), P1 = clearly visible commercial-quality failure, P2 = polish issue."
+  ],
+  "defects": [
+    {
+      "id": "DEF-0001",
+      "scene_id": "penthouse-bedroom",
+      "severity": "P0",
+      "category": "other",
+      "description": "Scene not built: no penthouse content exists in the world build. Capture skipped by design; entry stays open until art delivers the penthouse.",
+      "location_normalized": { "x": 0.5, "y": 0.5 },
+      "visible_evidence": null,
+      "recommended_owner": "env-art",
+      "status": "open"
+    },
+    {
+      "id": "DEF-0002",
+      "scene_id": "penthouse-living-room",
+      "severity": "P0",
+      "category": "other",
+      "description": "Scene not built: no penthouse content exists in the world build. Capture skipped by design; entry stays open until art delivers the penthouse.",
+      "location_normalized": { "x": 0.5, "y": 0.5 },
+      "visible_evidence": null,
+      "recommended_owner": "env-art",
+      "status": "open"
+    },
+    {
+      "id": "DEF-0003",
+      "scene_id": "residential-lobby",
+      "severity": "P0",
+      "category": "other",
+      "description": "Scene not built: the only authored lobby is the HQ lobby. Capture skipped by design; entry stays open until a residential lobby is authored.",
+      "location_normalized": { "x": 0.5, "y": 0.5 },
+      "visible_evidence": null,
+      "recommended_owner": "env-art",
+      "status": "open"
+    },
+    {
+      "id": "DEF-0004",
+      "scene_id": "hero-vehicle-interior",
+      "severity": "P0",
+      "category": "other",
+      "description": "Scene not built: no drivable-vehicle interior rig exists. Capture skipped by design; entry stays open until a vehicle interior is authored.",
+      "location_normalized": { "x": 0.5, "y": 0.5 },
+      "visible_evidence": null,
+      "recommended_owner": "vehicle-art",
+      "status": "open"
+    }
+  ],
+  "reviews": []
+}

@@ -51,10 +51,10 @@ import { Capybara } from './animals/CapybaraActor'
 import { OfficePanel } from './ui/OfficePanel'
 import { DEFAULT_SETTINGS, LoadingScreen, PauseMenu, TitleScreen, type Settings } from './ui/Screens'
 import { floorAtPosition, loadGame, saveGame, type SaveData } from './gameplay/save'
-import { restoreDestruction } from './gameplay/runtime'
 import { cityAudio } from './audio'
 import { isDevInspection } from './gameplay/dev-view'
 import { gameplayZoneAt, sceneVisibilityForZone } from './gameplay/zone'
+import { visionCaptureSpec, visionFeet } from './gameplay/vision-capture'
 
 /** Slow enough to be free, often enough that a crash costs little progress. */
 const SAVE_INTERVAL_MS = 5000
@@ -71,7 +71,6 @@ function currentSaveData(settings: Settings): SaveData {
     forward: { ...rt.player.forward },
     tour: useHud.getState().cityTour,
     settings: { quality: settings.quality, sensitivity: settings.sensitivity, fov: settings.fov, volume: settings.volume },
-    destroyed: [...rt.destroyed],
   }
 }
 
@@ -84,9 +83,6 @@ function applySave(data: SaveData): void {
   rt.elevator = initialElevator(floorAtPosition(data.pos))
   rt.zone = gameplayZoneAt(rt.player.pos, carHeight(rt.elevator))
   useHud.setState({ cityTour: data.tour, gameplayZone: rt.zone })
-  // Destruction is restored whole: the persisted set is the authority for
-  // what no longer exists, and every other breakable returns to full health.
-  restoreDestruction(new Set(data.destroyed))
 }
 
 const PostProcessing = lazy(() => import('./world/PostProcessing'))
@@ -355,6 +351,12 @@ export default function App() {
     // outranks whatever the last session happened to be playing at.
     quality: DEFAULT_SETTINGS.quality,
   }))
+  // Opt-in fixed-camera mode for the visual QA bridge. Null in every normal
+  // session; the page performs no network I/O and exposes no global.
+  const vision = useMemo(
+    () => visionCaptureSpec(typeof location === 'undefined' ? '' : location.search),
+    [],
+  )
   const [ready, setReady] = useState(false)
   const [progress, setProgress] = useState(0)
   const controls = useRef<{ lock(): void; unlock(): void } | null>(null)
@@ -465,7 +467,24 @@ export default function App() {
   // Apply the restored world state once. The elevator floor is derived from
   // the position rather than stored, so the two can never contradict.
   useEffect(() => {
-    if (visualInspection) {
+    if (vision) {
+      // Fixed-camera capture: anchor the simulated body beneath the capture
+      // camera so zone visibility and collision resolve exactly as they would
+      // for a player standing there, and pin the sky/weather to the scene spec.
+      rt.player.pos = visionFeet(vision)
+      rt.player.velocityY = 0
+      rt.player.forward = { x: 0, z: -1 }
+      rt.clock.hour = vision.time
+      rt.clock.rainTarget = vision.rain
+      rt.clock.weather = {
+        rain: vision.rain,
+        wetness: vision.rain >= 0.5 ? 1 : 0,
+      }
+      rt.elevator = initialElevator(floorAtPosition(rt.player.pos))
+      rt.zone = gameplayZoneAt(rt.player.pos, carHeight(rt.elevator))
+      useHud.setState({ gameplayZone: rt.zone })
+      document.documentElement.classList.add('vision-capture')
+    } else if (visualInspection) {
       rt.elevator = initialElevator(floorAtPosition(rt.player.pos))
       rt.zone = gameplayZoneAt(rt.player.pos, carHeight(rt.elevator))
       useHud.setState({ gameplayZone: rt.zone })
@@ -477,11 +496,11 @@ export default function App() {
     } else if (restored.repaired.length > 0) {
       console.warn(`[save] repaired: ${restored.repaired.join(', ')}`)
     }
-  }, [restored, visualInspection])
+  }, [restored, visualInspection, vision])
 
   // Persist on a slow timer and on the way out. One small JSON.stringify.
   useEffect(() => {
-    if (visualInspection) return
+    if (visualInspection || vision) return
     const snapshot = () => saveGame(currentSaveData(settings))
     const id = setInterval(snapshot, SAVE_INTERVAL_MS)
     window.addEventListener('pagehide', snapshot)
@@ -490,7 +509,7 @@ export default function App() {
       window.removeEventListener('pagehide', snapshot)
       snapshot()
     }
-  }, [settings, visualInspection])
+  }, [settings, visualInspection, vision])
 
 
   // Fake a little progress so the loading card is not a frozen empty bar on a
@@ -502,8 +521,10 @@ export default function App() {
   }, [ready])
 
   useEffect(() => {
-    if (ready && screen === 'loading') setScreen(visualInspection ? 'playing' : 'title')
-  }, [ready, screen, setScreen, visualInspection])
+    if (ready && screen === 'loading') {
+      setScreen(visualInspection || vision ? 'playing' : 'title')
+    }
+  }, [ready, screen, setScreen, visualInspection, vision])
 
   const enterWorld = useCallback(() => {
     setScreen('playing')
@@ -564,7 +585,7 @@ export default function App() {
         dpr={[1, 2]}
         gl={{ antialias: false, powerPreference: 'high-performance' }}
         camera={{
-          fov: settings.fov,
+          fov: vision?.fov ?? settings.fov,
           near: 0.1,
           far: 900,
           position: [SPAWN.x, SPAWN.y + 1.65, SPAWN.z],

@@ -1,0 +1,17 @@
+{
+  "pipeline": "shenron-city visual QA bridge",
+  "generated_at": "2026-08-05T19:07:03.825Z",
+  "git_rev": "d1e5c2ce02019f192c06cd7a62df37efa63429f6",
+  "server": "http://127.0.0.1:9122",
+  "results": [
+    {
+      "scene_id": "hq-lobby",
+      "ok": true,
+      "failed": [],
+      "p0Failed": false,
+      "fps": 30,
+      "settled": false,
+      "diff": 0.11787227083331983
+    }
+  ]
+}

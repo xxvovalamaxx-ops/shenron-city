@@ -1,0 +1,24 @@
+Reactorcore Art (RC Art)
+==
+PACK: Fire Smoke Animations
+
+--
+
+Pixel-art sprites pack depicting fire and smoke frame animations. Includes multiple variants, styles and sizes.
+
+The package offers both sheets and individual images. Both are PNGs with transparent background.
+
+--
+
+These are intended to be used with particle systems of game engines where multiple instances of the same particle are spawned rapidly or all at once - usually in combination with other pixel particles or other sprite animations.
+
+--
+
+By default in image import settings, all sprites/textures have been set to 32 pixels per unit and using a point filter so they appear crisp.
+
+--
+
+Contact:
+mailto:reactorcoregames@gmail.com
+
+Enjoy!

@@ -1,4 +1,4 @@
-// locations.cjs — the canonical Phase 2O-A benchmark camera registry.
+// locations.js — the canonical Phase 2O-A benchmark camera registry.
 //
 // Every location is keyed to documented world coordinates, not a memory of
 // where a screenshot was taken. Manhattan locations are given as real

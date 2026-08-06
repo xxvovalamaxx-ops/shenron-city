@@ -9,7 +9,7 @@
  */
 import { useEffect, useMemo, useRef } from 'react'
 import { useFrame, useThree } from '@react-three/fiber'
-import { Matrix4, Object3D, Quaternion, Vector3 } from 'three'
+import { Matrix4, Object3D, PerspectiveCamera, Quaternion, Vector3 } from 'three'
 import { advanceRuntimeTime, rt, setRuntimePaused } from './runtime'
 import { advanceTraffic, vehicleColliders, vehiclePose } from './traffic'
 import { boomDistance, smoothBoom } from './camera-boom'
@@ -41,8 +41,12 @@ import { useLaser } from '../weapons/useLaser'
 import { capybaraCollider, capybaraPose } from '../animals/capybara'
 import { residentColliders } from './residents'
 import { breakableColliders } from '../destruction/collision'
-import { stepDestruction } from '../destruction/destruction'
 import { debugInspectionView } from './dev-view'
+import {
+  VISION_CAMERA_DATASET_KEY,
+  VISION_READY_DATASET_KEY,
+  visionCaptureSpec,
+} from './vision-capture'
 import { gameplayZoneAt, outdoorSimulationActive } from './zone'
 
 const WALK_SPEED = 4.3
@@ -74,6 +78,14 @@ export function GameLoop({ interactables, ambientPedestrians, onInteract }: Game
   const prevCarY = useRef(carHeight(rt.elevator))
   const forwardVec = useRef(new Vector3())
 
+  // Fixed-camera capture mode for the QA bridge. While active the simulation
+  // still runs (traffic, crowd, weather) but the camera never follows the
+  // player, so consecutive screenshots are comparable.
+  const vision = useMemo(
+    () => visionCaptureSpec(typeof location === 'undefined' ? '' : location.search),
+    [],
+  )
+
   // Static geometry never changes; rebuilding it per frame would dominate the
   // frame budget for no reason.
   const staticWorld = useMemo<AABB[]>(() => [...staticColliders(), ...hqColliders()], [])
@@ -92,6 +104,19 @@ export function GameLoop({ interactables, ambientPedestrians, onInteract }: Game
 
   useEffect(() => {
     if (typeof location === 'undefined') return
+    const spec = visionCaptureSpec(location.search)
+    if (spec) {
+      // Fixed camera for the QA bridge. The runner passes the pose through
+      // the query; the pure parser keeps every number validated.
+      camera.position.set(spec.position.x, spec.position.y, spec.position.z)
+      camera.lookAt(spec.target.x, spec.target.y, spec.target.z)
+      ;(camera as unknown as PerspectiveCamera).fov = spec.fov
+      ;(camera as unknown as PerspectiveCamera).updateProjectionMatrix()
+      const pose = `${spec.position.x},${spec.position.y},${spec.position.z}|${spec.target.x},${spec.target.y},${spec.target.z}|${spec.fov}`
+      document.documentElement.dataset[VISION_CAMERA_DATASET_KEY] = pose
+      document.documentElement.dataset[VISION_READY_DATASET_KEY] = '1'
+      return
+    }
     const view = debugInspectionView(location.search, import.meta.env.DEV)
     if (!view) return
     camera.position.set(view.position.x, view.position.y + EYE_HEIGHT, view.position.z)
@@ -427,35 +452,27 @@ export function GameLoop({ interactables, ambientPedestrians, onInteract }: Game
     rt.zone = gameplayZoneAt(p.pos, carY)
 
     // ── 8. Camera follows the body ───────────────────────────────────────────
-    camera.position.set(p.pos.x, p.pos.y + EYE_HEIGHT, p.pos.z)
+    if (!vision) {
+      camera.position.set(p.pos.x, p.pos.y + EYE_HEIGHT, p.pos.z)
 
-    if (rt.thirdPerson) {
-      // PointerLockControls owns rotation; the boom only moves the camera back
-      // along the direction it is already looking, so both modes share one
-      // aiming model and switching does not change where you are pointing.
-      camera.getWorldDirection(forwardVec.current)
-      const eye = { x: p.pos.x, y: p.pos.y + EYE_HEIGHT, z: p.pos.z }
-      // Swept against the same colliders that stop the player — a boom tested
-      // against a different set will eventually disagree with the world.
-      const wanted = boomDistance(eye, forwardVec.current, colliders)
-      boom.current = smoothBoom(boom.current, wanted, dt)
-      camera.position.addScaledVector(forwardVec.current, -boom.current)
-    } else if (boom.current !== 0) {
-      boom.current = 0
+      if (rt.thirdPerson) {
+        // PointerLockControls owns rotation; the boom only moves the camera back
+        // along the direction it is already looking, so both modes share one
+        // aiming model and switching does not change where you are pointing.
+        camera.getWorldDirection(forwardVec.current)
+        const eye = { x: p.pos.x, y: p.pos.y + EYE_HEIGHT, z: p.pos.z }
+        // Swept against the same colliders that stop the player — a boom tested
+        // against a different set will eventually disagree with the world.
+        const wanted = boomDistance(eye, forwardVec.current, colliders)
+        boom.current = smoothBoom(boom.current, wanted, dt)
+        camera.position.addScaledVector(forwardVec.current, -boom.current)
+      } else if (boom.current !== 0) {
+        boom.current = 0
+      }
     }
 
     // ── 8b. Laser weapon raycasting + heat ───────────────────────────────────
     updateLaser(camera, dt)
-
-    // ── 8c. Destructible-prop damage, with the same real dt as everything
-    // else in this loop. Damage used to be applied from the component's own
-    // useFrame at a fixed 1/60 s, so time-to-destroy scaled with frame rate;
-    // now it is part of the one place the simulation advances.
-    stepDestruction(rt.destruction, {
-      aim: rt.player.aimPoint,
-      dt,
-      destroyed: rt.destroyed,
-    })
 
     // ── 9. Interaction targeting ─────────────────────────────────────────────
     camera.getWorldDirection(forwardVec.current)

@@ -1,3 +1,208 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:0e158b6ef6aedca94da5c7dce9018e2d25a03ebd63b9372ba069f76508907c9e
-size 6178
+{
+  "status": "complete",
+  "blender_version": "5.1.2",
+  "render_engine": "CYCLES",
+  "cycles_device": "GPU",
+  "devices": [
+    {
+      "name": "NVIDIA GeForce RTX 5070",
+      "type": "CUDA",
+      "enabled": false
+    },
+    {
+      "name": "AMD Ryzen 9 9900X 12-Core Processor",
+      "type": "CPU",
+      "enabled": false
+    },
+    {
+      "name": "NVIDIA GeForce RTX 5070",
+      "type": "OPTIX",
+      "enabled": true
+    },
+    {
+      "name": "AMD Radeon(TM) Graphics",
+      "type": "HIP",
+      "enabled": false
+    }
+  ],
+  "samples": 512,
+  "adaptive_threshold": 0.005,
+  "max_bounces": 12,
+  "denoiser": "OPENIMAGEDENOISE",
+  "exact_resolution": [
+    1937,
+    1079
+  ],
+  "high_resolution": [
+    3840,
+    2140
+  ],
+  "mode": "png",
+  "exact_multilayer_render_seconds": null,
+  "exact_png_render_seconds": 87.37,
+  "high_render_seconds": 333.446,
+  "passes": [
+    "Combined",
+    "DiffCol (albedo)",
+    "Normal",
+    "Depth (Z)",
+    "Mist",
+    "Roughness",
+    "CryptoObject",
+    "CryptoMaterial",
+    "CryptoAsset",
+    "Roughness materials configured: 28"
+  ],
+  "scene_counts": {
+    "objects": 12337,
+    "mesh_objects": 12280,
+    "materials": 37,
+    "images": 77,
+    "collections": 17,
+    "vertices_source": 20755238,
+    "polygons_source": 12799410,
+    "ancient_stair_stones": 88
+  },
+  "outputs": {
+    "japanese-forest-shrine-final-1937x1079.png": {
+      "path": "D:\\Projects\\GitHub Projects\\shenron-city\\docs\\Assets\\Previews\\Final\\japanese-forest-shrine-final-1937x1079.png",
+      "bytes": 3569799
+    },
+    "japanese-forest-shrine-final-3840x2140.png": {
+      "path": "D:\\Projects\\GitHub Projects\\shenron-city\\docs\\Assets\\Previews\\Final\\japanese-forest-shrine-final-3840x2140.png",
+      "bytes": 12826141
+    },
+    "japanese-forest-shrine-final-multilayer.exr": {
+      "path": "D:\\Projects\\GitHub Projects\\shenron-city\\docs\\Assets\\Previews\\Final\\Passes\\japanese-forest-shrine-final-multilayer.exr",
+      "bytes": 143934878
+    },
+    "Japanese_Forest_Shrine_Realistic.blend": {
+      "path": "D:\\Projects\\GitHub Projects\\shenron-city\\SourceAssets\\Models\\Environment\\Working\\Japanese_Forest_Shrine_Realistic.blend",
+      "bytes": 61332146
+    }
+  },
+  "exact_multilayer_observed_elapsed": "01:29.016",
+  "exact_multilayer_cycles_total_time": "01:26.00",
+  "vram_mib": {
+    "before": 4845,
+    "observed_peak": 8338,
+    "after": 4584,
+    "observed_delta": 3493
+  },
+  "presentation_color_grade": {
+    "source": "Preserved raw Cycles PNGs in Final/Raw",
+    "space": "display RGB after AgX",
+    "luminance_offset": 0.008,
+    "highlight_knee_start": 0.45,
+    "highlight_gain": 0.48,
+    "regional_positive_fill_rgb": [
+      0.96,
+      1.0,
+      0.72
+    ],
+    "midtone_dip_center": 0.24,
+    "midtone_dip_width": 0.16,
+    "midtone_dip_strength": 0.008,
+    "highlight_lift_start": 0.5,
+    "highlight_lift_end": 0.9,
+    "highlight_lift_strength": 0.04,
+    "chroma_factor": 0.8,
+    "regional_luminance_target_3x3": [
+      [
+        0.2964325,
+        0.2537491,
+        0.153848
+      ],
+      [
+        0.2643866,
+        0.1934073,
+        0.3225934
+      ],
+      [
+        0.2467302,
+        0.2928785,
+        0.4425421
+      ]
+    ],
+    "regional_feather_pixels_at_963_width": 15,
+    "purpose": "restore sun patches and balance the shrine/stair distribution without changing geometry, materials, shadows, or the linear multilayer EXR"
+  },
+  "pass_verification": {
+    "manifest": "D:\\Projects\\GitHub Projects\\shenron-city\\docs\\Assets\\Previews\\Final\\Passes\\multilayer-pass-manifest.json",
+    "all_required_passes_present": true,
+    "required_passes_present": {
+      "Combined": true,
+      "Albedo": true,
+      "Normal": true,
+      "Depth": true,
+      "Mist": true,
+      "Roughness": true,
+      "CryptoObject": true,
+      "CryptoMaterial": true,
+      "CryptoAsset": true
+    }
+  },
+  "derived_outputs": {
+    "japanese-forest-shrine-final-963x538.png": {
+      "path": "D:\\Projects\\GitHub Projects\\shenron-city\\docs\\Assets\\Previews\\Final\\japanese-forest-shrine-final-963x538.png",
+      "bytes": 1036570,
+      "sha256": "8fc86f80cbe12366c70d3853a913c87adf2636f44093ec9710f656feb1fe3187",
+      "dimensions": [
+        963,
+        538
+      ],
+      "mode": "RGB"
+    },
+    "japanese-forest-shrine-final-clay-963x538.png": {
+      "path": "D:\\Projects\\GitHub Projects\\shenron-city\\docs\\Assets\\Previews\\Final\\japanese-forest-shrine-final-clay-963x538.png",
+      "bytes": 717883,
+      "sha256": "d55f8deb8c535176bb1be82c34d6f29b694c8f5b4d876d1639633720512a54fe",
+      "dimensions": [
+        963,
+        538
+      ],
+      "mode": "RGB"
+    },
+    "japanese-forest-shrine-before-after.png": {
+      "path": "D:\\Projects\\GitHub Projects\\shenron-city\\docs\\Assets\\Previews\\Final\\japanese-forest-shrine-before-after.png",
+      "bytes": 2072936,
+      "sha256": "c6e8312bf51e25e0be7437c73cbe209b5473fe6b6012043d304afd6c33696ef9",
+      "dimensions": [
+        1926,
+        594
+      ],
+      "mode": "RGB"
+    }
+  },
+  "verified_outputs": {
+    "japanese-forest-shrine-final-1937x1079.png": {
+      "path": "D:\\Projects\\GitHub Projects\\shenron-city\\docs\\Assets\\Previews\\Final\\japanese-forest-shrine-final-1937x1079.png",
+      "bytes": 3569799,
+      "sha256": "acc34709423bc9e62994d51b0a3b107d9a6a13c50e21c3e15bd0a58465b3fa4f",
+      "dimensions": [
+        1937,
+        1079
+      ],
+      "mode": "RGB"
+    },
+    "japanese-forest-shrine-final-3840x2140.png": {
+      "path": "D:\\Projects\\GitHub Projects\\shenron-city\\docs\\Assets\\Previews\\Final\\japanese-forest-shrine-final-3840x2140.png",
+      "bytes": 12826141,
+      "sha256": "bc1d2c15acd15911cd1de16f9acf0cfbf1d53e649fcb66d97f22003246cdd94a",
+      "dimensions": [
+        3840,
+        2140
+      ],
+      "mode": "RGB"
+    }
+  },
+  "multilayer_exr": {
+    "path": "D:\\Projects\\GitHub Projects\\shenron-city\\docs\\Assets\\Previews\\Final\\Passes\\japanese-forest-shrine-final-multilayer.exr",
+    "bytes": 143934878,
+    "sha256": "d4241a7e56e1a9b2247b3657be04697dd05b20d9ac650bc521fca74682df8389",
+    "dimensions": [
+      1937,
+      1079
+    ]
+  }
+}

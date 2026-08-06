@@ -1,4 +1,4 @@
-// cdp.cjs — minimal Chrome DevTools Protocol client (zero dependencies).
+// cdp.js — minimal Chrome DevTools Protocol client (zero dependencies).
 // Node >= 22 provides global WebSocket; this repo targets Node ^20.19 || >=22.12.
 
 const { spawn } = require('node:child_process')

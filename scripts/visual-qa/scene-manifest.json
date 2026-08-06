@@ -1,0 +1,243 @@
+{
+  "pipeline": "shenron-city visual QA bridge",
+  "version": 1,
+  "documentedAt": "2026-08-05",
+  "coordinateSystem": "metres, +Y up, HQ entrance at z=0; camera positions are eye-level (y = floor + 1.66)",
+  "notes": [
+    "Scenes whose subject does not exist in the current build are marked status=not-built and are skipped by the capture runner; the defect ledger records them as P0 content gaps instead of fabricating evidence.",
+    "Night and Rain are weather variants of the hero street (same pose, different time/rain), per the 17-scene brief.",
+    "Time is in hours (0..24). Rain is 0 dry .. 1 downpour and is pre-saturated so the road is wet on the first frame."
+  ],
+  "scenes": [
+    {
+      "scene_id": "penthouse-bedroom",
+      "label": "Penthouse bedroom",
+      "status": "not-built",
+      "zone": "penthouse",
+      "note": "No penthouse content exists in the world build. Capture is skipped; ledger entry pending art."
+    },
+    {
+      "scene_id": "penthouse-living-room",
+      "label": "Penthouse living room",
+      "status": "not-built",
+      "zone": "penthouse",
+      "note": "No penthouse content exists in the world build. Capture is skipped; ledger entry pending art."
+    },
+    {
+      "scene_id": "residential-lobby",
+      "label": "Residential lobby",
+      "status": "not-built",
+      "zone": "lobby",
+      "note": "The only authored lobby is the HQ lobby. Capture is skipped; ledger entry pending art."
+    },
+    {
+      "scene_id": "hero-vehicle-exterior",
+      "label": "Hero vehicle exterior",
+      "status": "ready",
+      "zone": "exterior",
+      "camera": { "position": [6.9, 1.71, 118], "target": [3.6, 1.2, 92], "fov": 60 },
+      "time": 15.5,
+      "rain": 0,
+      "seed": "vision-bridge-v1",
+      "resolution": { "width": 1920, "height": 1080 },
+      "graphicsPreset": "ultra",
+      "assetIds": [
+        "/assets/production/vehicles/premium-sedan.glb",
+        "/assets/production/vehicles/suv-crossover.glb",
+        "/assets/production/vehicles/compact-city.glb",
+        "/assets/production/vehicles/delivery-van.glb"
+      ],
+      "note": "East traffic lane (x=3.6) framed from the sidewalk; vehicles circulate on TRAFFIC_LOOP."
+    },
+    {
+      "scene_id": "hero-vehicle-interior",
+      "label": "Hero vehicle interior",
+      "status": "not-built",
+      "zone": "exterior",
+      "note": "No drivable-vehicle interior rig exists. Capture is skipped; ledger entry pending art."
+    },
+    {
+      "scene_id": "hero-street",
+      "label": "Hero street (Dragon Boulevard)",
+      "status": "ready",
+      "zone": "exterior",
+      "camera": { "position": [-5.8, 1.71, 123], "target": [0, 2.2, 68], "fov": 60 },
+      "time": 15.5,
+      "rain": 0,
+      "seed": "vision-bridge-v1",
+      "resolution": { "width": 1920, "height": 1080 },
+      "graphicsPreset": "ultra",
+      "assetIds": [
+        "/assets/production/architecture/hero-district.glb",
+        "/assets/production/vehicles/premium-sedan.glb",
+        "/assets/production/vehicles/suv-crossover.glb",
+        "/assets/production/vehicles/compact-city.glb",
+        "/assets/production/vehicles/delivery-van.glb"
+      ],
+      "note": "Canonical hero-boulevard inspection pose."
+    },
+    {
+      "scene_id": "market",
+      "label": "Night market",
+      "status": "ready",
+      "zone": "exterior",
+      "camera": { "position": [5.4, 1.71, 113], "target": [15.4, 2.0, 88], "fov": 60 },
+      "time": 20.5,
+      "rain": 0,
+      "seed": "vision-bridge-v1",
+      "resolution": { "width": 1920, "height": 1080 },
+      "graphicsPreset": "ultra",
+      "assetIds": ["/assets/production/architecture/hero-district.glb"],
+      "note": "Night market wide view (awning stalls visible)."
+    },
+    {
+      "scene_id": "hq-exterior",
+      "label": "HQ exterior",
+      "status": "ready",
+      "zone": "exterior",
+      "camera": { "position": [11.5, 1.71, 36], "target": [0, 8.5, 0], "fov": 60 },
+      "time": 15.5,
+      "rain": 0,
+      "seed": "vision-bridge-v1",
+      "resolution": { "width": 1920, "height": 1080 },
+      "graphicsPreset": "ultra",
+      "assetIds": ["/assets/production/architecture/hero-district.glb"],
+      "note": "Canonical hq-exterior inspection pose."
+    },
+    {
+      "scene_id": "hq-entrance",
+      "label": "HQ entrance",
+      "status": "ready",
+      "zone": "exterior",
+      "camera": { "position": [-3.7, 1.71, 12.8], "target": [0, 2.3, 0.4], "fov": 60 },
+      "time": 15.5,
+      "rain": 0,
+      "seed": "vision-bridge-v1",
+      "resolution": { "width": 1920, "height": 1080 },
+      "graphicsPreset": "ultra",
+      "assetIds": [
+        "/assets/production/architecture/hero-district.glb",
+        "/assets/production/props/automatic-door-leaf.glb"
+      ],
+      "note": "Canonical hq-entrance inspection pose; automatic doors are dynamic."
+    },
+    {
+      "scene_id": "hq-lobby",
+      "label": "HQ lobby",
+      "status": "ready",
+      "zone": "lobby",
+      "camera": { "position": [6.4, 1.71, -4], "target": [-6.5, 1.35, -13.8], "fov": 60 },
+      "time": 15.5,
+      "rain": 0,
+      "seed": "vision-bridge-v1",
+      "resolution": { "width": 1920, "height": 1080 },
+      "graphicsPreset": "ultra",
+      "assetIds": ["/assets/production/interiors/hq-lobby.glb"],
+      "note": "Canonical hq-lobby inspection pose (reception desk and back wall)."
+    },
+    {
+      "scene_id": "elevator",
+      "label": "Elevator",
+      "status": "ready",
+      "zone": "elevator",
+      "camera": { "position": [0, 1.71, -32.2], "target": [1.25, 1.48, -31.2], "fov": 60 },
+      "time": 15.5,
+      "rain": 0,
+      "seed": "vision-bridge-v1",
+      "resolution": { "width": 1920, "height": 1080 },
+      "graphicsPreset": "ultra",
+      "assetIds": [
+        "/assets/production/interiors/elevator-static.glb",
+        "/assets/production/interiors/elevator-car.glb"
+      ],
+      "note": "Inside the car at the ground floor (SHAFT.doorZ - carDepth/2)."
+    },
+    {
+      "scene_id": "floor-45-wide",
+      "label": "Floor 45 wide",
+      "status": "ready",
+      "zone": "floor45",
+      "camera": { "position": [0, 181.71, -1.5], "target": [0, 181.58, -22], "fov": 60 },
+      "time": 15.5,
+      "rain": 0,
+      "seed": "vision-bridge-v1",
+      "resolution": { "width": 1920, "height": 1080 },
+      "graphicsPreset": "ultra",
+      "assetIds": ["/assets/production/interiors/floor45.glb"],
+      "note": "HQ.y=180; camera at 181.71 (floor + eye). Elevator arrival view."
+    },
+    {
+      "scene_id": "floor-45-workstation",
+      "label": "Floor 45 workstation",
+      "status": "ready",
+      "zone": "floor45",
+      "camera": { "position": [3.7, 181.71, -6], "target": [9.2, 181.35, -6], "fov": 60 },
+      "time": 15.5,
+      "rain": 0,
+      "seed": "vision-bridge-v1",
+      "resolution": { "width": 1920, "height": 1080 },
+      "graphicsPreset": "ultra",
+      "assetIds": ["/assets/production/interiors/floor45.glb"],
+      "note": "Agent office glass wall and desk in frame (agent-workstation pose)."
+    },
+    {
+      "scene_id": "shenron-agent-station",
+      "label": "Shenron agent station",
+      "status": "ready",
+      "zone": "floor45",
+      "camera": { "position": [6.3, 181.71, -22], "target": [11, 181.35, -22], "fov": 60 },
+      "time": 15.5,
+      "rain": 0,
+      "seed": "vision-bridge-v1",
+      "resolution": { "width": 1920, "height": 1080 },
+      "graphicsPreset": "ultra",
+      "assetIds": ["/assets/production/interiors/floor45.glb"],
+      "note": "Office slot index 5 (x=10, z=-22) framed from the corridor; the closest authored equivalent of a Shenron agent station."
+    },
+    {
+      "scene_id": "manhattan-aerial",
+      "label": "Manhattan aerial",
+      "status": "ready",
+      "zone": "exterior",
+      "camera": { "position": [1300, 500, -3000], "target": [1300, 0, -3200], "fov": 60 },
+      "time": 15.5,
+      "rain": 0,
+      "seed": "vision-bridge-v1",
+      "resolution": { "width": 1920, "height": 1080 },
+      "graphicsPreset": "ultra",
+      "assetIds": [
+        "/models/manhattan/manhattan_world.glb",
+        "/models/manhattan/manhattan_base.glb"
+      ],
+      "note": "Camera above the island's x=1300 column; tiles load within TILE_LOAD_RADIUS=5200. Far plane is 900 so altitude 500 keeps the ground inside."
+    },
+    {
+      "scene_id": "hero-street-night",
+      "label": "Hero street, night",
+      "status": "ready",
+      "zone": "exterior",
+      "camera": { "position": [-5.8, 1.71, 123], "target": [0, 2.2, 68], "fov": 60 },
+      "time": 22,
+      "rain": 0,
+      "seed": "vision-bridge-v1",
+      "resolution": { "width": 1920, "height": 1080 },
+      "graphicsPreset": "ultra",
+      "assetIds": ["/assets/production/architecture/hero-district.glb"],
+      "note": "Weather variant of hero-street at hour 22 (neon signage, night grade)."
+    },
+    {
+      "scene_id": "hero-street-rain",
+      "label": "Hero street, rain",
+      "status": "ready",
+      "zone": "exterior",
+      "camera": { "position": [-5.8, 1.71, 123], "target": [0, 2.2, 68], "fov": 60 },
+      "time": 14,
+      "rain": 1,
+      "seed": "vision-bridge-v1",
+      "resolution": { "width": 1920, "height": 1080 },
+      "graphicsPreset": "ultra",
+      "assetIds": ["/assets/production/architecture/hero-district.glb"],
+      "note": "Weather variant of hero-street with rain pre-saturated (wet road, falling rain)."
+    }
+  ]
+}

@@ -1,4 +1,4 @@
-// stat.cjs — honest summary statistics for frame-time samples.
+// stat.js — honest summary statistics for frame-time samples.
 //
 // The project rule is "a number you can diff is worth more than a picture":
 // every run reports avg/median/p1/p0.1 as ms-per-frame AND fps, plus variance

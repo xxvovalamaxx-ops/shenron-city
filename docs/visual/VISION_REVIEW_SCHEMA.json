@@ -1,0 +1,150 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "shenron-city/docs/visual/VISION_REVIEW_SCHEMA.json",
+  "title": "Shenron City vision review verdict",
+  "description": "Strict output contract for vision-model review of visual QA captures. Verdicts must conform exactly; unknown keys are rejected.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "review_id",
+    "scene_id",
+    "reviewed_at",
+    "reviewer",
+    "capture_git_rev",
+    "verdict",
+    "reference_match_confidence",
+    "commercial_game_credibility",
+    "blocking_defects",
+    "scores",
+    "summary"
+  ],
+  "properties": {
+    "schema_version": { "const": 1 },
+    "review_id": { "type": "string", "pattern": "^rev-[a-z0-9-]+$" },
+    "scene_id": { "type": "string", "minLength": 1 },
+    "reviewed_at": { "type": "string", "format": "date-time" },
+    "reviewer": { "type": "string", "minLength": 1 },
+    "capture_git_rev": { "type": "string", "minLength": 1 },
+    "verdict": { "enum": ["pass", "fail", "uncertain"] },
+    "reference_match_confidence": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1,
+      "description": "How strongly the frame matches the manifest description of the scene (e.g. 'hero street on Dragon Boulevard')."
+    },
+    "commercial_game_credibility": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1,
+      "description": "Whether the frame would pass a commercial game screenshot review."
+    },
+    "blocking_defects": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/defect" }
+    },
+    "scores": { "$ref": "#/$defs/scores" },
+    "summary": {
+      "type": "string",
+      "description": "1-3 sentence human-readable verdict summary."
+    }
+  },
+  "$defs": {
+    "defect": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "severity",
+        "category",
+        "description",
+        "location_normalized",
+        "visible_evidence",
+        "recommended_owner"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^DEF-[0-9]{4}$",
+          "description": "Unique within the ledger, e.g. DEF-0001."
+        },
+        "severity": { "enum": ["P0", "P1", "P2"] },
+        "category": {
+          "enum": [
+            "geometry",
+            "materials",
+            "lighting",
+            "character",
+            "vehicle",
+            "animation",
+            "world-density",
+            "rendering",
+            "compositing",
+            "other"
+          ]
+        },
+        "description": { "type": "string", "minLength": 1 },
+        "location_normalized": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["x", "y"],
+          "properties": {
+            "x": { "type": "number", "minimum": 0, "maximum": 1 },
+            "y": { "type": "number", "minimum": 0, "maximum": 1 }
+          },
+          "description": "Position relative to frame corners (0,0 = top-left, 1,1 = bottom-right)."
+        },
+        "visible_evidence": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["frame", "crop"],
+          "properties": {
+            "frame": { "enum": ["frame-a", "frame-b", "both"] },
+            "crop": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["x0", "y0", "x1", "y1"],
+              "properties": {
+                "x0": { "type": "integer", "minimum": 0 },
+                "y0": { "type": "integer", "minimum": 0 },
+                "x1": { "type": "integer", "minimum": 0 },
+                "y1": { "type": "integer", "minimum": 0 }
+              },
+              "description": "Pixel crop of the defect in the chosen frame."
+            }
+          }
+        },
+        "recommended_owner": {
+          "type": "string",
+          "description": "Art discipline responsible, e.g. 'env-art', 'character-art', 'vfx', 'tech-art', 'gameplay'."
+        }
+      }
+    },
+    "scores": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "geometry",
+        "materials",
+        "lighting",
+        "character_realism",
+        "vehicle_realism",
+        "animation",
+        "world_density",
+        "technical_cleanliness",
+        "overall"
+      ],
+      "properties": {
+        "geometry": { "type": "number", "minimum": 0, "maximum": 1 },
+        "materials": { "type": "number", "minimum": 0, "maximum": 1 },
+        "lighting": { "type": "number", "minimum": 0, "maximum": 1 },
+        "character_realism": { "type": "number", "minimum": 0, "maximum": 1 },
+        "vehicle_realism": { "type": "number", "minimum": 0, "maximum": 1 },
+        "animation": { "type": "number", "minimum": 0, "maximum": 1 },
+        "world_density": { "type": "number", "minimum": 0, "maximum": 1 },
+        "technical_cleanliness": { "type": "number", "minimum": 0, "maximum": 1 },
+        "overall": { "type": "number", "minimum": 0, "maximum": 1 }
+      }
+    }
+  }
+}

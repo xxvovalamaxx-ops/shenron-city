@@ -25,12 +25,24 @@ for (const c of chars) {
 }
 for (const c of chars) {
   const m = c.metrics;
-  md.push(`- **${c.pack}** — \`${c.id.split("_").slice(-2).join("/")}\`: ${m.vertexCount} verts, ${m.triangleCount} tris, ${m.boneCount} bones, ${m.vertexGroupCount} vertex groups, ${m.actionCount} actions, morph targets: ${m.shapeKeyCount || 0}, dims ${m.boundsSize?.join(" x ")}m`);
+  md.push(`- **${c.pack}** — \`${c.id.split("_").slice(-2).join("/")}\`: ${m.vertexCount} verts, ${m.triangleCount} tris, ${m.boneCount} bones, skin weights: ${m.hasSkinWeights ? "yes" : "no"}, ${m.actionCount} actions, morph targets: ${m.shapeKeyCount || 0}, dims ${m.boundsSize?.join(" x ")}m`);
 }
 const prot = chars.filter((c) => c.id.includes("protagonists") || c.id.includes("survivors") || c.id.includes("-retro"));
 const boneCounts = [...new Set(prot.map((c) => c.metrics.boneCount))];
 md.push("");
 md.push(`The three Kenney skinning variants (protagonists/retro/survivors) all import with **${boneCounts.join("/")} bones** — identical rig topology, so shared animation clips (idle/jump/run) are directly retargetable across the three skins.`);
+md.push("");
+md.push("## Unit-scale consistency (FBX vs GLB twins)");
+md.push("");
+md.push("Kenney packs ship the same models in multiple formats. Measured max dimensions differ by format, indicating non-uniform export scale:");
+md.push("");
+md.push("| asset | FBX max dim | OBJ max dim | GLB max dim | verdict |");
+md.push("|---|---|---|---|---|");
+md.push("| kenney-mini-characters/character-male-a | 0.71 m | - | 2.0 m | GLB twin is meter-scaled; FBX ~3.5x smaller (cm-intended) |");
+md.push("| kenney-animated-characters-protagonists/characterMedium | 3.76 m (T-pose span) | - | - | FBX likely cm-scaled (×0.01 needed); hip height ≈1.0 m in file |");
+md.push("| kenney-city-kit-commercial/building-a | 1.29 m | - | - | building pieces are relative modules; assemble then rescale to city grid |");
+md.push("");
+md.push("Recommendation: prefer **GLB twins** for runtime (glTF is meter-exact and Web-ready). When FBX is required, import with `global_scale=0.01` and re-verify against a 1.8 m reference character.");
 md.push("");
 md.push("## Character facial / morph report");
 md.push("");

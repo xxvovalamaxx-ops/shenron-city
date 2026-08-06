@@ -79,7 +79,3 @@ scripts/tmp*.py
 scripts/ifbx_patched_*.py
 scripts/patched_fbx_*.py
 scripts/debug-page.png
-scripts/run-with-chrome.cjs
-
-# Git worktrees for parallel asset/QA branches (own .git pointers, never committed)
-/ds/
