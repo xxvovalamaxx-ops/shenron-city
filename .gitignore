@@ -79,6 +79,10 @@ scripts/tmp*.py
 scripts/ifbx_patched_*.py
 scripts/patched_fbx_*.py
 scripts/debug-page.png
+scripts/run-with-chrome.cjs
 
 # asset technical validation staging (reproducible from SourceAssets/PublicLibrary)
 staging/
+
+# Git worktrees for parallel asset/QA branches (own .git pointers, never committed)
+/ds/
