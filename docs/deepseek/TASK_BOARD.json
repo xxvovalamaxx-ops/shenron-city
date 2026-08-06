@@ -10,28 +10,32 @@
       "title": "Honest benchmark harness (camera identity + metrics)",
       "branch": "ds/2o-baseline",
       "repo": "Manhattan",
-      "status": "worktree_ready_awaiting_dispatch",
+      "status": "done_awaiting_merge_approval",
+      "commit": "f005768",
       "depends_on": [],
       "acceptance": [
         "Programmatic fixed-camera rig keyed to documented world coordinates (START/Times Square, 620 m alt, Floor 45, corridor, Battery, street level)",
         "P2-075 reconciliation record: confirm START = TIMES_SQUARE in main.js; measure at the real location",
         "Re-measure every 'optimistic and unverified' claim from HANDOFF/BASELINE/ledger at real locations; measured vs claimed table",
         "JSON evidence committed under docs/qa/evidence/"
-      ]
+      ],
+      "results": "P2-075 CONFIRMED (START == TIMES_SQUARE). Claims: 7 CONFIRMED (0px diff, 400/400 props, 99.88% of 808 pts, 0.00000 RMS silence, 17437px vs claimed 17436, corridor 0.00m, audio table byte-exact), 2 DIFFERS (LOD max 0.00m is FALSE -> max 22.9m bid 20009 missing L2 tile; street-life CPU 0.4->0.8ms), 2 UNVERIFIABLE (RTX5070 payload, frozen Blender stats). Times Square street: 1,005,972 tris / 106 draws / cpu 0.32ms / raster 1.8ms / 21.9MB. Software-GL limitation recorded."
     },
     {
       "id": "2O-A-002",
       "title": "Visual-evidence pipeline (structural/numerical checks)",
       "branch": "ds/qa-integrity",
       "repo": "Manhattan",
-      "status": "worktree_ready_awaiting_dispatch",
+      "status": "done_awaiting_merge_approval",
+      "commit": "81a4733",
       "depends_on": ["2O-A-001"],
       "acceptance": [
         "Fixed-camera capture with reproducible frames (works with baseline cameras)",
         "Checks: stddev, distinct colors, luminance bands, occlusion fraction, near geometry coverage, black-ceiling/interior, winding, culled raycasts, frame diff, audio RMS/asymmetry, missing-asset errors",
         "Contact sheets produced",
         "JSON defect output schema; node:test unit tests for pure math"
-      ]
+      ],
+      "results": "All 15 shots: dead-frame 15/15 PASS (would catch uniform frames), unlit-surface 5/5 PASS, audio PASS (silence 0.00000), 0 console errors, 0 failed requests. FAILURES: occlusion on lift_cab (near 0.8125>0.6); culled-from-inside 0/18 rays on floor45_ops, hq_lobby, shenron_arrival (wrong winding or missing walls). 4 defects (3 culled medium, 1 occlusion medium). Tests 37/37 pass. Export contract (luminanceStddev/distinctColours/occlusionFraction/pixelDiff/bandLuminance) satisfied. Depth readback unavailable (WebGL2)."
     },
     {
       "id": "2O-A-003",
@@ -48,11 +52,25 @@
       ]
     },
     {
+      "id": "2O-A-003",
+      "title": "Public library catalog (families, licenses, classes)",
+      "branch": "ds/asset-catalog",
+      "repo": "shenron",
+      "status": "complete_merged_2026-08-06_by_concurrent_session",
+      "depends_on": [],
+      "acceptance": [
+        "Per-family license class (eval/game/repo/source/transformed/attribution/quarantine)",
+        "Manifest + receipts reconciled",
+        "Preview contact sheets",
+        "No runtime integration"
+      ]
+    },
+    {
       "id": "2O-A-004",
       "title": "Technical asset validation + quarantine list",
       "branch": "ds/asset-technical",
       "repo": "shenron",
-      "status": "worktree_exists_sparse_unfinished",
+      "status": "complete_merged_2026-08-06_by_concurrent_session",
       "depends_on": ["2O-A-003"],
       "acceptance": [
         "Poly/hierarchy/LOD/texture/Draco/KTX2 checks per candidate family",
@@ -65,18 +83,25 @@
       "title": "Vision bridge + defect-to-test conversion",
       "branch": "ds/vision-bridge",
       "repo": "Manhattan",
-      "status": "worktree_ready_awaiting_dispatch",
+      "status": "done_awaiting_merge_approval",
+      "commit": "e7b1baa",
       "depends_on": ["2O-A-002"],
       "acceptance": [
         "Contact sheets feed external vision critic",
         "JSON defect output",
         "Repeatable defects become regression tests"
-      ]
+      ],
+      "results": "contact-sheet.mjs (self-contained HTML + MD index), defect-schema.json + DEFECT_SCHEMA.md (V-#### ids, severity/category enums, numeric check contract incl. framecheck export names), defect-to-test.mjs (generates node:test regressions; verified: no-input exits 0, malformed JSON exits 1, confirmed-without-check refused, missing framecheck.js fails clearly, happy path passes). Sample sheet from 1 real probe capture (Times Square street level, 547,134 bytes) committed."
     }
   ],
   "phase_2o": {
-    "2O_A_honest_baseline": "in_progress",
-    "2O_B_structural_optimization": "not_started",
-    "2O_C_final_optimization": "not_started"
+    "2O_A_honest_baseline": "complete_merged_2026-08-06",
+    "2O_B_structural_optimization": "complete_merged_2026-08-06",
+    "2O_B_fixes": [
+      { "lod_datum": "merged c8cf9f5; max error 22.9m -> 0.0051m; claim CONFIRMED with corrected convention" },
+      { "street_life_cpu": "merged 7968fad; 0.8ms was sampling artifact; median 0.4ms CONFIRMED" },
+      { "interior_defects": "merged 9eb7a1b; 4 defects -> 0 (frame matrixWorld fix + inward winding + enclosure-relative occlusion rule)" }
+    ],
+    "2O_C_final_optimization": "not_started_requires_phase3"
   }
 }

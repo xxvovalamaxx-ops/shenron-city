@@ -7,20 +7,35 @@
 - **Merge target = Manhattan repo `phase2/living-city`** for 2o-baseline/qa-integrity/vision-bridge; shenron `main` for asset branches (shenron main tree is frozen dirty — 3,608 paths — merges only after user decision).
 - All merges require explicit user approval. The orchestrator does not merge unilaterally.
 
-## Queue (as of 2026-08-05, after handoff recovery)
+## Queue (final, 2026-08-06)
 
 | # | Branch | Repo | Status | Depends on | Approved | Merged |
 |---|---|---|---|---|---|---|
-| — | ds/asset-catalog | shenron | exists (locked) | — | pending | no |
-| — | ds/asset-technical | shenron | exists (sparse unfinished) | asset-catalog | pending | no |
-| — | ds/2o-baseline | Manhattan | worktree ready | — | pending | no |
-| — | ds/qa-integrity | Manhattan | worktree ready | 2o-baseline | pending | no |
-| — | ds/vision-bridge | Manhattan | worktree ready | qa-integrity | pending | no |
+| — | ds/asset-catalog | shenron | **superseded — merged by concurrent session** (`64a3c4689`, `9e1537031`, `46108d31c`) | — | ✅ | ✅ |
+| — | ds/asset-technical | shenron | **MERGED by concurrent session** (`64a3c4689` — technical review deliverables, repair queue, preview evidence) | asset-catalog | ✅ | ✅ |
+| 1 | ds/2o-baseline | Manhattan | **MERGED — `701d0de` (f005768)** | — | ✅ 2026-08-06 | ✅ |
+| 2 | ds/qa-integrity | Manhattan | **MERGED — `b37bd02` (81a4733)** | 2o-baseline | ✅ 2026-08-06 | ✅ |
+| 3 | ds/vision-bridge | Manhattan | **MERGED — `c78b7ad` (e7b1baa)** | qa-integrity | ✅ 2026-08-06 | ✅ |
+| 4 | ds/2o-b-lod | Manhattan | **MERGED — `c8cf9f5` (3e753ba)** | 2O-A | ✅ 2026-08-06 | ✅ |
+| 5 | ds/2o-b-perf | Manhattan | **MERGED — `7968fad` (c84417c)** | 2O-A | ✅ 2026-08-06 | ✅ |
+| 6 | ds/2o-b-interiors | Manhattan | **MERGED — `9eb7a1b` (29e6a07)** | 2O-A | ✅ 2026-08-06 | ✅ |
+
+Manhattan `phase2/living-city` @ `9eb7a1b`: clean, **50/50 QA tests pass**, 15/15 framecheck shots pass, 0 open defects.
+
+## 2O-B items — ALL RESOLVED (2026-08-06)
+
+- **LOD claim "max 0.00 m"**: disputed (real max 22.9 m) → root cause was a 12 m vertical-datum bug (`LAND_LEVEL` omitted in `56_build_lods.py`) + a datum-blind harness convention. Fixed and rebuilt: median 0.000 / p90 0.0006 / **max 0.0051 m** over footprint samples. Claim CONFIRMED with corrected convention. (`docs/qa/2O_B_lod_fix.md`)
+- **street-life CPU 0.4 → 0.8 ms**: 2O-A's 0.8 ms was a single-sample artifact; re-measured median **0.4 ms** over 3 runs. Claim CONFIRMED. Subsystem breakdown recorded. (`docs/qa/2O_B_street_life_perf.md`)
+- **QA defects (4)**: culled-from-inside 0/18 was a framecheck frame bug (mesh quaternion instead of matrixWorld inverse) + real outward-winding of solid interior walls (backface-culled from inside); lift_cab occlusion was a false positive (enclosure legitimately fills the near field) → new enclosure-relative rule. **0 defects after fix.** (`docs/qa/2O_B_interiors_fix.md`)
+
+## Process hygiene (new)
+
+Repeated interruptions were leaving zombie vite/Chrome/node processes (held ports, burned memory, contributed to sessions appearing stuck). Rules + sweep record in `docs/deepseek/PROCESS_HYGIENE.md`. Blender MCP disabled in opencode config (spawned at startup while Blender was not running).
 
 ## Wave 1 definition of done
 
-All five branches produce: clean commit, tests, evidence, exact changed-file list, known limitations, no unrelated changes.
+All five branches produce: clean commit, tests, evidence, exact changed-file list, known limitations, no unrelated changes. — Met by all branches (both repos).
 
 ## Blocker for entry — RESOLVED
 
-The handoff (`e6303ba`, `docs/phase2/HANDOFF.md`) was recovered in the nested Manhattan repo. Wave 1 content is now defined by the handoff + task board. Remaining coordination risk: the concurrent session mutating shenron repo branches (main worktree moved to `ds/vision-bridge` at 21:10) — reconcile with that session before any shenron merge.
+The handoff (`e6303ba`, `docs/phase2/HANDOFF.md`) was recovered in the nested Manhattan repo. The shenron worktree farm was completed and merged by the concurrent session (`6041c8eab`); the shenron tree is now clean and committed (asset library 83k files / 60 GB, LFS re-aligned).
