@@ -106,7 +106,9 @@ describe('benchmark camera registry (P2-075 regression)', () => {
     const src = readFileSync(resolve(__dirname, '../../src/gameplay/dev-view.ts'), 'utf8')
     for (const id of Object.keys(LOCATIONS)) {
       if (LOCATIONS[id].app !== 'shenron') continue
-      expect(src).toContain(`'${LOCATIONS[id].view}':`)
+      const view = LOCATIONS[id].view
+      // Registry keys with dashes are quoted; plain identifiers are not.
+      expect(src.includes(`'${view}':`) || src.includes(`${view}:`), `${view} missing from dev-view.ts`).toBe(true)
     }
   })
 })

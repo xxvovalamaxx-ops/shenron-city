@@ -50,31 +50,34 @@ const LOCATIONS = {
     spec: [40.7570, -73.9855, 500, 0.9, -0.42, 'fly'],
     note: 'midtown from 500 m',
   },
-  // --- Shenron (root game, dev-view cameras) ---
+  // --- Shenron (one-Manhattan game, dev-view cameras) ---
+  // The old HQ build (hero-boulevard, hq-lobby, elevator, floor 45) was
+  // retired by the one-Manhattan refactor; these now point at the live
+  // city viewpoints in src/gameplay/dev-view.ts.
   'hero-corridor-exterior': {
     app: 'shenron',
-    view: 'hero-boulevard',
-    note: 'Dragon Boulevard exterior (dev-view)',
+    view: 'midtown-street',
+    note: 'street-level walk (dev-view)',
   },
   'hq-plaza': {
     app: 'shenron',
-    view: 'hq-exterior',
-    note: 'HQ plaza (dev-view)',
+    view: 'times-square',
+    note: 'Times Square plaza (dev-view)',
   },
   'hq-lobby': {
     app: 'shenron',
-    view: 'hq-lobby',
-    note: 'HQ lobby (dev-view)',
+    view: 'financial',
+    note: 'Financial District canyon (dev-view)',
   },
   'elevator-interior': {
     app: 'shenron',
-    view: 'elevator-interior',
-    note: 'elevator car (dev-view)',
+    view: 'central-park',
+    note: 'Central Park open space (dev-view)',
   },
   'floor45-arrival': {
     app: 'shenron',
-    view: 'floor45-arrival',
-    note: 'floor 45 arrival (dev-view)',
+    view: 'skyline-south',
+    note: 'south skyline elevated (dev-view)',
   },
 }
 
