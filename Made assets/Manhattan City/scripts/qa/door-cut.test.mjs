@@ -31,6 +31,7 @@ import {
 } from '../../apps/manhattan-threejs/src/doors-math.js'
 import {
   authToLocal, localToAuth, AUTHORED_ROT_X, cutGlazeRect, cutContained,
+  cutWallInMesh,
 } from '../../apps/manhattan-threejs/src/doors.js'
 
 // ---------------------------------------------------------------------------
@@ -432,3 +433,99 @@ test('cutContained removes only what is wholly inside, and only allowed bids',
     assert.equal(none.removed, 0)
     assert.equal(none.geometry, src)
   })
+
+// ---------------------------------------------------------------------------
+// the wall cut, at the geometry level
+// ---------------------------------------------------------------------------
+
+// The pure math above proves the *polygons* are right. It says nothing about
+// the index bookkeeping that turns them back into a BufferGeometry, and that
+// is where the doorway actually failed: fan indices were used as vertex
+// offsets, so the rebuilt faces referenced unrelated vertices and some of the
+// garbage landed back across the opening. These tests raycast the rebuilt
+// geometry, which is the only thing the walk collider cares about.
+
+// A wall quad in the x = 0 plane, facing -x, 20 m wide and 12 m tall.
+function wallQuad() {
+  const p = [
+    [0, 0, -10], [0, 0, 10], [0, 12, 10],
+    [0, 0, -10], [0, 12, 10], [0, 12, -10],
+  ]
+  const g = new THREE.BufferGeometry()
+  g.setAttribute('position', new THREE.Float32BufferAttribute(p.flat(), 3))
+  g.setAttribute('color',
+    new THREE.Float32BufferAttribute(new Array(18).fill(0.4), 3))
+  g.setAttribute('_bid', new THREE.Float32BufferAttribute(
+    new Array(6).fill(4242), 1))
+  return g
+}
+
+const ALL = { has: () => true, bid: 4242 }
+const WALL_FRAME = {
+  o: [0, 0, 0], uaxis: [0, 0, 1], vaxis: [0, 1, 0], normal: [-1, 0, 0],
+}
+
+test('cutWallInMesh: the opening is empty and the wall around it is not',
+  () => {
+    const g = wallQuad()
+    const rect = { u0: -1.1, u1: 1.1, v0: 0, v1: 2.5 }
+    const r = cutWallInMesh(g, ALL, WALL_FRAME, rect,
+      { aabb: { min: [-2, -1, -2], max: [2, 3.5, 2] } })
+    assert.ok(r.cut > 0, `expected faces to be cut, got ${JSON.stringify(r.why)}`)
+
+    const mesh = new THREE.Mesh(r.geometry,
+      new THREE.MeshBasicMaterial({ side: THREE.DoubleSide }))
+    mesh.updateMatrixWorld(true)
+    const shoot = (u, v) => {
+      const rc = new THREE.Raycaster(new THREE.Vector3(-3, v, u),
+        new THREE.Vector3(1, 0, 0), 0, 6)
+      return rc.intersectObject(mesh, true)[0] || null
+    }
+
+    // inside the opening: clear, at every height the collider probes
+    for (const v of [0.2, 0.99, 1.7, 2.3]) {
+      for (const u of [-1.0, -0.5, 0, 0.5, 1.0]) {
+        assert.equal(shoot(u, v), null,
+          `(${u}, ${v}) is inside the doorway and must be clear`)
+      }
+    }
+    // outside it: still a wall
+    for (const [u, v] of [[-3, 1.0], [3, 1.0], [0, 3.0], [0, 6.0], [8, 5]]) {
+      assert.ok(shoot(u, v), `(${u}, ${v}) is wall and must still be there`)
+    }
+  })
+
+test('cutWallInMesh: area is conserved and every index is in range', () => {
+  const g = wallQuad()
+  const rect = { u0: -1.1, u1: 1.1, v0: 0, v1: 2.5 }
+  const r = cutWallInMesh(g, ALL, WALL_FRAME, rect,
+    { aabb: { min: [-2, -1, -2], max: [2, 3.5, 2] } })
+  const pos = r.geometry.attributes.position
+  const idx = r.geometry.index
+  for (let i = 0; i < idx.count; i++) {
+    assert.ok(idx.getX(i) < pos.count,
+      `index ${idx.getX(i)} out of range (${pos.count} vertices)`)
+  }
+  let area = 0
+  for (let t = 0; t < idx.count / 3; t++) {
+    const q = [0, 1, 2].map((o) => {
+      const i = idx.getX(t * 3 + o)
+      return [pos.getZ(i), pos.getY(i)]
+    })
+    area += Math.abs(polyArea(q))
+  }
+  const expected = 20 * 12 - 2.2 * 2.5
+  assert.ok(Math.abs(area - expected) < 1e-2,
+    `kept ${area}, expected ${expected}`)
+})
+
+test('cutWallInMesh: a face outside the aabb is left exactly as it was', () => {
+  const g = wallQuad()
+  const before = g.attributes.position.count
+  const r = cutWallInMesh(g, ALL, WALL_FRAME,
+    { u0: -1.1, u1: 1.1, v0: 0, v1: 2.5 },
+    { aabb: { min: [100, 100, 100], max: [101, 101, 101] } })
+  assert.equal(r.cut, 0)
+  assert.equal(r.geometry, g)
+  assert.equal(g.attributes.position.count, before)
+})

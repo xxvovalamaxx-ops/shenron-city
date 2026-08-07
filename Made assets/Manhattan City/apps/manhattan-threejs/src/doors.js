@@ -41,7 +41,7 @@
 
 import * as THREE from 'three'
 import {
-  cutTriangle, fanTriangles, polyArea, rectsOverlap, polyBox,
+  cutTriangle, rectsOverlap, polyBox,
   triNormal3, wallFrame, framePoint, frameProject,
 } from './doors-math.js'
 
@@ -94,19 +94,54 @@ const SILL = 0.08
 const TRACK_Z = 2.5         // header track height
 
 // ---- door behaviour --------------------------------------------------------
-const OPEN_S = 2.2          // leaf slide-out seconds
-const CLOSE_S = 2.6
+// Leaf travel. 1.76 m in 1.1 s is 1.6 m/s — brisk, and about what a real
+// automatic entrance does. It has to beat the walk: the trigger reaches 5 m,
+// the player covers that in 1.19 s at WALK speed, and a leaf still sliding
+// when they arrive gets shoved out of the way by the collider instead —
+// measured at a 0.79 m single-frame displacement against a 0.5 m budget.
+const OPEN_S = 1.1
+const CLOSE_S = 1.6
 const DWELL_S = 3.5         // how long the door waits after the player leaves
-const TRIGGER_X = [-2.3, 0.35]   // room-local x span of the trigger volume
+// Room-local x span of the trigger volume, measured from the door plane.
+//
+// Outward reach: an automatic door's sensor sees you coming. At 2.3 m the
+// player covered the approach in 0.55 s against the old 2.2 s slide, so they
+// always arrived at a quarter-open leaf and were shoved sideways by the
+// collider. 5 m of reach against a 1.1 s slide leaves the leaf parked before
+// the player gets there.
+//
+// Inward reach: the volume has to cover the room side too, or the door shuts
+// behind the player and will not let them out again. Measured: the reverse
+// traversal never crossed in 181 frames at three of the four doorways.
+const TRIGGER_X = [-5.0, 2.6]
 const TRIGGER_MARGIN_Y = 0.95
 const TRIGGER_Z = [-0.5, 3.2]
 const OBSTRUCT_MARGIN = 0.45     // player body radius, applied to the leaf box
 const PRELOAD_R = 9.0           // interior shown + lamp up inside this range
 const CUT_R = 400.0             // wall cut applied once the player is this close
+const CUT_RETRY_MS = 500        // back-off between failed cut attempts
+const FRONTAGE_PASSES = 4       // rotate/re-resolve until the frontage settles
+const RAY_STANDOFF = 60.0       // how far out the wall-finding ray starts
+const PASSAGE_PAD = 0.15        // the passage clears wider than the door leaf
+const WALK_START = 6.0          // where a walk test begins, outside the trigger
+const PASSAGE_RECT = {
+  u0: -WALL_W / 2 - PASSAGE_PAD, u1: WALL_W / 2 + PASSAGE_PAD,
+  v0: -PASSAGE_PAD, v1: WALL_H + PASSAGE_PAD,
+}
 const APPROACH_R = 6.0          // the approach to a doorway must be this clear
 const ENTER_MARGIN = 0.18       // crossing hysteresis at the wall plane
 const WALL_GAP = 0.35           // room glazed wall sits this far inside the wall
-const RECESS_WALL_DIST = 5.0    // HQ podium front, in front of the lobby glass
+const RECESS_WALL_DIST = 5.0    // fallback only; the podium front is measured
+// How far along the wall's own normal a face may sit and still belong to this
+// doorway. The wall frame is an infinite plane and Manhattan's facades are all
+// parallel, so without this the cut punches phantom doorways through every
+// building down the block that projects into the same (u, v).
+const WALL_BAND = { min: -1.6, max: 1.6 }
+// The render probe: how far past the door plane must be clear, and how far
+// the ray runs before it stops caring. 3 m of clear room behind the opening
+// is a doorway you can walk through; the rooms are 12-15 m deep.
+const PROBE_CLEAR = 3.0
+const ROOM_DEPTH_PROBE = 8.0
 
 // ---- persistence -----------------------------------------------------------
 const SAVE_KEY = 'manhattan.doors.v1'
@@ -313,7 +348,31 @@ export function cloneGeometry(geometry) {
 // rect in (u, v). Returns { geometry, cut, removed } — the new geometry, or
 // the same geometry when nothing was cut. The appended split vertices copy
 // the colour of the face they came from, so the facade shading is seamless.
-export function cutWallInMesh(geometry, bidSet, frame, rect) {
+//
+// opts.band = { min, max } bounds how far along the frame normal a face may
+// sit and still be cut. Without it the frame is an infinite plane: Manhattan's
+// facades are all parallel to each other, so a door rect punched "in the wall"
+// also punches phantom doorways through every parallel facade down the block
+// that happens to project into the same (u, v). Always pass a band.
+//
+// Faces are cut whichever way they are wound, as long as they are roughly
+// parallel to the wall (|dot| > 0.5). The first pass cut only faces whose
+// normal *opposed* the frame's — but the frame is built from a face of that
+// same wall, so its own normal scores +1 and the wall the doorway is in was
+// the one thing the cut skipped. Measured: 2 of 48 building faces reached the
+// facing test at the tower lobby and both were rejected by it. Localisation
+// is the band's and the aabb's job, not the winding's; a doorway passage has
+// to clear whatever is in it, including a neighbour's wall wound back toward
+// the door (the market's block shares its outline with an adjacent school).
+//
+// opts.aabb = { min, max } is the cheap early-out and should always be given.
+// A resident tile mesh holds ~10^5 triangles and its bounding box spans a
+// 1,400 m tile, so without a per-triangle box test every doorway pays normal
+// dots and plane projections over the whole tile — measured as minutes per
+// cut, which is what turned the passage sweep into a hang.
+export function cutWallInMesh(geometry, bidSet, frame, rect, opts = {}) {
+  const band = opts.band || null
+  const aabb = opts.aabb || null
   const pos = geometry.attributes.position
   const nrm = geometry.attributes.normal
   const col = geometry.attributes.color
@@ -333,6 +392,15 @@ export function cutWallInMesh(geometry, bidSet, frame, rect) {
   const srcBid = geometry.attributes._bid || geometry.attributes._BID
   let cut = 0
   let removed = 0
+  // Why faces were passed over. A cut that reports zero is otherwise silent
+  // about whether it found no building, no wall facing the right way, nothing
+  // in the depth band, or nothing overlapping the rect — four very different
+  // bugs. Cheap counters beat re-deriving it from the outside.
+  // missAxis is a bitmask tally (1 = x, 2 = y, 4 = z) of which axis put a
+  // face outside the door box — which is the difference between "the frame is
+  // in the wrong place" and "the frame is in the wrong coordinate space".
+  const why = { total: tris, mine: 0, box: 0, facing: 0, band: 0, rect: 0,
+    missAxis: {} }
 
   for (let t = 0; t < tris; t++) {
     const a = idx ? idx.getX(t * 3) : t * 3
@@ -342,33 +410,69 @@ export function cutWallInMesh(geometry, bidSet, frame, rect) {
       outTris.push([a, b, c])
       continue
     }
+    why.mine++
     v(a, p0); v(b, p1); v(c, p2)
+    if (aabb) {
+      let miss = 0
+      for (let k = 0; k < 3; k++) {
+        if (Math.max(p0[k], p1[k], p2[k]) < aabb.min[k] ||
+            Math.min(p0[k], p1[k], p2[k]) > aabb.max[k]) {
+          miss |= (1 << k)
+        }
+      }
+      if (miss) {
+        why.missAxis[miss] = (why.missAxis[miss] || 0) + 1
+        outTris.push([a, b, c])
+        continue
+      }
+    }
+    why.box++
     const n = triNormal3(p0, p1, p2)
     const dot = n[0] * frame.normal[0] + n[1] * frame.normal[1] +
       n[2] * frame.normal[2]
-    if (dot > -0.5) { outTris.push([a, b, c]); continue }
+    if (Math.abs(dot) < 0.5) {
+      outTris.push([a, b, c])
+      continue
+    }
+    why.facing++
+    if (band) {
+      // depth along the frame normal, from the face centroid
+      const cxm = (p0[0] + p1[0] + p2[0]) / 3 - frame.o[0]
+      const cym = (p0[1] + p1[1] + p2[1]) / 3 - frame.o[1]
+      const czm = (p0[2] + p1[2] + p2[2]) / 3 - frame.o[2]
+      const depth = cxm * frame.normal[0] + cym * frame.normal[1] +
+        czm * frame.normal[2]
+      if (depth < band.min || depth > band.max) {
+        outTris.push([a, b, c])
+        continue
+      }
+    }
+    why.band++
     const u0 = frameProject(frame, p0)
     const u1 = frameProject(frame, p1)
     const u2 = frameProject(frame, p2)
     const tb = polyBox([u0, u1, u2])
     if (!rectsOverlap(tb, rect)) { outTris.push([a, b, c]); continue }
+    why.rect++
 
     const pieces = cutTriangle([u0, u1, u2], rect)
     if (pieces === null) { outTris.push([a, b, c]); continue }
     if (!pieces.length) { removed++; continue }
     cut++
 
-    // the piece vertices, fanned into triangles in (u, v)
-    const flat = []
-    const triIndex = []
-    for (const piece of pieces) {
-      const off = flat.length / 2
-      for (const [u, vv] of piece) flat.push(u, vv)
-      for (let i = 1; i < piece.length - 1; i++) {
-        triIndex.push(off, off + i, off + i + 1)
-      }
-    }
-    const base = pos.count + newVerts.length / 3
+    // The kept pieces, fanned into triangles and appended as their own
+    // vertices.
+    //
+    // This used to build a fan index over a shared vertex list and then emit
+    // the triangles as [base + i, base + i + 1, base + i + 2] with `i` running
+    // over the fan's *values* rather than its positions — so the rebuilt faces
+    // referenced whatever vertices happened to sit at those offsets. The
+    // result is geometry that has nothing to do with the wall, and some of it
+    // lands back across the opening: measured, a collision probe from inside
+    // the home lobby hit tile geometry at (u, v) = (0.00, 0.99), dead centre
+    // of a 2.2 x 2.5 m doorway that rays at other heights passed straight
+    // through. Emitting three fresh vertices per triangle costs a few
+    // duplicates and cannot be indexed wrong.
     const c0 = col ? [col.getX(a), col.getY(a), col.getZ(a)] : null
     // the face's own building id, not the caller's: a passage cut runs over
     // the *neighbours'* faces, and stamping them with the target's bid would
@@ -376,17 +480,22 @@ export function cutWallInMesh(geometry, bidSet, frame, rect) {
     // P2-060)
     const b0 = srcBid ? Math.round(srcBid.getX(a))
       : (bidSet.bid ?? 0)
-    for (const i of triIndex) {
-      const p = framePoint(frame, flat[i * 2], flat[i * 2 + 1])
-      newVerts.push(p[0], p[1], p[2])
-      newNorms.push(n[0], n[1], n[2])
-      newBids.push(b0)
-      if (c0) newCols.push(c0[0], c0[1], c0[2])
+    for (const piece of pieces) {
+      for (let i = 1; i < piece.length - 1; i++) {
+        const base = pos.count + newVerts.length / 3
+        for (const [u, vv] of [piece[0], piece[i], piece[i + 1]]) {
+          const p = framePoint(frame, u, vv)
+          newVerts.push(p[0], p[1], p[2])
+          newNorms.push(n[0], n[1], n[2])
+          newBids.push(b0)
+          if (c0) newCols.push(c0[0], c0[1], c0[2])
+        }
+        outTris.push([base, base + 1, base + 2])
+      }
     }
-    for (const i of triIndex) outTris.push([base + i, base + i + 1, base + i + 2])
   }
 
-  if (!cut && !removed) return { geometry, cut: 0, removed: 0 }
+  if (!cut && !removed) return { geometry, cut: 0, removed: 0, why }
 
   const out = cloneGeometry(geometry)
   const posA = out.attributes.position
@@ -414,7 +523,8 @@ export function cutWallInMesh(geometry, bidSet, frame, rect) {
   for (const [a, b, c] of outTris) outIdx.push(a, b, c)
   out.setIndex(outIdx)
   out.computeBoundingSphere()
-  return { geometry: out, cut, removed }
+  out.computeBoundingBox()
+  return { geometry: out, cut, removed, why }
 }
 
 // ---------------------------------------------------------------------------
@@ -472,9 +582,11 @@ export class Doors {
     for (const d of this.doors) {
       // the interior answers no keypress once its doorway is real
       d.room.doorway = true
-      // the wall cut may rotate the room to a clear frontage, so the
-      // assembly is built after it, from the final matrix
-      if (d.kind === 'wall') this._cutWall(d)
+      // the wall cut may rotate the room to a clear frontage, and it measures
+      // the wall distance the assembly and the crossing plane are placed
+      // from, so the assembly is built after it, from the final matrix. Both
+      // kinds cut: a recess is a wall like any other (§ _cutWall).
+      this._cutWall(d)
       this._buildAssembly(d)
       this._cutRoomGlass(d)
     }
@@ -482,9 +594,7 @@ export class Doors {
     this.stats.doors = this.doors.length
     // tiles can arrive after boot; re-cut a door's wall when its tile loads
     this.streamer.onReady.push(() => {
-      for (const d of this.doors) {
-        if (!d.cut && d.kind === 'wall') this._findAndCut(d)
-      }
+      for (const d of this.doors) if (!d.cut) this._findAndCut(d)
     })
     console.info('[doors]', this.doors.length, 'doorways configured:',
       this.doors.map((d) => `${d.key} (bid ${d.bid})`).join(', '))
@@ -547,16 +657,87 @@ export class Doors {
 
   // ---- wall discovery -----------------------------------------------------
 
+  // Which vertices of a merged tile mesh belong to `bid`, as a predicate.
+  // Draco quantises _BID so it decodes as 34686.0039 — always round (P2-060).
   _buildingVerts(mesh, bid) {
     const attr = mesh.geometry.attributes._bid || mesh.geometry.attributes._BID
     if (!attr) return null
-    const set = new Set()
+    return { has: (i) => Math.round(attr.getX(i)) === bid, bid }
+  }
+
+  // Does this mesh hold any of `bid`? Early-exits on the first match rather
+  // than materialising a vertex set, which _findMesh would otherwise pay for
+  // every candidate mesh in every resident tile.
+  _hasBuilding(mesh, bid) {
+    const attr = mesh.geometry.attributes._bid || mesh.geometry.attributes._BID
+    if (!attr) return false
     for (let i = 0; i < attr.count; i++) {
-      if (Math.round(attr.getX(i)) === bid) set.add(i)
+      if (Math.round(attr.getX(i)) === bid) return true
     }
-    if (!set.size) return null
-    set.bid = bid
-    return set
+    return false
+  }
+
+  // Every vertex of a standalone mesh. The HQ tower is its own object rather
+  // than a merged tile, so it has no _bid to select on — the whole mesh is
+  // the building. A predicate rather than a Set: cutWallInMesh only ever asks
+  // `has(i)`, and materialising one entry per vertex of a city-scale mesh is
+  // pure allocation.
+  _allVerts(mesh, bid) {
+    if (!mesh.geometry.attributes.position.count) return null
+    return { has: () => true, bid }
+  }
+
+  // The mesh a doorway cuts into, and the vertex set that selects its
+  // building inside it.
+  _cutTarget(d) {
+    if (d.kind === 'recess') {
+      const mesh = this.hq && this.hq.tower && this.hq.tower.children[0]
+      if (!mesh) return null
+      return { mesh, verts: this._allVerts(mesh, d.bid), standalone: true }
+    }
+    const b = d.room.building
+    const wx = b ? b.x : this.city.x(d.bid)
+    const wz = b ? -b.y : -this.city.y(d.bid)
+    const mesh = this._findMesh(d.bid, wx, wz)
+    if (!mesh) return null
+    return { mesh, verts: this._buildingVerts(mesh, d.bid), standalone: false }
+  }
+
+  // A world wall frame expressed in a mesh's own coordinates.
+  //
+  // Tile meshes are baked in world space and sit at identity, so the cut can
+  // read their positions directly. The HQ tower is not: it is placed by hq.js
+  // with the site's origin and yaw, and its geometry runs 0..46.7 m in x. Its
+  // doorway was being cut with a world-space frame against local-space
+  // vertices — 1,828 of 1,828 faces rejected, every time.
+  _frameInMeshSpace(frame, mesh) {
+    mesh.updateMatrixWorld(true)
+    const e = mesh.matrixWorld.elements
+    const identity = Math.abs(e[0] - 1) < 1e-9 && Math.abs(e[5] - 1) < 1e-9 &&
+      Math.abs(e[10] - 1) < 1e-9 && Math.abs(e[12]) < 1e-9 &&
+      Math.abs(e[13]) < 1e-9 && Math.abs(e[14]) < 1e-9 &&
+      Math.abs(e[1]) < 1e-9 && Math.abs(e[2]) < 1e-9 && Math.abs(e[4]) < 1e-9
+    if (identity) return frame
+    const inv = new THREE.Matrix4().copy(mesh.matrixWorld).invert()
+    const rot = new THREE.Matrix3().setFromMatrix4(inv)
+    const pt = (v) => new THREE.Vector3(v[0], v[1], v[2])
+      .applyMatrix4(inv).toArray()
+    const dir = (v) => new THREE.Vector3(v[0], v[1], v[2])
+      .applyMatrix3(rot).normalize().toArray()
+    return {
+      o: pt(frame.o),
+      uaxis: dir(frame.uaxis),
+      vaxis: dir(frame.vaxis),
+      normal: dir(frame.normal),
+    }
+  }
+
+  // The height the doorway's sill sits at: the room's own floor, not the land
+  // level. The HQ lobby stands on a 0.60 m podium plinth (12.60 against a
+  // 12.00 pavement); cutting its opening from the pavement would leave a lip
+  // across the threshold.
+  _sillY(d) {
+    return d.room.group.position.y
   }
 
   _meshBox(mesh) {
@@ -578,7 +759,7 @@ export class Doors {
             wz < bb.min.z - 2 || wz > bb.max.z + 2) return
         const s = g.boundingSphere
         if (Math.hypot(wx - s.center.x, wz - s.center.z) > s.radius + 2) return
-        if (this._buildingVerts(o, bid)) found = o
+        if (this._hasBuilding(o, bid)) found = o
       })
       if (found) return found
     }
@@ -592,13 +773,63 @@ export class Doors {
   // building (adjacent footprints overlap in the OSM data) is rejected --
   // a doorway that opens onto a neighbour's wall is not a doorway. Null when
   // no wall face answers.
-  _findWall(d, mesh) {
+  // The wall the player will actually meet, found by one ray along the way in
+  // rather than by scanning candidates.
+  //
+  // _findWall picks the candidate whose *centroid* is nearest the door axis,
+  // then takes the perpendicular foot on that face's plane. On a tower whose
+  // wall quads are tens of metres across, the nearest centroid can belong to a
+  // plane 15 m away — measured, both tower lobbies ended up standing 15.06 m
+  // and 4.48 m from the wall their doorway was cut into. A ray cannot make
+  // that mistake: whatever it hits first going in is the wall in the way.
+  // It is also O(1), where the candidate sweep costs an approach raycast per
+  // ground-band triangle (1,828 of them for the HQ tower, which hung the page).
+  //
+  // `bid` filters hits in a merged tile mesh to the target building; a
+  // standalone mesh (the HQ tower) passes null.
+  _findWallByRay(d, mesh, bid = null) {
+    const dir = this._doorDir(d)
+    const sillY = this._sillY(d)
+    const attr = mesh.geometry.attributes._bid || mesh.geometry.attributes._BID
+    for (const z of [1.2, 0.6, 1.8]) {
+      const origin = this.roomToWorld(d, -RAY_STANDOFF, d.bayCenter, z)
+      const rc = new THREE.Raycaster(origin, dir, 0, RAY_STANDOFF * 2)
+      let hit = null
+      for (const h of rc.intersectObject(mesh, true)) {
+        if (!h.face) continue
+        if (bid != null && attr &&
+            Math.round(attr.getX(h.face.a)) !== bid) continue
+        hit = h
+        break
+      }
+      if (!hit) continue
+      const n = hit.face.normal.clone()
+        .applyNormalMatrix(
+          new THREE.Matrix3().getNormalMatrix(hit.object.matrixWorld))
+        .normalize()
+      // the frame normal points out of the building, against the walk-in
+      if (n.dot(dir) > 0) n.negate()
+      const frame = wallFrame([n.x, n.y, n.z])
+      const axis = this.roomToWorld(d, 0, d.bayCenter, 0)
+      axis.y = sillY
+      const t = -((axis.x - hit.point.x) * n.x + (axis.y - hit.point.y) * n.y +
+        (axis.z - hit.point.z) * n.z)
+      frame.o = [axis.x + n.x * t, sillY, axis.z + n.z * t]
+      // how far in front of the room origin the wall face is, along +x
+      const local = this._local(d, hit.point, new THREE.Vector3())
+      return { frame, wallDist: Math.abs(local.x) }
+    }
+    return null
+  }
+
+  _findWall(d, mesh, set = null) {
     const pos = mesh.geometry.attributes.position
     const idx = mesh.geometry.index
-    const set = this._buildingVerts(mesh, d.bid)
+    set = set || this._buildingVerts(mesh, d.bid)
     if (!set) return null
+    const sillY = this._sillY(d)
     const doorAxis = this.roomToWorld(d, 0, d.bayCenter, 0)
-    doorAxis.y = this.groundY
+    doorAxis.y = sillY
 
     const p0 = [0, 0, 0]; const p1 = [0, 0, 0]; const p2 = [0, 0, 0]
     const candidates = []
@@ -611,8 +842,8 @@ export class Doors {
       p0[0] = pos.getX(a); p0[1] = pos.getY(a); p0[2] = pos.getZ(a)
       p1[0] = pos.getX(b); p1[1] = pos.getY(b); p1[2] = pos.getZ(b)
       p2[0] = pos.getX(c); p2[1] = pos.getY(c); p2[2] = pos.getZ(c)
-      if (Math.max(p0[1], p1[1], p2[1]) < this.groundY - 0.5 ||
-          Math.min(p0[1], p1[1], p2[1]) > this.groundY + WALL_H + 0.5) {
+      if (Math.max(p0[1], p1[1], p2[1]) < sillY - 0.5 ||
+          Math.min(p0[1], p1[1], p2[1]) > sillY + WALL_H + 0.5) {
         continue
       }
       const n = triNormal3(p0, p1, p2)
@@ -628,22 +859,28 @@ export class Doors {
     candidates.sort((a, b) => a.d2 - b.d2)
     for (const cand of candidates) {
       const frame = wallFrame(cand.n)
-      const ax = doorAxis.x - cand.p[0]
-      const ay = doorAxis.y - cand.p[1]
-      const az = doorAxis.z - cand.p[2]
-      const t = -(ax * cand.n[0] + ay * cand.n[1] + az * cand.n[2])
+      // The door axis, projected onto the candidate's plane: subtract the
+      // signed distance along the normal from the axis itself.
+      //
+      // This used to start from the candidate face's centroid and step along
+      // the normal, which lands the origin *off* the plane by the whole wall
+      // distance and leaves it wherever the nearest triangle happened to be —
+      // measured at 25.0 m from the room's own doorway for the home lobby,
+      // with the frame origin 11.73 m clear of the wall. Everything derived
+      // from the frame inherits that: the cut rect, the door box, the
+      // assembly. The opening was being cut at the nearest wall triangle
+      // rather than in front of the door.
+      const dn = (doorAxis.x - cand.p[0]) * cand.n[0] +
+        (doorAxis.y - cand.p[1]) * cand.n[1] +
+        (doorAxis.z - cand.p[2]) * cand.n[2]
       const proj = [
-        cand.p[0] + cand.n[0] * t,
-        cand.p[1] + cand.n[1] * t,
-        cand.p[2] + cand.n[2] * t,
+        doorAxis.x - cand.n[0] * dn,
+        doorAxis.y - cand.n[1] * dn,
+        doorAxis.z - cand.n[2] * dn,
       ]
-      frame.o = [proj[0], this.groundY, proj[2]]
+      frame.o = [proj[0], sillY, proj[2]]
       if (!this._approachClear(d, frame)) continue
-      const wallDist = Math.abs(
-        (cand.p[0] - d.room.group.position.x) * cand.n[0] +
-        (cand.p[1] - d.room.group.position.y) * cand.n[1] +
-        (cand.p[2] - d.room.group.position.z) * cand.n[2])
-      return { frame, wallDist }
+      return { frame, wallDist: Math.abs(dn) }
     }
     return null
   }
@@ -659,7 +896,7 @@ export class Doors {
     const ox = frame.o[0] + frame.normal[0] * 0.4
     const oz = frame.o[2] + frame.normal[2] * 0.4
     raycaster.set(
-      new THREE.Vector3(ox, this.groundY + 1.5, oz),
+      new THREE.Vector3(ox, frame.o[1] + 1.5, oz),
       new THREE.Vector3(frame.normal[0], 0, frame.normal[2]))
     raycaster.far = APPROACH_R
     const seen = []
@@ -685,48 +922,102 @@ export class Doors {
   }
 
   _cutWall(d) {
-    const b = d.room.building
-    const wx = b ? b.x : this.city.x(d.bid)
-    const wz = b ? -b.y : -this.city.y(d.bid)
-    const mesh = this._findMesh(d.bid, wx, wz)
-    if (!mesh) return false
-    let wall = this._findWall(d, mesh)
+    const target = this._cutTarget(d)
+    if (!target || !target.verts) return false
+    const mesh = target.mesh
+    let wall = target.standalone
+      ? this._findWallByRay(d, mesh)
+      : this._findWall(d, mesh, target.verts)
     if (!wall) return false
+    d.frontageNormal = wall.frame.normal.map((v) => +v.toFixed(3))
 
-    if (!d.relocated) {
+    // A recess doorway is anchored by its own building (the HQ podium is
+    // placed by hq.js and its lobby's links, shot and lift are authored
+    // against it), so it is never rotated or shifted -- but it is cut, like
+    // any other wall. The first pass took the podium's authored entrance
+    // recess on trust; measured, the podium front is solid across the whole
+    // frontage (rays at 1 m spacing from -4 m to +4 m along the wall all hit
+    // HQ_tower at the same 0.4 m depth, at every height from 0.3 to 2.2 m).
+    // A door placed on that would be a door painted on a wall.
+    if (!target.standalone && !d.relocated) {
       // A blocked default frontage (adjacent footprint overlap) means the
       // doorway has to face the clear wall instead: rotate the room so its
       // glazed wall looks out through the chosen opening, then rebase every
       // camera position the corridor and the HUD derive from the room.
-      const n = wall.frame.normal
-      const yaw = Math.atan2(n[2], -n[0])
-      d.room.group.rotation.y = yaw
-      d.room.group.updateMatrixWorld(true)
-      d.room.yaw = yaw
-      this.interiors.rebase(d.room)
+      //
+      // Rotating moves the door axis, which can make a *different* wall the
+      // nearest one — so resolve and rotate until they agree. Doing it once
+      // leaves the room facing wall A while the shift below uses wall B's
+      // distance, and the two disagree by however far apart the walls are:
+      // measured, the tower lobby ended up 15 m clear of its own footprint
+      // with the cut landing on nothing.
+      let passes = 0
+      for (; passes < FRONTAGE_PASSES; passes++) {
+        const n = wall.frame.normal
+        const yaw = Math.atan2(n[2], -n[0])
+        if (Math.abs(yaw - d.room.group.rotation.y) < 1e-6) break
+        d.room.group.rotation.y = yaw
+        d.room.group.updateMatrixWorld(true)
+        d.room.yaw = yaw
+        this.interiors.rebase(d.room)
+        const next = this._findWall(d, mesh, target.verts)
+        if (!next) break
+        wall = next
+      }
+      d.frontagePasses = passes
       d.relocated = true
       // the assembly is built from the room's matrix; a relocation that
       // happens after load (tile arrived late) must rebuild it
       if (d.group) this._buildAssembly(d)
-      // re-resolve the wall from the rotated room, so the door axis lands on
-      // the new frontage exactly
-      wall = this._findWall(d, mesh) || wall
     }
     d.wallDist = wall.wallDist
 
-    // move the room so its glazed entrance wall sits just inside the cut, or
-    // the walk-in would land the player inside the solid building mass
-    if (!d.shifted) {
-      const doorDir = this._doorDir(d)
-      d.room.group.position.addScaledVector(doorDir, wall.wallDist - WALL_GAP)
-      d.room.group.updateMatrixWorld(true)
-      d.shifted = true
+    // The frontage is chosen; now measure the wall along the way in and stand
+    // the room at it.
+    //
+    // The room is anchored at its building's centre and its authored +x
+    // (_doorDir) points *into* the building — the relocation above sets the
+    // yaw precisely so, giving doorDir = -normal. So the move toward the
+    // frontage is along the wall normal, i.e. **minus** doorDir. Shifting
+    // along +doorDir drives the room deeper in instead: measured, the tower
+    // lobby went from 9.80 m off its wall to 16.44 m.
+    //
+    // Everything the cut needs — the rect's centre, the door box, the
+    // assembly plane — comes from this frame, so it is resolved from the
+    // room's *final* position, and by ray rather than by candidate scan.
+    if (!target.standalone) {
+      const byRay = this._findWallByRay(d, mesh, d.bid)
+      if (byRay) wall = byRay
+      if (!d.shifted) {
+        const doorDir = this._doorDir(d)
+        d.room.group.position.addScaledVector(doorDir,
+          -(wall.wallDist - WALL_GAP))
+        d.room.group.updateMatrixWorld(true)
+        d.shifted = true
+      }
+      // Once the opening exists the ray flies straight through it and finds
+      // nothing, so a re-cut (tile streamed out and back) has to reuse the
+      // frame that was resolved when the wall was still solid.
+      const settled = this._findWallByRay(d, mesh, d.bid) || d.resolvedWall
+      if (settled) wall = settled
+      d.resolvedWall = wall
+      d.wallDist = wall.wallDist
+      // the number that says the room is standing at its own wall: after the
+      // shift this must be WALL_GAP, not "somewhere in the building"
+      d.shiftResidual_m = +wall.wallDist.toFixed(3)
+    } else {
+      wall = this._findWallByRay(d, mesh) || d.resolvedWall || wall
+      d.resolvedWall = wall
+      d.wallDist = wall.wallDist
     }
 
     // the frame origin is on the door axis, so the cut rect is centred on it
     const rect = { u0: -WALL_W / 2, u1: WALL_W / 2, v0: 0, v1: WALL_H }
-    const r = cutWallInMesh(mesh.geometry, this._buildingVerts(mesh, d.bid),
-      wall.frame, rect)
+    const box = this._doorBox(wall.frame)
+    // the target's own geometry may not be in world space (the HQ tower)
+    const meshFrame = this._frameInMeshSpace(wall.frame, mesh)
+    const r = cutWallInMesh(mesh.geometry, target.verts, meshFrame, rect,
+      { band: WALL_BAND, aabb: this._doorBox(meshFrame) })
     if (r.geometry !== mesh.geometry) {
       d.mesh = mesh
       mesh.geometry = r.geometry
@@ -735,6 +1026,13 @@ export class Doors {
     d.cut = r.cut > 0 || r.removed > 0
     d.cutFaces = r.cut
     d.removedTris = r.removed
+    d.cutWhy = r.why
+    d.cutFrame = { o: wall.frame.o.map((v) => +v.toFixed(2)),
+      n: wall.frame.normal.map((v) => +v.toFixed(3)),
+      box: { min: box.min.map((v) => +v.toFixed(2)),
+        max: box.max.map((v) => +v.toFixed(2)) },
+      axis: this.roomToWorld(d, 0, d.bayCenter, 0).toArray()
+        .map((v) => +v.toFixed(2)) }
 
     // A passage cut: some footprints in the OSM data overlap their
     // neighbours by a metre or more (the corridor market's block shares its
@@ -753,28 +1051,38 @@ export class Doors {
     // the *other* buildings' faces only (the target's wall is already cut),
     // plus a containment sweep for the faces that are not parallel to the
     // wall and so cannot be rect-subtracted. Both are counted.
-    const box = this._doorBox(wall.frame)
     d.passageRemoved = 0
     d.passageCutFaces = 0
     d.passageBoxRemoved = 0
-    for (const group of this.streamer.pickables()) {
+    // The HQ tower is not streamed, so the sweep has to be told about it — and
+    // it needs the sweep: its podium reveals are perpendicular to the frontage
+    // and so are not touched by the frontage cut, but they are still inside
+    // the passage.
+    const sweep = [...this.streamer.pickables()]
+    if (this.hq && this.hq.tower) sweep.push(this.hq.tower)
+    for (const group of sweep) {
       group.traverse((o) => {
         if (!o.isMesh) return
         const g = o.geometry
-        if (!(g.attributes._bid || g.attributes._BID)) return
-        if (!g.boundingSphere) g.computeBoundingSphere()
-        const s = g.boundingSphere
-        if (s.center.x < box.min[0] - s.radius ||
-            s.center.x > box.max[0] + s.radius ||
-            s.center.y < box.min[1] - s.radius ||
-            s.center.y > box.max[1] + s.radius ||
-            s.center.z < box.min[2] - s.radius ||
-            s.center.z > box.max[2] + s.radius) return
+        // AABB against the door box, not a sphere test: a tile mesh's
+        // bounding sphere covers most of the tile, so the loose test dragged
+        // every resident mesh through the cut
+        if (!g.boundingBox) g.computeBoundingBox()
+        const bb = g.boundingBox
+        if (bb.max.x < box.min[0] || bb.min.x > box.max[0] ||
+            bb.max.y < box.min[1] || bb.min.y > box.max[1] ||
+            bb.max.z < box.min[2] || bb.min.z > box.max[2]) return
         let geom = g
         let touched = false
         const others = this._verticesExcept(o, d.bid)
         if (others) {
-          const rc = cutWallInMesh(geom, others, wall.frame, rect)
+          // A passage is at least as wide as the door it serves. The
+          // neighbour's wall is rarely exactly parallel to the target's, so
+          // subtracting the identical rect leaves slivers across the opening
+          // — measured, 6 of 15 probe rays still met building 20009 at the
+          // market's threshold after an exact-rect passage cut.
+          const rc = cutWallInMesh(geom, others, wall.frame, PASSAGE_RECT,
+            { band: WALL_BAND, aabb: box })
           if (rc.geometry !== geom) {
             geom = rc.geometry
             touched = true
@@ -796,19 +1104,13 @@ export class Doors {
     return d.cut
   }
 
-  // Every vertex index in a merged tile mesh that does *not* belong to `bid`.
-  // The returned set carries .bid = null so a re-emitted face keeps its own
-  // building id rather than being relabelled as the target's.
+  // Every vertex in a merged tile mesh that does *not* belong to `bid`, as a
+  // predicate. .bid = null so a re-emitted face keeps its own building id
+  // rather than being relabelled as the target's.
   _verticesExcept(mesh, bid) {
     const attr = mesh.geometry.attributes._bid || mesh.geometry.attributes._BID
     if (!attr) return null
-    const set = new Set()
-    for (let i = 0; i < attr.count; i++) {
-      if (Math.round(attr.getX(i)) !== bid) set.add(i)
-    }
-    if (!set.size) return null
-    set.bid = null
-    return set
+    return { has: (i) => Math.round(attr.getX(i)) !== bid, bid: null }
   }
 
   // The doorway volume in world space, as an axis-aligned box: WALL_W plus a
@@ -840,15 +1142,26 @@ export class Doors {
   }
 
   // A wall door's cut lives in a tile mesh; a tile that streams out and back
-  // in brings fresh uncut geometry, so the cut has to be re-applied.
+  // in brings fresh uncut geometry, so the cut has to be re-applied. The HQ
+  // tower is not streamed, so being parented to the scene is enough.
   _meshLive(d) {
-    return !!(d.mesh && d.mesh.parent && d.mesh.parent.parent)
+    if (!d.mesh || !d.mesh.parent) return false
+    return d.kind === 'recess' ? true : !!d.mesh.parent.parent
   }
 
   _findAndCut(d) {
-    if (d.kind !== 'wall') return
     if (d.cut && this._meshLive(d)) return
-    this._cutWall(d)
+    // The cut walks the tile mesh and raycasts; retrying it every frame while
+    // a tile is still arriving costs more than the cut does. Back off.
+    const now = performance.now()
+    if (d.nextCutAt && now < d.nextCutAt) return
+    d.nextCutAt = now + CUT_RETRY_MS
+    const before = d.wallDist
+    if (this._cutWall(d) && d.wallDist !== before && d.group) {
+      // the measured wall distance moved the crossing plane; the assembly is
+      // built at that plane, so it has to follow
+      this._buildAssembly(d)
+    }
   }
 
   // Punch the door opening in the room's glazed wall. Each room instance has
@@ -878,8 +1191,15 @@ export class Doors {
 
   // ---- door assembly ------------------------------------------------------
 
+  // Where the doorway plane sits in the room's authored x: the face of the
+  // wall the opening is cut in. For a shifted room that is WALL_GAP by
+  // construction; for a recess it is wherever the podium wall was measured to
+  // be (the HQ's was assumed at 5.0 m and is actually 0.4 m, which put the
+  // door assembly 4.5 m out in the open plaza with the real wall left solid
+  // behind it).
   _wallPlaneX(d) {
-    return d.kind === 'recess' ? -(d.wallDist - 0.1) : -WALL_GAP
+    if (d.kind !== 'recess') return -WALL_GAP
+    return -(d.wallDist ?? RECESS_WALL_DIST)
   }
 
   _buildAssembly(d) {
@@ -1153,7 +1473,7 @@ export class Doors {
     let open = 0
     for (const d of this.doors) {
       if (!d.group) continue
-      if (d.kind === 'wall' && (!d.cut || !this._meshLive(d))) {
+      if (!d.cut || !this._meshLive(d)) {
         const c = this._local(d, camera.position, new THREE.Vector3())
         if (c.length() < CUT_R) this._findAndCut(d)
       }
@@ -1188,6 +1508,14 @@ export class Doors {
       if (d.state === 'open') open++
       if (d.leaf) {
         d.leaf.position.y = d.bayY0 + 0.02 + d.progress * LEAF_W
+        // Push the new position into the world matrix now. Raycasting does
+        // not update matrices — it trusts them — and the walk collider probes
+        // this leaf in the *same* frame the door moves. Without this the
+        // collider sees wherever the leaf was at the last render, which under
+        // the QA harness (render loop frozen) means it never moves at all:
+        // measured, the leaf blocked the walk-in on 160 of 181 frames with
+        // the door reading fully open.
+        d.group.updateMatrixWorld(true)
       }
     }
     this.stats.open = open
@@ -1306,6 +1634,8 @@ export class Doors {
         state: d.state, kind: d.kind, bid: d.bid,
         wallDist_m: +(d.wallDist ?? -1).toFixed(2),
         relocated: !!d.relocated, shifted: !!d.shifted,
+        frontagePasses: d.frontagePasses ?? null,
+        shiftResidual_m: d.shiftResidual_m ?? null, cutWhy: d.cutWhy,
         cutFaces: d.cutFaces, removedTris: d.removedTris,
         passageRemoved: d.passageRemoved,
         passageCutFaces: d.passageCutFaces,
@@ -1319,7 +1649,7 @@ export class Doors {
       const res = this._probeOpening(d)
       say(`${d.key} opening is real (render)`, res.blocked === 0, {
         rays: res.rays, blocked: res.blocked,
-        wallCut: d.kind === 'wall' ? d.cut : 'authored recess',
+        wallCut: d.cut, cutFaces: d.cutFaces,
         wallDist_m: +(d.wallDist ?? -1).toFixed(2),
       })
 
@@ -1327,14 +1657,17 @@ export class Doors {
       say(`${d.key} walk-in crosses without teleport`,
         walk.crossed && walk.maxJump < 0.5 && walk.inside,
         { maxJump_m: +walk.maxJump.toFixed(3), frames: walk.frames,
-          inside: walk.inside, doorState: walk.doorState,
-          maxJumpAt: walk.maxJumpAt })
+          crossed: walk.crossed, inside: walk.inside,
+          startLocalX: walk.startLocalX, endLocalX: walk.endLocalX,
+          doorState: walk.doorState, maxJumpAt: walk.maxJumpAt })
 
       const rev = this._walkTest(d, -1)
       say(`${d.key} reverse traversal exits`,
         rev.crossed && !rev.inside,
         { maxJump_m: +rev.maxJump.toFixed(3), frames: rev.frames,
-          inside: rev.inside, maxJumpAt: rev.maxJumpAt })
+          crossed: rev.crossed, inside: rev.inside,
+          startLocalX: rev.startLocalX, endLocalX: rev.endLocalX,
+          doorState: rev.doorState, maxJumpAt: rev.maxJumpAt })
 
       const cyc = this._cycleTest(d)
       say(`${d.key} door cycle opens and closes`, cyc.openCycles >= 2 &&
@@ -1395,9 +1728,14 @@ export class Doors {
         const z = 1.2 + r / rows * 1.1
         const origin = this.roomToWorld(d, plane - 2.0, y, z)
         raycaster.set(origin, dir)
-        raycaster.far = 4.5
+        // 2 m of approach, the wall itself, and the depth of the room behind
+        // it. Anything solid before the room's own back wall means the
+        // opening is not there. The window is measured from the door plane,
+        // not a fixed 3.8 m: the HQ's plane was 4.5 m out of position and a
+        // fixed window let a solid podium wall 6.5 m in count as clear.
+        raycaster.far = ROOM_DEPTH_PROBE
         const hit = raycaster.intersectObjects(colliders, true)[0]
-        const blockedHere = !!hit && hit.distance < 3.8
+        const blockedHere = !!hit && hit.distance < 2.0 + PROBE_CLEAR
         if (blockedHere) blocked++
         rays.push({
           hit: blockedHere,
@@ -1436,7 +1774,9 @@ export class Doors {
     }
     const plane = this._wallPlaneX(d)
     if (dir < 0) this.interiors.enterPhysical(d.room)
-    const start = this.roomToWorld(d, plane - dir * 3.2, d.bayCenter, 1.7)
+    // Start outside the trigger's reach so the walk includes the approach the
+    // door's timing is built around, rather than beginning on top of it.
+    const start = this.roomToWorld(d, plane - dir * WALK_START, d.bayCenter, 1.7)
     const target = this.roomToWorld(d, plane + dir * 3.0, d.bayCenter, 1.7)
     camera.position.copy(start)
     controls.mode = 'walk'
@@ -1544,14 +1884,19 @@ export class Doors {
     this._lampTarget = 0
     this.interiors.lamp.intensity = 0
     return { crossed, maxJump, maxJumpAt, frames: i + 1, inside: reachedInside,
-      doorState: d.state, trace }
+      doorState: d.state, trace,
+      startLocalX: +(plane - dir * WALK_START).toFixed(2),
+      endLocalX: +this._local(d, camera.position, lp).x.toFixed(2) }
   }
 
   _cycleTest(d) {
     const camera = this._camera
     if (!camera) return { openCycles: 0, closedOnce: false, reason: 'no camera' }
     const plane = this._wallPlaneX(d)
-    const outside = this.roomToWorld(d, plane - 4, d.bayCenter, 1.7)
+    // "away" has to be clear of the trigger's reach, or the door never gets
+    // the chance to close and the cycle test measures nothing
+    const outside = this.roomToWorld(d, plane + TRIGGER_X[0] - 3,
+      d.bayCenter, 1.7)
     const atDoor = this.roomToWorld(d, plane - 0.6, d.bayCenter, 1.7)
     let openCycles = 0
     let closedOnce = false

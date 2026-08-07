@@ -19,13 +19,23 @@ const FLY_BOOST = 420.0
 const GRAVITY = 22.0
 const JUMP = 6.4
 const RADIUS = 0.45 // m, body radius for wall probes
-const STEP = 0.55 // m, how high a ledge can be walked onto
+// How high a ledge can be walked onto, and — since Phase 3B — the hard cap on
+// how far the ground snap may lift the camera in one frame. 0.65 rather than
+// 0.55 because the HQ podium plinth the lobby doorway sits on measures 0.60 m
+// above the pavement (12.60 vs 12.00) and a doorway you cannot step up to is
+// not a doorway. Anything taller is a ledge to be blocked by, not climbed.
+const STEP = 0.65
+
+// The most the wall resolve may displace the camera in one frame.
+const MAX_PUSH = 0.35
 
 // Allocated once: _resolveWalls runs four of these every frame.
 const PROBES = [
   new THREE.Vector3(1, 0, 0), new THREE.Vector3(-1, 0, 0),
   new THREE.Vector3(0, 0, 1), new THREE.Vector3(0, 0, -1),
 ]
+const _tmpBefore = new THREE.Vector3()
+const _tmpPush = new THREE.Vector3()
 
 export class Controls {
   constructor(camera, dom) {
@@ -96,6 +106,16 @@ export class Controls {
     }
   }
 
+  // The surface the camera stands on. The ray starts a metre above the eye so
+  // a ledge in front of you can be stepped onto, which means it can also
+  // return something *above* your head — and the caller snaps the camera to
+  // whatever comes back. Anything higher than one step above the feet is a
+  // ceiling, not a floor, so it is skipped and the search continues downward.
+  //
+  // Phase 3B is what exposed this: a door header and its lit ceiling panel sit
+  // ~2.6 m up in the walk collider set, and walking out through the doorway
+  // launched the camera onto the header — a measured 2.595 m vertical jump,
+  // which is a teleport by any honest reading.
   _groundBelow(pos) {
     if (!this.colliders.length) return null
     this.ray.set(
@@ -103,8 +123,13 @@ export class Controls {
       new THREE.Vector3(0, -1, 0),
     )
     this.ray.far = 600
-    const hit = this._firstHit()
-    return hit ? hit.point.y : null
+    const ceiling = pos.y - EYE + STEP
+    for (const h of this.ray.intersectObjects(this.colliders, true)) {
+      if (this.hitFilter && this.hitFilter(h)) continue
+      if (h.point.y > ceiling) continue
+      return h.point.y
+    }
+    return null
   }
 
   // Push out of walls: probe along the four horizontal axes and push back out
@@ -120,6 +145,7 @@ export class Controls {
   // which is how the player walked in through a solid facade.
   _resolveWalls(next) {
     if (!this.colliders.length) return next
+    const before = _tmpBefore.copy(next)
     const origin = new THREE.Vector3(next.x, next.y - EYE + 1.0, next.z)
     this.ray.far = RADIUS + 0.35
     for (const d of PROBES) {
@@ -131,6 +157,15 @@ export class Controls {
       // back toward where the ray came from
       if (n.dot(d) > 0) n.negate()
       next.addScaledVector(n, RADIUS - hit.distance)
+    }
+    // Four probes each push up to RADIUS, and in a corner they compound: a
+    // player squeezing through a doorway was displaced 0.98 m in a single
+    // frame, which is a teleport however correct the collision response is.
+    // Clamp it — a deeper overlap simply resolves over the next few frames.
+    const push = _tmpPush.subVectors(next, before)
+    const len = push.length()
+    if (len > MAX_PUSH) {
+      next.copy(before).addScaledVector(push, MAX_PUSH / len)
     }
     return next
   }

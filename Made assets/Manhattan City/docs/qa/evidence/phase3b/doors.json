@@ -1,16 +1,16 @@
 {
-  "generatedAt": "2026-08-06T23:00:54.183Z",
+  "generatedAt": "2026-08-07T17:19:34.951Z",
   "runner": "scripts/qa/doorcheck-run.mjs",
   "branch": "main",
-  "commit": "1060d8278",
+  "commit": "f27e07d27",
   "app": "http://127.0.0.1:5176/",
   "doors": {
     "home_lobby": {
-      "startedAt": "2026-08-06T23:00:56.937Z",
+      "startedAt": "2026-08-07T17:19:37.872Z",
       "capture": {
         "ok": true,
         "file": "evidence\\phase2\\door_home_lobby_threshold.png",
-        "bytes": 66727
+        "bytes": 85455
       },
       "frame": {
         "checks": {
@@ -19,15 +19,15 @@
             "pass": true,
             "measured": {
               "stddev": [
-                40.055,
-                39.415,
-                38.318
+                47.177,
+                41.981,
+                36.162
               ],
-              "stddevMax": 40.055,
-              "distinctColours": 101,
-              "distinctColours6bit": 597,
-              "distinctColoursExact": 1726,
-              "meanLuminance": 0.1319
+              "stddevMax": 47.177,
+              "distinctColours": 120,
+              "distinctColours6bit": 846,
+              "distinctColoursExact": 2940,
+              "meanLuminance": 0.08341
             },
             "threshold": "stddev > 8 per channel AND >= 200 distinct colours (6-bit quantised)"
           },
@@ -36,20 +36,20 @@
             "pass": null,
             "applicable": false,
             "measured": {
-              "lumTopBand": 0.15099,
-              "lumBottomBand": 0.09996,
-              "lumMiddleBand": 0.13618,
-              "lumMean": 0.1319,
-              "dimmest20Mean": 0.0372,
-              "brightest20Mean": 0.33915
+              "lumTopBand": 0.05392,
+              "lumBottomBand": 0.12171,
+              "lumMiddleBand": 0.08048,
+              "lumMean": 0.08341,
+              "dimmest20Mean": 0.00616,
+              "brightest20Mean": 0.24399
             },
             "threshold": "interior: top-band mean < 0.02 linear while bottom band >= 0.1"
           }
         },
         "measured": {
-          "stddevMax": 40.055,
-          "meanLuminance": 0.1319,
-          "coloursExact": 1726
+          "stddevMax": 47.177,
+          "meanLuminance": 0.08341,
+          "coloursExact": 2940
         }
       },
       "scene": {
@@ -79,30 +79,24 @@
             {
               "room": "home_lobby",
               "label": "Lobby",
-              "hits": 9,
-              "misses": 9,
+              "hits": 12,
+              "misses": 6,
               "missedDirs": [
                 0,
                 1,
-                3,
-                5,
-                6,
                 9,
                 10,
                 13,
                 14
               ],
-              "glassCovered": 0,
+              "glassCovered": 3,
               "pass": false,
               "measured": {
-                "hits": 9,
-                "misses": 9,
+                "hits": 12,
+                "misses": 6,
                 "missedDirs": [
                   0,
                   1,
-                  3,
-                  5,
-                  6,
                   9,
                   10,
                   13,
@@ -120,11 +114,11 @@
                   ],
                   "tExit": 13.71,
                   "sight": {
-                    "lumMean": 0.0188,
-                    "lumTop": 0.0205,
-                    "lumBot": 0.0177,
-                    "distinctColours6bit": 14,
-                    "stddevMax": 18.94
+                    "lumMean": 0.0155,
+                    "lumTop": 0.0155,
+                    "lumBot": 0.0155,
+                    "distinctColours6bit": 4,
+                    "stddevMax": 23.7
                   }
                 },
                 {
@@ -136,59 +130,11 @@
                   ],
                   "tExit": 12.08,
                   "sight": {
-                    "lumMean": 0.0011,
-                    "lumTop": 0.0011,
-                    "lumBot": 0.0011,
-                    "distinctColours6bit": 4,
-                    "stddevMax": 4.53
-                  }
-                },
-                {
-                  "ray": 3,
-                  "dir": [
-                    0.38268343236508984,
-                    0,
-                    0.9238795325112867
-                  ],
-                  "tExit": 12.15,
-                  "sight": {
-                    "lumMean": 0.0022,
+                    "lumMean": 0.0021,
                     "lumTop": 0.0021,
-                    "lumBot": 0.0022,
-                    "distinctColours6bit": 7,
-                    "stddevMax": 8.32
-                  }
-                },
-                {
-                  "ray": 5,
-                  "dir": [
-                    -0.3826834323650897,
-                    0,
-                    0.9238795325112867
-                  ],
-                  "tExit": 7.62,
-                  "sight": {
-                    "lumMean": 0.0047,
-                    "lumTop": 0.0047,
-                    "lumBot": 0.0047,
-                    "distinctColours6bit": 1,
-                    "stddevMax": 0
-                  }
-                },
-                {
-                  "ray": 6,
-                  "dir": [
-                    -0.7071067811865475,
-                    0,
-                    0.7071067811865476
-                  ],
-                  "tExit": 7.88,
-                  "sight": {
-                    "lumMean": 0.0033,
-                    "lumTop": 0.0059,
-                    "lumBot": 0.0028,
-                    "distinctColours6bit": 24,
-                    "stddevMax": 7.73
+                    "lumBot": 0.0021,
+                    "distinctColours6bit": 5,
+                    "stddevMax": 7.8
                   }
                 },
                 {
@@ -200,11 +146,11 @@
                   ],
                   "tExit": 12.08,
                   "sight": {
-                    "lumMean": 0.0023,
-                    "lumTop": 0.0023,
-                    "lumBot": 0.0023,
-                    "distinctColours6bit": 3,
-                    "stddevMax": 10.29
+                    "lumMean": 0.0005,
+                    "lumTop": 0.0005,
+                    "lumBot": 0.0005,
+                    "distinctColours6bit": 1,
+                    "stddevMax": 0
                   }
                 },
                 {
@@ -216,11 +162,11 @@
                   ],
                   "tExit": 12.49,
                   "sight": {
-                    "lumMean": 0.0084,
-                    "lumTop": 0.0086,
-                    "lumBot": 0.0101,
-                    "distinctColours6bit": 42,
-                    "stddevMax": 15.77
+                    "lumMean": 0.0005,
+                    "lumTop": 0.0005,
+                    "lumBot": 0.0005,
+                    "distinctColours6bit": 1,
+                    "stddevMax": 0
                   }
                 },
                 {
@@ -232,11 +178,11 @@
                   ],
                   "tExit": 7.62,
                   "sight": {
-                    "lumMean": 0.0022,
-                    "lumTop": 0.0022,
-                    "lumBot": 0.0022,
-                    "distinctColours6bit": 3,
-                    "stddevMax": 3.94
+                    "lumMean": 0.004,
+                    "lumTop": 0.0078,
+                    "lumBot": 0.0058,
+                    "distinctColours6bit": 26,
+                    "stddevMax": 7.97
                   }
                 },
                 {
@@ -248,24 +194,24 @@
                   ],
                   "tExit": 7.88,
                   "sight": {
-                    "lumMean": 0.0033,
-                    "lumTop": 0.0033,
-                    "lumBot": 0.0031,
-                    "distinctColours6bit": 10,
-                    "stddevMax": 4.04
+                    "lumMean": 0.03,
+                    "lumTop": 0.0201,
+                    "lumBot": 0.0411,
+                    "distinctColours6bit": 98,
+                    "stddevMax": 30.32
                   }
                 }
               ],
               "aabb": {
                 "min": [
-                  -1098.7,
+                  -1121.9,
                   12,
-                  1468.3
+                  1510.3
                 ],
                 "max": [
-                  -1070.3,
+                  -1093.6,
                   18,
-                  1493.2
+                  1535.2
                 ]
               }
             }
@@ -275,39 +221,69 @@
             "rooms": [
               {
                 "room": "home_lobby",
-                "hits": 9,
-                "misses": 9,
-                "glassCovered": 0
+                "hits": 12,
+                "misses": 6,
+                "glassCovered": 3
               }
             ],
-            "totalHits": 9,
-            "totalMisses": 9,
-            "hitsOfRays": "9/18"
+            "totalHits": 12,
+            "totalMisses": 6,
+            "hitsOfRays": "12/18"
           },
           "threshold": "per room: misses <= 2 of 18 rays (16 horizontal + up + down)"
         }
       },
       "verify": {
-        "ok": false,
+        "ok": true,
         "checks": [
           {
             "name": "home_lobby placed",
             "ok": true,
-            "state": "closed",
+            "state": "open",
             "kind": "wall",
             "bid": 20263,
-            "wallDist_m": 16.99,
+            "wallDist_m": 0.35,
             "relocated": true,
             "shifted": true,
+            "frontagePasses": 2,
+            "shiftResidual_m": 0.35,
+            "cutWhy": {
+              "total": 4196,
+              "mine": 42,
+              "box": 2,
+              "facing": 2,
+              "band": 2,
+              "rect": 2,
+              "missAxis": {
+                "1": 2,
+                "2": 4,
+                "3": 4,
+                "4": 4,
+                "5": 6,
+                "6": 12,
+                "7": 8
+              }
+            },
             "cutFaces": 2,
-            "passageRemoved": 2,
+            "removedTris": 0,
+            "passageRemoved": 0,
+            "passageCutFaces": 0,
+            "passageBoxRemoved": 0,
+            "glazeCutFaces": 2,
+            "glazeRemovedTris": 0,
+            "glazeTrisKept": 12,
+            "assembly": {
+              "leafHeight_m": 2.36,
+              "leafWidth_m": 1.58,
+              "litPanelAboveFloor_m": 2.63
+            },
             "lastClear": {
               "ok": true,
               "seen": [],
               "origin": [
-                -1131.9,
+                -1105.4,
                 1.5,
-                1521.3
+                1516.5
               ]
             }
           },
@@ -408,32 +384,36 @@
             ],
             "blocked": 0,
             "wallCut": true,
-            "wallDist_m": 16.99
+            "cutFaces": 2,
+            "wallDist_m": 0.35
           },
           {
             "name": "home_lobby walk-in crosses without teleport",
-            "ok": false,
-            "maxJump_m": 0.14,
-            "frames": 181,
-            "inside": false,
+            "ok": true,
+            "maxJump_m": 0.161,
+            "frames": 43,
+            "crossed": true,
+            "inside": true,
+            "startLocalX": -6.35,
+            "endLocalX": -0.33,
             "doorState": "open",
             "maxJumpAt": {
-              "frame": 5,
+              "frame": 41,
               "from": [
-                -1087.98,
+                -1112.483,
                 13.693,
-                1490.549
+                1529.269
               ],
               "to": [
-                -1087.912,
-                13.693,
-                1490.427
+                -1112.415,
+                13.772,
+                1529.146
               ],
-              "doorState": "closed",
-              "leafY": 0.14,
+              "doorState": "open",
+              "leafY": 1.9,
               "groundHit": {
-                "y": 11.99,
-                "obj": "LAND_manhattan",
+                "y": 14.66,
+                "obj": "Mesh",
                 "bid": null
               },
               "under": [
@@ -555,26 +535,30 @@
           {
             "name": "home_lobby reverse traversal exits",
             "ok": true,
-            "maxJump_m": 0.14,
-            "frames": 23,
+            "maxJump_m": 0.161,
+            "frames": 43,
+            "crossed": true,
             "inside": false,
+            "startLocalX": 5.65,
+            "endLocalX": -0.37,
+            "doorState": "open",
             "maxJumpAt": {
-              "frame": 5,
+              "frame": 41,
               "from": [
-                -1085.559,
+                -1112.231,
                 13.693,
-                1486.174
+                1528.814
               ],
               "to": [
-                -1085.627,
-                13.693,
-                1486.297
+                -1112.299,
+                13.772,
+                1528.936
               ],
-              "doorState": "closing",
-              "leafY": 1.787,
+              "doorState": "open",
+              "leafY": 1.9,
               "groundHit": {
-                "y": 11.99,
-                "obj": "LAND_manhattan",
+                "y": 14.68,
+                "obj": "Mesh",
                 "bid": null
               },
               "under": [
@@ -717,144 +701,176 @@
             "state": "closed",
             "kind": "wall",
             "bid": 14513,
-            "wallDist_m": 5.38,
+            "wallDist_m": 0.35,
             "relocated": true,
             "shifted": true,
+            "frontagePasses": 1,
+            "shiftResidual_m": 0.35,
+            "cutWhy": {
+              "total": 42796,
+              "mine": 30,
+              "box": 4,
+              "facing": 4,
+              "band": 2,
+              "rect": 2,
+              "missAxis": {
+                "2": 8,
+                "4": 2,
+                "5": 4,
+                "6": 4,
+                "7": 8
+              }
+            },
             "cutFaces": 2,
-            "passageRemoved": 2,
+            "removedTris": 0,
+            "passageRemoved": 1,
+            "passageCutFaces": 4,
+            "passageBoxRemoved": 0,
+            "glazeCutFaces": 2,
+            "glazeRemovedTris": 0,
+            "glazeTrisKept": 6,
+            "assembly": {
+              "leafHeight_m": 2.36,
+              "leafWidth_m": 1.58,
+              "litPanelAboveFloor_m": 2.63
+            },
             "lastClear": {
               "ok": true,
               "seen": [],
               "origin": [
-                -1880.7,
+                -1884.8,
                 1.5,
-                3617.1
+                3613.5
               ]
             }
           },
           {
             "name": "bodega opening is real (render)",
-            "ok": false,
+            "ok": true,
             "rays": [
               {
-                "hit": true,
-                "distance": 2.56,
-                "object": "BLD_midrise_-02_-03_1",
-                "bid": 14438
+                "hit": false,
+                "distance": null,
+                "object": null,
+                "bid": null
               },
               {
-                "hit": true,
-                "distance": 2.56,
-                "object": "BLD_midrise_-02_-03_1",
-                "bid": 14438
+                "hit": false,
+                "distance": null,
+                "object": null,
+                "bid": null
               },
               {
-                "hit": true,
-                "distance": 2.56,
-                "object": "BLD_midrise_-02_-03_1",
-                "bid": 14438
+                "hit": false,
+                "distance": null,
+                "object": null,
+                "bid": null
               },
               {
-                "hit": true,
-                "distance": 2.56,
-                "object": "BLD_midrise_-02_-03_1",
-                "bid": 14438
+                "hit": false,
+                "distance": null,
+                "object": null,
+                "bid": null
               },
               {
-                "hit": true,
-                "distance": 2.56,
-                "object": "BLD_midrise_-02_-03_1",
-                "bid": 14438
+                "hit": false,
+                "distance": null,
+                "object": null,
+                "bid": null
               },
               {
-                "hit": true,
-                "distance": 2.56,
-                "object": "BLD_midrise_-02_-03_1",
-                "bid": 14438
+                "hit": false,
+                "distance": null,
+                "object": null,
+                "bid": null
               },
               {
-                "hit": true,
-                "distance": 2.56,
-                "object": "BLD_midrise_-02_-03_1",
-                "bid": 14438
+                "hit": false,
+                "distance": null,
+                "object": null,
+                "bid": null
               },
               {
-                "hit": true,
-                "distance": 2.56,
-                "object": "BLD_midrise_-02_-03_1",
-                "bid": 14438
+                "hit": false,
+                "distance": null,
+                "object": null,
+                "bid": null
               },
               {
-                "hit": true,
-                "distance": 2.56,
-                "object": "BLD_midrise_-02_-03_1",
-                "bid": 14438
+                "hit": false,
+                "distance": null,
+                "object": null,
+                "bid": null
               },
               {
-                "hit": true,
-                "distance": 2.56,
-                "object": "BLD_midrise_-02_-03_1",
-                "bid": 14438
+                "hit": false,
+                "distance": null,
+                "object": null,
+                "bid": null
               },
               {
-                "hit": true,
-                "distance": 2.56,
-                "object": "BLD_midrise_-02_-03_1",
-                "bid": 14438
+                "hit": false,
+                "distance": null,
+                "object": null,
+                "bid": null
               },
               {
-                "hit": true,
-                "distance": 2.56,
-                "object": "BLD_midrise_-02_-03_1",
-                "bid": 14438
+                "hit": false,
+                "distance": null,
+                "object": null,
+                "bid": null
               },
               {
-                "hit": true,
-                "distance": 2.56,
-                "object": "BLD_midrise_-02_-03_1",
-                "bid": 14438
+                "hit": false,
+                "distance": null,
+                "object": null,
+                "bid": null
               },
               {
-                "hit": true,
-                "distance": 2.56,
-                "object": "BLD_midrise_-02_-03_1",
-                "bid": 14438
+                "hit": false,
+                "distance": null,
+                "object": null,
+                "bid": null
               },
               {
-                "hit": true,
-                "distance": 2.56,
-                "object": "BLD_midrise_-02_-03_1",
-                "bid": 14438
+                "hit": false,
+                "distance": null,
+                "object": null,
+                "bid": null
               }
             ],
-            "blocked": 15,
+            "blocked": 0,
             "wallCut": true,
-            "wallDist_m": 5.38
+            "cutFaces": 2,
+            "wallDist_m": 0.35
           },
           {
             "name": "bodega walk-in crosses without teleport",
-            "ok": false,
-            "maxJump_m": 0.14,
-            "frames": 181,
-            "inside": false,
+            "ok": true,
+            "maxJump_m": 0.161,
+            "frames": 43,
+            "crossed": true,
+            "inside": true,
+            "startLocalX": -6.35,
+            "endLocalX": -0.33,
             "doorState": "open",
             "maxJumpAt": {
-              "frame": 5,
+              "frame": 41,
               "from": [
-                -1890.48,
+                -1884.957,
                 13.693,
-                3607.211
+                3613.383
               ],
               "to": [
-                -1890.602,
-                13.693,
-                3607.143
+                -1885.079,
+                13.772,
+                3613.315
               ],
-              "doorState": "closed",
-              "leafY": 0.14,
+              "doorState": "opening",
+              "leafY": 1.9,
               "groundHit": {
-                "y": 11.99,
-                "obj": "LAND_manhattan",
+                "y": 14.66,
+                "obj": "Mesh",
                 "bid": null
               },
               "under": [
@@ -976,26 +992,30 @@
           {
             "name": "bodega reverse traversal exits",
             "ok": true,
-            "maxJump_m": 0.966,
-            "frames": 20,
+            "maxJump_m": 0.161,
+            "frames": 43,
+            "crossed": true,
             "inside": false,
+            "startLocalX": 5.65,
+            "endLocalX": -0.37,
+            "doorState": "open",
             "maxJumpAt": {
-              "frame": 18,
+              "frame": 41,
               "from": [
-                -1893.257,
+                -1885.411,
                 13.693,
-                3605.662
+                3613.13
               ],
               "to": [
-                -1892.414,
-                13.693,
-                3606.133
+                -1885.289,
+                13.772,
+                3613.198
               ],
-              "doorState": "opening",
-              "leafY": 1.812,
+              "doorState": "open",
+              "leafY": 1.9,
               "groundHit": {
-                "y": 11.99,
-                "obj": "LAND_manhattan",
+                "y": 14.68,
+                "obj": "Mesh",
                 "bid": null
               },
               "under": [
@@ -1138,18 +1158,47 @@
             "state": "closed",
             "kind": "wall",
             "bid": 19990,
-            "wallDist_m": 9.8,
+            "wallDist_m": 0.35,
             "relocated": true,
             "shifted": true,
+            "frontagePasses": 1,
+            "shiftResidual_m": 0.35,
+            "cutWhy": {
+              "total": 2624,
+              "mine": 48,
+              "box": 2,
+              "facing": 2,
+              "band": 2,
+              "rect": 2,
+              "missAxis": {
+                "1": 2,
+                "3": 8,
+                "4": 6,
+                "5": 6,
+                "6": 8,
+                "7": 16
+              }
+            },
             "cutFaces": 2,
-            "passageRemoved": 2,
+            "removedTris": 0,
+            "passageRemoved": 0,
+            "passageCutFaces": 0,
+            "passageBoxRemoved": 0,
+            "glazeCutFaces": 2,
+            "glazeRemovedTris": 0,
+            "glazeTrisKept": 12,
+            "assembly": {
+              "leafHeight_m": 2.36,
+              "leafWidth_m": 1.58,
+              "litPanelAboveFloor_m": 2.63
+            },
             "lastClear": {
               "ok": true,
               "seen": [],
               "origin": [
-                -1681.4,
+                -1667.7,
                 1.5,
-                2288.3
+                2284
               ]
             }
           },
@@ -1250,32 +1299,36 @@
             ],
             "blocked": 0,
             "wallCut": true,
-            "wallDist_m": 9.8
+            "cutFaces": 2,
+            "wallDist_m": 0.35
           },
           {
             "name": "tower_lobby walk-in crosses without teleport",
-            "ok": false,
-            "maxJump_m": 0.14,
-            "frames": 181,
-            "inside": false,
+            "ok": true,
+            "maxJump_m": 0.161,
+            "frames": 43,
+            "crossed": true,
+            "inside": true,
+            "startLocalX": -6.35,
+            "endLocalX": -0.33,
             "doorState": "open",
             "maxJumpAt": {
-              "frame": 5,
+              "frame": 41,
               "from": [
-                -1654.392,
+                -1685.281,
                 13.693,
-                2294.554
+                2274.185
               ],
               "to": [
-                -1654.27,
-                13.693,
-                2294.623
+                -1685.159,
+                13.772,
+                2274.253
               ],
-              "doorState": "closed",
-              "leafY": 0.14,
+              "doorState": "opening",
+              "leafY": 1.9,
               "groundHit": {
-                "y": 11.99,
-                "obj": "LAND_manhattan",
+                "y": 14.66,
+                "obj": "Mesh",
                 "bid": null
               },
               "under": [
@@ -1390,26 +1443,30 @@
           {
             "name": "tower_lobby reverse traversal exits",
             "ok": true,
-            "maxJump_m": 0.14,
-            "frames": 23,
+            "maxJump_m": 0.161,
+            "frames": 43,
+            "crossed": true,
             "inside": false,
+            "startLocalX": 5.65,
+            "endLocalX": -0.37,
+            "doorState": "open",
             "maxJumpAt": {
-              "frame": 5,
+              "frame": 41,
               "from": [
-                -1650.028,
+                -1684.828,
                 13.693,
-                2296.995
+                2274.438
               ],
               "to": [
-                -1650.15,
-                13.693,
-                2296.926
+                -1684.95,
+                13.772,
+                2274.37
               ],
-              "doorState": "closing",
-              "leafY": 1.787,
+              "doorState": "open",
+              "leafY": 1.9,
               "groundHit": {
-                "y": 11.99,
-                "obj": "LAND_manhattan",
+                "y": 14.68,
+                "obj": "Mesh",
                 "bid": null
               },
               "under": [
@@ -1545,9 +1602,41 @@
             "state": "closed",
             "kind": "recess",
             "bid": 34686,
-            "wallDist_m": 5,
+            "wallDist_m": 0.4,
             "relocated": false,
-            "shifted": false
+            "shifted": false,
+            "frontagePasses": null,
+            "shiftResidual_m": null,
+            "cutWhy": {
+              "total": 1828,
+              "mine": 1828,
+              "box": 14,
+              "facing": 6,
+              "band": 6,
+              "rect": 6,
+              "missAxis": {
+                "1": 20,
+                "2": 48,
+                "3": 497,
+                "4": 100,
+                "5": 168,
+                "6": 68,
+                "7": 913
+              }
+            },
+            "cutFaces": 6,
+            "removedTris": 0,
+            "passageRemoved": 0,
+            "passageCutFaces": 0,
+            "passageBoxRemoved": 0,
+            "glazeCutFaces": 2,
+            "glazeRemovedTris": 0,
+            "glazeTrisKept": 12,
+            "assembly": {
+              "leafHeight_m": 2.36,
+              "leafWidth_m": 1.58,
+              "litPanelAboveFloor_m": 2.63
+            }
           },
           {
             "name": "hq_lobby opening is real (render)",
@@ -1645,33 +1734,37 @@
               }
             ],
             "blocked": 0,
-            "wallCut": "authored recess",
-            "wallDist_m": 5
+            "wallCut": true,
+            "cutFaces": 6,
+            "wallDist_m": 0.4
           },
           {
             "name": "hq_lobby walk-in crosses without teleport",
-            "ok": false,
-            "maxJump_m": 0.331,
-            "frames": 181,
-            "inside": false,
+            "ok": true,
+            "maxJump_m": 0.157,
+            "frames": 43,
+            "crossed": true,
+            "inside": true,
+            "startLocalX": -6.4,
+            "endLocalX": -0.38,
             "doorState": "open",
             "maxJumpAt": {
-              "frame": 9,
+              "frame": 41,
               "from": [
-                -2321.458,
-                14,
-                1811.081
+                -2322.071,
+                14.3,
+                1817.797
               ],
               "to": [
-                -2321.526,
-                14.3,
-                1811.203
+                -2322.138,
+                14.372,
+                1817.92
               ],
               "doorState": "opening",
-              "leafY": 0.193,
+              "leafY": 1.9,
               "groundHit": {
-                "y": 12.6,
-                "obj": "HQ_tower",
+                "y": 15.26,
+                "obj": "Mesh",
                 "bid": null
               },
               "under": [
@@ -1793,26 +1886,30 @@
           {
             "name": "hq_lobby reverse traversal exits",
             "ok": true,
-            "maxJump_m": 0.14,
-            "frames": 23,
+            "maxJump_m": 0.623,
+            "frames": 43,
+            "crossed": true,
             "inside": false,
+            "startLocalX": 5.6,
+            "endLocalX": -0.42,
+            "doorState": "open",
             "maxJumpAt": {
-              "frame": 5,
+              "frame": 42,
               "from": [
-                -2323.598,
-                14.3,
-                1814.971
+                -2322.254,
+                13.693,
+                1818.13
               ],
               "to": [
-                -2323.531,
+                -2322.187,
                 14.3,
-                1814.848
+                1818.007
               ],
-              "doorState": "closing",
-              "leafY": 1.787,
+              "doorState": "open",
+              "leafY": 1.9,
               "groundHit": {
-                "y": 12.6,
-                "obj": "HQ_tower",
+                "y": 15.27,
+                "obj": "Mesh",
                 "bid": null
               },
               "under": [
@@ -1960,34 +2057,49 @@
       },
       "determinism": {
         "sameTrace": true,
-        "framesA": 181,
-        "framesB": 181,
-        "maxJumpA": 0.14,
-        "maxJumpB": 0.14
+        "framesA": 43,
+        "framesB": 43,
+        "maxJumpA": 0.1608,
+        "maxJumpB": 0.1608
       },
       "bid": 20263,
       "kind": "wall",
       "cut": true,
       "cutFaces": 2,
       "removedTris": 0,
-      "wallDist_m": 16.986028653197184,
+      "glaze": {
+        "cutFaces": 2,
+        "removedTris": 0,
+        "trisKept": 12
+      },
+      "passageCut": {
+        "meshes": 0,
+        "cutFaces": 0,
+        "containedRemoved": 0
+      },
+      "assembly": {
+        "leafHeight_m": 2.36,
+        "leafWidth_m": 1.58,
+        "litPanelAboveFloor_m": 2.63
+      },
+      "wallDist_m": 0.34999999999990905,
       "captureState": {
-        "doorState": "closed",
-        "leafProgress": 0,
+        "doorState": "open",
+        "leafProgress": 1,
         "lamp": 0.55,
         "roomVisible": true
       },
       "passage": {
         "box": {
           "min": [
-            -1044.2072805367668,
+            -1114.2200610180034,
             11.9,
-            1519.8310535292958
+            1527.099637965778
           ],
           "max": [
-            -1040.3218914905453,
+            -1110.4931159763582,
             14.6,
-            1523.5612006933034
+            1530.9831023587356
           ]
         },
         "otherTrianglesInsideDoorBox": 0
@@ -1995,21 +2107,21 @@
       "consoleErrors": [],
       "failedRequests": [],
       "checkResults": {
-        "verify": false,
+        "verify": true,
         "frame": true,
         "occlusion": true,
         "capture": true,
         "determinism": true
       },
-      "pass": false,
-      "durationMs": 50887
+      "pass": true,
+      "durationMs": 22636
     },
     "bodega": {
-      "startedAt": "2026-08-06T23:01:47.824Z",
+      "startedAt": "2026-08-07T17:20:00.508Z",
       "capture": {
         "ok": true,
         "file": "evidence\\phase2\\door_bodega_threshold.png",
-        "bytes": 57305
+        "bytes": 131470
       },
       "frame": {
         "checks": {
@@ -2018,15 +2130,15 @@
             "pass": true,
             "measured": {
               "stddev": [
-                43.256,
-                43.111,
-                42.763
+                59.458,
+                62.176,
+                65.855
               ],
-              "stddevMax": 43.256,
-              "distinctColours": 55,
-              "distinctColours6bit": 204,
-              "distinctColoursExact": 410,
-              "meanLuminance": 0.07436
+              "stddevMax": 65.855,
+              "distinctColours": 191,
+              "distinctColours6bit": 1393,
+              "distinctColoursExact": 5585,
+              "meanLuminance": 0.12184
             },
             "threshold": "stddev > 8 per channel AND >= 200 distinct colours (6-bit quantised)"
           },
@@ -2035,20 +2147,20 @@
             "pass": null,
             "applicable": false,
             "measured": {
-              "lumTopBand": 0.09752,
-              "lumBottomBand": 0.08897,
-              "lumMiddleBand": 0.06178,
-              "lumMean": 0.07436,
-              "dimmest20Mean": 0.01367,
-              "brightest20Mean": 0.27241
+              "lumTopBand": 0.06197,
+              "lumBottomBand": 0.04736,
+              "lumMiddleBand": 0.16663,
+              "lumMean": 0.12184,
+              "dimmest20Mean": 0.00745,
+              "brightest20Mean": 0.50274
             },
             "threshold": "interior: top-band mean < 0.02 linear while bottom band >= 0.1"
           }
         },
         "measured": {
-          "stddevMax": 43.256,
-          "meanLuminance": 0.07436,
-          "coloursExact": 410
+          "stddevMax": 65.855,
+          "meanLuminance": 0.12184,
+          "coloursExact": 5585
         }
       },
       "scene": {
@@ -2107,11 +2219,11 @@
                   ],
                   "tExit": 4.81,
                   "sight": {
-                    "lumMean": 0.0567,
+                    "lumMean": 0.0047,
                     "lumTop": 0.0061,
-                    "lumBot": 0.1154,
-                    "distinctColours6bit": 25,
-                    "stddevMax": 68.31
+                    "lumBot": 0.0023,
+                    "distinctColours6bit": 32,
+                    "stddevMax": 9.53
                   }
                 },
                 {
@@ -2123,11 +2235,11 @@
                   ],
                   "tExit": 4.81,
                   "sight": {
-                    "lumMean": 0.0148,
+                    "lumMean": 0.0149,
                     "lumTop": 0.0058,
-                    "lumBot": 0.0215,
-                    "distinctColours6bit": 119,
-                    "stddevMax": 21.31
+                    "lumBot": 0.0233,
+                    "distinctColours6bit": 112,
+                    "stddevMax": 20.39
                   }
                 },
                 {
@@ -2139,24 +2251,24 @@
                   ],
                   "tExit": 4.96,
                   "sight": {
-                    "lumMean": 0.0186,
-                    "lumTop": 0.0083,
-                    "lumBot": 0.0198,
-                    "distinctColours6bit": 103,
-                    "stddevMax": 25.37
+                    "lumMean": 0.0171,
+                    "lumTop": 0.0077,
+                    "lumBot": 0.0213,
+                    "distinctColours6bit": 112,
+                    "stddevMax": 23.58
                   }
                 }
               ],
               "aabb": {
                 "min": [
-                  -1906.5,
+                  -1897.7,
                   12,
-                  3597.1
+                  3602
                 ],
                 "max": [
-                  -1891.2,
+                  -1882.4,
                   15.2,
-                  3611.3
+                  3616.2
                 ]
               }
             }
@@ -2179,7 +2291,7 @@
         }
       },
       "verify": {
-        "ok": false,
+        "ok": true,
         "checks": [
           {
             "name": "home_lobby placed",
@@ -2187,18 +2299,48 @@
             "state": "closed",
             "kind": "wall",
             "bid": 20263,
-            "wallDist_m": 16.99,
+            "wallDist_m": 0.35,
             "relocated": true,
             "shifted": true,
+            "frontagePasses": 2,
+            "shiftResidual_m": 0.35,
+            "cutWhy": {
+              "total": 4196,
+              "mine": 42,
+              "box": 2,
+              "facing": 2,
+              "band": 2,
+              "rect": 2,
+              "missAxis": {
+                "1": 2,
+                "2": 4,
+                "3": 4,
+                "4": 4,
+                "5": 6,
+                "6": 12,
+                "7": 8
+              }
+            },
             "cutFaces": 2,
-            "passageRemoved": 2,
+            "removedTris": 0,
+            "passageRemoved": 0,
+            "passageCutFaces": 0,
+            "passageBoxRemoved": 0,
+            "glazeCutFaces": 2,
+            "glazeRemovedTris": 0,
+            "glazeTrisKept": 12,
+            "assembly": {
+              "leafHeight_m": 2.36,
+              "leafWidth_m": 1.58,
+              "litPanelAboveFloor_m": 2.63
+            },
             "lastClear": {
               "ok": true,
               "seen": [],
               "origin": [
-                -1041.9,
+                -1112.6,
                 1.5,
-                1521.9
+                1529.4
               ]
             }
           },
@@ -2299,32 +2441,36 @@
             ],
             "blocked": 0,
             "wallCut": true,
-            "wallDist_m": 16.99
+            "cutFaces": 2,
+            "wallDist_m": 0.35
           },
           {
             "name": "home_lobby walk-in crosses without teleport",
-            "ok": false,
-            "maxJump_m": 0.14,
-            "frames": 181,
-            "inside": false,
+            "ok": true,
+            "maxJump_m": 0.161,
+            "frames": 43,
+            "crossed": true,
+            "inside": true,
+            "startLocalX": -6.35,
+            "endLocalX": -0.33,
             "doorState": "open",
             "maxJumpAt": {
-              "frame": 5,
+              "frame": 41,
               "from": [
-                -1087.98,
+                -1112.483,
                 13.693,
-                1490.549
+                1529.269
               ],
               "to": [
-                -1087.912,
-                13.693,
-                1490.427
+                -1112.415,
+                13.772,
+                1529.146
               ],
-              "doorState": "closed",
-              "leafY": 0.14,
+              "doorState": "opening",
+              "leafY": 1.9,
               "groundHit": {
-                "y": 11.99,
-                "obj": "LAND_manhattan",
+                "y": 14.66,
+                "obj": "Mesh",
                 "bid": null
               },
               "under": [
@@ -2446,26 +2592,30 @@
           {
             "name": "home_lobby reverse traversal exits",
             "ok": true,
-            "maxJump_m": 0.14,
-            "frames": 23,
+            "maxJump_m": 0.161,
+            "frames": 43,
+            "crossed": true,
             "inside": false,
+            "startLocalX": 5.65,
+            "endLocalX": -0.37,
+            "doorState": "open",
             "maxJumpAt": {
-              "frame": 5,
+              "frame": 41,
               "from": [
-                -1085.559,
+                -1112.231,
                 13.693,
-                1486.174
+                1528.814
               ],
               "to": [
-                -1085.627,
-                13.693,
-                1486.297
+                -1112.299,
+                13.772,
+                1528.936
               ],
-              "doorState": "closing",
-              "leafY": 1.787,
+              "doorState": "open",
+              "leafY": 1.9,
               "groundHit": {
-                "y": 11.99,
-                "obj": "LAND_manhattan",
+                "y": 14.68,
+                "obj": "Mesh",
                 "bid": null
               },
               "under": [
@@ -2608,144 +2758,176 @@
             "state": "closed",
             "kind": "wall",
             "bid": 14513,
-            "wallDist_m": 5.38,
+            "wallDist_m": 0.35,
             "relocated": true,
             "shifted": true,
+            "frontagePasses": 1,
+            "shiftResidual_m": 0.35,
+            "cutWhy": {
+              "total": 42796,
+              "mine": 30,
+              "box": 4,
+              "facing": 4,
+              "band": 2,
+              "rect": 2,
+              "missAxis": {
+                "2": 8,
+                "4": 2,
+                "5": 4,
+                "6": 4,
+                "7": 8
+              }
+            },
             "cutFaces": 2,
-            "passageRemoved": 2,
+            "removedTris": 0,
+            "passageRemoved": 1,
+            "passageCutFaces": 4,
+            "passageBoxRemoved": 0,
+            "glazeCutFaces": 2,
+            "glazeRemovedTris": 0,
+            "glazeTrisKept": 6,
+            "assembly": {
+              "leafHeight_m": 2.36,
+              "leafWidth_m": 1.58,
+              "litPanelAboveFloor_m": 2.63
+            },
             "lastClear": {
               "ok": true,
               "seen": [],
               "origin": [
-                -1880.7,
+                -1884.8,
                 1.5,
-                3617.1
+                3613.5
               ]
             }
           },
           {
             "name": "bodega opening is real (render)",
-            "ok": false,
+            "ok": true,
             "rays": [
               {
-                "hit": true,
-                "distance": 2.56,
-                "object": "BLD_midrise_-02_-03_1",
-                "bid": 14438
+                "hit": false,
+                "distance": null,
+                "object": null,
+                "bid": null
               },
               {
-                "hit": true,
-                "distance": 2.56,
-                "object": "BLD_midrise_-02_-03_1",
-                "bid": 14438
+                "hit": false,
+                "distance": null,
+                "object": null,
+                "bid": null
               },
               {
-                "hit": true,
-                "distance": 2.56,
-                "object": "BLD_midrise_-02_-03_1",
-                "bid": 14438
+                "hit": false,
+                "distance": null,
+                "object": null,
+                "bid": null
               },
               {
-                "hit": true,
-                "distance": 2.56,
-                "object": "BLD_midrise_-02_-03_1",
-                "bid": 14438
+                "hit": false,
+                "distance": null,
+                "object": null,
+                "bid": null
               },
               {
-                "hit": true,
-                "distance": 2.56,
-                "object": "BLD_midrise_-02_-03_1",
-                "bid": 14438
+                "hit": false,
+                "distance": null,
+                "object": null,
+                "bid": null
               },
               {
-                "hit": true,
-                "distance": 2.56,
-                "object": "BLD_midrise_-02_-03_1",
-                "bid": 14438
+                "hit": false,
+                "distance": null,
+                "object": null,
+                "bid": null
               },
               {
-                "hit": true,
-                "distance": 2.56,
-                "object": "BLD_midrise_-02_-03_1",
-                "bid": 14438
+                "hit": false,
+                "distance": null,
+                "object": null,
+                "bid": null
               },
               {
-                "hit": true,
-                "distance": 2.56,
-                "object": "BLD_midrise_-02_-03_1",
-                "bid": 14438
+                "hit": false,
+                "distance": null,
+                "object": null,
+                "bid": null
               },
               {
-                "hit": true,
-                "distance": 2.56,
-                "object": "BLD_midrise_-02_-03_1",
-                "bid": 14438
+                "hit": false,
+                "distance": null,
+                "object": null,
+                "bid": null
               },
               {
-                "hit": true,
-                "distance": 2.56,
-                "object": "BLD_midrise_-02_-03_1",
-                "bid": 14438
+                "hit": false,
+                "distance": null,
+                "object": null,
+                "bid": null
               },
               {
-                "hit": true,
-                "distance": 2.56,
-                "object": "BLD_midrise_-02_-03_1",
-                "bid": 14438
+                "hit": false,
+                "distance": null,
+                "object": null,
+                "bid": null
               },
               {
-                "hit": true,
-                "distance": 2.56,
-                "object": "BLD_midrise_-02_-03_1",
-                "bid": 14438
+                "hit": false,
+                "distance": null,
+                "object": null,
+                "bid": null
               },
               {
-                "hit": true,
-                "distance": 2.56,
-                "object": "BLD_midrise_-02_-03_1",
-                "bid": 14438
+                "hit": false,
+                "distance": null,
+                "object": null,
+                "bid": null
               },
               {
-                "hit": true,
-                "distance": 2.56,
-                "object": "BLD_midrise_-02_-03_1",
-                "bid": 14438
+                "hit": false,
+                "distance": null,
+                "object": null,
+                "bid": null
               },
               {
-                "hit": true,
-                "distance": 2.56,
-                "object": "BLD_midrise_-02_-03_1",
-                "bid": 14438
+                "hit": false,
+                "distance": null,
+                "object": null,
+                "bid": null
               }
             ],
-            "blocked": 15,
+            "blocked": 0,
             "wallCut": true,
-            "wallDist_m": 5.38
+            "cutFaces": 2,
+            "wallDist_m": 0.35
           },
           {
             "name": "bodega walk-in crosses without teleport",
-            "ok": false,
-            "maxJump_m": 0.14,
-            "frames": 181,
-            "inside": false,
+            "ok": true,
+            "maxJump_m": 0.161,
+            "frames": 43,
+            "crossed": true,
+            "inside": true,
+            "startLocalX": -6.35,
+            "endLocalX": -0.33,
             "doorState": "open",
             "maxJumpAt": {
-              "frame": 5,
+              "frame": 41,
               "from": [
-                -1890.48,
+                -1884.957,
                 13.693,
-                3607.211
+                3613.383
               ],
               "to": [
-                -1890.602,
-                13.693,
-                3607.143
+                -1885.079,
+                13.772,
+                3613.315
               ],
-              "doorState": "closed",
-              "leafY": 0.492,
+              "doorState": "opening",
+              "leafY": 1.9,
               "groundHit": {
-                "y": 11.99,
-                "obj": "LAND_manhattan",
+                "y": 14.66,
+                "obj": "Mesh",
                 "bid": null
               },
               "under": [
@@ -2867,26 +3049,30 @@
           {
             "name": "bodega reverse traversal exits",
             "ok": true,
-            "maxJump_m": 0.966,
-            "frames": 20,
+            "maxJump_m": 0.161,
+            "frames": 43,
+            "crossed": true,
             "inside": false,
+            "startLocalX": 5.65,
+            "endLocalX": -0.37,
+            "doorState": "open",
             "maxJumpAt": {
-              "frame": 18,
+              "frame": 41,
               "from": [
-                -1893.257,
+                -1885.411,
                 13.693,
-                3605.662
+                3613.13
               ],
               "to": [
-                -1892.414,
-                13.693,
-                3606.133
+                -1885.289,
+                13.772,
+                3613.198
               ],
-              "doorState": "opening",
-              "leafY": 1.812,
+              "doorState": "open",
+              "leafY": 1.9,
               "groundHit": {
-                "y": 11.99,
-                "obj": "LAND_manhattan",
+                "y": 14.68,
+                "obj": "Mesh",
                 "bid": null
               },
               "under": [
@@ -3029,18 +3215,47 @@
             "state": "closed",
             "kind": "wall",
             "bid": 19990,
-            "wallDist_m": 9.8,
+            "wallDist_m": 0.35,
             "relocated": true,
             "shifted": true,
+            "frontagePasses": 1,
+            "shiftResidual_m": 0.35,
+            "cutWhy": {
+              "total": 2624,
+              "mine": 48,
+              "box": 2,
+              "facing": 2,
+              "band": 2,
+              "rect": 2,
+              "missAxis": {
+                "1": 2,
+                "3": 8,
+                "4": 6,
+                "5": 6,
+                "6": 8,
+                "7": 16
+              }
+            },
             "cutFaces": 2,
-            "passageRemoved": 2,
+            "removedTris": 0,
+            "passageRemoved": 0,
+            "passageCutFaces": 0,
+            "passageBoxRemoved": 0,
+            "glazeCutFaces": 2,
+            "glazeRemovedTris": 0,
+            "glazeTrisKept": 12,
+            "assembly": {
+              "leafHeight_m": 2.36,
+              "leafWidth_m": 1.58,
+              "litPanelAboveFloor_m": 2.63
+            },
             "lastClear": {
               "ok": true,
               "seen": [],
               "origin": [
-                -1681.4,
+                -1667.7,
                 1.5,
-                2288.3
+                2284
               ]
             }
           },
@@ -3141,32 +3356,36 @@
             ],
             "blocked": 0,
             "wallCut": true,
-            "wallDist_m": 9.8
+            "cutFaces": 2,
+            "wallDist_m": 0.35
           },
           {
             "name": "tower_lobby walk-in crosses without teleport",
-            "ok": false,
-            "maxJump_m": 0.14,
-            "frames": 181,
-            "inside": false,
+            "ok": true,
+            "maxJump_m": 0.161,
+            "frames": 43,
+            "crossed": true,
+            "inside": true,
+            "startLocalX": -6.35,
+            "endLocalX": -0.33,
             "doorState": "open",
             "maxJumpAt": {
-              "frame": 5,
+              "frame": 41,
               "from": [
-                -1654.392,
+                -1685.281,
                 13.693,
-                2294.554
+                2274.185
               ],
               "to": [
-                -1654.27,
-                13.693,
-                2294.623
+                -1685.159,
+                13.772,
+                2274.253
               ],
-              "doorState": "closed",
-              "leafY": 0.492,
+              "doorState": "open",
+              "leafY": 1.9,
               "groundHit": {
-                "y": 11.99,
-                "obj": "LAND_manhattan",
+                "y": 14.66,
+                "obj": "Mesh",
                 "bid": null
               },
               "under": [
@@ -3281,26 +3500,30 @@
           {
             "name": "tower_lobby reverse traversal exits",
             "ok": true,
-            "maxJump_m": 0.14,
-            "frames": 23,
+            "maxJump_m": 0.161,
+            "frames": 43,
+            "crossed": true,
             "inside": false,
+            "startLocalX": 5.65,
+            "endLocalX": -0.37,
+            "doorState": "open",
             "maxJumpAt": {
-              "frame": 5,
+              "frame": 41,
               "from": [
-                -1650.028,
+                -1684.828,
                 13.693,
-                2296.995
+                2274.438
               ],
               "to": [
-                -1650.15,
-                13.693,
-                2296.926
+                -1684.95,
+                13.772,
+                2274.37
               ],
-              "doorState": "closing",
-              "leafY": 1.787,
+              "doorState": "open",
+              "leafY": 1.9,
               "groundHit": {
-                "y": 11.99,
-                "obj": "LAND_manhattan",
+                "y": 14.68,
+                "obj": "Mesh",
                 "bid": null
               },
               "under": [
@@ -3436,9 +3659,41 @@
             "state": "closed",
             "kind": "recess",
             "bid": 34686,
-            "wallDist_m": 5,
+            "wallDist_m": 0.4,
             "relocated": false,
-            "shifted": false
+            "shifted": false,
+            "frontagePasses": null,
+            "shiftResidual_m": null,
+            "cutWhy": {
+              "total": 1828,
+              "mine": 1828,
+              "box": 14,
+              "facing": 6,
+              "band": 6,
+              "rect": 6,
+              "missAxis": {
+                "1": 20,
+                "2": 48,
+                "3": 497,
+                "4": 100,
+                "5": 168,
+                "6": 68,
+                "7": 913
+              }
+            },
+            "cutFaces": 6,
+            "removedTris": 0,
+            "passageRemoved": 0,
+            "passageCutFaces": 0,
+            "passageBoxRemoved": 0,
+            "glazeCutFaces": 2,
+            "glazeRemovedTris": 0,
+            "glazeTrisKept": 12,
+            "assembly": {
+              "leafHeight_m": 2.36,
+              "leafWidth_m": 1.58,
+              "litPanelAboveFloor_m": 2.63
+            }
           },
           {
             "name": "hq_lobby opening is real (render)",
@@ -3536,33 +3791,37 @@
               }
             ],
             "blocked": 0,
-            "wallCut": "authored recess",
-            "wallDist_m": 5
+            "wallCut": true,
+            "cutFaces": 6,
+            "wallDist_m": 0.4
           },
           {
             "name": "hq_lobby walk-in crosses without teleport",
-            "ok": false,
-            "maxJump_m": 0.331,
-            "frames": 181,
-            "inside": false,
+            "ok": true,
+            "maxJump_m": 0.157,
+            "frames": 43,
+            "crossed": true,
+            "inside": true,
+            "startLocalX": -6.4,
+            "endLocalX": -0.38,
             "doorState": "open",
             "maxJumpAt": {
-              "frame": 9,
+              "frame": 41,
               "from": [
-                -2321.458,
-                14,
-                1811.081
+                -2322.071,
+                14.3,
+                1817.797
               ],
               "to": [
-                -2321.526,
-                14.3,
-                1811.203
+                -2322.138,
+                14.372,
+                1817.92
               ],
-              "doorState": "opening",
-              "leafY": 0.545,
+              "doorState": "open",
+              "leafY": 1.9,
               "groundHit": {
-                "y": 12.6,
-                "obj": "HQ_tower",
+                "y": 15.26,
+                "obj": "Mesh",
                 "bid": null
               },
               "under": [
@@ -3684,26 +3943,30 @@
           {
             "name": "hq_lobby reverse traversal exits",
             "ok": true,
-            "maxJump_m": 0.14,
-            "frames": 23,
+            "maxJump_m": 0.623,
+            "frames": 43,
+            "crossed": true,
             "inside": false,
+            "startLocalX": 5.6,
+            "endLocalX": -0.42,
+            "doorState": "open",
             "maxJumpAt": {
-              "frame": 5,
+              "frame": 42,
               "from": [
-                -2323.598,
-                14.3,
-                1814.971
+                -2322.254,
+                13.693,
+                1818.13
               ],
               "to": [
-                -2323.531,
+                -2322.187,
                 14.3,
-                1814.848
+                1818.007
               ],
-              "doorState": "closing",
-              "leafY": 1.787,
+              "doorState": "open",
+              "leafY": 1.9,
               "groundHit": {
-                "y": 12.6,
-                "obj": "HQ_tower",
+                "y": 15.27,
+                "obj": "Mesh",
                 "bid": null
               },
               "under": [
@@ -3851,56 +4114,71 @@
       },
       "determinism": {
         "sameTrace": true,
-        "framesA": 181,
-        "framesB": 181,
-        "maxJumpA": 0.14,
-        "maxJumpB": 0.14
+        "framesA": 43,
+        "framesB": 43,
+        "maxJumpA": 0.1608,
+        "maxJumpB": 0.1608
       },
       "bid": 14513,
       "kind": "wall",
       "cut": true,
       "cutFaces": 2,
       "removedTris": 0,
-      "wallDist_m": 5.384876908736482,
+      "glaze": {
+        "cutFaces": 2,
+        "removedTris": 0,
+        "trisKept": 6
+      },
+      "passageCut": {
+        "meshes": 1,
+        "cutFaces": 4,
+        "containedRemoved": 0
+      },
+      "assembly": {
+        "leafHeight_m": 2.36,
+        "leafWidth_m": 1.58,
+        "litPanelAboveFloor_m": 2.63
+      },
+      "wallDist_m": 0.34999999999993747,
       "captureState": {
-        "doorState": "closed",
-        "leafProgress": 0.2,
+        "doorState": "open",
+        "leafProgress": 1,
         "lamp": 0.55,
         "roomVisible": true
       },
       "passage": {
         "box": {
           "min": [
-            -1877.7125320919135,
+            -1887.127468095177,
             11.9,
-            3579.856366073424
+            3611.3901859056696
           ],
           "max": [
-            -1873.987778691886,
+            -1883.2410018721857,
             14.6,
-            3583.738507979527
+            3615.122131876218
           ]
         },
-        "otherTrianglesInsideDoorBox": 0
+        "otherTrianglesInsideDoorBox": 12
       },
       "consoleErrors": [],
       "failedRequests": [],
       "checkResults": {
-        "verify": false,
+        "verify": true,
         "frame": true,
         "occlusion": true,
         "capture": true,
         "determinism": true
       },
-      "pass": false,
-      "durationMs": 47390
+      "pass": true,
+      "durationMs": 21054
     },
     "tower_lobby": {
-      "startedAt": "2026-08-06T23:02:35.214Z",
+      "startedAt": "2026-08-07T17:20:21.562Z",
       "capture": {
         "ok": true,
         "file": "evidence\\phase2\\door_tower_lobby_threshold.png",
-        "bytes": 66733
+        "bytes": 62073
       },
       "frame": {
         "checks": {
@@ -3909,15 +4187,15 @@
             "pass": true,
             "measured": {
               "stddev": [
-                38.835,
-                39.681,
-                39.766
+                57.886,
+                50.337,
+                43.9
               ],
-              "stddevMax": 39.766,
-              "distinctColours": 79,
-              "distinctColours6bit": 513,
-              "distinctColoursExact": 1560,
-              "meanLuminance": 0.12301
+              "stddevMax": 57.886,
+              "distinctColours": 83,
+              "distinctColours6bit": 457,
+              "distinctColoursExact": 1612,
+              "meanLuminance": 0.09455
             },
             "threshold": "stddev > 8 per channel AND >= 200 distinct colours (6-bit quantised)"
           },
@@ -3926,20 +4204,20 @@
             "pass": null,
             "applicable": false,
             "measured": {
-              "lumTopBand": 0.13316,
-              "lumBottomBand": 0.1097,
-              "lumMiddleBand": 0.12406,
-              "lumMean": 0.12301,
-              "dimmest20Mean": 0.03308,
-              "brightest20Mean": 0.32185
+              "lumTopBand": 0.04912,
+              "lumBottomBand": 0.1338,
+              "lumMiddleBand": 0.09661,
+              "lumMean": 0.09455,
+              "dimmest20Mean": 0.00196,
+              "brightest20Mean": 0.24864
             },
             "threshold": "interior: top-band mean < 0.02 linear while bottom band >= 0.1"
           }
         },
         "measured": {
-          "stddevMax": 39.766,
-          "meanLuminance": 0.12301,
-          "coloursExact": 1560
+          "stddevMax": 57.886,
+          "meanLuminance": 0.09455,
+          "coloursExact": 1612
         }
       },
       "scene": {
@@ -3969,32 +4247,26 @@
             {
               "room": "lobby",
               "label": "Tower lobby",
-              "hits": 9,
-              "misses": 9,
+              "hits": 12,
+              "misses": 6,
               "missedDirs": [
                 1,
                 2,
                 4,
                 5,
-                7,
-                8,
-                9,
                 13,
                 14
               ],
-              "glassCovered": 0,
+              "glassCovered": 3,
               "pass": false,
               "measured": {
-                "hits": 9,
-                "misses": 9,
+                "hits": 12,
+                "misses": 6,
                 "missedDirs": [
                   1,
                   2,
                   4,
                   5,
-                  7,
-                  8,
-                  9,
                   13,
                   14
                 ]
@@ -4010,11 +4282,11 @@
                   ],
                   "tExit": 7.63,
                   "sight": {
-                    "lumMean": 0.0009,
+                    "lumMean": 0.001,
                     "lumTop": 0.0009,
-                    "lumBot": 0.0009,
-                    "distinctColours6bit": 1,
-                    "stddevMax": 0
+                    "lumBot": 0.001,
+                    "distinctColours6bit": 5,
+                    "stddevMax": 3.27
                   }
                 },
                 {
@@ -4026,11 +4298,11 @@
                   ],
                   "tExit": 7.87,
                   "sight": {
-                    "lumMean": 0.001,
-                    "lumTop": 0.001,
-                    "lumBot": 0.001,
-                    "distinctColours6bit": 3,
-                    "stddevMax": 3.79
+                    "lumMean": 0.0009,
+                    "lumTop": 0.0009,
+                    "lumBot": 0.0009,
+                    "distinctColours6bit": 5,
+                    "stddevMax": 2.12
                   }
                 },
                 {
@@ -4042,11 +4314,11 @@
                   ],
                   "tExit": 13.75,
                   "sight": {
-                    "lumMean": 0.0058,
-                    "lumTop": 0.0059,
-                    "lumBot": 0.0058,
-                    "distinctColours6bit": 6,
-                    "stddevMax": 15.26
+                    "lumMean": 0.0006,
+                    "lumTop": 0.0006,
+                    "lumBot": 0.0006,
+                    "distinctColours6bit": 1,
+                    "stddevMax": 0
                   }
                 },
                 {
@@ -4058,59 +4330,11 @@
                   ],
                   "tExit": 12.08,
                   "sight": {
-                    "lumMean": 0.0024,
-                    "lumTop": 0.0091,
-                    "lumBot": 0.0007,
-                    "distinctColours6bit": 9,
-                    "stddevMax": 11.59
-                  }
-                },
-                {
-                  "ray": 7,
-                  "dir": [
-                    -0.9238795325112867,
-                    0,
-                    0.3826834323650899
-                  ],
-                  "tExit": 12.23,
-                  "sight": {
-                    "lumMean": 0.0086,
-                    "lumTop": 0.0099,
-                    "lumBot": 0.0014,
-                    "distinctColours6bit": 15,
-                    "stddevMax": 16.87
-                  }
-                },
-                {
-                  "ray": 8,
-                  "dir": [
-                    -1,
-                    0,
-                    1.2246467991473532e-16
-                  ],
-                  "tExit": 8.68,
-                  "sight": {
-                    "lumMean": 0.0022,
-                    "lumTop": 0.0022,
-                    "lumBot": 0.0022,
-                    "distinctColours6bit": 3,
-                    "stddevMax": 5.57
-                  }
-                },
-                {
-                  "ray": 9,
-                  "dir": [
-                    -0.9238795325112868,
-                    0,
-                    -0.38268343236508967
-                  ],
-                  "tExit": 7.63,
-                  "sight": {
-                    "lumMean": 0.0034,
-                    "lumTop": 0.0031,
-                    "lumBot": 0.0036,
-                    "distinctColours6bit": 3,
-                    "stddevMax": 0.98
+                    "lumMean": 0.0006,
+                    "lumTop": 0.0006,
+                    "lumBot": 0.0006,
+                    "distinctColours6bit": 1,
+                    "stddevMax": 0
                   }
                 },
                 {
@@ -4122,11 +4346,11 @@
                   ],
                   "tExit": 12.08,
                   "sight": {
-                    "lumMean": 0.0123,
-                    "lumTop": 0.0139,
-                    "lumBot": 0.012,
-                    "distinctColours6bit": 18,
-                    "stddevMax": 21.06
+                    "lumMean": 0.0037,
+                    "lumTop": 0.0045,
+                    "lumBot": 0.0048,
+                    "distinctColours6bit": 12,
+                    "stddevMax": 6.27
                   }
                 },
                 {
@@ -4138,24 +4362,24 @@
                   ],
                   "tExit": 12.47,
                   "sight": {
-                    "lumMean": 0.0032,
-                    "lumTop": 0.0105,
-                    "lumBot": 0.001,
-                    "distinctColours6bit": 29,
-                    "stddevMax": 14.12
+                    "lumMean": 0.0021,
+                    "lumTop": 0.0041,
+                    "lumBot": 0.0019,
+                    "distinctColours6bit": 13,
+                    "stddevMax": 4.94
                   }
                 }
               ],
               "aabb": {
                 "min": [
-                  -1657.1,
+                  -1691.2,
                   12,
-                  2283.9
+                  2264.8
                 ],
                 "max": [
-                  -1632.1,
+                  -1666.3,
                   18,
-                  2312.3
+                  2293.2
                 ]
               }
             }
@@ -4165,20 +4389,20 @@
             "rooms": [
               {
                 "room": "lobby",
-                "hits": 9,
-                "misses": 9,
-                "glassCovered": 0
+                "hits": 12,
+                "misses": 6,
+                "glassCovered": 3
               }
             ],
-            "totalHits": 9,
-            "totalMisses": 9,
-            "hitsOfRays": "9/18"
+            "totalHits": 12,
+            "totalMisses": 6,
+            "hitsOfRays": "12/18"
           },
           "threshold": "per room: misses <= 2 of 18 rays (16 horizontal + up + down)"
         }
       },
       "verify": {
-        "ok": false,
+        "ok": true,
         "checks": [
           {
             "name": "home_lobby placed",
@@ -4186,18 +4410,48 @@
             "state": "closed",
             "kind": "wall",
             "bid": 20263,
-            "wallDist_m": 16.99,
+            "wallDist_m": 0.35,
             "relocated": true,
             "shifted": true,
+            "frontagePasses": 2,
+            "shiftResidual_m": 0.35,
+            "cutWhy": {
+              "total": 4196,
+              "mine": 42,
+              "box": 2,
+              "facing": 2,
+              "band": 2,
+              "rect": 2,
+              "missAxis": {
+                "1": 2,
+                "2": 4,
+                "3": 4,
+                "4": 4,
+                "5": 6,
+                "6": 12,
+                "7": 8
+              }
+            },
             "cutFaces": 2,
-            "passageRemoved": 2,
+            "removedTris": 0,
+            "passageRemoved": 0,
+            "passageCutFaces": 0,
+            "passageBoxRemoved": 0,
+            "glazeCutFaces": 2,
+            "glazeRemovedTris": 0,
+            "glazeTrisKept": 12,
+            "assembly": {
+              "leafHeight_m": 2.36,
+              "leafWidth_m": 1.58,
+              "litPanelAboveFloor_m": 2.63
+            },
             "lastClear": {
               "ok": true,
               "seen": [],
               "origin": [
-                -1041.9,
+                -1112.6,
                 1.5,
-                1521.9
+                1529.4
               ]
             }
           },
@@ -4298,32 +4552,36 @@
             ],
             "blocked": 0,
             "wallCut": true,
-            "wallDist_m": 16.99
+            "cutFaces": 2,
+            "wallDist_m": 0.35
           },
           {
             "name": "home_lobby walk-in crosses without teleport",
-            "ok": false,
-            "maxJump_m": 0.14,
-            "frames": 181,
-            "inside": false,
+            "ok": true,
+            "maxJump_m": 0.161,
+            "frames": 43,
+            "crossed": true,
+            "inside": true,
+            "startLocalX": -6.35,
+            "endLocalX": -0.33,
             "doorState": "open",
             "maxJumpAt": {
-              "frame": 5,
+              "frame": 41,
               "from": [
-                -1087.98,
+                -1112.483,
                 13.693,
-                1490.549
+                1529.269
               ],
               "to": [
-                -1087.912,
-                13.693,
-                1490.427
+                -1112.415,
+                13.772,
+                1529.146
               ],
-              "doorState": "closed",
-              "leafY": 0.492,
+              "doorState": "open",
+              "leafY": 1.9,
               "groundHit": {
-                "y": 11.99,
-                "obj": "LAND_manhattan",
+                "y": 14.66,
+                "obj": "Mesh",
                 "bid": null
               },
               "under": [
@@ -4445,26 +4703,30 @@
           {
             "name": "home_lobby reverse traversal exits",
             "ok": true,
-            "maxJump_m": 0.14,
-            "frames": 23,
+            "maxJump_m": 0.161,
+            "frames": 43,
+            "crossed": true,
             "inside": false,
+            "startLocalX": 5.65,
+            "endLocalX": -0.37,
+            "doorState": "open",
             "maxJumpAt": {
-              "frame": 5,
+              "frame": 41,
               "from": [
-                -1085.559,
+                -1112.231,
                 13.693,
-                1486.174
+                1528.814
               ],
               "to": [
-                -1085.627,
-                13.693,
-                1486.297
+                -1112.299,
+                13.772,
+                1528.936
               ],
-              "doorState": "closing",
-              "leafY": 1.787,
+              "doorState": "open",
+              "leafY": 1.9,
               "groundHit": {
-                "y": 11.99,
-                "obj": "LAND_manhattan",
+                "y": 14.68,
+                "obj": "Mesh",
                 "bid": null
               },
               "under": [
@@ -4607,144 +4869,176 @@
             "state": "closed",
             "kind": "wall",
             "bid": 14513,
-            "wallDist_m": 5.38,
+            "wallDist_m": 0.35,
             "relocated": true,
             "shifted": true,
+            "frontagePasses": 1,
+            "shiftResidual_m": 0.35,
+            "cutWhy": {
+              "total": 42796,
+              "mine": 30,
+              "box": 4,
+              "facing": 4,
+              "band": 2,
+              "rect": 2,
+              "missAxis": {
+                "2": 8,
+                "4": 2,
+                "5": 4,
+                "6": 4,
+                "7": 8
+              }
+            },
             "cutFaces": 2,
-            "passageRemoved": 2,
+            "removedTris": 0,
+            "passageRemoved": 1,
+            "passageCutFaces": 4,
+            "passageBoxRemoved": 0,
+            "glazeCutFaces": 2,
+            "glazeRemovedTris": 0,
+            "glazeTrisKept": 6,
+            "assembly": {
+              "leafHeight_m": 2.36,
+              "leafWidth_m": 1.58,
+              "litPanelAboveFloor_m": 2.63
+            },
             "lastClear": {
               "ok": true,
               "seen": [],
               "origin": [
-                -1875.7,
+                -1884.8,
                 1.5,
-                3581.4
+                3613.5
               ]
             }
           },
           {
             "name": "bodega opening is real (render)",
-            "ok": false,
+            "ok": true,
             "rays": [
               {
-                "hit": true,
-                "distance": 2.56,
-                "object": "BLD_midrise_-02_-03_1",
-                "bid": 14438
+                "hit": false,
+                "distance": null,
+                "object": null,
+                "bid": null
               },
               {
-                "hit": true,
-                "distance": 2.56,
-                "object": "BLD_midrise_-02_-03_1",
-                "bid": 14438
+                "hit": false,
+                "distance": null,
+                "object": null,
+                "bid": null
               },
               {
-                "hit": true,
-                "distance": 2.56,
-                "object": "BLD_midrise_-02_-03_1",
-                "bid": 14438
+                "hit": false,
+                "distance": null,
+                "object": null,
+                "bid": null
               },
               {
-                "hit": true,
-                "distance": 2.56,
-                "object": "BLD_midrise_-02_-03_1",
-                "bid": 14438
+                "hit": false,
+                "distance": null,
+                "object": null,
+                "bid": null
               },
               {
-                "hit": true,
-                "distance": 2.56,
-                "object": "BLD_midrise_-02_-03_1",
-                "bid": 14438
+                "hit": false,
+                "distance": null,
+                "object": null,
+                "bid": null
               },
               {
-                "hit": true,
-                "distance": 2.56,
-                "object": "BLD_midrise_-02_-03_1",
-                "bid": 14438
+                "hit": false,
+                "distance": null,
+                "object": null,
+                "bid": null
               },
               {
-                "hit": true,
-                "distance": 2.56,
-                "object": "BLD_midrise_-02_-03_1",
-                "bid": 14438
+                "hit": false,
+                "distance": null,
+                "object": null,
+                "bid": null
               },
               {
-                "hit": true,
-                "distance": 2.56,
-                "object": "BLD_midrise_-02_-03_1",
-                "bid": 14438
+                "hit": false,
+                "distance": null,
+                "object": null,
+                "bid": null
               },
               {
-                "hit": true,
-                "distance": 2.56,
-                "object": "BLD_midrise_-02_-03_1",
-                "bid": 14438
+                "hit": false,
+                "distance": null,
+                "object": null,
+                "bid": null
               },
               {
-                "hit": true,
-                "distance": 2.56,
-                "object": "BLD_midrise_-02_-03_1",
-                "bid": 14438
+                "hit": false,
+                "distance": null,
+                "object": null,
+                "bid": null
               },
               {
-                "hit": true,
-                "distance": 2.56,
-                "object": "BLD_midrise_-02_-03_1",
-                "bid": 14438
+                "hit": false,
+                "distance": null,
+                "object": null,
+                "bid": null
               },
               {
-                "hit": true,
-                "distance": 2.56,
-                "object": "BLD_midrise_-02_-03_1",
-                "bid": 14438
+                "hit": false,
+                "distance": null,
+                "object": null,
+                "bid": null
               },
               {
-                "hit": true,
-                "distance": 2.56,
-                "object": "BLD_midrise_-02_-03_1",
-                "bid": 14438
+                "hit": false,
+                "distance": null,
+                "object": null,
+                "bid": null
               },
               {
-                "hit": true,
-                "distance": 2.56,
-                "object": "BLD_midrise_-02_-03_1",
-                "bid": 14438
+                "hit": false,
+                "distance": null,
+                "object": null,
+                "bid": null
               },
               {
-                "hit": true,
-                "distance": 2.56,
-                "object": "BLD_midrise_-02_-03_1",
-                "bid": 14438
+                "hit": false,
+                "distance": null,
+                "object": null,
+                "bid": null
               }
             ],
-            "blocked": 15,
+            "blocked": 0,
             "wallCut": true,
-            "wallDist_m": 5.38
+            "cutFaces": 2,
+            "wallDist_m": 0.35
           },
           {
             "name": "bodega walk-in crosses without teleport",
-            "ok": false,
-            "maxJump_m": 0.14,
-            "frames": 181,
-            "inside": false,
+            "ok": true,
+            "maxJump_m": 0.161,
+            "frames": 43,
+            "crossed": true,
+            "inside": true,
+            "startLocalX": -6.35,
+            "endLocalX": -0.33,
             "doorState": "open",
             "maxJumpAt": {
-              "frame": 5,
+              "frame": 41,
               "from": [
-                -1890.48,
+                -1884.957,
                 13.693,
-                3607.211
+                3613.383
               ],
               "to": [
-                -1890.602,
-                13.693,
-                3607.143
+                -1885.079,
+                13.772,
+                3613.315
               ],
-              "doorState": "closed",
-              "leafY": 0.14,
+              "doorState": "opening",
+              "leafY": 1.9,
               "groundHit": {
-                "y": 11.99,
-                "obj": "LAND_manhattan",
+                "y": 14.66,
+                "obj": "Mesh",
                 "bid": null
               },
               "under": [
@@ -4866,26 +5160,30 @@
           {
             "name": "bodega reverse traversal exits",
             "ok": true,
-            "maxJump_m": 0.966,
-            "frames": 20,
+            "maxJump_m": 0.161,
+            "frames": 43,
+            "crossed": true,
             "inside": false,
+            "startLocalX": 5.65,
+            "endLocalX": -0.37,
+            "doorState": "open",
             "maxJumpAt": {
-              "frame": 18,
+              "frame": 41,
               "from": [
-                -1893.257,
+                -1885.411,
                 13.693,
-                3605.662
+                3613.13
               ],
               "to": [
-                -1892.414,
-                13.693,
-                3606.133
+                -1885.289,
+                13.772,
+                3613.198
               ],
-              "doorState": "opening",
-              "leafY": 1.812,
+              "doorState": "open",
+              "leafY": 1.9,
               "groundHit": {
-                "y": 11.99,
-                "obj": "LAND_manhattan",
+                "y": 14.68,
+                "obj": "Mesh",
                 "bid": null
               },
               "under": [
@@ -5028,18 +5326,47 @@
             "state": "closed",
             "kind": "wall",
             "bid": 19990,
-            "wallDist_m": 9.8,
+            "wallDist_m": 0.35,
             "relocated": true,
             "shifted": true,
+            "frontagePasses": 1,
+            "shiftResidual_m": 0.35,
+            "cutWhy": {
+              "total": 2624,
+              "mine": 48,
+              "box": 2,
+              "facing": 2,
+              "band": 2,
+              "rect": 2,
+              "missAxis": {
+                "1": 2,
+                "3": 8,
+                "4": 6,
+                "5": 6,
+                "6": 8,
+                "7": 16
+              }
+            },
             "cutFaces": 2,
-            "passageRemoved": 2,
+            "removedTris": 0,
+            "passageRemoved": 0,
+            "passageCutFaces": 0,
+            "passageBoxRemoved": 0,
+            "glazeCutFaces": 2,
+            "glazeRemovedTris": 0,
+            "glazeTrisKept": 12,
+            "assembly": {
+              "leafHeight_m": 2.36,
+              "leafWidth_m": 1.58,
+              "litPanelAboveFloor_m": 2.63
+            },
             "lastClear": {
               "ok": true,
               "seen": [],
               "origin": [
-                -1681.4,
+                -1667.7,
                 1.5,
-                2288.3
+                2284
               ]
             }
           },
@@ -5140,32 +5467,36 @@
             ],
             "blocked": 0,
             "wallCut": true,
-            "wallDist_m": 9.8
+            "cutFaces": 2,
+            "wallDist_m": 0.35
           },
           {
             "name": "tower_lobby walk-in crosses without teleport",
-            "ok": false,
-            "maxJump_m": 0.14,
-            "frames": 181,
-            "inside": false,
+            "ok": true,
+            "maxJump_m": 0.161,
+            "frames": 43,
+            "crossed": true,
+            "inside": true,
+            "startLocalX": -6.35,
+            "endLocalX": -0.33,
             "doorState": "open",
             "maxJumpAt": {
-              "frame": 5,
+              "frame": 41,
               "from": [
-                -1654.392,
+                -1685.281,
                 13.693,
-                2294.554
+                2274.185
               ],
               "to": [
-                -1654.27,
-                13.693,
-                2294.623
+                -1685.159,
+                13.772,
+                2274.253
               ],
-              "doorState": "closed",
-              "leafY": 0.492,
+              "doorState": "opening",
+              "leafY": 1.9,
               "groundHit": {
-                "y": 11.99,
-                "obj": "LAND_manhattan",
+                "y": 14.66,
+                "obj": "Mesh",
                 "bid": null
               },
               "under": [
@@ -5280,26 +5611,30 @@
           {
             "name": "tower_lobby reverse traversal exits",
             "ok": true,
-            "maxJump_m": 0.14,
-            "frames": 23,
+            "maxJump_m": 0.161,
+            "frames": 43,
+            "crossed": true,
             "inside": false,
+            "startLocalX": 5.65,
+            "endLocalX": -0.37,
+            "doorState": "open",
             "maxJumpAt": {
-              "frame": 5,
+              "frame": 41,
               "from": [
-                -1650.028,
+                -1684.828,
                 13.693,
-                2296.995
+                2274.438
               ],
               "to": [
-                -1650.15,
-                13.693,
-                2296.926
+                -1684.95,
+                13.772,
+                2274.37
               ],
-              "doorState": "closing",
-              "leafY": 1.787,
+              "doorState": "open",
+              "leafY": 1.9,
               "groundHit": {
-                "y": 11.99,
-                "obj": "LAND_manhattan",
+                "y": 14.68,
+                "obj": "Mesh",
                 "bid": null
               },
               "under": [
@@ -5435,9 +5770,41 @@
             "state": "closed",
             "kind": "recess",
             "bid": 34686,
-            "wallDist_m": 5,
+            "wallDist_m": 0.4,
             "relocated": false,
-            "shifted": false
+            "shifted": false,
+            "frontagePasses": null,
+            "shiftResidual_m": null,
+            "cutWhy": {
+              "total": 1828,
+              "mine": 1828,
+              "box": 14,
+              "facing": 6,
+              "band": 6,
+              "rect": 6,
+              "missAxis": {
+                "1": 20,
+                "2": 48,
+                "3": 497,
+                "4": 100,
+                "5": 168,
+                "6": 68,
+                "7": 913
+              }
+            },
+            "cutFaces": 6,
+            "removedTris": 0,
+            "passageRemoved": 0,
+            "passageCutFaces": 0,
+            "passageBoxRemoved": 0,
+            "glazeCutFaces": 2,
+            "glazeRemovedTris": 0,
+            "glazeTrisKept": 12,
+            "assembly": {
+              "leafHeight_m": 2.36,
+              "leafWidth_m": 1.58,
+              "litPanelAboveFloor_m": 2.63
+            }
           },
           {
             "name": "hq_lobby opening is real (render)",
@@ -5535,33 +5902,37 @@
               }
             ],
             "blocked": 0,
-            "wallCut": "authored recess",
-            "wallDist_m": 5
+            "wallCut": true,
+            "cutFaces": 6,
+            "wallDist_m": 0.4
           },
           {
             "name": "hq_lobby walk-in crosses without teleport",
-            "ok": false,
-            "maxJump_m": 0.331,
-            "frames": 181,
-            "inside": false,
+            "ok": true,
+            "maxJump_m": 0.157,
+            "frames": 43,
+            "crossed": true,
+            "inside": true,
+            "startLocalX": -6.4,
+            "endLocalX": -0.38,
             "doorState": "open",
             "maxJumpAt": {
-              "frame": 9,
+              "frame": 41,
               "from": [
-                -2321.458,
-                14,
-                1811.081
+                -2322.071,
+                14.3,
+                1817.797
               ],
               "to": [
-                -2321.526,
-                14.3,
-                1811.203
+                -2322.138,
+                14.372,
+                1817.92
               ],
-              "doorState": "opening",
-              "leafY": 0.545,
+              "doorState": "open",
+              "leafY": 1.9,
               "groundHit": {
-                "y": 12.6,
-                "obj": "HQ_tower",
+                "y": 15.26,
+                "obj": "Mesh",
                 "bid": null
               },
               "under": [
@@ -5683,26 +6054,30 @@
           {
             "name": "hq_lobby reverse traversal exits",
             "ok": true,
-            "maxJump_m": 0.14,
-            "frames": 23,
+            "maxJump_m": 0.623,
+            "frames": 43,
+            "crossed": true,
             "inside": false,
+            "startLocalX": 5.6,
+            "endLocalX": -0.42,
+            "doorState": "open",
             "maxJumpAt": {
-              "frame": 5,
+              "frame": 42,
               "from": [
-                -2323.598,
-                14.3,
-                1814.971
+                -2322.254,
+                13.693,
+                1818.13
               ],
               "to": [
-                -2323.531,
+                -2322.187,
                 14.3,
-                1814.848
+                1818.007
               ],
-              "doorState": "closing",
-              "leafY": 1.787,
+              "doorState": "open",
+              "leafY": 1.9,
               "groundHit": {
-                "y": 12.6,
-                "obj": "HQ_tower",
+                "y": 15.27,
+                "obj": "Mesh",
                 "bid": null
               },
               "under": [
@@ -5850,34 +6225,49 @@
       },
       "determinism": {
         "sameTrace": true,
-        "framesA": 181,
-        "framesB": 181,
-        "maxJumpA": 0.14,
-        "maxJumpB": 0.14
+        "framesA": 43,
+        "framesB": 43,
+        "maxJumpA": 0.1608,
+        "maxJumpB": 0.1608
       },
       "bid": 19990,
       "kind": "wall",
       "cut": true,
       "cutFaces": 2,
       "removedTris": 0,
-      "wallDist_m": 9.797406963492438,
+      "glaze": {
+        "cutFaces": 2,
+        "removedTris": 0,
+        "trisKept": 12
+      },
+      "passageCut": {
+        "meshes": 0,
+        "cutFaces": 0,
+        "containedRemoved": 0
+      },
+      "assembly": {
+        "leafHeight_m": 2.36,
+        "leafWidth_m": 1.58,
+        "litPanelAboveFloor_m": 2.63
+      },
+      "wallDist_m": 0.3500000000001364,
       "captureState": {
-        "doorState": "closed",
-        "leafProgress": 0.2,
+        "doorState": "open",
+        "leafProgress": 1,
         "lamp": 0.55,
         "roomVisible": true
       },
       "passage": {
         "box": {
           "min": [
-            -1691.1909599167786,
+            -1686.998124038086,
             11.9,
-            2281.996132302337
+            2272.444585049975
           ],
           "max": [
-            -1687.3035120909483,
+            -1683.1105748938342,
             14.6,
-            2285.7297217417527
+            2276.178344358337
           ]
         },
         "otherTrianglesInsideDoorBox": 0
@@ -5885,38 +6275,38 @@
       "consoleErrors": [],
       "failedRequests": [],
       "checkResults": {
-        "verify": false,
+        "verify": true,
         "frame": true,
         "occlusion": true,
         "capture": true,
         "determinism": true
       },
-      "pass": false,
-      "durationMs": 47082
+      "pass": true,
+      "durationMs": 21777
     },
     "hq_lobby": {
-      "startedAt": "2026-08-06T23:03:22.296Z",
+      "startedAt": "2026-08-07T17:20:43.339Z",
       "capture": {
         "ok": true,
         "file": "evidence\\phase2\\door_hq_lobby_threshold.png",
-        "bytes": 46707
+        "bytes": 115336
       },
       "frame": {
         "checks": {
           "dead-frame": {
             "id": "dead-frame",
-            "pass": false,
+            "pass": true,
             "measured": {
               "stddev": [
-                42.811,
-                41.549,
-                39.227
+                47.143,
+                47.689,
+                47.347
               ],
-              "stddevMax": 42.811,
-              "distinctColours": 33,
-              "distinctColours6bit": 126,
-              "distinctColoursExact": 254,
-              "meanLuminance": 0.10412
+              "stddevMax": 47.689,
+              "distinctColours": 93,
+              "distinctColours6bit": 773,
+              "distinctColoursExact": 4341,
+              "meanLuminance": 0.06766
             },
             "threshold": "stddev > 8 per channel AND >= 200 distinct colours (6-bit quantised)"
           },
@@ -5925,20 +6315,20 @@
             "pass": null,
             "applicable": false,
             "measured": {
-              "lumTopBand": 0.10304,
-              "lumBottomBand": 0.14759,
-              "lumMiddleBand": 0.09,
-              "lumMean": 0.10412,
-              "dimmest20Mean": 0.02727,
-              "brightest20Mean": 0.31564
+              "lumTopBand": 0.03621,
+              "lumBottomBand": 0.10124,
+              "lumMiddleBand": 0.06694,
+              "lumMean": 0.06766,
+              "dimmest20Mean": 0.00196,
+              "brightest20Mean": 0.22571
             },
             "threshold": "interior: top-band mean < 0.02 linear while bottom band >= 0.1"
           }
         },
         "measured": {
-          "stddevMax": 42.811,
-          "meanLuminance": 0.10412,
-          "coloursExact": 254
+          "stddevMax": 47.689,
+          "meanLuminance": 0.06766,
+          "coloursExact": 4341
         }
       },
       "scene": {
@@ -5968,34 +6358,28 @@
             {
               "room": "hq_lobby",
               "label": "HQ lobby",
-              "hits": 9,
-              "misses": 9,
+              "hits": 12,
+              "misses": 6,
               "missedDirs": [
                 1,
                 2,
                 5,
                 6,
                 8,
-                9,
-                11,
-                13,
-                14
+                9
               ],
-              "glassCovered": 0,
+              "glassCovered": 3,
               "pass": false,
               "measured": {
-                "hits": 9,
-                "misses": 9,
+                "hits": 12,
+                "misses": 6,
                 "missedDirs": [
                   1,
                   2,
                   5,
                   6,
                   8,
-                  9,
-                  11,
-                  13,
-                  14
+                  9
                 ]
               },
               "threshold": "misses <= 2 of 18 rays",
@@ -6025,11 +6409,11 @@
                   ],
                   "tExit": 12.5,
                   "sight": {
-                    "lumMean": 0.018,
-                    "lumTop": 0.0161,
-                    "lumBot": 0.0263,
+                    "lumMean": 0.0183,
+                    "lumTop": 0.0164,
+                    "lumBot": 0.0269,
                     "distinctColours6bit": 16,
-                    "stddevMax": 30.94
+                    "stddevMax": 31.23
                   }
                 },
                 {
@@ -6041,11 +6425,11 @@
                   ],
                   "tExit": 7.62,
                   "sight": {
-                    "lumMean": 0.0158,
-                    "lumTop": 0.0204,
-                    "lumBot": 0.019,
-                    "distinctColours6bit": 20,
-                    "stddevMax": 20.01
+                    "lumMean": 0.0159,
+                    "lumTop": 0.0205,
+                    "lumBot": 0.0191,
+                    "distinctColours6bit": 21,
+                    "stddevMax": 20.04
                   }
                 },
                 {
@@ -6059,9 +6443,9 @@
                   "sight": {
                     "lumMean": 0.015,
                     "lumTop": 0.0122,
-                    "lumBot": 0.0232,
+                    "lumBot": 0.0233,
                     "distinctColours6bit": 24,
-                    "stddevMax": 21.32
+                    "stddevMax": 21.34
                   }
                 },
                 {
@@ -6073,11 +6457,11 @@
                   ],
                   "tExit": 13.7,
                   "sight": {
-                    "lumMean": 0.0058,
-                    "lumTop": 0.006,
+                    "lumMean": 0.0059,
+                    "lumTop": 0.0061,
                     "lumBot": 0.0051,
-                    "distinctColours6bit": 14,
-                    "stddevMax": 9.23
+                    "distinctColours6bit": 15,
+                    "stddevMax": 9.16
                   }
                 },
                 {
@@ -6089,59 +6473,11 @@
                   ],
                   "tExit": 12.07,
                   "sight": {
-                    "lumMean": 0.0029,
-                    "lumTop": 0.0062,
+                    "lumMean": 0.004,
+                    "lumTop": 0.0118,
                     "lumBot": 0.0023,
-                    "distinctColours6bit": 20,
-                    "stddevMax": 8.75
-                  }
-                },
-                {
-                  "ray": 11,
-                  "dir": [
-                    -0.38268343236509034,
-                    0,
-                    -0.9238795325112865
-                  ],
-                  "tExit": 12.12,
-                  "sight": {
-                    "lumMean": 0.0067,
-                    "lumTop": 0.0201,
-                    "lumBot": 0.0036,
-                    "distinctColours6bit": 15,
-                    "stddevMax": 22.13
-                  }
-                },
-                {
-                  "ray": 13,
-                  "dir": [
-                    0.38268343236509,
-                    0,
-                    -0.9238795325112866
-                  ],
-                  "tExit": 7.62,
-                  "sight": {
-                    "lumMean": 0.0096,
-                    "lumTop": 0.0093,
-                    "lumBot": 0.0097,
-                    "distinctColours6bit": 3,
-                    "stddevMax": 0.84
-                  }
-                },
-                {
-                  "ray": 14,
-                  "dir": [
-                    0.7071067811865474,
-                    0,
-                    -0.7071067811865477
-                  ],
-                  "tExit": 7.89,
-                  "sight": {
-                    "lumMean": 0.0077,
-                    "lumTop": 0.0077,
-                    "lumBot": 0.0078,
-                    "distinctColours6bit": 7,
-                    "stddevMax": 8.66
+                    "distinctColours6bit": 23,
+                    "stddevMax": 13.17
                   }
                 }
               ],
@@ -6164,20 +6500,20 @@
             "rooms": [
               {
                 "room": "hq_lobby",
-                "hits": 9,
-                "misses": 9,
-                "glassCovered": 0
+                "hits": 12,
+                "misses": 6,
+                "glassCovered": 3
               }
             ],
-            "totalHits": 9,
-            "totalMisses": 9,
-            "hitsOfRays": "9/18"
+            "totalHits": 12,
+            "totalMisses": 6,
+            "hitsOfRays": "12/18"
           },
           "threshold": "per room: misses <= 2 of 18 rays (16 horizontal + up + down)"
         }
       },
       "verify": {
-        "ok": false,
+        "ok": true,
         "checks": [
           {
             "name": "home_lobby placed",
@@ -6185,18 +6521,48 @@
             "state": "closed",
             "kind": "wall",
             "bid": 20263,
-            "wallDist_m": 16.99,
+            "wallDist_m": 0.35,
             "relocated": true,
             "shifted": true,
+            "frontagePasses": 2,
+            "shiftResidual_m": 0.35,
+            "cutWhy": {
+              "total": 4196,
+              "mine": 42,
+              "box": 2,
+              "facing": 2,
+              "band": 2,
+              "rect": 2,
+              "missAxis": {
+                "1": 2,
+                "2": 4,
+                "3": 4,
+                "4": 4,
+                "5": 6,
+                "6": 12,
+                "7": 8
+              }
+            },
             "cutFaces": 2,
-            "passageRemoved": 2,
+            "removedTris": 0,
+            "passageRemoved": 0,
+            "passageCutFaces": 0,
+            "passageBoxRemoved": 0,
+            "glazeCutFaces": 2,
+            "glazeRemovedTris": 0,
+            "glazeTrisKept": 12,
+            "assembly": {
+              "leafHeight_m": 2.36,
+              "leafWidth_m": 1.58,
+              "litPanelAboveFloor_m": 2.63
+            },
             "lastClear": {
               "ok": true,
               "seen": [],
               "origin": [
-                -1041.9,
+                -1112.6,
                 1.5,
-                1521.9
+                1529.4
               ]
             }
           },
@@ -6297,32 +6663,36 @@
             ],
             "blocked": 0,
             "wallCut": true,
-            "wallDist_m": 16.99
+            "cutFaces": 2,
+            "wallDist_m": 0.35
           },
           {
             "name": "home_lobby walk-in crosses without teleport",
-            "ok": false,
-            "maxJump_m": 0.14,
-            "frames": 181,
-            "inside": false,
+            "ok": true,
+            "maxJump_m": 0.161,
+            "frames": 43,
+            "crossed": true,
+            "inside": true,
+            "startLocalX": -6.35,
+            "endLocalX": -0.33,
             "doorState": "open",
             "maxJumpAt": {
-              "frame": 5,
+              "frame": 41,
               "from": [
-                -1087.98,
+                -1112.483,
                 13.693,
-                1490.549
+                1529.269
               ],
               "to": [
-                -1087.912,
-                13.693,
-                1490.427
+                -1112.415,
+                13.772,
+                1529.146
               ],
-              "doorState": "closed",
-              "leafY": 0.492,
+              "doorState": "open",
+              "leafY": 1.9,
               "groundHit": {
-                "y": 11.99,
-                "obj": "LAND_manhattan",
+                "y": 14.66,
+                "obj": "Mesh",
                 "bid": null
               },
               "under": [
@@ -6444,26 +6814,30 @@
           {
             "name": "home_lobby reverse traversal exits",
             "ok": true,
-            "maxJump_m": 0.14,
-            "frames": 23,
+            "maxJump_m": 0.161,
+            "frames": 43,
+            "crossed": true,
             "inside": false,
+            "startLocalX": 5.65,
+            "endLocalX": -0.37,
+            "doorState": "open",
             "maxJumpAt": {
-              "frame": 5,
+              "frame": 41,
               "from": [
-                -1085.559,
+                -1112.231,
                 13.693,
-                1486.174
+                1528.814
               ],
               "to": [
-                -1085.627,
-                13.693,
-                1486.297
+                -1112.299,
+                13.772,
+                1528.936
               ],
-              "doorState": "closing",
-              "leafY": 1.787,
+              "doorState": "open",
+              "leafY": 1.9,
               "groundHit": {
-                "y": 11.99,
-                "obj": "LAND_manhattan",
+                "y": 14.68,
+                "obj": "Mesh",
                 "bid": null
               },
               "under": [
@@ -6606,144 +6980,176 @@
             "state": "closed",
             "kind": "wall",
             "bid": 14513,
-            "wallDist_m": 5.38,
+            "wallDist_m": 0.35,
             "relocated": true,
             "shifted": true,
+            "frontagePasses": 1,
+            "shiftResidual_m": 0.35,
+            "cutWhy": {
+              "total": 42796,
+              "mine": 30,
+              "box": 4,
+              "facing": 4,
+              "band": 2,
+              "rect": 2,
+              "missAxis": {
+                "2": 8,
+                "4": 2,
+                "5": 4,
+                "6": 4,
+                "7": 8
+              }
+            },
             "cutFaces": 2,
-            "passageRemoved": 2,
+            "removedTris": 0,
+            "passageRemoved": 1,
+            "passageCutFaces": 4,
+            "passageBoxRemoved": 0,
+            "glazeCutFaces": 2,
+            "glazeRemovedTris": 0,
+            "glazeTrisKept": 6,
+            "assembly": {
+              "leafHeight_m": 2.36,
+              "leafWidth_m": 1.58,
+              "litPanelAboveFloor_m": 2.63
+            },
             "lastClear": {
               "ok": true,
               "seen": [],
               "origin": [
-                -1875.7,
+                -1884.8,
                 1.5,
-                3581.4
+                3613.5
               ]
             }
           },
           {
             "name": "bodega opening is real (render)",
-            "ok": false,
+            "ok": true,
             "rays": [
               {
-                "hit": true,
-                "distance": 2.56,
-                "object": "BLD_midrise_-02_-03_1",
-                "bid": 14438
+                "hit": false,
+                "distance": null,
+                "object": null,
+                "bid": null
               },
               {
-                "hit": true,
-                "distance": 2.56,
-                "object": "BLD_midrise_-02_-03_1",
-                "bid": 14438
+                "hit": false,
+                "distance": null,
+                "object": null,
+                "bid": null
               },
               {
-                "hit": true,
-                "distance": 2.56,
-                "object": "BLD_midrise_-02_-03_1",
-                "bid": 14438
+                "hit": false,
+                "distance": null,
+                "object": null,
+                "bid": null
               },
               {
-                "hit": true,
-                "distance": 2.56,
-                "object": "BLD_midrise_-02_-03_1",
-                "bid": 14438
+                "hit": false,
+                "distance": null,
+                "object": null,
+                "bid": null
               },
               {
-                "hit": true,
-                "distance": 2.56,
-                "object": "BLD_midrise_-02_-03_1",
-                "bid": 14438
+                "hit": false,
+                "distance": null,
+                "object": null,
+                "bid": null
               },
               {
-                "hit": true,
-                "distance": 2.56,
-                "object": "BLD_midrise_-02_-03_1",
-                "bid": 14438
+                "hit": false,
+                "distance": null,
+                "object": null,
+                "bid": null
               },
               {
-                "hit": true,
-                "distance": 2.56,
-                "object": "BLD_midrise_-02_-03_1",
-                "bid": 14438
+                "hit": false,
+                "distance": null,
+                "object": null,
+                "bid": null
               },
               {
-                "hit": true,
-                "distance": 2.56,
-                "object": "BLD_midrise_-02_-03_1",
-                "bid": 14438
+                "hit": false,
+                "distance": null,
+                "object": null,
+                "bid": null
               },
               {
-                "hit": true,
-                "distance": 2.56,
-                "object": "BLD_midrise_-02_-03_1",
-                "bid": 14438
+                "hit": false,
+                "distance": null,
+                "object": null,
+                "bid": null
               },
               {
-                "hit": true,
-                "distance": 2.56,
-                "object": "BLD_midrise_-02_-03_1",
-                "bid": 14438
+                "hit": false,
+                "distance": null,
+                "object": null,
+                "bid": null
               },
               {
-                "hit": true,
-                "distance": 2.56,
-                "object": "BLD_midrise_-02_-03_1",
-                "bid": 14438
+                "hit": false,
+                "distance": null,
+                "object": null,
+                "bid": null
               },
               {
-                "hit": true,
-                "distance": 2.56,
-                "object": "BLD_midrise_-02_-03_1",
-                "bid": 14438
+                "hit": false,
+                "distance": null,
+                "object": null,
+                "bid": null
               },
               {
-                "hit": true,
-                "distance": 2.56,
-                "object": "BLD_midrise_-02_-03_1",
-                "bid": 14438
+                "hit": false,
+                "distance": null,
+                "object": null,
+                "bid": null
               },
               {
-                "hit": true,
-                "distance": 2.56,
-                "object": "BLD_midrise_-02_-03_1",
-                "bid": 14438
+                "hit": false,
+                "distance": null,
+                "object": null,
+                "bid": null
               },
               {
-                "hit": true,
-                "distance": 2.56,
-                "object": "BLD_midrise_-02_-03_1",
-                "bid": 14438
+                "hit": false,
+                "distance": null,
+                "object": null,
+                "bid": null
               }
             ],
-            "blocked": 15,
+            "blocked": 0,
             "wallCut": true,
-            "wallDist_m": 5.38
+            "cutFaces": 2,
+            "wallDist_m": 0.35
           },
           {
             "name": "bodega walk-in crosses without teleport",
-            "ok": false,
-            "maxJump_m": 0.14,
-            "frames": 181,
-            "inside": false,
+            "ok": true,
+            "maxJump_m": 0.161,
+            "frames": 43,
+            "crossed": true,
+            "inside": true,
+            "startLocalX": -6.35,
+            "endLocalX": -0.33,
             "doorState": "open",
             "maxJumpAt": {
-              "frame": 5,
+              "frame": 41,
               "from": [
-                -1890.48,
+                -1884.957,
                 13.693,
-                3607.211
+                3613.383
               ],
               "to": [
-                -1890.602,
-                13.693,
-                3607.143
+                -1885.079,
+                13.772,
+                3613.315
               ],
-              "doorState": "closed",
-              "leafY": 0.492,
+              "doorState": "open",
+              "leafY": 1.9,
               "groundHit": {
-                "y": 11.99,
-                "obj": "LAND_manhattan",
+                "y": 14.66,
+                "obj": "Mesh",
                 "bid": null
               },
               "under": [
@@ -6865,26 +7271,30 @@
           {
             "name": "bodega reverse traversal exits",
             "ok": true,
-            "maxJump_m": 0.966,
-            "frames": 20,
+            "maxJump_m": 0.161,
+            "frames": 43,
+            "crossed": true,
             "inside": false,
+            "startLocalX": 5.65,
+            "endLocalX": -0.37,
+            "doorState": "open",
             "maxJumpAt": {
-              "frame": 18,
+              "frame": 41,
               "from": [
-                -1893.257,
+                -1885.411,
                 13.693,
-                3605.662
+                3613.13
               ],
               "to": [
-                -1892.414,
-                13.693,
-                3606.133
+                -1885.289,
+                13.772,
+                3613.198
               ],
-              "doorState": "opening",
-              "leafY": 1.812,
+              "doorState": "open",
+              "leafY": 1.9,
               "groundHit": {
-                "y": 11.99,
-                "obj": "LAND_manhattan",
+                "y": 14.68,
+                "obj": "Mesh",
                 "bid": null
               },
               "under": [
@@ -7027,18 +7437,47 @@
             "state": "closed",
             "kind": "wall",
             "bid": 19990,
-            "wallDist_m": 9.8,
+            "wallDist_m": 0.35,
             "relocated": true,
             "shifted": true,
+            "frontagePasses": 1,
+            "shiftResidual_m": 0.35,
+            "cutWhy": {
+              "total": 2624,
+              "mine": 48,
+              "box": 2,
+              "facing": 2,
+              "band": 2,
+              "rect": 2,
+              "missAxis": {
+                "1": 2,
+                "3": 8,
+                "4": 6,
+                "5": 6,
+                "6": 8,
+                "7": 16
+              }
+            },
             "cutFaces": 2,
-            "passageRemoved": 2,
+            "removedTris": 0,
+            "passageRemoved": 0,
+            "passageCutFaces": 0,
+            "passageBoxRemoved": 0,
+            "glazeCutFaces": 2,
+            "glazeRemovedTris": 0,
+            "glazeTrisKept": 12,
+            "assembly": {
+              "leafHeight_m": 2.36,
+              "leafWidth_m": 1.58,
+              "litPanelAboveFloor_m": 2.63
+            },
             "lastClear": {
               "ok": true,
               "seen": [],
               "origin": [
-                -1689.6,
+                -1685.4,
                 1.5,
-                2283.7
+                2274.1
               ]
             }
           },
@@ -7139,32 +7578,36 @@
             ],
             "blocked": 0,
             "wallCut": true,
-            "wallDist_m": 9.8
+            "cutFaces": 2,
+            "wallDist_m": 0.35
           },
           {
             "name": "tower_lobby walk-in crosses without teleport",
-            "ok": false,
-            "maxJump_m": 0.14,
-            "frames": 181,
-            "inside": false,
+            "ok": true,
+            "maxJump_m": 0.161,
+            "frames": 43,
+            "crossed": true,
+            "inside": true,
+            "startLocalX": -6.35,
+            "endLocalX": -0.33,
             "doorState": "open",
             "maxJumpAt": {
-              "frame": 5,
+              "frame": 41,
               "from": [
-                -1654.392,
+                -1685.281,
                 13.693,
-                2294.554
+                2274.185
               ],
               "to": [
-                -1654.27,
-                13.693,
-                2294.623
+                -1685.159,
+                13.772,
+                2274.253
               ],
-              "doorState": "closed",
-              "leafY": 0.14,
+              "doorState": "opening",
+              "leafY": 1.9,
               "groundHit": {
-                "y": 11.99,
-                "obj": "LAND_manhattan",
+                "y": 14.66,
+                "obj": "Mesh",
                 "bid": null
               },
               "under": [
@@ -7279,26 +7722,30 @@
           {
             "name": "tower_lobby reverse traversal exits",
             "ok": true,
-            "maxJump_m": 0.14,
-            "frames": 23,
+            "maxJump_m": 0.161,
+            "frames": 43,
+            "crossed": true,
             "inside": false,
+            "startLocalX": 5.65,
+            "endLocalX": -0.37,
+            "doorState": "open",
             "maxJumpAt": {
-              "frame": 5,
+              "frame": 41,
               "from": [
-                -1650.028,
+                -1684.828,
                 13.693,
-                2296.995
+                2274.438
               ],
               "to": [
-                -1650.15,
-                13.693,
-                2296.926
+                -1684.95,
+                13.772,
+                2274.37
               ],
-              "doorState": "closing",
-              "leafY": 1.787,
+              "doorState": "open",
+              "leafY": 1.9,
               "groundHit": {
-                "y": 11.99,
-                "obj": "LAND_manhattan",
+                "y": 14.68,
+                "obj": "Mesh",
                 "bid": null
               },
               "under": [
@@ -7434,9 +7881,41 @@
             "state": "closed",
             "kind": "recess",
             "bid": 34686,
-            "wallDist_m": 5,
+            "wallDist_m": 0.4,
             "relocated": false,
-            "shifted": false
+            "shifted": false,
+            "frontagePasses": null,
+            "shiftResidual_m": null,
+            "cutWhy": {
+              "total": 1828,
+              "mine": 1828,
+              "box": 14,
+              "facing": 6,
+              "band": 6,
+              "rect": 6,
+              "missAxis": {
+                "1": 20,
+                "2": 48,
+                "3": 497,
+                "4": 100,
+                "5": 168,
+                "6": 68,
+                "7": 913
+              }
+            },
+            "cutFaces": 6,
+            "removedTris": 0,
+            "passageRemoved": 0,
+            "passageCutFaces": 0,
+            "passageBoxRemoved": 0,
+            "glazeCutFaces": 2,
+            "glazeRemovedTris": 0,
+            "glazeTrisKept": 12,
+            "assembly": {
+              "leafHeight_m": 2.36,
+              "leafWidth_m": 1.58,
+              "litPanelAboveFloor_m": 2.63
+            }
           },
           {
             "name": "hq_lobby opening is real (render)",
@@ -7534,33 +8013,37 @@
               }
             ],
             "blocked": 0,
-            "wallCut": "authored recess",
-            "wallDist_m": 5
+            "wallCut": true,
+            "cutFaces": 6,
+            "wallDist_m": 0.4
           },
           {
             "name": "hq_lobby walk-in crosses without teleport",
-            "ok": false,
-            "maxJump_m": 0.331,
-            "frames": 181,
-            "inside": false,
+            "ok": true,
+            "maxJump_m": 0.157,
+            "frames": 43,
+            "crossed": true,
+            "inside": true,
+            "startLocalX": -6.4,
+            "endLocalX": -0.38,
             "doorState": "open",
             "maxJumpAt": {
-              "frame": 9,
+              "frame": 41,
               "from": [
-                -2321.458,
-                14,
-                1811.081
+                -2322.071,
+                14.3,
+                1817.797
               ],
               "to": [
-                -2321.526,
-                14.3,
-                1811.203
+                -2322.138,
+                14.372,
+                1817.92
               ],
               "doorState": "opening",
-              "leafY": 0.545,
+              "leafY": 1.9,
               "groundHit": {
-                "y": 12.6,
-                "obj": "HQ_tower",
+                "y": 15.26,
+                "obj": "Mesh",
                 "bid": null
               },
               "under": [
@@ -7682,26 +8165,30 @@
           {
             "name": "hq_lobby reverse traversal exits",
             "ok": true,
-            "maxJump_m": 0.14,
-            "frames": 23,
+            "maxJump_m": 0.623,
+            "frames": 43,
+            "crossed": true,
             "inside": false,
+            "startLocalX": 5.6,
+            "endLocalX": -0.42,
+            "doorState": "open",
             "maxJumpAt": {
-              "frame": 5,
+              "frame": 42,
               "from": [
-                -2323.598,
-                14.3,
-                1814.971
+                -2322.254,
+                13.693,
+                1818.13
               ],
               "to": [
-                -2323.531,
+                -2322.187,
                 14.3,
-                1814.848
+                1818.007
               ],
-              "doorState": "closing",
-              "leafY": 1.787,
+              "doorState": "open",
+              "leafY": 1.9,
               "groundHit": {
-                "y": 12.6,
-                "obj": "HQ_tower",
+                "y": 15.27,
+                "obj": "Mesh",
                 "bid": null
               },
               "under": [
@@ -7849,33 +8336,50 @@
       },
       "determinism": {
         "sameTrace": true,
-        "framesA": 181,
-        "framesB": 181,
-        "maxJumpA": 0.3311,
-        "maxJumpB": 0.3311
+        "framesA": 43,
+        "framesB": 43,
+        "maxJumpA": 0.1574,
+        "maxJumpB": 0.1574
       },
       "bid": 34686,
       "kind": "recess",
-      "cut": false,
-      "wallDist_m": 5,
+      "cut": true,
+      "cutFaces": 6,
+      "removedTris": 0,
+      "glaze": {
+        "cutFaces": 2,
+        "removedTris": 0,
+        "trisKept": 12
+      },
+      "passageCut": {
+        "meshes": 0,
+        "cutFaces": 0,
+        "containedRemoved": 0
+      },
+      "assembly": {
+        "leafHeight_m": 2.36,
+        "leafWidth_m": 1.58,
+        "litPanelAboveFloor_m": 2.63
+      },
+      "wallDist_m": 0.40000000000009095,
       "captureState": {
-        "doorState": "closed",
-        "leafProgress": 0.2,
-        "lamp": 0.54,
+        "doorState": "open",
+        "leafProgress": 1,
+        "lamp": 0.55,
         "roomVisible": true
       },
       "passage": null,
       "consoleErrors": [],
       "failedRequests": [],
       "checkResults": {
-        "verify": false,
+        "verify": true,
         "frame": true,
         "occlusion": true,
         "capture": true,
         "determinism": true
       },
-      "pass": false,
-      "durationMs": 47899
+      "pass": true,
+      "durationMs": 20689
     }
   },
   "system": {
@@ -7888,8 +8392,8 @@
       "checks": {
         "available": true,
         "silenceRms": 0,
-        "noiseRms": 0.20466,
-        "leftRms": 0.28944,
+        "noiseRms": 0.20487,
+        "leftRms": 0.28973,
         "rightRms": 0,
         "asymRatio": 99
       },
@@ -7900,14 +8404,14 @@
           "mag1500": 0
         },
         "trafficOnly": {
-          "rms": 0.06666,
-          "centroid": 577,
-          "mag1500": 20.959
+          "rms": 0.06344,
+          "centroid": 532,
+          "mag1500": 15.104
         },
         "rainOnly": {
-          "rms": 0.13326,
-          "centroid": 1680,
-          "mag1500": 17.282
+          "rms": 0.13284,
+          "centroid": 2066,
+          "mag1500": 5.461
         },
         "sirenOnly": {
           "rms": 0.03951,
@@ -7920,26 +8424,26 @@
           "mag1500": 0.792
         },
         "streetOnly": {
-          "rms": 0.06175,
-          "centroid": 742,
-          "mag1500": 9.299
+          "rms": 0.05953,
+          "centroid": 959,
+          "mag1500": 23.524
         },
         "streetIndoor": {
-          "rms": 0.02576,
-          "centroid": 700,
-          "mag1500": 3.055
+          "rms": 0.0256,
+          "centroid": 518,
+          "mag1500": 6.048
         }
       }
     },
     "audioTransition": {
-      "centroidOutdoor": 742,
-      "centroidIndoor": 700,
-      "dropRatio": 0.943,
-      "rmsOutdoor": 0.06175,
-      "rmsIndoor": 0.02576,
-      "mag1500Outdoor": 9.299,
-      "mag1500Indoor": 3.055,
-      "tyresCut": 0.329
+      "centroidOutdoor": 959,
+      "centroidIndoor": 518,
+      "dropRatio": 0.54,
+      "rmsOutdoor": 0.05953,
+      "rmsIndoor": 0.0256,
+      "mag1500Outdoor": 23.524,
+      "mag1500Indoor": 6.048,
+      "tyresCut": 0.257
     },
     "pause": {
       "frozen": true,
@@ -7953,7 +8457,7 @@
           "home_lobby": "closing",
           "hq_lobby": "closing"
         },
-        "at": 1786057450909
+        "at": 1786123265050
       },
       "bootState": [
         {
@@ -7970,20 +8474,20 @@
   },
   "summary": {
     "doorsTotal": 4,
-    "doorsPassed": 0,
-    "doorsFailed": 4,
+    "doorsPassed": 4,
+    "doorsFailed": 0,
     "audioTransition": {
-      "centroidOutdoor": 742,
-      "centroidIndoor": 700,
-      "dropRatio": 0.943,
-      "rmsOutdoor": 0.06175,
-      "rmsIndoor": 0.02576,
-      "mag1500Outdoor": 9.299,
-      "mag1500Indoor": 3.055,
-      "tyresCut": 0.329
+      "centroidOutdoor": 959,
+      "centroidIndoor": 518,
+      "dropRatio": 0.54,
+      "rmsOutdoor": 0.05953,
+      "rmsIndoor": 0.0256,
+      "mag1500Outdoor": 23.524,
+      "mag1500Indoor": 6.048,
+      "tyresCut": 0.257
     },
     "pauseFrozen": true,
     "reloadRestored": true,
-    "durationMs": 198030
+    "durationMs": 91533
   }
 }

@@ -175,6 +175,27 @@ async function waitFor(fn, timeout, what) {
   }
 }
 
+// Kill a spawned process *and everything it started*.
+//
+// child.kill() signals only the direct child. On Windows the dev server is a
+// grandchild — cmd.exe spawns npm-cli.js, which spawns vite — so killing the
+// child leaves vite holding its port. One leak per run is invisible; a
+// session of them is not. Measured after an afternoon of iterating: 26
+// orphaned vite servers on ports 5176-5237 and 78 stray node processes.
+function killTree(child) {
+  if (!child || child.exitCode !== null) return
+  try {
+    if (process.platform === 'win32') {
+      execSync(`taskkill /pid ${child.pid} /T /F`, { stdio: 'ignore' })
+    } else {
+      process.kill(-child.pid, 'SIGKILL')
+    }
+  } catch {
+    // the tree may already be gone, or the pid reused; fall back to the child
+    try { child.kill('SIGKILL') } catch { /* nothing left to kill */ }
+  }
+}
+
 function gitOut(args) {
   try {
     return execSync(`git ${args}`, { cwd: REPO, encoding: 'utf8' }).trim()
@@ -205,8 +226,12 @@ function doorScript(cfg) {
   // frame (+x into, +y left, +z up), which is not the room group's own local
   // frame, and applying that swap zero times is what put the first pass of
   // this pipeline 1.70 m to the side of every opening.
+  // Stand inside the door's own trigger reach, not beyond it: parked at 6 m
+  // against a 5 m sensor the machine correctly kept the door shut, and the
+  // "threshold" capture was of a closed door (leafProgress 0.20, mean
+  // luminance 0.039 — a dark frame, and an honest one).
   const plane = doors._wallPlaneX(d)
-  const near = doors.roomToWorld(d, plane - 6, d.bayCenter, 1.7)
+  const near = doors.roomToWorld(d, plane - 3, d.bayCenter, 1.7)
   m.camera.position.copy(near)
   m.camera.lookAt(doors.roomToWorld(d, plane + 2, d.bayCenter, 1.7))
   for (let i = 0; i < 45; i++) doors.update(1 / 30, m.camera)
@@ -643,8 +668,8 @@ async function main() {
       '| restored =', JSON.stringify(afterReload.bootState))
   } finally {
     if (cdp) cdp.close()
-    if (chrome) { chrome.kill(); await new Promise((r) => setTimeout(r, 500)) }
-    if (dev) { dev.kill(); await new Promise((r) => setTimeout(r, 500)) }
+    if (chrome) { killTree(chrome); await new Promise((r) => setTimeout(r, 500)) }
+    if (dev) { killTree(dev); await new Promise((r) => setTimeout(r, 500)) }
     try { rmSync(profile, { recursive: true, force: true }) } catch { /* best effort */ }
   }
 

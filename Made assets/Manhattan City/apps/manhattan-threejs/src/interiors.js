@@ -11,11 +11,17 @@
 //   penthouse  a tall residential tower, one floor below its roof
 //   bodega     a low mixed-use or retail building on an avenue
 //
-// Entry is an explicit action rather than walking through the facade. The
-// building shells are solid collision geometry with no door openings cut into
-// them, so a walk-in would mean either cutting 56,476 doorways or turning off
-// collision at the wall — a marked threshold and a keypress is honest about
-// what the geometry actually supports.
+// Entry used to be an explicit action rather than walking through the facade,
+// because the building shells were solid collision geometry with no door
+// openings cut into them. Phase 3B cuts real ones (doors.js): four doorways
+// so far, in the buildings the hero corridor touches. Those four rooms carry
+// `doorway = true` and answer no keypress at all — you walk in, and the walk
+// collider probes the actual tile meshes, so the hole in the mesh is the hole
+// in the collision.
+//
+// The other 56,472 buildings are still solid, and enter/exit below is still
+// what serves them. The honest statement is now per building, not per city:
+// see docs/phase2/PHASE3B.md for which are cut and what gates the rest.
 
 import * as THREE from 'three'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'

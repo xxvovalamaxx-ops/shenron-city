@@ -462,6 +462,26 @@ async function waitFor(fn, timeout, what) {
   }
 }
 
+// Kill a spawned process *and everything it started*.
+//
+// child.kill() signals only the direct child. On Windows the dev server is a
+// grandchild -- cmd.exe spawns npm-cli.js, which spawns vite -- so killing the
+// child leaves vite holding its port. One leak per run is invisible; a session
+// of them is not (see the same helper in doorcheck-run.mjs).
+function killTree(child) {
+  if (!child || child.exitCode !== null) return
+  try {
+    if (process.platform === 'win32') {
+      execSync(`taskkill /pid ${child.pid} /T /F`, { stdio: 'ignore' })
+    } else {
+      process.kill(-child.pid, 'SIGKILL')
+    }
+  } catch {
+    // the tree may already be gone, or the pid reused; fall back to the child
+    try { child.kill('SIGKILL') } catch { /* nothing left to kill */ }
+  }
+}
+
 function gitOut(args) {
   try {
     return execSync(`git ${args}`, { cwd: REPO, encoding: 'utf8' }).trim()
@@ -705,8 +725,8 @@ async function main() {
     }
   } finally {
     if (cdp) cdp.close()
-    if (chrome) { chrome.kill(); await new Promise((r) => setTimeout(r, 500)) }
-    if (dev) { dev.kill(); await new Promise((r) => setTimeout(r, 500)) }
+    if (chrome) { killTree(chrome); await new Promise((r) => setTimeout(r, 500)) }
+    if (dev) { killTree(dev); await new Promise((r) => setTimeout(r, 500)) }
     try { rmSync(profile, { recursive: true, force: true }) } catch { /* best effort */ }
   }
 

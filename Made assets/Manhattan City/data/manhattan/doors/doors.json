@@ -3,6 +3,7 @@
  "generatedBy": "scripts/phase2/68_build_doors.py",
  "scope": "the buildings the hero corridor touches (5 rooms, 4 buildings)",
  "groundLevel": 12.0,
+ "runtimeEnabled": true,
  "doors": [
   {
    "key": "home_lobby",
