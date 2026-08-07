@@ -15,7 +15,7 @@
     "typecheck": "tsc --noEmit",
     "build": "tsc --noEmit && vite build",
     "verify:standalone": "node scripts/verify-standalone-build.mjs",
-    "verify:assets": "node scripts/verify-manhattan-assets.mjs && node scripts/verify-environment-authoring.mjs && node scripts/verify-night-environment-asset.mjs && node scripts/verify-japanese-forest-shrine-source.mjs",
+    "verify:assets": "node scripts/verify-manhattan-assets.mjs && node scripts/verify-environment-authoring.mjs && node scripts/verify-night-environment-asset.mjs && node scripts/verify-japanese-forest-shrine-source.mjs && node scripts/assets/verify-runtime-textures.mjs",
     "catalog:public-library": "node scripts/assets/catalog-public-library.mjs",
     "verify:public-library": "node scripts/assets/verify-public-library.mjs",
     "inspect:production-assets": "node scripts/assets/inspect-gltf.mjs",
