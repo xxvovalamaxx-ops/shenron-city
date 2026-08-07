@@ -147,6 +147,30 @@ class ManhattanCollision {
     })
   }
 
+  /**
+   * Re-read the world matrix of every transformed entry that has moved.
+   *
+   * Rooms do move after they are registered, and by a lot. `doors._cutWall`
+   * shifts a room onto its building's real wall the moment that tile streams
+   * in — measured at 30 m for the tower lobby, which arrives long after boot,
+   * because tiles load toward the camera and the doorways are across town from
+   * the spawn. A baked matrix left behind by that would put the room's walls
+   * 30 m from the room you can see: an invisible obstruction in the road, and
+   * a room you could walk straight through.
+   *
+   * Only the transform is rebuilt, never the tree — the geometry is the same
+   * mesh in the same local frame, it is standing somewhere else.
+   */
+  syncInteriors(): void {
+    for (const entry of this.buildingBvhs) {
+      if (!entry.matrix || !entry.inverse) continue
+      const current = entry.mesh.matrixWorld
+      if (current.equals(entry.matrix)) continue
+      entry.matrix.copy(current)
+      entry.inverse.copy(current).invert()
+    }
+  }
+
   clearBase(): void {
     this.groundMeshes.length = 0
     this.buildingBvhs.length = 0

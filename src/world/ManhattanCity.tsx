@@ -437,6 +437,9 @@ class CityPipeline {
       this.doors.bind(camera, null)
     }
     this.doors.paused = rt.paused || document.hidden
+    // Before the doors run, not after: a cut that lands this frame moves its
+    // room, and the crossing test that follows reads the collider.
+    manhattanCollision.syncInteriors()
     this.interiors.update(camera)
     this.doors.update(dt, camera)
   }
