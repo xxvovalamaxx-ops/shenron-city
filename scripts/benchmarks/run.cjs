@@ -16,7 +16,8 @@
 //          --out DIR, --quality low|medium|high (shenron only),
 //          --no-start-dev
 //
-// Metrics: rAF frame deltas (avg/median/p1/p0.1, stall frames), long tasks,
+// Metrics: rAF frame deltas (avg/median, conventional 1%/0.1% lows, stall
+// frames), long tasks,
 // JS heap, load time, CPU counters (CDP Performance), console/network error
 // buckets, per-frame render time (Manhattan app), scene actor counts
 // (Manhattan app), screenshot integrity (sha256, luminance bands, frame diff
@@ -519,7 +520,7 @@ async function main() {
       fs.writeFileSync(path.join(args.out, `${tag}-pass${p + 1}.png`), result.before)
       if (p === 0) pass1Decoded = result.decoded
       console.log(`[${tag}] pass ${p + 1}: avg ${summary.fps.avg.toFixed(1)} fps, ` +
-        `p1 ${summary.fps.p1.toFixed(1)}, p0.1 ${summary.fps.p01.toFixed(1)}, ` +
+        `1% low ${summary.fps.low1.toFixed(1)}, 0.1% low ${summary.fps.low01.toFixed(1)}, ` +
         `dead ${summary.deadFrames}, draws ${result.stats?.drawCalls ?? 'n/a'}, ` +
         `tris ${result.stats?.triangles ?? 'n/a'}, cpu ${cpu?.scriptMsPerSec ?? 'n/a'} ms/s` +
         (result.transition?.rideMs ? `, ride ${result.transition.rideMs} ms` : '') +
@@ -536,8 +537,8 @@ async function main() {
   const variance = varianceAcrossPasses(
     passes.map((p) => ({ stats: {
       fpsAvg: p.stats.fps.avg,
-      fpsP1: p.stats.fps.p1,
-      fpsP01: p.stats.fps.p01,
+      fpsLow1: p.stats.fps.low1,
+      fpsLow01: p.stats.fps.low01,
       frameAvgMs: p.stats.frameMs.avg,
       heapUsedMB: p.heapUsedMB?.length ? p.heapUsedMB[p.heapUsedMB.length - 1].mb : 0,
     } })))

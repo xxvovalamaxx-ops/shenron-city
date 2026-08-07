@@ -38,6 +38,7 @@ export default defineConfig({
       'src/**/*.test.mjs',
       'tests/**/*.test.ts',
       'scripts/visual-qa/**/*.test.mjs',
+      'scripts/benchmarks/**/*.test.mjs',
     ],
   },
 })

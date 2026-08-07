@@ -1,0 +1,68 @@
+{
+  "finding": "P2O-001 — the benchmark 1% low and 0.1% low measured the FASTEST frames",
+  "mechanism": "summarizeFrames sorted frame times ascending then took percentile(0.01)/percentile(0.001). On an ascending array those are the smallest frame times, i.e. the fastest frames. Converted to FPS they were published as \"1% low\" and \"0.1% low\".",
+  "sample": "100 frames at 120 fps (8.333 ms), N of them stalled to 100 ms (10 fps)",
+  "table": [
+    {
+      "stalledFrames": 0,
+      "avgFps": 120,
+      "retiredLow1Fps": 120,
+      "fixedLow1Fps": 120,
+      "retiredExceedsAvg": false
+    },
+    {
+      "stalledFrames": 1,
+      "avgFps": 108.11,
+      "retiredLow1Fps": 120,
+      "fixedLow1Fps": 10,
+      "retiredExceedsAvg": true
+    },
+    {
+      "stalledFrames": 5,
+      "avgFps": 77.42,
+      "retiredLow1Fps": 120,
+      "fixedLow1Fps": 10,
+      "retiredExceedsAvg": true
+    },
+    {
+      "stalledFrames": 20,
+      "avgFps": 37.5,
+      "retiredLow1Fps": 120,
+      "fixedLow1Fps": 10,
+      "retiredExceedsAvg": true
+    },
+    {
+      "stalledFrames": 50,
+      "avgFps": 18.46,
+      "retiredLow1Fps": 120,
+      "fixedLow1Fps": 10,
+      "retiredExceedsAvg": true
+    }
+  ],
+  "directionCheck": {
+    "note": "1000-frame runs so the slowest-1% slice has 10 frames and its composition can change. More stutter must read worse.",
+    "retired": {
+      "badFrames5": 120,
+      "badFrames20": 120
+    },
+    "fixed": {
+      "badFrames5": 18.46,
+      "badFrames20": 10
+    },
+    "retiredVerdict": "unchanged at 120.00 fps — blind to stutter",
+    "fixedVerdict": "18.52 -> 10.00 fps — tracks the stutter"
+  },
+  "note": "The stalledFrames:0 row shows retiredExceedsAvg false; at N=0 the two statistics are the same number and any difference is float noise. Rows N>=1 are the demonstration.",
+  "invalidates": [
+    "fps.p1",
+    "fps.p01",
+    "frameMs.p1",
+    "frameMs.p01"
+  ],
+  "replacedBy": [
+    "fps.low1",
+    "fps.low01 (mean-of-slowest, primary)",
+    "fps.low1P99",
+    "fps.low01P999 (nearest-rank percentile, secondary)"
+  ]
+}

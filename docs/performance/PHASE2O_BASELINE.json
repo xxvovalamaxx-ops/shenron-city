@@ -28,8 +28,6 @@
         "y": -597.0996000001797
       },
       "fpsAvg": 58.4572028606482,
-      "fpsP1": 71.28355287803323,
-      "fpsP01": 71.81254144662374,
       "spreadPct": 7.284310988087291,
       "appStats": {
         "ok": true,
@@ -129,7 +127,9 @@
       "gpu": {
         "renderer": "ANGLE (NVIDIA, NVIDIA GeForce RTX 5070 (0x00002F04) Direct3D11 vs_5_0 ps_5_0, D3D11)",
         "vendor": "Google Inc. (NVIDIA)"
-      }
+      },
+      "RETIRED_fpsP1_INVALID": 71.28355287803323,
+      "RETIRED_fpsP01_INVALID": 71.81254144662374
     },
     {
       "app": "manhattan",
@@ -144,8 +144,6 @@
         "y": -8082.959400000411
       },
       "fpsAvg": 42.79228721734987,
-      "fpsP1": 52.91104041057569,
-      "fpsP01": 53.382139858365356,
       "spreadPct": 5.312822250496893,
       "appStats": {
         "ok": true,
@@ -245,7 +243,9 @@
       "gpu": {
         "renderer": "ANGLE (NVIDIA, NVIDIA GeForce RTX 5070 (0x00002F04) Direct3D11 vs_5_0 ps_5_0, D3D11)",
         "vendor": "Google Inc. (NVIDIA)"
-      }
+      },
+      "RETIRED_fpsP1_INVALID": 52.91104041057569,
+      "RETIRED_fpsP01_INVALID": 53.382139858365356
     },
     {
       "app": "manhattan",
@@ -260,8 +260,6 @@
         "y": -2543.202000000358
       },
       "fpsAvg": 99.96334700522088,
-      "fpsP1": 108.30606204010637,
-      "fpsP01": 122.96747968218381,
       "spreadPct": 0.01124611061653267,
       "appStats": {
         "ok": true,
@@ -361,7 +359,9 @@
       "gpu": {
         "renderer": "ANGLE (NVIDIA, NVIDIA GeForce RTX 5070 (0x00002F04) Direct3D11 vs_5_0 ps_5_0, D3D11)",
         "vendor": "Google Inc. (NVIDIA)"
-      }
+      },
+      "RETIRED_fpsP1_INVALID": 108.30606204010637,
+      "RETIRED_fpsP01_INVALID": 122.96747968218381
     },
     {
       "app": "manhattan",
@@ -376,8 +376,6 @@
         "y": -3494.138400000499
       },
       "fpsAvg": 27.73596338218195,
-      "fpsP1": 34.5645190988212,
-      "fpsP01": 34.683839457853615,
       "spreadPct": 4.4055724596752155,
       "appStats": {
         "ok": true,
@@ -477,7 +475,9 @@
       "gpu": {
         "renderer": "ANGLE (NVIDIA, NVIDIA GeForce RTX 5070 (0x00002F04) Direct3D11 vs_5_0 ps_5_0, D3D11)",
         "vendor": "Google Inc. (NVIDIA)"
-      }
+      },
+      "RETIRED_fpsP1_INVALID": 34.5645190988212,
+      "RETIRED_fpsP01_INVALID": 34.683839457853615
     },
     {
       "app": "manhattan",
@@ -492,8 +492,6 @@
         "y": -2432.62799999983
       },
       "fpsAvg": 44.36876526314552,
-      "fpsP1": 166.55749836914364,
-      "fpsP01": 327.6409415775799,
       "spreadPct": 12.377861215470826,
       "appStats": {
         "ok": true,
@@ -639,7 +637,9 @@
       "gpu": {
         "renderer": "ANGLE (NVIDIA, NVIDIA GeForce RTX 5070 (0x00002F04) Direct3D11 vs_5_0 ps_5_0, D3D11)",
         "vendor": "Google Inc. (NVIDIA)"
-      }
+      },
+      "RETIRED_fpsP1_INVALID": 166.55749836914364,
+      "RETIRED_fpsP01_INVALID": 327.6409415775799
     },
     {
       "app": "manhattan",
@@ -654,8 +654,6 @@
         "y": -2432.62799999983
       },
       "fpsAvg": 30.661073196845958,
-      "fpsP1": 35.98256867627677,
-      "fpsP01": 36.24722441106027,
       "spreadPct": 0.9453621852940007,
       "appStats": {
         "ok": true,
@@ -755,7 +753,9 @@
       "gpu": {
         "renderer": "ANGLE (NVIDIA, NVIDIA GeForce RTX 5070 (0x00002F04) Direct3D11 vs_5_0 ps_5_0, D3D11)",
         "vendor": "Google Inc. (NVIDIA)"
-      }
+      },
+      "RETIRED_fpsP1_INVALID": 35.98256867627677,
+      "RETIRED_fpsP01_INVALID": 36.24722441106027
     },
     {
       "app": "manhattan",
@@ -770,8 +770,6 @@
         "y": -2432.62799999983
       },
       "fpsAvg": 30.798743102586286,
-      "fpsP1": 37.2706247850145,
-      "fpsP01": 37.41006767285494,
       "spreadPct": 12.310385340575355,
       "appStats": {
         "ok": true,
@@ -871,7 +869,9 @@
       "gpu": {
         "renderer": "ANGLE (NVIDIA, NVIDIA GeForce RTX 5070 (0x00002F04) Direct3D11 vs_5_0 ps_5_0, D3D11)",
         "vendor": "Google Inc. (NVIDIA)"
-      }
+      },
+      "RETIRED_fpsP1_INVALID": 37.2706247850145,
+      "RETIRED_fpsP01_INVALID": 37.41006767285494
     },
     {
       "app": "manhattan",
@@ -886,8 +886,6 @@
         "y": -2432.62799999983
       },
       "fpsAvg": 31.532996377643244,
-      "fpsP1": 36.303709228104104,
-      "fpsP01": 36.565953518978,
       "spreadPct": 6.6974689371926575,
       "appStats": {
         "ok": true,
@@ -987,7 +985,9 @@
       "gpu": {
         "renderer": "ANGLE (NVIDIA, NVIDIA GeForce RTX 5070 (0x00002F04) Direct3D11 vs_5_0 ps_5_0, D3D11)",
         "vendor": "Google Inc. (NVIDIA)"
-      }
+      },
+      "RETIRED_fpsP1_INVALID": 36.303709228104104,
+      "RETIRED_fpsP01_INVALID": 36.565953518978
     },
     {
       "app": "manhattan",
@@ -1002,8 +1002,6 @@
         "y": -2432.62799999983
       },
       "fpsAvg": 31.825373350726863,
-      "fpsP1": 36.46815412601982,
-      "fpsP01": 37.00237671098585,
       "spreadPct": 3.8440024346296995,
       "appStats": {
         "ok": true,
@@ -1103,7 +1101,9 @@
       "gpu": {
         "renderer": "ANGLE (NVIDIA, NVIDIA GeForce RTX 5070 (0x00002F04) Direct3D11 vs_5_0 ps_5_0, D3D11)",
         "vendor": "Google Inc. (NVIDIA)"
-      }
+      },
+      "RETIRED_fpsP1_INVALID": 36.46815412601982,
+      "RETIRED_fpsP01_INVALID": 37.00237671098585
     },
     {
       "app": "manhattan",
@@ -1118,8 +1118,6 @@
         "y": -2432.62799999983
       },
       "fpsAvg": 33.08466915330847,
-      "fpsP1": 36.36363636363637,
-      "fpsP01": 37.59398496030002,
       "spreadPct": 0,
       "appStats": {
         "ok": true,
@@ -1319,7 +1317,9 @@
       "gpu": {
         "renderer": "ANGLE (NVIDIA, NVIDIA GeForce RTX 5070 (0x00002F04) Direct3D11 vs_5_0 ps_5_0, D3D11)",
         "vendor": "Google Inc. (NVIDIA)"
-      }
+      },
+      "RETIRED_fpsP1_INVALID": 36.36363636363637,
+      "RETIRED_fpsP01_INVALID": 37.59398496030002
     },
     {
       "app": "manhattan",
@@ -1334,8 +1334,6 @@
         "y": -2432.62799999983
       },
       "fpsAvg": 31.66258893796906,
-      "fpsP1": 36.246734703430114,
-      "fpsP01": 36.509218821022934,
       "spreadPct": 7.142964287895234,
       "appStats": {
         "ok": true,
@@ -1435,7 +1433,9 @@
       "gpu": {
         "renderer": "ANGLE (NVIDIA, NVIDIA GeForce RTX 5070 (0x00002F04) Direct3D11 vs_5_0 ps_5_0, D3D11)",
         "vendor": "Google Inc. (NVIDIA)"
-      }
+      },
+      "RETIRED_fpsP1_INVALID": 36.246734703430114,
+      "RETIRED_fpsP01_INVALID": 36.509218821022934
     },
     {
       "app": "manhattan",
@@ -1450,8 +1450,6 @@
         "y": -2432.62799999983
       },
       "fpsAvg": 23.56199885333339,
-      "fpsP1": 29.07319293171102,
-      "fpsP01": 29.383692691416282,
       "spreadPct": 3.048742479623814,
       "appStats": {
         "ok": true,
@@ -1495,7 +1493,9 @@
       "gpu": {
         "renderer": "ANGLE (NVIDIA, NVIDIA GeForce RTX 5070 (0x00002F04) Direct3D11 vs_5_0 ps_5_0, D3D11)",
         "vendor": "Google Inc. (NVIDIA)"
-      }
+      },
+      "RETIRED_fpsP1_INVALID": 29.07319293171102,
+      "RETIRED_fpsP01_INVALID": 29.383692691416282
     },
     {
       "app": "shenron",
@@ -1507,8 +1507,6 @@
       "cameraAsserted": "elevator car (dev-view)",
       "manhattanProjection": null,
       "fpsAvg": 99.90588441958774,
-      "fpsP1": 142.9146537337576,
-      "fpsP01": 240.59274057224457,
       "spreadPct": 0.14005079295175163,
       "appStats": null,
       "transition": null,
@@ -1566,7 +1564,9 @@
       "gpu": {
         "renderer": "ANGLE (NVIDIA, NVIDIA GeForce RTX 5070 (0x00002F04) Direct3D11 vs_5_0 ps_5_0, D3D11)",
         "vendor": "Google Inc. (NVIDIA)"
-      }
+      },
+      "RETIRED_fpsP1_INVALID": 142.9146537337576,
+      "RETIRED_fpsP01_INVALID": 240.59274057224457
     },
     {
       "app": "shenron",
@@ -1578,8 +1578,6 @@
       "cameraAsserted": "floor 45 arrival (dev-view)",
       "manhattanProjection": null,
       "fpsAvg": 99.92503418146605,
-      "fpsP1": 135.3479515703241,
-      "fpsP01": 319.6480938811782,
       "spreadPct": 0.15628087467459026,
       "appStats": null,
       "transition": null,
@@ -1637,7 +1635,9 @@
       "gpu": {
         "renderer": "ANGLE (NVIDIA, NVIDIA GeForce RTX 5070 (0x00002F04) Direct3D11 vs_5_0 ps_5_0, D3D11)",
         "vendor": "Google Inc. (NVIDIA)"
-      }
+      },
+      "RETIRED_fpsP1_INVALID": 135.3479515703241,
+      "RETIRED_fpsP01_INVALID": 319.6480938811782
     },
     {
       "app": "shenron",
@@ -1649,8 +1649,6 @@
       "cameraAsserted": "Dragon Boulevard exterior (dev-view)",
       "manhattanProjection": null,
       "fpsAvg": 98.49997575041678,
-      "fpsP1": 129.87012981986453,
-      "fpsP01": 144.92753610669052,
       "spreadPct": 0,
       "appStats": null,
       "transition": null,
@@ -1808,7 +1806,9 @@
       "gpu": {
         "renderer": "ANGLE (NVIDIA, NVIDIA GeForce RTX 5070 (0x00002F04) Direct3D11 vs_5_0 ps_5_0, D3D11)",
         "vendor": "Google Inc. (NVIDIA)"
-      }
+      },
+      "RETIRED_fpsP1_INVALID": 129.87012981986453,
+      "RETIRED_fpsP01_INVALID": 144.92753610669052
     },
     {
       "app": "shenron",
@@ -1820,8 +1820,6 @@
       "cameraAsserted": "Dragon Boulevard exterior (dev-view)",
       "manhattanProjection": null,
       "fpsAvg": 96.85309775103276,
-      "fpsP1": 127.19298244754089,
-      "fpsP01": 157.128825526491,
       "spreadPct": 1.3197945579782797,
       "appStats": null,
       "transition": null,
@@ -1879,7 +1877,9 @@
       "gpu": {
         "renderer": "ANGLE (NVIDIA, NVIDIA GeForce RTX 5070 (0x00002F04) Direct3D11 vs_5_0 ps_5_0, D3D11)",
         "vendor": "Google Inc. (NVIDIA)"
-      }
+      },
+      "RETIRED_fpsP1_INVALID": 127.19298244754089,
+      "RETIRED_fpsP01_INVALID": 157.128825526491
     },
     {
       "app": "shenron",
@@ -1891,8 +1891,6 @@
       "cameraAsserted": "Dragon Boulevard exterior (dev-view)",
       "manhattanProjection": null,
       "fpsAvg": 98.4887496763428,
-      "fpsP1": 128.76012881791794,
-      "fpsP01": 140.21164026912925,
       "spreadPct": 0.5273597609512243,
       "appStats": null,
       "transition": null,
@@ -1950,7 +1948,9 @@
       "gpu": {
         "renderer": "ANGLE (NVIDIA, NVIDIA GeForce RTX 5070 (0x00002F04) Direct3D11 vs_5_0 ps_5_0, D3D11)",
         "vendor": "Google Inc. (NVIDIA)"
-      }
+      },
+      "RETIRED_fpsP1_INVALID": 128.76012881791794,
+      "RETIRED_fpsP01_INVALID": 140.21164026912925
     },
     {
       "app": "shenron",
@@ -1962,8 +1962,6 @@
       "cameraAsserted": "Dragon Boulevard exterior (dev-view)",
       "manhattanProjection": null,
       "fpsAvg": 98.87009533044454,
-      "fpsP1": 133.9497392224388,
-      "fpsP01": 154.06509999194262,
       "spreadPct": 0.5455038182634637,
       "appStats": null,
       "transition": null,
@@ -2021,7 +2019,9 @@
       "gpu": {
         "renderer": "ANGLE (NVIDIA, NVIDIA GeForce RTX 5070 (0x00002F04) Direct3D11 vs_5_0 ps_5_0, D3D11)",
         "vendor": "Google Inc. (NVIDIA)"
-      }
+      },
+      "RETIRED_fpsP1_INVALID": 133.9497392224388,
+      "RETIRED_fpsP01_INVALID": 154.06509999194262
     },
     {
       "app": "shenron",
@@ -2033,8 +2033,6 @@
       "cameraAsserted": "Dragon Boulevard exterior (dev-view)",
       "manhattanProjection": null,
       "fpsAvg": 99.35582578635133,
-      "fpsP1": 131.09878700328616,
-      "fpsP01": 145.16458799319187,
       "spreadPct": 0.17072339131422842,
       "appStats": null,
       "transition": null,
@@ -2092,7 +2090,9 @@
       "gpu": {
         "renderer": "ANGLE (NVIDIA, NVIDIA GeForce RTX 5070 (0x00002F04) Direct3D11 vs_5_0 ps_5_0, D3D11)",
         "vendor": "Google Inc. (NVIDIA)"
-      }
+      },
+      "RETIRED_fpsP1_INVALID": 131.09878700328616,
+      "RETIRED_fpsP01_INVALID": 145.16458799319187
     },
     {
       "app": "shenron",
@@ -2104,8 +2104,6 @@
       "cameraAsserted": "Dragon Boulevard exterior (dev-view)",
       "manhattanProjection": null,
       "fpsAvg": 95.38990050841532,
-      "fpsP1": 127.1773493915742,
-      "fpsP01": 137.6890975671437,
       "spreadPct": 7.640760783525158,
       "appStats": null,
       "transition": null,
@@ -2163,7 +2161,9 @@
       "gpu": {
         "renderer": "ANGLE (NVIDIA, NVIDIA GeForce RTX 5070 (0x00002F04) Direct3D11 vs_5_0 ps_5_0, D3D11)",
         "vendor": "Google Inc. (NVIDIA)"
-      }
+      },
+      "RETIRED_fpsP1_INVALID": 127.1773493915742,
+      "RETIRED_fpsP01_INVALID": 137.6890975671437
     },
     {
       "app": "shenron",
@@ -2175,8 +2175,6 @@
       "cameraAsserted": "HQ lobby (dev-view)",
       "manhattanProjection": null,
       "fpsAvg": 99.83595171578854,
-      "fpsP1": 148.72198877541913,
-      "fpsP01": 189.88872765856868,
       "spreadPct": 0.22655644223401777,
       "appStats": null,
       "transition": null,
@@ -2234,7 +2232,9 @@
       "gpu": {
         "renderer": "ANGLE (NVIDIA, NVIDIA GeForce RTX 5070 (0x00002F04) Direct3D11 vs_5_0 ps_5_0, D3D11)",
         "vendor": "Google Inc. (NVIDIA)"
-      }
+      },
+      "RETIRED_fpsP1_INVALID": 148.72198877541913,
+      "RETIRED_fpsP01_INVALID": 189.88872765856868
     },
     {
       "app": "shenron",
@@ -2246,8 +2246,6 @@
       "cameraAsserted": "HQ plaza (dev-view)",
       "manhattanProjection": null,
       "fpsAvg": 99.82758303106914,
-      "fpsP1": 151.58582085808095,
-      "fpsP01": 193.66231253229697,
       "spreadPct": 0.023740207187927086,
       "appStats": null,
       "transition": null,
@@ -2305,7 +2303,20 @@
       "gpu": {
         "renderer": "ANGLE (NVIDIA, NVIDIA GeForce RTX 5070 (0x00002F04) Direct3D11 vs_5_0 ps_5_0, D3D11)",
         "vendor": "Google Inc. (NVIDIA)"
-      }
+      },
+      "RETIRED_fpsP1_INVALID": 151.58582085808095,
+      "RETIRED_fpsP01_INVALID": 193.66231253229697
     }
-  ]
+  ],
+  "INVALIDATED": {
+    "defect": "P2O-001 — every 1% low and 0.1% low in this file measures the FASTEST frames",
+    "mechanism": "scripts/benchmarks/lib/stat.cjs sorted frame times ascending and then took percentile(0.01) / percentile(0.001). On an ascending array those are the smallest frame times, i.e. the fastest frames. They were converted to FPS and published as the lows.",
+    "evidence": "All 22 runs in this file report a 1% low ABOVE their own average, and a 0.1% low above their 1% low. Both are impossible for a real low. The worst example is the elevator run: 44.4 fps average, 327.6 fps claimed 0.1% low.",
+    "proof": "evidence/opus/performance/percentile-bug-proof.json",
+    "fixedIn": "scripts/benchmarks/lib/stat.cjs — fps.low1 / fps.low01 (mean of the slowest 1% / 0.1%), fps.low1P99 / fps.low01P999 (nearest-rank).",
+    "fieldsRenamed": "fpsP1 -> RETIRED_fpsP1_INVALID, fpsP01 -> RETIRED_fpsP01_INVALID (44 fields). Renamed rather than deleted so the record survives, and renamed rather than left alone so no tool or reader can consume them as valid.",
+    "stillValid": "fpsAvg, frameAvgMs, heapUsedMB, load times, CPU counters, error buckets and screenshot integrity are unaffected — the defect is confined to the two low statistics.",
+    "alsoStale": "Runs recorded against app \"manhattan\" measured the Manhattan reference app, removed in 3460f5cf1. They are not measurements of the current game. Per-app run counts at time of invalidation: {\"manhattan\":12,\"shenron\":10}",
+    "regenerationRequired": true
+  }
 }

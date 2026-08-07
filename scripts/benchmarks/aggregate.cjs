@@ -47,8 +47,10 @@ const rows = runs.map((r) => {
     cameraAsserted: r.notes?.cameraAsserted ?? null,
     manhattanProjection: r.notes?.manhattanProjection ?? null,
     fpsAvg: r.variance.fpsAvg?.mean ?? null,
-    fpsP1: r.variance.fpsP1?.mean ?? null,
-    fpsP01: r.variance.fpsP01?.mean ?? null,
+    // Conventional lows: mean FPS across the slowest 1% / 0.1% of frames.
+    // The fpsP1/fpsP01 these replace measured the fastest frames (P2O-001).
+    fpsLow1: r.variance.fpsLow1?.mean ?? null,
+    fpsLow01: r.variance.fpsLow01?.mean ?? null,
     spreadPct: r.variance.fpsAvg?.spreadPct ?? null,
     appStats: p1?.appStats ?? null,
     transition: p1?.transition ?? null,
