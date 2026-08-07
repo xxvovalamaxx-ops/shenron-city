@@ -99,12 +99,51 @@ for name in TARGET_CLIPS:
 for o in list(bpy.data.objects):
     if o.type == "MESH":
         bpy.data.objects.remove(o, do_unlink=True)
-eric_arm.animation_data_clear()
+
+# And remove the source rig. Leaving it in exported its own 22 unretargeted
+# clips alongside the 7 baked ones — same names, different skeleton, 1.1 MB
+# instead of 0.2 MB, and a runtime that could pick the wrong one by name.
+bpy.data.objects.remove(hero_arm, do_unlink=True)
+
+# Do NOT clear animation_data here.
+#
+# export_animation_mode="ACTIONS" works by assigning each action to the object
+# in turn and sampling it, so it needs animation_data to assign *to*. Clearing
+# it first left the exporter with nothing to attach and it wrote a GLB with the
+# skeleton and zero animations — which is exactly what shipped: the runtime's
+# clip map came up empty, no action ever played, and the player stood in the
+# street in his bind pose. Keep the action block alive and keep a fake user on
+# each baked clip so none of them is garbage-collected before export.
 for a in bpy.data.actions:
     a.use_fake_user = False
+baked_names = []
 for name in TARGET_CLIPS:
     if name in bpy.data.actions:
         bpy.data.actions[name].use_fake_user = True
+        baked_names.append(name)
+print("TO EXPORT:", baked_names, flush=True)
+if not baked_names:
+    raise SystemExit("no baked actions to export — refusing to write a T-pose GLB")
+
+# One NLA track per clip, and export by track.
+#
+# "ACTIONS" mode looked like the obvious choice and is not: since Blender's
+# slotted-action rework the exporter only emits the action actually assigned to
+# the armature, so a run that baked all seven clips shipped exactly one
+# (Idle_Loop, 267 channels — measured). NLA tracks are explicit: one track in,
+# one glTF animation out, named after the track.
+if eric_arm.animation_data is None:
+    eric_arm.animation_data_create()
+eric_arm.animation_data.action = None
+for track in list(eric_arm.animation_data.nla_tracks):
+    eric_arm.animation_data.nla_tracks.remove(track)
+for name in baked_names:
+    action = bpy.data.actions[name]
+    track = eric_arm.animation_data.nla_tracks.new()
+    track.name = name
+    start = int(action.frame_range[0])
+    strip = track.strips.new(name, start, action)
+    strip.name = name
 
 os.makedirs(os.path.dirname(OUT_URL), exist_ok=True)
 bpy.ops.export_scene.gltf(
@@ -112,7 +151,7 @@ bpy.ops.export_scene.gltf(
     export_format="GLB",
     use_selection=False,
     export_animations=True,
-    export_animation_mode="ACTIONS",
+    export_animation_mode="NLA_TRACKS",
     export_materials="NONE",
     export_apply=False,
     export_yup=True,

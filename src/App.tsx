@@ -22,6 +22,7 @@ import { useGame } from './adapter/store'
 import { inputLocked, useHud } from './ui/hud-store'
 import { ResilientResizeObserver } from './lib/resize'
 import { GameLoop } from './gameplay/GameLoop'
+import { DragLook } from './gameplay/DragLook'
 import { rt, setRuntimePaused } from './gameplay/runtime'
 import { PlayerAvatar } from './character/PlayerAvatar'
 import { VehicleRig } from './world/VehicleRig'
@@ -349,11 +350,10 @@ export default function App() {
   // menu straight back. What the player got was a menu that would not go away
   // and a burst of city ambience on every click.
   //
-  // Mouselook is not worth blocking play over. A refused lock drops the
-  // controls entirely (the same shape as ?no-pointer-lock=1, the automation
-  // switch) so nothing can bounce the screen back to paused: WASD still
-  // drives, there is just no mouselook until the page is opened in a real
-  // browser window. The HUD says so rather than leaving it a mystery.
+  // Mouselook is not worth blocking play over. A refused lock drops
+  // PointerLockControls so nothing can bounce the screen back to paused, and
+  // DragLook takes over: hold the left button and drag. The HUD says so rather
+  // than leaving it a mystery.
   const enterWorld = useCallback(() => {
     const canLock = pointerLockEnabled && !pointerLockBlocked
     if (canLock && document.hasFocus()) {
@@ -411,13 +411,19 @@ export default function App() {
             }}
           />
         )}
+        {/* Whenever pointer lock is not doing the job, drag-to-look is. */}
+        <DragLook
+          enabled={(!pointerLockEnabled || pointerLockBlocked) && screen === 'playing'}
+          sensitivity={settings.sensitivity}
+        />
       </Canvas>
 
       {screen === 'playing' && <Hud />}
       {screen === 'playing' && pointerLockBlocked && (
         <div className="input-notice" role="status">
-          Mouselook needs a top-level browser window — this page is embedded, so
-          the pointer cannot be captured. Movement keys still work.
+          This page can’t capture the pointer — <strong>hold the left mouse
+          button and drag to look</strong>. Open it in its own browser window
+          for normal mouselook.
         </div>
       )}
       {introActive && screen === 'playing' && !vision && !visualInspection && (
