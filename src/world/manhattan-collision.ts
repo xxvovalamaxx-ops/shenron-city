@@ -20,6 +20,16 @@ import { cityWorld } from '../city/registry.js'
 interface BvhEntry {
   mesh: THREE.Mesh
   bvh: MeshBVH
+  /**
+   * World -> mesh-local, for meshes whose geometry is not already in world
+   * space. Absent on city tiles, which are exported pre-placed and hang off an
+   * untransformed group; present on interior rooms, which are one authored
+   * mesh instanced at a building's position and yaw. Rigid (rotate + translate,
+   * never scaled), so hit distances need no correction — only the ray goes in
+   * and the hit point comes back out.
+   */
+  inverse?: THREE.Matrix4
+  matrix?: THREE.Matrix4
 }
 
 const GROUND_RAY_START_Y = 320
@@ -36,6 +46,25 @@ class ManhattanCollision {
   /** BLD_* meshes from every loaded tile, each with a built BVH. */
   readonly buildingBvhs: BvhEntry[] = []
   baseReady = false
+
+  private localRay = new THREE.Ray()
+
+  /**
+   * Cast one world-space ray at one entry, in whatever frame its geometry
+   * lives in. The returned hit's `point` is always world-space.
+   */
+  private hitEntry(
+    entry: BvhEntry,
+    ray: THREE.Ray,
+    far: number,
+    side: THREE.Side = THREE.FrontSide,
+  ) {
+    if (!entry.inverse) return raycastFirst(entry.bvh, ray, far, side)
+    this.localRay.copy(ray).applyMatrix4(entry.inverse)
+    const hit = raycastFirst(entry.bvh, this.localRay, far, side)
+    if (hit && entry.matrix) hit.point.applyMatrix4(entry.matrix)
+    return hit
+  }
 
   registerGround(mesh: THREE.Mesh): void {
     if (this.groundMeshes.includes(mesh)) return
@@ -59,7 +88,7 @@ class ManhattanCollision {
     })
   }
 
-  unregisterTileBuildings(root: THREE.Group): void {
+  unregisterTileBuildings(root: THREE.Object3D): void {
     const doomed = new Set<THREE.Mesh>()
     root.traverse((object) => {
       if (object instanceof THREE.Mesh) doomed.add(object)
@@ -67,6 +96,55 @@ class ManhattanCollision {
     for (let i = this.buildingBvhs.length - 1; i >= 0; i--) {
       if (doomed.has(this.buildingBvhs[i].mesh)) this.buildingBvhs.splice(i, 1)
     }
+  }
+
+  /**
+   * Rebuild the tree for a mesh whose geometry was replaced under us.
+   *
+   * Phase 3B cuts real openings by rebuilding a tile mesh's position and index
+   * buffers, and the tile has usually been indexed long before the cut lands
+   * (tiles stream in; the cut retries until its tile arrives). Without this the
+   * hole renders and the collider does not move: the player stops dead in an
+   * empty doorway. Same-mesh identity is what links the two, so the cut side
+   * only has to say "this mesh changed".
+   */
+  refreshMesh(mesh: THREE.Mesh): void {
+    const entry = this.buildingBvhs.find((e) => e.mesh === mesh)
+    if (!entry) return
+    const geometry = mesh.geometry
+    if (!geometry.attributes.position || geometry.attributes.position.count < 3) return
+    entry.bvh = new MeshBVH(geometry, { strategy: 2 })
+  }
+
+  /**
+   * Index a placed interior room so its walls stop the player.
+   *
+   * Only the walls: the glazed panes are marked `userData.glaze` and a room you
+   * cannot see out of is not the room that was authored. Floors and ceilings go
+   * in with everything else and cost nothing — `move()` sweeps horizontally at
+   * chest height, which never meets a horizontal surface.
+   *
+   * Deliberately *not* registered as ground. `groundHeightAt` keeps the highest
+   * hit below 60 m, so a ceiling three metres over the floor would win and
+   * stand the player on top of it. Street-level rooms sit on the sidewalk the
+   * street tiles already answer for, which is the floor height by construction.
+   */
+  registerInterior(root: THREE.Object3D): void {
+    root.updateMatrixWorld(true)
+    root.traverse((object) => {
+      if (!(object instanceof THREE.Mesh)) return
+      if (object.userData.glaze) return
+      const geometry = object.geometry
+      if (!geometry.attributes.position || geometry.attributes.position.count < 3) return
+      if (this.buildingBvhs.some((e) => e.mesh === object)) return
+      const matrix = object.matrixWorld.clone()
+      this.buildingBvhs.push({
+        mesh: object,
+        bvh: new MeshBVH(geometry, { strategy: 2 }),
+        matrix,
+        inverse: matrix.clone().invert(),
+      })
+    })
   }
 
   clearBase(): void {
@@ -119,8 +197,8 @@ class ManhattanCollision {
     let best: number | null = null
     this.groundRay.origin.set(x, GROUND_RAY_START_Y, z)
     this.groundRay.direction.copy(this.down)
-    for (const { bvh } of this.buildingBvhs) {
-      const hit = raycastFirst(bvh, this.groundRay, GROUND_RAY_START_Y + 100, THREE.DoubleSide)
+    for (const entry of this.buildingBvhs) {
+      const hit = this.hitEntry(entry, this.groundRay, GROUND_RAY_START_Y + 100, THREE.DoubleSide)
       if (hit) {
         const y = hit.point.y
         if (best === null || y > best) best = y
@@ -136,8 +214,8 @@ class ManhattanCollision {
   isInsideBuilding(x: number, groundY: number, z: number): boolean {
     this.groundRay.origin.set(x, groundY + 0.2, z)
     this.groundRay.direction.set(0, 1, 0)
-    for (const { bvh } of this.buildingBvhs) {
-      const hit = raycastFirst(bvh, this.groundRay, INSIDE_PROBE_Y)
+    for (const entry of this.buildingBvhs) {
+      const hit = this.hitEntry(entry, this.groundRay, INSIDE_PROBE_Y)
       if (hit && hit.point.y - groundY < INSIDE_PROBE_Y) return true
     }
     return false
@@ -164,8 +242,8 @@ class ManhattanCollision {
       this.moveRay.origin.copy(origin)
       this.moveRay.direction.copy(this.moveDir)
       let closest = length
-      for (const { bvh } of this.buildingBvhs) {
-        const hit = raycastFirst(bvh, this.moveRay, length)
+      for (const entry of this.buildingBvhs) {
+        const hit = this.hitEntry(entry, this.moveRay, length)
         if (hit && hit.distance < closest && hit.distance > 0.001) closest = hit.distance
       }
       if (closest >= length) {
@@ -210,8 +288,8 @@ class ManhattanCollision {
     this.castRay.origin.set(origin.x, origin.y + startYOffset, origin.z)
     this.castRay.direction.copy(this.moveDir.set(direction.x, direction.y, direction.z).normalize())
     let closest = maxDistance
-    for (const { bvh } of this.buildingBvhs) {
-      const hit = raycastFirst(bvh, this.castRay, maxDistance)
+    for (const entry of this.buildingBvhs) {
+      const hit = this.hitEntry(entry, this.castRay, maxDistance)
       if (hit && hit.distance > 0.001 && hit.distance < closest) closest = hit.distance
     }
     return closest

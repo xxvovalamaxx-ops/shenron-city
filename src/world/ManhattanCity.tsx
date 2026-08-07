@@ -21,6 +21,9 @@ import { Traffic } from '../city/traffic.js'
 import { Weather } from '../city/weather.js'
 import { Crowd } from '../city/pedestrians.js'
 import { Subway } from '../city/subway.js'
+import { Interiors } from '../city/interiors.js'
+import { HQ } from '../city/hq.js'
+import { Doors } from '../city/doors.js'
 import { buildSky } from '../city/sky.js'
 import { cityWorld } from '../city/registry.js'
 import { cityHud } from '../city/city-hud.js'
@@ -135,12 +138,18 @@ class CityPipeline {
   private readonly weather: Weather
   private readonly crowd: Crowd
   private readonly subway: Subway
+  private readonly interiors: Interiors
+  private readonly hq: HQ
+  private readonly doors: Doors
   private readonly lights: ReturnType<typeof buildSky>
   private readonly sun: THREE.DirectionalLight | null
   private readonly processed = new Set<string>()
   private readonly roots = new Map<string, THREE.Group>()
   /** Walkable surface meshes registered per tile, so unloading undoes them. */
   private readonly groundByTile = new Map<string, THREE.Mesh[]>()
+  /** Placed room groups, so dispose can undo their collision registration. */
+  private readonly interiorGroups: THREE.Group[] = []
+  private doorsBound = false
   private baseDone = false
   private hudTimer = 0
   private lastNight = -1
@@ -168,6 +177,27 @@ class CityPipeline {
     this.traffic = new Traffic(group, cityWorld.city, this.demand)
     this.crowd = new Crowd(group, cityWorld.city, this.demand)
     this.subway = new Subway(group, cityWorld.city)
+    // Interiors, the HQ and the Phase 3B doorways. These place themselves into
+    // the scene at real world coordinates rather than into the city group, so
+    // they take `scene` — the group is only a convenience parent for the
+    // streamed tiles.
+    this.interiors = new Interiors(scene, cityWorld.city)
+    this.hq = new HQ(scene, cityWorld.city, this.interiors, this.facade)
+    // No hero corridor in the game: it is a scripted camera tour that belonged
+    // to the authoring app. Doors treats it as optional (`this.corridor?.`),
+    // and without it a lift link falls back to the interiors' own transition.
+    this.doors = new Doors(scene, cityWorld.city, this.interiors, this.hq, null, this.streamer)
+    // A wall cut rebuilds a tile mesh's buffers; the BVH indexed at tile-load
+    // has to follow or the doorway is a hole you cannot walk through. Measured
+    // both ways by scripts/qa/doorcheck.mjs: with the hook, 0 of 15 probe rays
+    // meet anything at all four doorways; with `--no-bvh-refresh`, 15 of 15,
+    // and two of the three walks stop dead in an empty opening.
+    //
+    // The escape hatch is dev-only on purpose. It exists so that control run
+    // stays reproducible, not so a build can ship without collision.
+    if (!(import.meta.env.DEV && new URLSearchParams(location.search).has('noBvhRefresh'))) {
+      this.doors.onGeometryChanged = (mesh: THREE.Mesh) => manhattanCollision.refreshMesh(mesh)
+    }
 
     const lights = buildSky(scene, gl)
     this.lights = lights
@@ -184,6 +214,9 @@ class CityPipeline {
     cityWorld.traffic = this.traffic
     cityWorld.crowd = this.crowd
     cityWorld.subway = this.subway
+    cityWorld.interiors = this.interiors
+    cityWorld.hq = this.hq
+    cityWorld.doors = this.doors
     cityWorld.demand = this.demand
     // The reference app exposed the same handle for live inspection; the
     // visual-QA runner and the debugger read stats and geometry through it.
@@ -222,6 +255,26 @@ class CityPipeline {
     if (this.disposed) return
     demand.setSubway(this.subway)
 
+    // Rooms, the HQ tower, then the doorways that cut into them. Order is
+    // load-bearing: HQ registers two more rooms with interiors, linkRooms
+    // resolves the lift thresholds between them by key, and doors resolves
+    // each entry against a room that must already exist — an entrance with no
+    // interior behind it is left as a closed door rather than a hole into a
+    // solid building.
+    await this.interiors.load()
+    if (this.disposed) return
+    await this.hq.load()
+    if (this.disposed) return
+    this.interiors.linkRooms()
+    await this.doors.load()
+    if (this.disposed) return
+    // Only now: a wall cut can rotate a room onto a clear frontage, and the
+    // BVH bakes the room's world matrix.
+    for (const room of this.interiors.rooms) {
+      manhattanCollision.registerInterior(room.group)
+      this.interiorGroups.push(room.group)
+    }
+
     this._rigSun()
     this.weather.setTime(rt.clock.hour)
     this.weather.setRain(rt.clock.weather.rain)
@@ -232,7 +285,9 @@ class CityPipeline {
       traffic.stats.lanes, 'lanes,',
       crowd.stats.lanes, 'walk lanes,',
       props.stats.total, 'props,',
-      this.subway.stats.total, 'subway entrances',
+      this.subway.stats.total, 'subway entrances,',
+      this.interiors.stats.rooms, 'rooms,',
+      this.doors.stats.doors, 'doorways',
     )
   }
 
@@ -274,6 +329,7 @@ class CityPipeline {
     traffic.update(dt, camera)
     crowd.update(dt, camera)
     weather.update(dt, camera)
+    this._interiors(dt, camera)
     this._syncWeather(camera)
     this._hud(dt, camera)
     void st
@@ -362,6 +418,29 @@ class CityPipeline {
     this.hooks.onTileRegistered?.(file, root)
   }
 
+  // ---- interiors + doorways -------------------------------------------
+
+  /**
+   * Drive the room state and the doorways off the live camera.
+   *
+   * Doors has its own `paused` flag wired to page visibility; the game's pause
+   * is a separate thing (the menu is open, the world is frozen) and has to
+   * reach it too, or a door left mid-swing keeps swinging behind the menu.
+   */
+  private _interiors(dt: number, camera: THREE.Camera): void {
+    if (!this.interiors.ready) return
+    if (!this.doorsBound) {
+      this.doorsBound = true
+      // No walk controller to hand over: the game resolves movement through
+      // manhattanCollision, not through a raycast controls object. Doors only
+      // uses `controls` for the scripted lift ride, which needs the corridor.
+      this.doors.bind(camera, null)
+    }
+    this.doors.paused = rt.paused || document.hidden
+    this.interiors.update(camera)
+    this.doors.update(dt, camera)
+  }
+
   // ---- weather + clock bridge ----------------------------------------
 
   private _syncWeather(camera: THREE.Camera): void {
@@ -437,6 +516,17 @@ class CityPipeline {
       for (const mesh of grounds) manhattanCollision.unregisterGround(mesh)
     }
     this.groundByTile.clear()
+    // Rooms and the HQ live on the scene, not the city group, so the group
+    // teardown below never reaches them.
+    for (const group of this.interiorGroups) {
+      manhattanCollision.unregisterTileBuildings(group)
+      disposeGroup(group)
+    }
+    this.interiorGroups.length = 0
+    if (this.hq.tower) disposeGroup(this.hq.tower as THREE.Group)
+    this.scene.remove(this.interiors.lamp)
+    this.interiors.material.dispose()
+    this.interiors.glassMaterial.dispose()
     manhattanCollision.clearBase()
     for (const t of this.lod.tiles.values()) {
       for (const tier of ['L2', 'L3', 'L4'] as const) {

@@ -9,6 +9,9 @@ export declare const cityWorld: {
   traffic: import('./traffic.js').Traffic | null
   crowd: import('./pedestrians.js').Crowd | null
   subway: import('./subway.js').Subway | null
+  interiors: import('./interiors.js').Interiors | null
+  hq: import('./hq.js').HQ | null
+  doors: import('./doors.js').Doors | null
   city: import('./city.js').City | null
   demand: import('./demand.js').Demand | null
   ready: boolean
