@@ -20,8 +20,10 @@ Thumbs.db
 !.vscode/extensions.json
 
 # Local launcher config â€” hardcodes absolute machine paths. Matched at any
-# depth: nested authoring projects carry their own .claude/ too.
+# depth: nested authoring projects carry their own .claude/ too. The same goes
+# for settings.local.json, which is a per-machine permission allowlist.
 **/.claude/launch.json
+**/.claude/settings.local.json
 
 # Large source assets belong in Git LFS, not here. See docs/ASSETS.md before
 # committing the first .blend / .psd / raw texture.

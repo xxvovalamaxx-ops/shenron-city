@@ -1,8 +1,0 @@
-{
-  "permissions": {
-    "allow": [
-      "mcp__Blender__get_blendfile_summary_path_info",
-      "mcp__Blender__get_blendfile_summary_datablocks"
-    ]
-  }
-}
