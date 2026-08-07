@@ -1,0 +1,64 @@
+{
+  "schemaVersion": 1,
+  "branch": "opus/hero-corridor-v1",
+  "updated": "2026-08-08",
+  "note": "Defects that are measured, not suspected. A row with no evidence field is an observation awaiting measurement and is marked severity 'unranked'.",
+  "defects": [
+    {
+      "id": "OPUS-001",
+      "severity": "P1",
+      "title": "One-frame stall of 152 ms during the interactive walkthrough",
+      "detail": "The QA walkthrough sampled 45 FPS readings across 22 steps: 92 fps average, 6.55 fps minimum. A 6.55 fps sample is a ~152 ms frame. Not yet attributed — candidates are tile decode on the streaming thread, BVH construction on tile register, and the dev-tool spawn path.",
+      "evidence": "evidence/visual/qa-walkthrough/qa-report.json",
+      "state": "open"
+    },
+    {
+      "id": "OPUS-002",
+      "severity": "P1",
+      "title": "Two independent simulation loops advance city life",
+      "detail": "GameLoop advances the Phase 3A vehicle session and its pedestrians; ManhattanCity/CityPipeline separately advances LION traffic and the sidewalk crowd. Two clocks, two pause states, no shared entity registry. A city traffic vehicle cannot become player-controlled without a second overlapping instance.",
+      "evidence": null,
+      "state": "open"
+    },
+    {
+      "id": "OPUS-003",
+      "severity": "P2",
+      "title": "Facade, sky, weather and lighting authority is not established",
+      "detail": "CityLightingRig/night-materials, src/city/facade.js, FacadeMaterial.setNight(), NightEnvironment, the ported city sky/weather system and the React day-cycle clock all exist. Which one renders each visible BLD_*/ROAD_* surface has not been determined. Suspected duplicate and dead paths.",
+      "evidence": null,
+      "state": "open"
+    },
+    {
+      "id": "OPUS-004",
+      "severity": "unranked",
+      "title": "Street-level Manhattan is a stylised blockout, not a city",
+      "detail": "Flat extruded buildings with painted-on window rectangles, no facade depth or reveals, no entrances or storefronts, cone trees, untextured road with no kerbs, crossings, signals or clutter. This is the Stage 1-4 programme, recorded here so the gap is never implied away.",
+      "evidence": "evidence/visual/qa-walkthrough/qa-walkthrough.mp4",
+      "state": "open"
+    },
+    {
+      "id": "OPUS-005",
+      "severity": "P2",
+      "title": "Benchmark baseline has not been regenerated against current HEAD",
+      "detail": "docs/performance/PHASE2O_BASELINE.json is invalidated in place: its 44 low-FPS fields are renamed RETIRED_*_INVALID and it carries an INVALIDATED block. Averages and integrity data in it remain valid. 12 of its 22 runs measured the removed Manhattan reference app. No replacement baseline exists yet.",
+      "evidence": "docs/performance/PHASE2O_BASELINE.json",
+      "state": "open"
+    }
+  ],
+  "closed": [
+    {
+      "id": "OPUS-000",
+      "title": "Five shipped models 404'd on their own textures",
+      "detail": "Kenney kits reference Textures/colormap.png relative to the model; the directory was never copied into public/. Five GLTFLoader errors per run on a build with green asset verification.",
+      "fix": "Atlases embedded into each GLB; verify-runtime-textures.mjs now walks public/ and gates on unresolvable dependencies (442 scanned, 0 unresolvable; exit 1 on a rebuilt pre-fix model).",
+      "commit": "e83c49a38"
+    },
+    {
+      "id": "P2O-001",
+      "title": "Benchmark 1% low and 0.1% low measured the fastest frames",
+      "detail": "Ascending frame times with percentile(0.01) returns the smallest frame time. Reported as the low. Blind to stutter and moved the wrong way under increasing stall counts.",
+      "fix": "fps.low1/low01 (mean of slowest) and fps.low1P99/low01P999 (nearest-rank), 14 tests, old fields renamed RETIRED_*_INVALID in code and baseline.",
+      "commit": "5fee2dd07"
+    }
+  ]
+}
