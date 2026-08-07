@@ -1042,3 +1042,24 @@ html.vision-capture .overlay {
   flex: 1;
   min-width: 0;
 }
+
+/* Shown when the browsing context refuses pointer lock (an embedded preview
+   pane, for one). The game is playable on the keyboard; this says why the
+   mouse does nothing rather than leaving it a mystery. */
+.input-notice {
+  position: fixed;
+  left: 50%;
+  bottom: 24px;
+  transform: translateX(-50%);
+  max-width: min(560px, calc(100vw - 32px));
+  padding: 10px 14px;
+  border: 1px solid #5a74c9;
+  border-radius: 8px;
+  background: rgba(16, 22, 44, 0.92);
+  color: #dbe3ff;
+  font-size: 13px;
+  line-height: 1.4;
+  text-align: center;
+  pointer-events: none;
+  z-index: 40;
+}

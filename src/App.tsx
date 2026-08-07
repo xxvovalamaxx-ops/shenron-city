@@ -62,6 +62,9 @@ function applySave(data: SaveData): void {
 
 const PostProcessing = lazy(() => import('./world/PostProcessing'))
 
+/** How often LoadGate samples the loader store. */
+const LOAD_GATE_POLL_MS = 100
+
 /** Hands the renderer to the perf overlay and applies quality settings. */
 function RendererBridge({ maxDpr, shadows }: { maxDpr: number; shadows: boolean }) {
   const gl = useThree((s) => s.gl)
@@ -157,7 +160,6 @@ function VisionBridge({ vision }: { vision: VisionCaptureSpec | null }) {
  * Manhattan base (the island surface we spawn on) must be registered.
  */
 function LoadGate({ baseReady, onReady }: { baseReady: boolean; onReady(): void }) {
-  const { progress, active } = useProgress()
   const fired = useRef(false)
 
   const fire = useCallback(() => {
@@ -168,14 +170,28 @@ function LoadGate({ baseReady, onReady }: { baseReady: boolean; onReady(): void 
     setTimeout(onReady, 0)
   }, [onReady])
 
+  // Read the loader store imperatively rather than subscribing to it.
+  //
+  // useProgress() is backed by three's LoadingManager, which writes to the
+  // store *synchronously* as each asset resolves. A subscriber is therefore
+  // scheduled for update in the middle of whichever sibling happened to
+  // resolve — in practice RealisticPlayer settling its glTF — and React
+  // reports that as "Cannot update a component (LoadGate) while rendering a
+  // different component (RealisticPlayer)". Polling sidesteps it entirely;
+  // this gate only needs to notice readiness within a frame or two.
   useEffect(() => {
-    if (baseReady && !active && progress >= 100) {
-      fire()
-      return
+    const check = () => {
+      const { progress, active } = useProgress.getState()
+      if (baseReady && !active && progress >= 100) fire()
     }
-    const id = setTimeout(fire, 1200)
-    return () => clearTimeout(id)
-  }, [baseReady, active, progress, fire])
+    check()
+    const poll = setInterval(check, LOAD_GATE_POLL_MS)
+    const fallback = setTimeout(fire, 1200)
+    return () => {
+      clearInterval(poll)
+      clearTimeout(fallback)
+    }
+  }, [baseReady, fire])
 
   return null
 }
@@ -211,6 +227,9 @@ export default function App() {
   const [baseReady, setBaseReady] = useState(false)
   const [progress, setProgress] = useState(0)
   const [introActive, setIntroActive] = useState(false)
+  // Set once the browsing context refuses pointer lock; from then on the game
+  // runs in drag-to-look rather than retrying a lock that cannot succeed.
+  const [pointerLockBlocked, setPointerLockBlocked] = useState(false)
   const controls = useRef<{ lock(): void; unlock(): void } | null>(null)
   const bootStartedAt = useRef(window.performance.now()).current
   const spawnResolved = useRef(false)
@@ -320,12 +339,50 @@ export default function App() {
     }
   }, [ready, baseReady, screen, setScreen, visualInspection, vision])
 
+  // Enter the world, and only claim to have entered if the pointer actually
+  // locked.
+  //
+  // requestPointerLock rejects in contexts that are not a valid top-level
+  // document — an embedded preview pane is one — and the old path ignored
+  // that: the screen flipped to 'playing', the audio graph started, the lock
+  // silently failed, and PointerLockControls' unlock handler put the pause
+  // menu straight back. What the player got was a menu that would not go away
+  // and a burst of city ambience on every click.
+  //
+  // Mouselook is not worth blocking play over. A refused lock drops the
+  // controls entirely (the same shape as ?no-pointer-lock=1, the automation
+  // switch) so nothing can bounce the screen back to paused: WASD still
+  // drives, there is just no mouselook until the page is opened in a real
+  // browser window. The HUD says so rather than leaving it a mystery.
   const enterWorld = useCallback(() => {
+    const canLock = pointerLockEnabled && !pointerLockBlocked
+    if (canLock && document.hasFocus()) {
+      const done = (locked: boolean) => {
+        if (locked) return
+        setPointerLockBlocked(true)
+        console.warn(
+          '[input] pointer lock refused by this browsing context; ' +
+            'keyboard movement only until this page is opened in a ' +
+            'top-level browser window',
+        )
+      }
+      try {
+        const result = controls.current?.lock() as unknown
+        if (result instanceof Promise) {
+          result.then(() => done(true)).catch(() => done(false))
+        } else {
+          // three's older lock() is synchronous and reports nothing, so ask
+          // the document on the next tick instead
+          setTimeout(() => done(document.pointerLockElement != null), 0)
+        }
+      } catch {
+        done(false)
+      }
+    }
     setScreen('playing')
     setIntroActive(true)
-    if (pointerLockEnabled && document.hasFocus()) controls.current?.lock()
     void cityAudio.start()
-  }, [pointerLockEnabled, setScreen])
+  }, [pointerLockEnabled, pointerLockBlocked, setScreen])
 
   return (
     <>
@@ -345,7 +402,7 @@ export default function App() {
           <VisionBridge vision={vision} />
           <LoadGate baseReady={baseReady} onReady={markSceneReady} />
         </Suspense>
-        {pointerLockEnabled && (
+        {pointerLockEnabled && !pointerLockBlocked && (
           <PointerLockControls
             ref={controls as never}
             pointerSpeed={settings.sensitivity}
@@ -357,6 +414,12 @@ export default function App() {
       </Canvas>
 
       {screen === 'playing' && <Hud />}
+      {screen === 'playing' && pointerLockBlocked && (
+        <div className="input-notice" role="status">
+          Mouselook needs a top-level browser window — this page is embedded, so
+          the pointer cannot be captured. Movement keys still work.
+        </div>
+      )}
       {introActive && screen === 'playing' && !vision && !visualInspection && (
         <IntroSequence
           onDone={() => {
