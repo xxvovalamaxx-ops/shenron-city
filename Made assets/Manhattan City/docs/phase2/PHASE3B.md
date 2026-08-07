@@ -1,7 +1,32 @@
 # Phase 3B — doors, and walk-in interiors
 
-Status: **the five corridor rooms pass, 4/4 doorways. Gate 1 closed.**
-Evidence: `docs/qa/evidence/phase3b/doors.json` (4/4, generated 2026-08-07).
+Status: **the five corridor rooms pass, 4/4 doorways, in the game. Gate 1 closed.**
+Evidence: `docs/qa/evidence/phase3b/doors.json` (4/4 in the authoring app,
+generated 2026-08-07) and `evidence/doors/doorcheck.json` at the repo root
+(4/4 in the game, against its own collider).
+
+**The doorway pipeline now lives in the game**, at `src/city/{doors,doors-math,
+interiors,hq}.js`. It was built and first measured here, in the Manhattan
+authoring app, which has since been removed: the repo had two runnable worlds
+rendering the same city and only the reference one had doors. What came across
+is the four modules above and nothing else — `corridor.js`, the scripted camera
+tour, stayed behind, because a tour that takes the camera away from the player
+is a demo. Its one piece of real content, the `home_lobby` room, is now placed
+in `interiors.js` beside the other rooms.
+
+The port is not a copy, and the difference is the whole point of Phase 3B. The
+authoring app's walk controller raycast the live scene graph, so a wall cut was
+visible to collision the moment it landed. The game indexes each building mesh
+into a MeshBVH once, when its tile streams in — so a cut arriving afterwards
+leaves the tree describing a wall that is no longer drawn, which is precisely
+"a door placed visually on top of an uncut collision wall". `Doors` reports
+every geometry swap through `onGeometryChanged`; the pipeline rebuilds that
+mesh's BVH. `scripts/qa/doorcheck.mjs` measures it through
+`manhattanCollision` and never through the scene graph, and its
+`--no-bvh-refresh` control run is the reason to believe the result: 15 of 15
+probe rays blocked at the three doorways in streamed tiles, versus 0 of 15 with
+the hook. `hq_lobby` passes either way — it is placed, not streamed, and never
+had a stale tree.
 
 This is the plan and the ledger for Phase 3B of the roadmap in
 `docs/phase2/HANDOFF.md`. The claim it replaces is the one that opened
@@ -41,7 +66,7 @@ height from 0.3 to 2.2 m — and it sits 0.40 m from the room origin, not the
 in the open plaza with the real wall untouched behind them. A recess is now
 cut like any other wall (P2-082).
 
-## The doorway pipeline (`apps/manhattan-threejs/src/doors.js`)
+## The doorway pipeline (`src/city/doors.js`)
 
 For every configured doorway, in order:
 

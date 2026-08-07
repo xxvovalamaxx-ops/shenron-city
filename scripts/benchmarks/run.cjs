@@ -33,12 +33,9 @@ const { LOCATIONS, ll2xy } = require('./lib/locations.cjs')
 const { decodePng, luminanceBands, frameDiff, sha256 } = require('./lib/png.cjs')
 
 const REPO = path.resolve(__dirname, '..', '..')
-const MANHATTAN_APP = path.join(
-  REPO, 'Made assets', 'Manhattan City', 'apps', 'manhattan-threejs')
 const CHROME = process.env.CHROME ||
   'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe'
 const SHENRON_URL = 'http://127.0.0.1:9132'
-const MANHATTAN_URL = 'http://127.0.0.1:5176'
 
 // ---------------------------------------------------------------- args ----
 
@@ -53,7 +50,7 @@ function parseArgs() {
     const i = a.indexOf(name)
     return i >= 0 ? a[i + 1] : def
   }
-  const app = get('--app', 'manhattan')
+  const app = get('--app', 'shenron')
   const location = get('--location', 'times-square')
   const scenario = get('--scenario', 'stand')
   return {
@@ -446,6 +443,16 @@ async function main() {
   trace("main start " + JSON.stringify({ app: args.app, location: args.location, scenario: args.scenario }))
   const { app, location, scenario } = args
   if (!LOCATIONS[location]) throw new Error(`unknown location ${location}`)
+  if (app === 'manhattan') {
+    // The Manhattan reference app is gone; the game is the only runtime. Its
+    // locations are still in the registry because they are real addresses and
+    // real measurements were taken at them, but their camera spec is that
+    // app's [lat, lon, alt, yaw, pitch, mode] dialect, which nothing reads now.
+    // Retagging them 'shenron' would point the game's camera placer at numbers
+    // it would misread, and quietly report a benchmark of the wrong view.
+    throw new Error(
+      'the manhattan reference app was removed; benchmark the game with --app shenron')
+  }
   if (LOCATIONS[location].app !== app) {
     throw new Error(`location ${location} belongs to app ${LOCATIONS[location].app}, not ${app}`)
   }
@@ -461,13 +468,8 @@ async function main() {
     const shen = await ensureDevServer(
       SHENRON_URL, REPO, path.join(REPO, 'node_modules', 'vite', 'bin', 'vite.js'), 9132)
     if (shen.started) dev.push(shen.child)
-    trace("ensure manhattan")
-    const manh = await ensureDevServer(
-      MANHATTAN_URL, MANHATTAN_APP,
-      path.join(MANHATTAN_APP, 'node_modules', 'vite', 'bin', 'vite.js'), 5176)
-    if (manh.started) dev.push(manh.child)
   }
-  const url = app === 'manhattan' ? MANHATTAN_URL : SHENRON_URL
+  const url = SHENRON_URL
 
   trace("launching chrome")
   const browser = await launchChrome({ chromePath: args.chrome, port: args.port })
@@ -522,7 +524,7 @@ async function main() {
         `tris ${result.stats?.triangles ?? 'n/a'}, cpu ${cpu?.scriptMsPerSec ?? 'n/a'} ms/s` +
         (result.transition?.rideMs ? `, ride ${result.transition.rideMs} ms` : '') +
         `, err ${errors.consoleErrors + errors.exceptions + errors.networkFailures}`)
-      if (app === 'manhattan' && result.stats?.district) {
+      if (result.stats?.district) {
         console.log(`[${tag}]   camera at ${result.stats.camera.x},${result.stats.camera.z} → ${result.stats.district}`)
       }
     }
@@ -548,9 +550,8 @@ async function main() {
     variance,
     notes: {
       cameraAsserted: LOCATIONS[location].note,
-      manhattanProjection: app === 'manhattan'
-        ? ll2xy(LOCATIONS[location].spec[0], LOCATIONS[location].spec[1])
-        : null,
+      manhattanProjection:
+        ll2xy(LOCATIONS[location].spec[0], LOCATIONS[location].spec[1]),
     },
   }
   const aggFile = path.join(args.out, `${tag}.json`)

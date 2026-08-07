@@ -1,8 +1,8 @@
 // door-cut.test.mjs — unit tests for the Phase 3B doorway cut math.
 //
-// Run: node --test scripts/qa/
+// Run: npm test
 //
-// The module under test is pure (apps/manhattan-threejs/src/doors-math.js):
+// The module under test is pure (src/city/doors-math.js):
 // no three.js, no DOM, so the identical code that cuts the real tile walls
 // in the browser is proven here in Node. The invariants that matter:
 //
@@ -20,7 +20,7 @@
 // wall 1.70 m to the side of a 2.20 m opening. These tests are the cheap
 // guard — pure arithmetic, no browser.
 
-import test from 'node:test'
+import { test } from 'vitest'
 import assert from 'node:assert/strict'
 import * as THREE from 'three'
 
@@ -28,11 +28,11 @@ import {
   polyArea, splitByLine, subtractRect, polyBox, rectsOverlap,
   cutTriangle, fanTriangles, piecesArea,
   triNormal3, wallFrame, framePoint, frameProject,
-} from '../../apps/manhattan-threejs/src/doors-math.js'
+} from './doors-math.js'
 import {
   authToLocal, localToAuth, AUTHORED_ROT_X, cutGlazeRect, cutContained,
   cutWallInMesh,
-} from '../../apps/manhattan-threejs/src/doors.js'
+} from './doors.js'
 
 // ---------------------------------------------------------------------------
 // 2D primitives

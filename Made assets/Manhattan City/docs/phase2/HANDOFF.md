@@ -37,8 +37,11 @@ This is the real gap. Build these checks before you write new features; they
 are your substitute for looking, and each one corresponds to a defect that
 actually shipped.
 
-Put them in `apps/manhattan-threejs/src/framecheck.js`, exposed on
-`window.__manhattan.framecheck`. All of them read pixels back with
+These were written for `framecheck.js` in the Manhattan reference app, which
+has been removed — the runtime is now the game, at the repo root. The checks
+themselves are unchanged and still owed; the game's equivalents live under
+`scripts/visual-qa/` (`frame-analysis.mjs` covers 1 and 2). All of them read
+pixels back with
 `renderer.getContext().readPixels(...)` — the same trick `hq.verify()`
 already uses, so copy that method's structure.
 
@@ -113,17 +116,26 @@ scripts/phase2/          the build pipeline (Blender + pure-stdlib Python)
   64_corridor.py              lift cab, car interior, Shenron form (Blender)
   66_subway.py + 67_build_subway.py   entrances, and the footfall they generate
 
-apps/manhattan-threejs/src/   the runtime
-  city, streamer, lod, facade, streets, traffic, pedestrians, props, demand,
-  weather, audio, interiors, hq, corridor, subway, controls, capture, sky
+<repo root>/src/city/            the runtime
+  city, streamer, lod, facade, traffic, pedestrians, props, demand, weather,
+  interiors, hq, doors, doors-math, subway, sky
 ```
 
-Run it: `npm run dev` in `apps/manhattan-threejs`, port 5173. Never start a
-dev server any other way — `vite.config.js` mounts the world data straight out
-of the repo and provides the `/__capture` evidence sink.
+The Manhattan reference app that used to live in `apps/manhattan-threejs/` is
+gone. It was a second runnable world rendering the same city, and the repo is
+meant to hold one game; its runtime modules are the list above, ported into
+`src/city/` and driven by `src/world/ManhattanCity.tsx`. Two things did not
+come across: `corridor.js`, a scripted camera tour, and `controls.js`, whose
+raycast walk controller the game replaces with
+`src/world/manhattan-collision.ts`. The authoring pipeline — every script in
+`scripts/phase2/`, and `data/`, `exports/`, `blend/` — is untouched and is
+still where the world comes from.
 
-Keys: `WASD` move, `F` fly/walk, `E` enter/leave, `C` hero corridor, `L`
-licences, `M` mute, `H` hide overlays.
+Run it: `npm run dev` at the repo root, port 5173. The world data is served
+from `public/models/manhattan/` rather than mounted out of this project, so a
+rebuilt export has to be copied across.
+
+Keys: `WASD` move, `F` fly/walk, `E` enter/leave, `M` mute, `H` hide overlays.
 
 **Measured performance** (RTX 5070, 1280×720): resident tile payload 67.8 MB →
 10–16 MB after LOD; street-life CPU ~0.4 ms/frame. See §3 for why the
