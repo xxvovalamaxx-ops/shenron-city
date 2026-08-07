@@ -1,0 +1,70 @@
+{
+  "site": {
+    "bid": 34686,
+    "name": "",
+    "addr": "",
+    "district": "Midtown West / Times Sq",
+    "replaced_height_m": 100.35,
+    "lot_area_m2": 4879.8,
+    "centroid": [
+      -2329.82,
+      -1829.81
+    ]
+  },
+  "origin": [
+    -2318.735,
+    -1809.657
+  ],
+  "yaw": -2.073658,
+  "frontage": {
+    "street": "W 47 ST",
+    "width_m": 10.36,
+    "midpoint": [
+      -2310.98,
+      -1795.56
+    ]
+  },
+  "footprint": {
+    "width_m": 54.0,
+    "depth_m": 46.0,
+    "plaza_depth_m": 9.0,
+    "corners": [
+      [
+        -2346.73,
+        -1804.53
+      ],
+      [
+        -2364.56,
+        -1836.95
+      ],
+      [
+        -2317.25,
+        -1862.98
+      ],
+      [
+        -2299.42,
+        -1830.56
+      ]
+    ]
+  },
+  "suppress": [
+    34686
+  ],
+  "suppressed_detail": [
+    {
+      "bid": 34686,
+      "name": "",
+      "height_m": 100.35,
+      "area_m2": 4879.8
+    }
+  ],
+  "clearance": {
+    "podium_to_centreline_m": 16.78,
+    "street_half_width_m": 5.33,
+    "podium_to_kerb_m": 11.45,
+    "street": "W 46 ST",
+    "in_the_road": false
+  },
+  "candidates_considered": 102,
+  "rule": "registry-picked: midtown, drivable frontage, lot >= 2700 m2, 45-185 m tall, not a landmark"
+}

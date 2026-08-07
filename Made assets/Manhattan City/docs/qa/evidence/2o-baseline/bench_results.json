@@ -1,0 +1,2094 @@
+{
+  "startedAt": "2026-08-06T05:44:26.986Z",
+  "machine": {
+    "platform": "win32",
+    "node": "v24.18.0",
+    "chrome": "headless=new, SwiftShader software GL",
+    "note": "Software rendering: absolute fps is not hardware-GPU performance. cpuMs is main-thread command submission; rasterMs forces the SwiftShader rasterizer to finish (render + readPixels), which is the honest per-frame cost on this machine. Draw calls, triangles, resident bytes and CPU times are the load metrics."
+  },
+  "port": 5173,
+  "vite": {
+    "url": "http://127.0.0.1:5173/"
+  },
+  "cdpPort": 9223,
+  "boot": {
+    "buildings": 56476,
+    "archetypes": 22,
+    "districts": 48,
+    "renderer": {
+      "software": "webgl2",
+      "precision": "highp",
+      "maxTextureSize": 16384
+    },
+    "timesSquare": {
+      "x": -1476,
+      "y": -2433
+    },
+    "camera": {
+      "x": -1476,
+      "y": 620,
+      "z": 2433
+    },
+    "canvas": {
+      "w": 1280,
+      "h": 720
+    }
+  },
+  "data": {
+    "registryRows": 56476,
+    "cityBuildings": 56476,
+    "archetypes": 22,
+    "districts": 48,
+    "tiles": 119,
+    "streetTiles": 61,
+    "bounds": {
+      "x": [
+        -8613.21,
+        5762.78
+      ],
+      "y": [
+        -11108.03,
+        10855.22
+      ],
+      "h_max": 472
+    },
+    "graphEdges": 16379,
+    "graphNodes": 11256,
+    "drivableEdges": 11395,
+    "drivableKm": 1026691.1,
+    "walkLanes": 14675,
+    "walkKm": 1249577.97,
+    "propsRecords": 112418,
+    "oneway": {
+      "forward": 4398,
+      "backward": 4271,
+      "twoWay": 2726
+    },
+    "statePlane": {
+      "source": "source_data/nyc/traffic_volume.json + street_graph.json, nysp port in this script",
+      "claimedPoints": 808,
+      "parsed": 808,
+      "within25m": 807,
+      "pctWithin25m": 99.88,
+      "medianM": 0.68,
+      "p90M": 1.08,
+      "maxM": 23.7,
+      "unboundedM": 1,
+      "beyond25m": 1
+    },
+    "sidewalk": {
+      "source": "data/manhattan/streets/sidewalk_geom.json, shoelace in this script",
+      "polygons": 5202,
+      "outerAreaM2": 34648275,
+      "holeAreaM2": 27678989,
+      "netAreaM2": 6969286,
+      "statedSumM2": 62327332
+    }
+  },
+  "cameras": [
+    {
+      "name": "bench_start_ts_topdown",
+      "placement": {
+        "x": -1476,
+        "y": 620,
+        "z": 2433
+      },
+      "measure": {
+        "label": "bench_start_ts_topdown",
+        "camera": {
+          "x": -1476,
+          "y": 620,
+          "z": 2433
+        },
+        "dims": {
+          "width": 1280,
+          "height": 720,
+          "pixelRatio": 1
+        },
+        "perFrame": {
+          "calls": 82,
+          "triangles": 887915,
+          "points": 0,
+          "lines": 0
+        },
+        "geometries": 117,
+        "textures": 2,
+        "programs": 14,
+        "cpuMs": {
+          "n": 10,
+          "median": 0.2,
+          "p95": 0.3017,
+          "mean": 0.2167,
+          "kind": "main-thread renderer.render() wall time; command submission, rasterization deferred to the GPU process"
+        },
+        "rasterMs": {
+          "n": 9,
+          "median": 1.3,
+          "p95": 2.74,
+          "mean": 1.5556,
+          "kind": "render + readPixels per frame; forces the SwiftShader rasterizer to finish synchronously (includes the ~3.7 MB readback)"
+        },
+        "gpuMs": null,
+        "gpuTimer": "EXT_disjoint_timer_query_webgl2",
+        "gpuFault": null,
+        "gpuDropped": {
+          "reason": "EXT_disjoint_timer_query_webgl2 exposed but queries never became QUERY_RESULT_AVAILABLE (SwiftShader)"
+        },
+        "memory": {
+          "webgl1": {
+            "geometries": 117,
+            "textures": 2
+          },
+          "performance": {
+            "usedJSHeapMB": 260.2239,
+            "totalJSHeapMB": 305.7476
+          }
+        },
+        "software": "webgl2",
+        "note": "gpuMs only when EXT_disjoint_timer_query_webgl2 exists; software-GL times are not hardware-GPU numbers"
+      },
+      "payload": {
+        "worldMB": 13.5514,
+        "streetsMB": 2.1559,
+        "lodMB": 5.3564,
+        "totalMB": 21.0637,
+        "lodFiles": 75,
+        "residentTiles": 19,
+        "streetTiles": 7
+      },
+      "scene": {
+        "objects": 463,
+        "meshes": 293,
+        "instancedMeshes": 27,
+        "instances": 1355,
+        "triangles": 2073478,
+        "geometries": 288,
+        "materials": 74
+      },
+      "sim": {
+        "vehicles": 430,
+        "people": 349,
+        "propsDrawn": 468,
+        "lod": {
+          "full": 4,
+          "L2": 14,
+          "L3": 57,
+          "L4": 27,
+          "off": 0,
+          "tris": 515746,
+          "files": 98
+        },
+        "corridorLeg": null
+      },
+      "evidence": {
+        "ok": true,
+        "file": "evidence\\phase2\\bench_start_ts_topdown.png",
+        "bytes": 1770732
+      },
+      "frameHealth": {
+        "w": 1280,
+        "h": 720,
+        "meanLuma": 66.95,
+        "stddev": 32.1,
+        "distinctColors8": 31394,
+        "distinctColors4": 195,
+        "lumaMin": 1,
+        "lumaMax": 190,
+        "dead": false,
+        "contextLost": false
+      },
+      "evidenceSha": "c2c01d1e32e9c78fe9866fbfc163444d4502a650674f2c34775def8d36edc633"
+    },
+    {
+      "name": "bench_lincoln_square_topdown",
+      "placement": {
+        "x": -1900,
+        "y": 620,
+        "z": 600
+      },
+      "measure": {
+        "label": "bench_lincoln_square_topdown",
+        "camera": {
+          "x": -1900,
+          "y": 620,
+          "z": 600
+        },
+        "dims": {
+          "width": 1280,
+          "height": 720,
+          "pixelRatio": 1
+        },
+        "perFrame": {
+          "calls": 84,
+          "triangles": 858547,
+          "points": 0,
+          "lines": 0
+        },
+        "geometries": 139,
+        "textures": 2,
+        "programs": 14,
+        "cpuMs": {
+          "n": 10,
+          "median": 0.2667,
+          "p95": 0.355,
+          "mean": 0.28,
+          "kind": "main-thread renderer.render() wall time; command submission, rasterization deferred to the GPU process"
+        },
+        "rasterMs": {
+          "n": 9,
+          "median": 1.7,
+          "p95": 2.88,
+          "mean": 1.9444,
+          "kind": "render + readPixels per frame; forces the SwiftShader rasterizer to finish synchronously (includes the ~3.7 MB readback)"
+        },
+        "gpuMs": null,
+        "gpuTimer": "EXT_disjoint_timer_query_webgl2",
+        "gpuFault": null,
+        "gpuDropped": {
+          "reason": "EXT_disjoint_timer_query_webgl2 exposed but queries never became QUERY_RESULT_AVAILABLE (SwiftShader)"
+        },
+        "memory": {
+          "webgl1": {
+            "geometries": 139,
+            "textures": 2
+          },
+          "performance": {
+            "usedJSHeapMB": 279.8799,
+            "totalJSHeapMB": 335.4715
+          }
+        },
+        "software": "webgl2",
+        "note": "gpuMs only when EXT_disjoint_timer_query_webgl2 exists; software-GL times are not hardware-GPU numbers"
+      },
+      "payload": {
+        "worldMB": 13.9079,
+        "streetsMB": 2.1866,
+        "lodMB": 7.1146,
+        "totalMB": 23.2091,
+        "lodFiles": 93,
+        "residentTiles": 23,
+        "streetTiles": 8
+      },
+      "scene": {
+        "objects": 523,
+        "meshes": 326,
+        "instancedMeshes": 27,
+        "instances": 999,
+        "triangles": 2247072,
+        "geometries": 321,
+        "materials": 81
+      },
+      "sim": {
+        "vehicles": 308,
+        "people": 25,
+        "propsDrawn": 589,
+        "lod": {
+          "full": 7,
+          "L2": 11,
+          "L3": 50,
+          "L4": 34,
+          "off": 0,
+          "tris": 470612,
+          "files": 95
+        },
+        "corridorLeg": null
+      },
+      "evidence": {
+        "ok": true,
+        "file": "evidence\\phase2\\bench_lincoln_square_topdown.png",
+        "bytes": 898136
+      },
+      "frameHealth": {
+        "w": 1280,
+        "h": 720,
+        "meanLuma": 46.78,
+        "stddev": 41.35,
+        "distinctColors8": 20177,
+        "distinctColors4": 180,
+        "lumaMin": 2,
+        "lumaMax": 190,
+        "dead": false,
+        "contextLost": false
+      },
+      "evidenceSha": "7ced2aa51c3449a25290d2612489fe3b7e923a05344216409f97f0d9dbc3c787"
+    },
+    {
+      "name": "bench_times_square",
+      "placement": {
+        "x": -1505.6,
+        "y": 13.9,
+        "z": 2466.15
+      },
+      "measure": {
+        "label": "bench_times_square",
+        "camera": {
+          "x": -1505.6,
+          "y": 13.9002,
+          "z": 2466.15
+        },
+        "dims": {
+          "width": 1280,
+          "height": 720,
+          "pixelRatio": 1
+        },
+        "perFrame": {
+          "calls": 106,
+          "triangles": 1005972,
+          "points": 0,
+          "lines": 0
+        },
+        "geometries": 153,
+        "textures": 2,
+        "programs": 14,
+        "cpuMs": {
+          "n": 10,
+          "median": 0.3167,
+          "p95": 0.46,
+          "mean": 0.3333,
+          "kind": "main-thread renderer.render() wall time; command submission, rasterization deferred to the GPU process"
+        },
+        "rasterMs": {
+          "n": 9,
+          "median": 1.8,
+          "p95": 2,
+          "mean": 1.6444,
+          "kind": "render + readPixels per frame; forces the SwiftShader rasterizer to finish synchronously (includes the ~3.7 MB readback)"
+        },
+        "gpuMs": null,
+        "gpuTimer": "EXT_disjoint_timer_query_webgl2",
+        "gpuFault": null,
+        "gpuDropped": {
+          "reason": "EXT_disjoint_timer_query_webgl2 exposed but queries never became QUERY_RESULT_AVAILABLE (SwiftShader)"
+        },
+        "memory": {
+          "webgl1": {
+            "geometries": 153,
+            "textures": 2
+          },
+          "performance": {
+            "usedJSHeapMB": 282.1546,
+            "totalJSHeapMB": 340.0317
+          }
+        },
+        "software": "webgl2",
+        "note": "gpuMs only when EXT_disjoint_timer_query_webgl2 exists; software-GL times are not hardware-GPU numbers"
+      },
+      "payload": {
+        "worldMB": 13.0054,
+        "streetsMB": 1.7727,
+        "lodMB": 7.1146,
+        "totalMB": 21.8927,
+        "lodFiles": 93,
+        "residentTiles": 20,
+        "streetTiles": 6
+      },
+      "scene": {
+        "objects": 498,
+        "meshes": 309,
+        "instancedMeshes": 27,
+        "instances": 1371,
+        "triangles": 2132618,
+        "geometries": 304,
+        "materials": 70
+      },
+      "sim": {
+        "vehicles": 430,
+        "people": 359,
+        "propsDrawn": 477,
+        "lod": {
+          "full": 6,
+          "L2": 13,
+          "L3": 56,
+          "L4": 27,
+          "off": 0,
+          "tris": 489935,
+          "files": 96
+        },
+        "corridorLeg": null
+      },
+      "evidence": {
+        "ok": true,
+        "file": "evidence\\phase2\\bench_times_square.png",
+        "bytes": 501912
+      },
+      "frameHealth": {
+        "w": 1280,
+        "h": 720,
+        "meanLuma": 46.38,
+        "stddev": 46.02,
+        "distinctColors8": 13995,
+        "distinctColors4": 240,
+        "lumaMin": 0,
+        "lumaMax": 221,
+        "dead": false,
+        "contextLost": false
+      },
+      "evidenceSha": "c9bfb71410587516309c1df8b80d7bfcd1db11fb7e76c95774ab5b69f6cec024"
+    },
+    {
+      "name": "bench_midtown_air",
+      "placement": {
+        "x": -1475.15,
+        "y": 512,
+        "z": 2543.2
+      },
+      "measure": {
+        "label": "bench_midtown_air",
+        "camera": {
+          "x": -1475.1463,
+          "y": 512,
+          "z": 2543.202
+        },
+        "dims": {
+          "width": 1280,
+          "height": 720,
+          "pixelRatio": 1
+        },
+        "perFrame": {
+          "calls": 102,
+          "triangles": 916609,
+          "points": 0,
+          "lines": 0
+        },
+        "geometries": 160,
+        "textures": 2,
+        "programs": 14,
+        "cpuMs": {
+          "n": 10,
+          "median": 0.225,
+          "p95": 0.3417,
+          "mean": 0.2417,
+          "kind": "main-thread renderer.render() wall time; command submission, rasterization deferred to the GPU process"
+        },
+        "rasterMs": {
+          "n": 9,
+          "median": 1.7,
+          "p95": 2.56,
+          "mean": 1.8111,
+          "kind": "render + readPixels per frame; forces the SwiftShader rasterizer to finish synchronously (includes the ~3.7 MB readback)"
+        },
+        "gpuMs": null,
+        "gpuTimer": "EXT_disjoint_timer_query_webgl2",
+        "gpuFault": null,
+        "gpuDropped": {
+          "reason": "EXT_disjoint_timer_query_webgl2 exposed but queries never became QUERY_RESULT_AVAILABLE (SwiftShader)"
+        },
+        "memory": {
+          "webgl1": {
+            "geometries": 160,
+            "textures": 2
+          },
+          "performance": {
+            "usedJSHeapMB": 318.7104,
+            "totalJSHeapMB": 367.3897
+          }
+        },
+        "software": "webgl2",
+        "note": "gpuMs only when EXT_disjoint_timer_query_webgl2 exists; software-GL times are not hardware-GPU numbers"
+      },
+      "payload": {
+        "worldMB": 14.8888,
+        "streetsMB": 2.1559,
+        "lodMB": 7.1146,
+        "totalMB": 24.1593,
+        "lodFiles": 93,
+        "residentTiles": 23,
+        "streetTiles": 7
+      },
+      "scene": {
+        "objects": 537,
+        "meshes": 335,
+        "instancedMeshes": 27,
+        "instances": 1344,
+        "triangles": 2351892,
+        "geometries": 330,
+        "materials": 78
+      },
+      "sim": {
+        "vehicles": 430,
+        "people": 359,
+        "propsDrawn": 446,
+        "lod": {
+          "full": 4,
+          "L2": 15,
+          "L3": 56,
+          "L4": 27,
+          "off": 0,
+          "tris": 515911,
+          "files": 98
+        },
+        "corridorLeg": null
+      },
+      "evidence": {
+        "ok": true,
+        "file": "evidence\\phase2\\bench_midtown_air.png",
+        "bytes": 1264599
+      },
+      "frameHealth": {
+        "w": 1280,
+        "h": 720,
+        "meanLuma": 68.01,
+        "stddev": 52.99,
+        "distinctColors8": 29544,
+        "distinctColors4": 172,
+        "lumaMin": 0,
+        "lumaMax": 240,
+        "dead": false,
+        "contextLost": false
+      },
+      "evidenceSha": "3b5813e65a6ed6e5b5e9c58b2cc4b354cc42e738a2cc1f70c79a8975941bfe5b"
+    },
+    {
+      "name": "bench_skyline_from_east",
+      "placement": {
+        "x": 1517.29,
+        "y": 392,
+        "z": 3538.37
+      },
+      "measure": {
+        "label": "bench_skyline_from_east",
+        "camera": {
+          "x": 1517.2934,
+          "y": 392,
+          "z": 3538.368
+        },
+        "dims": {
+          "width": 1280,
+          "height": 720,
+          "pixelRatio": 1
+        },
+        "perFrame": {
+          "calls": 62,
+          "triangles": 248247,
+          "points": 0,
+          "lines": 0
+        },
+        "geometries": 161,
+        "textures": 2,
+        "programs": 14,
+        "cpuMs": {
+          "n": 10,
+          "median": 0.25,
+          "p95": 0.3367,
+          "mean": 0.265,
+          "kind": "main-thread renderer.render() wall time; command submission, rasterization deferred to the GPU process"
+        },
+        "rasterMs": {
+          "n": 9,
+          "median": 1.6,
+          "p95": 2.28,
+          "mean": 1.6111,
+          "kind": "render + readPixels per frame; forces the SwiftShader rasterizer to finish synchronously (includes the ~3.7 MB readback)"
+        },
+        "gpuMs": null,
+        "gpuTimer": "EXT_disjoint_timer_query_webgl2",
+        "gpuFault": null,
+        "gpuDropped": {
+          "reason": "EXT_disjoint_timer_query_webgl2 exposed but queries never became QUERY_RESULT_AVAILABLE (SwiftShader)"
+        },
+        "memory": {
+          "webgl1": {
+            "geometries": 161,
+            "textures": 2
+          },
+          "performance": {
+            "usedJSHeapMB": 306.9128,
+            "totalJSHeapMB": 372.3524
+          }
+        },
+        "software": "webgl2",
+        "note": "gpuMs only when EXT_disjoint_timer_query_webgl2 exists; software-GL times are not hardware-GPU numbers"
+      },
+      "payload": {
+        "worldMB": 13.9281,
+        "streetsMB": 1.1804,
+        "lodMB": 9.2452,
+        "totalMB": 24.3537,
+        "lodFiles": 123,
+        "residentTiles": 23,
+        "streetTiles": 6
+      },
+      "scene": {
+        "objects": 580,
+        "meshes": 354,
+        "instancedMeshes": 27,
+        "instances": 77,
+        "triangles": 2372615,
+        "geometries": 349,
+        "materials": 77
+      },
+      "sim": {
+        "vehicles": 0,
+        "people": 0,
+        "propsDrawn": 0,
+        "lod": {
+          "full": 6,
+          "L2": 14,
+          "L3": 58,
+          "L4": 24,
+          "off": 0,
+          "tris": 575179,
+          "files": 96
+        },
+        "corridorLeg": null
+      },
+      "evidence": {
+        "ok": true,
+        "file": "evidence\\phase2\\bench_skyline_from_east.png",
+        "bytes": 772547
+      },
+      "frameHealth": {
+        "w": 1280,
+        "h": 720,
+        "meanLuma": 96.87,
+        "stddev": 61.11,
+        "distinctColors8": 20082,
+        "distinctColors4": 154,
+        "lumaMin": 1,
+        "lumaMax": 216,
+        "dead": false,
+        "contextLost": false
+      },
+      "evidenceSha": "e3885eab9182f0d65069ba623f2e7c74109a809da8968d46857344d41b22ff31"
+    },
+    {
+      "name": "bench_downtown_air",
+      "placement": {
+        "x": -3540.35,
+        "y": 442,
+        "z": 7740.18
+      },
+      "measure": {
+        "label": "bench_downtown_air",
+        "camera": {
+          "x": -3540.3512,
+          "y": 442,
+          "z": 7740.18
+        },
+        "dims": {
+          "width": 1280,
+          "height": 720,
+          "pixelRatio": 1
+        },
+        "perFrame": {
+          "calls": 100,
+          "triangles": 879786,
+          "points": 0,
+          "lines": 0
+        },
+        "geometries": 143,
+        "textures": 2,
+        "programs": 14,
+        "cpuMs": {
+          "n": 10,
+          "median": 0.2917,
+          "p95": 0.4108,
+          "mean": 0.3117,
+          "kind": "main-thread renderer.render() wall time; command submission, rasterization deferred to the GPU process"
+        },
+        "rasterMs": {
+          "n": 9,
+          "median": 1.8,
+          "p95": 2.54,
+          "mean": 1.8889,
+          "kind": "render + readPixels per frame; forces the SwiftShader rasterizer to finish synchronously (includes the ~3.7 MB readback)"
+        },
+        "gpuMs": null,
+        "gpuTimer": "EXT_disjoint_timer_query_webgl2",
+        "gpuFault": null,
+        "gpuDropped": {
+          "reason": "EXT_disjoint_timer_query_webgl2 exposed but queries never became QUERY_RESULT_AVAILABLE (SwiftShader)"
+        },
+        "memory": {
+          "webgl1": {
+            "geometries": 143,
+            "textures": 2
+          },
+          "performance": {
+            "usedJSHeapMB": 223.4934,
+            "totalJSHeapMB": 291.4878
+          }
+        },
+        "software": "webgl2",
+        "note": "gpuMs only when EXT_disjoint_timer_query_webgl2 exists; software-GL times are not hardware-GPU numbers"
+      },
+      "payload": {
+        "worldMB": 9.7255,
+        "streetsMB": 1.8207,
+        "lodMB": 10.7832,
+        "totalMB": 22.3294,
+        "lodFiles": 152,
+        "residentTiles": 22,
+        "streetTiles": 9
+      },
+      "scene": {
+        "objects": 615,
+        "meshes": 359,
+        "instancedMeshes": 27,
+        "instances": 1749,
+        "triangles": 2198705,
+        "geometries": 354,
+        "materials": 55
+      },
+      "sim": {
+        "vehicles": 616,
+        "people": 566,
+        "propsDrawn": 443,
+        "lod": {
+          "full": 5,
+          "L2": 15,
+          "L3": 43,
+          "L4": 39,
+          "off": 0,
+          "tris": 379759,
+          "files": 97
+        },
+        "corridorLeg": null
+      },
+      "evidence": {
+        "ok": true,
+        "file": "evidence\\phase2\\bench_downtown_air.png",
+        "bytes": 1061598
+      },
+      "frameHealth": {
+        "w": 1280,
+        "h": 720,
+        "meanLuma": 70.22,
+        "stddev": 60.13,
+        "distinctColors8": 28462,
+        "distinctColors4": 184,
+        "lumaMin": 0,
+        "lumaMax": 221,
+        "dead": false,
+        "contextLost": false
+      },
+      "evidenceSha": "f87026a37498fdb7002b7d1c3ff0fb6041291f867cf06c2028790d0183db8b34"
+    },
+    {
+      "name": "bench_central_park_air",
+      "placement": {
+        "x": 168.59,
+        "y": 332,
+        "z": -110.57
+      },
+      "measure": {
+        "label": "bench_central_park_air",
+        "camera": {
+          "x": 168.5882,
+          "y": 332,
+          "z": -110.574
+        },
+        "dims": {
+          "width": 1280,
+          "height": 720,
+          "pixelRatio": 1
+        },
+        "perFrame": {
+          "calls": 128,
+          "triangles": 1133730,
+          "points": 0,
+          "lines": 0
+        },
+        "geometries": 202,
+        "textures": 2,
+        "programs": 14,
+        "cpuMs": {
+          "n": 10,
+          "median": 0.325,
+          "p95": 0.4325,
+          "mean": 0.3417,
+          "kind": "main-thread renderer.render() wall time; command submission, rasterization deferred to the GPU process"
+        },
+        "rasterMs": {
+          "n": 9,
+          "median": 1.9,
+          "p95": 2.46,
+          "mean": 1.9333,
+          "kind": "render + readPixels per frame; forces the SwiftShader rasterizer to finish synchronously (includes the ~3.7 MB readback)"
+        },
+        "gpuMs": null,
+        "gpuTimer": "EXT_disjoint_timer_query_webgl2",
+        "gpuFault": null,
+        "gpuDropped": {
+          "reason": "EXT_disjoint_timer_query_webgl2 exposed but queries never became QUERY_RESULT_AVAILABLE (SwiftShader)"
+        },
+        "memory": {
+          "webgl1": {
+            "geometries": 202,
+            "textures": 2
+          },
+          "performance": {
+            "usedJSHeapMB": 279.3857,
+            "totalJSHeapMB": 348.8092
+          }
+        },
+        "software": "webgl2",
+        "note": "gpuMs only when EXT_disjoint_timer_query_webgl2 exists; software-GL times are not hardware-GPU numbers"
+      },
+      "payload": {
+        "worldMB": 14.2808,
+        "streetsMB": 2.6249,
+        "lodMB": 12.0696,
+        "totalMB": 28.9753,
+        "lodFiles": 164,
+        "residentTiles": 18,
+        "streetTiles": 8
+      },
+      "scene": {
+        "objects": 625,
+        "meshes": 372,
+        "instancedMeshes": 27,
+        "instances": 366,
+        "triangles": 2806463,
+        "geometries": 367,
+        "materials": 76
+      },
+      "sim": {
+        "vehicles": 202,
+        "people": 10,
+        "propsDrawn": 77,
+        "lod": {
+          "full": 4,
+          "L2": 11,
+          "L3": 51,
+          "L4": 36,
+          "off": 0,
+          "tris": 482393,
+          "files": 98
+        },
+        "corridorLeg": null
+      },
+      "evidence": {
+        "ok": true,
+        "file": "evidence\\phase2\\bench_central_park_air.png",
+        "bytes": 1047874
+      },
+      "frameHealth": {
+        "w": 1280,
+        "h": 720,
+        "meanLuma": 83.42,
+        "stddev": 55.25,
+        "distinctColors8": 29593,
+        "distinctColors4": 205,
+        "lumaMin": 1,
+        "lumaMax": 237,
+        "dead": false,
+        "contextLost": false
+      },
+      "evidenceSha": "044a8cc4e0a78d67efca4cb204041d6b51df9239b49726efe83e649574978930"
+    },
+    {
+      "name": "bench_fifth_ave_34th",
+      "placement": {
+        "x": -1468.75,
+        "y": 13.9,
+        "z": 3460.2
+      },
+      "measure": {
+        "label": "bench_fifth_ave_34th",
+        "camera": {
+          "x": -1468.75,
+          "y": 13.9005,
+          "z": 3460.2
+        },
+        "dims": {
+          "width": 1280,
+          "height": 720,
+          "pixelRatio": 1
+        },
+        "perFrame": {
+          "calls": 101,
+          "triangles": 897129,
+          "points": 0,
+          "lines": 0
+        },
+        "geometries": 219,
+        "textures": 2,
+        "programs": 14,
+        "cpuMs": {
+          "n": 10,
+          "median": 0.3,
+          "p95": 0.3992,
+          "mean": 0.3133,
+          "kind": "main-thread renderer.render() wall time; command submission, rasterization deferred to the GPU process"
+        },
+        "rasterMs": {
+          "n": 9,
+          "median": 2,
+          "p95": 2.18,
+          "mean": 1.9222,
+          "kind": "render + readPixels per frame; forces the SwiftShader rasterizer to finish synchronously (includes the ~3.7 MB readback)"
+        },
+        "gpuMs": null,
+        "gpuTimer": "EXT_disjoint_timer_query_webgl2",
+        "gpuFault": null,
+        "gpuDropped": {
+          "reason": "EXT_disjoint_timer_query_webgl2 exposed but queries never became QUERY_RESULT_AVAILABLE (SwiftShader)"
+        },
+        "memory": {
+          "webgl1": {
+            "geometries": 219,
+            "textures": 2
+          },
+          "performance": {
+            "usedJSHeapMB": 394.1526,
+            "totalJSHeapMB": 461.0339
+          }
+        },
+        "software": "webgl2",
+        "note": "gpuMs only when EXT_disjoint_timer_query_webgl2 exists; software-GL times are not hardware-GPU numbers"
+      },
+      "payload": {
+        "worldMB": 16.2308,
+        "streetsMB": 2.8353,
+        "lodMB": 12.3115,
+        "totalMB": 31.3776,
+        "lodFiles": 167,
+        "residentTiles": 21,
+        "streetTiles": 9
+      },
+      "scene": {
+        "objects": 676,
+        "meshes": 405,
+        "instancedMeshes": 27,
+        "instances": 1643,
+        "triangles": 3077517,
+        "geometries": 400,
+        "materials": 84
+      },
+      "sim": {
+        "vehicles": 477,
+        "people": 455,
+        "propsDrawn": 615,
+        "lod": {
+          "full": 6,
+          "L2": 14,
+          "L3": 64,
+          "L4": 18,
+          "off": 0,
+          "tris": 505338,
+          "files": 96
+        },
+        "corridorLeg": null
+      },
+      "evidence": {
+        "ok": true,
+        "file": "evidence\\phase2\\bench_fifth_ave_34th.png",
+        "bytes": 405631
+      },
+      "frameHealth": {
+        "w": 1280,
+        "h": 720,
+        "meanLuma": 59.81,
+        "stddev": 45.07,
+        "distinctColors8": 13504,
+        "distinctColors4": 185,
+        "lumaMin": 0,
+        "lumaMax": 209,
+        "dead": false,
+        "contextLost": false
+      },
+      "evidenceSha": "81feacc560d990e3045d6ac0e55a9c2846f5f66dc38b2b099715f9d5df6097e5"
+    },
+    {
+      "name": "bench_west_village",
+      "placement": {
+        "x": -2923.85,
+        "y": 13.9,
+        "z": 5305.4
+      },
+      "measure": {
+        "label": "bench_west_village",
+        "camera": {
+          "x": -2923.85,
+          "y": 13.8995,
+          "z": 5305.4
+        },
+        "dims": {
+          "width": 1280,
+          "height": 720,
+          "pixelRatio": 1
+        },
+        "perFrame": {
+          "calls": 92,
+          "triangles": 909518,
+          "points": 0,
+          "lines": 0
+        },
+        "geometries": 225,
+        "textures": 2,
+        "programs": 14,
+        "cpuMs": {
+          "n": 10,
+          "median": 0.2833,
+          "p95": 0.355,
+          "mean": 0.2983,
+          "kind": "main-thread renderer.render() wall time; command submission, rasterization deferred to the GPU process"
+        },
+        "rasterMs": {
+          "n": 9,
+          "median": 3.2,
+          "p95": 34.34,
+          "mean": 8.8667,
+          "kind": "render + readPixels per frame; forces the SwiftShader rasterizer to finish synchronously (includes the ~3.7 MB readback)"
+        },
+        "gpuMs": null,
+        "gpuTimer": "EXT_disjoint_timer_query_webgl2",
+        "gpuFault": null,
+        "gpuDropped": {
+          "reason": "EXT_disjoint_timer_query_webgl2 exposed but queries never became QUERY_RESULT_AVAILABLE (SwiftShader)"
+        },
+        "memory": {
+          "webgl1": {
+            "geometries": 225,
+            "textures": 2
+          },
+          "performance": {
+            "usedJSHeapMB": 265.1093,
+            "totalJSHeapMB": 333.5089
+          }
+        },
+        "software": "webgl2",
+        "note": "gpuMs only when EXT_disjoint_timer_query_webgl2 exists; software-GL times are not hardware-GPU numbers"
+      },
+      "payload": {
+        "worldMB": 12.7953,
+        "streetsMB": 2.7307,
+        "lodMB": 12.9239,
+        "totalMB": 28.4499,
+        "lodFiles": 172,
+        "residentTiles": 22,
+        "streetTiles": 8
+      },
+      "scene": {
+        "objects": 679,
+        "meshes": 401,
+        "instancedMeshes": 27,
+        "instances": 2192,
+        "triangles": 2798524,
+        "geometries": 396,
+        "materials": 71
+      },
+      "sim": {
+        "vehicles": 443,
+        "people": 205,
+        "propsDrawn": 1458,
+        "lod": {
+          "full": 4,
+          "L2": 14,
+          "L3": 56,
+          "L4": 28,
+          "off": 0,
+          "tris": 405339,
+          "files": 98
+        },
+        "corridorLeg": null
+      },
+      "evidence": {
+        "ok": true,
+        "file": "evidence\\phase2\\bench_west_village.png",
+        "bytes": 209146
+      },
+      "frameHealth": {
+        "w": 1280,
+        "h": 720,
+        "meanLuma": 28.9,
+        "stddev": 46.66,
+        "distinctColors8": 3250,
+        "distinctColors4": 122,
+        "lumaMin": 0,
+        "lumaMax": 206,
+        "dead": false,
+        "contextLost": false
+      },
+      "evidenceSha": "b8e534ff18494c38725c3f1aa266f54742dae7d2e15986c49d113ddbd901a7de"
+    },
+    {
+      "name": "bench_harlem_rowhouses",
+      "placement": {
+        "x": 1695.7,
+        "y": 13.9,
+        "z": -3235.1
+      },
+      "measure": {
+        "label": "bench_harlem_rowhouses",
+        "camera": {
+          "x": 1695.7,
+          "y": 13.9002,
+          "z": -3235.1
+        },
+        "dims": {
+          "width": 1280,
+          "height": 720,
+          "pixelRatio": 1
+        },
+        "perFrame": {
+          "calls": 94,
+          "triangles": 888986,
+          "points": 0,
+          "lines": 0
+        },
+        "geometries": 218,
+        "textures": 2,
+        "programs": 14,
+        "cpuMs": {
+          "n": 10,
+          "median": 0.2833,
+          "p95": 0.3625,
+          "mean": 0.29,
+          "kind": "main-thread renderer.render() wall time; command submission, rasterization deferred to the GPU process"
+        },
+        "rasterMs": {
+          "n": 9,
+          "median": 1.3,
+          "p95": 2.24,
+          "mean": 1.5111,
+          "kind": "render + readPixels per frame; forces the SwiftShader rasterizer to finish synchronously (includes the ~3.7 MB readback)"
+        },
+        "gpuMs": null,
+        "gpuTimer": "EXT_disjoint_timer_query_webgl2",
+        "gpuFault": null,
+        "gpuDropped": {
+          "reason": "EXT_disjoint_timer_query_webgl2 exposed but queries never became QUERY_RESULT_AVAILABLE (SwiftShader)"
+        },
+        "memory": {
+          "webgl1": {
+            "geometries": 218,
+            "textures": 2
+          },
+          "performance": {
+            "usedJSHeapMB": 290.7629,
+            "totalJSHeapMB": 334.524
+          }
+        },
+        "software": "webgl2",
+        "note": "gpuMs only when EXT_disjoint_timer_query_webgl2 exists; software-GL times are not hardware-GPU numbers"
+      },
+      "payload": {
+        "worldMB": 11.226,
+        "streetsMB": 2.313,
+        "lodMB": 13.8555,
+        "totalMB": 27.3944,
+        "lodFiles": 192,
+        "residentTiles": 18,
+        "streetTiles": 8
+      },
+      "scene": {
+        "objects": 639,
+        "meshes": 372,
+        "instancedMeshes": 27,
+        "instances": 1605,
+        "triangles": 2671182,
+        "geometries": 367,
+        "materials": 76
+      },
+      "sim": {
+        "vehicles": 364,
+        "people": 88,
+        "propsDrawn": 1070,
+        "lod": {
+          "full": 4,
+          "L2": 11,
+          "L3": 33,
+          "L4": 54,
+          "off": 0,
+          "tris": 343098,
+          "files": 98
+        },
+        "corridorLeg": null
+      },
+      "evidence": {
+        "ok": true,
+        "file": "evidence\\phase2\\bench_harlem_rowhouses.png",
+        "bytes": 272116
+      },
+      "frameHealth": {
+        "w": 1280,
+        "h": 720,
+        "meanLuma": 78.16,
+        "stddev": 51.41,
+        "distinctColors8": 8429,
+        "distinctColors4": 212,
+        "lumaMin": 0,
+        "lumaMax": 208,
+        "dead": false,
+        "contextLost": false
+      },
+      "evidenceSha": "fa9215ee0a8add4d192d0280bb65377b59a8aea5f2b8a77c6bf3f4b8d5ea8e78"
+    },
+    {
+      "name": "bench_fidi_canyon",
+      "placement": {
+        "x": -3545.7,
+        "y": 13.9,
+        "z": 8093.6
+      },
+      "measure": {
+        "label": "bench_fidi_canyon",
+        "camera": {
+          "x": -3545.7,
+          "y": 13.8997,
+          "z": 8093.6
+        },
+        "dims": {
+          "width": 1280,
+          "height": 720,
+          "pixelRatio": 1
+        },
+        "perFrame": {
+          "calls": 89,
+          "triangles": 781117,
+          "points": 0,
+          "lines": 0
+        },
+        "geometries": 224,
+        "textures": 2,
+        "programs": 14,
+        "cpuMs": {
+          "n": 10,
+          "median": 0.2667,
+          "p95": 0.3475,
+          "mean": 0.2767,
+          "kind": "main-thread renderer.render() wall time; command submission, rasterization deferred to the GPU process"
+        },
+        "rasterMs": {
+          "n": 9,
+          "median": 3.5,
+          "p95": 27.38,
+          "mean": 7.6667,
+          "kind": "render + readPixels per frame; forces the SwiftShader rasterizer to finish synchronously (includes the ~3.7 MB readback)"
+        },
+        "gpuMs": null,
+        "gpuTimer": "EXT_disjoint_timer_query_webgl2",
+        "gpuFault": null,
+        "gpuDropped": {
+          "reason": "EXT_disjoint_timer_query_webgl2 exposed but queries never became QUERY_RESULT_AVAILABLE (SwiftShader)"
+        },
+        "memory": {
+          "webgl1": {
+            "geometries": 224,
+            "textures": 2
+          },
+          "performance": {
+            "usedJSHeapMB": 230.6182,
+            "totalJSHeapMB": 300.4961
+          }
+        },
+        "software": "webgl2",
+        "note": "gpuMs only when EXT_disjoint_timer_query_webgl2 exists; software-GL times are not hardware-GPU numbers"
+      },
+      "payload": {
+        "worldMB": 7.5557,
+        "streetsMB": 1.3694,
+        "lodMB": 13.8571,
+        "totalMB": 22.7822,
+        "lodFiles": 193,
+        "residentTiles": 19,
+        "streetTiles": 7
+      },
+      "scene": {
+        "objects": 657,
+        "meshes": 374,
+        "instancedMeshes": 27,
+        "instances": 1892,
+        "triangles": 2246670,
+        "geometries": 369,
+        "materials": 47
+      },
+      "sim": {
+        "vehicles": 553,
+        "people": 595,
+        "propsDrawn": 628,
+        "lod": {
+          "full": 6,
+          "L2": 13,
+          "L3": 42,
+          "L4": 41,
+          "off": 0,
+          "tris": 369787,
+          "files": 96
+        },
+        "corridorLeg": null
+      },
+      "evidence": {
+        "ok": true,
+        "file": "evidence\\phase2\\bench_fidi_canyon.png",
+        "bytes": 475990
+      },
+      "frameHealth": {
+        "w": 1280,
+        "h": 720,
+        "meanLuma": 60.23,
+        "stddev": 47.62,
+        "distinctColors8": 14492,
+        "distinctColors4": 237,
+        "lumaMin": 0,
+        "lumaMax": 195,
+        "dead": false,
+        "contextLost": false
+      },
+      "evidenceSha": "b39dc386353ef1a0b3a217e999d3cd53562155336d2679a312f76075df185e67"
+    },
+    {
+      "name": "bench_soho_castiron",
+      "placement": {
+        "x": -2765.55,
+        "y": 13.9,
+        "z": 6197.5
+      },
+      "measure": {
+        "label": "bench_soho_castiron",
+        "camera": {
+          "x": -2765.55,
+          "y": 13.9001,
+          "z": 6197.5
+        },
+        "dims": {
+          "width": 1280,
+          "height": 720,
+          "pixelRatio": 1
+        },
+        "perFrame": {
+          "calls": 92,
+          "triangles": 1016980,
+          "points": 0,
+          "lines": 0
+        },
+        "geometries": 258,
+        "textures": 2,
+        "programs": 14,
+        "cpuMs": {
+          "n": 10,
+          "median": 0.3,
+          "p95": 0.3825,
+          "mean": 0.31,
+          "kind": "main-thread renderer.render() wall time; command submission, rasterization deferred to the GPU process"
+        },
+        "rasterMs": {
+          "n": 9,
+          "median": 2.1,
+          "p95": 2.78,
+          "mean": 2.1111,
+          "kind": "render + readPixels per frame; forces the SwiftShader rasterizer to finish synchronously (includes the ~3.7 MB readback)"
+        },
+        "gpuMs": null,
+        "gpuTimer": "EXT_disjoint_timer_query_webgl2",
+        "gpuFault": null,
+        "gpuDropped": {
+          "reason": "EXT_disjoint_timer_query_webgl2 exposed but queries never became QUERY_RESULT_AVAILABLE (SwiftShader)"
+        },
+        "memory": {
+          "webgl1": {
+            "geometries": 258,
+            "textures": 2
+          },
+          "performance": {
+            "usedJSHeapMB": 266.2557,
+            "totalJSHeapMB": 333.8049
+          }
+        },
+        "software": "webgl2",
+        "note": "gpuMs only when EXT_disjoint_timer_query_webgl2 exists; software-GL times are not hardware-GPU numbers"
+      },
+      "payload": {
+        "worldMB": 11.4133,
+        "streetsMB": 2.6351,
+        "lodMB": 13.882,
+        "totalMB": 27.9303,
+        "lodFiles": 194,
+        "residentTiles": 22,
+        "streetTiles": 9
+      },
+      "scene": {
+        "objects": 715,
+        "meshes": 414,
+        "instancedMeshes": 27,
+        "instances": 1761,
+        "triangles": 2747002,
+        "geometries": 409,
+        "materials": 62
+      },
+      "sim": {
+        "vehicles": 517,
+        "people": 308,
+        "propsDrawn": 848,
+        "lod": {
+          "full": 6,
+          "L2": 13,
+          "L3": 53,
+          "L4": 30,
+          "off": 0,
+          "tris": 355661,
+          "files": 96
+        },
+        "corridorLeg": null
+      },
+      "evidence": {
+        "ok": true,
+        "file": "evidence\\phase2\\bench_soho_castiron.png",
+        "bytes": 235218
+      },
+      "frameHealth": {
+        "w": 1280,
+        "h": 720,
+        "meanLuma": 28.74,
+        "stddev": 42.59,
+        "distinctColors8": 6746,
+        "distinctColors4": 137,
+        "lumaMin": 0,
+        "lumaMax": 199,
+        "dead": false,
+        "contextLost": false
+      },
+      "evidenceSha": "d36a1c7973579bfbd0d62d559f635f229c9650dc2b37138704d962523668fc49"
+    },
+    {
+      "name": "bench_floor45",
+      "placement": {
+        "x": -2333.39,
+        "y": 198.22,
+        "z": 1820.54
+      },
+      "measure": {
+        "label": "bench_floor45",
+        "camera": {
+          "x": -2333.3943,
+          "y": 198.22,
+          "z": 1820.5393
+        },
+        "dims": {
+          "width": 1280,
+          "height": 720,
+          "pixelRatio": 1
+        },
+        "perFrame": {
+          "calls": 124,
+          "triangles": 982015,
+          "points": 0,
+          "lines": 0
+        },
+        "geometries": 253,
+        "textures": 2,
+        "programs": 14,
+        "cpuMs": {
+          "n": 10,
+          "median": 0.35,
+          "p95": 0.4492,
+          "mean": 0.3617,
+          "kind": "main-thread renderer.render() wall time; command submission, rasterization deferred to the GPU process"
+        },
+        "rasterMs": {
+          "n": 9,
+          "median": 1.9,
+          "p95": 2.76,
+          "mean": 2,
+          "kind": "render + readPixels per frame; forces the SwiftShader rasterizer to finish synchronously (includes the ~3.7 MB readback)"
+        },
+        "gpuMs": null,
+        "gpuTimer": "EXT_disjoint_timer_query_webgl2",
+        "gpuFault": null,
+        "gpuDropped": {
+          "reason": "EXT_disjoint_timer_query_webgl2 exposed but queries never became QUERY_RESULT_AVAILABLE (SwiftShader)"
+        },
+        "memory": {
+          "webgl1": {
+            "geometries": 253,
+            "textures": 2
+          },
+          "performance": {
+            "usedJSHeapMB": 299.8631,
+            "totalJSHeapMB": 364.1629
+          }
+        },
+        "software": "webgl2",
+        "note": "gpuMs only when EXT_disjoint_timer_query_webgl2 exists; software-GL times are not hardware-GPU numbers"
+      },
+      "payload": {
+        "worldMB": 13.4297,
+        "streetsMB": 1.9479,
+        "lodMB": 13.882,
+        "totalMB": 29.2595,
+        "lodFiles": 194,
+        "residentTiles": 22,
+        "streetTiles": 7
+      },
+      "scene": {
+        "objects": 720,
+        "meshes": 422,
+        "instancedMeshes": 27,
+        "instances": 1630,
+        "triangles": 2865570,
+        "geometries": 417,
+        "materials": 72
+      },
+      "sim": {
+        "vehicles": 531,
+        "people": 63,
+        "propsDrawn": 959,
+        "lod": {
+          "full": 4,
+          "L2": 17,
+          "L3": 55,
+          "L4": 26,
+          "off": 0,
+          "tris": 577937,
+          "files": 98
+        },
+        "corridorLeg": null
+      },
+      "evidence": {
+        "ok": true,
+        "file": "evidence\\phase2\\bench_floor45.png",
+        "bytes": 229893
+      },
+      "frameHealth": {
+        "w": 1280,
+        "h": 720,
+        "meanLuma": 69.95,
+        "stddev": 51.17,
+        "distinctColors8": 6522,
+        "distinctColors4": 152,
+        "lumaMin": 5,
+        "lumaMax": 240,
+        "dead": false,
+        "contextLost": false
+      },
+      "evidenceSha": "408864416c2d1703c4db5f9cddf558e456b959819de8cf80bc65eedcf01c0e69"
+    },
+    {
+      "name": "bench_corridor_drive",
+      "placement": {
+        "x": -1586.11,
+        "y": 13.09,
+        "z": 2628.79
+      },
+      "measure": {
+        "label": "bench_corridor_drive",
+        "camera": {
+          "x": -1586.3761,
+          "y": 13.09,
+          "z": 2629.2598
+        },
+        "dims": {
+          "width": 1280,
+          "height": 720,
+          "pixelRatio": 1
+        },
+        "perFrame": {
+          "calls": 105,
+          "triangles": 830575,
+          "points": 0,
+          "lines": 0
+        },
+        "geometries": 278,
+        "textures": 2,
+        "programs": 14,
+        "cpuMs": {
+          "n": 10,
+          "median": 0.2833,
+          "p95": 0.4292,
+          "mean": 0.2917,
+          "kind": "main-thread renderer.render() wall time; command submission, rasterization deferred to the GPU process"
+        },
+        "rasterMs": {
+          "n": 9,
+          "median": 1.8,
+          "p95": 2.2,
+          "mean": 1.8222,
+          "kind": "render + readPixels per frame; forces the SwiftShader rasterizer to finish synchronously (includes the ~3.7 MB readback)"
+        },
+        "gpuMs": null,
+        "gpuTimer": "EXT_disjoint_timer_query_webgl2",
+        "gpuFault": null,
+        "gpuDropped": {
+          "reason": "EXT_disjoint_timer_query_webgl2 exposed but queries never became QUERY_RESULT_AVAILABLE (SwiftShader)"
+        },
+        "memory": {
+          "webgl1": {
+            "geometries": 278,
+            "textures": 2
+          },
+          "performance": {
+            "usedJSHeapMB": 295.7493,
+            "totalJSHeapMB": 368.1812
+          }
+        },
+        "software": "webgl2",
+        "note": "gpuMs only when EXT_disjoint_timer_query_webgl2 exists; software-GL times are not hardware-GPU numbers"
+      },
+      "payload": {
+        "worldMB": 13.4297,
+        "streetsMB": 1.9479,
+        "lodMB": 13.882,
+        "totalMB": 29.2595,
+        "lodFiles": 194,
+        "residentTiles": 22,
+        "streetTiles": 7
+      },
+      "scene": {
+        "objects": 720,
+        "meshes": 422,
+        "instancedMeshes": 27,
+        "instances": 1347,
+        "triangles": 2865570,
+        "geometries": 417,
+        "materials": 72
+      },
+      "sim": {
+        "vehicles": 443,
+        "people": 360,
+        "propsDrawn": 441,
+        "lod": {
+          "full": 4,
+          "L2": 16,
+          "L3": 57,
+          "L4": 25,
+          "off": 0,
+          "tris": 516565,
+          "files": 98
+        },
+        "corridorLeg": "drive_market"
+      },
+      "evidence": {
+        "ok": true,
+        "file": "evidence\\phase2\\bench_corridor_drive.png",
+        "bytes": 181163
+      },
+      "frameHealth": {
+        "w": 1280,
+        "h": 720,
+        "meanLuma": 45.32,
+        "stddev": 47.09,
+        "distinctColors8": 9034,
+        "distinctColors4": 178,
+        "lumaMin": 2,
+        "lumaMax": 226,
+        "dead": false,
+        "contextLost": false
+      },
+      "evidenceSha": "0eb7b2cbafaddec67fcbb3aff2c4736f6f2ee7fe40631e07a47a54b9629fb87a"
+    },
+    {
+      "name": "bench_battery_1500",
+      "placement": {
+        "x": -4029.26,
+        "y": 1500,
+        "z": 8812.75
+      },
+      "measure": {
+        "label": "bench_battery_1500",
+        "camera": {
+          "x": -4029.2568,
+          "y": 1500,
+          "z": 8812.7478
+        },
+        "dims": {
+          "width": 1280,
+          "height": 720,
+          "pixelRatio": 1
+        },
+        "perFrame": {
+          "calls": 51,
+          "triangles": 248691,
+          "points": 0,
+          "lines": 0
+        },
+        "geometries": 223,
+        "textures": 2,
+        "programs": 14,
+        "cpuMs": {
+          "n": 10,
+          "median": 0.2167,
+          "p95": 0.2883,
+          "mean": 0.2333,
+          "kind": "main-thread renderer.render() wall time; command submission, rasterization deferred to the GPU process"
+        },
+        "rasterMs": {
+          "n": 9,
+          "median": 1.4,
+          "p95": 2.28,
+          "mean": 1.5778,
+          "kind": "render + readPixels per frame; forces the SwiftShader rasterizer to finish synchronously (includes the ~3.7 MB readback)"
+        },
+        "gpuMs": null,
+        "gpuTimer": "EXT_disjoint_timer_query_webgl2",
+        "gpuFault": null,
+        "gpuDropped": {
+          "reason": "EXT_disjoint_timer_query_webgl2 exposed but queries never became QUERY_RESULT_AVAILABLE (SwiftShader)"
+        },
+        "memory": {
+          "webgl1": {
+            "geometries": 223,
+            "textures": 2
+          },
+          "performance": {
+            "usedJSHeapMB": 392.3752,
+            "totalJSHeapMB": 435.5182
+          }
+        },
+        "software": "webgl2",
+        "note": "gpuMs only when EXT_disjoint_timer_query_webgl2 exists; software-GL times are not hardware-GPU numbers"
+      },
+      "payload": {
+        "worldMB": 6.6108,
+        "streetsMB": 0.7209,
+        "lodMB": 13.8953,
+        "totalMB": 21.227,
+        "lodFiles": 198,
+        "residentTiles": 19,
+        "streetTiles": 7
+      },
+      "scene": {
+        "objects": 661,
+        "meshes": 374,
+        "instancedMeshes": 27,
+        "instances": 426,
+        "triangles": 2092012,
+        "geometries": 369,
+        "materials": 44
+      },
+      "sim": {
+        "vehicles": 175,
+        "people": 16,
+        "propsDrawn": 152,
+        "lod": {
+          "full": 4,
+          "L2": 11,
+          "L3": 40,
+          "L4": 47,
+          "off": 0,
+          "tris": 344752,
+          "files": 98
+        },
+        "corridorLeg": null
+      },
+      "evidence": {
+        "ok": true,
+        "file": "evidence\\phase2\\bench_battery_1500.png",
+        "bytes": 143748
+      },
+      "frameHealth": {
+        "w": 1280,
+        "h": 720,
+        "meanLuma": 87.17,
+        "stddev": 64.26,
+        "distinctColors8": 3243,
+        "distinctColors4": 92,
+        "lumaMin": 7,
+        "lumaMax": 199,
+        "dead": false,
+        "contextLost": false
+      },
+      "evidenceSha": "f9c3729c6a44e25053d53ac645e02a39eace94a9e99b3cce69ac1808fd694113"
+    }
+  ],
+  "claims": {
+    "streetLifeMs": {
+      "streetLifeMs": 0.6,
+      "vehicles": 430,
+      "people": 359,
+      "propsDrawn": 477,
+      "note": "one update(1/30) of each sim, CPU only, render excluded"
+    },
+    "walkCycle": {
+      "people": 359,
+      "controlPx": {
+        "gt6": 0,
+        "exact": 0
+      },
+      "phaseAdvancePx": {
+        "gt6": 14107,
+        "exact": 15350
+      },
+      "positionsFrozen": true,
+      "phaseRadiansPerTick": 0.1527,
+      "tolerance": "per-channel >6 like hq.verify, plus exact-match count"
+    },
+    "propsOnPavement": {
+      "sampled": 400,
+      "onPavement": 400,
+      "notOnPavement": 0,
+      "noSurface": 0,
+      "medianSurfaceErrM": 0,
+      "worstSurfaceErrM": 0.001,
+      "toleranceM": 0.05,
+      "pavementTopM": 12.2,
+      "propRecordsTotal": 112418
+    },
+    "audio": {
+      "silent": {
+        "rms": 0,
+        "centroid": 0
+      },
+      "trafficOnly": {
+        "rms": 0.0638,
+        "centroid": 542
+      },
+      "rainOnly": {
+        "rms": 0.13256,
+        "centroid": 1865
+      },
+      "sirenOnly": {
+        "rms": 0.03951,
+        "centroid": 3779
+      },
+      "hornOnly": {
+        "rms": 0.07684,
+        "centroid": 2534
+      }
+    },
+    "hq": {
+      "ok": true,
+      "checks": [
+        {
+          "name": "room inside shaft",
+          "ok": true,
+          "room_x": [
+            15.46,
+            39.5
+          ],
+          "shaft_x": [
+            15,
+            41
+          ],
+          "room_y": [
+            -16,
+            16.04
+          ],
+          "shaft_y": [
+            -16.5,
+            16.5
+          ],
+          "margin_m": 0.46
+        },
+        {
+          "name": "floor 45 height",
+          "ok": true,
+          "expected_m": 184.5,
+          "measured_m": 184.5,
+          "world_m": 196.5,
+          "schedule": "8.2 + 43 x 4.1"
+        },
+        {
+          "name": "suppression changes the frame",
+          "ok": true,
+          "pixels_changed": 17437,
+          "of": 921600,
+          "percent": 1.89,
+          "suppressed_bids": 1
+        }
+      ]
+    },
+    "corridor": {
+      "ok": true,
+      "checks": [
+        {
+          "name": "route market is a road route",
+          "ok": true,
+          "straight_m": 2252.3,
+          "driven_m": 2508.7,
+          "detour_ratio": 1.11,
+          "edges": 29,
+          "points": 32
+        },
+        {
+          "name": "route market stays on the road",
+          "ok": true,
+          "samples": 101,
+          "worst_offset_m": 0
+        },
+        {
+          "name": "route hq is a road route",
+          "ok": true,
+          "straight_m": 1850.6,
+          "driven_m": 2704.6,
+          "detour_ratio": 1.46,
+          "edges": 28,
+          "points": 45
+        },
+        {
+          "name": "route hq stays on the road",
+          "ok": true,
+          "samples": 109,
+          "worst_offset_m": 0
+        },
+        {
+          "name": "Shenron stands on the dais",
+          "ok": true,
+          "offset_m": 0,
+          "world_y": 196.92
+        },
+        {
+          "name": "every leg is reachable",
+          "ok": true,
+          "legs": 11,
+          "rooms": [
+            "penthouse",
+            "home_lobby",
+            "bodega",
+            "hq_lobby",
+            "hq_floor45"
+          ],
+          "missing": []
+        }
+      ]
+    },
+    "lodL2": {
+      "samples": 583,
+      "files": 22,
+      "failedFiles": 0,
+      "medianErrM": 0,
+      "p90ErrM": 0.0006,
+      "maxErrM": 22.8993,
+      "minErrM": -0.0051,
+      "worstSample": {
+        "err": 22.8993,
+        "tile": "-02_-03",
+        "bid": 20009,
+        "x": -1887.9,
+        "y": -3617,
+        "registryH": 3,
+        "hitY": 25.899,
+        "hitObject": "LOD_L2_-02_-03",
+        "buildingName": ""
+      },
+      "tiles": [
+        {
+          "key": "-02_-02",
+          "file": "-02_-02_L2.glb",
+          "buildingsInTile": 1813,
+          "samples": 27
+        },
+        {
+          "key": "-02_-03",
+          "file": "-02_-03_L2.glb",
+          "buildingsInTile": 1828,
+          "samples": 27
+        },
+        {
+          "key": "-02_-01",
+          "file": "-02_-01_L2.glb",
+          "buildingsInTile": 312,
+          "samples": 25
+        },
+        {
+          "key": "+00_-02",
+          "file": "+00_-02_L2.glb",
+          "buildingsInTile": 1503,
+          "samples": 27
+        },
+        {
+          "key": "+00_-03",
+          "file": "+00_-03_L2.glb",
+          "buildingsInTile": 138,
+          "samples": 27
+        },
+        {
+          "key": "-01_-04",
+          "file": "-01_-04_L2.glb",
+          "buildingsInTile": 914,
+          "samples": 26
+        },
+        {
+          "key": "-03_-04",
+          "file": "-03_-04_L2.glb",
+          "buildingsInTile": 2049,
+          "samples": 27
+        },
+        {
+          "key": "-01_+00",
+          "file": "-01_+00_L2.glb",
+          "buildingsInTile": 2145,
+          "samples": 26
+        },
+        {
+          "key": "+00_+00",
+          "file": "+00_+00_L2.glb",
+          "buildingsInTile": 914,
+          "samples": 27
+        },
+        {
+          "key": "-01_-05",
+          "file": "-01_-05_L2.glb",
+          "buildingsInTile": 1327,
+          "samples": 27
+        },
+        {
+          "key": "-03_-05",
+          "file": "-03_-05_L2.glb",
+          "buildingsInTile": 1368,
+          "samples": 27
+        },
+        {
+          "key": "+01_+00",
+          "file": "+01_+00_L2.glb",
+          "buildingsInTile": 1049,
+          "samples": 26
+        },
+        {
+          "key": "-02_-06",
+          "file": "-02_-06_L2.glb",
+          "buildingsInTile": 1037,
+          "samples": 27
+        },
+        {
+          "key": "-03_-06",
+          "file": "-03_-06_L2.glb",
+          "buildingsInTile": 863,
+          "samples": 27
+        },
+        {
+          "key": "+02_+00",
+          "file": "+02_+00_L2.glb",
+          "buildingsInTile": 115,
+          "samples": 28
+        },
+        {
+          "key": "+02_+01",
+          "file": "+02_+01_L2.glb",
+          "buildingsInTile": 407,
+          "samples": 28
+        },
+        {
+          "key": "-03_-07",
+          "file": "-03_-07_L2.glb",
+          "buildingsInTile": 131,
+          "samples": 27
+        },
+        {
+          "key": "+01_+03",
+          "file": "+01_+03_L2.glb",
+          "buildingsInTile": 2272,
+          "samples": 27
+        },
+        {
+          "key": "-04_-08",
+          "file": "-04_-08_L2.glb",
+          "buildingsInTile": 87,
+          "samples": 28
+        },
+        {
+          "key": "+01_+05",
+          "file": "+01_+05_L2.glb",
+          "buildingsInTile": 445,
+          "samples": 22
+        },
+        {
+          "key": "+02_+06",
+          "file": "+02_+06_L2.glb",
+          "buildingsInTile": 709,
+          "samples": 24
+        },
+        {
+          "key": "+02_+07",
+          "file": "+02_+07_L2.glb",
+          "buildingsInTile": 53,
+          "samples": 26
+        }
+      ],
+      "method": "raycast from registry height+30m onto the tile L2 glb"
+    }
+  },
+  "endedAt": "2026-08-06T05:45:12.086Z",
+  "evidenceDuplicates": []
+}

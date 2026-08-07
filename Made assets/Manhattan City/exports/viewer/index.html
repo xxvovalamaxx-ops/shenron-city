@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Manhattan world — three.js viewer</title>
+<style>
+  html,body{margin:0;height:100%;background:#0d1116;color:#c9d4e0;
+            font:13px/1.5 ui-monospace,SFMono-Regular,Menlo,monospace;overflow:hidden}
+  #c{display:block;width:100%;height:100%}
+  #hud{position:fixed;top:12px;left:12px;background:rgba(10,14,19,.86);
+       border:1px solid #223040;border-radius:8px;padding:12px 14px;max-width:380px}
+  #hud h1{margin:0 0 8px;font-size:13px;color:#7fd4ff;letter-spacing:.04em}
+  .row{display:flex;justify-content:space-between;gap:16px}
+  .k{color:#6b8199}.v{color:#e8f0f8}
+  #pick{margin-top:10px;padding-top:10px;border-top:1px solid #223040;display:none}
+  #pick .t{color:#ffd479;margin-bottom:4px}
+  #status{position:fixed;bottom:12px;left:12px;color:#6b8199}
+  .ok{color:#6ee7a8}.bad{color:#ff8080}
+</style>
+</head>
+<body>
+<canvas id="c"></canvas>
+<div id="hud">
+  <h1>MANHATTAN — three.js runtime check</h1>
+  <div class="row"><span class="k">GLB</span><span class="v" id="s-size">…</span></div>
+  <div class="row"><span class="k">meshes</span><span class="v" id="s-mesh">…</span></div>
+  <div class="row"><span class="k">triangles</span><span class="v" id="s-tri">…</span></div>
+  <div class="row"><span class="k">COLOR_0</span><span class="v" id="s-col">…</span></div>
+  <div class="row"><span class="k">_BID</span><span class="v" id="s-bid">…</span></div>
+  <div class="row"><span class="k">distinct bids</span><span class="v" id="s-nbid">…</span></div>
+  <div class="row"><span class="k">load time</span><span class="v" id="s-time">…</span></div>
+  <div id="pick">
+    <div class="t">picked building</div>
+    <div class="row"><span class="k">bid</span><span class="v" id="p-bid">–</span></div>
+    <div class="row"><span class="k">name</span><span class="v" id="p-name">–</span></div>
+    <div class="row"><span class="k">address</span><span class="v" id="p-addr">–</span></div>
+    <div class="row"><span class="k">district</span><span class="v" id="p-dist">–</span></div>
+    <div class="row"><span class="k">height</span><span class="v" id="p-h">–</span></div>
+    <div class="row"><span class="k">source</span><span class="v" id="p-src">–</span></div>
+    <div class="row"><span class="k">osm way</span><span class="v" id="p-osm">–</span></div>
+  </div>
+</div>
+<div id="status">loading…</div>
+
+<script type="importmap">
+{ "imports": {
+  "three": "https://unpkg.com/three@0.169.0/build/three.module.js",
+  "three/addons/": "https://unpkg.com/three@0.169.0/examples/jsm/"
+}}
+</script>
+<script type="module">
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { GLTFLoader }    from 'three/addons/loaders/GLTFLoader.js';
+import { DRACOLoader }   from 'three/addons/loaders/DRACOLoader.js';
+
+const $ = id => document.getElementById(id);
+const status = m => $('status').innerHTML = m;
+
+const renderer = new THREE.WebGLRenderer({canvas:$('c'), antialias:true});
+renderer.setPixelRatio(Math.min(devicePixelRatio,2));
+renderer.setSize(innerWidth, innerHeight);
+renderer.toneMapping = THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure = 1.15;
+
+const scene = new THREE.Scene();
+scene.background = new THREE.Color(0x0d1116);
+scene.fog = new THREE.Fog(0x0d1116, 6000, 34000);
+
+const camera = new THREE.PerspectiveCamera(45, innerWidth/innerHeight, 5, 200000);
+camera.position.set(-6000, 4200, -12000);
+
+const controls = new OrbitControls(camera, renderer.domElement);
+controls.target.set(0, 0, 1500);
+controls.enableDamping = true;
+controls.dampingFactor = 0.06;
+controls.maxDistance = 60000;
+
+scene.add(new THREE.HemisphereLight(0xbcd6ff, 0x2a2622, 1.5));
+const sun = new THREE.DirectionalLight(0xfff0d8, 2.4);
+sun.position.set(-8000, 9000, -6000);
+scene.add(sun);
+
+// ---- manifest (lazy, for the picking panel) --------------------------------
+let manifest = null;
+fetch('../building_manifest.csv').then(r => r.ok ? r.text() : null).then(txt => {
+  if (!txt) return;
+  const lines = txt.split('\n');
+  const cols = lines[0].split(',');
+  const ix = n => cols.indexOf(n);
+  const m = new Map();
+  for (let i = 1; i < lines.length; i++) {
+    if (!lines[i]) continue;
+    const f = lines[i].split(',');
+    m.set(+f[ix('bid')], {
+      name: f[ix('name')], addr: f[ix('addr')], district: f[ix('district')],
+      h: f[ix('height_m')], src: f[ix('height_source')], osm: f[ix('osm_way_id')]
+    });
+  }
+  manifest = m;
+  console.log('[manifest] loaded', m.size, 'rows');
+}).catch(()=>{});
+
+// ---- load the GLB ----------------------------------------------------------
+const draco = new DRACOLoader();
+draco.setDecoderPath('https://unpkg.com/three@0.169.0/examples/jsm/libs/draco/');
+const loader = new GLTFLoader();
+loader.setDRACOLoader(draco);
+
+const t0 = performance.now();
+loader.load('../manhattan_world.glb', gltf => {
+  const dt = performance.now() - t0;
+  let meshes = 0, tris = 0, hasCol = false, hasBid = false;
+  const bids = new Set();
+
+  gltf.scene.traverse(o => {
+    if (!o.isMesh) return;
+    meshes++;
+    const g = o.geometry;
+    tris += (g.index ? g.index.count : g.attributes.position.count) / 3;
+    if (g.attributes.color) hasCol = true;
+    const bid = g.attributes._bid || g.attributes._BID;
+    if (bid) {
+      hasBid = true;
+      const a = bid.array;
+      for (let i = 0; i < a.length; i += Math.max(1, (a.length/64)|0)) bids.add(a[i]);
+    }
+    o.material = new THREE.MeshLambertMaterial({
+      vertexColors: !!g.attributes.color,
+      color: g.attributes.color ? 0xffffff : 0x8a8f96
+    });
+  });
+
+  scene.add(gltf.scene);
+  $('s-size').textContent = '26.4 MB (draco)';
+  $('s-mesh').textContent = meshes.toLocaleString();
+  $('s-tri').textContent  = Math.round(tris).toLocaleString();
+  $('s-col').innerHTML = hasCol ? '<span class=ok>present</span>'
+                                : '<span class=bad>MISSING</span>';
+  $('s-bid').innerHTML = hasBid ? '<span class=ok>present</span>'
+                                : '<span class=bad>MISSING</span>';
+  $('s-nbid').textContent = hasBid ? (bids.size + ' sampled') : '–';
+  $('s-time').textContent = (dt/1000).toFixed(2) + ' s';
+  status('<span class=ok>GLB loaded OK</span> — drag to orbit, click a building');
+  window.__loaded = {meshes, tris: Math.round(tris), hasCol, hasBid, ms: Math.round(dt)};
+}, xhr => {
+  if (xhr.total) status('loading ' + ((xhr.loaded/xhr.total)*100|0) + '%');
+}, err => {
+  status('<span class=bad>LOAD FAILED: ' + err + '</span>');
+  window.__loaded = {error: String(err)};
+});
+
+// ---- picking ---------------------------------------------------------------
+const ray = new THREE.Raycaster(), mouse = new THREE.Vector2();
+renderer.domElement.addEventListener('click', e => {
+  mouse.x = (e.clientX/innerWidth)*2 - 1;
+  mouse.y = -(e.clientY/innerHeight)*2 + 1;
+  ray.setFromCamera(mouse, camera);
+  const hit = ray.intersectObjects(scene.children, true)[0];
+  if (!hit || !hit.face) return;
+  const g = hit.object.geometry;
+  const attr = g.attributes._bid || g.attributes._BID;
+  if (!attr) return;
+  const bid = Math.round(attr.getX(hit.face.a));
+  $('pick').style.display = 'block';
+  $('p-bid').textContent = bid;
+  const r = manifest && manifest.get(bid);
+  $('p-name').textContent = r ? (r.name || '(unnamed)') : '…';
+  $('p-addr').textContent = r ? (r.addr || '–') : '…';
+  $('p-dist').textContent = r ? r.district : '…';
+  $('p-h').textContent    = r ? r.h + ' m' : '…';
+  $('p-src').textContent  = r ? r.src : '…';
+  $('p-osm').textContent  = r ? r.osm : '…';
+});
+
+addEventListener('resize', () => {
+  camera.aspect = innerWidth/innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(innerWidth, innerHeight);
+});
+
+(function loop(){ requestAnimationFrame(loop); controls.update(); renderer.render(scene,camera); })();
+</script>
+</body>
+</html>

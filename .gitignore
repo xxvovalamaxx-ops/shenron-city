@@ -19,8 +19,9 @@ Thumbs.db
 .vscode/*
 !.vscode/extensions.json
 
-# Local launcher config â€” hardcodes absolute machine paths
-.claude/launch.json
+# Local launcher config â€” hardcodes absolute machine paths. Matched at any
+# depth: nested authoring projects carry their own .claude/ too.
+**/.claude/launch.json
 
 # Large source assets belong in Git LFS, not here. See docs/ASSETS.md before
 # committing the first .blend / .psd / raw texture.
@@ -52,8 +53,14 @@ Thumbs.db
 /.asset-restore-*/
 
 # Standalone local authoring projects, not part of the game repo.
-/Made assets/Manhattan City/
 /Made assets/brick building/
+
+# The Manhattan authoring project carries its own .gitignore, which already
+# excludes every regenerable output (blend/, playblasts/, renders/, archive/,
+# source_data dumps, exports/*.glb). Only ds/ is missing from it: those are
+# per-branch snapshot copies, ~2.9 GB, and belong here for the same reason
+# the repo-root /ds/ worktrees do.
+/Made assets/Manhattan City/ds/
 
 # Local-only shrine review material. The user's reference pixels and raw
 # grading intermediates are never redistributed.

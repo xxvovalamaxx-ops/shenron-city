@@ -1,0 +1,1926 @@
+{
+  "generatedAt": "2026-08-06T14:25:39.744Z",
+  "runner": "scripts/qa/framecheck-run.mjs",
+  "branch": "ds/2o-b-interiors",
+  "commit": "c78b7ad",
+  "app": "http://127.0.0.1:5174/",
+  "frames": {
+    "width": 1280,
+    "height": 720
+  },
+  "shots": {
+    "midtown_air": {
+      "kind": "aerial",
+      "startedAt": "2026-08-06T14:25:42.619Z",
+      "capture": {
+        "ok": true,
+        "file": "evidence\\phase2\\midtown_air.png",
+        "bytes": 1272112
+      },
+      "checks": {
+        "dead-frame": {
+          "id": "dead-frame",
+          "pass": true,
+          "measured": {
+            "stddev": [
+              46.303,
+              53.92,
+              63.061
+            ],
+            "stddevMax": 63.061,
+            "distinctColours": 179,
+            "distinctColours6bit": 2385,
+            "distinctColoursExact": 28360,
+            "meanLuminance": 0.09835
+          },
+          "threshold": "stddev > 8 per channel AND >= 200 distinct colours (6-bit quantised)"
+        },
+        "unlit-surface": {
+          "id": "unlit-surface",
+          "pass": null,
+          "applicable": false,
+          "measured": {
+            "lumTopBand": 0.31274,
+            "lumBottomBand": 0.06072,
+            "lumMiddleBand": 0.03943,
+            "lumMean": 0.09835,
+            "dimmest20Mean": 0.00228,
+            "brightest20Mean": 0.33529
+          },
+          "threshold": "interior: top-band mean < 0.02 linear while bottom band >= 0.1"
+        }
+      },
+      "audio": {
+        "id": "audio",
+        "available": true,
+        "silenceRms": 0,
+        "noiseRms": 0.20302,
+        "leftRms": 0.28712,
+        "rightRms": 0,
+        "asymRatio": 99,
+        "pass": true,
+        "measured": {
+          "available": true,
+          "silenceRms": 0,
+          "noiseRms": 0.20302,
+          "leftRms": 0.28712,
+          "rightRms": 0,
+          "asymRatio": 99
+        },
+        "threshold": "silence RMS exactly 0.00000; noise RMS > 0.01; panned-source left/right ratio >= 1.5"
+      },
+      "scene": {
+        "occlusion": {
+          "id": "occluded-view",
+          "pass": true,
+          "measured": {
+            "nearFraction": 0,
+            "nearHits": 0,
+            "total": 144,
+            "byRowBand": {
+              "top": 0,
+              "middle": 0,
+              "bottom": 0
+            },
+            "byColBand": {
+              "left": 0,
+              "centre": 0,
+              "right": 0
+            }
+          },
+          "threshold": "near-field (first hit < 1.5 m) fraction <= 0.05 for this shot kind"
+        },
+        "culled": {
+          "id": "culled-from-inside",
+          "rooms": [],
+          "unavailable": true,
+          "reason": "no visible rooms at this camera"
+        }
+      },
+      "size": {
+        "width": 1280,
+        "height": 720,
+        "pixels": 921600
+      },
+      "depthOcc": {
+        "unavailable": true,
+        "reason": "depth readback invalid",
+        "nonFinite": 0,
+        "outOfRange": 0,
+        "range": [
+          0,
+          0
+        ]
+      },
+      "stats": {
+        "triangles": 827623,
+        "calls": 86
+      },
+      "consoleErrors": [],
+      "failedRequests": [],
+      "warnings": [],
+      "captureBytesOnDisk": 1272112,
+      "checksPass": true,
+      "pass": true,
+      "durationMs": 1014
+    },
+    "skyline_from_east": {
+      "kind": "aerial",
+      "startedAt": "2026-08-06T14:25:43.633Z",
+      "capture": {
+        "ok": true,
+        "file": "evidence\\phase2\\skyline_from_east.png",
+        "bytes": 772628
+      },
+      "checks": {
+        "dead-frame": {
+          "id": "dead-frame",
+          "pass": true,
+          "measured": {
+            "stddev": [
+              48.357,
+              63.461,
+              79.413
+            ],
+            "stddevMax": 79.413,
+            "distinctColours": 154,
+            "distinctColours6bit": 2141,
+            "distinctColoursExact": 20084,
+            "meanLuminance": 0.18256
+          },
+          "threshold": "stddev > 8 per channel AND >= 200 distinct colours (6-bit quantised)"
+        },
+        "unlit-surface": {
+          "id": "unlit-surface",
+          "pass": null,
+          "applicable": false,
+          "measured": {
+            "lumTopBand": 0.38719,
+            "lumBottomBand": 0.04081,
+            "lumMiddleBand": 0.16161,
+            "lumMean": 0.18256,
+            "dimmest20Mean": 0.00987,
+            "brightest20Mean": 0.40041
+          },
+          "threshold": "interior: top-band mean < 0.02 linear while bottom band >= 0.1"
+        }
+      },
+      "audio": {
+        "id": "audio",
+        "available": true,
+        "silenceRms": 0,
+        "noiseRms": 0.20302,
+        "leftRms": 0.28712,
+        "rightRms": 0,
+        "asymRatio": 99,
+        "pass": true,
+        "measured": {
+          "available": true,
+          "silenceRms": 0,
+          "noiseRms": 0.20302,
+          "leftRms": 0.28712,
+          "rightRms": 0,
+          "asymRatio": 99
+        },
+        "threshold": "silence RMS exactly 0.00000; noise RMS > 0.01; panned-source left/right ratio >= 1.5"
+      },
+      "scene": {
+        "occlusion": {
+          "id": "occluded-view",
+          "pass": true,
+          "measured": {
+            "nearFraction": 0,
+            "nearHits": 0,
+            "total": 144,
+            "byRowBand": {
+              "top": 0,
+              "middle": 0,
+              "bottom": 0
+            },
+            "byColBand": {
+              "left": 0,
+              "centre": 0,
+              "right": 0
+            }
+          },
+          "threshold": "near-field (first hit < 1.5 m) fraction <= 0.05 for this shot kind"
+        },
+        "culled": {
+          "id": "culled-from-inside",
+          "rooms": [],
+          "unavailable": true,
+          "reason": "no visible rooms at this camera"
+        }
+      },
+      "size": {
+        "width": 1280,
+        "height": 720,
+        "pixels": 921600
+      },
+      "depthOcc": {
+        "unavailable": true,
+        "reason": "depth readback invalid",
+        "nonFinite": 0,
+        "outOfRange": 0,
+        "range": [
+          0,
+          0
+        ]
+      },
+      "stats": {
+        "triangles": 248247,
+        "calls": 62
+      },
+      "consoleErrors": [],
+      "failedRequests": [],
+      "warnings": [],
+      "captureBytesOnDisk": 772628,
+      "checksPass": true,
+      "pass": true,
+      "durationMs": 493
+    },
+    "downtown_air": {
+      "kind": "aerial",
+      "startedAt": "2026-08-06T14:25:44.126Z",
+      "capture": {
+        "ok": true,
+        "file": "evidence\\phase2\\downtown_air.png",
+        "bytes": 1061516
+      },
+      "checks": {
+        "dead-frame": {
+          "id": "dead-frame",
+          "pass": true,
+          "measured": {
+            "stddev": [
+              53.131,
+              61.593,
+              71.226
+            ],
+            "stddevMax": 71.226,
+            "distinctColours": 182,
+            "distinctColours6bit": 2656,
+            "distinctColoursExact": 28443,
+            "meanLuminance": 0.1174
+          },
+          "threshold": "stddev > 8 per channel AND >= 200 distinct colours (6-bit quantised)"
+        },
+        "unlit-surface": {
+          "id": "unlit-surface",
+          "pass": null,
+          "applicable": false,
+          "measured": {
+            "lumTopBand": 0.3674,
+            "lumBottomBand": 0.06316,
+            "lumMiddleBand": 0.05214,
+            "lumMean": 0.1174,
+            "dimmest20Mean": 0.00196,
+            "brightest20Mean": 0.3753
+          },
+          "threshold": "interior: top-band mean < 0.02 linear while bottom band >= 0.1"
+        }
+      },
+      "audio": {
+        "id": "audio",
+        "available": true,
+        "silenceRms": 0,
+        "noiseRms": 0.20302,
+        "leftRms": 0.28712,
+        "rightRms": 0,
+        "asymRatio": 99,
+        "pass": true,
+        "measured": {
+          "available": true,
+          "silenceRms": 0,
+          "noiseRms": 0.20302,
+          "leftRms": 0.28712,
+          "rightRms": 0,
+          "asymRatio": 99
+        },
+        "threshold": "silence RMS exactly 0.00000; noise RMS > 0.01; panned-source left/right ratio >= 1.5"
+      },
+      "scene": {
+        "occlusion": {
+          "id": "occluded-view",
+          "pass": true,
+          "measured": {
+            "nearFraction": 0,
+            "nearHits": 0,
+            "total": 144,
+            "byRowBand": {
+              "top": 0,
+              "middle": 0,
+              "bottom": 0
+            },
+            "byColBand": {
+              "left": 0,
+              "centre": 0,
+              "right": 0
+            }
+          },
+          "threshold": "near-field (first hit < 1.5 m) fraction <= 0.05 for this shot kind"
+        },
+        "culled": {
+          "id": "culled-from-inside",
+          "rooms": [],
+          "unavailable": true,
+          "reason": "no visible rooms at this camera"
+        }
+      },
+      "size": {
+        "width": 1280,
+        "height": 720,
+        "pixels": 921600
+      },
+      "depthOcc": {
+        "unavailable": true,
+        "reason": "depth readback invalid",
+        "nonFinite": 0,
+        "outOfRange": 0,
+        "range": [
+          0,
+          0
+        ]
+      },
+      "stats": {
+        "triangles": 877902,
+        "calls": 100
+      },
+      "consoleErrors": [],
+      "failedRequests": [],
+      "warnings": [],
+      "captureBytesOnDisk": 1061516,
+      "checksPass": true,
+      "pass": true,
+      "durationMs": 1052
+    },
+    "central_park_air": {
+      "kind": "aerial",
+      "startedAt": "2026-08-06T14:25:45.178Z",
+      "capture": {
+        "ok": true,
+        "file": "evidence\\phase2\\central_park_air.png",
+        "bytes": 1048338
+      },
+      "checks": {
+        "dead-frame": {
+          "id": "dead-frame",
+          "pass": true,
+          "measured": {
+            "stddev": [
+              47.854,
+              56.039,
+              75.684
+            ],
+            "stddevMax": 75.684,
+            "distinctColours": 210,
+            "distinctColours6bit": 2693,
+            "distinctColoursExact": 29640,
+            "meanLuminance": 0.13794
+          },
+          "threshold": "stddev > 8 per channel AND >= 200 distinct colours (6-bit quantised)"
+        },
+        "unlit-surface": {
+          "id": "unlit-surface",
+          "pass": null,
+          "applicable": false,
+          "measured": {
+            "lumTopBand": 0.37256,
+            "lumBottomBand": 0.04218,
+            "lumMiddleBand": 0.09165,
+            "lumMean": 0.13794,
+            "dimmest20Mean": 0.00681,
+            "brightest20Mean": 0.37666
+          },
+          "threshold": "interior: top-band mean < 0.02 linear while bottom band >= 0.1"
+        }
+      },
+      "audio": {
+        "id": "audio",
+        "available": true,
+        "silenceRms": 0,
+        "noiseRms": 0.20302,
+        "leftRms": 0.28712,
+        "rightRms": 0,
+        "asymRatio": 99,
+        "pass": true,
+        "measured": {
+          "available": true,
+          "silenceRms": 0,
+          "noiseRms": 0.20302,
+          "leftRms": 0.28712,
+          "rightRms": 0,
+          "asymRatio": 99
+        },
+        "threshold": "silence RMS exactly 0.00000; noise RMS > 0.01; panned-source left/right ratio >= 1.5"
+      },
+      "scene": {
+        "occlusion": {
+          "id": "occluded-view",
+          "pass": true,
+          "measured": {
+            "nearFraction": 0,
+            "nearHits": 0,
+            "total": 144,
+            "byRowBand": {
+              "top": 0,
+              "middle": 0,
+              "bottom": 0
+            },
+            "byColBand": {
+              "left": 0,
+              "centre": 0,
+              "right": 0
+            }
+          },
+          "threshold": "near-field (first hit < 1.5 m) fraction <= 0.05 for this shot kind"
+        },
+        "culled": {
+          "id": "culled-from-inside",
+          "rooms": [],
+          "unavailable": true,
+          "reason": "no visible rooms at this camera"
+        }
+      },
+      "size": {
+        "width": 1280,
+        "height": 720,
+        "pixels": 921600
+      },
+      "depthOcc": {
+        "unavailable": true,
+        "reason": "depth readback invalid",
+        "nonFinite": 0,
+        "outOfRange": 0,
+        "range": [
+          0,
+          0
+        ]
+      },
+      "stats": {
+        "triangles": 1133198,
+        "calls": 128
+      },
+      "consoleErrors": [],
+      "failedRequests": [],
+      "warnings": [],
+      "captureBytesOnDisk": 1048338,
+      "checksPass": true,
+      "pass": true,
+      "durationMs": 1130
+    },
+    "fifth_ave_34th": {
+      "kind": "street",
+      "startedAt": "2026-08-06T14:25:46.308Z",
+      "capture": {
+        "ok": true,
+        "file": "evidence\\phase2\\fifth_ave_34th.png",
+        "bytes": 403129
+      },
+      "checks": {
+        "dead-frame": {
+          "id": "dead-frame",
+          "pass": true,
+          "measured": {
+            "stddev": [
+              41.544,
+              46.691,
+              52.294
+            ],
+            "stddevMax": 52.294,
+            "distinctColours": 190,
+            "distinctColours6bit": 1882,
+            "distinctColoursExact": 13169,
+            "meanLuminance": 0.07721
+          },
+          "threshold": "stddev > 8 per channel AND >= 200 distinct colours (6-bit quantised)"
+        },
+        "unlit-surface": {
+          "id": "unlit-surface",
+          "pass": null,
+          "applicable": false,
+          "measured": {
+            "lumTopBand": 0.11915,
+            "lumBottomBand": 0.07671,
+            "lumMiddleBand": 0.06339,
+            "lumMean": 0.07721,
+            "dimmest20Mean": 0.00371,
+            "brightest20Mean": 0.25692
+          },
+          "threshold": "interior: top-band mean < 0.02 linear while bottom band >= 0.1"
+        }
+      },
+      "audio": {
+        "id": "audio",
+        "available": true,
+        "silenceRms": 0,
+        "noiseRms": 0.20302,
+        "leftRms": 0.28712,
+        "rightRms": 0,
+        "asymRatio": 99,
+        "pass": true,
+        "measured": {
+          "available": true,
+          "silenceRms": 0,
+          "noiseRms": 0.20302,
+          "leftRms": 0.28712,
+          "rightRms": 0,
+          "asymRatio": 99
+        },
+        "threshold": "silence RMS exactly 0.00000; noise RMS > 0.01; panned-source left/right ratio >= 1.5"
+      },
+      "scene": {
+        "occlusion": {
+          "id": "occluded-view",
+          "pass": true,
+          "measured": {
+            "nearFraction": 0,
+            "nearHits": 0,
+            "total": 144,
+            "byRowBand": {
+              "top": 0,
+              "middle": 0,
+              "bottom": 0
+            },
+            "byColBand": {
+              "left": 0,
+              "centre": 0,
+              "right": 0
+            }
+          },
+          "threshold": "near-field (first hit < 1.5 m) fraction <= 0.35 for this shot kind"
+        },
+        "culled": {
+          "id": "culled-from-inside",
+          "rooms": [],
+          "unavailable": true,
+          "reason": "no visible rooms at this camera"
+        }
+      },
+      "size": {
+        "width": 1280,
+        "height": 720,
+        "pixels": 921600
+      },
+      "depthOcc": {
+        "unavailable": true,
+        "reason": "depth readback invalid",
+        "nonFinite": 0,
+        "outOfRange": 0,
+        "range": [
+          0,
+          0
+        ]
+      },
+      "stats": {
+        "triangles": 897533,
+        "calls": 101
+      },
+      "consoleErrors": [],
+      "failedRequests": [],
+      "warnings": [],
+      "captureBytesOnDisk": 403129,
+      "checksPass": true,
+      "pass": true,
+      "durationMs": 1639
+    },
+    "times_square": {
+      "kind": "street",
+      "startedAt": "2026-08-06T14:25:47.947Z",
+      "capture": {
+        "ok": true,
+        "file": "evidence\\phase2\\times_square.png",
+        "bytes": 505457
+      },
+      "checks": {
+        "dead-frame": {
+          "id": "dead-frame",
+          "pass": true,
+          "measured": {
+            "stddev": [
+              51.749,
+              51.798,
+              53.167
+            ],
+            "stddevMax": 53.167,
+            "distinctColours": 248,
+            "distinctColours6bit": 2500,
+            "distinctColoursExact": 14586,
+            "meanLuminance": 0.07638
+          },
+          "threshold": "stddev > 8 per channel AND >= 200 distinct colours (6-bit quantised)"
+        },
+        "unlit-surface": {
+          "id": "unlit-surface",
+          "pass": null,
+          "applicable": false,
+          "measured": {
+            "lumTopBand": 0.07451,
+            "lumBottomBand": 0.11409,
+            "lumMiddleBand": 0.06443,
+            "lumMean": 0.07638,
+            "dimmest20Mean": 0.00402,
+            "brightest20Mean": 0.3011
+          },
+          "threshold": "interior: top-band mean < 0.02 linear while bottom band >= 0.1"
+        }
+      },
+      "audio": {
+        "id": "audio",
+        "available": true,
+        "silenceRms": 0,
+        "noiseRms": 0.20302,
+        "leftRms": 0.28712,
+        "rightRms": 0,
+        "asymRatio": 99,
+        "pass": true,
+        "measured": {
+          "available": true,
+          "silenceRms": 0,
+          "noiseRms": 0.20302,
+          "leftRms": 0.28712,
+          "rightRms": 0,
+          "asymRatio": 99
+        },
+        "threshold": "silence RMS exactly 0.00000; noise RMS > 0.01; panned-source left/right ratio >= 1.5"
+      },
+      "scene": {
+        "occlusion": {
+          "id": "occluded-view",
+          "pass": true,
+          "measured": {
+            "nearFraction": 0,
+            "nearHits": 0,
+            "total": 144,
+            "byRowBand": {
+              "top": 0,
+              "middle": 0,
+              "bottom": 0
+            },
+            "byColBand": {
+              "left": 0,
+              "centre": 0,
+              "right": 0
+            }
+          },
+          "threshold": "near-field (first hit < 1.5 m) fraction <= 0.35 for this shot kind"
+        },
+        "culled": {
+          "id": "culled-from-inside",
+          "rooms": [],
+          "unavailable": true,
+          "reason": "no visible rooms at this camera"
+        }
+      },
+      "size": {
+        "width": 1280,
+        "height": 720,
+        "pixels": 921600
+      },
+      "depthOcc": {
+        "unavailable": true,
+        "reason": "depth readback invalid",
+        "nonFinite": 0,
+        "outOfRange": 0,
+        "range": [
+          0,
+          0
+        ]
+      },
+      "stats": {
+        "triangles": 912204,
+        "calls": 90
+      },
+      "consoleErrors": [],
+      "failedRequests": [],
+      "warnings": [],
+      "captureBytesOnDisk": 505457,
+      "checksPass": true,
+      "pass": true,
+      "durationMs": 1337
+    },
+    "west_village": {
+      "kind": "street",
+      "startedAt": "2026-08-06T14:25:49.284Z",
+      "capture": {
+        "ok": true,
+        "file": "evidence\\phase2\\west_village.png",
+        "bytes": 212992
+      },
+      "checks": {
+        "dead-frame": {
+          "id": "dead-frame",
+          "pass": true,
+          "measured": {
+            "stddev": [
+              42.078,
+              47.578,
+              51.943
+            ],
+            "stddevMax": 51.943,
+            "distinctColours": 119,
+            "distinctColours6bit": 667,
+            "distinctColoursExact": 3178,
+            "meanLuminance": 0.04116
+          },
+          "threshold": "stddev > 8 per channel AND >= 200 distinct colours (6-bit quantised)"
+        },
+        "unlit-surface": {
+          "id": "unlit-surface",
+          "pass": null,
+          "applicable": false,
+          "measured": {
+            "lumTopBand": 0.06803,
+            "lumBottomBand": 0.05034,
+            "lumMiddleBand": 0.02914,
+            "lumMean": 0.04116,
+            "dimmest20Mean": 0.00196,
+            "brightest20Mean": 0.18705
+          },
+          "threshold": "interior: top-band mean < 0.02 linear while bottom band >= 0.1"
+        }
+      },
+      "audio": {
+        "id": "audio",
+        "available": true,
+        "silenceRms": 0,
+        "noiseRms": 0.20302,
+        "leftRms": 0.28712,
+        "rightRms": 0,
+        "asymRatio": 99,
+        "pass": true,
+        "measured": {
+          "available": true,
+          "silenceRms": 0,
+          "noiseRms": 0.20302,
+          "leftRms": 0.28712,
+          "rightRms": 0,
+          "asymRatio": 99
+        },
+        "threshold": "silence RMS exactly 0.00000; noise RMS > 0.01; panned-source left/right ratio >= 1.5"
+      },
+      "scene": {
+        "occlusion": {
+          "id": "occluded-view",
+          "pass": true,
+          "measured": {
+            "nearFraction": 0,
+            "nearHits": 0,
+            "total": 144,
+            "byRowBand": {
+              "top": 0,
+              "middle": 0,
+              "bottom": 0
+            },
+            "byColBand": {
+              "left": 0,
+              "centre": 0,
+              "right": 0
+            }
+          },
+          "threshold": "near-field (first hit < 1.5 m) fraction <= 0.35 for this shot kind"
+        },
+        "culled": {
+          "id": "culled-from-inside",
+          "rooms": [],
+          "unavailable": true,
+          "reason": "no visible rooms at this camera"
+        }
+      },
+      "size": {
+        "width": 1280,
+        "height": 720,
+        "pixels": 921600
+      },
+      "depthOcc": {
+        "unavailable": true,
+        "reason": "depth readback invalid",
+        "nonFinite": 0,
+        "outOfRange": 0,
+        "range": [
+          0,
+          0
+        ]
+      },
+      "stats": {
+        "triangles": 909598,
+        "calls": 92
+      },
+      "consoleErrors": [],
+      "failedRequests": [],
+      "warnings": [],
+      "captureBytesOnDisk": 212992,
+      "checksPass": true,
+      "pass": true,
+      "durationMs": 1676
+    },
+    "harlem_rowhouses": {
+      "kind": "street",
+      "startedAt": "2026-08-06T14:25:50.960Z",
+      "capture": {
+        "ok": true,
+        "file": "evidence\\phase2\\harlem_rowhouses.png",
+        "bytes": 289003
+      },
+      "checks": {
+        "dead-frame": {
+          "id": "dead-frame",
+          "pass": true,
+          "measured": {
+            "stddev": [
+              48.004,
+              52.216,
+              60.524
+            ],
+            "stddevMax": 60.524,
+            "distinctColours": 192,
+            "distinctColours6bit": 1678,
+            "distinctColoursExact": 8955,
+            "meanLuminance": 0.11915
+          },
+          "threshold": "stddev > 8 per channel AND >= 200 distinct colours (6-bit quantised)"
+        },
+        "unlit-surface": {
+          "id": "unlit-surface",
+          "pass": null,
+          "applicable": false,
+          "measured": {
+            "lumTopBand": 0.24496,
+            "lumBottomBand": 0.06884,
+            "lumMiddleBand": 0.09398,
+            "lumMean": 0.11915,
+            "dimmest20Mean": 0.00554,
+            "brightest20Mean": 0.36884
+          },
+          "threshold": "interior: top-band mean < 0.02 linear while bottom band >= 0.1"
+        }
+      },
+      "audio": {
+        "id": "audio",
+        "available": true,
+        "silenceRms": 0,
+        "noiseRms": 0.20302,
+        "leftRms": 0.28712,
+        "rightRms": 0,
+        "asymRatio": 99,
+        "pass": true,
+        "measured": {
+          "available": true,
+          "silenceRms": 0,
+          "noiseRms": 0.20302,
+          "leftRms": 0.28712,
+          "rightRms": 0,
+          "asymRatio": 99
+        },
+        "threshold": "silence RMS exactly 0.00000; noise RMS > 0.01; panned-source left/right ratio >= 1.5"
+      },
+      "scene": {
+        "occlusion": {
+          "id": "occluded-view",
+          "pass": true,
+          "measured": {
+            "nearFraction": 0,
+            "nearHits": 0,
+            "total": 144,
+            "byRowBand": {
+              "top": 0,
+              "middle": 0,
+              "bottom": 0
+            },
+            "byColBand": {
+              "left": 0,
+              "centre": 0,
+              "right": 0
+            }
+          },
+          "threshold": "near-field (first hit < 1.5 m) fraction <= 0.35 for this shot kind"
+        },
+        "culled": {
+          "id": "culled-from-inside",
+          "rooms": [],
+          "unavailable": true,
+          "reason": "no visible rooms at this camera"
+        }
+      },
+      "size": {
+        "width": 1280,
+        "height": 720,
+        "pixels": 921600
+      },
+      "depthOcc": {
+        "unavailable": true,
+        "reason": "depth readback invalid",
+        "nonFinite": 0,
+        "outOfRange": 0,
+        "range": [
+          0,
+          0
+        ]
+      },
+      "stats": {
+        "triangles": 888274,
+        "calls": 94
+      },
+      "consoleErrors": [],
+      "failedRequests": [],
+      "warnings": [],
+      "captureBytesOnDisk": 289003,
+      "checksPass": true,
+      "pass": true,
+      "durationMs": 2517
+    },
+    "fidi_canyon": {
+      "kind": "street",
+      "startedAt": "2026-08-06T14:25:53.477Z",
+      "capture": {
+        "ok": true,
+        "file": "evidence\\phase2\\fidi_canyon.png",
+        "bytes": 480358
+      },
+      "checks": {
+        "dead-frame": {
+          "id": "dead-frame",
+          "pass": true,
+          "measured": {
+            "stddev": [
+              51.917,
+              48.398,
+              48.142
+            ],
+            "stddevMax": 51.917,
+            "distinctColours": 223,
+            "distinctColours6bit": 2011,
+            "distinctColoursExact": 14274,
+            "meanLuminance": 0.08043
+          },
+          "threshold": "stddev > 8 per channel AND >= 200 distinct colours (6-bit quantised)"
+        },
+        "unlit-surface": {
+          "id": "unlit-surface",
+          "pass": null,
+          "applicable": false,
+          "measured": {
+            "lumTopBand": 0.1128,
+            "lumBottomBand": 0.06973,
+            "lumMiddleBand": 0.07321,
+            "lumMean": 0.08043,
+            "dimmest20Mean": 0.00196,
+            "brightest20Mean": 0.2158
+          },
+          "threshold": "interior: top-band mean < 0.02 linear while bottom band >= 0.1"
+        }
+      },
+      "audio": {
+        "id": "audio",
+        "available": true,
+        "silenceRms": 0,
+        "noiseRms": 0.20302,
+        "leftRms": 0.28712,
+        "rightRms": 0,
+        "asymRatio": 99,
+        "pass": true,
+        "measured": {
+          "available": true,
+          "silenceRms": 0,
+          "noiseRms": 0.20302,
+          "leftRms": 0.28712,
+          "rightRms": 0,
+          "asymRatio": 99
+        },
+        "threshold": "silence RMS exactly 0.00000; noise RMS > 0.01; panned-source left/right ratio >= 1.5"
+      },
+      "scene": {
+        "occlusion": {
+          "id": "occluded-view",
+          "pass": true,
+          "measured": {
+            "nearFraction": 0,
+            "nearHits": 0,
+            "total": 144,
+            "byRowBand": {
+              "top": 0,
+              "middle": 0,
+              "bottom": 0
+            },
+            "byColBand": {
+              "left": 0,
+              "centre": 0,
+              "right": 0
+            }
+          },
+          "threshold": "near-field (first hit < 1.5 m) fraction <= 0.35 for this shot kind"
+        },
+        "culled": {
+          "id": "culled-from-inside",
+          "rooms": [],
+          "unavailable": true,
+          "reason": "no visible rooms at this camera"
+        }
+      },
+      "size": {
+        "width": 1280,
+        "height": 720,
+        "pixels": 921600
+      },
+      "depthOcc": {
+        "unavailable": true,
+        "reason": "depth readback invalid",
+        "nonFinite": 0,
+        "outOfRange": 0,
+        "range": [
+          0,
+          0
+        ]
+      },
+      "stats": {
+        "triangles": 781901,
+        "calls": 89
+      },
+      "consoleErrors": [],
+      "failedRequests": [],
+      "warnings": [],
+      "captureBytesOnDisk": 480358,
+      "checksPass": true,
+      "pass": true,
+      "durationMs": 1503
+    },
+    "soho_castiron": {
+      "kind": "street",
+      "startedAt": "2026-08-06T14:25:54.980Z",
+      "capture": {
+        "ok": true,
+        "file": "evidence\\phase2\\soho_castiron.png",
+        "bytes": 233741
+      },
+      "checks": {
+        "dead-frame": {
+          "id": "dead-frame",
+          "pass": true,
+          "measured": {
+            "stddev": [
+              36.596,
+              43.622,
+              50.223
+            ],
+            "stddevMax": 50.223,
+            "distinctColours": 160,
+            "distinctColours6bit": 1233,
+            "distinctColoursExact": 6786,
+            "meanLuminance": 0.03614
+          },
+          "threshold": "stddev > 8 per channel AND >= 200 distinct colours (6-bit quantised)"
+        },
+        "unlit-surface": {
+          "id": "unlit-surface",
+          "pass": null,
+          "applicable": false,
+          "measured": {
+            "lumTopBand": 0.07485,
+            "lumBottomBand": 0.0342,
+            "lumMiddleBand": 0.02388,
+            "lumMean": 0.03614,
+            "dimmest20Mean": 0.00196,
+            "brightest20Mean": 0.1652
+          },
+          "threshold": "interior: top-band mean < 0.02 linear while bottom band >= 0.1"
+        }
+      },
+      "audio": {
+        "id": "audio",
+        "available": true,
+        "silenceRms": 0,
+        "noiseRms": 0.20302,
+        "leftRms": 0.28712,
+        "rightRms": 0,
+        "asymRatio": 99,
+        "pass": true,
+        "measured": {
+          "available": true,
+          "silenceRms": 0,
+          "noiseRms": 0.20302,
+          "leftRms": 0.28712,
+          "rightRms": 0,
+          "asymRatio": 99
+        },
+        "threshold": "silence RMS exactly 0.00000; noise RMS > 0.01; panned-source left/right ratio >= 1.5"
+      },
+      "scene": {
+        "occlusion": {
+          "id": "occluded-view",
+          "pass": true,
+          "measured": {
+            "nearFraction": 0,
+            "nearHits": 0,
+            "total": 144,
+            "byRowBand": {
+              "top": 0,
+              "middle": 0,
+              "bottom": 0
+            },
+            "byColBand": {
+              "left": 0,
+              "centre": 0,
+              "right": 0
+            }
+          },
+          "threshold": "near-field (first hit < 1.5 m) fraction <= 0.35 for this shot kind"
+        },
+        "culled": {
+          "id": "culled-from-inside",
+          "rooms": [],
+          "unavailable": true,
+          "reason": "no visible rooms at this camera"
+        }
+      },
+      "size": {
+        "width": 1280,
+        "height": 720,
+        "pixels": 921600
+      },
+      "depthOcc": {
+        "unavailable": true,
+        "reason": "depth readback invalid",
+        "nonFinite": 0,
+        "outOfRange": 0,
+        "range": [
+          0,
+          0
+        ]
+      },
+      "stats": {
+        "triangles": 1017672,
+        "calls": 92
+      },
+      "consoleErrors": [],
+      "failedRequests": [],
+      "warnings": [],
+      "captureBytesOnDisk": 233741,
+      "checksPass": true,
+      "pass": true,
+      "durationMs": 2754
+    },
+    "floor45_ops": {
+      "kind": "interior",
+      "startedAt": "2026-08-06T14:25:57.734Z",
+      "capture": {
+        "ok": true,
+        "file": "evidence\\phase2\\floor45_ops.png",
+        "bytes": 186044
+      },
+      "checks": {
+        "dead-frame": {
+          "id": "dead-frame",
+          "pass": true,
+          "measured": {
+            "stddev": [
+              43.946,
+              46.741,
+              50.802
+            ],
+            "stddevMax": 50.802,
+            "distinctColours": 127,
+            "distinctColours6bit": 951,
+            "distinctColoursExact": 3032,
+            "meanLuminance": 0.08779
+          },
+          "threshold": "stddev > 8 per channel AND >= 200 distinct colours (6-bit quantised)"
+        },
+        "unlit-surface": {
+          "id": "unlit-surface",
+          "pass": true,
+          "applicable": true,
+          "measured": {
+            "lumTopBand": 0.08537,
+            "lumBottomBand": 0.07236,
+            "lumMiddleBand": 0.09373,
+            "lumMean": 0.08779,
+            "dimmest20Mean": 0.00497,
+            "brightest20Mean": 0.28651
+          },
+          "threshold": "interior: top-band mean < 0.02 linear while bottom band >= 0.1"
+        }
+      },
+      "audio": {
+        "id": "audio",
+        "available": true,
+        "silenceRms": 0,
+        "noiseRms": 0.20302,
+        "leftRms": 0.28712,
+        "rightRms": 0,
+        "asymRatio": 99,
+        "pass": true,
+        "measured": {
+          "available": true,
+          "silenceRms": 0,
+          "noiseRms": 0.20302,
+          "leftRms": 0.28712,
+          "rightRms": 0,
+          "asymRatio": 99
+        },
+        "threshold": "silence RMS exactly 0.00000; noise RMS > 0.01; panned-source left/right ratio >= 1.5"
+      },
+      "scene": {
+        "occlusion": {
+          "id": "occluded-view",
+          "pass": true,
+          "measured": {
+            "nearFraction": 0,
+            "nearHits": 0,
+            "total": 144,
+            "byRowBand": {
+              "top": 0,
+              "middle": 0,
+              "bottom": 0
+            },
+            "byColBand": {
+              "left": 0,
+              "centre": 0,
+              "right": 0
+            }
+          },
+          "threshold": "near-field (first hit < 1.5 m) fraction <= 0.35 for this shot kind"
+        },
+        "culled": {
+          "id": "culled-from-inside",
+          "rooms": [
+            {
+              "room": "hq_floor45",
+              "label": "Floor 45 — Mission Control",
+              "hits": 18,
+              "misses": 0,
+              "missedDirs": [],
+              "glassCovered": 6,
+              "pass": true,
+              "measured": {
+                "hits": 18,
+                "misses": 0,
+                "missedDirs": []
+              },
+              "threshold": "misses <= 2 of 18 rays",
+              "missDetails": [],
+              "aabb": {
+                "min": [
+                  -2351.8,
+                  196.5,
+                  1815.5
+                ],
+                "max": [
+                  -2312.1,
+                  203.5,
+                  1852
+                ]
+              }
+            }
+          ],
+          "pass": true,
+          "measured": {
+            "rooms": [
+              {
+                "room": "hq_floor45",
+                "hits": 18,
+                "misses": 0,
+                "glassCovered": 6
+              }
+            ],
+            "totalHits": 18,
+            "totalMisses": 0,
+            "hitsOfRays": "18/18"
+          },
+          "threshold": "per room: misses <= 2 of 18 rays (16 horizontal + up + down)"
+        }
+      },
+      "size": {
+        "width": 1280,
+        "height": 720,
+        "pixels": 921600
+      },
+      "depthOcc": {
+        "unavailable": true,
+        "reason": "depth readback invalid",
+        "nonFinite": 0,
+        "outOfRange": 0,
+        "range": [
+          0,
+          0
+        ]
+      },
+      "stats": {
+        "triangles": 982255,
+        "calls": 124
+      },
+      "consoleErrors": [],
+      "failedRequests": [],
+      "warnings": [],
+      "captureBytesOnDisk": 186044,
+      "checksPass": true,
+      "pass": true,
+      "durationMs": 1081
+    },
+    "hq_lobby": {
+      "kind": "interior",
+      "startedAt": "2026-08-06T14:25:58.817Z",
+      "capture": {
+        "ok": true,
+        "file": "evidence\\phase2\\hq_lobby.png",
+        "bytes": 121992
+      },
+      "checks": {
+        "dead-frame": {
+          "id": "dead-frame",
+          "pass": true,
+          "measured": {
+            "stddev": [
+              48.989,
+              54.614,
+              56.537
+            ],
+            "stddevMax": 56.537,
+            "distinctColours": 167,
+            "distinctColours6bit": 1334,
+            "distinctColoursExact": 4796,
+            "meanLuminance": 0.20973
+          },
+          "threshold": "stddev > 8 per channel AND >= 200 distinct colours (6-bit quantised)"
+        },
+        "unlit-surface": {
+          "id": "unlit-surface",
+          "pass": true,
+          "applicable": true,
+          "measured": {
+            "lumTopBand": 0.16246,
+            "lumBottomBand": 0.18261,
+            "lumMiddleBand": 0.23452,
+            "lumMean": 0.20973,
+            "dimmest20Mean": 0.01717,
+            "brightest20Mean": 0.42974
+          },
+          "threshold": "interior: top-band mean < 0.02 linear while bottom band >= 0.1"
+        }
+      },
+      "audio": {
+        "id": "audio",
+        "available": true,
+        "silenceRms": 0,
+        "noiseRms": 0.20302,
+        "leftRms": 0.28712,
+        "rightRms": 0,
+        "asymRatio": 99,
+        "pass": true,
+        "measured": {
+          "available": true,
+          "silenceRms": 0,
+          "noiseRms": 0.20302,
+          "leftRms": 0.28712,
+          "rightRms": 0,
+          "asymRatio": 99
+        },
+        "threshold": "silence RMS exactly 0.00000; noise RMS > 0.01; panned-source left/right ratio >= 1.5"
+      },
+      "scene": {
+        "occlusion": {
+          "id": "occluded-view",
+          "pass": true,
+          "measured": {
+            "nearFraction": 0,
+            "nearHits": 0,
+            "total": 144,
+            "byRowBand": {
+              "top": 0,
+              "middle": 0,
+              "bottom": 0
+            },
+            "byColBand": {
+              "left": 0,
+              "centre": 0,
+              "right": 0
+            }
+          },
+          "threshold": "near-field (first hit < 1.5 m) fraction <= 0.35 for this shot kind"
+        },
+        "culled": {
+          "id": "culled-from-inside",
+          "rooms": [
+            {
+              "room": "hq_lobby",
+              "label": "HQ lobby",
+              "hits": 18,
+              "misses": 0,
+              "missedDirs": [],
+              "glassCovered": 3,
+              "pass": true,
+              "measured": {
+                "hits": 18,
+                "misses": 0,
+                "missedDirs": []
+              },
+              "threshold": "misses <= 2 of 18 rays",
+              "missDetails": [],
+              "aabb": {
+                "min": [
+                  -2341,
+                  12.6,
+                  1812
+                ],
+                "max": [
+                  -2312.7,
+                  18.6,
+                  1836.8
+                ]
+              }
+            }
+          ],
+          "pass": true,
+          "measured": {
+            "rooms": [
+              {
+                "room": "hq_lobby",
+                "hits": 18,
+                "misses": 0,
+                "glassCovered": 3
+              }
+            ],
+            "totalHits": 18,
+            "totalMisses": 0,
+            "hitsOfRays": "18/18"
+          },
+          "threshold": "per room: misses <= 2 of 18 rays (16 horizontal + up + down)"
+        }
+      },
+      "size": {
+        "width": 1280,
+        "height": 720,
+        "pixels": 921600
+      },
+      "depthOcc": {
+        "unavailable": true,
+        "reason": "depth readback invalid",
+        "nonFinite": 0,
+        "outOfRange": 0,
+        "range": [
+          0,
+          0
+        ]
+      },
+      "stats": {
+        "triangles": 1038733,
+        "calls": 105
+      },
+      "consoleErrors": [],
+      "failedRequests": [],
+      "warnings": [],
+      "captureBytesOnDisk": 121992,
+      "checksPass": true,
+      "pass": true,
+      "durationMs": 1064
+    },
+    "lift_cab": {
+      "kind": "interior",
+      "startedAt": "2026-08-06T14:25:59.881Z",
+      "capture": {
+        "ok": true,
+        "file": "evidence\\phase2\\lift_cab.png",
+        "bytes": 35984
+      },
+      "checks": {
+        "dead-frame": {
+          "id": "dead-frame",
+          "pass": true,
+          "measured": {
+            "stddev": [
+              26.607,
+              28.584,
+              28.42
+            ],
+            "stddevMax": 28.584,
+            "distinctColours": 63,
+            "distinctColours6bit": 230,
+            "distinctColoursExact": 646,
+            "meanLuminance": 0.20741
+          },
+          "threshold": "stddev > 8 per channel AND >= 200 distinct colours (6-bit quantised)"
+        },
+        "unlit-surface": {
+          "id": "unlit-surface",
+          "pass": true,
+          "applicable": true,
+          "measured": {
+            "lumTopBand": 0.20299,
+            "lumBottomBand": 0.22473,
+            "lumMiddleBand": 0.20311,
+            "lumMean": 0.20741,
+            "dimmest20Mean": 0.08755,
+            "brightest20Mean": 0.27965
+          },
+          "threshold": "interior: top-band mean < 0.02 linear while bottom band >= 0.1"
+        }
+      },
+      "audio": {
+        "id": "audio",
+        "available": true,
+        "silenceRms": 0,
+        "noiseRms": 0.20302,
+        "leftRms": 0.28712,
+        "rightRms": 0,
+        "asymRatio": 99,
+        "pass": true,
+        "measured": {
+          "available": true,
+          "silenceRms": 0,
+          "noiseRms": 0.20302,
+          "leftRms": 0.28712,
+          "rightRms": 0,
+          "asymRatio": 99
+        },
+        "threshold": "silence RMS exactly 0.00000; noise RMS > 0.01; panned-source left/right ratio >= 1.5"
+      },
+      "scene": {
+        "occlusion": {
+          "id": "occluded-view",
+          "pass": true,
+          "measured": {
+            "nearFraction": 0.8125,
+            "nearHits": 117,
+            "total": 144,
+            "byRowBand": {
+              "top": 0.8541666666666666,
+              "middle": 0.875,
+              "bottom": 0.7083333333333334
+            },
+            "byColBand": {
+              "left": 0.9111111111111111,
+              "centre": 0.6,
+              "right": 0.9074074074074074
+            },
+            "enclosure": {
+              "nearFraction": 0.8125,
+              "nearHits": 117,
+              "byRowBand": {
+                "top": 0.8541666666666666,
+                "middle": 0.875,
+                "bottom": 0.7083333333333334
+              },
+              "byColBand": {
+                "left": 0.9111111111111111,
+                "centre": 0.6,
+                "right": 0.9074074074074074
+              },
+              "nearBudget": 0.9125,
+              "topBudget": 0.95,
+              "rule": "the frame must not exceed the enclosure's own near field plus margin (near +0.1, top +0.1), capped at 0.95/0.95"
+            }
+          },
+          "threshold": "enclosed interior: near-field occlusion must stay within the enclosure's own geometry-derived near field plus margin"
+        },
+        "culled": {
+          "id": "culled-from-inside",
+          "rooms": [],
+          "unavailable": true,
+          "reason": "no visible rooms at this camera"
+        }
+      },
+      "size": {
+        "width": 1280,
+        "height": 720,
+        "pixels": 921600
+      },
+      "depthOcc": {
+        "unavailable": true,
+        "reason": "depth readback invalid",
+        "nonFinite": 0,
+        "outOfRange": 0,
+        "range": [
+          0,
+          0
+        ]
+      },
+      "stats": {
+        "triangles": 983047,
+        "calls": 91
+      },
+      "consoleErrors": [],
+      "failedRequests": [],
+      "warnings": [],
+      "captureBytesOnDisk": 35984,
+      "checksPass": true,
+      "pass": true,
+      "durationMs": 1334
+    },
+    "car_cabin": {
+      "kind": "interior",
+      "startedAt": "2026-08-06T14:26:01.215Z",
+      "capture": {
+        "ok": true,
+        "file": "evidence\\phase2\\car_cabin.png",
+        "bytes": 108999
+      },
+      "checks": {
+        "dead-frame": {
+          "id": "dead-frame",
+          "pass": true,
+          "measured": {
+            "stddev": [
+              58.242,
+              52.786,
+              37.065
+            ],
+            "stddevMax": 58.242,
+            "distinctColours": 196,
+            "distinctColours6bit": 1219,
+            "distinctColoursExact": 3655,
+            "meanLuminance": 0.08505
+          },
+          "threshold": "stddev > 8 per channel AND >= 200 distinct colours (6-bit quantised)"
+        },
+        "unlit-surface": {
+          "id": "unlit-surface",
+          "pass": true,
+          "applicable": true,
+          "measured": {
+            "lumTopBand": 0.08633,
+            "lumBottomBand": 0.05811,
+            "lumMiddleBand": 0.0936,
+            "lumMean": 0.08505,
+            "dimmest20Mean": 0.00317,
+            "brightest20Mean": 0.30247
+          },
+          "threshold": "interior: top-band mean < 0.02 linear while bottom band >= 0.1"
+        }
+      },
+      "audio": {
+        "id": "audio",
+        "available": true,
+        "silenceRms": 0,
+        "noiseRms": 0.20302,
+        "leftRms": 0.28712,
+        "rightRms": 0,
+        "asymRatio": 99,
+        "pass": true,
+        "measured": {
+          "available": true,
+          "silenceRms": 0,
+          "noiseRms": 0.20302,
+          "leftRms": 0.28712,
+          "rightRms": 0,
+          "asymRatio": 99
+        },
+        "threshold": "silence RMS exactly 0.00000; noise RMS > 0.01; panned-source left/right ratio >= 1.5"
+      },
+      "scene": {
+        "occlusion": {
+          "id": "occluded-view",
+          "pass": true,
+          "measured": {
+            "nearFraction": 0.1597222222222222,
+            "nearHits": 23,
+            "total": 144,
+            "byRowBand": {
+              "top": 0,
+              "middle": 0,
+              "bottom": 0.4791666666666667
+            },
+            "byColBand": {
+              "left": 0.06666666666666667,
+              "centre": 0.2,
+              "right": 0.2037037037037037
+            }
+          },
+          "threshold": "near-field (first hit < 1.5 m) fraction <= 0.6 and top row-band <= 0.45 (a roof over the eye blacks out the top of the frame) for this shot kind"
+        },
+        "culled": {
+          "id": "culled-from-inside",
+          "rooms": [],
+          "unavailable": true,
+          "reason": "no visible rooms at this camera"
+        }
+      },
+      "size": {
+        "width": 1280,
+        "height": 720,
+        "pixels": 921600
+      },
+      "depthOcc": {
+        "unavailable": true,
+        "reason": "depth readback invalid",
+        "nonFinite": 0,
+        "outOfRange": 0,
+        "range": [
+          0,
+          0
+        ]
+      },
+      "stats": {
+        "triangles": 1091973,
+        "calls": 117
+      },
+      "consoleErrors": [],
+      "failedRequests": [],
+      "warnings": [],
+      "captureBytesOnDisk": 108999,
+      "checksPass": true,
+      "pass": true,
+      "durationMs": 1651
+    },
+    "shenron_arrival": {
+      "kind": "interior",
+      "startedAt": "2026-08-06T14:26:02.866Z",
+      "capture": {
+        "ok": true,
+        "file": "evidence\\phase2\\shenron_arrival.png",
+        "bytes": 290494
+      },
+      "checks": {
+        "dead-frame": {
+          "id": "dead-frame",
+          "pass": true,
+          "measured": {
+            "stddev": [
+              53.006,
+              56.519,
+              61.113
+            ],
+            "stddevMax": 61.113,
+            "distinctColours": 205,
+            "distinctColours6bit": 2231,
+            "distinctColoursExact": 8862,
+            "meanLuminance": 0.11564
+          },
+          "threshold": "stddev > 8 per channel AND >= 200 distinct colours (6-bit quantised)"
+        },
+        "unlit-surface": {
+          "id": "unlit-surface",
+          "pass": true,
+          "applicable": true,
+          "measured": {
+            "lumTopBand": 0.07151,
+            "lumBottomBand": 0.12864,
+            "lumMiddleBand": 0.12601,
+            "lumMean": 0.11564,
+            "dimmest20Mean": 0.00519,
+            "brightest20Mean": 0.40746
+          },
+          "threshold": "interior: top-band mean < 0.02 linear while bottom band >= 0.1"
+        }
+      },
+      "audio": {
+        "id": "audio",
+        "available": true,
+        "silenceRms": 0,
+        "noiseRms": 0.20302,
+        "leftRms": 0.28712,
+        "rightRms": 0,
+        "asymRatio": 99,
+        "pass": true,
+        "measured": {
+          "available": true,
+          "silenceRms": 0,
+          "noiseRms": 0.20302,
+          "leftRms": 0.28712,
+          "rightRms": 0,
+          "asymRatio": 99
+        },
+        "threshold": "silence RMS exactly 0.00000; noise RMS > 0.01; panned-source left/right ratio >= 1.5"
+      },
+      "scene": {
+        "occlusion": {
+          "id": "occluded-view",
+          "pass": true,
+          "measured": {
+            "nearFraction": 0,
+            "nearHits": 0,
+            "total": 144,
+            "byRowBand": {
+              "top": 0,
+              "middle": 0,
+              "bottom": 0
+            },
+            "byColBand": {
+              "left": 0,
+              "centre": 0,
+              "right": 0
+            }
+          },
+          "threshold": "near-field (first hit < 1.5 m) fraction <= 0.35 for this shot kind"
+        },
+        "culled": {
+          "id": "culled-from-inside",
+          "rooms": [
+            {
+              "room": "hq_floor45",
+              "label": "Floor 45 — Mission Control",
+              "hits": 18,
+              "misses": 0,
+              "missedDirs": [],
+              "glassCovered": 6,
+              "pass": true,
+              "measured": {
+                "hits": 18,
+                "misses": 0,
+                "missedDirs": []
+              },
+              "threshold": "misses <= 2 of 18 rays",
+              "missDetails": [],
+              "aabb": {
+                "min": [
+                  -2351.8,
+                  196.5,
+                  1815.5
+                ],
+                "max": [
+                  -2312.1,
+                  203.5,
+                  1852
+                ]
+              }
+            }
+          ],
+          "pass": true,
+          "measured": {
+            "rooms": [
+              {
+                "room": "hq_floor45",
+                "hits": 18,
+                "misses": 0,
+                "glassCovered": 6
+              }
+            ],
+            "totalHits": 18,
+            "totalMisses": 0,
+            "hitsOfRays": "18/18"
+          },
+          "threshold": "per room: misses <= 2 of 18 rays (16 horizontal + up + down)"
+        }
+      },
+      "size": {
+        "width": 1280,
+        "height": 720,
+        "pixels": 921600
+      },
+      "depthOcc": {
+        "unavailable": true,
+        "reason": "depth readback invalid",
+        "nonFinite": 0,
+        "outOfRange": 0,
+        "range": [
+          0,
+          0
+        ]
+      },
+      "stats": {
+        "triangles": 1141561,
+        "calls": 138
+      },
+      "consoleErrors": [],
+      "failedRequests": [],
+      "warnings": [],
+      "captureBytesOnDisk": 290494,
+      "checksPass": true,
+      "pass": true,
+      "durationMs": 683
+    }
+  },
+  "system": {
+    "devPort": 5174,
+    "boot": {
+      "consoleErrors": [],
+      "warnings": [],
+      "failedRequests": []
+    },
+    "audio": {
+      "available": true,
+      "silenceRms": 0,
+      "noiseRms": 0.20302,
+      "leftRms": 0.28712,
+      "rightRms": 0,
+      "asymRatio": 99
+    },
+    "audioVerify": {
+      "silent": {
+        "rms": 0,
+        "centroid": 0
+      },
+      "trafficOnly": {
+        "rms": 0.06685,
+        "centroid": 543
+      },
+      "rainOnly": {
+        "rms": 0.13245,
+        "centroid": 1593
+      },
+      "sirenOnly": {
+        "rms": 0.03951,
+        "centroid": 3779
+      },
+      "hornOnly": {
+        "rms": 0.07684,
+        "centroid": 2534
+      }
+    }
+  },
+  "summary": {
+    "shotsTotal": 15,
+    "shotsPassed": 15,
+    "shotsFailed": 0,
+    "defects": 0,
+    "durationMs": 24922
+  }
+}

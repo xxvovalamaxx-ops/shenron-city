@@ -1,0 +1,54 @@
+# Manhattan world — large binaries are frozen by hash (docs/phase2/BASELINE_HASHES.json)
+# and archived to archive/, not stored in git.
+
+# Blender working files and outputs
+blend/
+*.blend
+*.blend1
+
+# Raw Overpass / NYC downloads (regenerable via scripts/01_fetch_osm.py and
+# scripts/phase2/40_fetch_nyc_open_data.py)
+source_data/*.json
+source_data/cache/*.pkl
+source_data/nyc/*.json
+
+# Derived runtime payload (regenerable via scripts/phase2/45_build_runtime_data.py)
+data/manhattan/runtime/core.bin
+data/manhattan/runtime/text.json
+
+# The registry CSV is the canonical artefact and is tracked. The JSON is a
+# byte-for-byte duplicate of it written for convenience, 52 MB, regenerable
+# by scripts/phase2/41_build_registry.py.
+data/manhattan/buildings/building_registry.json
+
+# Draco decoder, copied out of node_modules by npm postinstall
+apps/*/public/draco/
+
+# Derived binaries. The lod/ rule needs its own line: exports/*.glb is a
+# single-level glob and does not reach into the subdirectory, so 16 MB of
+# regenerable LOD massing was staged on the first commit that produced it.
+exports/*.glb
+exports/lod/*.glb
+exports/*.zip
+exports/building_manifest.csv
+runtime-assets/
+
+# Media
+renders/
+playblasts/
+refframes/
+evidence/**/*.mp4
+evidence/**/*.png
+
+# Frozen archive (immutable copy, reproducible from scripts/)
+archive/
+
+# Node / web runtime
+node_modules/
+dist/
+.vite/
+*.log
+
+# Python
+__pycache__/
+*.pyc

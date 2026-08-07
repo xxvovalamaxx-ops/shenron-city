@@ -1,0 +1,28 @@
+{
+  "parts": {
+    "PROP_subway_stair": {
+      "width": 3.4,
+      "depth": 2.4,
+      "height": 3.4,
+      "kind": "stair",
+      "treads": 9,
+      "tris": 546,
+      "verts": 420
+    },
+    "PROP_subway_elevator": {
+      "width": 2.2,
+      "depth": 2.2,
+      "height": 2.99,
+      "kind": "elevator",
+      "tris": 152,
+      "verts": 112
+    }
+  },
+  "total_tris": 698,
+  "glb_bytes": 50824,
+  "space": "origin at the centre of the footprint on the pavement surface, +x along the kerb, +y across it into the carriageway, +z up",
+  "trademarks": "none reproduced. No roundel, no route bullet, no wordmark, no station name, no lettering at all. The sign is an empty dark panel with a lit edge; the globe lamps carry no insignia.",
+  "licence": "generated procedurally; no purchased kit, no scanned geometry, no photographic texture",
+  "blend": "blend\\manhattan_subway.blend",
+  "seconds": 0.2
+}

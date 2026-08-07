@@ -1,0 +1,255 @@
+{
+  "startedAt": "2026-08-06T12:01:24.267Z",
+  "claim": "HANDOFF §1 \"street-life CPU ~0.4 ms/frame\" (RTX 5070) vs 0.8 ms reported by Phase 2O-A (doc) / 0.6 ms (committed evidence), both single-sample streetLifeMs()",
+  "machine": {
+    "platform": "win32",
+    "node": "v24.18.0",
+    "chrome": "headless=new, SwiftShader software GL",
+    "note": "Software rendering: cpuMs is main-thread JS time only. Same harness pattern as bench-run.mjs, worker ports 5176/9226. The qa-integrity framecheck suite (vite 5174, CDP 9224) was running on this machine during both the 2O-A baseline and these runs."
+  },
+  "vite": {
+    "url": "http://127.0.0.1:5176/"
+  },
+  "cdpPort": 9226,
+  "stabilityAcrossRuns": {
+    "note": "streetLifeSamples(20) median per independent boot of the same harness: 3 runs",
+    "runMediansMs": [0.4, 0.35, 0.35],
+    "combinedMedianMs": 0.35,
+    "observedSampleRangeMs": [0.3, 0.9],
+    "p95ByRunMs": [0.52, null, 0.5],
+    "p95NullNote": "run 2's p95 was not captured before the evidence file was overwritten by run 3; the run-2 median 0.35 was captured from the console. Neither a median nor a p95 was fabricated.",
+    "verdict": "CONFIRMED — the claimed ~0.4 ms reproduces at the real Times Square street level with the full Phase 2 sim set. The 2O-A '0.8 ms' was one draw from this distribution (p95 0.52, max 0.9 observed)."
+  },
+  "streetLife": {
+    "n": 20,
+    "medianMs": 0.35,
+    "p95Ms": 0.5,
+    "meanMs": 0.355,
+    "samples": [
+      0.5,
+      0.5,
+      0.30000000074505806,
+      0.3999999985098839,
+      0.30000000074505806,
+      0.3999999985098839,
+      0.30000000074505806,
+      0.30000000074505806,
+      0.3999999985098839,
+      0.4000000022351742,
+      0.19999999925494194,
+      0.3999999985098839,
+      0.4000000022351742,
+      0.29999999701976776,
+      0.4000000022351742,
+      0.30000000074505806,
+      0.3999999985098839,
+      0.30000000074505806,
+      0.30000000074505806,
+      0.29999999701976776
+    ]
+  },
+  "block": {
+    "mode": "streetLifeBlock (bench streetLifeMs pattern)",
+    "includeAudio": true,
+    "dt": 0.03333333333333333,
+    "whole": {
+      "name": "block",
+      "n": 60,
+      "medianMs": 0.3,
+      "p95Ms": 0.505,
+      "meanMs": 0.35
+    },
+    "subs": [
+      {
+        "name": "props",
+        "n": 60,
+        "medianMs": 0.1,
+        "p95Ms": 0.2,
+        "meanMs": 0.1133
+      },
+      {
+        "name": "subway",
+        "n": 60,
+        "medianMs": 0,
+        "p95Ms": 0,
+        "meanMs": 0
+      },
+      {
+        "name": "traffic",
+        "n": 60,
+        "medianMs": 0.1,
+        "p95Ms": 0.2,
+        "meanMs": 0.12
+      },
+      {
+        "name": "crowd",
+        "n": 60,
+        "medianMs": 0.2,
+        "p95Ms": 0.3,
+        "meanMs": 0.1567
+      },
+      {
+        "name": "weather",
+        "n": 60,
+        "medianMs": 0,
+        "p95Ms": 0.1,
+        "meanMs": 0.0083
+      },
+      {
+        "name": "interiors",
+        "n": 60,
+        "medianMs": 0,
+        "p95Ms": 0,
+        "meanMs": 0
+      },
+      {
+        "name": "corridor",
+        "n": 60,
+        "medianMs": 0,
+        "p95Ms": 0,
+        "meanMs": 0
+      },
+      {
+        "name": "audio",
+        "n": 60,
+        "medianMs": 0,
+        "p95Ms": 0,
+        "meanMs": 0
+      },
+      {
+        "name": "render",
+        "n": 60,
+        "medianMs": 0.3,
+        "p95Ms": 0.61,
+        "meanMs": 0.36
+      }
+    ],
+    "counts": {
+      "vehicles": 430,
+      "people": 359,
+      "propsDrawn": 477,
+      "trafficSimLanes": 680,
+      "crowdSimLanes": 347,
+      "corridorActive": false,
+      "audioCtxRunning": false,
+      "camera": {
+        "x": -1505.6,
+        "y": 13.9002,
+        "z": 2466.15
+      }
+    }
+  },
+  "mainLoop": {
+    "mode": "mainLoopSims (real main-loop calls at a static camera)",
+    "includeAudio": true,
+    "dt": 0.03333333333333333,
+    "whole": {
+      "name": "block",
+      "n": 60,
+      "medianMs": 0.2,
+      "p95Ms": 0.3,
+      "meanMs": 0.2133
+    },
+    "subs": [
+      {
+        "name": "props",
+        "n": 60,
+        "medianMs": 0,
+        "p95Ms": 0,
+        "meanMs": 0
+      },
+      {
+        "name": "subway",
+        "n": 60,
+        "medianMs": 0,
+        "p95Ms": 0,
+        "meanMs": 0
+      },
+      {
+        "name": "traffic",
+        "n": 60,
+        "medianMs": 0.1,
+        "p95Ms": 0.205,
+        "meanMs": 0.1167
+      },
+      {
+        "name": "crowd",
+        "n": 60,
+        "medianMs": 0.1,
+        "p95Ms": 0.2,
+        "meanMs": 0.1183
+      },
+      {
+        "name": "weather",
+        "n": 60,
+        "medianMs": 0,
+        "p95Ms": 0,
+        "meanMs": 0
+      },
+      {
+        "name": "interiors",
+        "n": 60,
+        "medianMs": 0,
+        "p95Ms": 0,
+        "meanMs": 0.0017
+      },
+      {
+        "name": "corridor",
+        "n": 60,
+        "medianMs": 0,
+        "p95Ms": 0,
+        "meanMs": 0
+      },
+      {
+        "name": "audio",
+        "n": 60,
+        "medianMs": 0,
+        "p95Ms": 0,
+        "meanMs": 0
+      },
+      {
+        "name": "render",
+        "n": 60,
+        "medianMs": 0.2,
+        "p95Ms": 0.4,
+        "meanMs": 0.2183
+      }
+    ],
+    "counts": {
+      "vehicles": 430,
+      "people": 359,
+      "propsDrawn": 477,
+      "trafficSimLanes": 680,
+      "crowdSimLanes": 347,
+      "corridorActive": false,
+      "audioCtxRunning": false,
+      "camera": {
+        "x": -1505.6,
+        "y": 13.9002,
+        "z": 2466.15
+      }
+    }
+  },
+  "traffic": {
+    "steady": {
+      "name": "traffic.update, full street",
+      "n": 60,
+      "medianMs": 0.1,
+      "p95Ms": 0.2,
+      "meanMs": 0.08
+    },
+    "drained": {
+      "name": "traffic.update, refilling after empty",
+      "n": 60,
+      "medianMs": 0.1,
+      "p95Ms": 0.405,
+      "meanMs": 0.135
+    },
+    "counts": {
+      "steady": 430,
+      "refilled": 430
+    },
+    "note": "same real Traffic.update() in both; the drained run forces the spawn top-up (withDist sort over ~680 lanes + occupancy Map) to run every frame until the street refills. Difference = worst case for that block; steady p95 = how often churn triggers it at the camera."
+  },
+  "endedAt": "2026-08-06T12:01:24.267Z"
+}

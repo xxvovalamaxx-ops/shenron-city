@@ -1,0 +1,37 @@
+{
+  "published": 868,
+  "by_type": {
+    "Easement - Street": 131,
+    "Stair": 607,
+    "Easement - Passage": 51,
+    "Elevator": 39,
+    "Station House": 26,
+    "Stair/Escalator": 7,
+    "Escalator": 7
+  },
+  "drawn": 658,
+  "drawn_by_mesh": {
+    "stair": 619,
+    "elevator": 39
+  },
+  "not_drawn": {
+    "Easement - Street": 131,
+    "Easement - Passage": 51,
+    "Station House": 26
+  },
+  "unplaceable": 2,
+  "clashed": 0,
+  "nudged_along_kerb": 8,
+  "min_separation_m": 3.0,
+  "no_coordinate": 0,
+  "footfall_points": 868,
+  "footfall_cells": 228,
+  "station_complexes": 121,
+  "snap_offset_m": {
+    "median": 1.86,
+    "p90": 6.98,
+    "max": 47.47,
+    "limit": 55.0
+  },
+  "rule": "snapped to the nearest walk lane with a surveyed free width of at least the kiosk footprint plus 0.6 m, and rotated to that lane's direction"
+}

@@ -1,0 +1,22 @@
+{
+ "sidewalk_polygons": 5202,
+ "sidewalk_objects": 58,
+ "sidewalk_verts": 1040974,
+ "sidewalk_faces": 297036,
+ "sidewalk_surface_tris": 147170,
+ "kerb_quads": 149866,
+ "tessellate_failed": 0,
+ "marking_objects": 113,
+ "marking_faces": 365172,
+ "crosswalk_bars": 165518,
+ "stop_bars": 15741,
+ "approaches_too_short": 3151,
+ "heights": {
+  "road_z": 12.05,
+  "paint_z": 12.08,
+  "sidewalk_z": 12.200000000000001,
+  "kerb_h": 0.15
+ },
+ "blend": "blend\\manhattan_streets.blend",
+ "seconds": 2.0
+}

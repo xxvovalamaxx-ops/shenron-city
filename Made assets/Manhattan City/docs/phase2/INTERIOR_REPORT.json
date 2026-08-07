@@ -1,0 +1,48 @@
+{
+ "rooms": {
+  "INT_lobby": {
+   "width": 24.0,
+   "depth": 15.0,
+   "height": 6.0,
+   "kind": "lobby",
+   "tris": 626,
+   "glass_tris": 2,
+   "verts": 508,
+   "glass": "GLAZE_lobby",
+   "panes": 1
+  },
+  "INT_penthouse": {
+   "width": 18.0,
+   "depth": 12.0,
+   "height": 3.4,
+   "kind": "penthouse",
+   "tris": 622,
+   "glass_tris": 4,
+   "verts": 444,
+   "glass": "GLAZE_penthouse",
+   "panes": 2
+  },
+  "INT_bodega": {
+   "width": 9.0,
+   "depth": 12.0,
+   "height": 3.2,
+   "kind": "shop",
+   "tris": 2362,
+   "glass_tris": 2,
+   "verts": 1620,
+   "glass": "GLAZE_bodega",
+   "panes": 1
+  }
+ },
+ "total_tris": 3618,
+ "glb_bytes": 257952,
+ "space": "origin on the floor at the middle of the entrance wall, +x into the room, +y left, +z up",
+ "conventions": {
+  "COLOR_0 alpha": "1 = tint per instance, 0 = keep authored rgb",
+  "GLAZE_ prefix": "window glass; rendered transparent by the runtime and never a camera collider",
+  "lighting": "luminous ceiling panels rather than dynamic lights"
+ },
+ "licence": "generated procedurally; no purchased interior kit, no scanned furniture, no photographic texture",
+ "blend": "blend\\manhattan_interiors.blend",
+ "seconds": 0.3
+}

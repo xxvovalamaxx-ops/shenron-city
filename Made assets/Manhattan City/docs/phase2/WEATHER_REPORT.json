@@ -1,0 +1,41 @@
+{
+ "parts": {
+  "CLOUD_puff_a": {
+   "span": 300.0,
+   "tris": 240,
+   "verts": 130
+  },
+  "CLOUD_puff_b": {
+   "span": 330.0,
+   "tris": 160,
+   "verts": 90
+  },
+  "CLOUD_puff_c": {
+   "span": 300.0,
+   "tris": 180,
+   "verts": 96
+  },
+  "RAIN_streak": {
+   "length": 0.55,
+   "tris": 4,
+   "verts": 8
+  },
+  "RAIN_splash": {
+   "radius": 0.1,
+   "tris": 24,
+   "verts": 24
+  },
+  "PROP_umbrella": {
+   "radius": 0.52,
+   "height": 1.84,
+   "tris": 40,
+   "verts": 42
+  }
+ },
+ "total_tris": 648,
+ "glb_bytes": 57368,
+ "tint_mask": "COLOR_0 alpha: 1 = tint per instance, 0 = keep rgb",
+ "licence": "generated procedurally; no purchased HDRI, no sky photograph, no third-party mesh",
+ "blend": "blend\\manhattan_weather.blend",
+ "seconds": 0.3
+}

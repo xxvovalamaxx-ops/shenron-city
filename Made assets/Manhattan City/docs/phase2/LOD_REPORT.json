@@ -1,0 +1,21 @@
+{
+ "tiles": 102,
+ "grid_m": 1400.0,
+ "L2": {
+  "tris": 1026241,
+  "mb": 10.22
+ },
+ "L3": {
+  "tris": 564760,
+  "mb": 6.08
+ },
+ "L4": {
+  "tris": 5060,
+  "buildings": 506,
+  "tiles": 42,
+  "mb": 0.12
+ },
+ "l2_ring_verts": 10,
+ "blend": "blend\\manhattan_lod.blend",
+ "seconds": 7.8
+}

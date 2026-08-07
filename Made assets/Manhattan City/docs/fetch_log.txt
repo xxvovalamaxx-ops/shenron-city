@@ -1,0 +1,78 @@
+﻿Manhattan OSM acquisition -> D:\blender projects\Manheten\source_data
+======================================================================
+  [get ] boundary_manhattan  via overpass-api.de (attempt 1)
+  [ ok ] boundary_manhattan  1 elements, 0.0 MB, 1s
+  [get ] coastline_wide  via overpass-api.de (attempt 1)
+  [ ok ] coastline_wide  602 elements, 1.7 MB, 4s
+  [get ] water_wide  via overpass-api.de (attempt 1)
+  [ ok ] water_wide  1017 elements, 3.3 MB, 10s
+  [get ] buildings_band0  via overpass-api.de (attempt 1)
+  [fail] buildings_band0: HTTP Error 429: Too Many Requests
+  [get ] buildings_band0  via overpass-api.de (attempt 2)
+  [fail] buildings_band0: HTTP Error 429: Too Many Requests
+  [get ] buildings_band0  via overpass.kumi.systems (attempt 3)
+  [fail] buildings_band0: HTTP Error 504: Gateway Timeout
+  [get ] buildings_band0  via overpass.kumi.systems (attempt 4)
+  [ ok ] buildings_band0  4010 elements, 4.4 MB, 23s
+  [get ] buildings_band1  via overpass-api.de (attempt 1)
+  [fail] buildings_band1: HTTP Error 504: Gateway Timeout
+  [get ] buildings_band1  via overpass-api.de (attempt 2)
+  [fail] buildings_band1: HTTP Error 504: Gateway Timeout
+  [get ] buildings_band1  via overpass.kumi.systems (attempt 3)
+  [fail] buildings_band1: HTTP Error 504: Gateway Timeout
+  [get ] buildings_band1  via overpass.kumi.systems (attempt 4)
+  [ ok ] buildings_band1  16416 elements, 16.9 MB, 18s
+  [get ] buildings_band2  via overpass-api.de (attempt 1)
+  [ ok ] buildings_band2  15007 elements, 16.5 MB, 7s
+  [get ] buildings_band3  via overpass-api.de (attempt 1)
+  [ ok ] buildings_band3  8097 elements, 8.8 MB, 22s
+  [get ] buildings_band4  via overpass-api.de (attempt 1)
+  [fail] buildings_band4: HTTP Error 429: Too Many Requests
+  [get ] buildings_band4  via overpass-api.de (attempt 2)
+  [fail] buildings_band4: HTTP Error 429: Too Many Requests
+  [get ] buildings_band4  via overpass.kumi.systems (attempt 3)
+  [fail] buildings_band4: HTTP Error 504: Gateway Timeout
+  [get ] buildings_band4  via overpass.kumi.systems (attempt 4)
+  [fail] buildings_band4: HTTP Error 504: Gateway Timeout
+  [get ] buildings_band4  via overpass.osm.jp (attempt 5)
+  [fail] buildings_band4: <urlopen error [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: Hostname mismatch, certificate is not valid for 'overpass.osm.jp'. (_ssl.c:1010)>
+  [get ] buildings_band4  via overpass.osm.jp (attempt 6)
+  [fail] buildings_band4: <urlopen error [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: Hostname mismatch, certificate is not valid for 'overpass.osm.jp'. (_ssl.c:1010)>
+  [ERR ] buildings_band4 permanently failed: <urlopen error [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: Hostname mismatch, certificate is not valid for 'overpass.osm.jp'. (_ssl.c:1010)>
+  [get ] roads_manhattan  via overpass-api.de (attempt 1)
+  [fail] roads_manhattan: HTTP Error 504: Gateway Timeout
+  [get ] roads_manhattan  via overpass-api.de (attempt 2)
+  [ ok ] roads_manhattan  22550 elements, 22.4 MB, 5s
+  [get ] parks_manhattan  via overpass-api.de (attempt 1)
+  [ ok ] parks_manhattan  12615 elements, 13.9 MB, 8s
+  [get ] bridges_wide  via overpass-api.de (attempt 1)
+  [fail] bridges_wide: HTTP Error 429: Too Many Requests
+  [get ] bridges_wide  via overpass-api.de (attempt 2)
+  [fail] bridges_wide: HTTP Error 429: Too Many Requests
+  [get ] bridges_wide  via overpass.kumi.systems (attempt 3)
+  [ ok ] bridges_wide  10139 elements, 9.3 MB, 62s
+  [get ] piers_wide  via overpass-api.de (attempt 1)
+  [ ok ] piers_wide  2208 elements, 1.5 MB, 8s
+  [get ] context_buildings  via overpass-api.de (attempt 1)
+  [ ok ] context_buildings  105179 elements, 93.1 MB, 35s
+  [get ] rail_manhattan  via overpass-api.de (attempt 1)
+  [fail] rail_manhattan: HTTP Error 429: Too Many Requests
+  [get ] rail_manhattan  via overpass-api.de (attempt 2)
+  [ ok ] rail_manhattan  1397 elements, 1.7 MB, 6s
+======================================================================
+done: 13 ok, 1 failed
+failed: buildings_band4
+  boundary_manhattan.json          0.04 MB
+  bridges_wide.json                9.28 MB
+  buildings_band0.json             4.37 MB
+  buildings_band1.json            16.87 MB
+  buildings_band2.json            16.45 MB
+  buildings_band3.json             8.78 MB
+  coastline_wide.json              1.72 MB
+  context_buildings.json          93.13 MB
+  parks_manhattan.json            13.86 MB
+  piers_wide.json                  1.54 MB
+  rail_manhattan.json              1.66 MB
+  roads_manhattan.json            22.36 MB
+  water_wide.json                  3.25 MB
+total source data: 193.31 MB

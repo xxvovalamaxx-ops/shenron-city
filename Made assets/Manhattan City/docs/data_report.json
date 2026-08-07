@@ -1,0 +1,99 @@
+{
+  "land_raster_km2": 932.2,
+  "land_raster_spans": 7914,
+  "island_pts": 838,
+  "island_km2": 54.225536820708406,
+  "context_land_rings": 13,
+  "water_polys": 476,
+  "parks": 4760,
+  "road_segments": 22544,
+  "bridge_spans": 5703,
+  "piers": 2192,
+  "buildings": 56476,
+  "building_stats": {
+    "height_from_tag": 55099,
+    "cls_lowrise": 43126,
+    "height_estimated": 1377,
+    "cls_glass": 363,
+    "cls_midrise": 6595,
+    "cls_small": 3478,
+    "cls_highrise": 1496,
+    "landmark_height_fixed": 13,
+    "cls_tower": 106,
+    "cls_civic": 1094,
+    "cls_industrial": 218,
+    "skip_negative_layer": 17,
+    "skip_tiny": 560,
+    "skip_underground": 11,
+    "skip_no_building_tag": 1,
+    "footprint_hull_fallback": 1,
+    "skip_explicit_zero_height": 4,
+    "skip_context_small": 68380
+  },
+  "height_median": 17.3,
+  "height_p95": 52.8,
+  "height_max": 472.0,
+  "tallest": [
+    [
+      472.0,
+      "Central Park Tower"
+    ],
+    [
+      443.2,
+      "Empire State Building"
+    ],
+    [
+      426.0,
+      "432 Park Avenue"
+    ],
+    [
+      423.0,
+      "270 Park Avenue"
+    ],
+    [
+      417.0,
+      "One World Trade Center"
+    ],
+    [
+      397.0,
+      "One Vanderbilt"
+    ],
+    [
+      395.0,
+      "30 Hudson Yards"
+    ],
+    [
+      366.0,
+      "Bank of America Tower"
+    ],
+    [
+      325.1,
+      "The Torch"
+    ],
+    [
+      320.0,
+      "53 West 53"
+    ],
+    [
+      320.0,
+      "3 World Trade Center"
+    ],
+    [
+      318.9,
+      "Chrysler Building"
+    ],
+    [
+      317.3,
+      "The Spiral"
+    ],
+    [
+      308.2,
+      "50 Hudson Yards"
+    ],
+    [
+      304.8,
+      "520 5th Avenue"
+    ]
+  ],
+  "total_footprint_verts": 475865
+}

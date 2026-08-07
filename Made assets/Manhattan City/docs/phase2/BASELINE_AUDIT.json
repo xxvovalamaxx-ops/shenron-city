@@ -1,0 +1,147 @@
+{
+ "pass": 28,
+ "warn": 0,
+ "fail": 0,
+ "checks": [
+  {
+   "status": "PASS",
+   "name": "manifest rows",
+   "detail": "56476 buildings, 11.1 MB"
+  },
+  {
+   "status": "PASS",
+   "name": "height provenance breakdown",
+   "detail": "tag=54188 (95.9%) levels=904 zone_model=1371 landmark=13"
+  },
+  {
+   "status": "PASS",
+   "name": "real-OSM height coverage (tag+levels)",
+   "detail": "55105/56476 = 97.6%  [zone-estimated only 1371 = 2.4%]"
+  },
+  {
+   "status": "PASS",
+   "name": "bid uniqueness / contiguity",
+   "detail": "56476 unique, range 0..56475"
+  },
+  {
+   "status": "PASS",
+   "name": "osm_way_id uniqueness",
+   "detail": "56476 distinct OSM ways for 56476 buildings"
+  },
+  {
+   "status": "PASS",
+   "name": "attribution coverage",
+   "detail": "named=4443 addressed=43761 districts=28 (top: East Harlem 5016, Brooklyn 4990, Yorkville / Carnegie Hill 4622, Upper East Side 4098)"
+  },
+  {
+   "status": "PASS",
+   "name": "raw OSM ways indexed",
+   "detail": "125353 ways from 9 files in 1.3s"
+  },
+  {
+   "status": "PASS",
+   "name": "traceability: manifest -> raw OSM way",
+   "detail": "8/8 verified, 0 mismatched, 0 not found"
+  },
+  {
+   "status": "PASS",
+   "name": "building meshes in blend",
+   "detail": "242 chunk meshes, 2,932,907 verts, 1,569,041 faces"
+  },
+  {
+   "status": "PASS",
+   "name": "bid attribute on every chunk",
+   "detail": "242/242 meshes carry FACE int 'bid'"
+  },
+  {
+   "status": "PASS",
+   "name": "_bid attribute (glTF-exportable)",
+   "detail": "242/242 meshes carry POINT float '_bid'"
+  },
+  {
+   "status": "PASS",
+   "name": "bid values sane on sample chunk",
+   "detail": "BLD_midrise_-03_-05: 8468 faces, 310 distinct bids, range 301..19996"
+  },
+  {
+   "status": "PASS",
+   "name": "roof caps free of bowtie shards",
+   "detail": "0 self-intersecting of 71692 horizontal n-gon caps"
+  },
+  {
+   "status": "PASS",
+   "name": "no oversized building footprints",
+   "detail": "0 faces span >700 m; largest is 658 m (BLD_midrise_+00_+03 f409)"
+  },
+  {
+   "status": "PASS",
+   "name": "bcol colour attribute",
+   "detail": "242/242 meshes"
+  },
+  {
+   "status": "PASS",
+   "name": "traffic system",
+   "detail": "13086 lane splines, 2398 lane-km, evaluated instances=52774 (geometric estimate 46119 @ 52 m spacing)"
+  },
+  {
+   "status": "PASS",
+   "name": "collection bridges",
+   "detail": "3 objects, 6,096 verts"
+  },
+  {
+   "status": "PASS",
+   "name": "collection piers",
+   "detail": "1 objects, 18,785 verts"
+  },
+  {
+   "status": "PASS",
+   "name": "collection parks",
+   "detail": "74 objects, 347,089 verts"
+  },
+  {
+   "status": "PASS",
+   "name": "collection roads",
+   "detail": "54 objects, 124,772 verts"
+  },
+  {
+   "status": "PASS",
+   "name": "collection landmarks",
+   "detail": "2 objects, 238 verts"
+  },
+  {
+   "status": "PASS",
+   "name": "cameras",
+   "detail": "CAM_bridges, CAM_centralpark, CAM_downtown, CAM_flythrough, CAM_harbour, CAM_hero_wide, CAM_midtown, CAM_uptown"
+  },
+  {
+   "status": "PASS",
+   "name": "flythrough frame range",
+   "detail": "1-720 @ 30 fps = 24.0 s"
+  },
+  {
+   "status": "PASS",
+   "name": "GLB structure",
+   "detail": "v2, 26.6 MB, 380 meshes, 622 primitives, 380 nodes"
+  },
+  {
+   "status": "PASS",
+   "name": "GLB vertex attributes",
+   "detail": "attributes present: COLOR_0, NORMAL, POSITION, _BID"
+  },
+  {
+   "status": "PASS",
+   "name": "GLB carries building ids",
+   "detail": "looked for _BID / _bid among COLOR_0, NORMAL, POSITION, _BID"
+  },
+  {
+   "status": "PASS",
+   "name": "GLB extensions",
+   "detail": "used=['KHR_draco_mesh_compression']"
+  },
+  {
+   "status": "PASS",
+   "name": "user's brick file untouched",
+   "detail": "last modified 2026-08-02 07:41:33, 228445 bytes (session started ~05:45)"
+  }
+ ]
+}

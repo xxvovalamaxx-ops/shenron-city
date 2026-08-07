@@ -1,0 +1,18 @@
+{
+ "buildings": 56476,
+ "archetypes": 22,
+ "districts": 48,
+ "tiles": 119,
+ "tile_bytes": 44480304,
+ "street_tiles": 61,
+ "street_tile_bytes": 12545988,
+ "payload_bytes": {
+  "city.json": 20346,
+  "core.bin": 1129520,
+  "text.json": 1622959
+ },
+ "payload_total_mb": 2.77,
+ "with_text": 44716,
+ "with_year": 40788,
+ "seconds": 0.6
+}

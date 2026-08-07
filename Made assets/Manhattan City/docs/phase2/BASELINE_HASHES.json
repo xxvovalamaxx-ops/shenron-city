@@ -1,0 +1,402 @@
+{
+ "tag": "manhattan-geographic-foundation-v1",
+ "frozen_utc": "2026-08-03T09:33:02Z",
+ "root": "D:\\blender projects\\Manheten",
+ "groups": {
+  "scripts": {
+   "enforced": true,
+   "files": {
+    "scripts/01_fetch_osm.py": {
+     "sha256": "e397acf245c3c7fe75fbaea0db69231efe743e5e873e4a9522aa0bd26d6b0e1d",
+     "bytes": 7719
+    },
+    "scripts/01b_fetch_missing.py": {
+     "sha256": "e3829013d052092f865468b901aac5c1a5557266554bf0a819162587b0195c9a",
+     "bytes": 2555
+    },
+    "scripts/02_process_osm.py": {
+     "sha256": "94c2e71a8c3341443a8bd999045dba4acdd2b4726afb6ea04a2b48f691ae1007",
+     "bytes": 40434
+    },
+    "scripts/10_scene_setup.py": {
+     "sha256": "45f18ca8f2b531a445cb462f9eb3edc2ef711e0fa8c15f14d322ed1d93a8f33b",
+     "bytes": 6166
+    },
+    "scripts/15_materials.py": {
+     "sha256": "8c1b575f000b84ed9e2811b4c46082411b50e49672b06a05687e8bc5b322317c",
+     "bytes": 23729
+    },
+    "scripts/18_terrain.py": {
+     "sha256": "b89ad97847cd6833dee0fbe372b4a2ed4319aadcb6b46d2cf7af6cfaa0068db2",
+     "bytes": 10200
+    },
+    "scripts/19_parks.py": {
+     "sha256": "753bf468fa12ac0648e29b0ca472c83c24e17a860ed87a70142807ca844cc550",
+     "bytes": 8176
+    },
+    "scripts/20_buildings.py": {
+     "sha256": "7477aa548969c0704b5627bf754d010061cdaa9dbabe727476d83419dab57108",
+     "bytes": 29000
+    },
+    "scripts/22_roads.py": {
+     "sha256": "725b85305b56643371c271342e5d155b2c9de18d56973ff1b939c517a1c6e4ae",
+     "bytes": 2865
+    },
+    "scripts/24_bridges.py": {
+     "sha256": "38f1e34b36d29bfd05f8e3303c1733eb35924ca825b8859e0d4e5ff2a5515a93",
+     "bytes": 11207
+    },
+    "scripts/26_piers.py": {
+     "sha256": "47a4035eb4741be8890885cc46ed12c705fc2af99cbc7e3e1301e670503f0d80",
+     "bytes": 4435
+    },
+    "scripts/28_landmarks.py": {
+     "sha256": "2782c941ebbd87803d5a0be6d219456349d7c3658555fea2eeefd142511cb6c5",
+     "bytes": 5527
+    },
+    "scripts/30_traffic.py": {
+     "sha256": "078fc74d2e9fc9e0d25e5091f8fd15215ea8d0925aaf9d58dbc73de45deeeb23",
+     "bytes": 8751
+    },
+    "scripts/32_cameras.py": {
+     "sha256": "112b96f317630e778a250a75b722a0feea004a36ed40c93bd5fc345fce63fad6",
+     "bytes": 4786
+    },
+    "scripts/35_lookdev.py": {
+     "sha256": "745121ed8a4f4526bf99dba46e2de461f14e74a0a61aba87b237f9880595a6c5",
+     "bytes": 10944
+    },
+    "scripts/90_preview.py": {
+     "sha256": "10ecbb2cb601154cde2be4a502492384023a0d0214f1c595b7f00342688f48a6",
+     "bytes": 4643
+    },
+    "scripts/92_shots.py": {
+     "sha256": "814fda1433ec9ed874b1cbfba42dbe91a7e60f362b9955d0787091dc99f52c54",
+     "bytes": 2195
+    },
+    "scripts/94_playblast.py": {
+     "sha256": "bfafe92ac98429b8270992973561558f620452bfe62ebdb69342d7d0b36c2ba7",
+     "bytes": 3651
+    },
+    "scripts/96_export_gltf.py": {
+     "sha256": "49d7d479d5b076b4d8a584ce57d29ee6bdc4f3eb438ce63eb1871f2cfbaab3ba",
+     "bytes": 5093
+    },
+    "scripts/98_audit.py": {
+     "sha256": "18e280731c0fc6ccff89c079ef1a3684200426287031237b5bc0f2d37222bd4f",
+     "bytes": 16245
+    },
+    "scripts/99_build.py": {
+     "sha256": "fa809fe2df65d1c2a516f9bbbf1bd80a1ceaa3752511456cf843cc0ddb4bd566",
+     "bytes": 5003
+    },
+    "scripts/blender_common.py": {
+     "sha256": "03a3b0bcf7bc9d89797c48abfc65fe2c8ac9dde0e245cf2c022fd3abb66bc490",
+     "bytes": 9423
+    },
+    "scripts/open_in_blender.py": {
+     "sha256": "b7dea1289c4be788305fc82d6e8f32bbb967532fe6544dbf7781fb7a317b2430",
+     "bytes": 3682
+    },
+    "scripts/rescue_brick_all_versions.py": {
+     "sha256": "d6f654ed89e76c8a7a13124178b0b56a690399c4c1d9d7afcc5e5c6bf12c9cce",
+     "bytes": 3691
+    },
+    "scripts/rescue_brick_file.py": {
+     "sha256": "eda7ac86a70954a48ce9aa2956edc9cf0e64fe47eb0bff8a890882a22e7318d9",
+     "bytes": 3443
+    }
+   }
+  },
+  "phase2_scripts": {
+   "enforced": false,
+   "files": {
+    "scripts/phase2/freeze_baseline.py": {
+     "sha256": "ff58b7764b3b47591718d206696f04da392cdec58a1073a3ffecd5087877db97",
+     "bytes": 6318
+    },
+    "scripts/phase2/verify_baseline.py": {
+     "sha256": "51467285fb4878cf0f49d147dd2fec2753e229918a995b494583770f2958c926",
+     "bytes": 5570
+    }
+   }
+  },
+  "caches": {
+   "enforced": true,
+   "files": {
+    "source_data/cache/bridges.pkl": {
+     "sha256": "8cc06bc43378075ad0dc8acb560ffc1c1568c56cff705da8580f8b468c13d538",
+     "bytes": 762921
+    },
+    "source_data/cache/buildings.pkl": {
+     "sha256": "833bcc0eaf9f666cd2a70b05e9c0b0e35a53bbf1dfb0c4aabee5b2f53d6a6136",
+     "bytes": 17993964
+    },
+    "source_data/cache/land.pkl": {
+     "sha256": "fe0388f6103f150acee36bbc7ac73c1f009d8bd0cdaab43085ac8c612d35ce8f",
+     "bytes": 678426
+    },
+    "source_data/cache/parks.pkl": {
+     "sha256": "833ead827e738c5e07657988dceca00f698fb218cf9935473f2219df0afa56de",
+     "bytes": 1023212
+    },
+    "source_data/cache/piers.pkl": {
+     "sha256": "85688942bef5ec0a0288efa05c033072432a447f096c8bd24330d5536113d884",
+     "bytes": 245752
+    },
+    "source_data/cache/roads.pkl": {
+     "sha256": "5aebfe0711167e819f3d9fbc247b5a4aaf8435658022fc27c02455de747e1e6d",
+     "bytes": 2748971
+    },
+    "source_data/cache/water.pkl": {
+     "sha256": "a0380c3cceb76d128ad9354aca7cfd01f067d6d6b2d5c644e30d558a2654ee9a",
+     "bytes": 272792
+    }
+   }
+  },
+  "derived_data": {
+   "enforced": true,
+   "files": {
+    "docs/data_report.json": {
+     "sha256": "a5ee3cb18a3521c3fc06dc7a6773fdff65c42ea3364ea1cfd2048dc551f3c618",
+     "bytes": 1783
+    },
+    "exports/building_index.json": {
+     "sha256": "8dc6d465b9abd074b27a3ea8bb61bc374a9a988f840f3a2261ec0f1ce715ace8",
+     "bytes": 52946
+    },
+    "exports/building_manifest.csv": {
+     "sha256": "6c222e668d27e6d7c8b761f04a99a4ff56744358b9cddcb110ea7dc82afe08d1",
+     "bytes": 11121264
+    }
+   }
+  },
+  "docs": {
+   "enforced": false,
+   "files": {
+    "README.md": {
+     "sha256": "bae5bcf8c7b7aa94710b23c5d0eed93254eddc341840baac5e1ba633843cb75f",
+     "bytes": 2002
+    },
+    "docs/PIPELINE.md": {
+     "sha256": "fc203f91cc67aa8d6134cbcdfe6a415659c71e5dda7b292e46b195abce7e2c65",
+     "bytes": 19944
+    }
+   }
+  },
+  "binary_outputs": {
+   "enforced": false,
+   "files": {
+    "blend/manhattan_world.blend": {
+     "sha256": "ae81b6cdf97fb4fca4d88a899708f02cd2f211318005de5a9ddc139804ee0999",
+     "bytes": 302210281
+    },
+    "exports/manhattan_world.glb": {
+     "sha256": "d14c1345cba770343db5186fba20d28e1c2422afe02765071b8153d386f19327",
+     "bytes": 26602180
+    },
+    "playblasts/flythrough.mp4": {
+     "sha256": "b68461d5a94d9600daa27788b626fd3c829727aab776a7959b6296e3091a5daf",
+     "bytes": 34862736
+    }
+   }
+  },
+  "renders": {
+   "enforced": false,
+   "files": {
+    "renders/centralpark.png": {
+     "sha256": "2e48dbc3c73e7fc52bfa34156cb6b6e506fffb548e4d78d5a2fff2b5bc4f3442",
+     "bytes": 2908427
+    },
+    "renders/downtown.png": {
+     "sha256": "02e080455c5a70fea23b6674250349d752d2af38c1de417c40c55537e06614a9",
+     "bytes": 2928361
+    },
+    "renders/harbour.png": {
+     "sha256": "3cfec2896efb305db938bee99427869dd9a8e022939a437e8cabcde61469afb4",
+     "bytes": 2662482
+    },
+    "renders/midtown.png": {
+     "sha256": "74453a6745dbf1d4e0559dc022127184ac109f4ae41f31c5aaffe469478e171e",
+     "bytes": 2628936
+    },
+    "renders/penn_check.png": {
+     "sha256": "10611e75a7705a77017abfd85d5ff50b03aa9514a9e37a5cf1e00b49b72cb962",
+     "bytes": 2483756
+    },
+    "renders/plan.png": {
+     "sha256": "92e76922176dc58ff801100b3ce37b5be59756fe340298e41c4063bba9b053d4",
+     "bytes": 2317015
+    },
+    "renders/roof_check.png": {
+     "sha256": "73b5fbacf4fed00aa21c9008f137cbec126b399cd1b89bd9d8ef29817b40a7db",
+     "bytes": 2676607
+    },
+    "renders/roof_close.png": {
+     "sha256": "35be8db907a3152d023ce7fdf3b547fe40bc8ad0a3a13731036031021aae813d",
+     "bytes": 2957534
+    },
+    "renders/roof_close2.png": {
+     "sha256": "3c864b9777735fc619e82770b68334dad898ed5c4fffbfaa7659b8318dcdff0d",
+     "bytes": 2610056
+    },
+    "renders/rooftop_check.png": {
+     "sha256": "a120bd485e5f26b0c15cc2f16e3117c0fa89ea7b4a57b6c27af4984ae84779ec",
+     "bytes": 2438724
+    },
+    "renders/scatter_check.png": {
+     "sha256": "41b25f4c8f48d633a6db482823fe4b49ba69d289f768fad576126fcf50e1bc1a",
+     "bytes": 2354187
+    },
+    "renders/shore_check.png": {
+     "sha256": "149c8f9fcb231c37e9c09cf19861120f09e2edfe84ff5ca4ba9dd6618a79fdb5",
+     "bytes": 2273997
+    },
+    "renders/shot_bridges.png": {
+     "sha256": "b2ddd588181a1b0de54d09bdd626219ce30f22fe35dce09e06dab36f2510dab4",
+     "bytes": 2509468
+    },
+    "renders/shot_centralpark.png": {
+     "sha256": "b7f4dc4bae84390a5ef37bb620a67fc15d8d673b0a5251b7cf8e6ac755646c70",
+     "bytes": 2951387
+    },
+    "renders/shot_downtown.png": {
+     "sha256": "8a9cb4a899905c72ee768b4ace13de9270e3412a90b3db90e75b6d7ca754c2af",
+     "bytes": 2956838
+    },
+    "renders/shot_harbour.png": {
+     "sha256": "84e7e0cc8b3cebfa116e5b24db8ac71774c5139e82b470e87d99d428e91b42fa",
+     "bytes": 2722726
+    },
+    "renders/shot_hero_wide.png": {
+     "sha256": "0b6dd8fa0d413fc5d53d58873e1bd48669637b89ecbd5323e57c3133f9deaced",
+     "bytes": 2560298
+    },
+    "renders/shot_midtown.png": {
+     "sha256": "60b8776283bf05402a6aba13d94ab325df2b8c9cd5770870e0df6aaca5df8048",
+     "bytes": 2450005
+    },
+    "renders/shot_uptown.png": {
+     "sha256": "1da1ae25d7798ae4b52605200441e862e2b639a12bb557f1f0a75102c330c2e2",
+     "bytes": 2541740
+    },
+    "renders/test_brooklyn_close.png": {
+     "sha256": "f867c9a91b1a4880a8b15515019750e9ed635dcce4b1321b5be5b00e6deb03d7",
+     "bytes": 1645587
+    },
+    "renders/test_landonly.png": {
+     "sha256": "e4dfdef0d252f75b69156a2b7b545528e8d40f19dc268cc31d4917c0fa28766a",
+     "bytes": 2435883
+    },
+    "renders/test_noacne.png": {
+     "sha256": "d44517c81ad383db579da2bf71faefdf9b3fdb13d0c0abded0bfc01c4a3faf02",
+     "bytes": 3048928
+    },
+    "renders/user_view.png": {
+     "sha256": "9829d4dce8eb8dca9703a0a36e483a206dbec8f2261c293060702587723a498f",
+     "bytes": 2575159
+    },
+    "renders/zoom_context.png": {
+     "sha256": "922847aa7ffaf1cacf3e23f620cd7b5ec8dbd2bb693b12fe8d069a9492e6812f",
+     "bytes": 1672604
+    },
+    "renders/zoom_midtown.png": {
+     "sha256": "145fb235ce8ea859b4268f22b6f951aa1b17f1ee66e1305b41348d649b577823",
+     "bytes": 2587703
+    },
+    "renders/zoom_street.png": {
+     "sha256": "f2fa167f0a3d8e136cfd08957b9a866dd654894a42df7f449da695e0f44daa34",
+     "bytes": 2646141
+    }
+   }
+  },
+  "source_raw": {
+   "enforced": false,
+   "files": {
+    "source_data/boundary_manhattan.json": {
+     "sha256": "69fc673097bdc10e4e3f0409a033a99f521de3372f0f1cbd80aa045e7f1c46f5",
+     "bytes": 38420
+    },
+    "source_data/bridges_wide.json": {
+     "sha256": "92cddac75534668e45b05044a36dbfbcca0fa9f1eda3db7aa73ca58f092cb48a",
+     "bytes": 9277328
+    },
+    "source_data/buildings_band0.json": {
+     "sha256": "3e23d4796aea84200f597692bf6ba97ef888e3cdc9e5ce41bb68c74291cf6656",
+     "bytes": 4374452
+    },
+    "source_data/buildings_band1.json": {
+     "sha256": "ea26859a98e724fa2179266c4392dbb77990bcc67cc41b9dbf6a7be7b4a4bf62",
+     "bytes": 16874477
+    },
+    "source_data/buildings_band2.json": {
+     "sha256": "794976844df6145820198f87ec0f5543de5a06828c6da8479de51cb9df0efc5d",
+     "bytes": 16452909
+    },
+    "source_data/buildings_band3.json": {
+     "sha256": "9a92a45e61759c3b3f9ee5306c063d4fe9dd237c0b1a6e7a1045752e0d277e2f",
+     "bytes": 8780660
+    },
+    "source_data/buildings_band4_0.json": {
+     "sha256": "a9df8f30cdfad88b52bcc2f60ca9e50b7ad849b23bcd6de3607489b6dbab4fca",
+     "bytes": 1113543
+    },
+    "source_data/buildings_band4_1.json": {
+     "sha256": "07b3b1c3ec681980b19767368e250fef1e1a7d2e9c15115d79024d52e93fb0ce",
+     "bytes": 897161
+    },
+    "source_data/buildings_band4_2.json": {
+     "sha256": "02a5352d5d8e8d82c6512b8650f63924e742994461926f74632a1298e26bd5d8",
+     "bytes": 705778
+    },
+    "source_data/buildings_band4_3.json": {
+     "sha256": "c3e91b0d96e3bacac24cc89e63ac52a9901089423f17cff41f6ea56cd8beca40",
+     "bytes": 258137
+    },
+    "source_data/coastline_wide.json": {
+     "sha256": "6cec3e9c7681d3113762c89f1b6edd85dc25650d4f05928a88d28bc7093ff956",
+     "bytes": 1718568
+    },
+    "source_data/context_buildings.json": {
+     "sha256": "05173679125115caab6196d040e491cf170dc940d2b3fdc63cdda5ee49a6f4c0",
+     "bytes": 93126583
+    },
+    "source_data/parks_manhattan.json": {
+     "sha256": "eed13eb1f5f370ba9bcf3e4178219fd32a3dc211ed7b9bbf4ea714d38a9746e9",
+     "bytes": 13861201
+    },
+    "source_data/piers_wide.json": {
+     "sha256": "9a8a414dd8639cf4bbf1a05136a4c1d14451ef3aac1318ae1ea6e0653f3dc11d",
+     "bytes": 1539846
+    },
+    "source_data/rail_manhattan.json": {
+     "sha256": "779ee576bf83b72f558161a46c14ebf3fe2936bdf1d26d864900b6ba00466ee4",
+     "bytes": 1660475
+    },
+    "source_data/roads_manhattan.json": {
+     "sha256": "987d57cf760e5c3fe610d7d76491219765a477c85a79f047e2533ad6451fe934",
+     "bytes": 22358566
+    },
+    "source_data/water_wide.json": {
+     "sha256": "d6b8045b73ff3e361e5d7fb007bde7e05e9d1622d2fd3fdc7a159a2c4661e217",
+     "bytes": 3251319
+    }
+   }
+  }
+ },
+ "totals": {
+  "files": 85,
+  "bytes": 661678569,
+  "mb": 661.68
+ },
+ "accepted": [
+  {
+   "path": "scripts/blender_common.py",
+   "group": "scripts",
+   "from": "482df94a5fee154933a5bc09458660bc0eb813bff3443d9edf27dfbe3ab987c4",
+   "to": "03a3b0bcf7bc9d89797c48abfc65fe2c8ac9dde0e245cf2c022fd3abb66bc490",
+   "reason": "PROJECT was hardcoded to D:\\blender projects\\Manheten; the tree now lives elsewhere so nothing built at all. Resolved from __file__ instead. Path-only change, no geometry path touched: audit still 28/28 pass.",
+   "when": "2026-08-03T18:46:10Z"
+  }
+ ]
+}

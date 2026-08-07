@@ -1,0 +1,88 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://manhattan.local/schema/vision-defect.json",
+  "title": "Vision-bridge visual defect record",
+  "description": "A finding from visual review of a capture contact sheet. A defect is only ever closed by being reduced to a numeric check that a regression test can assert (the round-trip rule, see scripts/vision/README.md). 'Open' status is the honest default: no model's or reviewer's self-report counts as proof.",
+  "type": "object",
+  "required": ["id", "source", "image", "captured_at", "severity", "category", "description", "status"],
+  "additionalProperties": true,
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "Stable identifier, e.g. V-0001. Never reused for a different finding.",
+      "pattern": "^V-[0-9]{4,}$"
+    },
+    "source": {
+      "type": "string",
+      "description": "Where the finding came from: contact sheet file name, shot name, or reviewer label."
+    },
+    "image": {
+      "type": "string",
+      "description": "Path to the PNG capture the finding refers to, relative to the repo root (e.g. evidence/phase2/times_square.png)."
+    },
+    "captured_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Capture date/time of the image being reviewed (ISO 8601)."
+    },
+    "severity": {
+      "type": "string",
+      "enum": ["critical", "major", "minor"],
+      "description": "critical: breaks the shot (dead frame, inside a wall). major: visibly wrong. minor: cosmetic."
+    },
+    "category": {
+      "type": "string",
+      "enum": ["occlusion", "culling", "unlit", "z-fighting", "pop-in", "clipping", "missing geometry", "texture", "audio", "other"]
+    },
+    "description": {
+      "type": "string",
+      "description": "Narrow, falsifiable statement of what is wrong, e.g. 'horizontal black band across the top quarter of the frame', never 'looks bad'."
+    },
+    "check": {
+      "type": "object",
+      "description": "The suggested numeric reduction of this finding. Reference to a framecheck-style measurable: a function exported by apps/manhattan-threejs/src/framecheck.js (built in parallel by the qa-integrity worker). The generated regression test calls check.fn(...check.args) and asserts the result against check.threshold with check.operator. A defect with status 'confirmed' but no check cannot be closed; it stays 'open'.",
+      "required": ["fn", "operator", "threshold"],
+      "properties": {
+        "fn": {
+          "type": "string",
+          "description": "Name of the exported check function in framecheck.js, e.g. luminanceStddev, distinctColours, occlusionFraction, pixelDiff."
+        },
+        "args": {
+          "type": "array",
+          "description": "Arguments passed to the function verbatim. The strings '$IMAGE' and '$IMAGE_DIR' are replaced at generation time by the absolute path of this defect's image and its directory.",
+          "default": ["$IMAGE"]
+        },
+        "operator": {
+          "type": "string",
+          "enum": ["lt", "lte", "gt", "gte", "eq", "neq", "approx"],
+          "description": "lt/lte/gt/gte: numeric comparison of the result against threshold. eq/neq: strict equality. approx: |result - threshold| <= threshold * 0.05 (relative tolerance)."
+        },
+        "threshold": {
+          "type": "number",
+          "description": "The proposed threshold, in check.unit."
+        },
+        "unit": {
+          "type": "string",
+          "description": "Unit of the measurement, e.g. 'luminance stddev (linear)', 'fraction of frame', 'count of pixels'."
+        },
+        "ref": {
+          "type": "string",
+          "description": "Pointer to the framecheck-style measurable this is based on (HANDOFF section, bug ledger id, or framecheck doc)."
+        }
+      }
+    },
+    "status": {
+      "type": "string",
+      "enum": ["open", "confirmed", "rejected"],
+      "description": "open: reported, not yet reduced to a numeric check. confirmed: a numeric check exists and has been seen to fail. rejected: checked numerically and shown to be a false positive. Only confirmed defects are converted to regression tests."
+    },
+    "confirmed_by": {
+      "type": "string",
+      "description": "Who/what confirmed: reviewer name, vision model id, or a numeric run. Required when status is 'confirmed'."
+    },
+    "notes": {
+      "type": "string",
+      "description": "Anything that changes the reading of the finding, e.g. known intermittent conditions."
+    }
+  }
+}

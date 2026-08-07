@@ -1,0 +1,98 @@
+{
+ "props": {
+  "PROP_tree_broad": {
+   "height": 8.0,
+   "tris": 212,
+   "verts": 116
+  },
+  "PROP_tree_column": {
+   "height": 8.0,
+   "tris": 112,
+   "verts": 62
+  },
+  "PROP_tree_conifer": {
+   "height": 8.0,
+   "tris": 74,
+   "verts": 47
+  },
+  "PROP_streetlight": {
+   "height": 8.9,
+   "reach": 3.1,
+   "tris": 104,
+   "verts": 64
+  },
+  "PROP_signal": {
+   "height": 4.7,
+   "reach": 3.7,
+   "tris": 164,
+   "verts": 104
+  },
+  "PROP_hydrant": {
+   "height": 0.9,
+   "tris": 160,
+   "verts": 96
+  },
+  "PROP_bin": {
+   "height": 0.92,
+   "tris": 84,
+   "verts": 60
+  },
+  "PROP_shelter": {
+   "length": 4.3,
+   "depth": 1.65,
+   "height": 2.62,
+   "tris": 144,
+   "verts": 96
+  },
+  "PROP_bollard": {
+   "height": 0.98,
+   "tris": 38,
+   "verts": 26
+  },
+  "PROP_newsbox": {
+   "height": 1.03,
+   "tris": 84,
+   "verts": 56
+  }
+ },
+ "peds": {
+  "PED_adult_a": {
+   "height": 1.76,
+   "hip": 0.924,
+   "shoulder": 1.429,
+   "tris": 144,
+   "verts": 96
+  },
+  "PED_adult_b": {
+   "height": 1.68,
+   "hip": 0.882,
+   "shoulder": 1.364,
+   "tris": 180,
+   "verts": 120
+  },
+  "PED_child": {
+   "height": 1.24,
+   "hip": 0.651,
+   "shoulder": 1.007,
+   "tris": 168,
+   "verts": 112
+  }
+ },
+ "prop_tris": 1176,
+ "ped_tris": 492,
+ "props_glb_bytes": 111524,
+ "peds_glb_bytes": 45600,
+ "ped_channels": {
+  "1.00": "top -> instanceColor",
+  "0.66": "bottom -> aBottom",
+  "0.33": "skin -> aSkin",
+  "0.00": "authored rgb"
+ },
+ "limb_uv": {
+  "u": "0.0 static, 0.2 legL, 0.4 legR, 0.6 armL, 0.8 armR",
+  "v": "pivot height in metres / 4"
+ },
+ "licence": "generated procedurally; no third-party asset",
+ "blend": "blend\\manhattan_props.blend",
+ "seconds": 0.3
+}

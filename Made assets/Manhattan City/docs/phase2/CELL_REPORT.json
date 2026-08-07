@@ -1,0 +1,66 @@
+{
+ "buildings": 56476,
+ "cells_occupied": 2797,
+ "sectors_occupied": 278,
+ "cell_m": 200.0,
+ "sector_m": 800.0,
+ "pinned_buildings": 506,
+ "pin_height_m": 100.0,
+ "buildings_per_cell": {
+  "min": 1,
+  "p50": 10,
+  "p90": 57,
+  "p99": 107,
+  "max": 155,
+  "mean": 20.2
+ },
+ "citywide_tri_budget": {
+  "L0": 50828400,
+  "L1": 10165680,
+  "L2": 2259040,
+  "L3": 1468376,
+  "L4": 677712
+ },
+ "resident_tris_per_camera": {
+  "samples": 2416,
+  "p50": 1044884,
+  "p90": 1614846,
+  "p99": 1816564,
+  "max": 2042824,
+  "note": "worst case, no frustum culling; camera placed at the centre of every occupied cell with 2+ buildings"
+ },
+ "cells_over_l0_budget": 6,
+ "worst_cells": [
+  {
+   "cell": "c_10_21",
+   "n": 155,
+   "tri_l0": 139500
+  },
+  {
+   "cell": "c_9_20",
+   "n": 145,
+   "tri_l0": 130500
+  },
+  {
+   "cell": "c_-16_-25",
+   "n": 142,
+   "tri_l0": 127800
+  },
+  {
+   "cell": "c_-16_-27",
+   "n": 141,
+   "tri_l0": 126900
+  },
+  {
+   "cell": "c_9_21",
+   "n": 141,
+   "tri_l0": 126900
+  },
+  {
+   "cell": "c_-5_-3",
+   "n": 135,
+   "tri_l0": 121500
+  }
+ ],
+ "seconds": 1.0
+}

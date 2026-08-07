@@ -1,0 +1,72 @@
+{
+  "parts": {
+    "LIFT_cab": {
+      "width": 2.1,
+      "depth": 2.3,
+      "height": 2.6,
+      "kind": "lift",
+      "tris": 372,
+      "glass_tris": 0,
+      "verts": 264,
+      "glass": null,
+      "panes": 0
+    },
+    "CAR_cabin": {
+      "length": 4.8,
+      "width": 1.85,
+      "height": 1.45,
+      "kind": "car_cabin",
+      "eye": [
+        -0.1,
+        0.36,
+        1.07
+      ],
+      "tris": 706,
+      "glass_tris": 12,
+      "verts": 457,
+      "glass": "GLAZE_car",
+      "panes": 6
+    },
+    "SHENRON_form": {
+      "height": 4.3,
+      "radius": 1.75,
+      "kind": "presence",
+      "coil_points": 94,
+      "tris": 1148,
+      "glass_tris": 0,
+      "verts": 1212,
+      "glass": null,
+      "panes": 0
+    }
+  },
+  "total_tris": 2238,
+  "glb_bytes": 160096,
+  "space": "origin on the floor at the middle of the entrance wall, +x into the space, +y left, +z up; CAR_cabin instead uses the fleet convention, origin on the road surface at the middle of the car, +x forward",
+  "car": {
+    "body": [
+      4.8,
+      1.85,
+      1.45
+    ],
+    "eye": [
+      -0.1,
+      0.36,
+      1.07
+    ],
+    "eye_inside_body": true,
+    "eye_above_seat_base_m": 0.51,
+    "headroom_m": 0.27
+  },
+  "lift": {
+    "width": 2.1,
+    "depth": 2.3,
+    "height": 2.6
+  },
+  "shenron": {
+    "height_m": 4.3,
+    "licence": "original abstract form: a coiling luminous ribbon around a faceted core. No face, eyes, scales, horns or other character features. Deliberately not a reproduction of, and not derived from, any existing character design."
+  },
+  "licence": "generated procedurally; no purchased kit, no scanned geometry, no photographic texture, no branded vehicle interior",
+  "blend": "blend\\manhattan_corridor.blend",
+  "seconds": 0.3
+}

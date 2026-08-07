@@ -1,0 +1,48 @@
+{
+ "walk_lanes": 14675,
+ "walk_km": 1249.58,
+ "walk_nodes": 10099,
+ "probes": 423719,
+ "probes_on_pavement": 255875,
+ "edges_skipped": {
+  "undrivable": 5120,
+  "short": 969,
+  "no_pavement": 2146
+ },
+ "props": {
+  "streetlight": 30925,
+  "hydrant": 10552,
+  "bin": 7204,
+  "signal": 7228,
+  "newsbox": 1637,
+  "tree": 54214,
+  "shelter": 658
+ },
+ "trees": {
+  "rows": 254514,
+  "parsed": 254514,
+  "manhattan": 124272,
+  "retired": 25430,
+  "on_pavement": 54214,
+  "forms": {
+   "broad": 40264,
+   "upright": 13551,
+   "conifer": 399
+  },
+  "top_genera": {
+   "gleditsia": 11451,
+   "quercus": 8956,
+   "ginkgo": 5005,
+   "pyrus": 4421,
+   "tilia": 4307,
+   "zelkova": 3543,
+   "styphnolobium": 3163,
+   "platanus": 3047,
+   "ulmus": 2849,
+   "acer": 1212,
+   "gymnocladus": 1065,
+   "celtis": 732
+  }
+ },
+ "seconds": 26.2
+}

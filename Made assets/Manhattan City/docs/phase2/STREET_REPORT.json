@@ -1,0 +1,43 @@
+{
+ "centerline_segments": 16379,
+ "drivable_segments": 11395,
+ "nodes": 11256,
+ "intersections_deg3plus": 6358,
+ "network_km": 1372.9,
+ "drivable_km": 1026.7,
+ "by_kind": {
+  "street": 9286,
+  "path": 1581,
+  "bridge": 1118,
+  "ferry": 722,
+  "highway": 643,
+  "driveway": 359,
+  "tunnel": 143,
+  "alley": 54,
+  "non_physical": 46,
+  "step_street": 40,
+  "uturn": 31
+ },
+ "oneway": {
+  "forward": 4398,
+  "backward": 4271,
+  "two_way": 2726
+ },
+ "estimated_fields": {
+  "width": 2514,
+  "lanes": 2520,
+  "speed": 3006
+ },
+ "skipped": {
+  "skip_non_physical": 768,
+  "skip_selfloop": 29,
+  "skip_tiny": 9
+ },
+ "sidewalk_polygons": 5202,
+ "sidewalk_holes": 3854,
+ "sidewalk_net_area_m2": 6969269,
+ "sidewalk_verts_in": 1259565,
+ "sidewalk_verts_out": 149866,
+ "sidewalk_reduction": 0.881,
+ "seconds": 3.8
+}

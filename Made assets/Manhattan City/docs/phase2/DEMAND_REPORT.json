@@ -1,0 +1,146 @@
+{
+ "cells": 1928,
+ "join": {
+  "points": 808,
+  "snapped": 794,
+  "too_far": 1,
+  "edges_with_counts": 564
+ },
+ "volume_model": {
+  "train": 451,
+  "test": 113,
+  "median_log_error_model": 0.6282,
+  "median_log_error_mean_baseline": 0.685,
+  "typical_factor_model": 1.87,
+  "typical_factor_baseline": 1.98,
+  "beats_baseline": true,
+  "buckets": 20,
+  "fallback_mean_vph": 84.1
+ },
+ "edges_measured": 564,
+ "edges_estimated": 10841,
+ "max_vph": 2700.3,
+ "busiest_daytime_cells": [
+  {
+   "cell": "-9,-17",
+   "lat": 40.75016,
+   "lon": -73.98817,
+   "day": 27770.5,
+   "retail_m2": 226908,
+   "office_m2": 117261,
+   "units": 0
+  },
+  {
+   "cell": "-6,-13",
+   "lat": 40.75739,
+   "lon": -73.98105,
+   "day": 26410.9,
+   "retail_m2": 137057,
+   "office_m2": 186997,
+   "units": 61
+  },
+  {
+   "cell": "-7,-13",
+   "lat": 40.75739,
+   "lon": -73.98342,
+   "day": 26008.0,
+   "retail_m2": 15441,
+   "office_m2": 343021,
+   "units": 144
+  },
+  {
+   "cell": "-5,-12",
+   "lat": 40.7592,
+   "lon": -73.97868,
+   "day": 25818.9,
+   "retail_m2": 54485,
+   "office_m2": 487223,
+   "units": 0
+  },
+  {
+   "cell": "-6,-12",
+   "lat": 40.7592,
+   "lon": -73.98105,
+   "day": 25358.6,
+   "retail_m2": 8558,
+   "office_m2": 216542,
+   "units": 0
+  },
+  {
+   "cell": "-5,-13",
+   "lat": 40.75739,
+   "lon": -73.97868,
+   "day": 25325.6,
+   "retail_m2": 45342,
+   "office_m2": 178626,
+   "units": 191
+  },
+  {
+   "cell": "-7,-12",
+   "lat": 40.7592,
+   "lon": -73.98342,
+   "day": 24850.5,
+   "retail_m2": 25105,
+   "office_m2": 430037,
+   "units": 141
+  },
+  {
+   "cell": "-9,-16",
+   "lat": 40.75196,
+   "lon": -73.98817,
+   "day": 24772.4,
+   "retail_m2": 31810,
+   "office_m2": 363808,
+   "units": 0
+  },
+  {
+   "cell": "-8,-14",
+   "lat": 40.75558,
+   "lon": -73.98579,
+   "day": 24650.0,
+   "retail_m2": 36684,
+   "office_m2": 508132,
+   "units": 0
+  },
+  {
+   "cell": "-8,-13",
+   "lat": 40.75739,
+   "lon": -73.98579,
+   "day": 24455.1,
+   "retail_m2": 56630,
+   "office_m2": 293672,
+   "units": 51
+  },
+  {
+   "cell": "-5,-14",
+   "lat": 40.75558,
+   "lon": -73.97868,
+   "day": 22946.3,
+   "retail_m2": 31360,
+   "office_m2": 360792,
+   "units": 0
+  },
+  {
+   "cell": "-9,-15",
+   "lat": 40.75377,
+   "lon": -73.98817,
+   "day": 22906.8,
+   "retail_m2": 19511,
+   "office_m2": 366534,
+   "units": 0
+  }
+ ],
+ "weights_day": {
+  "retail": 0.055,
+  "office": 0.011,
+  "resid": 0.05,
+  "other": 0.004
+ },
+ "weights_eve": {
+  "retail": 0.038,
+  "office": 0.002,
+  "resid": 0.13,
+  "other": 0.003
+ },
+ "seconds": 0.7
+}

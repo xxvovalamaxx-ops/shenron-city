@@ -1,0 +1,1885 @@
+{
+  "schema": "2o-b-lod lod recheck: before/after L2 measurements",
+  "runs": [
+    {
+      "label": "before",
+      "startedAt": "2026-08-06T12:31:28.000Z",
+      "machine": {
+        "platform": "win32",
+        "node": "v24.18.0",
+        "chrome": "headless=new, SwiftShader software GL"
+      },
+      "boot": {
+        "buildings": 56476,
+        "landLevelM": 12,
+        "lodTiles": 102,
+        "manifestBase": null,
+        "manifestLandLevel": null
+      },
+      "harness": {
+        "samples": 583,
+        "files": 22,
+        "failedFiles": 0,
+        "medianErrM": 0,
+        "p90ErrM": 0.0006,
+        "maxErrM": 22.8993,
+        "minErrM": -0.0051,
+        "worstSample": {
+          "err": 22.8993,
+          "tile": "-02_-03",
+          "bid": 20009,
+          "x": -1887.9,
+          "y": -3617,
+          "registryH": 3,
+          "hitY": 25.899,
+          "hitObject": "LOD_L2_-02_-03",
+          "buildingName": ""
+        },
+        "tiles": [
+          {
+            "key": "-02_-02",
+            "file": "-02_-02_L2.glb",
+            "buildingsInTile": 1813,
+            "samples": 27
+          },
+          {
+            "key": "-02_-03",
+            "file": "-02_-03_L2.glb",
+            "buildingsInTile": 1828,
+            "samples": 27
+          },
+          {
+            "key": "-02_-01",
+            "file": "-02_-01_L2.glb",
+            "buildingsInTile": 312,
+            "samples": 25
+          },
+          {
+            "key": "+00_-02",
+            "file": "+00_-02_L2.glb",
+            "buildingsInTile": 1503,
+            "samples": 27
+          },
+          {
+            "key": "+00_-03",
+            "file": "+00_-03_L2.glb",
+            "buildingsInTile": 138,
+            "samples": 27
+          },
+          {
+            "key": "-01_-04",
+            "file": "-01_-04_L2.glb",
+            "buildingsInTile": 914,
+            "samples": 26
+          },
+          {
+            "key": "-03_-04",
+            "file": "-03_-04_L2.glb",
+            "buildingsInTile": 2049,
+            "samples": 27
+          },
+          {
+            "key": "-01_+00",
+            "file": "-01_+00_L2.glb",
+            "buildingsInTile": 2145,
+            "samples": 26
+          },
+          {
+            "key": "+00_+00",
+            "file": "+00_+00_L2.glb",
+            "buildingsInTile": 914,
+            "samples": 27
+          },
+          {
+            "key": "-01_-05",
+            "file": "-01_-05_L2.glb",
+            "buildingsInTile": 1327,
+            "samples": 27
+          },
+          {
+            "key": "-03_-05",
+            "file": "-03_-05_L2.glb",
+            "buildingsInTile": 1368,
+            "samples": 27
+          },
+          {
+            "key": "+01_+00",
+            "file": "+01_+00_L2.glb",
+            "buildingsInTile": 1049,
+            "samples": 26
+          },
+          {
+            "key": "-02_-06",
+            "file": "-02_-06_L2.glb",
+            "buildingsInTile": 1037,
+            "samples": 27
+          },
+          {
+            "key": "-03_-06",
+            "file": "-03_-06_L2.glb",
+            "buildingsInTile": 863,
+            "samples": 27
+          },
+          {
+            "key": "+02_+00",
+            "file": "+02_+00_L2.glb",
+            "buildingsInTile": 115,
+            "samples": 28
+          },
+          {
+            "key": "+02_+01",
+            "file": "+02_+01_L2.glb",
+            "buildingsInTile": 407,
+            "samples": 28
+          },
+          {
+            "key": "-03_-07",
+            "file": "-03_-07_L2.glb",
+            "buildingsInTile": 131,
+            "samples": 27
+          },
+          {
+            "key": "+01_+03",
+            "file": "+01_+03_L2.glb",
+            "buildingsInTile": 2272,
+            "samples": 27
+          },
+          {
+            "key": "-04_-08",
+            "file": "-04_-08_L2.glb",
+            "buildingsInTile": 87,
+            "samples": 28
+          },
+          {
+            "key": "+01_+05",
+            "file": "+01_+05_L2.glb",
+            "buildingsInTile": 445,
+            "samples": 22
+          },
+          {
+            "key": "+02_+06",
+            "file": "+02_+06_L2.glb",
+            "buildingsInTile": 709,
+            "samples": 24
+          },
+          {
+            "key": "+02_+07",
+            "file": "+02_+07_L2.glb",
+            "buildingsInTile": 53,
+            "samples": 26
+          }
+        ],
+        "method": "raycast from registry height+30m onto the tile L2 glb"
+      },
+      "both": {
+        "ground": 12,
+        "tiles": [
+          {
+            "key": "-02_-02",
+            "file": "-02_-02_L2.glb",
+            "buildings": 1813,
+            "samples": 27
+          },
+          {
+            "key": "-01_-02",
+            "file": "-01_-02_L2.glb",
+            "buildings": 1286,
+            "samples": 26
+          },
+          {
+            "key": "-02_-03",
+            "file": "-02_-03_L2.glb",
+            "buildings": 1828,
+            "samples": 27
+          },
+          {
+            "key": "-01_-03",
+            "file": "-01_-03_L2.glb",
+            "buildings": 1632,
+            "samples": 26
+          },
+          {
+            "key": "-02_-01",
+            "file": "-02_-01_L2.glb",
+            "buildings": 312,
+            "samples": 25
+          },
+          {
+            "key": "-01_-01",
+            "file": "-01_-01_L2.glb",
+            "buildings": 1070,
+            "samples": 27
+          },
+          {
+            "key": "+00_-02",
+            "file": "+00_-02_L2.glb",
+            "buildings": 1503,
+            "samples": 27
+          },
+          {
+            "key": "-03_-03",
+            "file": "-03_-03_L2.glb",
+            "buildings": 693,
+            "samples": 27
+          },
+          {
+            "key": "+00_-03",
+            "file": "+00_-03_L2.glb",
+            "buildings": 138,
+            "samples": 27
+          },
+          {
+            "key": "-02_-04",
+            "file": "-02_-04_L2.glb",
+            "buildings": 2551,
+            "samples": 27
+          },
+          {
+            "key": "-01_-04",
+            "file": "-01_-04_L2.glb",
+            "buildings": 914,
+            "samples": 26
+          },
+          {
+            "key": "+00_-01",
+            "file": "+00_-01_L2.glb",
+            "buildings": 2553,
+            "samples": 27
+          },
+          {
+            "key": "-03_-04",
+            "file": "-03_-04_L2.glb",
+            "buildings": 2049,
+            "samples": 27
+          },
+          {
+            "key": "-02_+00",
+            "file": "-02_+00_L2.glb",
+            "buildings": 30,
+            "samples": 30
+          },
+          {
+            "key": "-01_+00",
+            "file": "-01_+00_L2.glb",
+            "buildings": 2145,
+            "samples": 26
+          },
+          {
+            "key": "+01_-02",
+            "file": "+01_-02_L2.glb",
+            "buildings": 32,
+            "samples": 29
+          },
+          {
+            "key": "+00_+00",
+            "file": "+00_+00_L2.glb",
+            "buildings": 914,
+            "samples": 27
+          },
+          {
+            "key": "-02_-05",
+            "file": "-02_-05_L2.glb",
+            "buildings": 3043,
+            "samples": 27
+          },
+          {
+            "key": "-01_-05",
+            "file": "-01_-05_L2.glb",
+            "buildings": 1327,
+            "samples": 27
+          },
+          {
+            "key": "+01_-01",
+            "file": "+01_-01_L2.glb",
+            "buildings": 913,
+            "samples": 27
+          },
+          {
+            "key": "-03_-05",
+            "file": "-03_-05_L2.glb",
+            "buildings": 1368,
+            "samples": 27
+          },
+          {
+            "key": "-01_+01",
+            "file": "-01_+01_L2.glb",
+            "buildings": 603,
+            "samples": 26
+          },
+          {
+            "key": "+01_+00",
+            "file": "+01_+00_L2.glb",
+            "buildings": 1049,
+            "samples": 26
+          },
+          {
+            "key": "+00_+01",
+            "file": "+00_+01_L2.glb",
+            "buildings": 1213,
+            "samples": 27
+          },
+          {
+            "key": "-02_-06",
+            "file": "-02_-06_L2.glb",
+            "buildings": 1037,
+            "samples": 27
+          },
+          {
+            "key": "-01_-06",
+            "file": "-01_-06_L2.glb",
+            "buildings": 105,
+            "samples": 23
+          },
+          {
+            "key": "-03_-06",
+            "file": "-03_-06_L2.glb",
+            "buildings": 863,
+            "samples": 27
+          },
+          {
+            "key": "+01_+01",
+            "file": "+01_+01_L2.glb",
+            "buildings": 1970,
+            "samples": 27
+          },
+          {
+            "key": "+02_+00",
+            "file": "+02_+00_L2.glb",
+            "buildings": 115,
+            "samples": 28
+          },
+          {
+            "key": "+00_+02",
+            "file": "+00_+02_L2.glb",
+            "buildings": 987,
+            "samples": 23
+          },
+          {
+            "key": "+02_+01",
+            "file": "+02_+01_L2.glb",
+            "buildings": 407,
+            "samples": 28
+          },
+          {
+            "key": "+01_+02",
+            "file": "+01_+02_L2.glb",
+            "buildings": 2585,
+            "samples": 27
+          },
+          {
+            "key": "-03_-07",
+            "file": "-03_-07_L2.glb",
+            "buildings": 131,
+            "samples": 27
+          },
+          {
+            "key": "+00_+03",
+            "file": "+00_+03_L2.glb",
+            "buildings": 324,
+            "samples": 26
+          },
+          {
+            "key": "+01_+03",
+            "file": "+01_+03_L2.glb",
+            "buildings": 2272,
+            "samples": 27
+          },
+          {
+            "key": "-03_-08",
+            "file": "-03_-08_L2.glb",
+            "buildings": 61,
+            "samples": 31
+          },
+          {
+            "key": "-04_-08",
+            "file": "-04_-08_L2.glb",
+            "buildings": 87,
+            "samples": 28
+          },
+          {
+            "key": "+01_+04",
+            "file": "+01_+04_L2.glb",
+            "buildings": 860,
+            "samples": 27
+          },
+          {
+            "key": "+01_+05",
+            "file": "+01_+05_L2.glb",
+            "buildings": 445,
+            "samples": 22
+          },
+          {
+            "key": "+02_+05",
+            "file": "+02_+05_L2.glb",
+            "buildings": 510,
+            "samples": 25
+          },
+          {
+            "key": "+02_+06",
+            "file": "+02_+06_L2.glb",
+            "buildings": 709,
+            "samples": 24
+          },
+          {
+            "key": "+03_+06",
+            "file": "+03_+06_L2.glb",
+            "buildings": 58,
+            "samples": 28
+          },
+          {
+            "key": "+02_+07",
+            "file": "+02_+07_L2.glb",
+            "buildings": 53,
+            "samples": 26
+          },
+          {
+            "key": "+03_+07",
+            "file": "+03_+07_L2.glb",
+            "buildings": 358,
+            "samples": 27
+          }
+        ],
+        "failed": 0,
+        "l0failed": 0,
+        "legacy": {
+          "samples": 1173,
+          "median": 0,
+          "p90": 0.0006,
+          "p95": 0.0007,
+          "max": 22.8993,
+          "min": -0.0051,
+          "worst": {
+            "err": null
+          }
+        },
+        "corrected": {
+          "samples": 1173,
+          "median": -12,
+          "p90": -11.9994,
+          "p95": -11.9993,
+          "max": 10.8993,
+          "min": -12.0051,
+          "worst": {
+            "err": null
+          }
+        },
+        "delta": {
+          "samples": 1171,
+          "median": -12.0003,
+          "p90": -11.9994,
+          "p95": -11.9991,
+          "max": 1.4531,
+          "min": -34.7892,
+          "worst": {
+            "err": null
+          }
+        }
+      },
+      "bid20009": {
+        "tile": "-02_-03",
+        "file": "-02_-03_L2.glb",
+        "l0File": "manhattan_-02_-03.glb",
+        "l0Loaded": true,
+        "ground": 12,
+        "expectedRoofM": 15,
+        "registryHeightM": 3,
+        "ring": [
+          {
+            "tag": "pt0",
+            "x": -1876.4619760671214,
+            "y": -3599.150527800456,
+            "l2": {
+              "hitY": 3,
+              "errM": -12.0001
+            },
+            "l0": {
+              "hitY": null,
+              "errM": null
+            },
+            "deltaM": null
+          },
+          {
+            "tag": "pt1",
+            "x": -1877.1194698532834,
+            "y": -3598.796691000249,
+            "l2": {
+              "hitY": 25.899,
+              "errM": 10.8993
+            },
+            "l0": {
+              "hitY": 15,
+              "errM": 0
+            },
+            "deltaM": 10.899
+          },
+          {
+            "tag": "pt2",
+            "x": -1891.6349095825117,
+            "y": -3624.825810600372,
+            "l2": {
+              "hitY": 25.899,
+              "errM": 10.8993
+            },
+            "l0": {
+              "hitY": 37.901,
+              "errM": 22.9005
+            },
+            "deltaM": -12.002
+          },
+          {
+            "tag": "pt3",
+            "x": -1896.869571645992,
+            "y": -3623.366233799814,
+            "l2": {
+              "hitY": null,
+              "errM": null
+            },
+            "l0": {
+              "hitY": 15,
+              "errM": 0
+            },
+            "deltaM": null
+          },
+          {
+            "tag": "pt4",
+            "x": -1897.7462300263435,
+            "y": -3624.6267774004027,
+            "l2": {
+              "hitY": 5.8,
+              "errM": -9.2003
+            },
+            "l0": {
+              "hitY": 17.799,
+              "errM": 2.7994
+            },
+            "deltaM": -11.999
+          },
+          {
+            "tag": "pt5",
+            "x": -1892.342979813118,
+            "y": -3627.612275399936,
+            "l2": {
+              "hitY": null,
+              "errM": null
+            },
+            "l0": {
+              "hitY": null,
+              "errM": null
+            },
+            "deltaM": null
+          }
+        ],
+        "center": {
+          "tag": "centroid",
+          "x": -1887.8873953004772,
+          "y": -3617.0259306751263,
+          "l2": {
+            "hitY": 25.899,
+            "errM": 10.8993
+          },
+          "l0": {
+            "hitY": 37.901,
+            "errM": 22.9005
+          },
+          "deltaM": -12.002
+        },
+        "interior": {
+          "tag": "interior",
+          "x": -1884.8073423829999,
+          "y": -3613.3485611220913,
+          "l2": {
+            "hitY": 3,
+            "errM": -12.0001
+          },
+          "l0": {
+            "hitY": 15,
+            "errM": 0
+          },
+          "deltaM": -12
+        }
+      },
+      "endedAt": "2026-08-06T12:58:31.941Z",
+      "labelCorrectedAt": "2026-08-06T12:59:27.144Z"
+    },
+    {
+      "label": "after",
+      "startedAt": "2026-08-06T13:02:55.125Z",
+      "machine": {
+        "platform": "win32",
+        "node": "v24.18.0",
+        "chrome": "headless=new, SwiftShader software GL"
+      },
+      "boot": {
+        "buildings": 56476,
+        "landLevelM": 12,
+        "lodTiles": 102,
+        "manifestBase": "LAND_LEVEL + min_h",
+        "manifestLandLevel": 12
+      },
+      "harness": {
+        "samples": 582,
+        "files": 22,
+        "failedFiles": 0,
+        "medianErrM": 12,
+        "p90ErrM": 12.0006,
+        "maxErrM": 12.0049,
+        "minErrM": 11.9949,
+        "worstSample": {
+          "err": 12.0049,
+          "tile": "+02_+07",
+          "bid": 44989,
+          "x": 3693.6,
+          "y": 10643,
+          "registryH": 8.03,
+          "hitY": 20.035,
+          "hitObject": "LOD_L2_+02_+07",
+          "buildingName": ""
+        },
+        "tiles": [
+          {
+            "key": "-02_-02",
+            "file": "-02_-02_L2.glb",
+            "buildingsInTile": 1813,
+            "samples": 27
+          },
+          {
+            "key": "-02_-03",
+            "file": "-02_-03_L2.glb",
+            "buildingsInTile": 1828,
+            "samples": 26
+          },
+          {
+            "key": "-02_-01",
+            "file": "-02_-01_L2.glb",
+            "buildingsInTile": 312,
+            "samples": 25
+          },
+          {
+            "key": "+00_-02",
+            "file": "+00_-02_L2.glb",
+            "buildingsInTile": 1503,
+            "samples": 27
+          },
+          {
+            "key": "+00_-03",
+            "file": "+00_-03_L2.glb",
+            "buildingsInTile": 138,
+            "samples": 27
+          },
+          {
+            "key": "-01_-04",
+            "file": "-01_-04_L2.glb",
+            "buildingsInTile": 914,
+            "samples": 26
+          },
+          {
+            "key": "-03_-04",
+            "file": "-03_-04_L2.glb",
+            "buildingsInTile": 2049,
+            "samples": 27
+          },
+          {
+            "key": "-01_+00",
+            "file": "-01_+00_L2.glb",
+            "buildingsInTile": 2145,
+            "samples": 26
+          },
+          {
+            "key": "+00_+00",
+            "file": "+00_+00_L2.glb",
+            "buildingsInTile": 914,
+            "samples": 27
+          },
+          {
+            "key": "-01_-05",
+            "file": "-01_-05_L2.glb",
+            "buildingsInTile": 1327,
+            "samples": 27
+          },
+          {
+            "key": "-03_-05",
+            "file": "-03_-05_L2.glb",
+            "buildingsInTile": 1368,
+            "samples": 27
+          },
+          {
+            "key": "+01_+00",
+            "file": "+01_+00_L2.glb",
+            "buildingsInTile": 1049,
+            "samples": 26
+          },
+          {
+            "key": "-02_-06",
+            "file": "-02_-06_L2.glb",
+            "buildingsInTile": 1037,
+            "samples": 27
+          },
+          {
+            "key": "-03_-06",
+            "file": "-03_-06_L2.glb",
+            "buildingsInTile": 863,
+            "samples": 27
+          },
+          {
+            "key": "+02_+00",
+            "file": "+02_+00_L2.glb",
+            "buildingsInTile": 115,
+            "samples": 28
+          },
+          {
+            "key": "+02_+01",
+            "file": "+02_+01_L2.glb",
+            "buildingsInTile": 407,
+            "samples": 28
+          },
+          {
+            "key": "-03_-07",
+            "file": "-03_-07_L2.glb",
+            "buildingsInTile": 131,
+            "samples": 27
+          },
+          {
+            "key": "+01_+03",
+            "file": "+01_+03_L2.glb",
+            "buildingsInTile": 2272,
+            "samples": 27
+          },
+          {
+            "key": "-04_-08",
+            "file": "-04_-08_L2.glb",
+            "buildingsInTile": 87,
+            "samples": 28
+          },
+          {
+            "key": "+01_+05",
+            "file": "+01_+05_L2.glb",
+            "buildingsInTile": 445,
+            "samples": 22
+          },
+          {
+            "key": "+02_+06",
+            "file": "+02_+06_L2.glb",
+            "buildingsInTile": 709,
+            "samples": 24
+          },
+          {
+            "key": "+02_+07",
+            "file": "+02_+07_L2.glb",
+            "buildingsInTile": 53,
+            "samples": 26
+          }
+        ],
+        "method": "raycast from registry height+30m onto the tile L2 glb"
+      },
+      "both": {
+        "ground": 12,
+        "tiles": [
+          {
+            "key": "-02_-02",
+            "file": "-02_-02_L2.glb",
+            "buildings": 1813,
+            "samples": 27,
+            "legacy": {
+              "samples": 27,
+              "max": 12.0007,
+              "min": 11.9993
+            },
+            "corrected": {
+              "samples": 27,
+              "max": 0.0007,
+              "min": -0.0007
+            },
+            "delta": {
+              "samples": 27,
+              "max": 0.0011,
+              "min": -5.4398
+            }
+          },
+          {
+            "key": "-01_-02",
+            "file": "-01_-02_L2.glb",
+            "buildings": 1286,
+            "samples": 26,
+            "legacy": {
+              "samples": 26,
+              "max": 12.0015,
+              "min": 11.9993
+            },
+            "corrected": {
+              "samples": 26,
+              "max": 0.0015,
+              "min": -0.0007
+            },
+            "delta": {
+              "samples": 26,
+              "max": 0.0011,
+              "min": -5.002
+            }
+          },
+          {
+            "key": "-02_-03",
+            "file": "-02_-03_L2.glb",
+            "buildings": 1828,
+            "samples": 27,
+            "legacy": {
+              "samples": 27,
+              "max": 34.8993,
+              "min": 11.9993
+            },
+            "corrected": {
+              "samples": 27,
+              "max": 22.8993,
+              "min": -0.0007
+            },
+            "delta": {
+              "samples": 27,
+              "max": 0.0009,
+              "min": -22.7892
+            }
+          },
+          {
+            "key": "-01_-03",
+            "file": "-01_-03_L2.glb",
+            "buildings": 1632,
+            "samples": 26,
+            "legacy": {
+              "samples": 26,
+              "max": 12.004,
+              "min": 11.9992
+            },
+            "corrected": {
+              "samples": 26,
+              "max": 0.004,
+              "min": -0.0008
+            },
+            "delta": {
+              "samples": 26,
+              "max": 0.0007,
+              "min": -5.7834
+            }
+          },
+          {
+            "key": "-02_-01",
+            "file": "-02_-01_L2.glb",
+            "buildings": 312,
+            "samples": 25,
+            "legacy": {
+              "samples": 25,
+              "max": 12.0048,
+              "min": 11.9965
+            },
+            "corrected": {
+              "samples": 25,
+              "max": 0.0048,
+              "min": -0.0035
+            },
+            "delta": {
+              "samples": 24,
+              "max": 0.001,
+              "min": -5.5707
+            }
+          },
+          {
+            "key": "-01_-01",
+            "file": "-01_-01_L2.glb",
+            "buildings": 1070,
+            "samples": 27,
+            "legacy": {
+              "samples": 27,
+              "max": 12.0006,
+              "min": 11.9994
+            },
+            "corrected": {
+              "samples": 27,
+              "max": 0.0006,
+              "min": -0.0006
+            },
+            "delta": {
+              "samples": 27,
+              "max": 7.1681,
+              "min": -4.5678
+            }
+          },
+          {
+            "key": "+00_-02",
+            "file": "+00_-02_L2.glb",
+            "buildings": 1503,
+            "samples": 27,
+            "legacy": {
+              "samples": 27,
+              "max": 12.0007,
+              "min": 11.9993
+            },
+            "corrected": {
+              "samples": 27,
+              "max": 0.0007,
+              "min": -0.0007
+            },
+            "delta": {
+              "samples": 27,
+              "max": 0.0005,
+              "min": -5.42
+            }
+          },
+          {
+            "key": "-03_-03",
+            "file": "-03_-03_L2.glb",
+            "buildings": 693,
+            "samples": 27,
+            "legacy": {
+              "samples": 27,
+              "max": 12.0035,
+              "min": 11.9993
+            },
+            "corrected": {
+              "samples": 27,
+              "max": 0.0035,
+              "min": -0.0007
+            },
+            "delta": {
+              "samples": 27,
+              "max": 0.0009,
+              "min": -5.2938
+            }
+          },
+          {
+            "key": "+00_-03",
+            "file": "+00_-03_L2.glb",
+            "buildings": 138,
+            "samples": 27,
+            "legacy": {
+              "samples": 27,
+              "max": 12.001,
+              "min": 11.9994
+            },
+            "corrected": {
+              "samples": 27,
+              "max": 0.001,
+              "min": -0.0006
+            },
+            "delta": {
+              "samples": 27,
+              "max": 0.0011,
+              "min": -4.2286
+            }
+          },
+          {
+            "key": "-02_-04",
+            "file": "-02_-04_L2.glb",
+            "buildings": 2551,
+            "samples": 27,
+            "legacy": {
+              "samples": 27,
+              "max": 12.0007,
+              "min": 11.9994
+            },
+            "corrected": {
+              "samples": 27,
+              "max": 0.0007,
+              "min": -0.0006
+            },
+            "delta": {
+              "samples": 27,
+              "max": 0.0013,
+              "min": -12.9972
+            }
+          },
+          {
+            "key": "-01_-04",
+            "file": "-01_-04_L2.glb",
+            "buildings": 914,
+            "samples": 26,
+            "legacy": {
+              "samples": 26,
+              "max": 12.0006,
+              "min": 11.9994
+            },
+            "corrected": {
+              "samples": 26,
+              "max": 0.0006,
+              "min": -0.0006
+            },
+            "delta": {
+              "samples": 26,
+              "max": 0.0012,
+              "min": -5.6796
+            }
+          },
+          {
+            "key": "+00_-01",
+            "file": "+00_-01_L2.glb",
+            "buildings": 2553,
+            "samples": 27,
+            "legacy": {
+              "samples": 27,
+              "max": 12.0006,
+              "min": 11.9995
+            },
+            "corrected": {
+              "samples": 27,
+              "max": 0.0006,
+              "min": -0.0005
+            },
+            "delta": {
+              "samples": 27,
+              "max": 0.0009,
+              "min": -4.3895
+            }
+          },
+          {
+            "key": "-03_-04",
+            "file": "-03_-04_L2.glb",
+            "buildings": 2049,
+            "samples": 27,
+            "legacy": {
+              "samples": 27,
+              "max": 12.0005,
+              "min": 11.9993
+            },
+            "corrected": {
+              "samples": 27,
+              "max": 0.0005,
+              "min": -0.0007
+            },
+            "delta": {
+              "samples": 27,
+              "max": 0.001,
+              "min": -4.5483
+            }
+          },
+          {
+            "key": "-02_+00",
+            "file": "-02_+00_L2.glb",
+            "buildings": 30,
+            "samples": 30,
+            "legacy": {
+              "samples": 30,
+              "max": 12.0027,
+              "min": 11.9993
+            },
+            "corrected": {
+              "samples": 30,
+              "max": 0.0027,
+              "min": -0.0007
+            },
+            "delta": {
+              "samples": 30,
+              "max": 0.001,
+              "min": -5.3222
+            }
+          },
+          {
+            "key": "-01_+00",
+            "file": "-01_+00_L2.glb",
+            "buildings": 2145,
+            "samples": 26,
+            "legacy": {
+              "samples": 26,
+              "max": 12.0007,
+              "min": 11.9994
+            },
+            "corrected": {
+              "samples": 26,
+              "max": 0.0007,
+              "min": -0.0006
+            },
+            "delta": {
+              "samples": 26,
+              "max": 0.0012,
+              "min": -4.6827
+            }
+          },
+          {
+            "key": "+01_-02",
+            "file": "+01_-02_L2.glb",
+            "buildings": 32,
+            "samples": 29,
+            "legacy": {
+              "samples": 29,
+              "max": 12.0032,
+              "min": 11.9988
+            },
+            "corrected": {
+              "samples": 29,
+              "max": 0.0032,
+              "min": -0.0012
+            },
+            "delta": {
+              "samples": 29,
+              "max": 0.0007,
+              "min": -5.6344
+            }
+          },
+          {
+            "key": "+00_+00",
+            "file": "+00_+00_L2.glb",
+            "buildings": 914,
+            "samples": 27,
+            "legacy": {
+              "samples": 27,
+              "max": 12.0007,
+              "min": 11.9993
+            },
+            "corrected": {
+              "samples": 27,
+              "max": 0.0007,
+              "min": -0.0007
+            },
+            "delta": {
+              "samples": 27,
+              "max": 0.0008,
+              "min": -5.4682
+            }
+          },
+          {
+            "key": "-02_-05",
+            "file": "-02_-05_L2.glb",
+            "buildings": 3043,
+            "samples": 27,
+            "legacy": {
+              "samples": 27,
+              "max": 12.0006,
+              "min": 11.9994
+            },
+            "corrected": {
+              "samples": 27,
+              "max": 0.0006,
+              "min": -0.0006
+            },
+            "delta": {
+              "samples": 27,
+              "max": 0.0009,
+              "min": -5.6627
+            }
+          },
+          {
+            "key": "-01_-05",
+            "file": "-01_-05_L2.glb",
+            "buildings": 1327,
+            "samples": 27,
+            "legacy": {
+              "samples": 27,
+              "max": 12.0007,
+              "min": 11.9993
+            },
+            "corrected": {
+              "samples": 27,
+              "max": 0.0007,
+              "min": -0.0007
+            },
+            "delta": {
+              "samples": 27,
+              "max": 0.001,
+              "min": -5.3367
+            }
+          },
+          {
+            "key": "+01_-01",
+            "file": "+01_-01_L2.glb",
+            "buildings": 913,
+            "samples": 27,
+            "legacy": {
+              "samples": 27,
+              "max": 12.0007,
+              "min": 11.9993
+            },
+            "corrected": {
+              "samples": 27,
+              "max": 0.0007,
+              "min": -0.0007
+            },
+            "delta": {
+              "samples": 27,
+              "max": 0.0012,
+              "min": -4.2061
+            }
+          },
+          {
+            "key": "-03_-05",
+            "file": "-03_-05_L2.glb",
+            "buildings": 1368,
+            "samples": 27,
+            "legacy": {
+              "samples": 27,
+              "max": 12.0007,
+              "min": 11.9994
+            },
+            "corrected": {
+              "samples": 27,
+              "max": 0.0007,
+              "min": -0.0006
+            },
+            "delta": {
+              "samples": 27,
+              "max": 0.0012,
+              "min": -5.7281
+            }
+          },
+          {
+            "key": "-01_+01",
+            "file": "-01_+01_L2.glb",
+            "buildings": 603,
+            "samples": 26,
+            "legacy": {
+              "samples": 26,
+              "max": 12.0006,
+              "min": 11.9994
+            },
+            "corrected": {
+              "samples": 26,
+              "max": 0.0006,
+              "min": -0.0006
+            },
+            "delta": {
+              "samples": 26,
+              "max": 0.0011,
+              "min": -5.7871
+            }
+          },
+          {
+            "key": "+01_+00",
+            "file": "+01_+00_L2.glb",
+            "buildings": 1049,
+            "samples": 26,
+            "legacy": {
+              "samples": 26,
+              "max": 12.0013,
+              "min": 11.9993
+            },
+            "corrected": {
+              "samples": 26,
+              "max": 0.0013,
+              "min": -0.0007
+            },
+            "delta": {
+              "samples": 26,
+              "max": 0.0009,
+              "min": -5.4965
+            }
+          },
+          {
+            "key": "+00_+01",
+            "file": "+00_+01_L2.glb",
+            "buildings": 1213,
+            "samples": 27,
+            "legacy": {
+              "samples": 27,
+              "max": 12.0006,
+              "min": 11.9994
+            },
+            "corrected": {
+              "samples": 27,
+              "max": 0.0006,
+              "min": -0.0006
+            },
+            "delta": {
+              "samples": 27,
+              "max": 0.0006,
+              "min": -6.4932
+            }
+          },
+          {
+            "key": "-02_-06",
+            "file": "-02_-06_L2.glb",
+            "buildings": 1037,
+            "samples": 27,
+            "legacy": {
+              "samples": 27,
+              "max": 12.0007,
+              "min": 11.9956
+            },
+            "corrected": {
+              "samples": 27,
+              "max": 0.0007,
+              "min": -0.0044
+            },
+            "delta": {
+              "samples": 27,
+              "max": 0.0007,
+              "min": -3.9198
+            }
+          },
+          {
+            "key": "-01_-06",
+            "file": "-01_-06_L2.glb",
+            "buildings": 105,
+            "samples": 23,
+            "legacy": {
+              "samples": 23,
+              "max": 12.0038,
+              "min": 11.9983
+            },
+            "corrected": {
+              "samples": 23,
+              "max": 0.0038,
+              "min": -0.0017
+            },
+            "delta": {
+              "samples": 23,
+              "max": 0.0009,
+              "min": -5.7166
+            }
+          },
+          {
+            "key": "-03_-06",
+            "file": "-03_-06_L2.glb",
+            "buildings": 863,
+            "samples": 27,
+            "legacy": {
+              "samples": 27,
+              "max": 12.0048,
+              "min": 11.9966
+            },
+            "corrected": {
+              "samples": 27,
+              "max": 0.0048,
+              "min": -0.0034
+            },
+            "delta": {
+              "samples": 27,
+              "max": 0.0005,
+              "min": -5.5075
+            }
+          },
+          {
+            "key": "+01_+01",
+            "file": "+01_+01_L2.glb",
+            "buildings": 1970,
+            "samples": 27,
+            "legacy": {
+              "samples": 27,
+              "max": 12.0007,
+              "min": 11.9962
+            },
+            "corrected": {
+              "samples": 27,
+              "max": 0.0007,
+              "min": -0.0038
+            },
+            "delta": {
+              "samples": 27,
+              "max": 0.0013,
+              "min": -5.2614
+            }
+          },
+          {
+            "key": "+02_+00",
+            "file": "+02_+00_L2.glb",
+            "buildings": 115,
+            "samples": 28,
+            "legacy": {
+              "samples": 28,
+              "max": 12.0013,
+              "min": 11.9974
+            },
+            "corrected": {
+              "samples": 28,
+              "max": 0.0013,
+              "min": -0.0026
+            },
+            "delta": {
+              "samples": 28,
+              "max": 0.001,
+              "min": -5.5584
+            }
+          },
+          {
+            "key": "+00_+02",
+            "file": "+00_+02_L2.glb",
+            "buildings": 987,
+            "samples": 23,
+            "legacy": {
+              "samples": 23,
+              "max": 12.0007,
+              "min": 11.9993
+            },
+            "corrected": {
+              "samples": 23,
+              "max": 0.0007,
+              "min": -0.0007
+            },
+            "delta": {
+              "samples": 23,
+              "max": 0.0013,
+              "min": -7.1031
+            }
+          },
+          {
+            "key": "+02_+01",
+            "file": "+02_+01_L2.glb",
+            "buildings": 407,
+            "samples": 28,
+            "legacy": {
+              "samples": 28,
+              "max": 12.0021,
+              "min": 11.9964
+            },
+            "corrected": {
+              "samples": 28,
+              "max": 0.0021,
+              "min": -0.0036
+            },
+            "delta": {
+              "samples": 28,
+              "max": 0.0009,
+              "min": -5.3976
+            }
+          },
+          {
+            "key": "+01_+02",
+            "file": "+01_+02_L2.glb",
+            "buildings": 2585,
+            "samples": 27,
+            "legacy": {
+              "samples": 27,
+              "max": 12.0045,
+              "min": 11.9983
+            },
+            "corrected": {
+              "samples": 27,
+              "max": 0.0045,
+              "min": -0.0017
+            },
+            "delta": {
+              "samples": 27,
+              "max": 0.001,
+              "min": -5.2757
+            }
+          },
+          {
+            "key": "-03_-07",
+            "file": "-03_-07_L2.glb",
+            "buildings": 131,
+            "samples": 27,
+            "legacy": {
+              "samples": 27,
+              "max": 12.0028,
+              "min": 11.9975
+            },
+            "corrected": {
+              "samples": 27,
+              "max": 0.0028,
+              "min": -0.0025
+            },
+            "delta": {
+              "samples": 27,
+              "max": 13.4531,
+              "min": -4.8766
+            }
+          },
+          {
+            "key": "+00_+03",
+            "file": "+00_+03_L2.glb",
+            "buildings": 324,
+            "samples": 26,
+            "legacy": {
+              "samples": 26,
+              "max": 12.0006,
+              "min": 11.9995
+            },
+            "corrected": {
+              "samples": 26,
+              "max": 0.0006,
+              "min": -0.0005
+            },
+            "delta": {
+              "samples": 25,
+              "max": 0.0002,
+              "min": -5.4571
+            }
+          },
+          {
+            "key": "+01_+03",
+            "file": "+01_+03_L2.glb",
+            "buildings": 2272,
+            "samples": 27,
+            "legacy": {
+              "samples": 27,
+              "max": 12.0006,
+              "min": 11.9993
+            },
+            "corrected": {
+              "samples": 27,
+              "max": 0.0006,
+              "min": -0.0007
+            },
+            "delta": {
+              "samples": 27,
+              "max": 0.0007,
+              "min": -4.385
+            }
+          },
+          {
+            "key": "-03_-08",
+            "file": "-03_-08_L2.glb",
+            "buildings": 61,
+            "samples": 31,
+            "legacy": {
+              "samples": 31,
+              "max": 12.005,
+              "min": 11.9994
+            },
+            "corrected": {
+              "samples": 31,
+              "max": 0.005,
+              "min": -0.0006
+            },
+            "delta": {
+              "samples": 31,
+              "max": 6.0541,
+              "min": -5.604
+            }
+          },
+          {
+            "key": "-04_-08",
+            "file": "-04_-08_L2.glb",
+            "buildings": 87,
+            "samples": 28,
+            "legacy": {
+              "samples": 28,
+              "max": 12.0049,
+              "min": 11.9961
+            },
+            "corrected": {
+              "samples": 28,
+              "max": 0.0049,
+              "min": -0.0039
+            },
+            "delta": {
+              "samples": 28,
+              "max": 0.0005,
+              "min": -5.3189
+            }
+          },
+          {
+            "key": "+01_+04",
+            "file": "+01_+04_L2.glb",
+            "buildings": 860,
+            "samples": 27,
+            "legacy": {
+              "samples": 27,
+              "max": 12.0006,
+              "min": 11.9951
+            },
+            "corrected": {
+              "samples": 27,
+              "max": 0.0006,
+              "min": -0.0049
+            },
+            "delta": {
+              "samples": 27,
+              "max": 0.0011,
+              "min": -5.5663
+            }
+          },
+          {
+            "key": "+01_+05",
+            "file": "+01_+05_L2.glb",
+            "buildings": 445,
+            "samples": 22,
+            "legacy": {
+              "samples": 22,
+              "max": 12.0007,
+              "min": 11.9993
+            },
+            "corrected": {
+              "samples": 22,
+              "max": 0.0007,
+              "min": -0.0007
+            },
+            "delta": {
+              "samples": 22,
+              "max": 0.0005,
+              "min": -5.7861
+            }
+          },
+          {
+            "key": "+02_+05",
+            "file": "+02_+05_L2.glb",
+            "buildings": 510,
+            "samples": 25,
+            "legacy": {
+              "samples": 25,
+              "max": 12.0007,
+              "min": 11.9961
+            },
+            "corrected": {
+              "samples": 25,
+              "max": 0.0007,
+              "min": -0.0039
+            },
+            "delta": {
+              "samples": 25,
+              "max": 0.0002,
+              "min": -5.1236
+            }
+          },
+          {
+            "key": "+02_+06",
+            "file": "+02_+06_L2.glb",
+            "buildings": 709,
+            "samples": 24,
+            "legacy": {
+              "samples": 24,
+              "max": 12.0006,
+              "min": 11.9993
+            },
+            "corrected": {
+              "samples": 24,
+              "max": 0.0006,
+              "min": -0.0007
+            },
+            "delta": {
+              "samples": 24,
+              "max": 0.0002,
+              "min": -5.6364
+            }
+          },
+          {
+            "key": "+03_+06",
+            "file": "+03_+06_L2.glb",
+            "buildings": 58,
+            "samples": 28,
+            "legacy": {
+              "samples": 28,
+              "max": 12.0004,
+              "min": 11.9996
+            },
+            "corrected": {
+              "samples": 28,
+              "max": 0.0004,
+              "min": -0.0004
+            },
+            "delta": {
+              "samples": 28,
+              "max": 0.0002,
+              "min": -5.2954
+            }
+          },
+          {
+            "key": "+02_+07",
+            "file": "+02_+07_L2.glb",
+            "buildings": 53,
+            "samples": 26,
+            "legacy": {
+              "samples": 26,
+              "max": 12.0049,
+              "min": 11.9949
+            },
+            "corrected": {
+              "samples": 26,
+              "max": 0.0049,
+              "min": -0.0051
+            },
+            "delta": {
+              "samples": 26,
+              "max": 0.0005,
+              "min": -5.0816
+            }
+          },
+          {
+            "key": "+03_+07",
+            "file": "+03_+07_L2.glb",
+            "buildings": 358,
+            "samples": 27,
+            "legacy": {
+              "samples": 27,
+              "max": 12.0027,
+              "min": 11.9995
+            },
+            "corrected": {
+              "samples": 27,
+              "max": 0.0027,
+              "min": -0.0005
+            },
+            "delta": {
+              "samples": 27,
+              "max": 0.0006,
+              "min": -5.0958
+            }
+          }
+        ],
+        "failed": 0,
+        "l0failed": 0,
+        "legacy": {
+          "samples": 1173,
+          "median": 12,
+          "p90": 12.0006,
+          "p95": 12.0007,
+          "max": 34.8993,
+          "min": 11.9949,
+          "worst": {
+            "err": 34.8993,
+            "tile": "-02_-03",
+            "bid": 20009,
+            "x": -1887.9,
+            "y": -3617,
+            "registryH": 3,
+            "l2HitY": 37.899,
+            "l0HitY": 37.901
+          }
+        },
+        "corrected": {
+          "samples": 1173,
+          "median": 0,
+          "p90": 0.0006,
+          "p95": 0.0007,
+          "max": 22.8993,
+          "min": -0.0051,
+          "worst": {
+            "err": 22.8993,
+            "tile": "-02_-03",
+            "bid": 20009,
+            "x": -1887.9,
+            "y": -3617,
+            "registryH": 3,
+            "l2HitY": 37.899,
+            "l0HitY": 37.901
+          }
+        },
+        "delta": {
+          "samples": 1171,
+          "median": -0.0003,
+          "p90": 0.0006,
+          "p95": 0.0009,
+          "max": 13.4531,
+          "min": -22.7892,
+          "worst": {
+            "err": -22.7892,
+            "tile": "-02_-03",
+            "bid": 3837,
+            "x": -1488.5,
+            "y": -3489.5,
+            "registryH": 443.2,
+            "l2HitY": 455.2,
+            "l0HitY": 477.989
+          }
+        }
+      },
+      "bid20009": {
+        "tile": "-02_-03",
+        "file": "-02_-03_L2.glb",
+        "l0File": "manhattan_-02_-03.glb",
+        "l0Loaded": true,
+        "ground": 12,
+        "expectedRoofM": 15,
+        "registryHeightM": 3,
+        "ring": [
+          {
+            "tag": "pt0",
+            "x": -1876.4619760671214,
+            "y": -3599.150527800456,
+            "l2": {
+              "hitY": 15,
+              "errM": -0.0001
+            },
+            "l0": {
+              "hitY": null,
+              "errM": null
+            },
+            "deltaM": null
+          },
+          {
+            "tag": "pt1",
+            "x": -1877.1194698532834,
+            "y": -3598.796691000249,
+            "l2": {
+              "hitY": 37.899,
+              "errM": 22.8993
+            },
+            "l0": {
+              "hitY": 15,
+              "errM": 0
+            },
+            "deltaM": 22.899
+          },
+          {
+            "tag": "pt2",
+            "x": -1891.6349095825117,
+            "y": -3624.825810600372,
+            "l2": {
+              "hitY": 37.899,
+              "errM": 22.8993
+            },
+            "l0": {
+              "hitY": 37.901,
+              "errM": 22.9005
+            },
+            "deltaM": -0.002
+          },
+          {
+            "tag": "pt3",
+            "x": -1896.869571645992,
+            "y": -3623.366233799814,
+            "l2": {
+              "hitY": null,
+              "errM": null
+            },
+            "l0": {
+              "hitY": 15,
+              "errM": 0
+            },
+            "deltaM": null
+          },
+          {
+            "tag": "pt4",
+            "x": -1897.7462300263435,
+            "y": -3624.6267774004027,
+            "l2": {
+              "hitY": 17.8,
+              "errM": 2.7997
+            },
+            "l0": {
+              "hitY": 17.799,
+              "errM": 2.7994
+            },
+            "deltaM": 0.001
+          },
+          {
+            "tag": "pt5",
+            "x": -1892.342979813118,
+            "y": -3627.612275399936,
+            "l2": {
+              "hitY": null,
+              "errM": null
+            },
+            "l0": {
+              "hitY": null,
+              "errM": null
+            },
+            "deltaM": null
+          }
+        ],
+        "center": {
+          "tag": "centroid",
+          "x": -1887.8873953004772,
+          "y": -3617.0259306751263,
+          "l2": {
+            "hitY": 37.899,
+            "errM": 22.8993
+          },
+          "l0": {
+            "hitY": 37.901,
+            "errM": 22.9005
+          },
+          "deltaM": -0.002
+        },
+        "interior": {
+          "tag": "interior",
+          "x": -1884.8073423829999,
+          "y": -3613.3485611220913,
+          "l2": {
+            "hitY": 15,
+            "errM": -0.0001
+          },
+          "l0": {
+            "hitY": 15,
+            "errM": 0
+          },
+          "deltaM": 0
+        }
+      },
+      "endedAt": "2026-08-06T13:03:03.911Z"
+    }
+  ]
+}

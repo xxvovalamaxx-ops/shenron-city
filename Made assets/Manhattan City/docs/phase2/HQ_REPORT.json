@@ -1,0 +1,88 @@
+{
+  "parts": {
+    "HQ_tower": {
+      "width": 54.0,
+      "depth": 46.0,
+      "height": 244.0,
+      "roof": 226.0,
+      "podium_h": 23.0,
+      "floors_shaft1": 31,
+      "floors_shaft2": 11,
+      "floor45_z": 184.49999999999997,
+      "band_h": 8.2,
+      "tris": 1828,
+      "glass_tris": 4,
+      "verts": 2256,
+      "glass": "GLAZE_hq",
+      "panes": 2
+    },
+    "INT_floor45": {
+      "width": 32.0,
+      "depth": 24.0,
+      "height": 7.0,
+      "kind": "mission_control",
+      "consoles": 14,
+      "screens_lit": 0,
+      "tris": 2842,
+      "glass_tris": 8,
+      "verts": 1952,
+      "glass": "GLAZE_floor45",
+      "panes": 4
+    }
+  },
+  "total_tris": 4682,
+  "glb_bytes": 328836,
+  "space": "origin on the ground at the middle of the street frontage, +x into the site, +y left, +z up",
+  "tower": {
+    "lot_width_m": 54.0,
+    "lot_depth_m": 46.0,
+    "plaza_depth_m": 9.0,
+    "podium_height_m": 23.0,
+    "roof_m": 226.0,
+    "mast_m": 244.0,
+    "ground_floor_m": 8.2,
+    "typical_floor_m": 4.1,
+    "floors": 42
+  },
+  "anchor": {
+    "floor45": {
+      "x": 15.5,
+      "y": 0.0,
+      "z": 184.49999999999997,
+      "floor": 45,
+      "note": "tower-local; same yaw as the tower"
+    },
+    "lobby_door": {
+      "x": 8.8,
+      "y": 0.0,
+      "z": 0.6
+    },
+    "dais": {
+      "x": 4.800000000000001,
+      "y": 0.0,
+      "z": 0.42,
+      "note": "floor45-local; the end of the hero corridor"
+    }
+  },
+  "clearance": {
+    "shaft_depth_m": 26.0,
+    "shaft_width_m": 33.0,
+    "room_depth_m": 24.0,
+    "room_width_m": 32.0,
+    "depth_clear_m": 1.5,
+    "width_clear_m": 1.0,
+    "band_height_m": 8.2,
+    "room_height_m": 7.0,
+    "head_clear_m": 1.2,
+    "floor45_inside_shaft2": true
+  },
+  "mission_control": {
+    "screens": 5,
+    "consoles": 14,
+    "screens_lit": 0,
+    "note": "video wall and every monitor authored dark. Mission Control state is not fabricated offline, and telemetry baked into vertex colour would be exactly that."
+  },
+  "licence": "original design, generated procedurally. Not a model of any real corporate headquarters, carries no company mark, and uses no photographed facade or purchased kit.",
+  "blend": "blend\\manhattan_hq.blend",
+  "seconds": 0.3
+}

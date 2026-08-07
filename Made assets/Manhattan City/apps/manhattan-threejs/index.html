@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Manhattan — Three.js runtime</title>
+<link rel="stylesheet" href="/src/style.css">
+</head>
+<body>
+<canvas id="view"></canvas>
+
+<div id="boot">
+  <div class="boot-inner">
+    <div class="boot-title">MANHATTAN</div>
+    <div class="boot-sub" id="boot-sub">loading world data…</div>
+    <div class="boot-bar"><i id="boot-bar"></i></div>
+  </div>
+</div>
+
+<div id="hud" hidden>
+  <div class="panel" id="stats">
+    <div class="row"><span class="k">fps</span><b id="h-fps">–</b></div>
+    <div class="row"><span class="k">tris</span><b id="h-tris">–</b></div>
+    <div class="row"><span class="k">draws</span><b id="h-draws">–</b></div>
+    <div class="row"><span class="k">tiles</span><b id="h-tiles">–</b></div>
+    <div class="row"><span class="k">mode</span><b id="h-mode">fly</b></div>
+    <div class="row"><span class="k">where</span><b id="h-where">–</b></div>
+    <div class="row"><span class="k">alt</span><b id="h-alt">–</b></div>
+    <div class="row"><span class="k">cars</span><b id="h-cars">–</b></div>
+    <div class="row"><span class="k">people</span><b id="h-peds">–</b></div>
+    <div class="row"><span class="k">props</span><b id="h-props">–</b></div>
+    <div class="row"><span class="k">lod</span><b id="h-lod">–</b></div>
+    <div class="row"><span class="k">sky</span><b id="h-sky">–</b></div>
+    <div class="row"><span class="k">audio</span><b id="h-audio">click to start</b></div>
+    <div class="row"><span class="k">room</span><b id="h-room">–</b></div>
+  </div>
+
+  <div class="panel" id="pick" hidden>
+    <div class="pick-title" id="p-name">–</div>
+    <div class="row"><span class="k">id</span><b id="p-id">–</b></div>
+    <div class="row"><span class="k">address</span><b id="p-addr">–</b></div>
+    <div class="row"><span class="k">district</span><b id="p-dist">–</b></div>
+    <div class="row"><span class="k">archetype</span><b id="p-arch">–</b></div>
+    <div class="row"><span class="k">height</span><b id="p-h">–</b></div>
+    <div class="row"><span class="k">built</span><b id="p-yr">–</b></div>
+    <div class="row"><span class="k">floors</span><b id="p-fl">–</b></div>
+    <div class="row"><span class="k">match</span><b id="p-conf">–</b></div>
+  </div>
+</div>
+
+<div id="help" hidden>
+  <b>W A S D</b> move · <b>Space / C</b> up down · <b>Shift</b> boost
+  · <b>F</b> fly / walk · <b>Click</b> canvas to look, <b>Esc</b> to release
+  · <b>Click</b> a building to inspect · <b>E</b> enter / leave a room · <b>M</b> mute · <b>C</b> hero corridor · <b>L</b> licences · <b>H</b> hide this
+</div>
+
+<div id="credit" hidden>
+  Map data © <b>OpenStreetMap</b> contributors, ODbL 1.0 · NYC Open Data · MTA
+  · <a href="#" id="credit-more">data sources &amp; licences</a>
+</div>
+
+<!--
+  ODbL 4.3 wants attribution that a reader can actually find, and the one-line
+  notice above names two of the eight datasets this world is built from. This
+  panel is the full list: every source, its licence, and what it is used for.
+  Reachable with L, or from the link in the notice, which stays on screen.
+-->
+<div id="credits" hidden>
+  <div class="ctitle">Data sources &amp; licences<span id="credits-close">esc</span></div>
+
+  <div class="csec">Geometry</div>
+  <div class="crow"><span>OpenStreetMap</span><b>ODbL 1.0</b></div>
+  <div class="cnote">
+    Building footprints, roads, water, parks, bridges and piers.
+    © OpenStreetMap contributors. This world is a Derivative Database;
+    the produced works here are shared under the same terms.
+  </div>
+
+  <div class="csec">City of New York — NYC Open Data</div>
+  <div class="crow"><span>Building Footprints <i>5zhs-2jue</i></span><b>public domain</b></div>
+  <div class="crow"><span>MapPLUTO / PLUTO <i>64uk-42ks</i></span><b>public domain</b></div>
+  <div class="crow"><span>Neighbourhood Tabulation Areas <i>9nt8-h7nd</i></span><b>public domain</b></div>
+  <div class="crow"><span>LION Street Centreline <i>inkn-q76z</i></span><b>public domain</b></div>
+  <div class="crow"><span>Planimetric Sidewalk <i>52n9-sdep</i></span><b>public domain</b></div>
+  <div class="crow"><span>Forestry Street Trees <i>hn5i-inap</i></span><b>public domain</b></div>
+  <div class="crow"><span>DOT Traffic Volume Counts <i>7ym2-wayt</i></span><b>public domain</b></div>
+  <div class="cnote">
+    Heights, land use, floor area, districts, carriageways, kerb lines, tree
+    species and traffic volumes. Not endorsed by the City of New York.
+  </div>
+
+  <div class="csec">Metropolitan Transportation Authority — data.ny.gov</div>
+  <div class="crow"><span>Subway Entrances and Exits <i>i9wp-a4ja</i></span><b>public domain</b></div>
+  <div class="cnote">
+    868 Manhattan entrances, used for station kiosks and pedestrian demand.
+    No MTA trademark, roundel, route bullet or wordmark is reproduced.
+  </div>
+
+  <div class="csec">Everything else</div>
+  <div class="cnote">
+    All meshes, materials, facades, vehicles, street furniture, interiors, the
+    HQ tower and its Floor 45, and all audio are generated procedurally in
+    Blender and at runtime from the data above. No purchased kit, no scanned
+    geometry, no photographic texture, no ripped or extracted game assets, and
+    no imagery from any commercial map provider. Buildings are unbranded and
+    vehicles carry no marque.
+  </div>
+  <div class="cnote cstate">
+    Current honest state: a city-scale massing model with procedural facades,
+    street life and interiors. It is not photoreal and it is not a finished
+    game.
+  </div>
+</div>
+
+<script type="module" src="/src/main.js"></script>
+</body>
+</html>

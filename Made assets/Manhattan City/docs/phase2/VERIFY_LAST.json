@@ -1,0 +1,15 @@
+{
+ "verdict": "PASS",
+ "unchanged": 66,
+ "added": [],
+ "changed": [],
+ "missing": [],
+ "audit": {
+  "baseline_pass": 28,
+  "current_pass": 28,
+  "current_fail": 0,
+  "regressed": [],
+  "dropped": [],
+  "gained": []
+ }
+}

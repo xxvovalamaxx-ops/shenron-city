@@ -1,0 +1,27 @@
+{
+ "osm_buildings": 56476,
+ "osm_buildings_manhattan": 44994,
+ "osm_buildings_context": 11482,
+ "nyc_footprints": 45194,
+ "pluto_lots": 42544,
+ "matched_to_nyc": 44767,
+ "matched_pct_all_rows": 79.27,
+ "matched_manhattan": 44763,
+ "matched_pct_manhattan": 99.49,
+ "confidence": {
+  "medium": 1202,
+  "high": 42627,
+  "low": 938
+ },
+ "pluto_joined": 44738,
+ "pluto_joined_via_mappluto": 3353,
+ "pluto_joined_pct_all_rows": 79.22,
+ "pluto_joined_manhattan": 44733,
+ "pluto_joined_pct_manhattan": 99.42,
+ "unmatched": 11709,
+ "ambiguous": 2959,
+ "nyc_footprint_used": 43183,
+ "nyc_footprint_unused": 2011,
+ "nyc_footprint_shared": 1250,
+ "seconds": 3.8
+}
