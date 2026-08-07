@@ -8,17 +8,17 @@
       "id": "OPUS-001",
       "severity": "P1",
       "title": "One-frame stall of 152 ms during the interactive walkthrough",
-      "detail": "The QA walkthrough sampled 45 FPS readings across 22 steps: 92 fps average, 6.55 fps minimum. A 6.55 fps sample is a ~152 ms frame. Not yet attributed — candidates are tile decode on the streaming thread, BVH construction on tile register, and the dev-tool spawn path.",
+      "detail": "The QA walkthrough sampled 45 FPS readings across 22 steps: 92 fps average, 6.55 fps minimum. A 6.55 fps sample is a ~152 ms frame. Not yet attributed \u2014 candidates are tile decode on the streaming thread, BVH construction on tile register, and the dev-tool spawn path.",
       "evidence": "evidence/visual/qa-walkthrough/qa-report.json",
       "state": "open"
     },
     {
       "id": "OPUS-002",
       "severity": "P1",
-      "title": "Two independent simulation loops advance city life",
-      "detail": "GameLoop advances the Phase 3A vehicle session and its pedestrians; ManhattanCity/CityPipeline separately advances LION traffic and the sidewalk crowd. Two clocks, two pause states, no shared entity registry. A city traffic vehicle cannot become player-controlled without a second overlapping instance.",
-      "evidence": null,
-      "state": "open"
+      "title": "Simulation order is emergent, and two vehicle registries cannot merge",
+      "detail": "CORRECTED 2026-08-08. The first version of this entry claimed the city read a stale pause state because ManhattanCity ran before GameLoop. That is false: GameLoop carries R3F renderPriority -100 (on the callback closing line, which is why a grep of the opening line missed it), so it writes rt.paused and the runtime clock before any priority-0 subscriber reads them. Ordering is correct today. What is real: (a) the order is bare integers in separate files with nine of eleven callbacks at the default priority, so their relative order is JSX mount order \u2014 undeclared, untested, and changed by moving a line; (b) the frame delta is clamped in six independent places all spelling 1/20 by hand (GameLoop MAX_DT, ManhattanCity, PlayerBody, CityLightingRig, DayCycleRig, SkyRig); (c) sim.registry.vehicles (Map, Phase 3A) and Traffic.vehicles (array, LION) are separate, so a city car cannot become the player car without a second overlapping instance. (c) is the only one with player-visible consequences.",
+      "evidence": "src/gameplay/simulation.ts header; 19 tests in src/gameplay/simulation.test.ts",
+      "state": "partially addressed \u2014 ordered authority built and tested, not yet adopted by the components"
     },
     {
       "id": "OPUS-003",
