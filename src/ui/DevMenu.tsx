@@ -13,14 +13,44 @@ import {
   useDevSpawns,
 } from '../gameplay/dev-spawns'
 import { MANHATTAN_LANDMARKS, manhattanCollision, resolveManhattanSpawn } from '../world/manhattan-collision'
+import { nearestGround } from '../world/ground-search'
 import { cityAudio } from '../audio'
 import { InputMonitor } from './InputMonitor'
 
-function teleport(x: number, z: number): void {
-  const ground = manhattanCollision.groundHeightAt(x, z) ?? 12.4
-  rt.player.pos.x = x
-  rt.player.pos.y = ground
-  rt.player.pos.z = z
+/**
+ * Put the player on solid ground at or near (x, z).
+ *
+ * The `?? 12.4` this replaces was a fallback height used whenever the downward
+ * ray found nothing — which is not rare. Measured across the nine landmarks
+ * below, two of them (Times Square and the Financial District) sit over holes
+ * in the Phase 2 land data, so teleporting there stood the player on a
+ * hard-coded height with the ocean plane visible underneath.
+ *
+ * Now it searches outward for real ground and reports in the console when it
+ * had to move you, so a hole shows up as a message rather than as a void.
+ */
+function teleport(x: number, z: number, label?: string): void {
+  const hit = nearestGround(
+    (px, pz) => manhattanCollision.groundHeightAt(px, pz),
+    x,
+    z,
+  )
+  if (!hit) {
+    console.warn(
+      `[dev] no ground within 400 m of ${label ?? `${x}, ${z}`} — not teleporting. ` +
+        'The Phase 2 land data has a hole here.',
+    )
+    return
+  }
+  if (hit.movedBy > 1) {
+    console.warn(
+      `[dev] ${label ?? 'destination'} has no ground; moved ${hit.movedBy.toFixed(0)} m ` +
+        'to the nearest solid point.',
+    )
+  }
+  rt.player.pos.x = hit.x
+  rt.player.pos.y = hit.y
+  rt.player.pos.z = hit.z
   rt.player.velocityY = 0
   rt.player.flying = false
   rt.player.grounded = true
@@ -49,7 +79,7 @@ export function DevMenu() {
         <div className="dev-menu-title">Teleport</div>
         <div className="dev-menu-grid">
           {MANHATTAN_LANDMARKS.map((landmark) => (
-            <button key={landmark.id} className="small" onClick={() => teleport(landmark.x, landmark.z)}>
+            <button key={landmark.id} className="small" onClick={() => teleport(landmark.x, landmark.z, landmark.label)}>
               {landmark.label}
             </button>
           ))}
