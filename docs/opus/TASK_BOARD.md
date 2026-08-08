@@ -33,9 +33,12 @@ not started, and no claim is made about it.
         and Phase 3A's world-pose form is correct for the one being driven
 - [ ] **0B.6** Wire the handoff into the enter/exit path in vehicle-control.ts.
       Until this lands, entering a city car still spawns a duplicate
-- [ ] **0C** One facade / sky / weather / lighting authority — OPUS-003.
-      First step is an audit that reports which material system is bound to
-      each streamed tier at runtime, because that is currently unknown
+- [x] **0C.0** Audit — `docs/opus/LIGHTING_AUDIT.md`, commit `b5457c074`
+- [x] **0C.1** Clock-aware `scene.environment`; one shared night curve —
+      `18b38e540` · measured 0 at midday, 0.1 at dusk, 0.2 at night
+- [ ] **0C.2** Runtime assertion: which material is bound per streamed tier
+- [ ] **0C.3** Adopt or delete `getBuildingNightMaterial` and `SkyRig`, both
+      unreachable on the shipping path
 - [x] **0D** Runtime resource defects in VehicleRig — `e182db3ae`
       · per-frame geometry/material construction inside useFrame, removed
       · shared pedestrian pair disposed per mesh, killing survivors' buffers
