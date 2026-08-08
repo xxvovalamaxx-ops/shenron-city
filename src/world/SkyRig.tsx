@@ -14,6 +14,7 @@ import * as THREE from 'three'
 import { rt } from '../gameplay/runtime'
 import { skyAt, stepWeather, sunAt } from './daycycle'
 import type { QualitySettings } from './palette'
+import { MAX_STEP_SECONDS } from '../gameplay/simulation'
 
 /** Sun distance. Far enough that its shadow frustum covers the hero district. */
 const SUN_DISTANCE = 260
@@ -45,7 +46,7 @@ export function SkyRig({ quality }: { quality: QualitySettings }) {
 
   useFrame((state, rawDt) => {
     if (rt.paused) return
-    const dt = Math.min(rawDt, 1 / 20)
+    const dt = Math.min(rawDt, MAX_STEP_SECONDS)
 
     // Deterministic captures keep the clock pinned at the capture hour.
     if (!rt.captureFrozen) {

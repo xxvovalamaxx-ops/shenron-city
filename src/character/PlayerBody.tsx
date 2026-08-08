@@ -27,6 +27,7 @@ import { useFrame } from '@react-three/fiber'
 import { Group, Mesh } from 'three'
 import { rt } from '../gameplay/runtime'
 import { useHud } from '../ui/hud-store'
+import { MAX_STEP_SECONDS } from '../gameplay/simulation'
 
 const BODY_COLOR = '#3a4558'
 const SKIN_COLOR = '#d4a574'
@@ -80,7 +81,7 @@ export function PlayerBody() {
 
   useFrame((_, rawDt) => {
     if (rt.paused) return
-    const dt = Math.min(rawDt, 1 / 20)
+    const dt = Math.min(rawDt, MAX_STEP_SECONDS)
     const group = groupRef.current
     if (!group) return
 

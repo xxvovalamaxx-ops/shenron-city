@@ -18,6 +18,7 @@ import { cityLightingUniforms } from './city-lighting-uniforms'
 import { DEFAULT_WORLD_SEED } from './city-lighting'
 import { cityNightModeFor, setCityNightMode } from './night-materials'
 import type { QualityPreset } from './palette'
+import { MAX_STEP_SECONDS } from '../gameplay/simulation'
 
 const DATA_BIN = '/models/manhattan/building-lighting.bin'
 const DATA_JSON = '/models/manhattan/building-lighting.json'
@@ -102,7 +103,7 @@ export function CityLightingRig({ quality }: { quality: QualityPreset }) {
   useFrame((_, rawDt) => {
     if (!enabled.current) return
     if (!readyRef.current || rt.paused) return
-    const dt = Math.min(rawDt, 1 / 20)
+    const dt = Math.min(rawDt, MAX_STEP_SECONDS)
     const hour = normaliseHour(rt.clock.hour)
     cityLightingUniforms.uCityHour.value = hour
 

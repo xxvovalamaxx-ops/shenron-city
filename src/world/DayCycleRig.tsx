@@ -14,6 +14,7 @@ import { useEffect, useRef } from 'react'
 import { useFrame } from '@react-three/fiber'
 import { rt } from '../gameplay/runtime'
 import { stepWeather } from './daycycle'
+import { MAX_STEP_SECONDS } from '../gameplay/simulation'
 
 /** Real seconds per in-game hour. A full day in eight minutes. */
 export const SECONDS_PER_HOUR = 20
@@ -32,7 +33,7 @@ export function DayCycle() {
 
   useFrame((_, rawDt) => {
     if (rt.paused) return
-    const dt = Math.min(rawDt, 1 / 20)
+    const dt = Math.min(rawDt, MAX_STEP_SECONDS)
 
     // Deterministic captures keep the clock pinned at the capture hour.
     if (!rt.captureFrozen) {
