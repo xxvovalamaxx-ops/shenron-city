@@ -26,7 +26,7 @@
       "title": "A night HDR lights the city at every hour; two material systems are dead",
       "detail": "AUDITED 2026-08-08, docs/opus/LIGHTING_AUDIT.md. Nothing is fighting over background/fog \u2014 sky.js installs and weather.js drives, one subsystem. What is actually wrong: (a) NightEnvironment.tsx:23-58 sets scene.environment to a night HDR with dependency array [gl, scene], neither of which changes after mount, so a night map lights the city permanently regardless of the clock \u2014 the exact defect the brief names; (b) getBuildingNightMaterial has one call site, reachable only when ManhattanCity mode===\"full\", and the game mounts mode=\"tiles\", so it has never rendered a streamed building; (c) SkyRig.tsx is imported by nothing. Streamed BLD_* actually get FacadeMaterial via streamer.injected.",
       "evidence": "docs/opus/LIGHTING_AUDIT.md",
-      "state": "audited, not fixed \u2014 0C.1 clock-aware environment, 0C.2 runtime assertion, 0C.3 adopt-or-delete"
+      "state": "0C.1 FIXED (18b38e540) \u2014 environmentIntensity follows nightFactor; measured 0 at midday, 0.1 at dusk, 0.2 at night. ManhattanCity now shares the canonical curve instead of a private copy with 90-minute-different shoulders. 0C.2 runtime assertion and 0C.3 adopt-or-delete for getBuildingNightMaterial/SkyRig remain."
     },
     {
       "id": "OPUS-004",
@@ -59,6 +59,22 @@
       "detail": "Found at the start of the 21:10 turn. The working tree carried uncommitted edits I did not make across 7 tracked files (traffic.js, traffic.d.ts, vehicle-control.ts, vehicle-entities.ts, vehicle-lanes.ts, vehicle-replay.test.ts, vehicle-traffic.ts) plus 3 untracked new files (street-nav.js/.d.ts, graph-lane-provider.ts). It is the same consolidation this branch is doing, by a different route: a shared street-nav lane graph and 'ghosts' in Traffic for player-owned vehicles. src/city/traffic.js:109 does not parse, so the city pipeline cannot load and the game cannot boot. vehicle-replay.test.ts \u2014 their own Phase 3A determinism gate \u2014 also fails. Left completely untouched; snapshotted read-only to the session scratchpad (tracked.patch + the 3 new files). No git add -A while it is present. UPDATE 21:45 \u2014 traffic.js now parses and the game boots; they also adapted my vehicle-handoff differential test to import pointAt from their street-nav.js, and extended into ManhattanCity.tsx (installLaneProvider + trafficGhosts). Their design is a shared lane graph plus ghosts, which is complementary to the promotion module rather than a duplicate of it. 3 tests in their own new vehicle-session.test.ts still fail on ghost positions (~70 m out).",
       "evidence": "vitest: 2 failed / 375 passed; PARSE_ERROR at src/city/traffic.js:109:12",
       "state": "partially resolved \u2014 tree compiles and boots; ownership of the vehicle subsystem still undecided"
+    },
+    {
+      "id": "OPUS-008",
+      "severity": "P0",
+      "title": "The ground plane renders pure black at midday",
+      "detail": "Seen in a headless capture at Times Square, visionTime=12: sky, clouds and the distant skyline render correctly, and the entire ground/street plane below the horizon is pure black. Lead, not a diagnosis: cityLightingUniforms defaults uCityHour to 21 and uCityPractical to 0, and CityLightingRig's useFrame returns early on `!readyRef.current`, which only flips true inside the building-lighting data texture's load callback. If that texture is missing, slow or fails, every ROAD_ surface keeps rendering at 21:00 with practicals off for the whole session. Next step is to confirm whether readyRef ever flips in a normal boot, and to make the uniforms default to the actual clock rather than to 21.",
+      "evidence": "headless capture, camera (-1476, 13.7, -2433) at hour 12",
+      "state": "open"
+    },
+    {
+      "id": "OPUS-009",
+      "severity": "P1",
+      "title": "The player's retargeted pose is contorted and his feet sit below the origin",
+      "detail": "After 05e841bf3 he stands \u2014 head 1.405 m above the feet, was -0.29 \u2014 but the pose is wrong: one arm raised straight up, one leg out to the side, and the foot bone sits about 0.77 m below the player origin so he is partly sunk into the pavement. The two fixes in that commit corrected the holder channel and the global Z frame; neither can correct per-bone rotations. scripts/retarget/bake-retarget.py retargets Quaternius clips onto the Sketchfab rig with world-space copy-rotation constraints, and the two rigs do not share a rest orientation. The fix is a proper re-bake against matched rest poses, in Blender. Patching further quaternions would be guessing at 89 bones.",
+      "evidence": "bone world positions in the running game; screenshot in the 05e841bf3 verification",
+      "state": "open"
     }
   ],
   "closed": [
