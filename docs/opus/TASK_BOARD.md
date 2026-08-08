@@ -26,12 +26,13 @@ not started, and no claim is made about it.
 - [x] **0B.3** One frame clamp; six hand-written copies retired — `b18c5dddd`
 - [ ] **0B.4** Move the remaining nine useFrame callbacks onto declared stages.
       Their order is still JSX mount order
-- [ ] **0B.5** One traffic + crowd registry. `sim.registry.vehicles` (Map) and
-      `Traffic.vehicles` (array) are still separate, so a city car cannot
-      become the player's car without a second overlapping instance. This is
-      the only part of 0B a player can see
-- [ ] **0B.6** Explicit authority transfer on enter/exit; park-or-return-to-AI
-      on release
+- [x] **0B.5** Promotion/demotion between the two representations — `ed675d9b0`
+      · 23 tests incl. a differential test against the shipping renderer
+      · one live representation at a time, asserted by countRepresentations
+      · NOT a merged registry: LION's lane-space form is correct for 700 cars
+        and Phase 3A's world-pose form is correct for the one being driven
+- [ ] **0B.6** Wire the handoff into the enter/exit path in vehicle-control.ts.
+      Until this lands, entering a city car still spawns a duplicate
 - [ ] **0C** One facade / sky / weather / lighting authority — OPUS-003.
       First step is an audit that reports which material system is bound to
       each streamed tier at runtime, because that is currently unknown

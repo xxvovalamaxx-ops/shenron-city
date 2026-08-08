@@ -43,6 +43,14 @@
       "detail": "docs/performance/PHASE2O_BASELINE.json is invalidated in place: its 44 low-FPS fields are renamed RETIRED_*_INVALID and it carries an INVALIDATED block. Averages and integrity data in it remain valid. 12 of its 22 runs measured the removed Manhattan reference app. No replacement baseline exists yet.",
       "evidence": "docs/performance/PHASE2O_BASELINE.json",
       "state": "open"
+    },
+    {
+      "id": "OPUS-006",
+      "severity": "P1",
+      "title": "Something outside this session checks out main mid-work",
+      "detail": "Observed twice on 2026-08-08, the second time DURING a turn: the working tree was switched from opus/hero-corridor-v1 to main while files were being edited. Symptom was 33 tests vanishing (simulation.test.ts 19, stat.test.mjs 14) because those files exist only on the branch. Reflog line: 'checkout: moving from opus/hero-corridor-v1 to main'. No work was lost \u2014 commits live on the branch and new untracked files survive a checkout \u2014 but a `git add -A` landing while main is checked out would commit to the wrong branch. Candidates: the second worktree at E:/temp projects/shenron-city-polish on branch polish/realism (locked), or one of the resident @gitkraken/gk MCP processes. Not attributed; not reproduced on demand.",
+      "evidence": "git reflog; test count 377 -> 344 with two files absent from the vitest file list",
+      "state": "open \u2014 mitigated by re-checking out the branch at the start of every turn"
     }
   ],
   "closed": [
