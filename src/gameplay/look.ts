@@ -53,14 +53,63 @@ export function applyLookDelta(
   }
 }
 
-/** Read the angles back off a camera's Euler, so a fallback can pick up
- *  wherever pointer lock (or the intro camera) left the view. */
+/**
+ * Read the angles back off a camera's Euler.
+ *
+ * Only correct when the Euler is already in YXZ order, which is why
+ * `lookAnglesFromDirection` exists and is what callers should use. Kept
+ * because reading `rotation.x`/`rotation.y` off a YXZ camera is exact and
+ * cheap, and the drag controller re-reads its own camera mid-drag.
+ *
+ * Do not point this at a camera that was last oriented by `lookAt`. See
+ * `lookAnglesFromDirection`.
+ */
 export function lookAnglesFrom(rotation: { x: number; y: number }): LookAngles {
   return {
     yaw: Number.isFinite(rotation.y) ? rotation.y : 0,
     pitch: Math.max(
       -PITCH_LIMIT,
       Math.min(PITCH_LIMIT, Number.isFinite(rotation.x) ? rotation.x : 0),
+    ),
+  }
+}
+
+/**
+ * Recover yaw and pitch from the direction a camera is actually facing.
+ *
+ * This is the safe one, and the reason is a bug it caused. `lookAnglesFrom`
+ * takes `rotation.x` as pitch and `rotation.y` as yaw and drops `rotation.z`.
+ * That is only true of a YXZ Euler. `Object3D.lookAt` writes a quaternion, and
+ * `camera.rotation` then decomposes it in whatever order the camera happens to
+ * carry — `XYZ` by default — where a steep downward look puts a large value in
+ * `z`. Reading x and y from that and re-applying them as YXZ pitch and yaw
+ * silently discards the z term, and the view arrives rotated.
+ *
+ * Measured on the intro dive, which ends looking down at the player: the Euler
+ * read was 12.9 degrees out for most of the flight and left the camera's up
+ * vector at y = 0.53 — visibly rolled. Deriving from the forward vector is
+ * exact (0.0 degrees) at every point of the same flight, because a direction
+ * has no rotation order to disagree about.
+ *
+ * The inverse of `camera.rotation.set(pitch, yaw, 0)` in YXZ order, whose
+ * forward is `(-sin y * cos p, sin p, -cos y * cos p)`.
+ */
+export function lookAnglesFromDirection(direction: {
+  x: number
+  y: number
+  z: number
+}): LookAngles {
+  const { x, y, z } = direction
+  const length = Math.hypot(x, y, z)
+  // A zero or non-finite direction has no heading to recover; facing along -z
+  // is the identity orientation and beats returning NaN.
+  if (!Number.isFinite(length) || length < 1e-9) return { yaw: 0, pitch: 0 }
+  const ny = y / length
+  return {
+    yaw: Math.atan2(-x / length, -z / length),
+    pitch: Math.max(
+      -PITCH_LIMIT,
+      Math.min(PITCH_LIMIT, Math.asin(Math.max(-1, Math.min(1, ny)))),
     ),
   }
 }

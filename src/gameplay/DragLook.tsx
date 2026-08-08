@@ -18,8 +18,9 @@
  */
 import { useEffect, useRef } from 'react'
 import { useThree } from '@react-three/fiber'
+import { Vector3 } from 'three'
 
-import { applyLookDelta, lookAnglesFrom, type LookAngles } from './look'
+import { applyLookDelta, lookAnglesFromDirection, type LookAngles } from './look'
 
 interface Props {
   /** False while paused, or whenever pointer lock is doing the job instead. */
@@ -34,6 +35,7 @@ export function DragLook({ enabled, sensitivity = 1 }: Props) {
   // the camera is mutated directly anyway.
   const angles = useRef<LookAngles>({ yaw: 0, pitch: 0 })
   const dragging = useRef(false)
+  const scratch = useRef(new Vector3())
   const sensitivityRef = useRef(sensitivity)
   sensitivityRef.current = sensitivity
 
@@ -42,7 +44,13 @@ export function DragLook({ enabled, sensitivity = 1 }: Props) {
 
     // Pick up wherever the view already is, so enabling this never snaps the
     // camera — the intro camera and PointerLockControls both leave a heading.
-    angles.current = lookAnglesFrom(camera.rotation)
+    //
+    // From the forward vector, not from camera.rotation. The intro hands over
+    // a camera last oriented by lookAt, whose Euler is decomposed in XYZ order
+    // with the steep downward look expressed partly in `z`. Reading x and y
+    // and dropping z put the view 12.9 degrees out with its up vector rolled
+    // to y = 0.53, which is what "the character is upside down" looked like.
+    angles.current = lookAnglesFromDirection(camera.getWorldDirection(scratch.current))
 
     const apply = () => {
       camera.rotation.order = 'YXZ'
@@ -52,7 +60,11 @@ export function DragLook({ enabled, sensitivity = 1 }: Props) {
     const onPointerDown = (event: PointerEvent) => {
       if (event.button !== 0) return
       dragging.current = true
-      angles.current = lookAnglesFrom(camera.rotation)
+      // Also from the direction. `apply()` is what sets the YXZ order, and it
+      // only runs on pointer *move* — so on the very first drag the camera can
+      // still be carrying the intro's XYZ Euler, and reading x/y off it
+      // reintroduces the same roll this component was fixed for.
+      angles.current = lookAnglesFromDirection(camera.getWorldDirection(scratch.current))
       // setPointerCapture keeps the drag alive if the cursor leaves the canvas
       // mid-swing, which is most swings.
       try {

@@ -70,19 +70,26 @@ const LOAD_GATE_POLL_MS = 100
 function RendererBridge({ maxDpr, shadows }: { maxDpr: number; shadows: boolean }) {
   const gl = useThree((s) => s.gl)
   const scene = useThree((s) => s.scene)
+  const camera = useThree((s) => s.camera)
   const setDpr = useThree((s) => s.setDpr)
 
   useEffect(() => {
     ;(window as { __gameRenderer?: THREE.WebGLRenderer }).__gameRenderer = gl
     ;(window as { __gameScene?: THREE.Scene }).__gameScene = scene
+    // The camera is not a child of the scene, so a QA harness cannot find it
+    // by traversal. Exposed alongside the other two for the same reason they
+    // are: measuring the camera from outside is how the upside-down handover
+    // was caught.
+    ;(window as { __gameCamera?: THREE.Camera }).__gameCamera = camera
     gl.shadowMap.enabled = shadows
     gl.shadowMap.type = THREE.PCFShadowMap
     setDpr(Math.min(window.devicePixelRatio, maxDpr))
     return () => {
       delete (window as { __gameRenderer?: THREE.WebGLRenderer }).__gameRenderer
       delete (window as { __gameScene?: THREE.Scene }).__gameScene
+      delete (window as { __gameCamera?: THREE.Camera }).__gameCamera
     }
-  }, [gl, scene, maxDpr, shadows, setDpr])
+  }, [gl, scene, camera, maxDpr, shadows, setDpr])
 
   return null
 }

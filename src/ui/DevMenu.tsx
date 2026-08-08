@@ -14,6 +14,7 @@ import {
 } from '../gameplay/dev-spawns'
 import { MANHATTAN_LANDMARKS, manhattanCollision, resolveManhattanSpawn } from '../world/manhattan-collision'
 import { cityAudio } from '../audio'
+import { InputMonitor } from './InputMonitor'
 
 function teleport(x: number, z: number): void {
   const ground = manhattanCollision.groundHeightAt(x, z) ?? 12.4
@@ -157,6 +158,8 @@ export function DevMenu() {
           </button>
         </label>
       </div>
+
+      <InputMonitor />
     </div>
   )
 }

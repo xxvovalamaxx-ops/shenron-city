@@ -1063,3 +1063,46 @@ html.vision-capture .overlay {
   pointer-events: none;
   z-index: 40;
 }
+
+/* Live input readout inside the dev panel (F2).
+   Lit chips are what the *simulation* believes is held — see InputMonitor. */
+.input-monitor .input-keys {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-bottom: 5px;
+}
+
+.input-key {
+  flex: 0 0 auto;
+  min-width: 34px;
+  padding: 3px 6px;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 3px;
+  background: rgba(255, 255, 255, 0.04);
+  color: rgba(255, 255, 255, 0.45);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-align: center;
+  /* No transition on the way in: a 100 ms fade on a key press is the
+     difference between "did that register?" and knowing. */
+  transition: none;
+}
+
+.input-key.is-down {
+  border-color: #e0455f;
+  background: rgba(224, 69, 95, 0.22);
+  color: #fff;
+  box-shadow: 0 0 8px rgba(224, 69, 95, 0.35);
+}
+
+.input-readout {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  color: rgba(255, 255, 255, 0.55);
+  font-size: 10px;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.02em;
+}
