@@ -365,8 +365,18 @@ export function getRoadNightMaterial(options: NightMaterialOptions): THREE.MeshS
   if (cached) return cached
 
   const material = new THREE.MeshStandardMaterial({
-    vertexColors: true,
-    color: 0xffffff,
+    // NOT vertexColors. ROAD_* meshes carry only POSITION and NORMAL — the
+    // exporter puts their colour in the material (MAT_asphalt, linear
+    // 0.028/0.028/0.031), and only BLD_* meshes have COLOR_0.
+    //
+    // With vertexColors on and no attribute to read, WebGL supplies the
+    // default (0,0,0,1), so diffuse became 0xffffff x black = pure black and
+    // every road in the city rendered as a void at midday. streamer.js already
+    // carries a comment warning about exactly this — "they carry no COLOR_0,
+    // their colour is in the material" — and deliberately leaves roads on the
+    // authored material; this override then made the same mistake one layer up.
+    vertexColors: false,
+    color: new THREE.Color().setRGB(0.028, 0.028, 0.031, THREE.LinearSRGBColorSpace),
     roughness: 0.92,
     metalness: 0.02,
   })
