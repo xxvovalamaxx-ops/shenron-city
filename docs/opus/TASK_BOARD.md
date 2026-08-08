@@ -19,9 +19,19 @@ not started, and no claim is made about it.
       `manhattan` arm of `run.cjs` throws with an explanation and the 12 stale
       runs are flagged in the baseline; the scenario definitions themselves
       (`elevator`, `zone`) still sit in `lib/locations.cjs`
-- [ ] **0B** One simulation authority — OPUS-002. One fixed step, one clock,
-      one pause, one traffic + crowd registry, one event stream; explicit
-      authority transfer for the player vehicle; no second overlapping instance
+- [x] **0B.1** Ordered simulation authority, declared stages — `52dae450e`
+      · 19 tests `src/gameplay/simulation.test.ts`
+- [x] **0B.2** City advances from the authority's `city` stage — `ee58bf966`
+      · A/B headless, 3x500 frames: 100.1 -> 100.0 avg fps, 86.5 -> 86.1 1% low
+- [x] **0B.3** One frame clamp; six hand-written copies retired — `b18c5dddd`
+- [ ] **0B.4** Move the remaining nine useFrame callbacks onto declared stages.
+      Their order is still JSX mount order
+- [ ] **0B.5** One traffic + crowd registry. `sim.registry.vehicles` (Map) and
+      `Traffic.vehicles` (array) are still separate, so a city car cannot
+      become the player's car without a second overlapping instance. This is
+      the only part of 0B a player can see
+- [ ] **0B.6** Explicit authority transfer on enter/exit; park-or-return-to-AI
+      on release
 - [ ] **0C** One facade / sky / weather / lighting authority — OPUS-003.
       First step is an audit that reports which material system is bound to
       each streamed tier at runtime, because that is currently unknown
