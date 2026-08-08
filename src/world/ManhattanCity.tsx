@@ -10,6 +10,7 @@ import {
 import { manhattanCollision } from './manhattan-collision'
 import { getBuildingNightMaterial, getRoadNightMaterial, isCityNightMaterial } from './night-materials'
 import { QUALITY, type QualityPreset } from './palette'
+import { nightFactor } from './city-lighting'
 import { rt } from '../gameplay/runtime'
 import { simulation } from '../gameplay/simulation'
 import { City } from '../city/city.js'
@@ -471,10 +472,13 @@ class CityPipeline {
     const rain = rt.clock.weather.rain
     if (Math.abs(weather.rain - rain) > 1e-3) weather.setRain(rain)
 
-    // Facade night windows follow the same shoulders as the city-night
-    // shader: lit between dusk and dawn, fading across the transition bands.
-    const night =
-      1 - smoothstep(5.5, 8, hour) + smoothstep(18, 21, hour)
+    // Facade night windows follow the same shoulders as everything else that
+    // cares what time it is. This used to be a private copy of the curve with
+    // its own edges (5.5-8 dawn, 18-21 dusk) against city-lighting's 4.5-6.5
+    // and 18.5-20.5 — so the windows and the street lamps disagreed by up to
+    // 90 minutes about when night had fallen, in a build whose whole problem
+    // is that nothing agrees on the time of day.
+    const night = nightFactor(hour as Parameters<typeof nightFactor>[0])
     if (Math.abs(night - this.lastNight) > 1e-3) {
       this.lastNight = night
       facade.setNight(night)
@@ -586,10 +590,6 @@ class CityPipeline {
   }
 }
 
-function smoothstep(a: number, b: number, x: number): number {
-  const t = Math.min(1, Math.max(0, (x - a) / (b - a)))
-  return t * t * (3 - 2 * t)
-}
 
 export function ManhattanCity({
   mode = 'full',
