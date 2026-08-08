@@ -14,6 +14,7 @@ import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
 import { clone as cloneSkeleton } from 'three/examples/jsm/utils/SkeletonUtils.js'
 import { rt } from '../gameplay/runtime'
 import type { PlayerMotion } from './player-locomotion'
+import { sanitizeClips } from './clip-hygiene'
 
 export const REALISTIC_PLAYER_URL = '/models/characters/player/player.glb?v=1'
 export const REALISTIC_PLAYER_CLIPS_URL = '/models/characters/player/player-clips.glb?v=1'
@@ -67,6 +68,20 @@ export function RealisticPlayer({ motion, animationSpeed = 1, castShadow = true 
   const mixer = useMemo(() => new THREE.AnimationMixer(model), [model])
 
   const clips = useMemo(() => {
+    // Borrowed clips must not drive the node that merely holds the skeleton.
+    // Blender's yup conversion can land on `_rootJoint` as an animated -90
+    // degree X rotation; the mesh's own holder sits at identity, so playing it
+    // laid the character face-down on the road. Stripped from the asset by
+    // scripts/retarget/strip-root-holder-channels.mjs — this is the guard that
+    // keeps a future re-bake from putting it back without anyone noticing.
+    const { dropped } = sanitizeClips(clipSource.animations)
+    if (dropped.length) {
+      console.warn(
+        `[player] dropped ${dropped.length} holder track(s) from the locomotion ` +
+          `clips: ${[...new Set(dropped)].join(', ')}. Re-run ` +
+          'scripts/retarget/strip-root-holder-channels.mjs on player-clips.glb.',
+      )
+    }
     const byName = new Map<string, THREE.AnimationClip>()
     for (const clip of clipSource.animations) byName.set(clip.name, clip)
     return byName
