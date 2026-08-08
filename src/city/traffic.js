@@ -21,6 +21,7 @@
 import * as THREE from 'three'
 import { VehicleFleet } from './vehicles.js'
 import { buildLaneGraph, hash1, lanesNear, pointAt, routeNextLaneWith } from './street-nav.js'
+import { STOP_LINE, buildIntersections, signalPhase, stopLineTarget, amberMayContinue, classifyTurn, conflictsFor } from './intersections.js'
 
 const SIM_RADIUS = 520       // simulate lanes within this of the camera
 const DESPAWN = 620
@@ -29,8 +30,6 @@ const GAP_MIN = 2.2          // bumper gap at a stop
 const REACTION = 1.15        // seconds of headway to the vehicle ahead
 const ACCEL = 3.4            // m/s^2
 const BRAKE = 7.5
-const SIGNAL_CYCLE = 26.0    // seconds for a full two-phase cycle
-const SIGNAL_GREEN = 11.0    // green per phase, rest is all-red clearance
 
 export class Traffic {
   constructor(scene, city, demand = null) {
@@ -44,6 +43,7 @@ export class Traffic {
     this.lanes = []
     this.nodeLanes = new Map()   // node index -> outgoing lane ids
     this.grid = new Map()        // cell key -> lane ids
+    this.ixByNode = new Map()    // node index -> intersection record
     this.vehicles = []
     this.active = new Set()      // lane ids currently in scope
     this.clock = 0
@@ -65,6 +65,7 @@ export class Traffic {
     this.nodeLanes = nodeLanes
     this.grid = grid
     this.nodes = nodes
+    this.ixByNode = buildIntersections(nodes, lanes, nodeLanes).byNode
     this.stats.lanes = this.lanes.length
     return this
   }
@@ -78,13 +79,21 @@ export class Traffic {
   }
 
   // ---- signals ------------------------------------------------------------
-  // Returns true when a lane may proceed through its end node.
-  _green(lane) {
-    if (!lane.signalled) return true
-    const t = (this.clock + hash1(lane.to) * SIGNAL_CYCLE) % SIGNAL_CYCLE
-    const phase = t < SIGNAL_CYCLE / 2 ? 0 : 1
-    const within = t % (SIGNAL_CYCLE / 2)
-    return phase === lane.axis && within < SIGNAL_GREEN
+  // The signal phases and stop-line braking are shared with the Phase 3A
+  // vehicle sim through intersections.js, so both sims agree on the colour
+  // at the same clock and stop at the same line.
+
+  // The route the car will commit to at the end of `lane` (the same seeded
+  // decision the router makes), classified as a turn: a left turn cuts
+  // across the oncoming street, so it yields to opposing through traffic.
+  _willTurnLeft(lanes, lane, seed) {
+    const nid = routeNextLaneWith(lanes, lane, seed)
+    const next = lanes[nid]
+    if (!next) return false
+    const p0 = next.pts[0]
+    const p1 = next.pts[1] ?? p0
+    const startH = Math.atan2(p1[1] - p0[1], p1[0] - p0[0])
+    return classifyTurn(lane.heading, startH) === 'left'
   }
 
   // ---- spawn / recycle ----------------------------------------------------
@@ -223,6 +232,26 @@ export class Traffic {
     }
     for (const list of byLane.values()) list.sort((a, b) => a.s - b.s)
 
+    // Junction arbitration snapshot: every moving vehicle — and moving
+    // ghost, i.e. the player's car — on an intersection approach, taken
+    // before the movement loop because vehicles move during it. A green
+    // approach yields at its stop line while a conflicting approach holds
+    // the box or is closer to its own line.
+    const junctionVehicles = new Map()
+    for (const v of this.vehicles) {
+      const ln = this.lanes[v.lane]
+      if (!ln || !this.ixByNode.has(ln.to)) continue
+      if (!junctionVehicles.has(ln.to)) junctionVehicles.set(ln.to, [])
+      junctionVehicles.get(ln.to).push({ lane: ln, s: v.s, seed: v.seed, ghost: false })
+    }
+    for (const g of this.ghosts) {
+      const ln = this.lanes[g.lane]
+      if (!ln || !this.ixByNode.has(ln.to)) continue
+      if (g.v <= 0.5) continue
+      if (!junctionVehicles.has(ln.to)) junctionVehicles.set(ln.to, [])
+      junctionVehicles.get(ln.to).push({ lane: ln, s: g.s, seed: 0, ghost: true })
+    }
+
     for (const [laneId, list] of byLane) {
       const lane = this.lanes[laneId]
       for (let i = 0; i < list.length; i++) {
@@ -240,12 +269,43 @@ export class Traffic {
           }
         }
 
-        // stop line at a red signal
-        const toEnd = lane.len - v.s
-        if (lane.signalled && !this._green(lane)) {
-          const stopAt = 6.0
-          if (toEnd < stopAt + v.v * v.v / (2 * BRAKE) + 4) {
-            target = Math.min(target, Math.max(0, (toEnd - stopAt) * 0.9))
+        // stop line at a red signal, or an amber the car cannot stop for —
+        // the amber dilemma is resolved by the same rule as the Phase 3A sim
+        const ix = this.ixByNode?.get(lane.to) ?? null
+        const color = signalPhase(ix, lane.axis, this.clock)
+        if (color !== 'green') {
+          const toStop = lane.len - STOP_LINE - v.s
+          if (color === 'red' || !amberMayContinue(toStop, v.v, BRAKE)) {
+            const t = stopLineTarget(v.v, toStop, BRAKE, GAP_MIN)
+            if (t !== null) target = Math.min(target, t)
+          }
+        }
+
+        // intersection arbitration: yield at the stop line even on green
+        // while a conflicting approach holds the box or claims priority —
+        // the closer car goes first, ties broken by seed. Left turns
+        // additionally yield to opposing through traffic.
+        const toLine = lane.len - STOP_LINE - v.s
+        if (ix && toLine > 0) {
+          const group = junctionVehicles.get(lane.to)
+          if (group) {
+            const conflictIds = conflictsFor(ix, ix.approaches.indexOf(lane.id),
+              this._willTurnLeft(this.lanes, lane, v.seed))
+              .map((j) => ix.approaches[j])
+            let blocked = false
+            for (const w of group) {
+              if (!w.ghost && w.lane.id === lane.id && w.seed === v.seed) continue
+              if (!conflictIds.includes(w.lane.id)) continue
+              const wToLine = w.lane.len - STOP_LINE - w.s
+              if (wToLine < 0 || wToLine < toLine || (wToLine === toLine && w.seed < v.seed)) {
+                blocked = true
+                break
+              }
+            }
+            if (blocked) {
+              const t = stopLineTarget(v.v, toLine, BRAKE, GAP_MIN)
+              if (t !== null) target = Math.min(target, t)
+            }
           }
         }
         target *= v.type.speedScale

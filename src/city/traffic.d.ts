@@ -1,5 +1,6 @@
 import type { Camera, Object3D } from 'three'
 import type { NavLane } from './street-nav'
+import type { IntersectionRecord } from './intersections'
 
 export declare class Traffic {
   constructor(scene: Object3D, city: unknown, demand?: unknown)
@@ -13,6 +14,7 @@ export declare class Traffic {
   nodeLanes: Map<number, number[]>
   grid: Map<string, number[]>
   nodes: Array<[number, number]>
+  ixByNode: Map<number, IntersectionRecord>
   vehicles: Array<Record<string, unknown>>
   ghosts: Array<{ lane: number; s: number; v: number; length: number; ghost: boolean }>
   enabled: boolean
