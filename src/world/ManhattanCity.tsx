@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react'
 import * as THREE from 'three'
-import { useFrame, useThree } from '@react-three/fiber'
+import { useThree } from '@react-three/fiber'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
 import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js'
 import {
@@ -11,6 +11,7 @@ import { manhattanCollision } from './manhattan-collision'
 import { getBuildingNightMaterial, getRoadNightMaterial, isCityNightMaterial } from './night-materials'
 import { QUALITY, type QualityPreset } from './palette'
 import { rt } from '../gameplay/runtime'
+import { simulation } from '../gameplay/simulation'
 import { City } from '../city/city.js'
 import { FacadeMaterial } from '../city/facade.js'
 import { TileStreamer } from '../city/streamer.js'
@@ -121,7 +122,8 @@ interface PipelineHooks {
 
 /**
  * The ported life-engine pipeline. Owns the streamers, the sims and the
- * weather; updated once per frame from the ManhattanCity frame loop.
+ * weather; stepped once per frame from the simulation authority's `city`
+ * stage, after input and the player/vehicle stage have run.
  */
 class CityPipeline {
   private readonly scene: THREE.Scene
@@ -598,6 +600,7 @@ export function ManhattanCity({
   onTile.current = onTileRegistered
   const gl = useThree((s) => s.gl)
   const scene = useThree((s) => s.scene)
+  const camera = useThree((s) => s.camera)
 
   // Full mode: a single combined GLB. Simple, and the safest fallback when
   // tile streaming misbehaves in an unexpected browser.
@@ -659,12 +662,21 @@ export function ManhattanCity({
     }
   }, [mode, gl, scene])
 
-  useFrame((state, rawDt) => {
+  // The city advances from the simulation authority's `city` stage rather than
+  // from its own useFrame. It used to carry its own copy of the frame clamp
+  // (`Math.min(rawDt, 1 / 20)`), one of six spellings of the same number
+  // scattered across the render tree, and its position relative to the player
+  // was JSX mount order rather than anything declared.
+  //
+  // The camera comes from useThree, not from a useFrame callback argument, so
+  // the closure follows a camera swap (vision capture installs its own) via a
+  // re-render rather than reading a stale one.
+  useEffect(() => {
     if (mode !== 'tiles') return
-    const pipeline = pipelineRef.current
-    if (!pipeline) return
-    pipeline.update(Math.min(rawDt, 1 / 20), state.camera)
-  })
+    return simulation.register('city-pipeline', 'city', (frame) => {
+      pipelineRef.current?.update(frame.dt, camera)
+    })
+  }, [mode, camera])
 
   return <group ref={groupRef} position={position} scale={scale} name="manhattan-city" />
 }

@@ -101,65 +101,78 @@ describe('Simulation — one pause', () => {
     sim = new Simulation()
   })
 
-  it('a pause taken during input stops the same frame, not the next one', () => {
+  it('a pause taken during input zeroes the delta for the same frame', () => {
     // The property that makes a single pause state worth having, stated as
     // arithmetic rather than left to depend on render priorities: the input
-    // stage flips pause and every gameplay stage after it in the SAME frame
-    // already sees it. Today the -100 priority on GameLoop gets this right by
-    // hand; here it is a guarantee of the ordering itself.
-    const ran: string[] = []
+    // stage flips pause and every stage after it in the SAME frame already
+    // sees dt 0. Today the -100 priority on GameLoop gets this right by hand;
+    // here it is a guarantee of the ordering itself.
+    const seen: Array<[string, number]> = []
     sim.register('input', 'input', () => {
       sim.setPaused(true)
-      ran.push('input')
     })
-    sim.register('city', 'city', () => ran.push('city'))
-    sim.register('vehicles', 'vehicles', () => ran.push('vehicles'))
-    sim.register('present', 'presentation', () => ran.push('present'))
+    sim.register('city', 'city', (f) => seen.push(['city', f.dt]))
+    sim.register('vehicles', 'vehicles', (f) => seen.push(['vehicles', f.dt]))
+    sim.register('present', 'presentation', (f) => seen.push(['present', f.dt]))
 
     const frame = sim.step(1 / 60)
-    expect(ran).toEqual(['input', 'present'])
+    expect(seen).toEqual([
+      ['vehicles', 0],
+      ['city', 0],
+      ['present', 0],
+    ])
     expect(frame.paused).toBe(true)
     expect(frame.dt).toBe(0)
   })
 
   it('an unpause taken during input resumes the same frame', () => {
     sim.setPaused(true)
-    const ran: string[] = []
+    let dt = -1
     sim.register('input', 'input', () => {
       sim.setPaused(false)
-      ran.push('input')
     })
-    sim.register('city', 'city', () => ran.push('city'))
-    sim.step(1 / 60)
-    expect(ran).toEqual(['input', 'city'])
-  })
-
-  it('presentation still runs while paused, so a paused frame still draws', () => {
-    sim.setPaused(true)
-    let drew = 0
-    let stepped = 0
-    sim.register('present', 'presentation', () => {
-      drew++
-    })
-    sim.register('city', 'city', () => {
-      stepped++
-    })
-    sim.step(1 / 60)
-    sim.step(1 / 60)
-    expect(drew).toBe(2)
-    expect(stepped).toBe(0)
-  })
-
-  it('presentation sees dt 0 while paused, so nothing integrates behind the menu', () => {
-    sim.setPaused(true)
-    let dt = -1
-    let raw = -1
-    sim.register('p', 'presentation', (f) => {
+    sim.register('city', 'city', (f) => {
       dt = f.dt
+    })
+    sim.step(1 / 60)
+    expect(dt).toBeCloseTo(1 / 60, 10)
+  })
+
+  it('pausing zeroes the delta, it does not skip stages', () => {
+    // Load-bearing, and the reason the first design was wrong. The city
+    // pipeline must keep being called while paused so its tile streamers
+    // converge on the loaded set behind the pause menu — skipping the stage
+    // would freeze streaming whenever the player opened settings.
+    sim.setPaused(true)
+    let cityCalls = 0
+    let cityDt = -1
+    let presentCalls = 0
+    sim.register('city', 'city', (f) => {
+      cityCalls++
+      cityDt = f.dt
+    })
+    sim.register('present', 'presentation', () => {
+      presentCalls++
+    })
+    sim.step(1 / 60)
+    sim.step(1 / 60)
+    expect(cityCalls).toBe(2)
+    expect(presentCalls).toBe(2)
+    expect(cityDt).toBe(0)
+  })
+
+  it('tells a system it is a paused frame, for anything that must hard-stop', () => {
+    // dt 0 freezes anything that integrates. A system doing dt-independent
+    // work — spawning, decisions, audio triggers — reads this instead.
+    sim.setPaused(true)
+    let paused: boolean | null = null
+    let raw = -1
+    sim.register('x', 'city', (f) => {
+      paused = f.paused
       raw = f.rawDt
     })
     sim.step(1 / 60)
-    expect(dt).toBe(0)
+    expect(paused).toBe(true)
     // Real time is still available for anything that legitimately wants it.
     expect(raw).toBeCloseTo(1 / 60, 10)
   })

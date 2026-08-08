@@ -1,0 +1,153 @@
+{
+  "pipeline": "shenron-city interactive QA walkthrough",
+  "generated_at": "2026-08-08T16:56:56.044Z",
+  "git_rev": "52dae450e359be6d32fd1edc268ee2001a20fc3e",
+  "server": "http://127.0.0.1:5173",
+  "headless": false,
+  "resolution": "1600x900",
+  "video_mp4": "evidence\\opus\\walkthrough-sim-authority\\qa-walkthrough.mp4",
+  "fps": {
+    "samples": 206,
+    "avg": 54,
+    "min": 0.08
+  },
+  "steps": [
+    {
+      "name": "open game",
+      "ok": true,
+      "ms": 3826,
+      "note": "to title in 1843.8ms"
+    },
+    {
+      "name": "title screen",
+      "ok": true,
+      "ms": 2675,
+      "note": "title card visible, waiting on ENTER MANHATTAN"
+    },
+    {
+      "name": "enter world",
+      "ok": true,
+      "ms": 105,
+      "note": "clicked ENTER MANHATTAN"
+    },
+    {
+      "name": "cinematic intro",
+      "ok": true,
+      "ms": 6210,
+      "note": "intro complete, camera handed to player"
+    },
+    {
+      "name": "first-person walk",
+      "ok": true,
+      "ms": 142121,
+      "note": "moved 1000.000,11.993,-3000.000 -> 1000.000,11.993,-3000.000"
+    },
+    {
+      "name": "sprint",
+      "ok": true,
+      "ms": 4013,
+      "note": "sprinted 1000.000,11.993,-3000.000 -> 1000.000,11.993,-3000.000"
+    },
+    {
+      "name": "jump",
+      "ok": true,
+      "ms": 1533,
+      "note": "jumped while walking"
+    },
+    {
+      "name": "double-space fly toggle",
+      "ok": true,
+      "ms": 672,
+      "note": "✈ FLY MODE — Space↑ Ctrl↓ Shift=Fast — Double-Space to land"
+    },
+    {
+      "name": "fly key-repeat check",
+      "ok": true,
+      "ms": 1,
+      "note": "no toggle on synthetic key repeat"
+    },
+    {
+      "name": "fly skyline ascent",
+      "ok": true,
+      "ms": 71824,
+      "note": "flew to 1000.000,11.993,-3000.000"
+    },
+    {
+      "name": "dev tools: teleport Times Square",
+      "ok": true,
+      "ms": 5009,
+      "note": "at 1000.000,12.093,-3000.000"
+    },
+    {
+      "name": "dev tools: night time",
+      "ok": true,
+      "ms": 4507,
+      "note": "clock set to 22:00"
+    },
+    {
+      "name": "dev tools: spawn vehicles and props",
+      "ok": true,
+      "ms": 5878,
+      "note": "spawned 6 entities (0 -> 6)"
+    },
+    {
+      "name": "dev tools: rain",
+      "ok": true,
+      "ms": 5807,
+      "note": "rain at 100%"
+    },
+    {
+      "name": "dev tools: speed multiplier",
+      "ok": true,
+      "ms": 3723,
+      "note": "speed 3x briefly"
+    },
+    {
+      "name": "dev tools: close",
+      "ok": true,
+      "ms": 79,
+      "note": "F2 closed"
+    },
+    {
+      "name": "teleport Empire State via dev tools",
+      "ok": true,
+      "ms": 7587,
+      "note": "walked near -1476.000,12.085,-2433.000"
+    },
+    {
+      "name": "central park daytime",
+      "ok": true,
+      "ms": 74323,
+      "note": "walking the park"
+    },
+    {
+      "name": "statue of liberty",
+      "ok": true,
+      "ms": 72768,
+      "note": "looked around the harbor"
+    },
+    {
+      "name": "perf overlay F3",
+      "ok": true,
+      "ms": 3981,
+      "note": "overlay visible, 0.08 fps"
+    },
+    {
+      "name": "pause menu + settings",
+      "ok": true,
+      "ms": 5324,
+      "note": "cycled quality low -> high, resumed"
+    },
+    {
+      "name": "final walk",
+      "ok": true,
+      "ms": 3022,
+      "note": "done"
+    }
+  ],
+  "findings": [],
+  "console_errors": [],
+  "console_warnings": [],
+  "page_errors": [],
+  "failed_requests": []
+}

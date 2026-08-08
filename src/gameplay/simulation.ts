@@ -41,19 +41,11 @@
  * after input, so a pause taken this frame stops this frame's time. `vehicles`
  * and `city` are the two halves of the world, vehicles first because the city
  * reads the player's position to stream toward it. `presentation` is for
- * systems that only look at state: cameras, rigs, HUD sampling. It is the one
- * stage that still runs while paused, so a paused frame still draws.
+ * systems that only look at state: cameras, rigs, HUD sampling.
  */
 export const SIM_STAGES = ['input', 'clock', 'vehicles', 'city', 'presentation'] as const
 
 export type SimStage = (typeof SIM_STAGES)[number]
-
-/** Stages that are skipped entirely while paused. */
-const GAMEPLAY_STAGES: ReadonlySet<SimStage> = new Set<SimStage>([
-  'clock',
-  'vehicles',
-  'city',
-])
 
 /** The largest step the simulation will take, in seconds. */
 export const MAX_STEP_SECONDS = 1 / 20
@@ -166,7 +158,18 @@ export class Simulation {
         // Re-read: the input stage may have just changed it.
         frame = { ...frame, paused: this.pausedFlag }
       }
-      if (frame.paused && GAMEPLAY_STAGES.has(stage)) continue
+      // Pausing zeroes the delta; it does not skip stages.
+      //
+      // The first version skipped every gameplay stage while paused, and
+      // adopting it in ManhattanCity showed why that is wrong: the city
+      // pipeline must keep running with dt 0 so the tile streamers converge
+      // on the loaded set behind the pause menu. Skipping it would have
+      // frozen streaming whenever the player opened settings — a regression
+      // the stage list itself would have caused, silently.
+      //
+      // So the rule is one rule: dt is 0 in a paused frame. Anything that
+      // integrates by dt freezes for free. Anything that must hard-stop
+      // regardless of dt reads `frame.paused` and returns.
       const staged: SimFrame = frame.paused ? { ...frame, dt: 0 } : frame
       for (const reg of this.byStage.get(stage) ?? []) {
         try {
@@ -201,3 +204,13 @@ export class Simulation {
 
 /** The game's single instance. */
 export const simulation = new Simulation()
+
+// Exposed for the QA harnesses, alongside __cityWorld / __rt /
+// __manhattanCollision. Without it there is no way to ask from outside which
+// systems are registered, in which stage, or whether a frame actually ran —
+// which is exactly the question a "did the refactor keep working" check needs
+// to answer, and answering it by proxy is how a probe ends up measuring the
+// wrong loop.
+if (typeof globalThis !== 'undefined') {
+  ;(globalThis as unknown as { __simulation: Simulation }).__simulation = simulation
+}

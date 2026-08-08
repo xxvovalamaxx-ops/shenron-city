@@ -10,6 +10,7 @@ import { useEffect, useMemo, useRef } from 'react'
 import { useFrame, useThree } from '@react-three/fiber'
 import { PerspectiveCamera, Vector3 } from 'three'
 import { advanceRuntimeTime, rt, setRuntimePaused } from './runtime'
+import { simulation, MAX_STEP_SECONDS } from './simulation'
 import { boomDistance, smoothBoom } from './camera-boom'
 import { useKeys } from './input'
 import { EYE_HEIGHT } from './collision'
@@ -30,7 +31,8 @@ const JUMP_VELOCITY = 6.2
 const FLY_SPEED = 18
 const FLY_SPRINT_SPEED = 42
 const GRAVITY = -22
-const MAX_DT = 1 / 20
+/** One clamp for the whole game. Re-exported name kept for local readability. */
+const MAX_DT = MAX_STEP_SECONDS
 const HUD_INTERVAL = 0.1
 
 export interface GameLoopProps {
@@ -122,6 +124,18 @@ export function GameLoop() {
   }, [])
 
   useFrame((state, rawDt) => {
+    // This callback is the game's input and player/vehicle stage, and it runs
+    // first because of the -100 render priority below. Everything registered
+    // with the simulation authority — the city pipeline, and in time the rest
+    // — runs after it, in declared stage order, from the `finally` at the
+    // bottom.
+    //
+    // `finally` rather than a call at the end: the body has several early
+    // returns (paused, and the cinematic intro), and the city and presentation
+    // stages must advance on every frame regardless of which one fires. A
+    // paused frame still has to draw. Nothing is caught, so a throw here still
+    // propagates after the later stages have had their turn.
+    try {
     const dt = Math.min(rawDt, MAX_DT)
     const p = rt.player
     const hudNow = useHud.getState()
@@ -130,6 +144,8 @@ export function GameLoop() {
 
     Object.assign(rt.keys, keys.current)
     setRuntimePaused(locked)
+    // One pause decision, taken here, visible to every later stage this frame.
+    simulation.setPaused(locked)
     if (locked) {
       Object.assign(keys.current, rt.keys)
       return
@@ -444,6 +460,11 @@ export function GameLoop() {
       if (changed) {
         useHud.setState(next)
       }
+    }
+    } finally {
+      // Stages after input/vehicles: the city pipeline, then presentation.
+      // Runs on paused and intro frames too — see the note at the top.
+      simulation.step(rawDt)
     }
   }, -100)
 
