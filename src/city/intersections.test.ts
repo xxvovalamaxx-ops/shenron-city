@@ -3,7 +3,11 @@ import { buildLaneGraph } from './street-nav.js'
 import {
   buildIntersections,
   classifyTurn,
+  conflictsFor,
   signalColorAt,
+  signalPhase,
+  stopLineTarget,
+  amberMayContinue,
   STOP_LINE,
   SIGNAL_CYCLE,
   SIGNAL_GREEN,
@@ -107,6 +111,7 @@ describe('signalColorAt', () => {
       x: 0,
       y: 0,
       approaches: [],
+      headings: [],
       stopLine: STOP_LINE,
       boxRadius: STOP_LINE + 4.5,
       conflicts: [],
@@ -146,6 +151,52 @@ describe('signalColorAt', () => {
   })
 })
 
+describe('conflictsFor', () => {
+  // The cross has four travel headings: south, east, north, west, with two
+  // parallel lanes each. Approach indexes 0..7; lanes of the same heading
+  // never conflict with each other.
+  function crossIx(): IntersectionRecord {
+    return buildCross().ix.list[0]
+  }
+
+  it('yields to the crossing approaches, not to the same street', () => {
+    const ix = crossIx()
+    const headings = buildCross().graph.lanes
+    // Approach 0 is a south-bound lane. Its conflicts must be the
+    // east/west lanes (which cross it), never the north-bound parallel or
+    // the other south-bound lane (same heading) — and never the opposing
+    // north-bound lane unless turning left.
+    const conflicts = conflictsFor(ix, 0, false)
+    expect(conflicts.length).toBe(4)
+    for (const j of conflicts) {
+      const d = headings[ix.approaches[j]].heading - headings[ix.approaches[0]].heading
+      expect(Math.abs(d)).toBeGreaterThan(0.6)
+      expect(Math.abs(d)).toBeLessThan(2.4)
+    }
+  })
+
+  it('adds the opposing through approaches only for a left turn', () => {
+    const ix = crossIx()
+    const headings = buildCross().graph.lanes
+    const straight = conflictsFor(ix, 0, false)
+    const left = conflictsFor(ix, 0, true)
+    // The two parallel opposing (north-bound) lanes join the conflict set.
+    const extra = left.filter((j) => !straight.includes(j))
+    expect(extra.length).toBe(2)
+    for (const j of extra) {
+      const d = headings[ix.approaches[j]].heading - headings[ix.approaches[0]].heading
+      expect(Math.abs(d)).toBeGreaterThan(2.4)
+    }
+  })
+
+  it('never conflicts with itself', () => {
+    const ix = crossIx()
+    for (let i = 0; i < ix.approaches.length; i++) {
+      expect(conflictsFor(ix, i, true)).not.toContain(i)
+    }
+  })
+})
+
 describe('classifyTurn', () => {
   it('classifies straight, left, right and uturn', () => {
     expect(classifyTurn(0, 0.1)).toBe('straight')
@@ -153,5 +204,57 @@ describe('classifyTurn', () => {
     expect(classifyTurn(0, -Math.PI / 2)).toBe('right')
     expect(classifyTurn(0, Math.PI)).toBe('uturn')
     expect(classifyTurn(0, -Math.PI + 0.1)).toBe('uturn')
+  })
+})
+
+describe('stop-line braking', () => {
+  const BRAKE = 7.5
+
+  it('signalPhase and signalColorAt agree on every point of the cycle', () => {
+    const ix: IntersectionRecord = {
+      node: 0,
+      x: 0,
+      y: 0,
+      approaches: [],
+      headings: [],
+      stopLine: STOP_LINE,
+      boxRadius: STOP_LINE + 4.5,
+      conflicts: [],
+      program: { cycle: SIGNAL_CYCLE, green: SIGNAL_GREEN, amber: SIGNAL_AMBER, offset: 7.3 },
+    }
+    for (let t = 0; t < 60; t += 0.17) {
+      expect(signalPhase(ix, 0, t)).toBe(signalColorAt(ix, 0, t))
+      expect(signalPhase(ix, 1, t)).toBe(signalColorAt(ix, 1, t))
+    }
+  })
+
+  it('cruises when the car can still stop comfortably', () => {
+    // v²/2a = 100/15 ≈ 6.7 m — a 20 m approach needs no braking yet.
+    expect(stopLineTarget(10, 20, BRAKE)).toBeNull()
+  })
+
+  it('brakes toward a stop exactly at the line when inside the envelope', () => {
+    const stopDist = 100 / 15 + 2
+    const target = stopLineTarget(10, 8, BRAKE, 2)
+    expect(target).not.toBeNull()
+    expect(target!).toBeGreaterThan(0)
+    expect(target!).toBeLessThan(10)
+    expect(target!).toBeCloseTo(10 * (8 / stopDist), 9)
+  })
+
+  it('holds a car already stopped at the line', () => {
+    expect(stopLineTarget(0, 2, BRAKE, 2)).toBe(0)
+  })
+
+  it('leaves a car whose nose is past the line alone', () => {
+    expect(stopLineTarget(10, -1, BRAKE)).toBeNull()
+  })
+
+  it('resolves the amber dilemma by stopping distance', () => {
+    // At 10 m/s the car needs ≈ 6.7 m: 4 m out it must run the amber,
+    // 8 m out it can still stop.
+    expect(amberMayContinue(4, 10, BRAKE)).toBe(true)
+    expect(amberMayContinue(8, 10, BRAKE)).toBe(false)
+    expect(amberMayContinue(4, 0, BRAKE)).toBe(false)
   })
 })

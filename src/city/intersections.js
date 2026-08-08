@@ -50,6 +50,7 @@ export function buildIntersections(nodes, lanes, nodeLanes) {
       x,
       y,
       approaches,
+      headings: approaches.map((id) => lanes[id].heading),
       stopLine: STOP_LINE,
       // The box the approach stop lines bound: far enough back that a car
       // waiting at its line clears the crossing approaches' paths.
@@ -87,6 +88,32 @@ function crossingPairs(approachIds, lanes) {
   return pairs
 }
 
+// ---- arbitration -------------------------------------------------------------
+
+/**
+ * Approach indexes a vehicle on `approachIndex` must yield to at
+ * arbitration time: the declared crossing approaches, plus the opposing
+ * through approaches when the vehicle will turn left (a left turn cuts
+ * across the oncoming street). `willTurnLeft` depends on the route chosen
+ * at the node, so it is supplied by the caller, not baked in. Pure and
+ * deterministic — both traffic sims arbitrate through this.
+ */
+export function conflictsFor(ix, approachIndex, willTurnLeft) {
+  const out = new Set()
+  for (const [a, b] of ix.conflicts) {
+    if (a === approachIndex) out.add(b)
+    if (b === approachIndex) out.add(a)
+  }
+  if (willTurnLeft) {
+    for (let j = 0; j < ix.approaches.length; j++) {
+      if (j === approachIndex) continue
+      const d = headingDelta(ix.headings[approachIndex], ix.headings[j])
+      if (Math.abs(d) > 2.4) out.add(j)
+    }
+  }
+  return [...out]
+}
+
 // ---- signal state ----------------------------------------------------------
 
 /**
@@ -94,7 +121,7 @@ function crossingPairs(approachIds, lanes) {
  * (seconds). A lane's `axis` selects its phase; `'amber'` occupies the tail
  * of the green half-cycle. Unsignalled approaches are always green.
  */
-export function signalColorAt(ix, axis, clock) {
+export function signalPhase(ix, axis, clock) {
   if (!ix) return 'green'
   const half = ix.program.cycle / 2
   const t = (clock + ix.program.offset) % ix.program.cycle
@@ -103,6 +130,37 @@ export function signalColorAt(ix, axis, clock) {
   if (phase !== axis) return 'red'
   if (within < ix.program.green) return 'green'
   return 'amber'
+}
+
+/** Colour for a lane that may carry its own baked signal copy. */
+export function signalColorAt(ix, axis, clock) {
+  return signalPhase(ix, axis, clock)
+}
+
+// ---- stop-line braking --------------------------------------------------------
+
+/**
+ * Target speed (m/s) for a vehicle braking to a full stop exactly at the
+ * stop line, or null when no braking is called for. `toStop` is the
+ * distance from the vehicle's nose to the stop line; `gap` (metres,
+ * default 2) is the small resting clearance before the line. A vehicle
+ * whose nose is already across the line has committed and is left alone.
+ */
+export function stopLineTarget(speed, toStop, brakeDecel, gap = 2) {
+  if (toStop <= 0) return null
+  const stopDist = speed * speed / (2 * brakeDecel) + gap
+  if (toStop <= stopDist) return Math.max(0, speed * (toStop / Math.max(stopDist, 1e-3)))
+  return null
+}
+
+/**
+ * Amber dilemma check: may the vehicle run the amber rather than brake?
+ * If the stopping distance at the current speed overshoots the line, the
+ * car cannot stop comfortably and must continue through — braking would
+ * only leave it blocking the crossing phase.
+ */
+export function amberMayContinue(toStop, speed, brakeDecel) {
+  return speed > 0 && speed * speed / (2 * brakeDecel) > toStop
 }
 
 // ---- turn classification ----------------------------------------------------
