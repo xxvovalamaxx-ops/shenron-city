@@ -64,16 +64,13 @@ describe('laneToWorld', () => {
 })
 
 describe('laneToWorld agrees with the shipping renderer', () => {
-  // The module header claims this mirrors Traffic._pointAt and Traffic._render.
-  // A claim like that is worth exactly as much as its differential test, so
-  // here it is against the real implementation rather than a copy of it.
-  // _pointAt reads only its arguments, so it runs off the prototype with no
-  // instance and no Three scene.
-  it('matches Traffic._pointAt across both segments of a bent lane', async () => {
-    const { Traffic } = (await import('../../city/traffic.js')) as unknown as {
-      Traffic: { prototype: { _pointAt(lane: unknown, s: number): [number, number, number] } }
+  // The module header claims this mirrors the renderer's pointAt. A claim
+  // like that is worth exactly as much as its differential test, so here it
+  // is against the real implementation rather than a copy of it.
+  it('matches the shipping pointAt across both segments of a bent lane', async () => {
+    const { pointAt } = (await import('../../city/street-nav.js')) as unknown as {
+      pointAt(lane: unknown, s: number): [number, number, number]
     }
-    const pointAt = Traffic.prototype._pointAt
     const lane = elbowLane()
 
     // _pointAt is called by _render as _pointAt(lane, min(v.s, lane.len)), so

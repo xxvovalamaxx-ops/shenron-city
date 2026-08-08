@@ -15,6 +15,8 @@ import {
   type VehicleSimState,
 } from './vehicle-control'
 import type { VehicleWorld } from './vehicle-collision'
+import { setLaneTable, type LaneProvider } from './vehicle-lanes'
+import { vehicleSpec } from './vehicle-specs'
 
 export {
   snapshotOwnedVehicle,
@@ -23,6 +25,74 @@ export {
 } from './vehicle-control'
 
 export const vehicleSim: VehicleSimState = createVehicleSim()
+
+/**
+ * A braking obstacle for the LION city traffic sim, in its lane space:
+ * numeric lane id, metres along the lane, speed, body length.
+ */
+export interface TrafficGhost {
+  lane: number
+  s: number
+  v: number
+  length: number
+  ghost: true
+}
+
+/**
+ * Install the street graph as the live lane source. Called once the city
+ * pipeline has built the LION lanes (`Traffic.load`). AI cars launched on
+ * the drawn boulevard loop before the graph arrived are projected onto the
+ * graph's nearest lane so they drive real streets immediately; parked cars
+ * (including the player's) stay where they are.
+ */
+export function installLaneProvider(
+  sim: VehicleSimState,
+  provider: LaneProvider,
+): void {
+  sim.provider = provider
+  setLaneTable(provider.lanes)
+  for (const entity of sim.registry.vehicles.values()) {
+    if (entity.state !== 'AI_CONTROLLED' || !entity.ai) continue
+    const hit = provider.project(entity.pose.pos.x, entity.pose.pos.z, 60)
+    if (!hit) continue
+    entity.ai.laneId = hit.lane.id
+    entity.ai.distance = hit.distance
+    entity.ai.targetSpeed = hit.lane.speedLimit * 0.8
+  }
+}
+
+/**
+ * Project every live sim vehicle onto the graph as ghosts for
+ * `Traffic.setGhosts`: the city sim brakes for them and never spawns over
+ * them. AI cars report their routed lane position directly; parked and
+ * player-controlled cars project onto the nearest lane. Only graph lanes
+ * have numeric LION ids, so the loop provider yields no ghosts.
+ */
+export function trafficGhosts(
+  sim: VehicleSimState,
+  provider: LaneProvider | null,
+): TrafficGhost[] {
+  if (!provider?.graph) return []
+  const out: TrafficGhost[] = []
+  for (const entity of sim.registry.vehicles.values()) {
+    if (entity.state === 'DISABLED' || entity.state === 'UNAVAILABLE') continue
+    const spec = vehicleSpec(entity.kind)
+    const laneId = entity.ai?.laneId ?? null
+    const onLane = laneId ? (provider.lanes[laneId] ?? null) : null
+    const hit = onLane
+      ? { lane: onLane, distance: entity.ai!.distance }
+      : provider.project(entity.pose.pos.x, entity.pose.pos.z, 60)
+    if (!hit) continue
+    out.push({
+      lane: Number(hit.lane.id),
+      s: hit.distance,
+      v: entity.motion.speed,
+      length: spec.halfLength * 2,
+      ghost: true,
+    })
+  }
+  return out
+}
 
 /**
  * Advance the session by a frame of `dt` seconds. The frame is subdivided

@@ -47,6 +47,26 @@ const ARENA_HEAD_ON: Lane = {
 }
 ;(LANES as Record<string, Lane>)[ARENA_HEAD_ON.id] = ARENA_HEAD_ON
 
+/**
+ * The taxi's lane: one lane-width north of the road (z = 1.8), east-to-west,
+ * so it clips the owned car's front corner while it is boxed against the
+ * wall and then clips the parked police car — genuine traffic collisions
+ * that never wedge the owned car's path. The z-overlap with the owned car is
+ * the shallower contact axis, so the separation nudges the car south and
+ * releases it, while the police clip is purely cosmetic to the run.
+ */
+const ARENA_TAXI: Lane = {
+  id: 'arena-taxi',
+  loop: false,
+  speedLimit: 8,
+  laneWidth: 1.6,
+  points: [
+    { x: 40, z: 1.8 },
+    { x: -10, z: 1.8 },
+  ],
+}
+;(LANES as Record<string, Lane>)[ARENA_TAXI.id] = ARENA_TAXI
+
 /** Documented replay tolerances — see docs/phase3/PHASE3A.md. */
 export const REPLAY_TOLERANCE_POSITION_M = 1e-9
 export const REPLAY_TOLERANCE_HEADING_RAD = 1e-9
@@ -54,10 +74,15 @@ export const REPLAY_TOLERANCE_SPEED_MS = 1e-9
 
 const FLOOR: AABB = aabb(0, 0, 0, 400, 1, 400)
 /**
- * A thick building slab across the path at x = 20 (x 16..24), so a head-on
- * world collision — and a boxed-in exit — are both part of the recorded run.
+ * A thick building slab across the road at x = 20 (x 15.85..23.85), so a
+ * head-on world collision — and a boxed-in exit — are both part of the
+ * recorded run. The player's world collision is a circle sweep with radius
+ * halfWidth*0.85 = 0.81, so the west face (14.6) sits inside the sweep path
+ * of the owned car's head-on lock (circle edge 14.30..14.85). It spans
+ * z -0.625..0.125: it covers the owned car's lane (z 0) but clears the
+ * taxi's side lane at z = 1.8 (the taxi's box starts at z = 0.75).
  */
-const WALL: AABB = aabb(20, 2, 0, 8, 6, 200)
+const WALL: AABB = aabb(18.6, 2, -0.25, 8, 6, 0.75)
 
 interface Arena {
   world: AabbVehicleWorld
@@ -79,11 +104,11 @@ function buildArena(): Arena {
   const taxi = spawnVehicle(
     sim.registry,
     'taxi',
-    { pos: { x: 12, y: 0.5, z: 0 }, heading: -Math.PI / 2 },
+    { pos: { x: 30, y: 0.5, z: 1.8 }, heading: -Math.PI / 2 },
     'AI_CONTROLLED',
     parkedMotion(),
   )
-  taxi.ai = { laneId: ARENA_HEAD_ON.id, distance: 0, targetSpeed: 5, reactionClock: 0 }
+  taxi.ai = { laneId: ARENA_TAXI.id, distance: 10, targetSpeed: 5, reactionClock: 0 }
   taxi.motion.speed = 5
 
   // Parked cars on both sides of the road near the wall.
@@ -206,12 +231,12 @@ describe('deterministic replay (Phase 3A gate)', () => {
   })
 
   it('the owned car ends parked and the player back on foot', () => {
-    const { world, sim } = buildArena()
-    for (let step = 0; step < STEPS; step++) {
-      stepVehicleSim(sim, world, recordedInputAt(step * DT, step), DT, 21)
-    }
-    const owned = [...sim.registry.vehicles.values()].find((v) => v.owned)!
-    expect(owned.state).toBe('PARKED')
+  const { world, sim } = buildArena()
+  for (let step = 0; step < STEPS; step++) {
+    stepVehicleSim(sim, world, recordedInputAt(step * DT, step), DT, 21)
+  }
+  const owned = [...sim.registry.vehicles.values()].find((v) => v.owned)!
+  expect(owned.state).toBe('PARKED')
     expect(sim.registry.playerVehicleId).toBeNull()
     expect(sim.playerVisible).toBe(true)
     // The player should stand clear of the car, on the floor.

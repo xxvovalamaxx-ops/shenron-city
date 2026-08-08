@@ -12,7 +12,7 @@
 import type { Vec3 } from '../collision'
 import { stepVehicle } from './vehicle-model'
 import { vehicleSpec } from './vehicle-specs'
-import { BOULEVARD_LOOP, LANES, nearestLanePoint, pointAlongLane, wrapLaneDistance, type Lane } from './vehicle-lanes'
+import { BOULEVARD_LOOP, LANES, laneAheadPoint, nearestLanePoint, routeNextLaneId, wrapLaneDistance, type Lane, type LaneProvider } from './vehicle-lanes'
 import {
   rectContact,
   type Pedestrian,
@@ -65,7 +65,7 @@ export function aiInputFor(
   // This converges where a lateral P controller on a limited-steer car
   // hunts, because the pursuit point leads the car into the line instead of
   // pushing it sideways.
-  const ahead = pointAlongLane(lane, ai.distance + AI_LOOKAHEAD)
+  const ahead = laneAheadPoint(lane, ai.distance, AI_LOOKAHEAD, ai.seed ?? vehicle.id, LANES)
   const toTarget = Math.atan2(
     ahead.point.x - vehicle.pose.pos.x,
     ahead.point.z - vehicle.pose.pos.z,
@@ -237,6 +237,24 @@ export function stepAiVehicle(
   // Track progress along the lane for the follow logic.
   entity.ai!.distance = wrapLaneDistance(lane, entity.ai!.distance + entity.motion.speed * dt)
 
+  // At the end of a real street lane, route onto a follow-on lane. The
+  // overshoot carries over so the car does not stall at the junction; on the
+  // drawn loop this never fires because loop lanes wrap.
+  if (!lane.loop && entity.ai!.distance >= laneLengthCached(lane)) {
+    const len = laneLengthCached(lane)
+    const nextId = routeNextLaneId(lane, entity.ai!.seed ?? entity.id, LANES)
+    if (nextId !== null) {
+      entity.ai!.laneId = nextId
+      entity.ai!.distance -= len
+      const next = LANES[nextId]
+      if (next) entity.ai!.targetSpeed = next.speedLimit * 0.8
+    } else {
+      // Dead end: hold just short of the lane end.
+      entity.ai!.distance = len - 0.5
+      entity.ai!.targetSpeed = 0
+    }
+  }
+
   return { collisionsWorld, pedHits: 0 }
 }
 
@@ -321,6 +339,7 @@ export function updateTrafficDirector(
   clocks: Map<number, number>,
   returnDistance = 200,
   returnDelay = 20,
+  provider: LaneProvider | null = null,
 ): number[] {
   const returned: number[] = []
   for (const entity of registry.vehicles.values()) {
@@ -332,10 +351,16 @@ export function updateTrafficDirector(
     const clock = (clocks.get(entity.id) ?? 0) + (dist > returnDistance ? dt : -dt)
     clocks.set(entity.id, Math.max(0, clock))
     if (clock >= returnDelay) {
-      const transition = transitionVehicle(registry, entity.id, 'AI_CONTROLLED')
+      // The owned car returns to AI on the lane it currently sits on: keep
+      // its AI lane when it has one, otherwise project onto the provider's
+      // nearest lane, and fall back to the drawn loop.
+      const lane =
+        (entity.ai?.laneId ? LANES[entity.ai.laneId] : null) ??
+        provider?.project(entity.pose.pos.x, entity.pose.pos.z, 60)?.lane ??
+        BOULEVARD_LOOP
+      const transition = transitionVehicle(registry, entity.id, 'AI_CONTROLLED', lane.id)
       if (transition.ok) {
         entity.owned = false
-        const lane = BOULEVARD_LOOP
         const sample = nearestLanePoint(lane, entity.pose.pos.x, entity.pose.pos.z)
         entity.ai!.distance = sample.distance
         entity.ai!.targetSpeed = lane.speedLimit * 0.8

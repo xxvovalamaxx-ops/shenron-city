@@ -28,6 +28,9 @@ import { Doors } from '../city/doors.js'
 import { buildSky } from '../city/sky.js'
 import { cityWorld } from '../city/registry.js'
 import { cityHud } from '../city/city-hud.js'
+import { installLaneProvider, trafficGhosts, vehicleSim } from '../gameplay/vehicles/vehicle-session'
+import { createGraphLaneProvider } from '../gameplay/vehicles/graph-lane-provider'
+import type { LaneProvider } from '../gameplay/vehicles/vehicle-lanes'
 
 // three-mesh-bvh extends BufferGeometry/Mesh only when asked; wire it up once.
 THREE.BufferGeometry.prototype.computeBoundsTree = computeBoundsTree
@@ -156,6 +159,9 @@ class CityPipeline {
   private hudTimer = 0
   private lastNight = -1
   private disposed = false
+  /** The LION lane provider, once the street graph has loaded; enables the
+   * Phase 3A sim to drive real streets and feed ghosts to the city sim. */
+  private graphProvider: LaneProvider | null = null
 
   constructor(
     group: THREE.Group,
@@ -245,6 +251,13 @@ class CityPipeline {
     await traffic.load()
     if (this.disposed) return
 
+    // The street graph is the single source of lanes from here on: install
+    // it into the vehicle session so AI cars and the player's car drive the
+    // real one-way streets, and keep the city sim's ghosts in sync each
+    // frame in update().
+    this.graphProvider = createGraphLaneProvider(traffic.lanes, traffic.grid)
+    installLaneProvider(vehicleSim, this.graphProvider)
+
     await weather.load()
     if (this.disposed) return
     weather.bindSurfaces(streamer, streets)
@@ -328,6 +341,9 @@ class CityPipeline {
     lod.update(camera, streamer)
     props.update(camera)
     this.subway.update(camera)
+    if (this.graphProvider) {
+      this.traffic.setGhosts(trafficGhosts(vehicleSim, this.graphProvider))
+    }
     traffic.update(dt, camera)
     crowd.update(dt, camera)
     weather.update(dt, camera)

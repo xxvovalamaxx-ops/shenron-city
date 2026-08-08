@@ -22,7 +22,15 @@
 import type { Vec3 } from '../collision'
 import { localToWorld, type VehicleMotion, type VehiclePose, type VehicleSpec } from './vehicle-model'
 import { SPAWN_KINDS } from './vehicle-specs'
-import { BOULEVARD_LOOP, laneLength, nearestLanePoint, pointAlongLane, type Lane } from './vehicle-lanes'
+import {
+  BOULEVARD_LOOP,
+  LANES,
+  laneLength,
+  nearestLanePoint,
+  pointAlongLane,
+  type Lane,
+  type LaneProvider,
+} from './vehicle-lanes'
 import { MANHATTAN_SPAWN_POINT } from '../../world/manhattan-collision'
 
 export type VehicleState =
@@ -63,6 +71,8 @@ export interface AiState {
   targetSpeed: number
   /** Seconds until the AI stops reacting to a slow leader (released). */
   reactionClock: number
+  /** Routing seed: the lane choice at a junction is a pure function of it. */
+  seed?: number
 }
 
 export interface VehicleEntity {
@@ -134,12 +144,14 @@ export function spawnVehicle(
 
 /**
  * The one explicit state transition. Returns `ok: false` (and a reason) for
- * anything outside the table — the machine never half-applies.
+ * anything outside the table — the machine never half-applies. `laneId`
+ * selects the lane an AI vehicle re-enters on (graph lane, or the loop).
  */
 export function transitionVehicle(
   registry: VehicleRegistry,
   id: number,
   to: VehicleState,
+  laneId?: string,
 ): { ok: true } | { ok: false; reason: string } {
   const vehicle = registry.vehicles.get(id)
   if (!vehicle) return { ok: false, reason: `no vehicle ${id}` }
@@ -165,11 +177,14 @@ export function transitionVehicle(
   if (to === 'AI_CONTROLLED') {
     vehicle.controller = 'ai'
     vehicle.motion = parkedMotion()
+    const targetLaneId = laneId ?? BOULEVARD_LOOP.id
+    const targetLane = LANES[targetLaneId] ?? BOULEVARD_LOOP
     vehicle.ai = {
-      laneId: BOULEVARD_LOOP.id,
+      laneId: targetLaneId,
       distance: 0,
-      targetSpeed: BOULEVARD_LOOP.speedLimit,
+      targetSpeed: targetLane.speedLimit,
       reactionClock: 0,
+      seed: vehicle.id,
     }
     vehicle.owned = from === 'PLAYER_CONTROLLED' ? vehicle.owned : false
   }
@@ -280,25 +295,32 @@ export interface SpawnLayout {
 
 /**
  * Rebuild the default world: `PARKED_COUNT` cars at the kerb and the rest of
- * the budget circulating the boulevard loop. Identical seed, identical
- * layout, every run. The lane offsets park cars off the centre-line, facing
- * the direction of travel.
+ * the budget circulating, with the player's car closest to the spawn point.
+ * Identical seed, identical layout, every run. With a provider (the LION
+ * graph) the cars spawn on the real street nearest the spawn point; without
+ * one the drawn boulevard loop is used. The lane offsets park cars off the
+ * centre-line, facing the direction of travel.
  */
 export function createDefaultLayout(
   budget = PARKED_COUNT + AI_BUDGET,
   seed = 0x53a3,
+  provider: LaneProvider | null = null,
 ): SpawnLayout {
   const registry = createRegistry()
-  const lane = BOULEVARD_LOOP
+  const lane = pickPrimaryLane(provider)
   const parked = Math.min(PARKED_COUNT, budget)
   const ai = Math.max(0, budget - parked)
   const rand = seededRandom(seed)
+  const curb = lane.parkOffset ?? 3.2
+  const onGraph = lane.parkOffset !== undefined
+
+  const sample = nearestLanePoint(lane, MANHATTAN_SPAWN_POINT.x, MANHATTAN_SPAWN_POINT.z)
+  const parkSlots = parkedPositions(lane, sample, parked)
 
   for (let i = 0; i < parked; i++) {
-    const along = ((i + 0.5) / parked) * laneLength(lane)
+    const along = onGraph ? parkSlots[i] : ((i + 0.5) / parked) * laneLength(lane)
     const { point, heading } = pointAlongLane(lane, along)
     const right = { x: -Math.cos(heading), z: Math.sin(heading) }
-    const curb = 3.2
     const pos = {
       x: point.x + right.x * curb,
       y: 0,
@@ -309,7 +331,7 @@ export function createDefaultLayout(
   }
 
   for (let i = 0; i < ai; i++) {
-    const along = ((i + 0.5) / ai) * laneLength(lane)
+    const along = ((i + 0.5) / ai) * Math.max(10, laneLength(lane) - 10)
     const { point, heading } = pointAlongLane(lane, along)
     const kind = SPAWN_KINDS[(i + 1) % SPAWN_KINDS.length]
     const entity = spawnVehicle(
@@ -319,24 +341,26 @@ export function createDefaultLayout(
       'AI_CONTROLLED',
       parkedMotion(),
     )
-    if (entity.ai) {
-      entity.ai.distance = along
-      entity.ai.targetSpeed = lane.speedLimit * (0.62 + 0.34 * rand())
+    entity.ai = {
+      laneId: lane.id,
+      distance: along,
+      targetSpeed: lane.speedLimit * (0.62 + 0.34 * rand()),
+      reactionClock: 0,
+      seed: entity.id,
     }
   }
 
   // The player's car: parked closest to the default spawn point. It starts
   // owned but unattached — `playerVehicleId` only ever points at a vehicle
   // the player is entering or driving, so walk-mode prompts still work.
-  const nearest = nearestLanePoint(lane, MANHATTAN_SPAWN_POINT.x, MANHATTAN_SPAWN_POINT.z)
-  const right = { x: -Math.cos(nearest.heading), z: Math.sin(nearest.heading) }
+  const right = { x: -Math.cos(sample.heading), z: Math.sin(sample.heading) }
   const kind = SPAWN_KINDS[0]
   const entity = spawnVehicle(
     registry,
     kind,
     {
-      pos: { x: nearest.point.x + right.x * 3.2, y: 0, z: nearest.point.z + right.z * 3.2 },
-      heading: nearest.heading,
+      pos: { x: sample.point.x + right.x * curb, y: 0, z: sample.point.z + right.z * curb },
+      heading: sample.heading,
     },
     'PARKED',
     parkedMotion(),
@@ -344,5 +368,37 @@ export function createDefaultLayout(
   entity.owned = true
 
   return { registry, lane }
+}
+
+function pickPrimaryLane(provider: LaneProvider | null): Lane {
+  if (!provider) return BOULEVARD_LOOP
+  const parkable = provider.nearestLane(
+    MANHATTAN_SPAWN_POINT.x, MANHATTAN_SPAWN_POINT.z, 90, true,
+  )
+  if (parkable) return parkable
+  return provider.nearestLane(
+    MANHATTAN_SPAWN_POINT.x, MANHATTAN_SPAWN_POINT.z, 90,
+  ) ?? BOULEVARD_LOOP
+}
+
+/** Along-lane distances for parked cars, spread around the spawn sample on
+ * the side of the lane with the most room, never overlapping the player's
+ * car at the sample itself. */
+function parkedPositions(
+  lane: Lane,
+  sample: { distance: number },
+  count: number,
+): number[] {
+  const len = laneLength(lane)
+  const headroom = len - 2 - sample.distance
+  const backroom = sample.distance - 2
+  const forward = headroom >= backroom
+  const step = forward ? 10 : -10
+  const base = forward ? sample.distance + 12 : sample.distance - 12
+  const slots: number[] = []
+  for (let i = 0; i < count; i++) {
+    slots.push(Math.min(Math.max(2, base + i * step), Math.max(2, len - 2)))
+  }
+  return slots
 }
 

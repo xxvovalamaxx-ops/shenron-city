@@ -20,7 +20,7 @@ import {
   type VehiclePose,
 } from './vehicle-model'
 import { vehicleSpec } from './vehicle-specs'
-import { BOULEVARD_LOOP, nearestLanePoint, type Lane } from './vehicle-lanes'
+import { BOULEVARD_LOOP, LANES, nearestLanePoint, setLaneTable, type Lane, type LaneProvider } from './vehicle-lanes'
 import {
   ENTER_PROMPT_RADIUS,
   nearestEnterableDoor,
@@ -115,6 +115,9 @@ export interface VehicleSimState {
   headlightsOn: boolean
   /** Events produced by the last step, in order. */
   events: SimEvent[]
+  /** Lane provider in effect this session: the street graph once the city
+   * pipeline loads it, otherwise null (the drawn loop). */
+  provider: LaneProvider | null
   returnClocks: Map<number, number>
   pedestrians: Pedestrian[]
   simTime: number
@@ -123,11 +126,16 @@ export interface VehicleSimState {
   ownedPersisted: boolean
 }
 
-export function createVehicleSim(budget?: number): VehicleSimState {
-  const { registry, lane } = createDefaultLayout(budget)
+export function createVehicleSim(
+  budget?: number,
+  provider: LaneProvider | null = null,
+): VehicleSimState {
+  if (provider) setLaneTable(provider.lanes)
+  const { registry, lane } = createDefaultLayout(budget, undefined, provider)
   return {
     registry,
     lane,
+    provider,
     player: {
       pos: { x: 0, y: 0, z: 0 },
       forward: { x: 0, z: -1 },
@@ -383,7 +391,7 @@ export function stepVehicleSim(
   // Only cars the player has actually driven are reclaimable — the untouched
   // default car stays parked where the player can find it.
   const returned = sim.ownedPersisted
-    ? updateTrafficDirector(sim.registry, sim.player.pos, dt, sim.returnClocks)
+    ? updateTrafficDirector(sim.registry, sim.player.pos, dt, sim.returnClocks, undefined, undefined, sim.provider)
     : []
   for (const id of returned) {
     sim.events.push({ type: 'return-to-ai', vehicleId: id })
@@ -475,7 +483,7 @@ function stepTraffic(sim: VehicleSimState, world: VehicleWorld, dt: number): voi
   const registry = sim.registry
   for (const entity of registry.vehicles.values()) {
     if (entity.state !== 'AI_CONTROLLED' || !entity.ai) continue
-    const lane = entity.ai.laneId === sim.lane.id ? sim.lane : BOULEVARD_LOOP
+    const lane = LANES[entity.ai.laneId] ?? sim.lane
     const leaders = collectLaneLeaders(sim, entity, lane)
     const result = stepAiVehicle(entity, world, dt, leaders, sim.pedestrians)
     if (result.collisionsWorld) {
@@ -625,7 +633,7 @@ export function snapshotOwnedVehicle(sim: VehicleSimState): SavedVehicle | null 
  * the island surface exists; the position was valid when it was saved.
  */
 export function restoreOwnedVehicle(sim: VehicleSimState, saved: SavedVehicle | null): void {
-  const { registry, lane } = createDefaultLayout(undefined)
+  const { registry, lane } = createDefaultLayout(undefined, undefined, sim.provider)
   sim.registry = registry
   sim.lane = lane
   sim.transition = null
