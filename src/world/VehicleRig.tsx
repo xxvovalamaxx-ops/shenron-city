@@ -15,6 +15,7 @@ import * as THREE from 'three'
 import { vehicleSim } from '../gameplay/vehicles/vehicle-session'
 import { vehicleSpec } from '../gameplay/vehicles/vehicle-specs'
 import type { VehicleEntity } from '../gameplay/vehicles/vehicle-entities'
+import { disposeOwned, disposePedestrianResources, pedestrianResources } from './rig-resources'
 
 const KIND_COLOR: Record<string, string> = {
   sedan: '#c8c4b8',
@@ -148,24 +149,16 @@ export function VehicleRig() {
   useEffect(
     () => () => {
       for (const entry of entries.current.values()) {
-        entry.group.traverse((obj) => {
-          if (obj instanceof THREE.Mesh) {
-            obj.geometry.dispose()
-            const material = obj.material
-            if (Array.isArray(material)) material.forEach((m) => m.dispose())
-            else material.dispose()
-          }
-        })
+        disposeOwned(entry.group)
         entry.group.removeFromParent()
       }
       entries.current.clear()
-      for (const mesh of pedMeshes.current) {
-        mesh.geometry.dispose()
-        const material = mesh.material
-        if (Array.isArray(material)) material.forEach((m) => m.dispose())
-        else material.dispose()
-      }
+      // The pedestrian boxes share one geometry and one material, so the
+      // meshes are only detached here. The shared pair is released once,
+      // after every mesh referencing it is gone.
+      for (const mesh of pedMeshes.current) mesh.removeFromParent()
       pedMeshes.current = []
+      disposePedestrianResources()
     },
     [],
   )
@@ -205,14 +198,21 @@ export function VehicleRig() {
     for (const id of [...entries.current.keys()]) {
       if (!seen.has(id)) {
         const entry = entries.current.get(id)!
+        // Despawning used to be removeFromParent() alone. A rig is roughly
+        // eight geometries and six materials; every car that left the world
+        // leaked all of them for the rest of the session.
+        disposeOwned(entry.group)
         entry.group.removeFromParent()
         entries.current.delete(id)
       }
     }
 
-    // Pedestrians: one small box per crosser.
-    const pedGeometry = new THREE.BoxGeometry(0.42, 1.7, 0.26)
-    const pedMaterial = new THREE.MeshStandardMaterial({ color: '#4a5a6a', roughness: 0.8 })
+    // Pedestrians: one small box per crosser, off one shared geometry and one
+    // shared material. These were built inside this callback — two THREE
+    // objects constructed and thrown away 60-100 times a second, and every
+    // pedestrian added on the same frame shared an instance that the shrink
+    // loop below then disposed per mesh, killing the survivors' buffers.
+    const { geometry: pedGeometry, material: pedMaterial } = pedestrianResources()
     while (pedMeshes.current.length < vehicleSim.pedestrians.length) {
       const mesh = new THREE.Mesh(pedGeometry, pedMaterial)
       mesh.castShadow = true
@@ -232,11 +232,10 @@ export function VehicleRig() {
     }
     while (pedMeshes.current.length > vehicleSim.pedestrians.length) {
       const mesh = pedMeshes.current.pop()!
+      // Detach only. The geometry and material are shared with every other
+      // pedestrian; disposing them here is what removed one crosser and left
+      // the rest drawing from a dead buffer.
       mesh.removeFromParent()
-      mesh.geometry.dispose()
-      const material = mesh.material
-      if (Array.isArray(material)) material.forEach((m) => m.dispose())
-      else material.dispose()
     }
   })
 
