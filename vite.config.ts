@@ -39,6 +39,7 @@ export default defineConfig({
       'tests/**/*.test.ts',
       'scripts/visual-qa/**/*.test.mjs',
       'scripts/benchmarks/**/*.test.mjs',
+      'scripts/retarget/**/*.test.mjs',
     ],
   },
 })
