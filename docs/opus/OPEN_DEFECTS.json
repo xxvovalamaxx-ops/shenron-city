@@ -62,11 +62,11 @@
     },
     {
       "id": "OPUS-008",
-      "severity": "P0",
-      "title": "The ground plane renders pure black at midday",
-      "detail": "Seen in a headless capture at Times Square, visionTime=12: sky, clouds and the distant skyline render correctly, and the entire ground/street plane below the horizon is pure black. Lead, not a diagnosis: cityLightingUniforms defaults uCityHour to 21 and uCityPractical to 0, and CityLightingRig's useFrame returns early on `!readyRef.current`, which only flips true inside the building-lighting data texture's load callback. If that texture is missing, slow or fails, every ROAD_ surface keeps rendering at 21:00 with practicals off for the whole session. Next step is to confirm whether readyRef ever flips in a normal boot, and to make the uniforms default to the actual clock rather than to 21.",
-      "evidence": "headless capture, camera (-1476, 13.7, -2433) at hour 12",
-      "state": "open"
+      "severity": "P2",
+      "title": "Times Square has no ground; the ocean shows through as a black void",
+      "detail": "CORRECTED 2026-08-09. The first version of this entry said \"the ground plane renders pure black at midday\" and blamed cityLightingUniforms.uCityHour defaulting to 21. Both wrong. Raycasting the black region names the mesh: WATER_ocean at y=0, 31-57 m from a camera at y=13.7. It is not a lighting bug and not a road bug \u2014 there is simply no island geometry at Times Square, so the sea plane beneath it is what you see. At the actual spawn point (1000, -3000) the same probe hits LAND_manhattan at y=11.99, colour #3f3e3c, exactly as it should. manhattan-collision.ts already documents the cause: \"The Phase 2 source data has a genuine hole in the midtown-west band (no buildings, props or subway kiosks west of 6th Avenue \u2014 the Times Square plaza included)\". The defect is that the hole is not hidden: the ocean should not be visible through missing land. Options are to extend the land mesh, to fill the hole in the Phase 2 source, or to stop rendering ocean inside the island footprint.",
+      "evidence": "raycast naming WATER_ocean at Times Square vs LAND_manhattan at the spawn point",
+      "state": "open \u2014 cause identified, fix not chosen"
     },
     {
       "id": "OPUS-009",
