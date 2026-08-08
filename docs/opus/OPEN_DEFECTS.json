@@ -54,11 +54,11 @@
     },
     {
       "id": "OPUS-007",
-      "severity": "P0",
+      "severity": "P1",
       "title": "A concurrent session left src/city/traffic.js with a parse error",
-      "detail": "Found at the start of the 21:10 turn. The working tree carried uncommitted edits I did not make across 7 tracked files (traffic.js, traffic.d.ts, vehicle-control.ts, vehicle-entities.ts, vehicle-lanes.ts, vehicle-replay.test.ts, vehicle-traffic.ts) plus 3 untracked new files (street-nav.js/.d.ts, graph-lane-provider.ts). It is the same consolidation this branch is doing, by a different route: a shared street-nav lane graph and 'ghosts' in Traffic for player-owned vehicles. src/city/traffic.js:109 does not parse, so the city pipeline cannot load and the game cannot boot. vehicle-replay.test.ts \u2014 their own Phase 3A determinism gate \u2014 also fails. Left completely untouched; snapshotted read-only to the session scratchpad (tracked.patch + the 3 new files). No git add -A while it is present.",
+      "detail": "Found at the start of the 21:10 turn. The working tree carried uncommitted edits I did not make across 7 tracked files (traffic.js, traffic.d.ts, vehicle-control.ts, vehicle-entities.ts, vehicle-lanes.ts, vehicle-replay.test.ts, vehicle-traffic.ts) plus 3 untracked new files (street-nav.js/.d.ts, graph-lane-provider.ts). It is the same consolidation this branch is doing, by a different route: a shared street-nav lane graph and 'ghosts' in Traffic for player-owned vehicles. src/city/traffic.js:109 does not parse, so the city pipeline cannot load and the game cannot boot. vehicle-replay.test.ts \u2014 their own Phase 3A determinism gate \u2014 also fails. Left completely untouched; snapshotted read-only to the session scratchpad (tracked.patch + the 3 new files). No git add -A while it is present. UPDATE 21:45 \u2014 traffic.js now parses and the game boots; they also adapted my vehicle-handoff differential test to import pointAt from their street-nav.js, and extended into ManhattanCity.tsx (installLaneProvider + trafficGhosts). Their design is a shared lane graph plus ghosts, which is complementary to the promotion module rather than a duplicate of it. 3 tests in their own new vehicle-session.test.ts still fail on ghost positions (~70 m out).",
       "evidence": "vitest: 2 failed / 375 passed; PARSE_ERROR at src/city/traffic.js:109:12",
-      "state": "open \u2014 blocks 0B.6, 0C.2 and any runtime measurement. Needs an ownership decision."
+      "state": "partially resolved \u2014 tree compiles and boots; ownership of the vehicle subsystem still undecided"
     }
   ],
   "closed": [

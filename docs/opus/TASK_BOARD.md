@@ -36,8 +36,13 @@ not started, and no claim is made about it.
 - [ ] **0C** One facade / sky / weather / lighting authority — OPUS-003.
       First step is an audit that reports which material system is bound to
       each streamed tier at runtime, because that is currently unknown
-- [ ] **0D** Runtime resource defects — `VehicleRig.tsx` per-frame allocation,
-      shared-resource disposal, leak and repeated-entry tests
+- [x] **0D** Runtime resource defects in VehicleRig — `e182db3ae`
+      · per-frame geometry/material construction inside useFrame, removed
+      · shared pedestrian pair disposed per mesh, killing survivors' buffers
+      · vehicle despawn leaked ~8 geometries + ~6 materials per car
+      · 13 tests incl. 100 spawn/despawn cycles and repeated entry/exit
+- [ ] **0D.2** The same audit for the crowd and traffic presentation layers.
+      Only VehicleRig has been read
 - [x] **0E.1** Gate missing texture dependencies — `e83c49a38`
       · 442 models scanned, 0 unresolvable; exit 1 on a rebuilt pre-fix model
       · verified in the running game: 5 console errors → 0
