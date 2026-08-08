@@ -10,15 +10,32 @@
  * (vehicle-session.ts) projects the Phase 3A vehicles onto these lanes and
  * hands them to the LION sim as braking obstacles.
  */
-import { nearestLane as lionNearestLane, type NavLane } from '../../city/street-nav.js'
+import {
+  nearestLane as lionNearestLane,
+  hash1,
+  type NavLane,
+} from '../../city/street-nav.js'
+import { SIGNAL_CYCLE, SIGNAL_GREEN, SIGNAL_AMBER, buildIntersections, STOP_LINE } from '../../city/intersections.js'
 import type { Lane, LanePoint, LaneProvider } from './vehicle-lanes'
 
 export function createGraphLaneProvider(
   navLanes: NavLane[],
   grid: Map<string, number[]>,
 ): LaneProvider {
+  // The intersection model over the same lane graph, for the baked
+  // per-approach arbitration data.
+  const nodeLanes = new Map<number, number[]>()
+  for (const lane of navLanes) {
+    const list = nodeLanes.get(lane.from) ?? []
+    list.push(lane.id)
+    nodeLanes.set(lane.from, list)
+  }
+  const ixByNode = buildIntersections(null, navLanes, nodeLanes).byNode
+
   const table: Record<string, Lane> = {}
   for (const lane of navLanes) {
+    const ix = ixByNode.get(lane.to)
+    const approachIndex = ix?.approaches.indexOf(lane.id) ?? -1
     table[String(lane.id)] = {
       id: String(lane.id),
       loop: false,
@@ -27,6 +44,30 @@ export function createGraphLaneProvider(
       points: lane.pts.map(([x, y]): LanePoint => ({ x, z: -y })),
       next: lane.next.map((n) => String(n)),
       parkOffset: lane.park ?? undefined,
+      signalled: lane.signalled || undefined,
+      axis: lane.axis,
+      // Same fixed program the LION traffic sim arbitrates with, so both
+      // sims show the same colour at the same sim time.
+      signal: lane.signalled
+        ? {
+            cycle: SIGNAL_CYCLE,
+            green: SIGNAL_GREEN,
+            amber: SIGNAL_AMBER,
+            offset: hash1(lane.to) * SIGNAL_CYCLE,
+          }
+        : undefined,
+      junction: ix && approachIndex >= 0
+        ? {
+            id: lane.to,
+            boxRadius: STOP_LINE + 4.5,
+            crossingLaneIds: ix.conflicts
+              .filter(([a, b]) => a === approachIndex || b === approachIndex)
+              .map(([a, b]) => String(ix.approaches[a === approachIndex ? b : a])),
+            opposingLaneIds: ix.approaches
+              .filter((_, j) => j !== approachIndex && Math.abs(wrapHeading(ix.headings[approachIndex] - ix.headings[j])) > 2.4)
+              .map(String),
+          }
+        : undefined,
     }
   }
 
@@ -52,4 +93,11 @@ export function createGraphLaneProvider(
       return { lane, distance: hit.s }
     },
   }
+}
+
+function wrapHeading(h: number): number {
+  let d = h
+  while (d > Math.PI) d -= 2 * Math.PI
+  while (d < -Math.PI) d += 2 * Math.PI
+  return d
 }

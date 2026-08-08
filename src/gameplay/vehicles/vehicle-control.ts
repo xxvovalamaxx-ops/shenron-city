@@ -35,7 +35,13 @@ import {
   type Pedestrian,
   type VehicleWorld,
 } from './vehicle-collision'
-import { stepAiVehicle, updatePedestrians, updateTrafficDirector, resolveVehiclePairs } from './vehicle-traffic'
+import {
+  stepAiVehicle,
+  updatePedestrians,
+  updateTrafficDirector,
+  resolveVehiclePairs,
+  type JunctionOccupant,
+} from './vehicle-traffic'
 import {
   computeVehicleCamera,
   easeVehicleCamera,
@@ -481,15 +487,48 @@ function drivePlayerVehicle(
 
 function stepTraffic(sim: VehicleSimState, world: VehicleWorld, dt: number): void {
   const registry = sim.registry
+  const occupants = buildJunctionOccupants(sim)
   for (const entity of registry.vehicles.values()) {
     if (entity.state !== 'AI_CONTROLLED' || !entity.ai) continue
     const lane = LANES[entity.ai.laneId] ?? sim.lane
     const leaders = collectLaneLeaders(sim, entity, lane)
-    const result = stepAiVehicle(entity, world, dt, leaders, sim.pedestrians)
+    const result = stepAiVehicle(entity, world, dt, leaders, sim.pedestrians, sim.simTime, occupants)
     if (result.collisionsWorld) {
       sim.events.push({ type: 'collision-world', vehicleId: entity.id })
     }
   }
+}
+
+/**
+ * Moving vehicles on intersection approaches, grouped by junction, for the
+ * stop-line arbitration. AI cars report their routed lane position; the
+ * player's car (which has no AI state) projects onto the lane it is on.
+ * Parked and disabled vehicles never occupy a box.
+ */
+export function buildJunctionOccupants(sim: VehicleSimState): Map<number, JunctionOccupant[]> {
+  const out = new Map<number, JunctionOccupant[]>()
+  for (const entity of sim.registry.vehicles.values()) {
+    if (entity.state !== 'AI_CONTROLLED' && entity.state !== 'PLAYER_CONTROLLED') continue
+    const ai = entity.ai
+    let lane: Lane | null = null
+    let distance = 0
+    if (ai) {
+      lane = LANES[ai.laneId] ?? null
+      distance = ai.distance
+    } else if (sim.provider) {
+      const hit = sim.provider.project(entity.pose.pos.x, entity.pose.pos.z, 60)
+      if (hit) {
+        lane = hit.lane
+        distance = hit.distance
+      }
+    }
+    const junction = lane?.junction
+    if (!junction) continue
+    const list = out.get(junction.id) ?? []
+    list.push({ id: entity.id, laneId: lane!.id, distance })
+    out.set(junction.id, list)
+  }
+  return out
 }
 
 function collectLaneLeaders(

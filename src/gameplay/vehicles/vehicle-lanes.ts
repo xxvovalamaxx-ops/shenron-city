@@ -31,6 +31,24 @@ export interface Lane {
   next?: readonly string[]
   /** Curb offset for parking, metres right of travel. Absent on the loop. */
   parkOffset?: number
+  /** Signalled approach: this lane ends at an intersection signal. */
+  signalled?: boolean
+  /** Phase axis of the lane's signal: 0 or 1 in the two-phase cycle. */
+  axis?: number
+  /** Baked copy of the intersection's fixed signal program. */
+  signal?: { cycle: number; green: number; amber: number; offset: number }
+  /**
+   * The junction this approach feeds, baked with the lane ids of the
+   * approaches whose paths cross it (left-turn yield set included). The
+   * arbitration rule reads it: yield at the stop line while one of those
+   * lanes holds the box or claims priority.
+   */
+  junction?: {
+    id: number
+    boxRadius: number
+    crossingLaneIds: string[]
+    opposingLaneIds: string[]
+  }
 }
 
 export interface LaneSample {
@@ -75,8 +93,9 @@ export const LANES: Record<string, Lane> = {
 
 export function laneLength(lane: Lane): number {
   const n = lane.points.length
+  const segments = n - (lane.loop ? 0 : 1)
   let total = 0
-  for (let i = 0; i < n; i++) {
+  for (let i = 0; i < segments; i++) {
     const a = lane.points[i]
     const b = lane.points[(i + 1) % n]
     total += Math.hypot(b.x - a.x, b.z - a.z)
@@ -218,14 +237,14 @@ function laneHash(n: number): number {
   return x - Math.floor(x)
 }
 
-function laneEndHeading(lane: Lane): number {
+export function laneEndHeading(lane: Lane): number {
   const n = lane.points.length
   const a = lane.points[n - 2] ?? lane.points[0]
   const b = lane.points[n - 1]
   return Math.atan2(b.x - a.x, b.z - a.z)
 }
 
-function laneStartHeading(lane: Lane): number {
+export function laneStartHeading(lane: Lane): number {
   const a = lane.points[0]
   const b = lane.points[1] ?? a
   return Math.atan2(b.x - a.x, b.z - a.z)

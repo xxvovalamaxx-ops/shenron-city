@@ -12,7 +12,7 @@
 import type { Vec3 } from '../collision'
 import { stepVehicle } from './vehicle-model'
 import { vehicleSpec } from './vehicle-specs'
-import { BOULEVARD_LOOP, LANES, laneAheadPoint, nearestLanePoint, routeNextLaneId, wrapLaneDistance, type Lane, type LaneProvider } from './vehicle-lanes'
+import { BOULEVARD_LOOP, LANES, laneAheadPoint, laneEndHeading, laneLength, laneStartHeading, nearestLanePoint, routeNextLaneId, wrapLaneDistance, type Lane, type LaneProvider } from './vehicle-lanes'
 import {
   rectContact,
   type Pedestrian,
@@ -24,11 +24,22 @@ import {
   type VehicleRegistry,
   transitionVehicle,
 } from './vehicle-entities'
+import {
+  STOP_LINE,
+  signalPhase,
+  stopLineTarget,
+  amberMayContinue,
+  classifyTurn,
+} from '../../city/intersections.js'
 
 export const AI_LOOKAHEAD = 7
 export const AI_LEADER_GAP = 10
 export const AI_EMERGENCY_GAP = 3.5
 export const AI_PED_BRAKE_RANGE = 7
+/** Emergency braking deceleration, m/s², used for signal stop planning. */
+export const AI_BRAKE = 7.5
+/** Resting clearance before the stop line, metres. */
+export const AI_SIGNAL_GAP = 2.2
 /** Pure-pursuit gain: steer proportional to the angle to the lookahead point. */
 export const AI_STEER_PURSUIT = 2
 
@@ -48,14 +59,29 @@ export interface AiControllerInput {
 }
 
 /**
+ * One moving vehicle's position on an intersection approach, as seen by the
+ * arbitration rule. `distance` is along the lane, in metres.
+ */
+export interface JunctionOccupant {
+  id: number
+  laneId: string
+  distance: number
+}
+
+/**
  * Longitudinal and lateral commands for one AI vehicle. `leaders` supplies
  * the pose of any vehicle ahead on the same lane so the gap rule can brake.
+ * `clock` is the simulation clock in seconds, read for the signal phase.
+ * `junctionOccupants` maps junction id to the moving vehicles on its
+ * approaches (including the player), for the stop-line arbitration.
  */
 export function aiInputFor(
   vehicle: VehicleEntity,
   lane: Lane,
   leaders: ReadonlyArray<{ pose: { pos: Vec3; heading: number }; speed: number }>,
   pedestrians: ReadonlyArray<Pick<Pedestrian, 'pos' | 'radius'>>,
+  clock: number,
+  junctionOccupants: ReadonlyMap<number, ReadonlyArray<JunctionOccupant>>,
 ): AiControllerInput {
   const ai = vehicle.ai!
   const sample = nearestLanePoint(lane, vehicle.pose.pos.x, vehicle.pose.pos.z)
@@ -96,6 +122,53 @@ export function aiInputFor(
   }
 
   const speed = vehicle.motion.speed
+
+  // Signals: hold at the stop line on red; on amber brake unless the car is
+  // too close to stop comfortably — that one runs the amber through. The
+  // phase comes from the shared intersection model, so the LION traffic
+  // sim and this one show the same colour at the same clock.
+  if (lane.signal) {
+    const color = signalPhase({ program: lane.signal }, lane.axis ?? 0, clock)
+    if (color !== 'green') {
+      const toStop = laneLength(lane) - STOP_LINE - ai.distance
+      if (color === 'red' || !amberMayContinue(toStop, speed, AI_BRAKE)) {
+        const target = stopLineTarget(speed, toStop, AI_BRAKE, AI_SIGNAL_GAP)
+        if (target !== null) desired = Math.min(desired, target)
+      }
+    }
+  }
+
+  // Intersection arbitration: even on green, yield at the stop line while a
+  // conflicting approach holds the box or is closer to its own line — the
+  // closer car claims the box, ties broken by id. A car whose nose is past
+  // its line is committed and never yields. Left turns additionally yield
+  // to opposing through traffic.
+  const junction = lane.junction
+  if (junction) {
+    const myToLine = laneLength(lane) - STOP_LINE - ai.distance
+    if (myToLine > 0) {
+      const willTurnLeft = vehicleWillTurnLeft(vehicle, lane)
+      const occupants = junctionOccupants.get(junction.id)
+      let blocked = false
+      if (occupants) {
+        for (const w of occupants) {
+          if (w.id === vehicle.id) continue
+          const wLane = LANES[w.laneId]
+          if (!wLane || !junctionApproachConflicts(junction, wLane.id, willTurnLeft)) continue
+          const wToLine = laneLength(wLane) - STOP_LINE - w.distance
+          if (wToLine < 0 || wToLine < myToLine || (wToLine === myToLine && w.id < vehicle.id)) {
+            blocked = true
+            break
+          }
+        }
+      }
+      if (blocked) {
+        const target = stopLineTarget(speed, myToLine, AI_BRAKE, AI_SIGNAL_GAP)
+        if (target !== null) desired = Math.min(desired, target)
+      }
+    }
+  }
+
   if (speed < desired - 0.4) return { throttle: 1, brake: 0, steer, handbrake: false }
   if (speed > desired + 0.4) {
     return {
@@ -108,6 +181,37 @@ export function aiInputFor(
   return { throttle: 0, brake: 0, steer, handbrake: false }
 }
 
+/**
+ * Does the vehicle's seeded route take a left turn at the end of `lane`?
+ * Same routing decision the step makes, so the yield set matches the turn
+ * the car actually commits to.
+ */
+export function vehicleWillTurnLeft(
+  vehicle: VehicleEntity,
+  lane: Lane,
+): boolean {
+  if (lane.loop || !lane.next || lane.next.length === 0) return false
+  const next = LANES[routeNextLaneId(lane, vehicle.ai?.seed ?? vehicle.id, LANES)!]
+  if (!next) return false
+  return classifyTurn(laneEndHeading(lane), laneStartHeading(next)) === 'left'
+}
+
+/**
+ * Does an approach of `junction` conflict with the lane a vehicle is on?
+ * Crossing approaches always do; the opposing through approaches only when
+ * the vehicle will turn left across them.
+ */
+export function junctionApproachConflicts(
+  junction: NonNullable<Lane['junction']>,
+  laneId: string,
+  willTurnLeft: boolean,
+): boolean {
+  return (
+    junction.crossingLaneIds.includes(laneId) ||
+    (willTurnLeft && junction.opposingLaneIds.includes(laneId))
+  )
+}
+
 /** Signed distance (metres) from the leader's lane position to the vehicle's. */
 export function leaderGap(
   vehicle: VehicleEntity,
@@ -117,23 +221,14 @@ export function leaderGap(
   if (vehicle.ai === null) return null
   const me = nearestLanePoint(lane, vehicle.pose.pos.x, vehicle.pose.pos.z)
   const them = nearestLanePoint(lane, leaderPose.pos.x, leaderPose.pos.z)
+  const across = Math.hypot(leaderPose.pos.x - them.point.x, leaderPose.pos.z - them.point.z)
+  if (across > lane.laneWidth + 3.0) return null
   let gap = them.distance - me.distance
   if (lane.loop) {
-    const length = laneLengthCached(lane)
+    const length = laneLength(lane)
     if (gap < 0) gap += length
   }
   return gap
-}
-
-function laneLengthCached(lane: Lane): number {
-  const n = lane.points.length
-  let total = 0
-  for (let i = 0; i < n; i++) {
-    const a = lane.points[i]
-    const b = lane.points[(i + 1) % n]
-    total += Math.hypot(b.x - a.x, b.z - a.z)
-  }
-  return total
 }
 
 /** Lateral-acceleration-limited speed on a curve, m/s. */
@@ -206,10 +301,12 @@ export function stepAiVehicle(
   dt: number,
   leaders: ReadonlyArray<{ pose: { pos: Vec3; heading: number }; speed: number }>,
   pedestrians: ReadonlyArray<Pick<Pedestrian, 'pos' | 'radius'>>,
+  clock: number,
+  junctionOccupants: ReadonlyMap<number, ReadonlyArray<JunctionOccupant>>,
 ): { collisionsWorld: boolean; pedHits: number } {
   const lane = LANES[entity.ai!.laneId] ?? BOULEVARD_LOOP
   const spec = vehicleSpec(entity.kind)
-  const input = aiInputFor(entity, lane, leaders, pedestrians)
+  const input = aiInputFor(entity, lane, leaders, pedestrians, clock, junctionOccupants)
 
   const groundY = world.groundHeightAt(entity.pose.pos.x, entity.pose.pos.z)
   const before = { ...entity.pose }
@@ -240,8 +337,8 @@ export function stepAiVehicle(
   // At the end of a real street lane, route onto a follow-on lane. The
   // overshoot carries over so the car does not stall at the junction; on the
   // drawn loop this never fires because loop lanes wrap.
-  if (!lane.loop && entity.ai!.distance >= laneLengthCached(lane)) {
-    const len = laneLengthCached(lane)
+  if (!lane.loop && entity.ai!.distance >= laneLength(lane)) {
+    const len = laneLength(lane)
     const nextId = routeNextLaneId(lane, entity.ai!.seed ?? entity.id, LANES)
     if (nextId !== null) {
       entity.ai!.laneId = nextId

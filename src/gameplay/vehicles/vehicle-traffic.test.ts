@@ -15,6 +15,9 @@ import {
 const FLOOR: AABB = aabb(400, 0, 400, 2000, 1, 2000)
 const world = new AabbVehicleWorld([FLOOR])
 
+/** No junctions in these unit scenarios: the arbiter is idle. */
+const EMPTY_OCCUPANTS: ReadonlyMap<number, ReadonlyArray<import('./vehicle-traffic').JunctionOccupant>> = new Map()
+
 function aiEntity(registry: VehicleRegistry, distance: number, targetSpeed = 8) {
   const lane = BOULEVARD_LOOP
   const { point, heading } = pointAlongLane(lane, distance)
@@ -32,14 +35,14 @@ describe('lane following', () => {
     // Push the car to the right of the lane (positive lateral, +Z at this
     // segment's heading of +X) — it must steer left, i.e. positive.
     entity.pose.pos.z += 3
-    const input = aiInputFor(entity, BOULEVARD_LOOP, [], [])
+    const input = aiInputFor(entity, BOULEVARD_LOOP, [], [], 0, EMPTY_OCCUPANTS)
     expect(input.steer).toBeGreaterThan(0)
   })
 
   it('aligns heading with the lane ahead', () => {
     const { registry } = createDefaultLayout(4)
     const entity = aiEntity(registry, 0)
-    const input = aiInputFor(entity, BOULEVARD_LOOP, [], [])
+    const input = aiInputFor(entity, BOULEVARD_LOOP, [], [], 0, EMPTY_OCCUPANTS)
     expect(input.steer).toBeCloseTo(0, 9)
   })
 
@@ -48,7 +51,7 @@ describe('lane following', () => {
     const entity = aiEntity(registry, 0, 8)
     entity.motion.speed = 5
     const ahead = pointAlongLane(BOULEVARD_LOOP, 4)
-    const input = aiInputFor(entity, BOULEVARD_LOOP, [{ pose: { pos: { ...ahead.point, y: 0.5 }, heading: ahead.heading }, speed: 3 }], [])
+    const input = aiInputFor(entity, BOULEVARD_LOOP, [{ pose: { pos: { ...ahead.point, y: 0.5 }, heading: ahead.heading }, speed: 3 }], [], 0, EMPTY_OCCUPANTS)
     expect(input.brake).toBeGreaterThan(0)
   })
 
@@ -59,7 +62,7 @@ describe('lane following', () => {
     const inFront = pointAlongLane(BOULEVARD_LOOP, 3)
     const input = aiInputFor(entity, BOULEVARD_LOOP, [], [
       { pos: { ...inFront.point, y: 0.5 }, radius: 0.3 },
-    ])
+    ], 0, EMPTY_OCCUPANTS)
     expect(input.brake).toBeGreaterThan(0)
   })
 
@@ -79,7 +82,7 @@ describe('AI stepping keeps traffic on its lane', () => {
       nearestLanePoint(BOULEVARD_LOOP, entity.pose.pos.x, entity.pose.pos.z).lateral,
     )
     for (let i = 0; i < 1200; i++) {
-      stepAiVehicle(entity, world, 1 / 120, [], [])
+      stepAiVehicle(entity, world, 1 / 120, [], [], 0, EMPTY_OCCUPANTS)
     }
     const finalError = Math.abs(
       nearestLanePoint(BOULEVARD_LOOP, entity.pose.pos.x, entity.pose.pos.z).lateral,
@@ -92,7 +95,7 @@ describe('AI stepping keeps traffic on its lane', () => {
     const run = () => {
       const { registry } = createDefaultLayout(4)
       const entity = aiEntity(registry, 200, 6)
-      for (let i = 0; i < 300; i++) stepAiVehicle(entity, world, 1 / 120, [], [])
+      for (let i = 0; i < 300; i++) stepAiVehicle(entity, world, 1 / 120, [], [], 0, EMPTY_OCCUPANTS)
       return entity.pose
     }
     const a = run()
