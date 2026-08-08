@@ -23,10 +23,10 @@
     {
       "id": "OPUS-003",
       "severity": "P2",
-      "title": "Facade, sky, weather and lighting authority is not established",
-      "detail": "CityLightingRig/night-materials, src/city/facade.js, FacadeMaterial.setNight(), NightEnvironment, the ported city sky/weather system and the React day-cycle clock all exist. Which one renders each visible BLD_*/ROAD_* surface has not been determined. Suspected duplicate and dead paths.",
-      "evidence": null,
-      "state": "open"
+      "title": "A night HDR lights the city at every hour; two material systems are dead",
+      "detail": "AUDITED 2026-08-08, docs/opus/LIGHTING_AUDIT.md. Nothing is fighting over background/fog \u2014 sky.js installs and weather.js drives, one subsystem. What is actually wrong: (a) NightEnvironment.tsx:23-58 sets scene.environment to a night HDR with dependency array [gl, scene], neither of which changes after mount, so a night map lights the city permanently regardless of the clock \u2014 the exact defect the brief names; (b) getBuildingNightMaterial has one call site, reachable only when ManhattanCity mode===\"full\", and the game mounts mode=\"tiles\", so it has never rendered a streamed building; (c) SkyRig.tsx is imported by nothing. Streamed BLD_* actually get FacadeMaterial via streamer.injected.",
+      "evidence": "docs/opus/LIGHTING_AUDIT.md",
+      "state": "audited, not fixed \u2014 0C.1 clock-aware environment, 0C.2 runtime assertion, 0C.3 adopt-or-delete"
     },
     {
       "id": "OPUS-004",
@@ -51,6 +51,14 @@
       "detail": "Observed twice on 2026-08-08, the second time DURING a turn: the working tree was switched from opus/hero-corridor-v1 to main while files were being edited. Symptom was 33 tests vanishing (simulation.test.ts 19, stat.test.mjs 14) because those files exist only on the branch. Reflog line: 'checkout: moving from opus/hero-corridor-v1 to main'. No work was lost \u2014 commits live on the branch and new untracked files survive a checkout \u2014 but a `git add -A` landing while main is checked out would commit to the wrong branch. Candidates: the second worktree at E:/temp projects/shenron-city-polish on branch polish/realism (locked), or one of the resident @gitkraken/gk MCP processes. Not attributed; not reproduced on demand.",
       "evidence": "git reflog; test count 377 -> 344 with two files absent from the vitest file list",
       "state": "open \u2014 mitigated by re-checking out the branch at the start of every turn"
+    },
+    {
+      "id": "OPUS-007",
+      "severity": "P0",
+      "title": "A concurrent session left src/city/traffic.js with a parse error",
+      "detail": "Found at the start of the 21:10 turn. The working tree carried uncommitted edits I did not make across 7 tracked files (traffic.js, traffic.d.ts, vehicle-control.ts, vehicle-entities.ts, vehicle-lanes.ts, vehicle-replay.test.ts, vehicle-traffic.ts) plus 3 untracked new files (street-nav.js/.d.ts, graph-lane-provider.ts). It is the same consolidation this branch is doing, by a different route: a shared street-nav lane graph and 'ghosts' in Traffic for player-owned vehicles. src/city/traffic.js:109 does not parse, so the city pipeline cannot load and the game cannot boot. vehicle-replay.test.ts \u2014 their own Phase 3A determinism gate \u2014 also fails. Left completely untouched; snapshotted read-only to the session scratchpad (tracked.patch + the 3 new files). No git add -A while it is present.",
+      "evidence": "vitest: 2 failed / 375 passed; PARSE_ERROR at src/city/traffic.js:109:12",
+      "state": "open \u2014 blocks 0B.6, 0C.2 and any runtime measurement. Needs an ownership decision."
     }
   ],
   "closed": [
