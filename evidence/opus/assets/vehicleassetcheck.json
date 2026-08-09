@@ -9,20 +9,25 @@
     {
       "tier": "lod0",
       "url": "/models/vehicles/sportback_lod0.glb",
-      "triangles": 2816,
-      "meshes": 7,
+      "triangles": 7636,
+      "meshes": 12,
       "meshNames": [
         "VEH_body",
         "VEH_wheel_fl",
         "VEH_wheel_fr",
         "VEH_wheel_rl",
         "VEH_wheel_rr",
+        "VEH_interior",
+        "VEH_steering",
         "VEH_light_head",
-        "VEH_light_brake"
+        "VEH_light_brake",
+        "VEH_light_head001",
+        "VEH_light_brake001",
+        "VEH_glass"
       ],
       "size": {
         "x": 1.87,
-        "y": 1.38,
+        "y": 1.401,
         "z": 4.6
       },
       "wheels": [
@@ -35,29 +40,35 @@
         "fl",
         "fr"
       ],
-      "headMaterials": 1,
-      "brakeMaterials": 1,
+      "headMaterials": 2,
+      "brakeMaterials": 2,
       "unmatched": [],
       "problems": [],
-      "steerPivotAtHub": true
+      "steerPivotAtHub": true,
+      "headZ": 2.155,
+      "frontWheelZ": 1.375,
+      "rearWheelZ": -1.375
     },
     {
       "tier": "lod1",
       "url": "/models/vehicles/sportback_lod1.glb",
-      "triangles": 1528,
-      "meshes": 7,
+      "triangles": 3616,
+      "meshes": 10,
       "meshNames": [
-        "VEH_body",
-        "VEH_wheel_fl",
-        "VEH_wheel_fr",
-        "VEH_wheel_rl",
-        "VEH_wheel_rr",
-        "VEH_light_head",
-        "VEH_light_brake"
+        "VEH_body001",
+        "VEH_wheel_fl001",
+        "VEH_wheel_fr001",
+        "VEH_wheel_rl001",
+        "VEH_wheel_rr001",
+        "VEH_light_head002",
+        "VEH_light_brake002",
+        "VEH_light_head003",
+        "VEH_light_brake003",
+        "VEH_glass001"
       ],
       "size": {
         "x": 1.87,
-        "y": 1.371,
+        "y": 1.407,
         "z": 4.6
       },
       "wheels": [
@@ -70,11 +81,14 @@
         "fl",
         "fr"
       ],
-      "headMaterials": 1,
-      "brakeMaterials": 1,
+      "headMaterials": 2,
+      "brakeMaterials": 2,
       "unmatched": [],
       "problems": [],
-      "steerPivotAtHub": true
+      "steerPivotAtHub": true,
+      "headZ": 2.155,
+      "frontWheelZ": 1.375,
+      "rearWheelZ": -1.375
     },
     {
       "tier": "lod2",
@@ -110,7 +124,10 @@
         "no headlight material",
         "no brake light material"
       ],
-      "steerPivotAtHub": true
+      "steerPivotAtHub": true,
+      "headZ": null,
+      "frontWheelZ": 1.375,
+      "rearWheelZ": -1.375
     },
     {
       "tier": "lod3",
@@ -138,7 +155,10 @@
         "no headlight material",
         "no brake light material"
       ],
-      "steerPivotAtHub": true
+      "steerPivotAtHub": true,
+      "headZ": null,
+      "frontWheelZ": null,
+      "rearWheelZ": null
     }
   ],
   "checks": {
@@ -149,11 +169,10 @@
     "frontWheelsSteerOnNearTiers": true,
     "steerPivotsOnTheHub": true,
     "noStrayMeshes": true,
+    "headlightsFaceForward": true,
+    "frontWheelsAheadOfRear": true,
     "trianglesDecreaseWithTier": true
   },
-  "consoleErrors": [
-    "Please enable the NormalPass in the EffectComposer in order to use SSAO.",
-    "Please enable the NormalPass in the EffectComposer in order to use SSAO."
-  ],
+  "consoleErrors": [],
   "pass": true
 }

@@ -2,10 +2,15 @@ import { afterEach, describe, expect, it } from 'vitest'
 import * as THREE from 'three'
 
 import {
+  adoptAuthoredPedestrianResources,
+  buildPedestrianLod,
   disposeOwned,
+  disposePedestrianResourceSet,
   disposePedestrianResources,
   isShared,
+  loadAuthoredPedestrianResources,
   markShared,
+  PEDESTRIAN_LODS,
   pedestrianResources,
 } from './rig-resources'
 
@@ -30,6 +35,13 @@ function countingMesh(geometry?: THREE.BufferGeometry, material?: THREE.Material
 afterEach(() => {
   disposePedestrianResources()
 })
+
+/** A minimal authored tier with the same one-mesh contract as the shipped GLBs. */
+function pedestrianTier(): THREE.Group {
+  const root = new THREE.Group()
+  root.add(new THREE.Mesh(new THREE.BoxGeometry(0.5, 1.75, 0.24), new THREE.MeshStandardMaterial()))
+  return root
+}
 
 describe('disposeOwned', () => {
   it('disposes every geometry and material a tree owns', () => {
@@ -155,6 +167,83 @@ describe('pedestrianResources', () => {
     const after = pedestrianResources().geometry
     expect(after).not.toBe(before)
     expect(isShared(after)).toBe(true)
+  })
+
+  it('loads both shipped URLs into a distance-driven runtime LOD', async () => {
+    const requested: string[] = []
+    const resources = await loadAuthoredPedestrianResources({
+      async loadAsync(url) {
+        requested.push(url)
+        return { scene: pedestrianTier() }
+      },
+    })
+
+    expect(requested).toEqual(PEDESTRIAN_LODS.map((tier) => tier.url))
+    expect(resources.levels.map((level) => level.distance)).toEqual(
+      PEDESTRIAN_LODS.map((tier) => tier.distance),
+    )
+
+    const fallback = adoptAuthoredPedestrianResources(resources)
+    const lod = buildPedestrianLod()
+    expect(lod).toBeInstanceOf(THREE.LOD)
+    expect(lod.levels.map((level) => level.distance)).toEqual(
+      PEDESTRIAN_LODS.map((tier) => tier.distance),
+    )
+    expect(lod.getObjectForDistance(31.99)?.name).toBe('PED_LOD0')
+    expect(lod.getObjectForDistance(32)?.name).toBe('PED_LOD1')
+
+    // Existing crossers can be re-pointed before the fallback leaves GPU memory.
+    disposePedestrianResourceSet(fallback)
+  })
+
+  it('rejects a tier that cannot safely be represented as one shared LOD mesh', async () => {
+    const validTier = pedestrianTier()
+    const validMesh = validTier.children[0] as THREE.Mesh
+    let released = 0
+    validMesh.geometry.addEventListener('dispose', () => {
+      released++
+    })
+    const invalidTier = pedestrianTier()
+    const invalidExtra = new THREE.Mesh(new THREE.BoxGeometry(), new THREE.MeshStandardMaterial())
+    let invalidReleased = 0
+    ;(invalidTier.children[0] as THREE.Mesh).geometry.addEventListener('dispose', () => {
+      invalidReleased++
+    })
+    invalidExtra.geometry.addEventListener('dispose', () => {
+      invalidReleased++
+    })
+    invalidTier.add(invalidExtra)
+
+    await expect(loadAuthoredPedestrianResources({
+      async loadAsync(url) {
+        return { scene: url === PEDESTRIAN_LODS[1].url ? invalidTier : validTier }
+      },
+    })).rejects.toThrow(/expected exactly one pedestrian mesh/)
+    expect(released).toBe(1)
+    expect(invalidReleased).toBe(2)
+  })
+
+  it('disposes a fulfilled tier when its sibling request rejects', async () => {
+    const loaded = pedestrianTier()
+    const mesh = loaded.children[0] as THREE.Mesh
+    let geometryDisposals = 0
+    let materialDisposals = 0
+    mesh.geometry.addEventListener('dispose', () => {
+      geometryDisposals++
+    })
+    ;(mesh.material as THREE.Material).addEventListener('dispose', () => {
+      materialDisposals++
+    })
+
+    await expect(loadAuthoredPedestrianResources({
+      async loadAsync(url) {
+        if (url === PEDESTRIAN_LODS[0].url) return { scene: loaded }
+        throw new Error('far pedestrian tier unavailable')
+      },
+    })).rejects.toThrow(/far pedestrian tier unavailable/)
+
+    expect(geometryDisposals).toBe(1)
+    expect(materialDisposals).toBe(1)
   })
 })
 

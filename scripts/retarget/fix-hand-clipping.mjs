@@ -36,7 +36,7 @@ const CHUNK_BIN = 0x004e4942;
 if (raw.readUInt32LE(0) !== MAGIC) throw new Error('not GLB');
 const total = raw.readUInt32LE(8);
 let off = 12;
-let jsonData, binStart = 0, binLength = 0;
+let jsonData, binStart = 0;
 while (off < total) {
   const len = raw.readUInt32LE(off);
   const type = raw.readUInt32LE(off + 4);
@@ -44,7 +44,6 @@ while (off < total) {
     jsonData = JSON.parse(raw.subarray(off + 8, off + 8 + len).toString('utf8'));
   } else if (type === CHUNK_BIN) {
     binStart = off + 8;
-    binLength = len;
   }
   off += 8 + len;
 }

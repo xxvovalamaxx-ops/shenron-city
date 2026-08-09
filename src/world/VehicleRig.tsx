@@ -16,11 +16,12 @@ import { vehicleSim } from '../gameplay/vehicles/vehicle-session'
 import { vehicleSpec } from '../gameplay/vehicles/vehicle-specs'
 import type { VehicleEntity } from '../gameplay/vehicles/vehicle-entities'
 import {
-  adoptAuthoredPedestrian,
+  adoptAuthoredPedestrianResources,
+  buildPedestrianLod,
   disposeOwned,
+  disposePedestrianResourceSet,
   disposePedestrianResources,
-  pedestrianResources,
-  PEDESTRIAN_LOD0,
+  loadAuthoredPedestrianResources,
 } from './rig-resources'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
 import { applyVehicleState } from './vehicle-asset'
@@ -213,7 +214,7 @@ function releaseEntry(entry: VehicleRigEntry): void {
 export function VehicleRig() {
   const root = useRef<THREE.Group>(null)
   const entries = useRef(new Map<number, VehicleRigEntry>())
-  const pedMeshes = useRef<THREE.Mesh[]>([])
+  const pedMeshes = useRef<THREE.LOD[]>([])
 
   // Fetch the authored pedestrian once, on mount.
   //
@@ -223,19 +224,10 @@ export function VehicleRig() {
   // would improve and the ones on screen would stay boxes indefinitely.
   useEffect(() => {
     let cancelled = false
-    getVehicleGltfLoader()
-      .loadAsync(PEDESTRIAN_LOD0)
-      .then(({ scene }) => {
-        if (cancelled) return
-        let geometry: THREE.BufferGeometry | null = null
-        let material: THREE.MeshStandardMaterial | undefined
-        scene.traverse((object) => {
-          if (geometry || !(object instanceof THREE.Mesh)) return
-          geometry = object.geometry
-          if (object.material instanceof THREE.MeshStandardMaterial) material = object.material
-        })
-        if (!geometry) {
-          console.error('[pedestrians] authored figure has no mesh —', PEDESTRIAN_LOD0)
+    loadAuthoredPedestrianResources(getVehicleGltfLoader())
+      .then((resources) => {
+        if (cancelled) {
+          disposePedestrianResourceSet(resources)
           return
         }
         // No lift. The figure is authored standing on the ground with its
@@ -248,14 +240,20 @@ export function VehicleRig() {
         // wrong: centre-origin at y = 0 meant every crosser was half buried,
         // which nobody noticed because a small dark box in a street reads as
         // a shadow.
-        const { previous } = adoptAuthoredPedestrian(geometry, material)
-        const next = pedestrianResources()
-        for (const mesh of pedMeshes.current) {
-          mesh.geometry = next.geometry
-          mesh.material = next.material
+        const previous = adoptAuthoredPedestrianResources(resources)
+        for (let index = 0; index < pedMeshes.current.length; index++) {
+          const oldLod = pedMeshes.current[index]
+          const nextLod = buildPedestrianLod()
+          nextLod.position.copy(oldLod.position)
+          nextLod.rotation.copy(oldLod.rotation)
+          nextLod.scale.copy(oldLod.scale)
+          nextLod.visible = oldLod.visible
+          oldLod.parent?.add(nextLod)
+          oldLod.removeFromParent()
+          pedMeshes.current[index] = nextLod
         }
-        // Disposed only after every mesh has been re-pointed off it.
-        previous?.dispose()
+        // Disposed only after every LOD has been re-pointed off it.
+        disposePedestrianResourceSet(previous)
       })
       .catch((err: unknown) => {
         console.error('[pedestrians] authored figure unavailable —', err)
@@ -368,17 +366,13 @@ export function VehicleRig() {
       }
     }
 
-    // Pedestrians: one small box per crosser, off one shared geometry and one
-    // shared material. These were built inside this callback — two THREE
-    // objects constructed and thrown away 60-100 times a second, and every
-    // pedestrian added on the same frame shared an instance that the shrink
-    // loop below then disposed per mesh, killing the survivors' buffers.
-    const { geometry: pedGeometry, material: pedMaterial } = pedestrianResources()
+    // Pedestrians: one shared resource set per detail tier. A LOD object is
+    // allocated only when a crosser enters the scene (or when the authored
+    // tiers arrive), then the renderer picks its tier from camera distance.
     while (pedMeshes.current.length < vehicleSim.pedestrians.length) {
-      const mesh = new THREE.Mesh(pedGeometry, pedMaterial)
-      mesh.castShadow = true
-      rigRoot.add(mesh)
-      pedMeshes.current.push(mesh)
+      const lod = buildPedestrianLod()
+      rigRoot.add(lod)
+      pedMeshes.current.push(lod)
     }
     for (let i = 0; i < pedMeshes.current.length; i++) {
       const ped = vehicleSim.pedestrians[i]

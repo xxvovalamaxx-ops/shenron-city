@@ -20,14 +20,17 @@ import {
 import { ToneMappingMode } from 'postprocessing'
 import { Vector2, Color } from 'three'
 
+const SSAO_COLOR = new Color('#1a2a3a')
+const CHROMATIC_OFFSET = new Vector2(0.0008, 0.0008)
+
 export default function PostProcessing() {
   return (
-    <EffectComposer multisampling={0}>
+    <EffectComposer multisampling={0} enableNormalPass>
       <SSAO
         intensity={25}
         radius={0.15}
         luminanceInfluence={0.6}
-        color={new Color('#1a2a3a')}
+        color={SSAO_COLOR}
       />
       <Bloom
         intensity={0.45}
@@ -36,7 +39,7 @@ export default function PostProcessing() {
         mipmapBlur
       />
       <ChromaticAberration
-        offset={new Vector2(0.0008, 0.0008)}
+        offset={CHROMATIC_OFFSET}
         radialModulation={true}
         modulationOffset={0.5}
       />

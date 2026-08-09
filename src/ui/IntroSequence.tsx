@@ -6,7 +6,7 @@
  * runs while `rt.introSeconds` is inside the intro window — the game loop
  * deliberately defers camera ownership and freezes input for that window.
  */
-import { useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { useThree } from '@react-three/fiber'
 import { Vector3 } from 'three'
 import { rt } from '../gameplay/runtime'
@@ -91,16 +91,18 @@ export function IntroCamera() {
 
 export function IntroSequence({ onDone }: { onDone(): void }) {
   const [exited, setExited] = useState(false)
+  const exitedRef = useRef(false)
   const videoRef = useRef<HTMLVideoElement>(null)
   const onDoneRef = useRef(onDone)
   onDoneRef.current = onDone
 
-  const skip = () => {
-    if (exited) return
+  const skip = useCallback(() => {
+    if (exitedRef.current) return
+    exitedRef.current = true
     setExited(true)
     rt.introSeconds = Number.POSITIVE_INFINITY
     onDoneRef.current()
-  }
+  }, [])
 
   useEffect(() => {
     rt.introSeconds = 0
@@ -119,7 +121,7 @@ export function IntroSequence({ onDone }: { onDone(): void }) {
       window.removeEventListener('keydown', onKey)
       rt.introSeconds = Number.POSITIVE_INFINITY
     }
-  }, [])
+  }, [skip])
 
   // Cleanup: if the component unmounts for any reason (e.g. the menu opens),
   // make sure the intro window closes so input never stays frozen.

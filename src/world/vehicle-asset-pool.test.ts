@@ -10,7 +10,11 @@
 import { beforeEach, describe, expect, it } from 'vitest'
 import * as THREE from 'three'
 
-import { VehicleAssetPool, type GltfSource } from './vehicle-asset-pool'
+import {
+  SPORTBACK_LODS,
+  VehicleAssetPool,
+  type GltfSource,
+} from './vehicle-asset-pool'
 
 /** A template shaped like the real export: named materials, four wheels. */
 function template(): THREE.Group {
@@ -86,9 +90,9 @@ describe('loading once', () => {
     expect(pool.error).toBeNull()
   })
 
-  it('fetches once however many callers ask', async () => {
-    // Called from a frame callback, so a second fetch per frame is the bug
-    // this prevents.
+  it('fetches each tier once however many callers ask', async () => {
+    // Called from React effects that can overlap, so a second four-tier fetch
+    // is the bug this prevents.
     let fetches = 0
     const counting: GltfSource = {
       async loadAsync() {
@@ -97,7 +101,7 @@ describe('loading once', () => {
       },
     }
     await Promise.all([pool.load(counting), pool.load(counting), pool.load(counting)])
-    expect(fetches).toBe(1)
+    expect(fetches).toBe(SPORTBACK_LODS.length)
   })
 
   it('records a fetch failure instead of throwing into the frame loop', async () => {
@@ -170,7 +174,9 @@ describe('what an instance owns', () => {
   it('owns exactly the materials it cloned', () => {
     const car = pool.acquire('sedan')!
     const names = car.owned.map((m) => m.name).sort()
-    expect(names).toEqual(['VEH_lamp_brake', 'VEH_lamp_head', 'VEH_paint'])
+    expect(names).toEqual(
+      SPORTBACK_LODS.flatMap(() => ['VEH_lamp_brake', 'VEH_lamp_head', 'VEH_paint']).sort(),
+    )
   })
 
   it('starts with its lights off', () => {
@@ -184,6 +190,21 @@ describe('what an instance owns', () => {
     expect(car.bound.wheels.map((w) => w.slot)).toEqual(['fl', 'fr', 'rl', 'rr'])
     expect(car.bound.wheels.filter((w) => w.steers).map((w) => w.slot)).toEqual(['fl', 'fr'])
     expect(car.bound.brakeMaterials).toHaveLength(1)
+  })
+
+  it('assembles every authored tier into one distance-driven LOD', () => {
+    const car = pool.acquire('sedan')!
+    expect(car.group).toBeInstanceOf(THREE.LOD)
+    expect(car.group.levels.map((level) => level.distance)).toEqual(
+      SPORTBACK_LODS.map((tier) => tier.distance),
+    )
+    expect(car.group.levels.map((level) => level.object.name)).toEqual([
+      'VEH_sedan_LOD0',
+      'VEH_sedan_LOD1',
+      'VEH_sedan_LOD2',
+      'VEH_sedan_LOD3',
+    ])
+    expect(car.bindings).toHaveLength(SPORTBACK_LODS.length)
   })
 })
 

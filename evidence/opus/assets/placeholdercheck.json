@@ -6,7 +6,7 @@
     "y": 13.7,
     "z": -3000
   },
-  "meshesExamined": 288,
+  "meshesExamined": 300,
   "instrumentValidated": true,
   "controls": {
     "expectedBoxes": 7,
@@ -17,29 +17,10 @@
     "authoredCounted": 0,
     "hiddenCounted": 0
   },
-  "visiblePlaceholders": 2,
+  "visiblePlaceholders": 0,
   "allowListed": 0,
-  "byType": {
-    "BoxGeometry": 2
-  },
-  "worstOffenders": [
-    {
-      "name": "(unnamed)",
-      "geometry": "BoxGeometry",
-      "path": [
-        "vehicle-rig"
-      ],
-      "distance": 166.7
-    },
-    {
-      "name": "(unnamed)",
-      "geometry": "BoxGeometry",
-      "path": [
-        "vehicle-rig"
-      ],
-      "distance": 166.7
-    }
-  ],
-  "consoleErrors": 2,
-  "pass": false
+  "byType": {},
+  "worstOffenders": [],
+  "consoleErrors": 0,
+  "pass": true
 }
