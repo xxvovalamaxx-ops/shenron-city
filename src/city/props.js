@@ -12,6 +12,10 @@
 //   0 f32 x_m | 4 f32 y_m | 8 u8 type | 9 u8 yaw | 10 u8 scale | 11 u8 variant
 
 import * as THREE from 'three'
+
+/** Rebuild-time scratch for update(). See the note there. */
+const SCRATCH_OBJECT = new THREE.Object3D()
+const SCRATCH_COLOR = new THREE.Color()
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
 import { paintMaterial } from './vehicles.js'
 
@@ -154,8 +158,12 @@ export class StaticProps {
     const camY = -camera.position.z
     for (const m of this.meshes.values()) m.count = 0
 
-    const dummy = new THREE.Object3D()
-    const col = new THREE.Color()
+    // Scratch. update() early-outs unless the camera has moved REBUILD_AT, so
+    // this is per-rebuild rather than per-frame — cheaper than the crowd's
+    // case, and the same rule: a function called from the frame loop does not
+    // construct.
+    const dummy = SCRATCH_OBJECT
+    const col = SCRATCH_COLOR
     const r = Math.ceil(RADIUS / CELL)
     const cx = Math.floor(camX / CELL)
     const cy = Math.floor(camY / CELL)

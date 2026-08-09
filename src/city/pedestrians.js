@@ -24,6 +24,10 @@
 // stops.
 
 import * as THREE from 'three'
+
+/** Per-frame scratch for _render. See the note there. */
+const SCRATCH_OBJECT = new THREE.Object3D()
+const SCRATCH_COLOR = new THREE.Color()
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
 
 // The /models/manhattan/ mount is cached for an hour, and these asset files carry no
@@ -447,8 +451,15 @@ export class Crowd {
   }
 
   _render() {
-    const dummy = new THREE.Object3D()
-    const col = new THREE.Color()
+    // Scratch, not fresh objects. This runs every frame from update(), and an
+    // Object3D is not a cheap allocation — it carries a Vector3, a Quaternion,
+    // an Euler, a Scale, two Matrix4s and a Layers. At 100 fps that was ~100
+    // of those per second, plus a Color, thrown away immediately.
+    //
+    // Same rule as the VehicleRig fix: nothing is constructed inside a
+    // per-frame function.
+    const dummy = SCRATCH_OBJECT
+    const col = SCRATCH_COLOR
     for (const t of this.types) t.mesh.count = 0
 
     for (const p of this.people) {

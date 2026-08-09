@@ -1,0 +1,32 @@
+{
+  "generatedBy": "scripts/qa/leakcheck.mjs",
+  "seconds": 15,
+  "frames": 1500,
+  "budget": 8,
+  "first": {
+    "geometries": 162,
+    "textures": 32,
+    "programs": 36
+  },
+  "last": {
+    "geometries": 162,
+    "textures": 32,
+    "programs": 36
+  },
+  "growth": {
+    "geometries": 0,
+    "textures": 0,
+    "programs": 0
+  },
+  "peak": {
+    "geometries": 162,
+    "textures": 32
+  },
+  "churn": {
+    "geometries": 0,
+    "textures": 0
+  },
+  "consoleErrors": 0,
+  "errorSample": [],
+  "pass": true
+}
