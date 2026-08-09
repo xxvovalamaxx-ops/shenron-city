@@ -95,3 +95,11 @@ staging/
 
 # Git worktrees for parallel asset/QA branches (own .git pointers, never committed)
 /ds/
+
+# Manhattan compiler working data. Source locks, schemas and tiny fixtures are
+# tracked; downloaded NYC inputs and full generated city payloads are not.
+/data/raw/
+/data/normalized/
+/data/generated/
+/pipeline/reports/
+/public/city/generated/

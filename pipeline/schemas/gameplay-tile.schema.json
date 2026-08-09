@@ -1,0 +1,91 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://shenron-city.invalid/schemas/gameplay-tile.schema.json",
+  "title": "Phase 1 gameplay collider tile",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "tileId",
+    "tileSizeMeters",
+    "tileOriginMeters",
+    "tileOriginAxisOrder",
+    "coordinateSpace",
+    "axisConvention",
+    "footprintLocalAxisOrder",
+    "verticalAxis",
+    "sourceId",
+    "sourceHash",
+    "normalizedDerivationSha256",
+    "buildingCount",
+    "buildingIds",
+    "colliders"
+  ],
+  "properties": {
+    "schemaVersion": { "const": 2 },
+    "tileId": { "type": "string", "pattern": "^[1-9][0-9]*_[pm][0-9]{3}_[pm][0-9]{3}$" },
+    "tileSizeMeters": { "const": 256 },
+    "tileOriginMeters": { "$ref": "#/$defs/twoNumbers" },
+    "tileOriginAxisOrder": { "const": ["hq-local-east", "hq-local-north"] },
+    "coordinateSpace": { "const": "tile-local-horizontal-plus-hq-local-y-up-meters" },
+    "axisConvention": { "const": "x-east-y-up-z-negative-north" },
+    "footprintLocalAxisOrder": { "const": ["tile-local-east", "tile-local-negative-north"] },
+    "verticalAxis": { "const": "hq-local-y-up" },
+    "sourceId": { "type": "string", "minLength": 1 },
+    "sourceHash": { "$ref": "#/$defs/sha256" },
+    "normalizedDerivationSha256": { "$ref": "#/$defs/sha256" },
+    "buildingCount": { "type": "integer", "minimum": 0 },
+    "buildingIds": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": { "type": "string", "minLength": 1 }
+    },
+    "colliders": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["buildingId", "footprintLocal", "minY", "maxY", "boundsLocal"],
+        "properties": {
+          "buildingId": { "type": "string", "minLength": 1 },
+          "footprintLocal": { "$ref": "#/$defs/ring" },
+          "minY": { "type": "number" },
+          "maxY": { "type": "number" },
+          "boundsLocal": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["minEast", "minNegativeNorth", "maxEast", "maxNegativeNorth", "minY", "maxY"],
+            "properties": {
+              "minEast": { "type": "number" },
+              "minNegativeNorth": { "type": "number" },
+              "maxEast": { "type": "number" },
+              "maxNegativeNorth": { "type": "number" },
+              "minY": { "type": "number" },
+              "maxY": { "type": "number" }
+            }
+          }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "twoNumbers": {
+      "type": "array",
+      "minItems": 2,
+      "maxItems": 2,
+      "items": { "type": "number" }
+    },
+    "point": {
+      "type": "array",
+      "minItems": 2,
+      "maxItems": 2,
+      "items": { "type": "number" }
+    },
+    "ring": {
+      "type": "array",
+      "minItems": 3,
+      "items": { "$ref": "#/$defs/point" }
+    }
+  }
+}

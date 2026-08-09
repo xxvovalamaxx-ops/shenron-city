@@ -1,0 +1,59 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://shenron-city.invalid/schemas/normalized-building.schema.json",
+  "title": "Normalized Manhattan building",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "buildingId",
+    "centroidMeters",
+    "footprintMeters",
+    "sourceGroundElevationMeters",
+    "groundElevationMeters",
+    "roofHeightMeters",
+    "floorCount",
+    "yearBuilt",
+    "landUse",
+    "variationSeed",
+    "sourceProperties"
+  ],
+  "properties": {
+    "buildingId": { "type": "string", "minLength": 1 },
+    "centroidMeters": {
+      "type": "array",
+      "minItems": 2,
+      "maxItems": 2,
+      "items": { "type": "number" }
+    },
+    "footprintMeters": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["outer", "holes"],
+      "properties": {
+        "outer": { "$ref": "#/$defs/ring" },
+        "holes": { "type": "array", "items": { "$ref": "#/$defs/ring" } }
+      }
+    },
+    "sourceGroundElevationMeters": { "type": "number" },
+    "groundElevationMeters": { "type": "number" },
+    "roofHeightMeters": { "type": "number", "exclusiveMinimum": 0 },
+    "floorCount": { "type": "integer", "minimum": 0 },
+    "yearBuilt": { "type": "integer", "minimum": 0 },
+    "landUse": { "type": "string" },
+    "variationSeed": { "type": "integer", "minimum": 0, "maximum": 4294967295 },
+    "sourceProperties": { "type": "object" }
+  },
+  "$defs": {
+    "point": {
+      "type": "array",
+      "minItems": 2,
+      "maxItems": 2,
+      "items": { "type": "number" }
+    },
+    "ring": {
+      "type": "array",
+      "minItems": 3,
+      "items": { "$ref": "#/$defs/point" }
+    }
+  }
+}

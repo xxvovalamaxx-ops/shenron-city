@@ -1,0 +1,49 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://shenron-city.invalid/schemas/city-config.schema.json",
+  "title": "Manhattan HQ city configuration",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "configVersion",
+    "hqGeoAnchor",
+    "hqWorldPosition",
+    "northYawDegrees",
+    "worldUnitsPerMeter",
+    "aoiSizeMeters",
+    "standardTileSizeMeters",
+    "heroTileSizeMeters",
+    "axisConvention",
+    "anchorStatus",
+    "anchorNote"
+  ],
+  "properties": {
+    "$schema": { "type": "string" },
+    "configVersion": { "const": 1 },
+    "hqGeoAnchor": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["latitude", "longitude", "elevationMeters", "verticalDatum"],
+      "properties": {
+        "latitude": { "type": "number", "minimum": -90, "maximum": 90 },
+        "longitude": { "type": "number", "minimum": -180, "maximum": 180 },
+        "elevationMeters": { "type": "number" },
+        "verticalDatum": { "type": "string", "minLength": 1 }
+      }
+    },
+    "hqWorldPosition": {
+      "type": "array",
+      "minItems": 3,
+      "maxItems": 3,
+      "items": { "type": "number" }
+    },
+    "northYawDegrees": { "type": "number" },
+    "worldUnitsPerMeter": { "type": "number", "exclusiveMinimum": 0 },
+    "aoiSizeMeters": { "type": "number", "exclusiveMinimum": 0 },
+    "standardTileSizeMeters": { "const": 256 },
+    "heroTileSizeMeters": { "type": "number", "exclusiveMinimum": 0, "maximum": 256 },
+    "axisConvention": { "const": "x-east-y-up-z-negative-north" },
+    "anchorStatus": { "enum": ["provisional", "verified"] },
+    "anchorNote": { "type": "string", "minLength": 1 }
+  }
+}

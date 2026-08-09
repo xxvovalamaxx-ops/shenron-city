@@ -1,0 +1,134 @@
+{
+  "type": "FeatureCollection",
+  "name": "phase1-synthetic-hq-buildings",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "building_id": "fixture-hq",
+        "ground_elevation_us_survey_ft": 39.3700787,
+        "height_roof_us_survey_ft": 328.0839895,
+        "floor_count": 24,
+        "year_built": 2026,
+        "land_use": "office"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[
+          [-73.99582799, 40.76342596],
+          [-73.99518738, 40.76342596],
+          [-73.99518738, 40.76384199],
+          [-73.99582799, 40.76384199],
+          [-73.99582799, 40.76342596]
+        ]]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "building_id": "fixture-west-boundary",
+        "ground_elevation_meters": 11.7,
+        "roof_height_meters": 38.0,
+        "floor_count": 10,
+        "year_built": 1912,
+        "land_use": "mixed_use"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[
+          [-73.99878850, 40.76354353],
+          [-73.99831388, 40.76354353],
+          [-73.99831388, 40.76392338],
+          [-73.99878850, 40.76392338],
+          [-73.99878850, 40.76354353]
+        ]]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "building_id": "fixture-east-highrise",
+        "ground_elevation_meters": 12.4,
+        "roof_height_meters": 142.0,
+        "floor_count": 38,
+        "year_built": 2008,
+        "land_use": "residential"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[
+          [-73.99230702, 40.76515201],
+          [-73.99178494, 40.76515201],
+          [-73.99178494, 40.76569467],
+          [-73.99230702, 40.76569467],
+          [-73.99230702, 40.76515201]
+        ]]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "building_id": "fixture-southwest-lowrise",
+        "ground_elevation_meters": 10.8,
+        "roof_height_meters": 19.5,
+        "floor_count": 5,
+        "year_built": 1898,
+        "land_use": "residential"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[
+          [-74.00030884, 40.76043442],
+          [-73.99965623, 40.76043442],
+          [-73.99965623, 40.76107664],
+          [-74.00030884, 40.76107664],
+          [-74.00030884, 40.76043442]
+        ]]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "building_id": "fixture-northeast-landmark",
+        "ground_elevation_meters": 13.1,
+        "roof_height_meters": 210.0,
+        "floor_count": 52,
+        "year_built": 2019,
+        "land_use": "commercial"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[
+          [-73.99096975, 40.76702619],
+          [-73.99036469, 40.76702619],
+          [-73.99036469, 40.76755077],
+          [-73.99096975, 40.76755077],
+          [-73.99096975, 40.76702619]
+        ]]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "building_id": "fixture-concave",
+        "ground_elevation_meters": 12.0,
+        "roof_height_meters": 27.0,
+        "floor_count": 7,
+        "year_built": 1931,
+        "land_use": "warehouse"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[
+          [-73.99417296, 40.76277481],
+          [-73.99322372, 40.76277481],
+          [-73.99322372, 40.76349837],
+          [-73.99369834, 40.76349837],
+          [-73.99369834, 40.76313659],
+          [-73.99417296, 40.76313659],
+          [-73.99417296, 40.76277481]
+        ]]
+      }
+    }
+  ]
+}

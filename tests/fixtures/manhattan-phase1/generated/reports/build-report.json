@@ -1,0 +1,237 @@
+{
+  "aoiSizeMeters": 1000.0,
+  "axisConvention": "x-east-y-up-z-negative-north",
+  "buildings": 6,
+  "coordinateSpace": "hq-local-meters",
+  "gameplayTiles": 6,
+  "generatedBy": "city-pipeline/0.1.2",
+  "materialsPerTile": 1,
+  "normalizedDerivationSha256": "831e33be20dbe3dbd8c55d1fa54bfc2191eb881f68897ebf5a5e8ff7d81e7329",
+  "rootBoundsTileLocalZUp": [
+    -405.405734,
+    -355.300615,
+    -1.2,
+    434.227811,
+    434.971352,
+    211.1
+  ],
+  "schemaVersion": 1,
+  "sourceHash": "3e84d67fff2729f1a742bca2c4223907d6ca256859668dde28b66c76e892c73a",
+  "sourceId": "phase1-synthetic-buildings",
+  "tileSizeMeters": 256.0,
+  "tiles": [
+    {
+      "boundsTileLocalZUp": [
+        106.594266,
+        156.699385,
+        -1.2,
+        161.703528,
+        228.020402,
+        18.3
+      ],
+      "buildingIds": [
+        "fixture-southwest-lowrise"
+      ],
+      "compressedBytes": 1864,
+      "generatorVersion": "city-pipeline/0.1.2",
+      "glbBoundsYUp": [
+        106.594266,
+        -1.2,
+        -228.020402,
+        161.703528,
+        18.3,
+        -156.699385
+      ],
+      "licenseSources": [
+        "phase1-synthetic-buildings"
+      ],
+      "materials": 1,
+      "meshes": 1,
+      "normalizedDerivationSha256": "831e33be20dbe3dbd8c55d1fa54bfc2191eb881f68897ebf5a5e8ff7d81e7329",
+      "sourceHash": "3e84d67fff2729f1a742bca2c4223907d6ca256859668dde28b66c76e892c73a",
+      "sourceId": "phase1-synthetic-buildings",
+      "tileId": "256_m002_m002",
+      "triangles": 12,
+      "validationErrors": []
+    },
+    {
+      "boundsTileLocalZUp": [
+        234.983525,
+        -10.039936,
+        -0.3,
+        275.05955800000004,
+        32.143627,
+        37.7
+      ],
+      "buildingIds": [
+        "fixture-west-boundary"
+      ],
+      "compressedBytes": 1848,
+      "generatorVersion": "city-pipeline/0.1.2",
+      "glbBoundsYUp": [
+        234.983525,
+        -0.3,
+        -32.143627,
+        275.05955800000004,
+        37.7,
+        10.039936
+      ],
+      "licenseSources": [
+        "phase1-synthetic-buildings"
+      ],
+      "materials": 1,
+      "meshes": 1,
+      "normalizedDerivationSha256": "831e33be20dbe3dbd8c55d1fa54bfc2191eb881f68897ebf5a5e8ff7d81e7329",
+      "sourceHash": "3e84d67fff2729f1a742bca2c4223907d6ca256859668dde28b66c76e892c73a",
+      "sourceId": "phase1-synthetic-buildings",
+      "tileId": "256_m002_p000",
+      "triangles": 12,
+      "validationErrors": []
+    },
+    {
+      "boundsTileLocalZUp": [
+        112.698733,
+        160.591129,
+        0.0,
+        192.849635,
+        240.943788,
+        27.0
+      ],
+      "buildingIds": [
+        "fixture-concave"
+      ],
+      "compressedBytes": 2408,
+      "generatorVersion": "city-pipeline/0.1.2",
+      "glbBoundsYUp": [
+        112.698733,
+        0.0,
+        -240.943788,
+        192.849635,
+        27.0,
+        -160.591129
+      ],
+      "licenseSources": [
+        "phase1-synthetic-buildings"
+      ],
+      "materials": 1,
+      "meshes": 1,
+      "normalizedDerivationSha256": "831e33be20dbe3dbd8c55d1fa54bfc2191eb881f68897ebf5a5e8ff7d81e7329",
+      "sourceHash": "3e84d67fff2729f1a742bca2c4223907d6ca256859668dde28b66c76e892c73a",
+      "sourceId": "phase1-synthetic-buildings",
+      "tileId": "256_p000_m001",
+      "triangles": 20,
+      "validationErrors": []
+    },
+    {
+      "boundsTileLocalZUp": [
+        -27.044962,
+        -23.09977,
+        2.4e-05,
+        27.045233,
+        23.100175,
+        100.000224
+      ],
+      "buildingIds": [
+        "fixture-hq"
+      ],
+      "compressedBytes": 1824,
+      "generatorVersion": "city-pipeline/0.1.2",
+      "glbBoundsYUp": [
+        -27.044962,
+        2.4e-05,
+        -23.100175,
+        27.045233,
+        100.000224,
+        23.09977
+      ],
+      "licenseSources": [
+        "phase1-synthetic-buildings"
+      ],
+      "materials": 1,
+      "meshes": 1,
+      "normalizedDerivationSha256": "831e33be20dbe3dbd8c55d1fa54bfc2191eb881f68897ebf5a5e8ff7d81e7329",
+      "sourceHash": "3e84d67fff2729f1a742bca2c4223907d6ca256859668dde28b66c76e892c73a",
+      "sourceId": "phase1-synthetic-buildings",
+      "tileId": "256_p000_p000",
+      "triangles": 12,
+      "validationErrors": []
+    },
+    {
+      "boundsTileLocalZUp": [
+        14.240543000000002,
+        168.582209,
+        0.4,
+        58.323661000000016,
+        228.846116,
+        142.4
+      ],
+      "buildingIds": [
+        "fixture-east-highrise"
+      ],
+      "compressedBytes": 1852,
+      "generatorVersion": "city-pipeline/0.1.2",
+      "glbBoundsYUp": [
+        14.240543000000002,
+        0.4,
+        -228.846116,
+        58.323661000000016,
+        142.4,
+        -168.582209
+      ],
+      "licenseSources": [
+        "phase1-synthetic-buildings"
+      ],
+      "materials": 1,
+      "meshes": 1,
+      "normalizedDerivationSha256": "831e33be20dbe3dbd8c55d1fa54bfc2191eb881f68897ebf5a5e8ff7d81e7329",
+      "sourceHash": "3e84d67fff2729f1a742bca2c4223907d6ca256859668dde28b66c76e892c73a",
+      "sourceId": "phase1-synthetic-buildings",
+      "tileId": "256_p001_p000",
+      "triangles": 12,
+      "validationErrors": []
+    },
+    {
+      "boundsTileLocalZUp": [
+        127.13904000000002,
+        120.71412400000003,
+        1.1,
+        178.22781099999997,
+        178.97135200000002,
+        211.1
+      ],
+      "buildingIds": [
+        "fixture-northeast-landmark"
+      ],
+      "compressedBytes": 1868,
+      "generatorVersion": "city-pipeline/0.1.2",
+      "glbBoundsYUp": [
+        127.13904000000002,
+        1.1,
+        -178.97135200000002,
+        178.22781099999997,
+        211.1,
+        -120.71412400000003
+      ],
+      "licenseSources": [
+        "phase1-synthetic-buildings"
+      ],
+      "materials": 1,
+      "meshes": 1,
+      "normalizedDerivationSha256": "831e33be20dbe3dbd8c55d1fa54bfc2191eb881f68897ebf5a5e8ff7d81e7329",
+      "sourceHash": "3e84d67fff2729f1a742bca2c4223907d6ca256859668dde28b66c76e892c73a",
+      "sourceId": "phase1-synthetic-buildings",
+      "tileId": "256_p001_p001",
+      "triangles": 12,
+      "validationErrors": []
+    }
+  ],
+  "triangles": 80,
+  "verticalReference": {
+    "hqAnchorVerticalDatum": "NAVD88",
+    "normalizedUpFormula": "sourceGroundElevationMeters - hqGeoAnchor.elevationMeters",
+    "sourceDatumRelation": "same-as-hq-anchor",
+    "sourceGroundElevationVerticalDatum": "NAVD88"
+  },
+  "visualBytes": 11664,
+  "visualTiles": 6
+}

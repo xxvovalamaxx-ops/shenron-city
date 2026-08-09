@@ -13,6 +13,7 @@ import {
   useMemo,
   useRef,
   useState,
+  type ComponentType,
 } from 'react'
 import { Canvas, useFrame, useThree } from '@react-three/fiber'
 import { PointerLockControls, useProgress } from '@react-three/drei'
@@ -28,11 +29,13 @@ import { PlayerAvatar } from './character/PlayerAvatar'
 import { VehicleRig } from './world/VehicleRig'
 import { NightEnvironment } from './world/NightEnvironment'
 import { ManhattanCity } from './world/ManhattanCity'
+import { shouldUsePhase1City } from './world/phase1-mode'
 import { DayCycle } from './world/DayCycleRig'
 import { CityLightingRig } from './world/CityLightingRig'
 import { ShadowBudget } from './world/ShadowBudget'
 import { AtmosphericDust } from './world/AtmosphericDust'
 import { resolveManhattanSpawn } from './world/manhattan-collision'
+import { resolvePhase1Spawn } from './world/phase1-contract'
 import { PALETTE, QUALITY } from './world/palette'
 import { Hud } from './ui/Hud'
 import { DevMenu } from './ui/DevMenu'
@@ -62,6 +65,12 @@ function applySave(data: SaveData): void {
 }
 
 const PostProcessing = lazy(() => import('./world/PostProcessing'))
+type Phase1CityProps = {
+  onBaseRegistered?: (root: THREE.Group) => void
+}
+const Phase1City: ComponentType<Phase1CityProps> = import.meta.env.DEV
+  ? lazy(() => import('./world/Phase1City'))
+  : () => null
 
 /** How often LoadGate samples the loader store. */
 const LOAD_GATE_POLL_MS = 100
@@ -97,9 +106,11 @@ function RendererBridge({ maxDpr, shadows }: { maxDpr: number; shadows: boolean 
 function Scene({
   settings,
   onBaseRegistered,
+  phase1Enabled,
 }: {
   settings: Settings
   onBaseRegistered(): void
+  phase1Enabled: boolean
 }) {
 
   const quality = QUALITY[settings.quality]
@@ -115,14 +126,20 @@ function Scene({
       <CityLightingRig quality={settings.quality} />
       <ShadowBudget enabled={quality.shadows} mapSize={quality.shadowMapSize} />
 
-      {/* The one world: the streamed Manhattan island. */}
-      <ManhattanCity mode="tiles" quality={settings.quality} onBaseRegistered={onBaseRegistered} />
+      {/* Phase 1 remains an explicit development gate until it can replace the legacy streamer. */}
+      {phase1Enabled ? (
+        <Suspense fallback={null}>
+          <Phase1City onBaseRegistered={onBaseRegistered} />
+        </Suspense>
+      ) : (
+        <ManhattanCity mode="tiles" quality={settings.quality} onBaseRegistered={onBaseRegistered} />
+      )}
 
       <PlayerAvatar />
-      <VehicleRig />
-      <DevSpawns />
+      {!phase1Enabled && <VehicleRig />}
+      {!phase1Enabled && <DevSpawns />}
       <AtmosphericDust />
-      <IntroCamera />
+      {!phase1Enabled && <IntroCamera />}
 
       <GameLoop />
 
@@ -210,6 +227,10 @@ export default function App() {
   const pointerLockEnabled =
     typeof location === 'undefined' ||
     new URLSearchParams(location.search).get('no-pointer-lock') !== '1'
+  const phase1Enabled = import.meta.env.DEV && shouldUsePhase1City(
+    typeof location === 'undefined' ? '' : location.search,
+    true,
+  )
   const screen = useHud((s) => s.screen)
   const setScreen = useHud((s) => s.setScreen)
   const start = useGame((s) => s.start)
@@ -254,7 +275,7 @@ export default function App() {
   const handleBaseRegistered = useCallback(() => {
     if (spawnResolved.current) return
     spawnResolved.current = true
-    const spawn = resolveManhattanSpawn()
+    const spawn = phase1Enabled ? resolvePhase1Spawn() : resolveManhattanSpawn()
     rt.player.pos = spawn
     rt.player.velocityY = 0
     rt.player.grounded = true
@@ -272,7 +293,7 @@ export default function App() {
       document.documentElement.classList.add('vision-capture')
     }
     setBaseReady(true)
-  }, [vision])
+  }, [phase1Enabled, vision])
 
   useLayoutEffect(() => {
     const paused = inputLocked(screen)
@@ -311,7 +332,7 @@ export default function App() {
   // Apply the restored world state once the spawn has resolved (the base
   // registration is async, so this effect re-runs when baseReady flips).
   useEffect(() => {
-    if (vision || visualInspection) return
+    if (vision || visualInspection || phase1Enabled) return
     if (!baseReady || !spawnResolved.current) return
     if (restored.fault && restored.fault !== 'empty') {
       console.warn(`[save] ${restored.fault} — starting a fresh run`)
@@ -320,10 +341,10 @@ export default function App() {
     }
     if (!restored.data.forward.x && !restored.data.forward.z) return
     applySave(restored.data)
-  }, [restored, baseReady, visualInspection, vision])
+  }, [restored, baseReady, phase1Enabled, visualInspection, vision])
 
   useEffect(() => {
-    if (visualInspection || vision) return
+    if (visualInspection || vision || phase1Enabled) return
     const snapshot = () => saveGame(currentSaveData(settings))
     const id = setInterval(snapshot, 5000)
     window.addEventListener('pagehide', snapshot)
@@ -332,7 +353,7 @@ export default function App() {
       window.removeEventListener('pagehide', snapshot)
       snapshot()
     }
-  }, [settings, visualInspection, vision])
+  }, [settings, phase1Enabled, visualInspection, vision])
 
   // Fake progress so the loading card never sits frozen on a fast machine.
   useEffect(() => {
@@ -387,9 +408,9 @@ export default function App() {
       }
     }
     setScreen('playing')
-    setIntroActive(true)
+    setIntroActive(!phase1Enabled)
     void cityAudio.start()
-  }, [pointerLockEnabled, pointerLockBlocked, setScreen])
+  }, [phase1Enabled, pointerLockEnabled, pointerLockBlocked, setScreen])
 
   const resumeWorld = useCallback(() => {
     const canLock = pointerLockEnabled && !pointerLockBlocked
@@ -424,7 +445,11 @@ export default function App() {
         }}
       >
         <Suspense fallback={null}>
-          <Scene settings={settings} onBaseRegistered={handleBaseRegistered} />
+          <Scene
+            settings={settings}
+            onBaseRegistered={handleBaseRegistered}
+            phase1Enabled={phase1Enabled}
+          />
           <VisionBridge vision={vision} />
           <LoadGate baseReady={baseReady} onReady={markSceneReady} />
         </Suspense>

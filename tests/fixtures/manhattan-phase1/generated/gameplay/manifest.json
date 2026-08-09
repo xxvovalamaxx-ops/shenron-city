@@ -1,0 +1,113 @@
+{
+  "activationRadiusMeters": 384.0,
+  "axisConvention": "x-east-y-up-z-negative-north",
+  "colliderCoordinateSpace": "tile-local-horizontal-plus-hq-local-y-up-meters",
+  "coordinateSpace": "hq-local-meters",
+  "footprintLocalAxisOrder": [
+    "tile-local-east",
+    "tile-local-negative-north"
+  ],
+  "generatedBy": "city-pipeline/0.1.2",
+  "normalizedDerivationSha256": "831e33be20dbe3dbd8c55d1fa54bfc2191eb881f68897ebf5a5e8ff7d81e7329",
+  "schemaVersion": 2,
+  "sourceHash": "3e84d67fff2729f1a742bca2c4223907d6ca256859668dde28b66c76e892c73a",
+  "sourceId": "phase1-synthetic-buildings",
+  "tileOriginAxisOrder": [
+    "hq-local-east",
+    "hq-local-north"
+  ],
+  "tileSizeMeters": 256.0,
+  "tiles": [
+    {
+      "boundsHqLocal": {
+        "maxEast": -350.296472,
+        "maxNorth": -283.979598,
+        "minEast": -405.405734,
+        "minNorth": -355.300615
+      },
+      "buildingCount": 1,
+      "buildingIds": [
+        "fixture-southwest-lowrise"
+      ],
+      "collisionUri": "tiles/256_m002_m002.json",
+      "tileId": "256_m002_m002"
+    },
+    {
+      "boundsHqLocal": {
+        "maxEast": -236.940442,
+        "maxNorth": 32.143627,
+        "minEast": -277.016475,
+        "minNorth": -10.039936
+      },
+      "buildingCount": 1,
+      "buildingIds": [
+        "fixture-west-boundary"
+      ],
+      "collisionUri": "tiles/256_m002_p000.json",
+      "tileId": "256_m002_p000"
+    },
+    {
+      "boundsHqLocal": {
+        "maxEast": 192.849635,
+        "maxNorth": -15.056212,
+        "minEast": 112.698733,
+        "minNorth": -95.408871
+      },
+      "buildingCount": 1,
+      "buildingIds": [
+        "fixture-concave"
+      ],
+      "collisionUri": "tiles/256_p000_m001.json",
+      "tileId": "256_p000_m001"
+    },
+    {
+      "boundsHqLocal": {
+        "maxEast": 27.045233,
+        "maxNorth": 23.100175,
+        "minEast": -27.044962,
+        "minNorth": -23.09977
+      },
+      "buildingCount": 1,
+      "buildingIds": [
+        "fixture-hq"
+      ],
+      "collisionUri": "tiles/256_p000_p000.json",
+      "tileId": "256_p000_p000"
+    },
+    {
+      "boundsHqLocal": {
+        "maxEast": 314.323661,
+        "maxNorth": 228.846116,
+        "minEast": 270.240543,
+        "minNorth": 168.582209
+      },
+      "buildingCount": 1,
+      "buildingIds": [
+        "fixture-east-highrise"
+      ],
+      "collisionUri": "tiles/256_p001_p000.json",
+      "tileId": "256_p001_p000"
+    },
+    {
+      "boundsHqLocal": {
+        "maxEast": 434.227811,
+        "maxNorth": 434.971352,
+        "minEast": 383.13904,
+        "minNorth": 376.714124
+      },
+      "buildingCount": 1,
+      "buildingIds": [
+        "fixture-northeast-landmark"
+      ],
+      "collisionUri": "tiles/256_p001_p001.json",
+      "tileId": "256_p001_p001"
+    }
+  ],
+  "verticalAxis": "hq-local-y-up",
+  "verticalReference": {
+    "hqAnchorVerticalDatum": "NAVD88",
+    "normalizedUpFormula": "sourceGroundElevationMeters - hqGeoAnchor.elevationMeters",
+    "sourceDatumRelation": "same-as-hq-anchor",
+    "sourceGroundElevationVerticalDatum": "NAVD88"
+  }
+}

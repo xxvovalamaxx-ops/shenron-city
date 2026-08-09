@@ -17,7 +17,9 @@ export default tseslint.config(
       // Ported, tested city-life engine from the Phase 2 reference app. Plain
       // JS on purpose: it ships types via the sibling .d.ts files, and linting
       // the ported GLSL-injected shader code adds no signal.
-      'src/city/**',
+      'src/city/**/*.js',
+      'src/city/**/*.mjs',
+      'src/city/**/*.d.ts',
       'check-sketchfab-login.cjs',
       'download-vehicles-robust.cjs',
       // Throwaway phase-3C probes (never committed) — see the files' headers.

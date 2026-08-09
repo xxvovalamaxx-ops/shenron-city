@@ -1,0 +1,34 @@
+{
+  "boundsTileLocalZUp": [
+    112.698733,
+    160.591129,
+    0.0,
+    192.849635,
+    240.943788,
+    27.0
+  ],
+  "buildingIds": [
+    "fixture-concave"
+  ],
+  "compressedBytes": 2408,
+  "generatorVersion": "city-pipeline/0.1.2",
+  "glbBoundsYUp": [
+    112.698733,
+    0.0,
+    -240.943788,
+    192.849635,
+    27.0,
+    -160.591129
+  ],
+  "licenseSources": [
+    "phase1-synthetic-buildings"
+  ],
+  "materials": 1,
+  "meshes": 1,
+  "normalizedDerivationSha256": "831e33be20dbe3dbd8c55d1fa54bfc2191eb881f68897ebf5a5e8ff7d81e7329",
+  "sourceHash": "3e84d67fff2729f1a742bca2c4223907d6ca256859668dde28b66c76e892c73a",
+  "sourceId": "phase1-synthetic-buildings",
+  "tileId": "256_p000_m001",
+  "triangles": 20,
+  "validationErrors": []
+}

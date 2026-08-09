@@ -1,0 +1,83 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://shenron-city.invalid/schemas/gameplay-manifest.schema.json",
+  "title": "Phase 1 gameplay collider manifest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "generatedBy",
+    "sourceId",
+    "sourceHash",
+    "normalizedDerivationSha256",
+    "coordinateSpace",
+    "axisConvention",
+    "tileOriginAxisOrder",
+    "colliderCoordinateSpace",
+    "footprintLocalAxisOrder",
+    "verticalAxis",
+    "verticalReference",
+    "tileSizeMeters",
+    "activationRadiusMeters",
+    "tiles"
+  ],
+  "properties": {
+    "schemaVersion": { "const": 2 },
+    "generatedBy": { "type": "string", "minLength": 1 },
+    "sourceId": { "type": "string", "minLength": 1 },
+    "sourceHash": { "$ref": "#/$defs/sha256" },
+    "normalizedDerivationSha256": { "$ref": "#/$defs/sha256" },
+    "coordinateSpace": { "const": "hq-local-meters" },
+    "axisConvention": { "const": "x-east-y-up-z-negative-north" },
+    "tileOriginAxisOrder": { "const": ["hq-local-east", "hq-local-north"] },
+    "colliderCoordinateSpace": { "const": "tile-local-horizontal-plus-hq-local-y-up-meters" },
+    "footprintLocalAxisOrder": { "const": ["tile-local-east", "tile-local-negative-north"] },
+    "verticalAxis": { "const": "hq-local-y-up" },
+    "verticalReference": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["sourceGroundElevationVerticalDatum", "hqAnchorVerticalDatum", "sourceDatumRelation", "normalizedUpFormula"],
+      "properties": {
+        "sourceGroundElevationVerticalDatum": { "type": "string", "minLength": 1 },
+        "hqAnchorVerticalDatum": { "type": "string", "minLength": 1 },
+        "sourceDatumRelation": { "const": "same-as-hq-anchor" },
+        "normalizedUpFormula": { "const": "sourceGroundElevationMeters - hqGeoAnchor.elevationMeters" }
+      }
+    },
+    "tileSizeMeters": { "const": 256 },
+    "activationRadiusMeters": { "const": 384 },
+    "tiles": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["tileId", "boundsHqLocal", "collisionUri", "buildingCount", "buildingIds"],
+        "properties": {
+          "tileId": { "type": "string", "pattern": "^[1-9][0-9]*_[pm][0-9]{3}_[pm][0-9]{3}$" },
+          "boundsHqLocal": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["minEast", "minNorth", "maxEast", "maxNorth"],
+            "properties": {
+              "minEast": { "type": "number" },
+              "minNorth": { "type": "number" },
+              "maxEast": { "type": "number" },
+              "maxNorth": { "type": "number" }
+            }
+          },
+          "collisionUri": { "type": "string", "pattern": "^tiles/[1-9][0-9]*_[pm][0-9]{3}_[pm][0-9]{3}\\.json$" },
+          "buildingCount": { "type": "integer", "minimum": 0 },
+          "buildingIds": {
+            "type": "array",
+            "uniqueItems": true,
+            "items": { "type": "string", "minLength": 1 }
+          }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" }
+  }
+}

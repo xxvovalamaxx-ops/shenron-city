@@ -1,0 +1,19 @@
+{
+  "$schema": "../../pipeline/schemas/city-config.schema.json",
+  "configVersion": 1,
+  "hqGeoAnchor": {
+    "latitude": 40.7636339736285,
+    "longitude": -73.9955076866037,
+    "elevationMeters": 12.0,
+    "verticalDatum": "NAVD88"
+  },
+  "hqWorldPosition": [-2318.735, 12.0, 1809.657],
+  "northYawDegrees": 0.0,
+  "worldUnitsPerMeter": 1.0,
+  "aoiSizeMeters": 1000.0,
+  "standardTileSizeMeters": 256.0,
+  "heroTileSizeMeters": 128.0,
+  "axisConvention": "x-east-y-up-z-negative-north",
+  "anchorStatus": "provisional",
+  "anchorNote": "Derived from the current city projection origin (40.78, -73.968) and the authored HQ site origin (-2318.735, -1809.657). Validate the location, 12 m NAVD88 elevation, and selected official building record before production ingestion."
+}

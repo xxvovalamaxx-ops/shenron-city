@@ -1,0 +1,60 @@
+{
+  "axisConvention": "x-east-y-up-z-negative-north",
+  "buildingCount": 1,
+  "buildingIds": [
+    "fixture-southwest-lowrise"
+  ],
+  "colliders": [
+    {
+      "boundsLocal": {
+        "maxEast": 161.703528,
+        "maxNegativeNorth": -156.699385,
+        "maxY": 18.3,
+        "minEast": 106.594266,
+        "minNegativeNorth": -228.020402,
+        "minY": -1.2
+      },
+      "buildingId": "fixture-southwest-lowrise",
+      "footprintLocal": [
+        [
+          106.594266,
+          -156.702195
+        ],
+        [
+          161.700157,
+          -156.699385
+        ],
+        [
+          161.703528,
+          -228.017592
+        ],
+        [
+          106.598168,
+          -228.020402
+        ]
+      ],
+      "maxY": 18.3,
+      "minY": -1.2
+    }
+  ],
+  "coordinateSpace": "tile-local-horizontal-plus-hq-local-y-up-meters",
+  "footprintLocalAxisOrder": [
+    "tile-local-east",
+    "tile-local-negative-north"
+  ],
+  "normalizedDerivationSha256": "831e33be20dbe3dbd8c55d1fa54bfc2191eb881f68897ebf5a5e8ff7d81e7329",
+  "schemaVersion": 2,
+  "sourceHash": "3e84d67fff2729f1a742bca2c4223907d6ca256859668dde28b66c76e892c73a",
+  "sourceId": "phase1-synthetic-buildings",
+  "tileId": "256_m002_m002",
+  "tileOriginAxisOrder": [
+    "hq-local-east",
+    "hq-local-north"
+  ],
+  "tileOriginMeters": [
+    -512,
+    -512
+  ],
+  "tileSizeMeters": 256,
+  "verticalAxis": "hq-local-y-up"
+}

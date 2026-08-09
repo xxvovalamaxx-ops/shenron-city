@@ -1,0 +1,346 @@
+{
+  "generatedBy": "scripts/qa/phase1runtimecheck.mjs",
+  "url": "http://127.0.0.1:9321/?city=phase1&no-pointer-lock=1",
+  "checkedAt": "2026-08-09T23:00:31.808Z",
+  "hqWorld": {
+    "x": -2318.735,
+    "y": 12,
+    "z": 1809.657
+  },
+  "technicalRuntimePass": true,
+  "visualGatePass": true,
+  "faultInjectionPass": true,
+  "referenceQualityPass": null,
+  "referenceQualityNote": "Not assessed: the grayscale Phase-1 fixture is technical runtime geometry, not reference-quality art.",
+  "checks": {
+    "technical": {
+      "phase1StatusReady": true,
+      "gameplayReady": true,
+      "visualGeometryResident": true,
+      "rendererHasVisibleTiles": true,
+      "frameTechnicalSanity": true,
+      "playerNearPhase1Spawn": true,
+      "groundAtHq": true,
+      "buildingColliderAtHq": true,
+      "sweepStoppedAtBuilding": true,
+      "noUnexpectedFailedRequests": true,
+      "noHardConsoleErrors": true
+    },
+    "visualGate": {
+      "releaseDescriptorVerified": true,
+      "everyRequiredVisualModelLoaded": true,
+      "requiredVisualContentVisible": true,
+      "zeroTerminalVisualErrors": true,
+      "componentReportsEnterable": true
+    },
+    "faultInjection": {
+      "missingVisualGlbBlocksTechnicalReadiness": true,
+      "missingColliderJsonBlocksTechnicalReadiness": true
+    }
+  },
+  "failed": [],
+  "browserState": {
+    "player": {
+      "x": -2318.735,
+      "y": 12,
+      "z": 1889.657
+    },
+    "diagnostics": {
+      "status": "ready",
+      "loadedModels": 6,
+      "visibleModels": 3,
+      "errors": 0,
+      "terminalVisualErrors": 0,
+      "releaseVerified": true,
+      "requiredVisualModels": 6,
+      "loadedRequiredVisualModels": 6,
+      "visibleRequiredVisualModels": 3,
+      "enterable": true,
+      "gameplayStatus": "ready",
+      "residentGameplayTiles": 4,
+      "pendingGameplayTiles": 0,
+      "colliders": 4
+    },
+    "visual": {
+      "meshes": 5,
+      "triangles": 68,
+      "visibleTiles": 5,
+      "activeTiles": 6,
+      "rootLoaded": true
+    },
+    "collision": {
+      "ground": 12,
+      "roof": 112.0002212524414,
+      "inside": true,
+      "sweepStart": {
+        "x": -2318.735,
+        "y": 12,
+        "z": 1849.657
+      },
+      "swept": {
+        "x": -2318.735,
+        "y": 12,
+        "z": 1833.1167138671874
+      },
+      "stoppedBeforeCentre": true
+    },
+    "rendererMemory": {
+      "geometries": 7,
+      "textures": 36
+    },
+    "rendererCalls": 36,
+    "visualDiagnostics": {
+      "status": "ready",
+      "loadedModels": 6,
+      "visibleModels": 5,
+      "errors": 0,
+      "terminalVisualErrors": 0,
+      "releaseVerified": true,
+      "requiredVisualModels": 6,
+      "loadedRequiredVisualModels": 6,
+      "visibleRequiredVisualModels": 5,
+      "enterable": true,
+      "gameplayStatus": "ready",
+      "residentGameplayTiles": 4,
+      "pendingGameplayTiles": 0,
+      "colliders": 4
+    },
+    "visualCamera": "-2318.74,180.00,2059.66,0.0000,-0.4614,-0.8872"
+  },
+  "visualUrl": "http://127.0.0.1:9321/?city=phase1&visionCapture=1&visionX=-2318.735&visionY=180&visionZ=2059.657&visionTX=-2318.735&visionTY=50&visionTZ=1809.657&visionFov=55&visionTime=16.5&visionRain=0&visionSeed=phase1-runtime",
+  "frameAnalysis": {
+    "classification": "technical-frame-sanity-only",
+    "metrics": {
+      "width": 1920,
+      "height": 1080,
+      "meanLuma": 105.69547839358516,
+      "lumaStddev": 31.507194602200386,
+      "minLuma": 34.502599999999994,
+      "maxLuma": 178.396,
+      "nearBlackFraction": 0,
+      "overexposedFraction": 0,
+      "distinctColors": 2379,
+      "colorfulness": 0,
+      "bands": [
+        106.07005328640854,
+        125.72970589353528,
+        121.67232574230482,
+        98.85920547039339,
+        121.90680677058963,
+        104.74266436706752,
+        75.92910027524141,
+        89.12914550170127,
+        106.18591368881077
+      ],
+      "bandMinimum": 75.92910027524141,
+      "bandMaximum": 125.72970589353528,
+      "bandStddev": 15.376107634649573,
+      "edgeFraction": 0.08333333333333333,
+      "bottomBandMean": 106.18591368881077,
+      "bottomBandStddev": 12.38569646771328
+    },
+    "checks": {
+      "frame-not-black": {
+        "pass": true,
+        "metric": 105.69547839358516,
+        "threshold": "> 6 mean luma",
+        "severity": "P0"
+      },
+      "frame-not-flat": {
+        "pass": true,
+        "metric": {
+          "lumaStddev": 31.507194602200386,
+          "distinctColors": 2379
+        },
+        "threshold": "lumaStddev > 2 and > 400 distinct colours",
+        "severity": "P0"
+      },
+      "aspect-ratio": {
+        "pass": true,
+        "metric": 1.7777777777777777,
+        "threshold": "16:9 within 0.01",
+        "severity": "P1"
+      },
+      "no-full-black-corner": {
+        "pass": true,
+        "metric": 75.92910027524141,
+        "threshold": "all 9 bands > 1 mean luma",
+        "severity": "P1"
+      },
+      "no-void": {
+        "pass": true,
+        "metric": 49.80060561829387,
+        "threshold": "band spread > 4 (not a solid fill)",
+        "severity": "P0"
+      },
+      "overexposure-budget": {
+        "pass": true,
+        "metric": 0,
+        "threshold": "< 0.15 pixels above luma 250",
+        "severity": "P2"
+      },
+      "near-black-budget": {
+        "pass": true,
+        "metric": 0,
+        "threshold": "< 0.85 pixels below luma 8 (night scenes loosen)",
+        "severity": "P2"
+      },
+      "band-uniformity": {
+        "pass": true,
+        "metric": 15.376107634649573,
+        "threshold": "band luma stddev > 1 (varied framing)",
+        "severity": "P2"
+      },
+      "silhouette-coverage": {
+        "pass": true,
+        "metric": 0.08333333333333333,
+        "threshold": "> 0.05 grid edges (geometry present, not fog wall)",
+        "severity": "P1"
+      },
+      "ground-present": {
+        "pass": true,
+        "metric": {
+          "mean": 106.18591368881077,
+          "stddev": 12.38569646771328
+        },
+        "threshold": "bottom band non-black with texture variance",
+        "severity": "P2"
+      },
+      "color-palette-present": {
+        "pass": false,
+        "metric": 0,
+        "threshold": "bright-pixel saturation > 0.01",
+        "severity": "P2"
+      }
+    }
+  },
+  "consoleErrors": [],
+  "hardErrors": [],
+  "failedRequests": [
+    "http://127.0.0.1:9321/tests/fixtures/manhattan-phase1/generated/release.json: net::ERR_ABORTED",
+    "http://127.0.0.1:9321/tests/fixtures/manhattan-phase1/generated/release.json: net::ERR_ABORTED"
+  ],
+  "expectedAborts": [
+    "http://127.0.0.1:9321/tests/fixtures/manhattan-phase1/generated/release.json: net::ERR_ABORTED",
+    "http://127.0.0.1:9321/tests/fixtures/manhattan-phase1/generated/release.json: net::ERR_ABORTED"
+  ],
+  "hardFailedRequests": [],
+  "faultInjection": {
+    "visualGlb": {
+      "kind": "visual-glb",
+      "injectedUrl": "http://127.0.0.1:9321/tests/fixtures/manhattan-phase1/generated/visual/256_p000_p000.glb",
+      "diagnostic": {
+        "dataset": {
+          "qualityPreset": "high",
+          "avatarMotion": "Idle_Loop",
+          "avatarPlaybackRate": "1.000",
+          "avatarThirdPerson": "true",
+          "phase1TilesStatus": "error",
+          "phase1TilesLoaded": "0",
+          "phase1TilesVisible": "0",
+          "phase1TilesErrors": "1",
+          "phase1TilesTerminalVisualErrors": "1",
+          "phase1TilesReleaseVerified": "1",
+          "phase1TilesRequired": "6",
+          "phase1TilesRequiredLoaded": "0",
+          "phase1TilesRequiredVisible": "0",
+          "phase1TilesEnterable": "0",
+          "phase1GameplayStatus": "ready",
+          "phase1GameplayResident": "0",
+          "phase1GameplayPending": "0",
+          "phase1GameplayColliders": "0",
+          "initialLoadMs": "2409.6"
+        },
+        "diagnostics": {
+          "status": "error",
+          "loadedModels": 0,
+          "visibleModels": 0,
+          "errors": 1,
+          "terminalVisualErrors": 1,
+          "releaseVerified": true,
+          "requiredVisualModels": 6,
+          "loadedRequiredVisualModels": 0,
+          "visibleRequiredVisualModels": 0,
+          "enterable": false,
+          "gameplayStatus": "ready",
+          "residentGameplayTiles": 0,
+          "pendingGameplayTiles": 0,
+          "colliders": 0
+        },
+        "title": false
+      },
+      "technicalReady": false,
+      "consoleErrors": [
+        "[fault:visual-glb] Failed to load resource: net::ERR_FAILED",
+        "[fault:visual-glb] TilesRenderer : Failed to load tile at url \"visual/256_p000_p000.glb\".",
+        "[fault:visual-glb] TypeError: Failed to fetch",
+        "[fault:visual-glb] [phase1-city] failed to load http://127.0.0.1:9321/tests/fixtures/manhattan-phase1/generated/visual/256_p000_p000.glb: TypeError: Failed to fetch"
+      ],
+      "failedRequests": [
+        "http://127.0.0.1:9321/tests/fixtures/manhattan-phase1/generated/release.json: net::ERR_ABORTED",
+        "http://127.0.0.1:9321/tests/fixtures/manhattan-phase1/generated/visual/256_p000_p000.glb: net::ERR_FAILED"
+      ],
+      "pass": true
+    },
+    "colliderJson": {
+      "kind": "collider-json",
+      "injectedUrl": "http://127.0.0.1:9321/tests/fixtures/manhattan-phase1/generated/gameplay/tiles/256_m002_p000.json",
+      "diagnostic": {
+        "dataset": {
+          "qualityPreset": "high",
+          "avatarMotion": "Idle_Loop",
+          "avatarPlaybackRate": "1.000",
+          "avatarThirdPerson": "true",
+          "phase1TilesStatus": "error",
+          "phase1TilesLoaded": "0",
+          "phase1TilesVisible": "0",
+          "phase1TilesErrors": "2",
+          "phase1TilesTerminalVisualErrors": "0",
+          "phase1TilesReleaseVerified": "1",
+          "phase1TilesRequired": "6",
+          "phase1TilesRequiredLoaded": "0",
+          "phase1TilesRequiredVisible": "0",
+          "phase1TilesEnterable": "0",
+          "phase1GameplayStatus": "error",
+          "phase1GameplayResident": "0",
+          "phase1GameplayPending": "0",
+          "phase1GameplayColliders": "0",
+          "initialLoadMs": "2459.9"
+        },
+        "diagnostics": {
+          "status": "error",
+          "loadedModels": 0,
+          "visibleModels": 0,
+          "errors": 2,
+          "terminalVisualErrors": 0,
+          "releaseVerified": true,
+          "requiredVisualModels": 6,
+          "loadedRequiredVisualModels": 0,
+          "visibleRequiredVisualModels": 0,
+          "enterable": false,
+          "gameplayStatus": "error",
+          "residentGameplayTiles": 0,
+          "pendingGameplayTiles": 0,
+          "colliders": 0
+        },
+        "title": false
+      },
+      "technicalReady": false,
+      "consoleErrors": [
+        "[fault:collider-json] Failed to load resource: net::ERR_FAILED",
+        "[fault:collider-json] [phase1-gameplay] failed to load 256_m002_p000: TypeError: Failed to fetch",
+        "[fault:collider-json] [phase1-city] gameplay pipeline failed: TypeError: Failed to fetch"
+      ],
+      "failedRequests": [
+        "http://127.0.0.1:9321/tests/fixtures/manhattan-phase1/generated/release.json: net::ERR_ABORTED",
+        "http://127.0.0.1:9321/tests/fixtures/manhattan-phase1/generated/gameplay/tiles/256_m002_p000.json: net::ERR_FAILED",
+        "http://127.0.0.1:9321/tests/fixtures/manhattan-phase1/generated/gameplay/tiles/256_p000_m001.json: net::ERR_ABORTED",
+        "http://127.0.0.1:9321/tests/fixtures/manhattan-phase1/generated/gameplay/tiles/256_p000_p000.json: net::ERR_ABORTED",
+        "http://127.0.0.1:9321/tests/fixtures/manhattan-phase1/generated/gameplay/tiles/256_p001_p000.json: net::ERR_ABORTED"
+      ],
+      "pass": true
+    }
+  },
+  "screenshot": "E:\\temp projects\\shenron-city\\evidence\\visual\\captures\\phase1-runtime.png",
+  "pass": true
+}
