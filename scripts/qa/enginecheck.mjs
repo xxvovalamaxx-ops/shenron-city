@@ -60,13 +60,21 @@
  * Exit 2 = the instrument could not be trusted; 1 = the gate failed.
  */
 /* global window, requestAnimationFrame, KeyboardEvent */
+import { spawn } from 'node:child_process'
 import { existsSync, mkdirSync, writeFileSync } from 'node:fs'
+import { createConnection } from 'node:net'
 import { fileURLToPath } from 'node:url'
 import { dirname, join, resolve } from 'node:path'
 import puppeteer from 'puppeteer-core'
 
 const HERE = dirname(fileURLToPath(import.meta.url))
 const REPO_ROOT = resolve(HERE, '..', '..')
+const VITE = fileURLToPath(new URL('../../node_modules/vite/bin/vite.js', import.meta.url))
+const MANAGED_PORT = 9322
+const MANAGED_SERVER = `http://127.0.0.1:${MANAGED_PORT}`
+const STARTUP_TIMEOUT_MS = 30_000
+const CLEANUP_TIMEOUT_MS = 5_000
+const EXIT = Object.freeze({ pass: 0, failed: 1, inconclusive: 2 })
 
 const CANDIDATES = [
   'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe',
@@ -82,36 +90,244 @@ function resolveExecutablePath() {
   throw new Error('No Chromium-family browser found. Set PUPPETEER_EXECUTABLE_PATH.')
 }
 
-const args = {
-  server: 'http://127.0.0.1:5173',
-  out: join(REPO_ROOT, 'evidence', 'opus', 'audio', 'enginecheck.json'),
-}
-for (let i = 0; i < process.argv.length; i++) {
-  if (process.argv[i] === '--server') args.server = process.argv[++i]
-  else if (process.argv[i] === '--out') args.out = process.argv[++i]
+function printUsage() {
+  console.log(`Usage: node scripts/qa/enginecheck.mjs [--server URL] [--out FILE]
+
+Runs against a fresh Vite server on ${MANAGED_SERVER} by default. Supplying
+--server leaves that server running and uses it instead.`)
 }
 
-const browser = await puppeteer.launch({
-  executablePath: resolveExecutablePath(),
-  headless: true,
-  args: [
-    '--no-sandbox',
-    '--enable-unsafe-swiftshader',
-    // Headless has no user gesture to offer, so without this the context is
-    // born suspended, every RMS is 0, and the gate fails for a reason that has
-    // nothing to do with the game.
-    '--autoplay-policy=no-user-gesture-required',
-  ],
-  defaultViewport: { width: 1280, height: 720 },
-})
-const page = await browser.newPage()
-const errors = []
-page.on('console', (m) => {
-  if (m.type() === 'error') errors.push(m.text())
-})
-page.on('pageerror', (e) => errors.push(`pageerror: ${e.message}`))
+function parseArgs(argv) {
+  const args = {
+    server: null,
+    out: join(REPO_ROOT, 'evidence', 'opus', 'audio', 'enginecheck.json'),
+    help: false,
+  }
+  for (let index = 0; index < argv.length; index++) {
+    const flag = argv[index]
+    const value = () => {
+      const next = argv[++index]
+      if (!next || next.startsWith('--')) throw new Error(`${flag} requires a value`)
+      return next
+    }
+    if (flag === '--server') {
+      const server = value()
+      const url = new URL(server)
+      if (url.protocol !== 'http:' && url.protocol !== 'https:') {
+        throw new Error('--server must be an HTTP(S) URL')
+      }
+      args.server = url.toString().replace(/\/$/, '')
+    } else if (flag === '--out') {
+      args.out = resolve(value())
+    } else if (flag === '--help' || flag === '-h') {
+      args.help = true
+    } else {
+      throw new Error(`unknown option: ${flag}`)
+    }
+  }
+  return args
+}
 
-await page.goto(args.server, { waitUntil: 'domcontentloaded', timeout: 60000 })
+const sleep = (milliseconds) => new Promise((resolvePromise) => setTimeout(resolvePromise, milliseconds))
+
+function hasExited(child) {
+  return child.exitCode !== null || child.signalCode !== null
+}
+
+async function waitForExit(child, timeoutMs) {
+  if (hasExited(child)) return true
+  return new Promise((resolvePromise) => {
+    const timer = setTimeout(() => {
+      child.removeListener('exit', onExit)
+      resolvePromise(hasExited(child))
+    }, timeoutMs)
+    const onExit = () => {
+      clearTimeout(timer)
+      resolvePromise(true)
+    }
+    child.once('exit', onExit)
+  })
+}
+
+async function canConnect(host, port) {
+  return new Promise((resolvePromise) => {
+    const socket = createConnection({ host, port })
+    const finish = (connected) => {
+      socket.removeAllListeners()
+      socket.destroy()
+      resolvePromise(connected)
+    }
+    socket.setTimeout(1_000)
+    socket.once('connect', () => finish(true))
+    socket.once('error', () => finish(false))
+    socket.once('timeout', () => finish(false))
+  })
+}
+
+async function confirmPortReleased(host, port) {
+  const samples = []
+  // A just-signalled Node listener can briefly be reported as closed while its
+  // process is still unwinding on Windows. Require several clean probes so the
+  // lifecycle evidence means the dedicated port stayed released, not merely
+  // that one connection attempt won a shutdown race.
+  for (let index = 0; index < 3; index++) {
+    samples.push(await canConnect(host, port))
+    if (index < 2) await sleep(200)
+  }
+  return samples
+}
+
+async function fetchReady(url) {
+  const controller = new AbortController()
+  const timeout = setTimeout(() => controller.abort(), 2_000)
+  try {
+    const response = await fetch(url, { signal: controller.signal })
+    return response.ok
+  } finally {
+    clearTimeout(timeout)
+  }
+}
+
+async function startManagedServer(lifecycle, onSpawn) {
+  const serverUrl = new URL(MANAGED_SERVER)
+  const server = lifecycle.server
+  server.portOpenBeforeStart = await canConnect(serverUrl.hostname, MANAGED_PORT)
+  if (server.portOpenBeforeStart) {
+    throw new Error(
+      `refusing to reuse ${MANAGED_SERVER}: the dedicated engine QA port is already occupied`,
+    )
+  }
+  const child = spawn(
+    process.execPath,
+    [VITE, '--host', serverUrl.hostname, '--port', String(MANAGED_PORT), '--strictPort'],
+    { cwd: REPO_ROOT, stdio: ['ignore', 'pipe', 'pipe'], detached: false, windowsHide: true },
+  )
+  onSpawn(child)
+  server.pid = child.pid ?? null
+  const appendOutput = (chunk) => {
+    server.output = `${server.output}${chunk}`.slice(-4_000)
+  }
+  child.stdout?.setEncoding('utf8')
+  child.stderr?.setEncoding('utf8')
+  child.stdout?.on('data', appendOutput)
+  child.stderr?.on('data', appendOutput)
+  child.on('error', (error) => {
+    server.spawnError = error.message
+  })
+
+  const deadline = Date.now() + STARTUP_TIMEOUT_MS
+  while (Date.now() < deadline) {
+    if (server.spawnError) throw new Error(`could not start Vite: ${server.spawnError}`)
+    if (hasExited(child)) {
+      throw new Error(
+        `Vite exited before engine QA (${child.exitCode ?? child.signalCode}): ${server.output.trim()}`,
+      )
+    }
+    try {
+      if (await fetchReady(MANAGED_SERVER)) {
+        server.started = true
+        server.portOpenAfterStart = await canConnect(serverUrl.hostname, MANAGED_PORT)
+        return child
+      }
+    } catch {
+      // The listener is not ready yet.
+    }
+    await sleep(250)
+  }
+  throw new Error(`Vite did not start for engine QA: ${server.output.trim()}`)
+}
+
+async function closeBrowser(browser, lifecycle) {
+  const cleanup = lifecycle.browser
+  if (!browser) return
+  const child = browser.process()
+  cleanup.pid = child?.pid ?? null
+  const settled = await Promise.race([
+    browser.close().then(
+      () => ({ closed: true, error: null }),
+      (error) => ({ closed: false, error: error.message }),
+    ),
+    sleep(CLEANUP_TIMEOUT_MS).then(() => ({ closed: false, error: 'browser close timed out' })),
+  ])
+  cleanup.closeCompleted = settled.closed
+  if (settled.error) cleanup.closeError = settled.error
+
+  if (child && !hasExited(child)) {
+    cleanup.forced = true
+    try {
+      child.kill('SIGKILL')
+    } catch (error) {
+      cleanup.forceError = error.message
+    }
+    await waitForExit(child, CLEANUP_TIMEOUT_MS)
+  }
+  cleanup.processExited = !child || hasExited(child)
+  cleanup.exitCode = child?.exitCode ?? null
+  cleanup.signalCode = child?.signalCode ?? null
+  // A disconnected browser can reject close() after its process has already
+  // exited. The process state is the cleanup invariant; the close error stays
+  // in evidence for diagnosis without turning an already-clean run into a lie.
+  cleanup.verified = cleanup.processExited
+}
+
+async function stopManagedServer(child, lifecycle) {
+  const cleanup = lifecycle.server
+  if (!child) {
+    cleanup.portReleaseChecks = await confirmPortReleased('127.0.0.1', MANAGED_PORT)
+    cleanup.portOpenAfterCleanup = cleanup.portReleaseChecks.at(-1)
+    cleanup.verified = cleanup.portReleaseChecks.every((open) => open === false)
+    return
+  }
+  if (!hasExited(child)) {
+    cleanup.stopSignal = 'SIGTERM'
+    try {
+      child.kill('SIGTERM')
+    } catch (error) {
+      cleanup.stopError = error.message
+    }
+    if (!(await waitForExit(child, CLEANUP_TIMEOUT_MS))) {
+      cleanup.stopSignal = 'SIGKILL'
+      try {
+        child.kill('SIGKILL')
+      } catch (error) {
+        cleanup.forceError = error.message
+      }
+      await waitForExit(child, CLEANUP_TIMEOUT_MS)
+    }
+  }
+  cleanup.exited = hasExited(child)
+  cleanup.exitCode = child.exitCode
+  cleanup.signalCode = child.signalCode
+  cleanup.portReleaseChecks = await confirmPortReleased('127.0.0.1', MANAGED_PORT)
+  cleanup.portOpenAfterCleanup = cleanup.portReleaseChecks.at(-1)
+  cleanup.verified = cleanup.exited && cleanup.portReleaseChecks.every((open) => open === false)
+}
+
+async function runAcceptance(args, lifecycle, errors) {
+  let browser = null
+  try {
+    browser = await puppeteer.launch({
+      executablePath: resolveExecutablePath(),
+      headless: true,
+      args: [
+        '--no-sandbox',
+        '--enable-unsafe-swiftshader',
+        // Headless has no user gesture to offer, so without this the context is
+        // born suspended, every RMS is 0, and the gate fails for a reason that has
+        // nothing to do with the game.
+        '--autoplay-policy=no-user-gesture-required',
+      ],
+      defaultViewport: { width: 1280, height: 720 },
+    })
+    lifecycle.browser.launched = true
+    lifecycle.browser.pid = browser.process()?.pid ?? null
+    const page = await browser.newPage()
+    page.on('console', (m) => {
+      if (m.type() === 'error') errors.push(m.text())
+    })
+    page.on('pageerror', (e) => errors.push(`pageerror: ${e.message}`))
+
+    await page.goto(args.server, { waitUntil: 'domcontentloaded', timeout: 60000 })
 
 const booted = await page.evaluate(
   (limit) =>
@@ -134,12 +350,11 @@ const booted = await page.evaluate(
   120000,
 )
 if (!booted) {
-  console.error(
-    'enginecheck: never became ready (need __cityWorld, __vehicleSim, __hud, __cityAudio)',
+  throw new Error(
+    'enginecheck never became ready ' +
+      '(need __cityWorld, __vehicleSim, __hud, __cityAudio): ' +
+      errors.slice(0, 5).join(' | '),
   )
-  console.error(errors.slice(0, 5).join('\n'))
-  await browser.close()
-  process.exit(2)
 }
 
 await page.evaluate(() => window.__hud.getState().setScreen('playing'))
@@ -165,7 +380,11 @@ const result = await page.evaluate(
         sampleRate: audio.diagnostics().sampleRate,
       }
       if (!pool || !pool.cars.length) {
-        return done({ preconditions, aborted: 'no city traffic pool installed' })
+        return done({
+          preconditions,
+          aborted: 'no city traffic pool installed',
+          abortKind: 'missing-traffic-pool',
+        })
       }
 
       // Same reconstruction handoffcheck uses: laneToWorld is not reachable from
@@ -191,9 +410,17 @@ const result = await page.evaluate(
           stopped = true
         }
       }
-      if (!car) return done({ preconditions, aborted: 'no usable city car' })
+      if (!car) return done({
+        preconditions,
+        aborted: 'no usable city car',
+        abortKind: 'missing-usable-city-car',
+      })
       let place = placeOf(car)
-      if (!place) return done({ preconditions, aborted: 'car lane has no geometry' })
+      if (!place) return done({
+        preconditions,
+        aborted: 'car lane has no geometry',
+        abortKind: 'invalid-car-lane',
+      })
 
       // The stale-placement control needs a registry vehicle to stand near:
       // those are the only ones GameLoop passes a position for.
@@ -266,6 +493,9 @@ const result = await page.evaluate(
         return {
           n: rows.length,
           rms: +mean(rows.map((r) => r.rms)).toFixed(5),
+          // The horn is a 0.5 s one-shot, so its evidence is a transient the
+          // mean would bury.
+          peakRms: +Math.max(0, ...rows.map((r) => r.rms)).toFixed(5),
           level: +mean(rows.map((r) => r.level)).toFixed(4),
           placeGain: +mean(rows.map((r) => r.placeGain)).toFixed(4),
           pan: +mean(rows.map((r) => r.pan)).toFixed(3),
@@ -342,6 +572,7 @@ const result = await page.evaluate(
               out.aborted =
                 'the engine bus never went idle on foot — a moving registry car ' +
                 'stayed within earshot, so there is no uncontaminated baseline'
+              out.abortKind = 'transient-traffic-baseline'
               out.framesAdvanced = frames() - f0
               out.inconclusive = true
               return done(out)
@@ -355,6 +586,7 @@ const result = await page.evaluate(
             if (!sim.prompt?.trafficCar) {
               if (waited > 240) {
                 out.aborted = 'no city-car prompt appeared while standing on one'
+                out.abortKind = 'entry-prompt-missing'
                 out.framesAdvanced = frames() - f0
                 return done(out)
               }
@@ -388,13 +620,19 @@ const result = await page.evaluate(
             if (speed > 1) rows.push(sample())
 
             if (rows.length > 90) {
-              window.dispatchEvent(new KeyboardEvent('keyup', { code: 'KeyW', bubbles: true }))
               out.driving = summarise(rows.splice(0))
-              out.framesAdvanced = frames() - f0
-              out.paused = rt.paused
               out.playerVehicleId = id
               out.speedMps = speed
-              return done(out)
+              // Off the throttle and onto the brake. Two things come out of
+              // it: the note must fall when the throttle is released, which is
+              // the whole claim of "tied to speed and throttle"; and the horn
+              // then has an idling car to stand out against instead of one at
+              // full throttle, where it cleared the engine by only 22% — real,
+              // but far too thin a margin to gate on.
+              window.dispatchEvent(new KeyboardEvent('keyup', { code: 'KeyW', bubbles: true }))
+              window.dispatchEvent(new KeyboardEvent('keydown', { code: 'KeyS', bubbles: true }))
+              phase = 'coast'
+              waited = 0
             }
             if (waited > 480) {
               window.dispatchEvent(new KeyboardEvent('keyup', { code: 'KeyW', bubbles: true }))
@@ -403,10 +641,47 @@ const result = await page.evaluate(
                   ? 'never got into a car, so the engine was never under test'
                   : 'the car never reached 1 m/s under full throttle — blocked, ' +
                     'not silent; nothing was measured'
+              out.abortKind =
+                id === null ? 'entry-did-not-complete' : 'transient-traffic-blockage'
               out.framesAdvanced = frames() - f0
               out.playerVehicleId = id
               out.speedMps = speed
               out.inconclusive = true
+              return done(out)
+            }
+            break
+          }
+          case 'coast': {
+            const id = sim.registry.playerVehicleId
+            const speed =
+              id === null ? 0 : Math.abs(sim.registry.vehicles.get(id)?.motion.speed ?? 0)
+            // Sampling starts once the car has actually slowed, so the baseline
+            // is an idling car rather than one still carrying its speed.
+            if (speed < 2) rows.push(sample())
+            if (rows.length > 30 || waited > 240) {
+              window.dispatchEvent(new KeyboardEvent('keyup', { code: 'KeyS', bubbles: true }))
+              out.idling = summarise(rows.splice(0))
+              out.idleSpeedMps = +speed.toFixed(2)
+              phase = 'horn'
+              waited = 0
+            }
+            break
+          }
+          case 'horn': {
+            // A rising edge on the jump key is what the vehicle controls read
+            // as a horn.
+            if (waited === 1) {
+              window.dispatchEvent(new KeyboardEvent('keydown', { code: 'Space', bubbles: true }))
+            } else if (waited === 2) {
+              window.dispatchEvent(new KeyboardEvent('keyup', { code: 'Space', bubbles: true }))
+            } else if (waited > 2) {
+              rows.push(sample())
+            }
+            // 0.5 s of horn plus its tail, at whatever frame rate is on offer.
+            if (waited > 45) {
+              out.horn = summarise(rows.splice(0))
+              out.framesAdvanced = frames() - f0
+              out.paused = rt.paused
               return done(out)
             }
             break
@@ -422,6 +697,8 @@ const p = result.preconditions ?? {}
 const foot = result.onFoot ?? {}
 const drive = result.driving ?? {}
 const past = result.walkPast ?? {}
+const horn = result.horn ?? {}
+const idle = result.idling ?? {}
 
 // The engine's audible amplitude is the two gains in series. Either alone is a
 // lie; this is the number that decides whether a player hears anything.
@@ -467,6 +744,17 @@ const checks = {
   // Corroboration from the master bus, at the same spot as the control.
   mixLouderWhileDriving: (drive.rms ?? 0) > (foot.rms ?? 0) * 1.15,
 
+  // ── Throttle response ───────────────────────────────────────────────────
+  // The claim being gated is "tied to speed and throttle". A note that does
+  // not fall when the throttle is released is not tied to anything.
+  noteFallsOffThrottle: (idle.level ?? 1) < (drive.level ?? 0) * 0.6,
+
+  // ── The horn ────────────────────────────────────────────────────────────
+  // `horn` was in `AudioEvent`, had a voice in `ONE_SHOTS` and was fired by
+  // GameLoop — and `play()` had no case for it, so it did nothing. A peak, not
+  // a mean: it is a 0.5 s one-shot, and a mean over the window buries it.
+  hornAudible: (horn.peakRms ?? 0) > (idle.peakRms ?? 0) * 1.5,
+
   // ── The regression control ──────────────────────────────────────────────
   // Only meaningful if a moving registry car was there to walk past — traffic
   // is dynamic, and a fleet that happens to be sitting at a red light gives
@@ -493,41 +781,208 @@ const report = {
   pass,
 }
 
-mkdirSync(dirname(args.out), { recursive: true })
-writeFileSync(args.out, `${JSON.stringify(report, null, 2)}\n`)
-
-console.log(
-  `enginecheck: ${p.poolCars} city car(s), ${p.registryCars} in the registry, ` +
-    `${result.framesAdvanced ?? 0} sim frames, ctx ${p.audioState} @ ${p.sampleRate} Hz`,
-)
-if (result.aborted) console.error(`  ABORTED: ${result.aborted}`)
-console.log(
-  controlRan
-    ? `  walk past ${past.sourceDistance} m: placeGain ${past.placeGain} ` +
-        `(law says ${past.expectedPlaceGain})  level ${past.level}  on ${past.onAlways}`
-    : `  walk past:        SKIPPED — no moving registry car far enough to place ` +
-        `(nearest ${past.sourceDistance ?? 'none'} m)`,
-)
-console.log(
-  `  on foot:          level ${foot.level}  place ${foot.placeGain}  ` +
-    `audible ${footAudible}  rms ${foot.rms}`,
-)
-console.log(
-  `  driving @ ${(result.speedMps ?? 0).toFixed(1)} m/s: level ${drive.level}  ` +
-    `place ${drive.placeGain}  pan ${drive.pan}  audible ${drivingAudible}  rms ${drive.rms}`,
-)
-console.log(`  note:             ${drive.hz} Hz, cutoff ${drive.cutoffHz} Hz`)
-for (const [name, ok] of Object.entries(checks)) {
-  if (!ok) console.error(`  FAIL ${name}`)
+return report
+  } finally {
+    // Browser closure owns every page created by this run, including pages
+    // whose navigation or evaluate() call rejected above.
+    await closeBrowser(browser, lifecycle)
+  }
 }
-console.log(`  ${pass ? 'PASS' : 'FAIL'} — ${args.out}`)
 
-await page.close()
-await browser.close()
-// Exit 2 is "the experiment did not run", not "the engine is broken". The two
-// are worth keeping apart: a city car boxed in by AI traffic and a silent
-// engine bus produce the same empty numbers, and only one of them is a defect.
-if (result.inconclusive || result.aborted || !checks.loopRan || !checks.contextRunning) {
-  process.exit(2)
+const EXPECTED_INCONCLUSIVE_ABORTS = new Set([
+  // These are traffic-scheduling races. They prevent a clean measurement but
+  // do not say anything about the engine bus itself.
+  'transient-traffic-baseline',
+  'transient-traffic-blockage',
+])
+const INSTRUMENTATION_CHECKS = [
+  'contextRunning',
+  'sampleRateSane',
+  'loopRan',
+  'notPaused',
+  'analyserReadsTheMix',
+]
+
+function classifyMeasurement(report) {
+  const expectedAbort =
+    report.inconclusive === true && EXPECTED_INCONCLUSIVE_ABORTS.has(report.abortKind)
+  const failedInstrumentation = INSTRUMENTATION_CHECKS.filter((name) => report.checks[name] !== true)
+  if (expectedAbort || failedInstrumentation.length > 0) {
+    return {
+      status: 'inconclusive',
+      exitCode: EXIT.inconclusive,
+      reason: expectedAbort ? report.aborted : `instrumentation: ${failedInstrumentation.join(', ')}`,
+    }
+  }
+  return {
+    status: report.pass ? 'pass' : 'failed',
+    exitCode: report.pass ? EXIT.pass : EXIT.failed,
+    reason: report.aborted ?? null,
+  }
 }
-process.exit(pass ? 0 : 1)
+
+function createLifecycle(server) {
+  const managed = server === null
+  return {
+    server: {
+      mode: managed ? 'managed' : 'external',
+      managed,
+      url: server ?? MANAGED_SERVER,
+      port: managed ? MANAGED_PORT : null,
+      pid: null,
+      started: false,
+      output: '',
+      verified: managed ? false : true,
+    },
+    browser: {
+      launched: false,
+      pid: null,
+      verified: false,
+    },
+  }
+}
+
+function cleanupVerified(lifecycle) {
+  const serverClean = !lifecycle.server.managed || lifecycle.server.verified === true
+  const browserClean = !lifecycle.browser.launched || lifecycle.browser.verified === true
+  return serverClean && browserClean
+}
+
+function errorDetails(error) {
+  return {
+    name: error instanceof Error ? error.name : 'Error',
+    message: error instanceof Error ? error.message : String(error),
+    stack: error instanceof Error ? error.stack?.split('\n').slice(0, 8).join('\n') : undefined,
+  }
+}
+
+function writeReport(path, report) {
+  mkdirSync(dirname(path), { recursive: true })
+  writeFileSync(path, `${JSON.stringify(report, null, 2)}\n`)
+}
+
+function printReport(report, path) {
+  if (report.runError) {
+    console.error(`enginecheck: INCONCLUSIVE — ${report.runError.message}`)
+  } else {
+    const p = report.preconditions ?? {}
+    const foot = report.onFoot ?? {}
+    const drive = report.driving ?? {}
+    const idle = report.idling ?? {}
+    const past = report.walkPast ?? {}
+    const horn = report.horn ?? {}
+    console.log(
+      `enginecheck: ${p.poolCars} city car(s), ${p.registryCars} in the registry, ` +
+        `${report.framesAdvanced ?? 0} sim frames, ctx ${p.audioState} @ ${p.sampleRate} Hz`,
+    )
+    if (report.aborted) console.error(`  ABORTED: ${report.aborted}`)
+    console.log(
+      report.placementControl?.ran
+        ? `  walk past ${past.sourceDistance} m: placeGain ${past.placeGain} ` +
+          `(law says ${past.expectedPlaceGain})  level ${past.level}  on ${past.onAlways}`
+        : `  walk past:        SKIPPED — no moving registry car far enough to place ` +
+          `(nearest ${past.sourceDistance ?? 'none'} m)`,
+    )
+    console.log(
+      `  on foot:          level ${foot.level}  place ${foot.placeGain}  ` +
+        `audible ${report.audible?.onFoot}  rms ${foot.rms}`,
+    )
+    console.log(
+      `  driving @ ${(report.speedMps ?? 0).toFixed(1)} m/s: level ${drive.level}  ` +
+        `place ${drive.placeGain}  pan ${drive.pan}  audible ${report.audible?.driving}  rms ${drive.rms}`,
+    )
+    console.log(`  note:             ${drive.hz} Hz, cutoff ${drive.cutoffHz} Hz`)
+    console.log(
+      `  off throttle @ ${(report.idleSpeedMps ?? 0).toFixed(1)} m/s: level ${idle.level}  ` +
+        `${idle.hz} Hz  rms ${idle.rms}`,
+    )
+    console.log(
+      `  horn:             peak rms ${horn.peakRms} vs ${idle.peakRms} idling ` +
+        `(+${(((horn.peakRms ?? 0) / (idle.peakRms || 1)) * 100 - 100).toFixed(0)}%)`,
+    )
+    for (const [name, ok] of Object.entries(report.checks)) {
+      if (!ok) console.error(`  FAIL ${name}`)
+    }
+  }
+  const server = report.lifecycle.server
+  const browser = report.lifecycle.browser
+  console.log(
+    `  cleanup:          server ${server.mode}${server.managed ? ` :${server.port}` : ''} ` +
+      `pid ${server.pid ?? 'n/a'} released=${server.managed ? server.verified : 'external'}; ` +
+      `browser pid ${browser.pid ?? 'n/a'} exited=${browser.verified}`,
+  )
+  console.log(`  ${report.outcome.status.toUpperCase()} — ${path}`)
+}
+
+async function main() {
+  let args
+  try {
+    args = parseArgs(process.argv.slice(2))
+  } catch (error) {
+    console.error(`enginecheck: ${error instanceof Error ? error.message : String(error)}`)
+    printUsage()
+    return EXIT.inconclusive
+  }
+  if (args.help) {
+    printUsage()
+    return EXIT.pass
+  }
+
+  const lifecycle = createLifecycle(args.server)
+  const errors = []
+  let serverProcess = null
+  let measurement = null
+  let runError = null
+  try {
+    if (lifecycle.server.managed) {
+      args.server = MANAGED_SERVER
+      lifecycle.server.url = args.server
+      serverProcess = await startManagedServer(lifecycle, (child) => {
+        serverProcess = child
+      })
+    }
+    measurement = await runAcceptance(args, lifecycle, errors)
+  } catch (error) {
+    runError = errorDetails(error)
+  } finally {
+    if (lifecycle.server.managed) {
+      try {
+        await stopManagedServer(serverProcess, lifecycle)
+      } catch (error) {
+        lifecycle.server.cleanupError = error instanceof Error ? error.message : String(error)
+        lifecycle.server.verified = false
+      }
+    }
+  }
+
+  let report
+  if (runError || !measurement || !cleanupVerified(lifecycle)) {
+    report = {
+      generatedBy: 'scripts/qa/enginecheck.mjs',
+      server: args.server,
+      consoleErrors: errors.slice(0, 5),
+      lifecycle,
+      runError,
+      pass: false,
+      outcome: {
+        status: 'inconclusive',
+        exitCode: EXIT.inconclusive,
+        reason: runError?.message ?? 'runner cleanup could not be verified',
+      },
+    }
+  } else {
+    report = { ...measurement, server: args.server, lifecycle }
+    report.outcome = classifyMeasurement(report)
+  }
+
+  try {
+    writeReport(args.out, report)
+  } catch (error) {
+    console.error(`enginecheck: could not write ${args.out}: ${error instanceof Error ? error.message : String(error)}`)
+    return EXIT.inconclusive
+  }
+  printReport(report, args.out)
+  return report.outcome.exitCode
+}
+
+process.exitCode = await main()

@@ -437,7 +437,18 @@ export function createCityAudio(): CityAudio {
         case 'elevatorStop':
           rampMotor(false, at)
           return
+        case 'horn':
+          triggerShot(ONE_SHOTS.horn, where, 0, 1, 1)
+          return
       }
+      // Exhaustiveness, and it is not decoration: `horn` was in `AudioEvent`,
+      // had a voice in `ONE_SHOTS`, and was fired by GameLoop on the jump key
+      // while driving — and this switch had no case for it, so pressing the
+      // horn did nothing at all. A switch over a union in a void function is
+      // legal without a default, so nothing complained: not tsc, not eslint,
+      // not a test. `never` makes the next event that gets added fail to
+      // compile rather than fail to sound.
+      return assertHandled(event)
     },
 
     setEnabled(next) {
@@ -582,6 +593,17 @@ export const cityAudio = createCityAudio()
 // constructs its own second graph measures a graph nobody can hear.
 if (typeof window !== 'undefined') {
   ;(window as unknown as { __cityAudio: CityAudio }).__cityAudio = cityAudio
+}
+
+/**
+ * Reached only if a member of {@link AudioEvent} has no case above.
+ *
+ * Typed `never`, so that is a compile error rather than a silent no-op. At
+ * runtime it does nothing: a mix that throws mid-frame because somebody added
+ * an event is worse than one that misses a sound.
+ */
+function assertHandled(event: never): void {
+  void event
 }
 
 // ── Graph construction ───────────────────────────────────────────────────────

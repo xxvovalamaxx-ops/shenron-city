@@ -126,6 +126,15 @@ ripped source anywhere in its history:
       · control-validated by reintroducing the bug: `level` stays 0.186 and
         `placeGain` drops to 0 — an engine nobody can hear, which is why
         `placeGain` is in `diagnostics()` and why `level` alone is not a gate
+      · note falls off the throttle: 0.187 at full throttle to 0.033 coasting
+- [x] Horn — it was never audible. `horn` was in `AudioEvent`, had a voice in
+      `ONE_SHOTS` and was fired by GameLoop on the jump key while driving, and
+      `play()` simply had no case for it. A switch over a union in a void
+      function needs no default, so nothing complained: not tsc, not eslint,
+      not a test. The switch is now exhaustive against `never`, so the next
+      event that gets added fails to compile rather than fails to sound.
+      · measured: horn peak RMS 0.0268 vs 0.0098 idling (+173%); with the case
+        removed again, 0.0101 vs 0.0074 — bed drift, no transient
 - [ ] Door art in Blender (apertures + panels) — deferred, OPUS-021
 - [ ] Interior
 
