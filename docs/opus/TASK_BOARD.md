@@ -36,9 +36,13 @@ not started, and no claim is made about it.
 - [x] **0C.0** Audit — `docs/opus/LIGHTING_AUDIT.md`, commit `b5457c074`
 - [x] **0C.1** Clock-aware `scene.environment`; one shared night curve —
       `18b38e540` · measured 0 at midday, 0.1 at dusk, 0.2 at night
-- [ ] **0C.2** Runtime assertion: which material is bound per streamed tier
-- [ ] **0C.3** Adopt or delete `getBuildingNightMaterial` and `SkyRig`, both
-      unreachable on the shipping path
+- [x] **0C.2** Runtime assertion — `1a71a930a` · `window.__materialCensus()`
+      · 382 meshes, 14 tiers, 0 errors; 18 errors when the road bug is put back
+      · 17 tests; checks the material/geometry contract, not just bindings
+- [x] **0C.3** SkyRig deleted (unreferenced, superseded); ManhattanCity's
+      `mode` default flipped from the dead `'full'` path to `'tiles'`.
+      `getBuildingNightMaterial` kept — it belongs to the `'full'` fallback,
+      which is not the same as dead
 - [x] **0D** Runtime resource defects in VehicleRig — `e182db3ae`
       · per-frame geometry/material construction inside useFrame, removed
       · shared pedestrian pair disposed per mesh, killing survivors' buffers
