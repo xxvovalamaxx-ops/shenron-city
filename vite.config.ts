@@ -40,6 +40,10 @@ export default defineConfig({
       'scripts/visual-qa/**/*.test.mjs',
       'scripts/benchmarks/**/*.test.mjs',
       'scripts/retarget/**/*.test.mjs',
+      // Asset tooling — the GLB writer Stage 2 authors through. Without this
+      // line its tests exist and never run, which is the same as not having
+      // written them.
+      'scripts/assets/**/*.test.mjs',
     ],
   },
 })
