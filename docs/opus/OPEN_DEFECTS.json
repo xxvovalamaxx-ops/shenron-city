@@ -114,7 +114,23 @@
       "title": "0B.6 scoped wrong in my own notes: entering a city car does not spawn a duplicate, there is no path to enter one at all",
       "detail": "My running note said the enter path spawns a second overlapping entity. Read and then measured, that is not what happens. updateEnterPrompt in vehicle-control.ts iterates sim.registry.vehicles only — the Phase 3A registry — so LION traffic cars are not candidates for the prompt, are never offered, and cannot be entered by any path. Measured live with the game driven to screen=playing: Traffic holds 399 cars as {lane, s, v, type, seed, color, alive} across 25,468 lanes (802 sim lanes), while the drivable side is roughly 11 entities (11 groups under vehicle-rig, 101 primitives at about 9 per car). So 399 of the roughly 410 cars in the world are scenery the player can walk through the middle of. scripts/gameplay/vehicles/vehicle-handoff.ts already implements the fix — promoteTrafficCar takes exactly that TrafficCar shape, demoteToTraffic projects a world pose back onto the nearest lane, countRepresentations exists to assert no car is live in both — with tests, and nothing imports it. That makes it the third built-but-unwired module found on this branch after manhattan-tiles.ts (OPUS-010) and PlayerBody.tsx (OPUS-014). Recorded as its own entry rather than silently corrected, because acting on the wrong description would have produced a fix for a bug that does not exist.",
       "evidence": "grep: no importer of vehicle-handoff; vehicle-control.ts:587 iterates sim.registry.vehicles; live probe -> traffic.stats {lanes:25468, vehicles:399, simLanes:802}",
-      "state": "open — this is what 0B.6 actually is"
+      "state": "FIXED — vehicle-handoff wired into the enter path; verified live by scripts/qa/handoffcheck.mjs"
+    },
+    {
+      "id": "OPUS-016",
+      "severity": "P0",
+      "title": "No vehicle in the game could be entered: the interact press was gated on already driving",
+      "detail": "GameLoop built the vehicle sim input as `driving ? {...full controls...} : NO_VEHICLE_INPUT`, and NO_VEHICLE_INPUT has interact false. Interact is the one input whose entire job is to change whether the player is driving, so gating it on `driving` meant it could only be pressed by someone already in a car. The enter prompt rendered correctly — the player saw \"Press E to enter\" — and E did nothing. Not specific to city traffic: the same dead branch blocked entry to the nine registry cars too, which is why the missing LION path (OPUS-015) had never been noticed. Fixed by hoisting the edge, `const interactEdge = k.interact && !lastInteract.current`, and feeding it in both branches while leaving throttle, brake, steer, handbrake and horn gated on driving as before. Found only because handoffcheck stood the player on a real car, saw the prompt appear and pressed a real KeyE — a unit test could not have found it, because the pure sim was always correct and the bug lived entirely in what the game loop handed it.",
+      "evidence": "GameLoop.tsx:169 pre-fix ; only one interact site in the file; handoffcheck before fix -> prompt shown, registry unchanged; after fix -> registry 9 -> 10",
+      "state": "fixed"
+    },
+    {
+      "id": "OPUS-017",
+      "severity": "P1",
+      "title": "Capturing traffic.vehicles by reference silently breaks the handoff, because LION replaces the array",
+      "detail": "The first wiring passed `traffic.vehicles` to installCityTraffic as a value, with a comment defending the choice on the grounds that promotion must splice the live array. The premise was right and the implementation was wrong: traffic.js reassigns the field wholesale in two places — `this.vehicles = keep` when it rebuilds the in-scope set (traffic.js:138), and `this.vehicles = this.vehicles.filter(...)` when it reaps dead cars (traffic.js:327) — so the captured reference is stale from the first rebuild onward. Measured: the pool reported 25,468 lanes and 0 cars against a live fleet of 399. The dangerous form of the same fault is not the empty pool but the near miss — had the capture happened after cars existed, promoteTrafficCar would have spliced an abandoned array while the live car kept circulating, producing exactly the duplicate the module exists to prevent, and reporting success. Fixed by supplying getters so cars, lanes and roadY are re-read on every access, with CityTrafficPool now documenting the requirement and marking the fields readonly. Pinned by a unit test that swaps the array underneath the sim between steps.",
+      "evidence": "src/city/traffic.js:138,327 reassign this.vehicles; handoffcheck with the captured form -> poolCars 0 of 399; with getters -> 399",
+      "state": "fixed"
     }
   ],
   "closed": [
