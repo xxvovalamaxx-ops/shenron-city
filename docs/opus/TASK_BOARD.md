@@ -48,8 +48,14 @@ not started, and no claim is made about it.
       · shared pedestrian pair disposed per mesh, killing survivors' buffers
       · vehicle despawn leaked ~8 geometries + ~6 materials per car
       · 13 tests incl. 100 spawn/despawn cycles and repeated entry/exit
-- [ ] **0D.2** The same audit for the crowd and traffic presentation layers.
-      Only VehicleRig has been read
+- [x] **0D.2** Crowd and props presentation — `78a607ef5`
+      · `pedestrians.js _render()` built an Object3D + Color every frame
+      · `props.js` the same pair per rebuild
+      · `vehicles.js` checked and left alone — its allocation is in `load()`
+      · `traffic.js` has the same shape but belongs to OPUS-007; reported only
+- [x] **0D.3** `scripts/qa/leakcheck.mjs` — samples WebGLRenderer.info.memory
+      · 2000 frames, geometries 181→181, textures 33→33, 0 console errors
+      · control-validated: a per-frame leak gives 1111→2234, exactly 1/frame
 - [x] **0E.1** Gate missing texture dependencies — `e83c49a38`
       · 442 models scanned, 0 unresolvable; exit 1 on a rebuilt pre-fix model
       · verified in the running game: 5 console errors → 0
