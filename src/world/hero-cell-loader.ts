@@ -52,6 +52,8 @@ export interface LoadedHeroCell {
   lod0: THREE.Object3D
   lod1: THREE.Object3D | null
   lod1FromMetres: number
+  /** Collider entries accepted for the near tier before this cell became ready. */
+  colliderCount: number
   /** Lot centre, for the distance test. */
   position: THREE.Vector3
 }
@@ -134,7 +136,24 @@ export async function loadHeroCell(
   // The authored building answers the same collision queries the generated one
   // did. Registered after placement for the same reason.
   const colliders = registerHeroCollision(group, placement.buildingId)
+  const cell: LoadedHeroCell = {
+    buildingId: placement.buildingId,
+    group,
+    lod0,
+    lod1,
+    lod1FromMetres: spec.lod1FromMetres ?? DEFAULT_LOD1_METRES,
+    colliderCount: colliders,
+    position: new THREE.Vector3(
+      placement.position.x,
+      placement.position.y,
+      placement.position.z,
+    ),
+  }
   if (colliders === 0) {
+    // A visible but intangible replacement must not suppress the generated
+    // solid building. Roll back the node, collider entries, and owned GPU
+    // resources before reporting the load as failed.
+    unloadHeroCell(cell)
     // Loud, because the symptom is invisible: the tower renders and the player
     // walks through it.
     onFailure?.({
@@ -144,18 +163,7 @@ export async function loadHeroCell(
     })
   }
 
-  return {
-    buildingId: placement.buildingId,
-    group,
-    lod0,
-    lod1,
-    lod1FromMetres: spec.lod1FromMetres ?? DEFAULT_LOD1_METRES,
-    position: new THREE.Vector3(
-      placement.position.x,
-      placement.position.y,
-      placement.position.z,
-    ),
-  }
+  return colliders === 0 ? null : cell
 }
 
 /**
@@ -255,6 +263,18 @@ export interface SyncReport {
   loaded: number[]
   unloaded: number[]
   failed: HeroCellLoadFailure[]
+  /**
+   * Runtime facts captured before tile suppression runs. This is deliberately
+   * small: browser QA needs to prove that a real accepted collider preceded a
+   * legacy index rewrite, not infer it later from whatever happens to remain
+   * in the global collision registry.
+   */
+  loadedCells: Array<{
+    buildingId: number
+    colliderCount: number
+    hasLod1: boolean
+    lod1FromMetres: number
+  }>
 }
 
 /**
@@ -271,7 +291,7 @@ export async function syncHeroCells(
   parent: THREE.Object3D,
   loaded: Map<number, LoadedHeroCell>,
 ): Promise<SyncReport> {
-  const report: SyncReport = { loaded: [], unloaded: [], failed: [] }
+  const report: SyncReport = { loaded: [], unloaded: [], failed: [], loadedCells: [] }
   const wanted = registry.placements(city)
   const wantedIds = new Set(wanted.map((p) => p.buildingId))
 
@@ -293,6 +313,12 @@ export async function syncHeroCells(
     loaded.set(placement.buildingId, cell)
     registry.markReady(placement.buildingId)
     report.loaded.push(placement.buildingId)
+    report.loadedCells.push({
+      buildingId: cell.buildingId,
+      colliderCount: cell.colliderCount,
+      hasLod1: cell.lod1 !== null,
+      lod1FromMetres: cell.lod1FromMetres,
+    })
   }
 
   return report

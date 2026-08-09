@@ -14,6 +14,8 @@ export type DevViewpoint =
   | 'midtown-east'
   | 'harbor'
   | 'aerial-midtown'
+  | 'reference-rooftop-canyon'
+  | 'reference-driving-canyon'
 
 export interface DevInspectionView {
   position: Vec3
@@ -62,6 +64,19 @@ const VIEWS: Readonly<Record<DevViewpoint, DevInspectionView>> = {
   'aerial-midtown': {
     position: { x: 0, y: GROUND + 320, z: 900 },
     target: { x: 0, y: GROUND + 8, z: -300 },
+  },
+  // Fixed against the actual W47 HQ origin (-2318.735, 12, 1809.657), not
+  // the old Dragon Boulevard authoring origin. This is the reference-image
+  // comparison pose: layered roofs in front, the HQ and canyon behind.
+  'reference-rooftop-canyon': {
+    position: { x: -2480, y: 150, z: 1580 },
+    target: { x: -2319, y: 62, z: 1810 },
+  },
+  // Eye-level on the W47 frontage axis, looking east through the authored
+  // cluster toward the HQ rather than floating above the roadway.
+  'reference-driving-canyon': {
+    position: { x: -2390, y: GROUND + 1.45, z: 1752 },
+    target: { x: -2285, y: GROUND + 4, z: 1810 },
   },
 }
 

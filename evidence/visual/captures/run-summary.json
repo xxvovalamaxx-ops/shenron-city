@@ -1,33 +1,15 @@
 {
   "pipeline": "shenron-city visual QA bridge",
-  "generated_at": "2026-08-06T20:27:35.094Z",
-  "git_rev": "1467b1e197f9223115961260b6b3bb844d70ed98",
-  "server": "http://127.0.0.1:9122",
+  "generated_at": "2026-08-09T18:26:29.258Z",
+  "git_rev": "137e2dc455314854da36eeed5cb6152455bb396b",
+  "server": "http://127.0.0.1:4174",
   "results": [
     {
-      "scene_id": "manhattan-night-0200",
+      "scene_id": "reference-rooftop-canyon",
       "ok": true,
       "failed": [],
       "p0Failed": false,
-      "fps": 100,
-      "settled": true,
-      "diff": 0
-    },
-    {
-      "scene_id": "manhattan-day-1400",
-      "ok": true,
-      "failed": [],
-      "p0Failed": false,
-      "fps": 100,
-      "settled": true,
-      "diff": 0.000022170910493827258
-    },
-    {
-      "scene_id": "manhattan-night-aerial",
-      "ok": true,
-      "failed": [],
-      "p0Failed": false,
-      "fps": 100,
+      "fps": 101,
       "settled": true,
       "diff": 0
     }

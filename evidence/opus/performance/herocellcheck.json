@@ -1,75 +1,20 @@
 {
   "generatedBy": "scripts/qa/herocellcheck.mjs",
-  "target": 31416,
-  "survivedAMissingAsset": true,
-  "coherenceBefore": {
-    "name": "",
-    "address": "",
-    "groundTriangles": 212288,
-    "lanes": 25468,
-    "save": "{\"v\":2,\"pos\":{\"x\":1000,\"y\":11.992830276489258,\"z\":-3000},\"forward\":{\"x\":-0.5183017160933442,\"z\":-0.855197831554018},\"settings\":{\"quality\":\"high\",\"sensitivity\":1,\"fov\":72,\"volume\":0.7},\"vehicle\":null}",
-    "buildingTopAtLot": null,
-    "colliders": 96
+  "qaUrl": "http://127.0.0.1:41747/?spawn=reference-driving-canyon&inspect=1",
+  "target": 21729,
+  "expectedSpec": {
+    "lod0": "/models/manhattan/hero/w47/building-21729-lod0.glb",
+    "lod1": "/models/manhattan/hero/w47/building-21729-lod1.glb",
+    "lod1FromMetres": 300
   },
-  "coherenceAfter": {
-    "name": "",
-    "address": "",
-    "groundTriangles": 212288,
-    "lanes": 25468,
-    "save": "{\"v\":2,\"pos\":{\"x\":1000,\"y\":11.992830276489258,\"z\":-3000},\"forward\":{\"x\":-0.5183017160933442,\"z\":-0.855197831554018},\"settings\":{\"quality\":\"high\",\"sensitivity\":1,\"fov\":72,\"volume\":0.7},\"vehicle\":null}",
-    "buildingTopAtLot": 8.175000190734863,
-    "colliders": 100
-  },
-  "lot": {
-    "x": 26.4,
-    "z": -1481.9
-  },
-  "heroMeshes": 4,
-  "heroTriangles": 4682,
-  "heroPosition": {
-    "x": 26.4,
-    "y": 0,
-    "z": -1481.9
-  },
-  "heroBounds": {
-    "center": {
-      "x": 49.7,
-      "y": 121.8,
-      "z": -1481.9
-    },
-    "size": {
-      "x": 46.7,
-      "y": 244.3,
-      "z": 55.4
-    }
-  },
-  "topAtHeroCentre": 230,
-  "heroGone": true,
-  "building": {
-    "name": "",
-    "address": "",
-    "height": 35.9,
-    "x": 26.4,
-    "y": 1481.9
-  },
-  "meshesCarryingTarget": [
-    "BLD_midrise_+00_+01_1",
-    "BLD_midrise_+00_+01_2"
-  ],
-  "targetTrianglesBefore": 626,
-  "targetTrianglesAfter": 0,
-  "targetTrianglesAfterLift": 626,
-  "totalMeshes": 90,
-  "untouchedMeshes": 88,
-  "wronglyChanged": [],
-  "mismatchedAfterLift": [],
-  "applyReport": {
+  "initialUnmount": {
     "sync": {
-      "loaded": [
-        31416
+      "loaded": [],
+      "unloaded": [
+        21729
       ],
-      "unloaded": [],
-      "failed": []
+      "failed": [],
+      "loadedCells": []
     },
     "tiles": [
       {
@@ -109,7 +54,7 @@
         "missed": []
       },
       {
-        "file": "manhattan_+01_-01.glb",
+        "file": "manhattan_+00_-02.glb",
         "restored": 0,
         "meshes": 6,
         "changed": 0,
@@ -127,7 +72,7 @@
         "missed": []
       },
       {
-        "file": "manhattan_+01_+00.glb",
+        "file": "manhattan_-01_-02.glb",
         "restored": 0,
         "meshes": 6,
         "changed": 0,
@@ -136,18 +81,25 @@
         "missed": []
       },
       {
-        "file": "manhattan_+00_+01.glb",
+        "file": "manhattan_-02_-01.glb",
         "restored": 0,
-        "meshes": 4,
-        "changed": 2,
-        "removed": 626,
-        "hit": [
-          31416
-        ],
+        "meshes": 6,
+        "changed": 0,
+        "removed": 0,
+        "hit": [],
         "missed": []
       },
       {
         "file": "manhattan_-02_+00.glb",
+        "restored": 0,
+        "meshes": 6,
+        "changed": 0,
+        "removed": 0,
+        "hit": [],
+        "missed": []
+      },
+      {
+        "file": "manhattan_+00_-03.glb",
         "restored": 0,
         "meshes": 6,
         "changed": 0,
@@ -165,7 +117,22 @@
         "missed": []
       },
       {
-        "file": "manhattan_+01_+01.glb",
+        "file": "manhattan_-02_-02.glb",
+        "restored": 5,
+        "meshes": 6,
+        "changed": 4,
+        "removed": 238,
+        "hit": [
+          20093,
+          20653,
+          21717,
+          34687,
+          34859
+        ],
+        "missed": []
+      },
+      {
+        "file": "manhattan_-01_-03.glb",
         "restored": 0,
         "meshes": 6,
         "changed": 0,
@@ -174,7 +141,7 @@
         "missed": []
       },
       {
-        "file": "manhattan_+02_+00.glb",
+        "file": "manhattan_-03_-02.glb",
         "restored": 0,
         "meshes": 6,
         "changed": 0,
@@ -183,16 +150,7 @@
         "missed": []
       },
       {
-        "file": "manhattan_-01_+02.glb",
-        "restored": 0,
-        "meshes": 0,
-        "changed": 0,
-        "removed": 0,
-        "hit": [],
-        "missed": []
-      },
-      {
-        "file": "manhattan_+00_+03.glb",
+        "file": "manhattan_-03_-01.glb",
         "restored": 0,
         "meshes": 4,
         "changed": 0,
@@ -201,7 +159,7 @@
         "missed": []
       },
       {
-        "file": "manhattan_+00_+02.glb",
+        "file": "manhattan_-03_-03.glb",
         "restored": 0,
         "meshes": 6,
         "changed": 0,
@@ -210,81 +168,18 @@
         "missed": []
       },
       {
-        "file": "manhattan_+01_+02.glb",
+        "file": "manhattan_-02_-03.glb",
+        "restored": 0,
+        "meshes": 6,
+        "changed": 0,
+        "removed": 0,
+        "hit": [],
+        "missed": []
+      },
+      {
+        "file": "manhattan_-04_-02.glb",
         "restored": 0,
         "meshes": 4,
-        "changed": 0,
-        "removed": 0,
-        "hit": [],
-        "missed": []
-      },
-      {
-        "file": "manhattan_+01_+03.glb",
-        "restored": 0,
-        "meshes": 4,
-        "changed": 0,
-        "removed": 0,
-        "hit": [],
-        "missed": []
-      },
-      {
-        "file": "manhattan_+02_+02.glb",
-        "restored": 0,
-        "meshes": 2,
-        "changed": 0,
-        "removed": 0,
-        "hit": [],
-        "missed": []
-      },
-      {
-        "file": "manhattan_-01_+03.glb",
-        "restored": 0,
-        "meshes": 0,
-        "changed": 0,
-        "removed": 0,
-        "hit": [],
-        "missed": []
-      },
-      {
-        "file": "manhattan_+02_+03.glb",
-        "restored": 0,
-        "meshes": 2,
-        "changed": 0,
-        "removed": 0,
-        "hit": [],
-        "missed": []
-      },
-      {
-        "file": "manhattan_+02_+01.glb",
-        "restored": 0,
-        "meshes": 4,
-        "changed": 0,
-        "removed": 0,
-        "hit": [],
-        "missed": []
-      },
-      {
-        "file": "manhattan_-02_+02.glb",
-        "restored": 0,
-        "meshes": 0,
-        "changed": 0,
-        "removed": 0,
-        "hit": [],
-        "missed": []
-      },
-      {
-        "file": "manhattan_+00_+04.glb",
-        "restored": 0,
-        "meshes": 0,
-        "changed": 0,
-        "removed": 0,
-        "hit": [],
-        "missed": []
-      },
-      {
-        "file": "manhattan_-02_+01.glb",
-        "restored": 0,
-        "meshes": 0,
         "changed": 0,
         "removed": 0,
         "hit": [],
@@ -292,28 +187,1464 @@
       }
     ],
     "loaded": [
-      31416
+      20093,
+      20653,
+      21717,
+      34687,
+      34859
     ]
   },
-  "checks": {
-    "foundATarget": true,
-    "targetHadGeometry": true,
-    "suppressionRemovedIt": true,
-    "confinedToItsOwnTile": true,
-    "liftRestoredEveryMesh": true,
-    "liftRestoredTheBuilding": true,
-    "missingAssetChangedNothing": true,
-    "authoredBuildingArrived": true,
-    "authoredBuildingRemovedOnLift": true,
-    "addressMetadataUnchanged": true,
-    "navigationSurfacesUnchanged": true,
-    "trafficLanesUnchanged": true,
-    "saveStateUnchanged": true,
-    "collisionAnswersAtTheLot": true
+  "legacyBaseline": {
+    "ready": false,
+    "targetGroupCount": 0,
+    "w47GroupCount": 5,
+    "group": false,
+    "lod0": {
+      "exists": false,
+      "visible": null,
+      "meshes": 0,
+      "triangles": 0
+    },
+    "lod1": {
+      "exists": false,
+      "visible": null,
+      "meshes": 0,
+      "triangles": 0
+    },
+    "legacy": {
+      "perMesh": {
+        "BLD_midrise_-02_-02_1": 28,
+        "BLD_midrise_-02_-02_2": 10
+      },
+      "meshes": 2,
+      "triangles": 38
+    },
+    "heroColliderCount": 0,
+    "heroColliderNames": [],
+    "totalBuildingColliderCount": 144
   },
-  "consoleErrors": [
-    "Please enable the NormalPass in the EffectComposer in order to use SSAO.",
-    "Please enable the NormalPass in the EffectComposer in order to use SSAO."
-  ],
+  "normalRemount": {
+    "sync": {
+      "loaded": [
+        21729
+      ],
+      "unloaded": [],
+      "failed": [],
+      "loadedCells": [
+        {
+          "buildingId": 21729,
+          "colliderCount": 6,
+          "hasLod1": true,
+          "lod1FromMetres": 300
+        }
+      ]
+    },
+    "tiles": [
+      {
+        "file": "manhattan_base.glb",
+        "restored": 0,
+        "meshes": 0,
+        "changed": 0,
+        "removed": 0,
+        "hit": [],
+        "missed": []
+      },
+      {
+        "file": "manhattan_+00_+00.glb",
+        "restored": 0,
+        "meshes": 6,
+        "changed": 0,
+        "removed": 0,
+        "hit": [],
+        "missed": []
+      },
+      {
+        "file": "manhattan_+00_-01.glb",
+        "restored": 0,
+        "meshes": 6,
+        "changed": 0,
+        "removed": 0,
+        "hit": [],
+        "missed": []
+      },
+      {
+        "file": "manhattan_-01_-01.glb",
+        "restored": 0,
+        "meshes": 6,
+        "changed": 0,
+        "removed": 0,
+        "hit": [],
+        "missed": []
+      },
+      {
+        "file": "manhattan_+00_-02.glb",
+        "restored": 0,
+        "meshes": 6,
+        "changed": 0,
+        "removed": 0,
+        "hit": [],
+        "missed": []
+      },
+      {
+        "file": "manhattan_-01_+00.glb",
+        "restored": 0,
+        "meshes": 6,
+        "changed": 0,
+        "removed": 0,
+        "hit": [],
+        "missed": []
+      },
+      {
+        "file": "manhattan_-01_-02.glb",
+        "restored": 0,
+        "meshes": 6,
+        "changed": 0,
+        "removed": 0,
+        "hit": [],
+        "missed": []
+      },
+      {
+        "file": "manhattan_-02_-01.glb",
+        "restored": 0,
+        "meshes": 6,
+        "changed": 0,
+        "removed": 0,
+        "hit": [],
+        "missed": []
+      },
+      {
+        "file": "manhattan_-02_+00.glb",
+        "restored": 0,
+        "meshes": 6,
+        "changed": 0,
+        "removed": 0,
+        "hit": [],
+        "missed": []
+      },
+      {
+        "file": "manhattan_+00_-03.glb",
+        "restored": 0,
+        "meshes": 6,
+        "changed": 0,
+        "removed": 0,
+        "hit": [],
+        "missed": []
+      },
+      {
+        "file": "manhattan_-01_+01.glb",
+        "restored": 0,
+        "meshes": 6,
+        "changed": 0,
+        "removed": 0,
+        "hit": [],
+        "missed": []
+      },
+      {
+        "file": "manhattan_-02_-02.glb",
+        "restored": 6,
+        "meshes": 6,
+        "changed": 4,
+        "removed": 276,
+        "hit": [
+          20093,
+          20653,
+          21717,
+          21729,
+          34687,
+          34859
+        ],
+        "missed": []
+      },
+      {
+        "file": "manhattan_-01_-03.glb",
+        "restored": 0,
+        "meshes": 6,
+        "changed": 0,
+        "removed": 0,
+        "hit": [],
+        "missed": []
+      },
+      {
+        "file": "manhattan_-03_-02.glb",
+        "restored": 0,
+        "meshes": 6,
+        "changed": 0,
+        "removed": 0,
+        "hit": [],
+        "missed": []
+      },
+      {
+        "file": "manhattan_-03_-01.glb",
+        "restored": 0,
+        "meshes": 4,
+        "changed": 0,
+        "removed": 0,
+        "hit": [],
+        "missed": []
+      },
+      {
+        "file": "manhattan_-03_-03.glb",
+        "restored": 0,
+        "meshes": 6,
+        "changed": 0,
+        "removed": 0,
+        "hit": [],
+        "missed": []
+      },
+      {
+        "file": "manhattan_-02_-03.glb",
+        "restored": 0,
+        "meshes": 6,
+        "changed": 0,
+        "removed": 0,
+        "hit": [],
+        "missed": []
+      },
+      {
+        "file": "manhattan_-04_-02.glb",
+        "restored": 0,
+        "meshes": 4,
+        "changed": 0,
+        "removed": 0,
+        "hit": [],
+        "missed": []
+      },
+      {
+        "file": "manhattan_-04_-01.glb",
+        "restored": 0,
+        "meshes": 4,
+        "changed": 0,
+        "removed": 0,
+        "hit": [],
+        "missed": []
+      },
+      {
+        "file": "manhattan_-03_+00.glb",
+        "restored": 0,
+        "meshes": 6,
+        "changed": 0,
+        "removed": 0,
+        "hit": [],
+        "missed": []
+      },
+      {
+        "file": "manhattan_-04_-03.glb",
+        "restored": 0,
+        "meshes": 4,
+        "changed": 0,
+        "removed": 0,
+        "hit": [],
+        "missed": []
+      },
+      {
+        "file": "manhattan_-02_-04.glb",
+        "restored": 0,
+        "meshes": 6,
+        "changed": 0,
+        "removed": 0,
+        "hit": [],
+        "missed": []
+      },
+      {
+        "file": "manhattan_-03_-04.glb",
+        "restored": 0,
+        "meshes": 6,
+        "changed": 0,
+        "removed": 0,
+        "hit": [],
+        "missed": []
+      }
+    ],
+    "loaded": [
+      20093,
+      20653,
+      21717,
+      34687,
+      34859,
+      21729
+    ]
+  },
+  "normalLoad": {
+    "buildingId": 21729,
+    "colliderCount": 6,
+    "hasLod1": true,
+    "lod1FromMetres": 300
+  },
+  "normal": {
+    "ready": true,
+    "targetGroupCount": 1,
+    "w47GroupCount": 6,
+    "group": true,
+    "lod0": {
+      "exists": true,
+      "visible": true,
+      "meshes": 6,
+      "triangles": 1548
+    },
+    "lod1": {
+      "exists": true,
+      "visible": false,
+      "meshes": 5,
+      "triangles": 242
+    },
+    "legacy": {
+      "perMesh": {},
+      "meshes": 0,
+      "triangles": 0
+    },
+    "heroColliderCount": 6,
+    "heroColliderNames": [
+      "BLD_HERO_21729_0",
+      "BLD_HERO_21729_1",
+      "BLD_HERO_21729_2",
+      "BLD_HERO_21729_3",
+      "BLD_HERO_21729_4",
+      "BLD_HERO_21729_5"
+    ],
+    "totalBuildingColliderCount": 166
+  },
+  "lodSwitch": {
+    "configuredDistance": 300,
+    "hysteresisBand": 30,
+    "nearProbeDistance": 269,
+    "farProbeDistance": 331,
+    "near": {
+      "lod0Visible": true,
+      "lod1Visible": false
+    },
+    "far": {
+      "lod0Visible": false,
+      "lod1Visible": true
+    }
+  },
+  "normalUnmount": {
+    "sync": {
+      "loaded": [],
+      "unloaded": [
+        21729
+      ],
+      "failed": [],
+      "loadedCells": []
+    },
+    "tiles": [
+      {
+        "file": "manhattan_base.glb",
+        "restored": 0,
+        "meshes": 0,
+        "changed": 0,
+        "removed": 0,
+        "hit": [],
+        "missed": []
+      },
+      {
+        "file": "manhattan_+00_+00.glb",
+        "restored": 0,
+        "meshes": 6,
+        "changed": 0,
+        "removed": 0,
+        "hit": [],
+        "missed": []
+      },
+      {
+        "file": "manhattan_+00_-01.glb",
+        "restored": 0,
+        "meshes": 6,
+        "changed": 0,
+        "removed": 0,
+        "hit": [],
+        "missed": []
+      },
+      {
+        "file": "manhattan_-01_-01.glb",
+        "restored": 0,
+        "meshes": 6,
+        "changed": 0,
+        "removed": 0,
+        "hit": [],
+        "missed": []
+      },
+      {
+        "file": "manhattan_+00_-02.glb",
+        "restored": 0,
+        "meshes": 6,
+        "changed": 0,
+        "removed": 0,
+        "hit": [],
+        "missed": []
+      },
+      {
+        "file": "manhattan_-01_+00.glb",
+        "restored": 0,
+        "meshes": 6,
+        "changed": 0,
+        "removed": 0,
+        "hit": [],
+        "missed": []
+      },
+      {
+        "file": "manhattan_-01_-02.glb",
+        "restored": 0,
+        "meshes": 6,
+        "changed": 0,
+        "removed": 0,
+        "hit": [],
+        "missed": []
+      },
+      {
+        "file": "manhattan_-02_-01.glb",
+        "restored": 0,
+        "meshes": 6,
+        "changed": 0,
+        "removed": 0,
+        "hit": [],
+        "missed": []
+      },
+      {
+        "file": "manhattan_-02_+00.glb",
+        "restored": 0,
+        "meshes": 6,
+        "changed": 0,
+        "removed": 0,
+        "hit": [],
+        "missed": []
+      },
+      {
+        "file": "manhattan_+00_-03.glb",
+        "restored": 0,
+        "meshes": 6,
+        "changed": 0,
+        "removed": 0,
+        "hit": [],
+        "missed": []
+      },
+      {
+        "file": "manhattan_-01_+01.glb",
+        "restored": 0,
+        "meshes": 6,
+        "changed": 0,
+        "removed": 0,
+        "hit": [],
+        "missed": []
+      },
+      {
+        "file": "manhattan_-02_-02.glb",
+        "restored": 6,
+        "meshes": 6,
+        "changed": 4,
+        "removed": 238,
+        "hit": [
+          20093,
+          20653,
+          21717,
+          34687,
+          34859
+        ],
+        "missed": []
+      },
+      {
+        "file": "manhattan_-01_-03.glb",
+        "restored": 0,
+        "meshes": 6,
+        "changed": 0,
+        "removed": 0,
+        "hit": [],
+        "missed": []
+      },
+      {
+        "file": "manhattan_-03_-02.glb",
+        "restored": 0,
+        "meshes": 6,
+        "changed": 0,
+        "removed": 0,
+        "hit": [],
+        "missed": []
+      },
+      {
+        "file": "manhattan_-03_-01.glb",
+        "restored": 0,
+        "meshes": 4,
+        "changed": 0,
+        "removed": 0,
+        "hit": [],
+        "missed": []
+      },
+      {
+        "file": "manhattan_-03_-03.glb",
+        "restored": 0,
+        "meshes": 6,
+        "changed": 0,
+        "removed": 0,
+        "hit": [],
+        "missed": []
+      },
+      {
+        "file": "manhattan_-02_-03.glb",
+        "restored": 0,
+        "meshes": 6,
+        "changed": 0,
+        "removed": 0,
+        "hit": [],
+        "missed": []
+      },
+      {
+        "file": "manhattan_-04_-02.glb",
+        "restored": 0,
+        "meshes": 4,
+        "changed": 0,
+        "removed": 0,
+        "hit": [],
+        "missed": []
+      },
+      {
+        "file": "manhattan_-04_-01.glb",
+        "restored": 0,
+        "meshes": 4,
+        "changed": 0,
+        "removed": 0,
+        "hit": [],
+        "missed": []
+      },
+      {
+        "file": "manhattan_-03_+00.glb",
+        "restored": 0,
+        "meshes": 6,
+        "changed": 0,
+        "removed": 0,
+        "hit": [],
+        "missed": []
+      },
+      {
+        "file": "manhattan_-04_-03.glb",
+        "restored": 0,
+        "meshes": 4,
+        "changed": 0,
+        "removed": 0,
+        "hit": [],
+        "missed": []
+      },
+      {
+        "file": "manhattan_-02_-04.glb",
+        "restored": 0,
+        "meshes": 6,
+        "changed": 0,
+        "removed": 0,
+        "hit": [],
+        "missed": []
+      },
+      {
+        "file": "manhattan_-03_-04.glb",
+        "restored": 0,
+        "meshes": 6,
+        "changed": 0,
+        "removed": 0,
+        "hit": [],
+        "missed": []
+      },
+      {
+        "file": "manhattan_-01_-04.glb",
+        "restored": 0,
+        "meshes": 6,
+        "changed": 0,
+        "removed": 0,
+        "hit": [],
+        "missed": []
+      }
+    ],
+    "loaded": [
+      20093,
+      20653,
+      21717,
+      34687,
+      34859
+    ]
+  },
+  "afterNormalUnmount": {
+    "ready": false,
+    "targetGroupCount": 0,
+    "w47GroupCount": 5,
+    "group": false,
+    "lod0": {
+      "exists": false,
+      "visible": null,
+      "meshes": 0,
+      "triangles": 0
+    },
+    "lod1": {
+      "exists": false,
+      "visible": null,
+      "meshes": 0,
+      "triangles": 0
+    },
+    "legacy": {
+      "perMesh": {
+        "BLD_midrise_-02_-02_1": 28,
+        "BLD_midrise_-02_-02_2": 10
+      },
+      "meshes": 2,
+      "triangles": 38
+    },
+    "heroColliderCount": 0,
+    "heroColliderNames": [],
+    "totalBuildingColliderCount": 166
+  },
+  "zeroColliderRemount": {
+    "sync": {
+      "loaded": [],
+      "unloaded": [],
+      "failed": [
+        {
+          "buildingId": 21729,
+          "url": "/models/manhattan/hero/w47/building-21729-lod0.glb",
+          "reason": "authored geometry registered no collider — the building will not be solid"
+        }
+      ],
+      "loadedCells": []
+    },
+    "tiles": [
+      {
+        "file": "manhattan_base.glb",
+        "restored": 0,
+        "meshes": 0,
+        "changed": 0,
+        "removed": 0,
+        "hit": [],
+        "missed": []
+      },
+      {
+        "file": "manhattan_+00_+00.glb",
+        "restored": 0,
+        "meshes": 6,
+        "changed": 0,
+        "removed": 0,
+        "hit": [],
+        "missed": []
+      },
+      {
+        "file": "manhattan_+00_-01.glb",
+        "restored": 0,
+        "meshes": 6,
+        "changed": 0,
+        "removed": 0,
+        "hit": [],
+        "missed": []
+      },
+      {
+        "file": "manhattan_-01_-01.glb",
+        "restored": 0,
+        "meshes": 6,
+        "changed": 0,
+        "removed": 0,
+        "hit": [],
+        "missed": []
+      },
+      {
+        "file": "manhattan_+00_-02.glb",
+        "restored": 0,
+        "meshes": 6,
+        "changed": 0,
+        "removed": 0,
+        "hit": [],
+        "missed": []
+      },
+      {
+        "file": "manhattan_-01_+00.glb",
+        "restored": 0,
+        "meshes": 6,
+        "changed": 0,
+        "removed": 0,
+        "hit": [],
+        "missed": []
+      },
+      {
+        "file": "manhattan_-01_-02.glb",
+        "restored": 0,
+        "meshes": 6,
+        "changed": 0,
+        "removed": 0,
+        "hit": [],
+        "missed": []
+      },
+      {
+        "file": "manhattan_-02_-01.glb",
+        "restored": 0,
+        "meshes": 6,
+        "changed": 0,
+        "removed": 0,
+        "hit": [],
+        "missed": []
+      },
+      {
+        "file": "manhattan_-02_+00.glb",
+        "restored": 0,
+        "meshes": 6,
+        "changed": 0,
+        "removed": 0,
+        "hit": [],
+        "missed": []
+      },
+      {
+        "file": "manhattan_+00_-03.glb",
+        "restored": 0,
+        "meshes": 6,
+        "changed": 0,
+        "removed": 0,
+        "hit": [],
+        "missed": []
+      },
+      {
+        "file": "manhattan_-01_+01.glb",
+        "restored": 0,
+        "meshes": 6,
+        "changed": 0,
+        "removed": 0,
+        "hit": [],
+        "missed": []
+      },
+      {
+        "file": "manhattan_-02_-02.glb",
+        "restored": 6,
+        "meshes": 6,
+        "changed": 4,
+        "removed": 238,
+        "hit": [
+          20093,
+          20653,
+          21717,
+          34687,
+          34859
+        ],
+        "missed": []
+      },
+      {
+        "file": "manhattan_-01_-03.glb",
+        "restored": 0,
+        "meshes": 6,
+        "changed": 0,
+        "removed": 0,
+        "hit": [],
+        "missed": []
+      },
+      {
+        "file": "manhattan_-03_-02.glb",
+        "restored": 0,
+        "meshes": 6,
+        "changed": 0,
+        "removed": 0,
+        "hit": [],
+        "missed": []
+      },
+      {
+        "file": "manhattan_-03_-01.glb",
+        "restored": 0,
+        "meshes": 4,
+        "changed": 0,
+        "removed": 0,
+        "hit": [],
+        "missed": []
+      },
+      {
+        "file": "manhattan_-03_-03.glb",
+        "restored": 0,
+        "meshes": 6,
+        "changed": 0,
+        "removed": 0,
+        "hit": [],
+        "missed": []
+      },
+      {
+        "file": "manhattan_-02_-03.glb",
+        "restored": 0,
+        "meshes": 6,
+        "changed": 0,
+        "removed": 0,
+        "hit": [],
+        "missed": []
+      },
+      {
+        "file": "manhattan_-04_-02.glb",
+        "restored": 0,
+        "meshes": 4,
+        "changed": 0,
+        "removed": 0,
+        "hit": [],
+        "missed": []
+      },
+      {
+        "file": "manhattan_-04_-01.glb",
+        "restored": 0,
+        "meshes": 4,
+        "changed": 0,
+        "removed": 0,
+        "hit": [],
+        "missed": []
+      },
+      {
+        "file": "manhattan_-03_+00.glb",
+        "restored": 0,
+        "meshes": 6,
+        "changed": 0,
+        "removed": 0,
+        "hit": [],
+        "missed": []
+      },
+      {
+        "file": "manhattan_-04_-03.glb",
+        "restored": 0,
+        "meshes": 4,
+        "changed": 0,
+        "removed": 0,
+        "hit": [],
+        "missed": []
+      },
+      {
+        "file": "manhattan_-02_-04.glb",
+        "restored": 0,
+        "meshes": 6,
+        "changed": 0,
+        "removed": 0,
+        "hit": [],
+        "missed": []
+      },
+      {
+        "file": "manhattan_-03_-04.glb",
+        "restored": 0,
+        "meshes": 6,
+        "changed": 0,
+        "removed": 0,
+        "hit": [],
+        "missed": []
+      },
+      {
+        "file": "manhattan_-01_-04.glb",
+        "restored": 0,
+        "meshes": 6,
+        "changed": 0,
+        "removed": 0,
+        "hit": [],
+        "missed": []
+      }
+    ],
+    "loaded": [
+      20093,
+      20653,
+      21717,
+      34687,
+      34859
+    ]
+  },
+  "zeroCollider": {
+    "ready": false,
+    "targetGroupCount": 0,
+    "w47GroupCount": 5,
+    "group": false,
+    "lod0": {
+      "exists": false,
+      "visible": null,
+      "meshes": 0,
+      "triangles": 0
+    },
+    "lod1": {
+      "exists": false,
+      "visible": null,
+      "meshes": 0,
+      "triangles": 0
+    },
+    "legacy": {
+      "perMesh": {
+        "BLD_midrise_-02_-02_1": 28,
+        "BLD_midrise_-02_-02_2": 10
+      },
+      "meshes": 2,
+      "triangles": 38
+    },
+    "heroColliderCount": 0,
+    "heroColliderNames": [],
+    "totalBuildingColliderCount": 166
+  },
+  "zeroColliderFault": {
+    "rejectedRegisterCalls": 1,
+    "rollbackUnregisterCalls": 1,
+    "disposedGeometries": 11,
+    "disposedMaterials": 11
+  },
+  "recoveryRemount": {
+    "sync": {
+      "loaded": [
+        21729
+      ],
+      "unloaded": [],
+      "failed": [],
+      "loadedCells": [
+        {
+          "buildingId": 21729,
+          "colliderCount": 6,
+          "hasLod1": true,
+          "lod1FromMetres": 300
+        }
+      ]
+    },
+    "tiles": [
+      {
+        "file": "manhattan_base.glb",
+        "restored": 0,
+        "meshes": 0,
+        "changed": 0,
+        "removed": 0,
+        "hit": [],
+        "missed": []
+      },
+      {
+        "file": "manhattan_+00_+00.glb",
+        "restored": 0,
+        "meshes": 6,
+        "changed": 0,
+        "removed": 0,
+        "hit": [],
+        "missed": []
+      },
+      {
+        "file": "manhattan_+00_-01.glb",
+        "restored": 0,
+        "meshes": 6,
+        "changed": 0,
+        "removed": 0,
+        "hit": [],
+        "missed": []
+      },
+      {
+        "file": "manhattan_-01_-01.glb",
+        "restored": 0,
+        "meshes": 6,
+        "changed": 0,
+        "removed": 0,
+        "hit": [],
+        "missed": []
+      },
+      {
+        "file": "manhattan_+00_-02.glb",
+        "restored": 0,
+        "meshes": 6,
+        "changed": 0,
+        "removed": 0,
+        "hit": [],
+        "missed": []
+      },
+      {
+        "file": "manhattan_-01_+00.glb",
+        "restored": 0,
+        "meshes": 6,
+        "changed": 0,
+        "removed": 0,
+        "hit": [],
+        "missed": []
+      },
+      {
+        "file": "manhattan_-01_-02.glb",
+        "restored": 0,
+        "meshes": 6,
+        "changed": 0,
+        "removed": 0,
+        "hit": [],
+        "missed": []
+      },
+      {
+        "file": "manhattan_-02_-01.glb",
+        "restored": 0,
+        "meshes": 6,
+        "changed": 0,
+        "removed": 0,
+        "hit": [],
+        "missed": []
+      },
+      {
+        "file": "manhattan_-02_+00.glb",
+        "restored": 0,
+        "meshes": 6,
+        "changed": 0,
+        "removed": 0,
+        "hit": [],
+        "missed": []
+      },
+      {
+        "file": "manhattan_+00_-03.glb",
+        "restored": 0,
+        "meshes": 6,
+        "changed": 0,
+        "removed": 0,
+        "hit": [],
+        "missed": []
+      },
+      {
+        "file": "manhattan_-01_+01.glb",
+        "restored": 0,
+        "meshes": 6,
+        "changed": 0,
+        "removed": 0,
+        "hit": [],
+        "missed": []
+      },
+      {
+        "file": "manhattan_-02_-02.glb",
+        "restored": 6,
+        "meshes": 6,
+        "changed": 4,
+        "removed": 276,
+        "hit": [
+          20093,
+          20653,
+          21717,
+          21729,
+          34687,
+          34859
+        ],
+        "missed": []
+      },
+      {
+        "file": "manhattan_-01_-03.glb",
+        "restored": 0,
+        "meshes": 6,
+        "changed": 0,
+        "removed": 0,
+        "hit": [],
+        "missed": []
+      },
+      {
+        "file": "manhattan_-03_-02.glb",
+        "restored": 0,
+        "meshes": 6,
+        "changed": 0,
+        "removed": 0,
+        "hit": [],
+        "missed": []
+      },
+      {
+        "file": "manhattan_-03_-01.glb",
+        "restored": 0,
+        "meshes": 4,
+        "changed": 0,
+        "removed": 0,
+        "hit": [],
+        "missed": []
+      },
+      {
+        "file": "manhattan_-03_-03.glb",
+        "restored": 0,
+        "meshes": 6,
+        "changed": 0,
+        "removed": 0,
+        "hit": [],
+        "missed": []
+      },
+      {
+        "file": "manhattan_-02_-03.glb",
+        "restored": 0,
+        "meshes": 6,
+        "changed": 0,
+        "removed": 0,
+        "hit": [],
+        "missed": []
+      },
+      {
+        "file": "manhattan_-04_-02.glb",
+        "restored": 0,
+        "meshes": 4,
+        "changed": 0,
+        "removed": 0,
+        "hit": [],
+        "missed": []
+      },
+      {
+        "file": "manhattan_-04_-01.glb",
+        "restored": 0,
+        "meshes": 4,
+        "changed": 0,
+        "removed": 0,
+        "hit": [],
+        "missed": []
+      },
+      {
+        "file": "manhattan_-03_+00.glb",
+        "restored": 0,
+        "meshes": 6,
+        "changed": 0,
+        "removed": 0,
+        "hit": [],
+        "missed": []
+      },
+      {
+        "file": "manhattan_-04_-03.glb",
+        "restored": 0,
+        "meshes": 4,
+        "changed": 0,
+        "removed": 0,
+        "hit": [],
+        "missed": []
+      },
+      {
+        "file": "manhattan_-02_-04.glb",
+        "restored": 0,
+        "meshes": 6,
+        "changed": 0,
+        "removed": 0,
+        "hit": [],
+        "missed": []
+      },
+      {
+        "file": "manhattan_-03_-04.glb",
+        "restored": 0,
+        "meshes": 6,
+        "changed": 0,
+        "removed": 0,
+        "hit": [],
+        "missed": []
+      },
+      {
+        "file": "manhattan_-01_-04.glb",
+        "restored": 0,
+        "meshes": 6,
+        "changed": 0,
+        "removed": 0,
+        "hit": [],
+        "missed": []
+      }
+    ],
+    "loaded": [
+      20093,
+      20653,
+      21717,
+      34687,
+      34859,
+      21729
+    ]
+  },
+  "recoveryLoad": {
+    "buildingId": 21729,
+    "colliderCount": 6,
+    "hasLod1": true,
+    "lod1FromMetres": 300
+  },
+  "recovery": {
+    "ready": true,
+    "targetGroupCount": 1,
+    "w47GroupCount": 6,
+    "group": true,
+    "lod0": {
+      "exists": true,
+      "visible": true,
+      "meshes": 6,
+      "triangles": 1548
+    },
+    "lod1": {
+      "exists": true,
+      "visible": false,
+      "meshes": 5,
+      "triangles": 242
+    },
+    "legacy": {
+      "perMesh": {},
+      "meshes": 0,
+      "triangles": 0
+    },
+    "heroColliderCount": 6,
+    "heroColliderNames": [
+      "BLD_HERO_21729_0",
+      "BLD_HERO_21729_1",
+      "BLD_HERO_21729_2",
+      "BLD_HERO_21729_3",
+      "BLD_HERO_21729_4",
+      "BLD_HERO_21729_5"
+    ],
+    "totalBuildingColliderCount": 172
+  },
+  "idempotentReapply": {
+    "sync": {
+      "loaded": [],
+      "unloaded": [],
+      "failed": [],
+      "loadedCells": []
+    },
+    "tiles": [
+      {
+        "file": "manhattan_base.glb",
+        "restored": 0,
+        "meshes": 0,
+        "changed": 0,
+        "removed": 0,
+        "hit": [],
+        "missed": []
+      },
+      {
+        "file": "manhattan_+00_+00.glb",
+        "restored": 0,
+        "meshes": 6,
+        "changed": 0,
+        "removed": 0,
+        "hit": [],
+        "missed": []
+      },
+      {
+        "file": "manhattan_+00_-01.glb",
+        "restored": 0,
+        "meshes": 6,
+        "changed": 0,
+        "removed": 0,
+        "hit": [],
+        "missed": []
+      },
+      {
+        "file": "manhattan_-01_-01.glb",
+        "restored": 0,
+        "meshes": 6,
+        "changed": 0,
+        "removed": 0,
+        "hit": [],
+        "missed": []
+      },
+      {
+        "file": "manhattan_+00_-02.glb",
+        "restored": 0,
+        "meshes": 6,
+        "changed": 0,
+        "removed": 0,
+        "hit": [],
+        "missed": []
+      },
+      {
+        "file": "manhattan_-01_+00.glb",
+        "restored": 0,
+        "meshes": 6,
+        "changed": 0,
+        "removed": 0,
+        "hit": [],
+        "missed": []
+      },
+      {
+        "file": "manhattan_-01_-02.glb",
+        "restored": 0,
+        "meshes": 6,
+        "changed": 0,
+        "removed": 0,
+        "hit": [],
+        "missed": []
+      },
+      {
+        "file": "manhattan_-02_-01.glb",
+        "restored": 0,
+        "meshes": 6,
+        "changed": 0,
+        "removed": 0,
+        "hit": [],
+        "missed": []
+      },
+      {
+        "file": "manhattan_-02_+00.glb",
+        "restored": 0,
+        "meshes": 6,
+        "changed": 0,
+        "removed": 0,
+        "hit": [],
+        "missed": []
+      },
+      {
+        "file": "manhattan_+00_-03.glb",
+        "restored": 0,
+        "meshes": 6,
+        "changed": 0,
+        "removed": 0,
+        "hit": [],
+        "missed": []
+      },
+      {
+        "file": "manhattan_-01_+01.glb",
+        "restored": 0,
+        "meshes": 6,
+        "changed": 0,
+        "removed": 0,
+        "hit": [],
+        "missed": []
+      },
+      {
+        "file": "manhattan_-02_-02.glb",
+        "restored": 6,
+        "meshes": 6,
+        "changed": 4,
+        "removed": 276,
+        "hit": [
+          20093,
+          20653,
+          21717,
+          21729,
+          34687,
+          34859
+        ],
+        "missed": []
+      },
+      {
+        "file": "manhattan_-01_-03.glb",
+        "restored": 0,
+        "meshes": 6,
+        "changed": 0,
+        "removed": 0,
+        "hit": [],
+        "missed": []
+      },
+      {
+        "file": "manhattan_-03_-02.glb",
+        "restored": 0,
+        "meshes": 6,
+        "changed": 0,
+        "removed": 0,
+        "hit": [],
+        "missed": []
+      },
+      {
+        "file": "manhattan_-03_-01.glb",
+        "restored": 0,
+        "meshes": 4,
+        "changed": 0,
+        "removed": 0,
+        "hit": [],
+        "missed": []
+      },
+      {
+        "file": "manhattan_-03_-03.glb",
+        "restored": 0,
+        "meshes": 6,
+        "changed": 0,
+        "removed": 0,
+        "hit": [],
+        "missed": []
+      },
+      {
+        "file": "manhattan_-02_-03.glb",
+        "restored": 0,
+        "meshes": 6,
+        "changed": 0,
+        "removed": 0,
+        "hit": [],
+        "missed": []
+      },
+      {
+        "file": "manhattan_-04_-02.glb",
+        "restored": 0,
+        "meshes": 4,
+        "changed": 0,
+        "removed": 0,
+        "hit": [],
+        "missed": []
+      },
+      {
+        "file": "manhattan_-04_-01.glb",
+        "restored": 0,
+        "meshes": 4,
+        "changed": 0,
+        "removed": 0,
+        "hit": [],
+        "missed": []
+      },
+      {
+        "file": "manhattan_-03_+00.glb",
+        "restored": 0,
+        "meshes": 6,
+        "changed": 0,
+        "removed": 0,
+        "hit": [],
+        "missed": []
+      },
+      {
+        "file": "manhattan_-04_-03.glb",
+        "restored": 0,
+        "meshes": 4,
+        "changed": 0,
+        "removed": 0,
+        "hit": [],
+        "missed": []
+      },
+      {
+        "file": "manhattan_-02_-04.glb",
+        "restored": 0,
+        "meshes": 6,
+        "changed": 0,
+        "removed": 0,
+        "hit": [],
+        "missed": []
+      },
+      {
+        "file": "manhattan_-03_-04.glb",
+        "restored": 0,
+        "meshes": 6,
+        "changed": 0,
+        "removed": 0,
+        "hit": [],
+        "missed": []
+      },
+      {
+        "file": "manhattan_-01_-04.glb",
+        "restored": 0,
+        "meshes": 6,
+        "changed": 0,
+        "removed": 0,
+        "hit": [],
+        "missed": []
+      }
+    ],
+    "loaded": [
+      20093,
+      20653,
+      21717,
+      34687,
+      34859,
+      21729
+    ]
+  },
+  "afterIdempotent": {
+    "ready": true,
+    "targetGroupCount": 1,
+    "w47GroupCount": 6,
+    "group": true,
+    "lod0": {
+      "exists": true,
+      "visible": true,
+      "meshes": 6,
+      "triangles": 1548
+    },
+    "lod1": {
+      "exists": true,
+      "visible": false,
+      "meshes": 5,
+      "triangles": 242
+    },
+    "legacy": {
+      "perMesh": {},
+      "meshes": 0,
+      "triangles": 0
+    },
+    "heroColliderCount": 6,
+    "heroColliderNames": [
+      "BLD_HERO_21729_0",
+      "BLD_HERO_21729_1",
+      "BLD_HERO_21729_2",
+      "BLD_HERO_21729_3",
+      "BLD_HERO_21729_4",
+      "BLD_HERO_21729_5"
+    ],
+    "totalBuildingColliderCount": 172
+  },
+  "tileHitDuringNormalRemount": true,
+  "tileMissDuringNormalRemount": false,
+  "tileHitDuringZeroColliderFault": false,
+  "tileHitDuringRecovery": true,
+  "checks": {
+    "actualShippedW47Target": true,
+    "legacyGeometryWasResident": true,
+    "lod0AndLod1Loaded": true,
+    "configuredLodThresholdApplied": true,
+    "colliderRegisteredBeforeSuppression": true,
+    "normalUnmountRestoredWithoutLeak": true,
+    "zeroColliderDoesNotSuppressAndDisposes": true,
+    "recoveryRemountDoesNotLeak": true,
+    "noHardConsoleErrors": true
+  },
+  "consoleErrors": [],
   "pass": true
 }

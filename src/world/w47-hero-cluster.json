@@ -1,0 +1,127 @@
+{
+  "clusterId": "w47-rooftop-canyon-v1",
+  "hqBuildingId": 34686,
+  "groundY": 12,
+  "lod1FromMetres": 300,
+  "source": "Committed core.bin plus Draco-compressed Manhattan city-tile footprints and building registry; no downloaded art",
+  "sourceArtifacts": [
+    {
+      "path": "public/models/manhattan/data/core.bin",
+      "sha256": "a502e466f6ca331764d8e083f81881e261d67d1aabad2897e9abdb321c8fa9b6"
+    },
+    {
+      "path": "public/models/manhattan/manhattan_-02_-02.glb",
+      "sha256": "b77bb6261be498b11a0a861a5aef7b205887bb4db9c865398ace01914be3547a"
+    },
+    {
+      "path": "public/models/manhattan/building_index.json",
+      "sha256": "48ca5a925943c2622cc9120ff512aab709bc9da9ac5bf46b5648cba206ff2d45"
+    }
+  ],
+  "sourceFootprintFrame": "asset-local X/Z = source glTF world X/Z translated by the core.bin centroid and inverse-rotated by rotationY",
+  "footprintContainmentToleranceMetres": 0.05,
+  "buildings": [
+    {
+      "buildingId": 20093,
+      "osmId": 238320858,
+      "address": "538 West 48th Street",
+      "name": "Holiday Inn Express",
+      "x": -2239.17,
+      "y": -1770.38,
+      "height": 29,
+      "rotationY": -0.485126,
+      "sourceFootprintEnvelope": { "minX": -15.121696, "maxX": 15.053403, "minZ": -7.945874, "maxZ": 7.939314 },
+      "facade": "buff-brick hotel",
+      "roofKit": "water-tower",
+      "budgets": {
+        "lod0": { "maxBytes": 520000, "maxTriangles": 3600, "maxHeight": 39 },
+        "lod1": { "maxBytes": 120000, "maxTriangles": 500, "maxHeight": 39 }
+      }
+    },
+    {
+      "buildingId": 20653,
+      "osmId": 265317840,
+      "address": "545 West 45th Street",
+      "name": "W45 masonry tower",
+      "x": -2343.21,
+      "y": -1934.7,
+      "height": 46.6,
+      "rotationY": -0.332692,
+      "sourceFootprintEnvelope": { "minX": -20.838731, "maxX": 20.843342, "minZ": -15.264389, "maxZ": 15.2684 },
+      "facade": "limestone early-skyscraper",
+      "roofKit": "water-tower-hvac",
+      "budgets": {
+        "lod0": { "maxBytes": 620000, "maxTriangles": 4400, "maxHeight": 58 },
+        "lod1": { "maxBytes": 140000, "maxTriangles": 600, "maxHeight": 58 }
+      }
+    },
+    {
+      "buildingId": 21717,
+      "osmId": 265356047,
+      "address": "West 49th Street / 11th Avenue",
+      "name": "W49 hotel slab",
+      "x": -2359.3,
+      "y": -1706.2,
+      "height": 52.2,
+      "rotationY": 0.200851,
+      "sourceFootprintEnvelope": { "minX": -18.30005, "maxX": 20.906516, "minZ": -21.540353, "maxZ": 21.642951 },
+      "facade": "buff-brick hotel",
+      "roofKit": "billboard-hvac",
+      "budgets": {
+        "lod0": { "maxBytes": 650000, "maxTriangles": 4800, "maxHeight": 63 },
+        "lod1": { "maxBytes": 150000, "maxTriangles": 650, "maxHeight": 63 }
+      }
+    },
+    {
+      "buildingId": 21729,
+      "osmId": 265356060,
+      "address": "West 48th Street / 11th Avenue",
+      "name": "W48 residential tower",
+      "x": -2307.82,
+      "y": -1758.57,
+      "height": 78.15,
+      "rotationY": -1.482027,
+      "sourceFootprintEnvelope": { "minX": -43.696816, "maxX": 40.656312, "minZ": -32.301435, "maxZ": 35.323798 },
+      "facade": "white-brick residential",
+      "roofKit": "ducts-billboard",
+      "budgets": {
+        "lod0": { "maxBytes": 820000, "maxTriangles": 6200, "maxHeight": 90 },
+        "lod1": { "maxBytes": 180000, "maxTriangles": 800, "maxHeight": 90 }
+      }
+    },
+    {
+      "buildingId": 34687,
+      "osmId": 292151070,
+      "address": "548 West 48th Street",
+      "name": "Holiday Inn Express",
+      "x": -2272.48,
+      "y": -1752.2,
+      "height": 27,
+      "rotationY": 1.050584,
+      "sourceFootprintEnvelope": { "minX": -8.247047, "maxX": 8.815472, "minZ": -7.64326, "maxZ": 7.739431 },
+      "facade": "buff-brick hotel",
+      "roofKit": "water-tower",
+      "budgets": {
+        "lod0": { "maxBytes": 460000, "maxTriangles": 3200, "maxHeight": 37 },
+        "lod1": { "maxBytes": 110000, "maxTriangles": 450, "maxHeight": 37 }
+      }
+    },
+    {
+      "buildingId": 34859,
+      "osmId": 1278210264,
+      "address": "643 11th Avenue",
+      "name": "11th Avenue loft",
+      "x": -2395.04,
+      "y": -1769,
+      "height": 17.2,
+      "rotationY": -0.501731,
+      "sourceFootprintEnvelope": { "minX": -15.001656, "maxX": 14.999943, "minZ": -7.462796, "maxZ": 7.464104 },
+      "facade": "dark-glass loft",
+      "roofKit": "billboard-hvac",
+      "budgets": {
+        "lod0": { "maxBytes": 420000, "maxTriangles": 2800, "maxHeight": 28 },
+        "lod1": { "maxBytes": 100000, "maxTriangles": 420, "maxHeight": 28 }
+      }
+    }
+  ]
+}

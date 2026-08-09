@@ -25,6 +25,7 @@ import {
   type LoadedHeroCell,
 } from './hero-cell-loader'
 import { heroCells, type BuildingLookup } from './hero-cells'
+import { installPersistentHeroCells } from './hero-cell-manifest'
 import { rt } from '../gameplay/runtime'
 import { simulation } from '../gameplay/simulation'
 import { useSimulationStage } from '../gameplay/useSimulationStage'
@@ -199,6 +200,7 @@ class CityPipeline {
     quality: QualityPreset,
     hooks: PipelineHooks,
   ) {
+    installPersistentHeroCells(heroCells)
     this.scene = scene
     this.groupRoot = group
     this.quality = quality
@@ -336,6 +338,23 @@ class CityPipeline {
   async boot(): Promise<void> {
     if (this.disposed) return
     const { streamer, streets, lod, props, demand, traffic, weather, crowd } = this
+
+    // Persistent hero geometry must be standing before its streamed massing
+    // can be suppressed. Load the small W47 set first; any failed asset remains
+    // not-ready and therefore leaves its generated building intact.
+    const heroSync = cityWorld.city
+      ? await syncHeroCells(
+          heroCells,
+          cityWorld.city as unknown as BuildingLookup,
+          getGLTFLoader(),
+          this.groupRoot,
+          this.heroCellsLoaded,
+        )
+      : null
+    if (heroSync?.failed.length) {
+      console.warn('[hero-cells] persistent asset failures:', heroSync.failed)
+    }
+    if (this.disposed) return
 
     // Far tiers first: a tile that is about to be covered by L2 should never
     // briefly render at full detail on the way in.

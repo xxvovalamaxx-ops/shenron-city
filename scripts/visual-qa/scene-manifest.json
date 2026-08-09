@@ -299,6 +299,56 @@
         "near-black-budget": 0.95
       },
       "note": "Aerial night view over Midtown: near towers carry the full window grid, far ones read as aggregate warm glow (fwidth LOD)."
+    },
+    {
+      "scene_id": "reference-rooftop-canyon",
+      "label": "W47 rooftop canyon reference",
+      "status": "ready",
+      "zone": "exterior",
+      "camera": { "position": [-2480, 150, 1580], "target": [-2319, 62, 1810], "fov": 50 },
+      "time": 18,
+      "rain": 0,
+      "seed": "w47-rooftop-canyon-v1",
+      "resolution": { "width": 1920, "height": 1080 },
+      "graphicsPreset": "ultra",
+      "thresholdOverrides": {
+        "frame-diff": { "min": 0 }
+      },
+      "assetIds": [
+        "/models/manhattan/hq.glb",
+        "/models/manhattan/hero/w47/building-20093-lod0.glb",
+        "/models/manhattan/hero/w47/building-20653-lod0.glb",
+        "/models/manhattan/hero/w47/building-21717-lod0.glb",
+        "/models/manhattan/hero/w47/building-21729-lod0.glb",
+        "/models/manhattan/hero/w47/building-34687-lod0.glb",
+        "/models/manhattan/hero/w47/building-34859-lod0.glb"
+      ],
+      "note": "High oblique reference pose aimed at the actual W47 HQ. Frames authored setbacks, parapets, window-relief bands, and skyline-critical water-tower/HVAC/duct/billboard silhouettes. This fixed-seed capture can be fully stationary, so this scene alone permits a zero frame-diff minimum; the global maximum still catches camera drift."
+    },
+    {
+      "scene_id": "reference-driving-canyon",
+      "label": "W47 driving canyon reference",
+      "status": "ready",
+      "zone": "exterior",
+      "camera": { "position": [-2390, 13.85, 1752], "target": [-2285, 16.4, 1810], "fov": 58 },
+      "time": 16.25,
+      "rain": 0,
+      "seed": "w47-driving-canyon-v1",
+      "resolution": { "width": 1920, "height": 1080 },
+      "graphicsPreset": "ultra",
+      "thresholdOverrides": {
+        "frame-diff": { "min": 0 }
+      },
+      "assetIds": [
+        "/models/manhattan/hq.glb",
+        "/models/manhattan/hero/w47/building-20093-lod0.glb",
+        "/models/manhattan/hero/w47/building-20653-lod0.glb",
+        "/models/manhattan/hero/w47/building-21717-lod0.glb",
+        "/models/manhattan/hero/w47/building-21729-lod0.glb",
+        "/models/manhattan/hero/w47/building-34687-lod0.glb",
+        "/models/manhattan/hero/w47/building-34859-lod0.glb"
+      ],
+      "note": "Eye-level W47 frontage pose looking through the persistent hero cluster toward the actual HQ; suitable for traffic-scale and ground-floor-depth review. This fixed-seed capture can be fully stationary, so this scene alone permits a zero frame-diff minimum; the global maximum still catches camera drift."
     }
   ]
 }

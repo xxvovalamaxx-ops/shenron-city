@@ -26,7 +26,7 @@
 /* global document, requestAnimationFrame */
 import { readFileSync, writeFileSync, mkdirSync, existsSync } from 'node:fs'
 import { fileURLToPath } from 'node:url'
-import { dirname, join } from 'node:path'
+import { dirname, join, resolve } from 'node:path'
 import { execFileSync } from 'node:child_process'
 import puppeteer from 'puppeteer-core'
 import { decodePngToRgba } from './png-decode.mjs'
@@ -222,6 +222,15 @@ async function captureScene(browser, scene, args) {
   const checks = Object.fromEntries(
     Object.entries(analysisA.results).map(([id, r]) => [id, { pass: r.pass, metric: r.metric, threshold: r.threshold, severity: r.severity }]),
   )
+  // A large delta means the fixed capture camera did not produce comparable
+  // frames. It is a P0 capture-integrity failure, not merely diagnostics in
+  // metadata: a scene with a moved/unstable camera cannot be accepted.
+  checks['frame-diff'] = {
+    pass: diff.pass,
+    metric: diff.diff,
+    threshold: diff.threshold,
+    severity: 'P0',
+  }
   const summary = {
     scene_id: scene.scene_id,
     captured_at: new Date().toISOString(),
@@ -244,56 +253,82 @@ async function captureScene(browser, scene, args) {
   writeFileSync(join(outDir, 'frame-b.png'), Buffer.from(await frameB.png))
   writeFileSync(join(outDir, 'metadata.json'), JSON.stringify(summary, null, 2))
 
+  const { failed, p0Failed, ok } = summarizeCaptureChecks(checks)
+
+  return { scene_id: scene.scene_id, ok, failed, p0Failed, fps, settled, diff: diff.diff }
+}
+
+/**
+ * Convert named visual checks into the public scene verdict.
+ *
+ * Kept separate from Chromium work so the rule that frame-diff is a P0 gate
+ * is executable and regression-tested rather than implicit in captureScene.
+ */
+export function summarizeCaptureChecks(checks) {
   const failed = Object.entries(checks)
-    .filter(([, r]) => !r.pass)
-    .map(([id, r]) => `${id}(${r.severity})`)
-  const p0Failed = Object.entries(checks).some(([, r]) => !r.pass && r.severity === 'P0')
-
-  return { scene_id: scene.scene_id, ok: failed.length === 0, failed, p0Failed, fps, settled, diff: diff.diff }
-}
-
-const args = parseArgs(process.argv.slice(2))
-const manifest = JSON.parse(readFileSync(MANIFEST_PATH, 'utf8'))
-
-const scenes = manifest.scenes.filter((s) => (args.scenes ? args.scenes.includes(s.scene_id) : true))
-const ready = scenes.filter((s) => s.status === 'ready')
-const skipped = scenes.filter((s) => s.status !== 'ready')
-
-console.log(`manifest v${manifest.version}: ${ready.length} ready, ${skipped.length} not-built, ${scenes.length} selected`)
-
-const browser = await puppeteer.launch({
-  executablePath: resolveExecutablePath(),
-  headless: args.headless,
-  args: ['--enable-unsafe-swiftshader', '--mute-audio', '--window-size=1920,1080'],
-})
-
-const results = []
-try {
-  for (const scene of ready) {
-    process.stdout.write(`capturing ${scene.scene_id} ... `)
-    const result = await captureScene(browser, scene, args)
-    results.push(result)
-    console.log(result.ok ? 'ok' : `FAILED [${result.failed.join(', ')}]`)
+    .filter(([, result]) => !result.pass)
+    .map(([id, result]) => `${id}(${result.severity})`)
+  return {
+    ok: failed.length === 0,
+    failed,
+    p0Failed: Object.values(checks).some((result) => !result.pass && result.severity === 'P0'),
   }
-} finally {
-  await browser.close()
 }
 
-for (const scene of skipped) {
-  results.push({ scene_id: scene.scene_id, ok: false, failed: ['not-built (skipped)'], p0Failed: true, note: scene.note })
+/** P0 capture failures are CI failures; skipped not-built scenes remain evidence only. */
+export function captureExitCode(results) {
+  return results.some((result) => result.p0Failed && !result.note) ? 1 : 0
 }
 
-const summary = {
-  pipeline: manifest.pipeline,
-  generated_at: new Date().toISOString(),
-  git_rev: gitRev(),
-  server: args.server,
-  results,
-}
-const summaryPath = join(args.out, 'run-summary.json')
-mkdirSync(args.out, { recursive: true })
-writeFileSync(summaryPath, JSON.stringify(summary, null, 2))
-console.log(`summary written to ${summaryPath}`)
+export async function runCapture(argv = process.argv.slice(2)) {
+  const args = parseArgs(argv)
+  const manifest = JSON.parse(readFileSync(MANIFEST_PATH, 'utf8'))
 
-const anyP0 = results.some((r) => r.p0Failed && !r.note)
-process.exit(anyP0 ? 1 : 0)
+  const scenes = manifest.scenes.filter((s) => (args.scenes ? args.scenes.includes(s.scene_id) : true))
+  const ready = scenes.filter((s) => s.status === 'ready')
+  const skipped = scenes.filter((s) => s.status !== 'ready')
+
+  console.log(`manifest v${manifest.version}: ${ready.length} ready, ${skipped.length} not-built, ${scenes.length} selected`)
+
+  const browser = await puppeteer.launch({
+    executablePath: resolveExecutablePath(),
+    headless: args.headless,
+    args: ['--enable-unsafe-swiftshader', '--mute-audio', '--window-size=1920,1080'],
+  })
+
+  const results = []
+  try {
+    for (const scene of ready) {
+      process.stdout.write(`capturing ${scene.scene_id} ... `)
+      const result = await captureScene(browser, scene, args)
+      results.push(result)
+      console.log(result.ok ? 'ok' : `FAILED [${result.failed.join(', ')}]`)
+    }
+  } finally {
+    await browser.close()
+  }
+
+  for (const scene of skipped) {
+    results.push({ scene_id: scene.scene_id, ok: false, failed: ['not-built (skipped)'], p0Failed: true, note: scene.note })
+  }
+
+  const summary = {
+    pipeline: manifest.pipeline,
+    generated_at: new Date().toISOString(),
+    git_rev: gitRev(),
+    server: args.server,
+    results,
+  }
+  const summaryPath = join(args.out, 'run-summary.json')
+  mkdirSync(args.out, { recursive: true })
+  writeFileSync(summaryPath, JSON.stringify(summary, null, 2))
+  console.log(`summary written to ${summaryPath}`)
+
+  return { summary, exitCode: captureExitCode(results) }
+}
+
+// Importing the verdict helper from a focused test must not launch Chromium.
+if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
+  const { exitCode } = await runCapture()
+  process.exitCode = exitCode
+}

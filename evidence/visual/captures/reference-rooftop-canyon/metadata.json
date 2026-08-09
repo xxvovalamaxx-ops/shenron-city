@@ -1,0 +1,95 @@
+{
+  "scene_id": "reference-rooftop-canyon",
+  "captured_at": "2026-08-09T18:26:28.959Z",
+  "git_rev": "137e2dc455314854da36eeed5cb6152455bb396b",
+  "commit_repo_workspace": "E:\\temp projects\\shenron-city",
+  "url": "http://127.0.0.1:4174/?visionCapture=1&visionX=-2480&visionY=150&visionZ=1580&visionTX=-2319&visionTY=62&visionTZ=1810&visionFov=50&visionTime=18&visionRain=0&visionSeed=w47-rooftop-canyon-v1",
+  "settled": true,
+  "fps": 101,
+  "camera_pose_readback": "-2480.00,150.00,1580.00,0.5735,0.0000,0.8192",
+  "resolution": {
+    "width": 1920,
+    "height": 1080
+  },
+  "frame_diff": {
+    "value": 0,
+    "pass": false,
+    "threshold": "0.05 <= diff <= 12"
+  },
+  "checks": {
+    "frame-not-black": {
+      "pass": true,
+      "metric": 81.4728346080034,
+      "threshold": "> 6 mean luma",
+      "severity": "P0"
+    },
+    "frame-not-flat": {
+      "pass": true,
+      "metric": {
+        "lumaStddev": 58.74745132909831,
+        "distinctColors": 19704
+      },
+      "threshold": "lumaStddev > 2 and > 400 distinct colours",
+      "severity": "P0"
+    },
+    "aspect-ratio": {
+      "pass": true,
+      "metric": 1.7777777777777777,
+      "threshold": "16:9 within 0.01",
+      "severity": "P1"
+    },
+    "no-full-black-corner": {
+      "pass": true,
+      "metric": 25.560864715282598,
+      "threshold": "all 9 bands > 1 mean luma",
+      "severity": "P1"
+    },
+    "no-void": {
+      "pass": true,
+      "metric": 113.79687276640936,
+      "threshold": "band spread > 4 (not a solid fill)",
+      "severity": "P0"
+    },
+    "overexposure-budget": {
+      "pass": true,
+      "metric": 0,
+      "threshold": "< 0.15 pixels above luma 250",
+      "severity": "P2"
+    },
+    "near-black-budget": {
+      "pass": true,
+      "metric": 0.09330246913580247,
+      "threshold": "< 0.85 pixels below luma 8 (night scenes loosen)",
+      "severity": "P2"
+    },
+    "band-uniformity": {
+      "pass": true,
+      "metric": 44.63776475939084,
+      "threshold": "band luma stddev > 1 (varied framing)",
+      "severity": "P2"
+    },
+    "silhouette-coverage": {
+      "pass": true,
+      "metric": 0.5833333333333334,
+      "threshold": "> 0.05 grid edges (geometry present, not fog wall)",
+      "severity": "P1"
+    },
+    "ground-present": {
+      "pass": true,
+      "metric": {
+        "mean": 30.223279128484663,
+        "stddev": 3.255475195237775
+      },
+      "threshold": "bottom band non-black with texture variance",
+      "severity": "P2"
+    },
+    "color-palette-present": {
+      "pass": true,
+      "metric": 0.025789405445271155,
+      "threshold": "bright-pixel saturation > 0.01",
+      "severity": "P2"
+    }
+  },
+  "console_messages": [],
+  "issues": []
+}

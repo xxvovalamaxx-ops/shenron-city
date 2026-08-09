@@ -24,6 +24,8 @@ describe('development visual inspection', () => {
       'midtown-east',
       'harbor',
       'aerial-midtown',
+      'reference-rooftop-canyon',
+      'reference-driving-canyon',
     ]) {
       const view = debugInspectionView(`?spawn=${name}`, true)
       expect(view, name).not.toBeNull()
@@ -34,5 +36,13 @@ describe('development visual inspection', () => {
   it('resolves an aerial viewpoint high above the streets', () => {
     const view = debugInspectionView('?spawn=aerial-midtown', true)
     expect(view?.position.y).toBeGreaterThan(100)
+  })
+
+  it('pins both reference cameras to the real W47 HQ vicinity', () => {
+    for (const name of ['reference-rooftop-canyon', 'reference-driving-canyon']) {
+      const view = debugInspectionView(`?spawn=${name}`, true)
+      expect(Math.hypot(view!.target.x + 2318.735, view!.target.z - 1809.657), name)
+        .toBeLessThan(45)
+    }
   })
 })

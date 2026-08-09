@@ -18,14 +18,16 @@ import {
   type LoadedHeroCell,
 } from './hero-cell-loader'
 import { HeroCellRegistry, type BuildingLookup } from './hero-cells'
+import { manhattanCollision } from './manhattan-collision'
 
 let colliderCount = 0
+let acceptInteriorColliders = true
 vi.mock('./manhattan-collision', () => ({
   manhattanCollision: {
     // Counts what it accepted, mirroring the real system closely enough that
     // "registered nothing" is visible here rather than only in the browser.
     registerInterior: vi.fn(() => {
-      colliderCount += 1
+      if (acceptInteriorColliders) colliderCount += 1
     }),
     registerTileBuildings: vi.fn(),
     unregisterTileBuildings: vi.fn(),
@@ -63,6 +65,8 @@ describe('placing an authored building', () => {
   beforeEach(() => {
     parent = new THREE.Group()
     colliderCount = 0
+    acceptInteriorColliders = true
+    vi.clearAllMocks()
   })
 
   const placement = {
@@ -99,6 +103,7 @@ describe('placing an authored building', () => {
     expect(cell!.lod1).toBeTruthy()
     expect(cell!.lod0.visible).toBe(true)
     expect(cell!.lod1!.visible).toBe(false)
+    expect(cell!.colliderCount).toBe(1)
   })
 
   it('returns null and reports when the near tier will not load', async () => {
@@ -109,6 +114,32 @@ describe('placing an authored building', () => {
     expect(cell).toBeNull()
     expect(parent.children).toHaveLength(0)
     expect(failures).toHaveLength(1)
+  })
+
+  it('rolls back an authored model that registers no accepted collider', async () => {
+    acceptInteriorColliders = false
+    const authored = new THREE.Group()
+    const mesh = new THREE.Mesh(new THREE.BoxGeometry(1, 1, 1), new THREE.MeshBasicMaterial())
+    const disposeGeometry = vi.spyOn(mesh.geometry, 'dispose')
+    const disposeMaterial = vi.spyOn(mesh.material, 'dispose')
+    authored.add(mesh)
+    const failures: Array<{ reason: string }> = []
+    const loader: GltfSource = {
+      async loadAsync() {
+        return { scene: authored }
+      },
+    }
+
+    const cell = await loadHeroCell(placement, loader, parent, (failure) => failures.push(failure))
+
+    expect(cell).toBeNull()
+    expect(parent.children).toHaveLength(0)
+    expect(authored.parent).toBeNull()
+    expect(disposeGeometry).toHaveBeenCalledOnce()
+    expect(disposeMaterial).toHaveBeenCalledOnce()
+    expect(manhattanCollision.unregisterTileBuildings).toHaveBeenCalledOnce()
+    expect(failures).toHaveLength(1)
+    expect(failures[0].reason).toMatch(/no collider/)
   })
 
   it('keeps the cell when only the far tier fails, and says so', async () => {
@@ -142,14 +173,19 @@ describe('nothing is suppressed until the replacement is standing', () => {
     parent = new THREE.Group()
     registry = new HeroCellRegistry()
     loaded = new Map()
+    colliderCount = 0
+    acceptInteriorColliders = true
   })
 
   it('marks a cell ready only after its geometry is in the scene', async () => {
     registry.add({ buildingId: 0, lod0: '/hero/a.glb' })
     expect(registry.isReady(0)).toBe(false)
-    await syncHeroCells(registry, world, fakeLoader(), parent, loaded)
+    const report = await syncHeroCells(registry, world, fakeLoader(), parent, loaded)
     expect(registry.isReady(0)).toBe(true)
     expect(loaded.has(0)).toBe(true)
+    expect(report.loadedCells).toEqual([
+      { buildingId: 0, colliderCount: 1, hasLod1: false, lod1FromMetres: DEFAULT_LOD1_METRES },
+    ])
   })
 
   it('leaves a failed cell not-ready, so the generated building stays', async () => {
@@ -167,6 +203,21 @@ describe('nothing is suppressed until the replacement is standing', () => {
     expect(report.failed).toHaveLength(1)
     expect(report.loaded).toEqual([])
     expect(parent.children).toHaveLength(0)
+  })
+
+  it('leaves an uncollidable authored cell not-ready and unsuppressed', async () => {
+    acceptInteriorColliders = false
+    registry.add({ buildingId: 0, lod0: '/hero/a.glb' })
+
+    const report = await syncHeroCells(registry, world, fakeLoader(), parent, loaded)
+
+    expect(registry.isReady(0)).toBe(false)
+    expect(report.loaded).toEqual([])
+    expect(report.failed).toHaveLength(1)
+    expect(report.failed[0].reason).toMatch(/no collider/)
+    expect(loaded.size).toBe(0)
+    expect(parent.children).toHaveLength(0)
+    expect(report.loadedCells).toEqual([])
   })
 
   it('one failing cell does not stop the others loading', async () => {
@@ -216,6 +267,7 @@ describe('LOD switching', () => {
       lod0,
       lod1,
       lod1FromMetres: 300,
+      colliderCount: 1,
       position: new THREE.Vector3(0, 0, 0),
       ...over,
     }

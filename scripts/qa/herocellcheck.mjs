@@ -1,32 +1,20 @@
 /**
- * Does a hero cell actually replace one building — and only that one?
+ * Deterministic browser runtime gate for one shipped W47 hero cell.
  *
- * Stage 1 acceptance. The unit tests cover the arithmetic against a five-
- * triangle tile. This drives the real city: 56,476 buildings, 116 streamed
- * meshes, Draco-quantised `_bid`, geometry split across several meshes per
- * tile. Three claims, each with the control that makes it mean something:
+ * The previous check exercised a transient, non-W47 target. That could prove
+ * the generic suppression arithmetic while saying nothing about any building
+ * actually shipped in the W47 canyon. This gate always remounts building
+ * 21729, observes its real LOD assets and colliders, then injects a rejected
+ * collider registration against that same W47 source. It never substitutes HQ
+ * geometry or a synthetic target.
  *
- *   Suppression works. Triangles for the chosen building disappear. Control:
- *   the count before and after, on the meshes that actually carry it — chosen
- *   by reading the scene, not by trusting a tile calculation.
- *
- *   Suppression is confined. Every other tile is byte-for-byte unchanged.
- *   Control: a full triangle census of every other streamed mesh, before and
- *   after. Without this the check passes just as happily on an implementation
- *   that blanks the whole city.
- *
- *   Removal restores the original. Lifting the override puts back exactly the
- *   index that was there. Control: compare the restored triangle counts per
- *   mesh against the pre-suppression census, not just the total — a total can
- *   match while the triangles have moved between meshes.
- *
- * The building is picked from geometry that is loaded right now, for the reason
- * placeholdercheck learned the hard way: a sample chosen from a manifest and a
- * sample chosen from what is on screen are different samples, and only one of
- * them can be measured.
+ * The test opens dev-only inspection mode, then fixes its camera at W47 so the
+ * real -02/-02 streamed tile is resident. Evidence is only replaced after
+ * every runtime assertion passes; a failed run leaves the last known-good
+ * evidence intact.
  *
  * Usage:
- *   node scripts/qa/herocellcheck.mjs [--server URL]
+ *   node scripts/qa/herocellcheck.mjs [--server URL] [--out FILE]
  */
 /* global window */
 import { existsSync, mkdirSync, writeFileSync } from 'node:fs'
@@ -36,6 +24,9 @@ import puppeteer from 'puppeteer-core'
 
 const HERE = dirname(fileURLToPath(import.meta.url))
 const REPO_ROOT = resolve(HERE, '..', '..')
+const W47_TARGET_BUILDING_ID = 21729
+const W47_INSPECTION_SPAWN = 'reference-driving-canyon'
+const W47_TILE_TIMEOUT_MS = 45000
 
 const CANDIDATES = [
   'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe',
@@ -44,11 +35,21 @@ const CANDIDATES = [
   '/usr/bin/google-chrome',
   '/usr/bin/chromium',
 ]
+
 function resolveExecutablePath() {
   const fromEnv = process.env.PUPPETEER_EXECUTABLE_PATH || process.env.CHROME_PATH
   if (fromEnv) return fromEnv
-  for (const c of CANDIDATES) if (existsSync(c)) return c
+  for (const candidate of CANDIDATES) if (existsSync(candidate)) return candidate
   throw new Error('No Chromium-family browser found. Set PUPPETEER_EXECUTABLE_PATH.')
+}
+
+function w47RuntimeUrl(server) {
+  const url = new URL(server)
+  // Pin the streamed tile and prevent pointer lock. These parameters exist
+  // only in Vite dev builds, which is the only mode supported by this probe.
+  url.searchParams.set('spawn', W47_INSPECTION_SPAWN)
+  url.searchParams.set('inspect', '1')
+  return url.toString()
 }
 
 const args = {
@@ -60,379 +61,529 @@ for (let i = 0; i < process.argv.length; i++) {
   else if (process.argv[i] === '--out') args.out = process.argv[++i]
 }
 
-const browser = await puppeteer.launch({
-  executablePath: resolveExecutablePath(),
-  headless: true,
-  args: ['--no-sandbox', '--enable-unsafe-swiftshader'],
-  defaultViewport: { width: 1280, height: 720 },
-})
-const page = await browser.newPage()
-const errors = []
-page.on('console', (m) => {
-  if (m.type() === 'error') errors.push(m.text())
-})
-page.on('pageerror', (e) => errors.push(`pageerror: ${e.message}`))
+const qaUrl = w47RuntimeUrl(args.server)
+const consoleErrors = []
+let browser
+let page
+let report
 
-await page.goto(args.server, { waitUntil: 'domcontentloaded', timeout: 60000 })
+try {
+  browser = await puppeteer.launch({
+    executablePath: resolveExecutablePath(),
+    headless: true,
+    args: ['--no-sandbox', '--enable-unsafe-swiftshader'],
+    defaultViewport: { width: 1280, height: 720 },
+  })
+  page = await browser.newPage()
+  page.on('console', (message) => {
+    if (message.type() === 'error') consoleErrors.push(`console: ${message.text()}`)
+  })
+  page.on('pageerror', (error) => consoleErrors.push(`pageerror: ${error.message}`))
 
-const booted = await page.evaluate(
-  (limit) =>
-    new Promise((r) => {
-      const t0 = Date.now()
-      const tick = () => {
-        if (
-          window.__cityWorld?.ready &&
-          window.__heroCells &&
-          window.__heroCellsReapply &&
-          window.__gameScene
-        )
-          return r(true)
-        if (Date.now() - t0 > limit) return r(false)
-        setTimeout(tick, 250)
+  await page.goto(qaUrl, { waitUntil: 'domcontentloaded', timeout: 60000 })
+  const booted = await page.evaluate(
+    (target) =>
+      new Promise((resolveBoot) => {
+        const started = Date.now()
+        const tick = () => {
+          const group = window.__gameScene?.getObjectByName(`HERO_${target}`)
+          if (
+            window.__cityWorld?.ready &&
+            window.__heroCells?.isReady(target) &&
+            window.__heroCellsReapply &&
+            window.__gameScene &&
+            window.__gameCamera &&
+            window.__manhattanCollision &&
+            window.THREE &&
+            group
+          ) {
+            resolveBoot(true)
+            return
+          }
+          if (Date.now() - started > 120000) {
+            resolveBoot(false)
+            return
+          }
+          setTimeout(tick, 250)
+        }
+        tick()
+      }),
+    W47_TARGET_BUILDING_ID,
+  )
+  if (!booted) throw new Error('W47 runtime never became ready')
+
+  await page.evaluate(() => window.__hud?.getState().setScreen('playing'))
+
+  // The inspection route prevents the normal game loop from overwriting the
+  // camera, but its initial Canvas pose is generic. Put that fixed camera at
+  // the actual W47 lot before asking the streamer for the -02/-02 geometry.
+  await page.evaluate((target) => {
+    const city = window.__cityWorld.city
+    const camera = window.__gameCamera
+    const x = city.x(target)
+    const z = -city.y(target)
+    camera.position.set(x + 80, 72, z + 80)
+    camera.lookAt(x, 24, z)
+    camera.updateMatrixWorld()
+  }, W47_TARGET_BUILDING_ID)
+
+  try {
+    await page.waitForFunction(
+    (target) => {
+      let found = false
+      window.__gameScene?.traverse((object) => {
+        if (found || !object.isMesh) return
+        const geometry = object.geometry
+        const bid = geometry?.attributes?._bid ?? geometry?.attributes?._BID
+        if (!bid) return
+        const original = geometry.userData?.__heroCellOriginalIndex
+        const index = original ?? geometry.index
+        const indexArray = index?.array ?? index
+        const triangleCount = indexArray ? Math.floor(indexArray.length / 3) : Math.floor(bid.count / 3)
+        for (let triangle = 0; triangle < triangleCount; triangle++) {
+          const a = indexArray ? indexArray[triangle * 3] : triangle * 3
+          const b = indexArray ? indexArray[triangle * 3 + 1] : triangle * 3 + 1
+          const c = indexArray ? indexArray[triangle * 3 + 2] : triangle * 3 + 2
+          if (
+            Math.round(bid.getX(a)) === target &&
+            Math.round(bid.getX(b)) === target &&
+            Math.round(bid.getX(c)) === target
+          ) {
+            found = true
+            return
+          }
+        }
+      })
+      return found
+    },
+      { timeout: W47_TILE_TIMEOUT_MS, polling: 250 },
+      W47_TARGET_BUILDING_ID,
+    )
+  } catch {
+    throw new Error(`W47 building ${W47_TARGET_BUILDING_ID} never arrived in a streamed tile`)
+  }
+
+  // Lift the actual W47 target before measuring it. It starts legitimately
+  // suppressed, so its legacy `_bid` triangles are only observable after this
+  // controlled unmount.
+  const preparation = await page.evaluate(async (target) => {
+    const spec = window.__heroCells.get(target)
+    if (!spec) return { spec: null, unmount: null }
+    window.__heroCells.remove(target)
+    return { spec, unmount: await window.__heroCellsReapply() }
+  }, W47_TARGET_BUILDING_ID)
+  if (!preparation.spec) throw new Error(`W47 building ${W47_TARGET_BUILDING_ID} is absent from the registry`)
+
+  try {
+    await page.waitForFunction(
+    (target) => {
+      let triangles = 0
+      window.__gameScene?.traverse((object) => {
+        if (!object.isMesh || !/^BLD_[A-Za-z]+_[+-]\d+_[+-]\d+(_\d+)?$/.test(object.name)) return
+        const geometry = object.geometry
+        const bid = geometry?.attributes?._bid ?? geometry?.attributes?._BID
+        if (!bid) return
+        const index = geometry.index
+        const triangleCount = index ? Math.floor(index.count / 3) : Math.floor(bid.count / 3)
+        for (let triangle = 0; triangle < triangleCount; triangle++) {
+          const a = index ? index.getX(triangle * 3) : triangle * 3
+          const b = index ? index.getX(triangle * 3 + 1) : triangle * 3 + 1
+          const c = index ? index.getX(triangle * 3 + 2) : triangle * 3 + 2
+          if (
+            Math.round(bid.getX(a)) === target &&
+            Math.round(bid.getX(b)) === target &&
+            Math.round(bid.getX(c)) === target
+          ) {
+            triangles++
+          }
+        }
+      })
+      return triangles > 0
+    },
+      { timeout: W47_TILE_TIMEOUT_MS, polling: 250 },
+      W47_TARGET_BUILDING_ID,
+    )
+  } catch {
+    throw new Error(`W47 building ${W47_TARGET_BUILDING_ID} legacy triangles did not restore after unmount`)
+  }
+
+  const runtime = await page.evaluate(
+    async (target, originalSpec, initialUnmount) => {
+      const scene = window.__gameScene
+      const registry = window.__heroCells
+      const collision = window.__manhattanCollision
+      const camera = window.__gameCamera
+      const THREE = window.THREE
+
+      const waitFrames = async (count = 4) => {
+        for (let frame = 0; frame < count; frame++) {
+          await new Promise((resolveFrame) => window.requestAnimationFrame(resolveFrame))
+        }
       }
-      tick()
-    }),
-  120000,
-)
-if (!booted) {
-  console.error('herocellcheck: never became ready (need __heroCells and __heroCellsReapply)')
-  console.error(errors.slice(0, 5).join('\n'))
-  await browser.close()
-  process.exit(2)
+
+      const meshStats = (root) => {
+        let meshes = 0
+        let triangles = 0
+        root?.traverse((object) => {
+          if (!object.isMesh) return
+          meshes++
+          const geometry = object.geometry
+          triangles += geometry.index
+            ? Math.floor(geometry.index.count / 3)
+            : Math.floor((geometry.attributes.position?.count ?? 0) / 3)
+        })
+        return { meshes, triangles }
+      }
+
+      const legacyTriangles = (buildingId) => {
+        const perMesh = {}
+        scene.traverse((object) => {
+          if (!object.isMesh || !/^BLD_[A-Za-z]+_[+-]\d+_[+-]\d+(_\d+)?$/.test(object.name)) return
+          const geometry = object.geometry
+          const bid = geometry?.attributes?._bid ?? geometry?.attributes?._BID
+          if (!bid) return
+          const index = geometry.index
+          const triangleCount = index ? Math.floor(index.count / 3) : Math.floor(bid.count / 3)
+          let matched = 0
+          for (let triangle = 0; triangle < triangleCount; triangle++) {
+            const a = index ? index.getX(triangle * 3) : triangle * 3
+            const b = index ? index.getX(triangle * 3 + 1) : triangle * 3 + 1
+            const c = index ? index.getX(triangle * 3 + 2) : triangle * 3 + 2
+            if (
+              Math.round(bid.getX(a)) === buildingId &&
+              Math.round(bid.getX(b)) === buildingId &&
+              Math.round(bid.getX(c)) === buildingId
+            ) {
+              matched++
+            }
+          }
+          if (matched > 0) perMesh[object.name] = matched
+        })
+        return {
+          perMesh,
+          meshes: Object.keys(perMesh).length,
+          triangles: Object.values(perMesh).reduce((sum, count) => sum + count, 0),
+        }
+      }
+
+      const heroColliderEntries = (buildingId) =>
+        collision.buildingBvhs.filter((entry) => entry.mesh?.name.startsWith(`BLD_HERO_${buildingId}_`))
+
+      const groupCount = (name) => {
+        let count = 0
+        scene.traverse((object) => {
+          if (object.name === name) count++
+        })
+        return count
+      }
+      const allHeroGroupCount = () => {
+        let count = 0
+        scene.traverse((object) => {
+          if (/^HERO_\d+$/.test(object.name)) count++
+        })
+        return count
+      }
+
+      const snapshot = (buildingId) => {
+        const group = scene.getObjectByName(`HERO_${buildingId}`)
+        const lod0 = group?.getObjectByName(`HERO_${buildingId}_LOD0`) ?? null
+        const lod1 = group?.getObjectByName(`HERO_${buildingId}_LOD1`) ?? null
+        const colliders = heroColliderEntries(buildingId)
+        return {
+          ready: registry.isReady(buildingId),
+          targetGroupCount: groupCount(`HERO_${buildingId}`),
+          w47GroupCount: allHeroGroupCount(),
+          group: Boolean(group),
+          lod0: { exists: Boolean(lod0), visible: lod0?.visible ?? null, ...meshStats(lod0) },
+          lod1: { exists: Boolean(lod1), visible: lod1?.visible ?? null, ...meshStats(lod1) },
+          legacy: legacyTriangles(buildingId),
+          heroColliderCount: colliders.length,
+          heroColliderNames: colliders.map((entry) => entry.mesh.name),
+          totalBuildingColliderCount: collision.buildingColliderCount,
+        }
+      }
+
+      const hasTileHit = (reapplyReport, buildingId) =>
+        reapplyReport?.tiles?.some((tile) => tile.hit?.includes(buildingId)) ?? false
+      const hasTileMiss = (reapplyReport, buildingId) =>
+        reapplyReport?.tiles?.some((tile) => tile.missed?.includes(buildingId)) ?? false
+      const loadDiagnostic = (reapplyReport, buildingId) =>
+        reapplyReport?.sync?.loadedCells?.find((entry) => entry.buildingId === buildingId) ?? null
+
+      // The controlled legacy baseline is the actual W47 building after its
+      // authored replacement has been removed, not a target guessed from an
+      // on-screen tile.
+      const legacyBaseline = snapshot(target)
+
+      registry.add(originalSpec)
+      const normalRemount = await window.__heroCellsReapply()
+      await waitFrames()
+      const normal = snapshot(target)
+      const normalLoad = loadDiagnostic(normalRemount, target)
+
+      // `updateHeroLods` runs in the presentation stage. Move the fixed
+      // inspection camera through the real cell's configured hysteresis band
+      // and wait for that stage rather than toggling visibility directly.
+      const savedCameraPosition = camera.position.clone()
+      const threshold = normalLoad?.lod1FromMetres ?? originalSpec.lod1FromMetres
+      const band = threshold * 0.1
+      const targetGroup = scene.getObjectByName(`HERO_${target}`)
+      const setCameraDistance = (distance) => {
+        camera.position.set(targetGroup.position.x + distance, targetGroup.position.y, targetGroup.position.z)
+        camera.updateMatrixWorld()
+      }
+      setCameraDistance(Math.max(1, threshold - band - 1))
+      await waitFrames()
+      const nearLod = snapshot(target)
+      setCameraDistance(threshold + band + 1)
+      await waitFrames()
+      const farLod = snapshot(target)
+      camera.position.copy(savedCameraPosition)
+      camera.updateMatrixWorld()
+      await waitFrames()
+
+      // A normal unmount must restore the raw streamed triangles and remove
+      // both the authored node and its accepted collider entries.
+      registry.remove(target)
+      const normalUnmount = await window.__heroCellsReapply()
+      await waitFrames()
+      const afterNormalUnmount = snapshot(target)
+
+      // Fault injection on the real W47 GLBs: reject `registerInterior` while
+      // preserving the loader, geometry, placement and reapply path. Disposal
+      // hooks are restored in finally so this cannot contaminate the recovery.
+      const originalRegisterInterior = collision.registerInterior
+      const originalUnregisterTileBuildings = collision.unregisterTileBuildings
+      const originalGeometryDispose = THREE.BufferGeometry.prototype.dispose
+      const originalMaterialDispose = THREE.Material.prototype.dispose
+      let rejectedRegisterCalls = 0
+      let rollbackUnregisterCalls = 0
+      let disposedGeometries = 0
+      let disposedMaterials = 0
+      let zeroColliderRemount
+      try {
+        collision.registerInterior = () => {
+          rejectedRegisterCalls++
+        }
+        collision.unregisterTileBuildings = function unregisterForFault(root) {
+          if (root?.name === `HERO_${target}`) rollbackUnregisterCalls++
+          return originalUnregisterTileBuildings.call(this, root)
+        }
+        THREE.BufferGeometry.prototype.dispose = function disposeGeometry(...disposeArgs) {
+          disposedGeometries++
+          return originalGeometryDispose.apply(this, disposeArgs)
+        }
+        THREE.Material.prototype.dispose = function disposeMaterial(...disposeArgs) {
+          disposedMaterials++
+          return originalMaterialDispose.apply(this, disposeArgs)
+        }
+        registry.add(originalSpec)
+        zeroColliderRemount = await window.__heroCellsReapply()
+      } finally {
+        collision.registerInterior = originalRegisterInterior
+        collision.unregisterTileBuildings = originalUnregisterTileBuildings
+        THREE.BufferGeometry.prototype.dispose = originalGeometryDispose
+        THREE.Material.prototype.dispose = originalMaterialDispose
+      }
+      await waitFrames()
+      const zeroCollider = snapshot(target)
+
+      // Recover with the very same shipped W47 spec, then reapply once more to
+      // catch duplicate groups/colliders created by a supposedly idempotent run.
+      registry.add(originalSpec)
+      const recoveryRemount = await window.__heroCellsReapply()
+      await waitFrames()
+      const recovery = snapshot(target)
+      const idempotentReapply = await window.__heroCellsReapply()
+      await waitFrames()
+      const afterIdempotent = snapshot(target)
+
+      return {
+        target,
+        expectedSpec: {
+          lod0: originalSpec.lod0,
+          lod1: originalSpec.lod1 ?? null,
+          lod1FromMetres: originalSpec.lod1FromMetres ?? null,
+        },
+        initialUnmount,
+        legacyBaseline,
+        normalRemount,
+        normalLoad,
+        normal,
+        lodSwitch: {
+          configuredDistance: threshold,
+          hysteresisBand: band,
+          nearProbeDistance: Math.max(1, threshold - band - 1),
+          farProbeDistance: threshold + band + 1,
+          near: { lod0Visible: nearLod.lod0.visible, lod1Visible: nearLod.lod1.visible },
+          far: { lod0Visible: farLod.lod0.visible, lod1Visible: farLod.lod1.visible },
+        },
+        normalUnmount,
+        afterNormalUnmount,
+        zeroColliderRemount,
+        zeroCollider,
+        zeroColliderFault: {
+          rejectedRegisterCalls,
+          rollbackUnregisterCalls,
+          disposedGeometries,
+          disposedMaterials,
+        },
+        recoveryRemount,
+        recoveryLoad: loadDiagnostic(recoveryRemount, target),
+        recovery,
+        idempotentReapply,
+        afterIdempotent,
+        tileHitDuringNormalRemount: hasTileHit(normalRemount, target),
+        tileMissDuringNormalRemount: hasTileMiss(normalRemount, target),
+        tileHitDuringZeroColliderFault: hasTileHit(zeroColliderRemount, target),
+        tileHitDuringRecovery: hasTileHit(recoveryRemount, target),
+      }
+    },
+    W47_TARGET_BUILDING_ID,
+    preparation.spec,
+    preparation.unmount,
+  )
+
+  // Let any late browser errors from the last render tick arrive before this
+  // becomes a gate. Intentional failure is injected entirely in memory, so it
+  // must not need a 404 or a suppressed console error exemption.
+  await new Promise((resolveDelay) => setTimeout(resolveDelay, 250))
+
+  const checks = {
+    actualShippedW47Target:
+      runtime.target === W47_TARGET_BUILDING_ID &&
+      runtime.expectedSpec.lod0 ===
+        `/models/manhattan/hero/w47/building-${W47_TARGET_BUILDING_ID}-lod0.glb` &&
+      runtime.expectedSpec.lod1 ===
+        `/models/manhattan/hero/w47/building-${W47_TARGET_BUILDING_ID}-lod1.glb`,
+    legacyGeometryWasResident:
+      runtime.legacyBaseline.legacy.triangles > 0 && runtime.legacyBaseline.legacy.meshes > 0,
+    lod0AndLod1Loaded:
+      runtime.normal.ready &&
+      runtime.normal.targetGroupCount === 1 &&
+      runtime.normal.lod0.exists &&
+      runtime.normal.lod0.meshes > 0 &&
+      runtime.normal.lod0.triangles > 0 &&
+      runtime.normal.lod1.exists &&
+      runtime.normal.lod1.meshes > 0 &&
+      runtime.normal.lod1.triangles > 0,
+    configuredLodThresholdApplied:
+      runtime.expectedSpec.lod1FromMetres === 300 &&
+      runtime.normalLoad?.lod1FromMetres === runtime.expectedSpec.lod1FromMetres &&
+      runtime.normalLoad?.hasLod1 === true &&
+      runtime.lodSwitch.hysteresisBand === runtime.lodSwitch.configuredDistance * 0.1 &&
+      runtime.lodSwitch.near.lod0Visible === true &&
+      runtime.lodSwitch.near.lod1Visible === false &&
+      runtime.lodSwitch.far.lod0Visible === false &&
+      runtime.lodSwitch.far.lod1Visible === true,
+    colliderRegisteredBeforeSuppression:
+      runtime.normalLoad?.colliderCount > 0 &&
+      runtime.normal.heroColliderCount === runtime.normalLoad.colliderCount &&
+      runtime.normal.heroColliderCount === runtime.normal.lod0.meshes &&
+      runtime.tileHitDuringNormalRemount === true &&
+      runtime.tileMissDuringNormalRemount === false &&
+      runtime.normal.legacy.triangles === 0,
+    normalUnmountRestoredWithoutLeak:
+      runtime.normalUnmount?.sync?.unloaded?.includes(W47_TARGET_BUILDING_ID) &&
+      runtime.afterNormalUnmount.ready === false &&
+      runtime.afterNormalUnmount.targetGroupCount === 0 &&
+      runtime.afterNormalUnmount.heroColliderCount === 0 &&
+      runtime.afterNormalUnmount.legacy.triangles === runtime.legacyBaseline.legacy.triangles,
+    zeroColliderDoesNotSuppressAndDisposes:
+      runtime.zeroColliderFault.rejectedRegisterCalls > 0 &&
+      runtime.zeroColliderRemount?.sync?.loaded?.includes(W47_TARGET_BUILDING_ID) === false &&
+      runtime.zeroColliderRemount?.sync?.loadedCells?.some(
+        (entry) => entry.buildingId === W47_TARGET_BUILDING_ID,
+      ) === false &&
+      runtime.zeroColliderRemount?.sync?.failed?.some(
+        (failure) =>
+          failure.buildingId === W47_TARGET_BUILDING_ID && /no collider/i.test(failure.reason),
+      ) === true &&
+      runtime.zeroCollider.ready === false &&
+      runtime.zeroCollider.targetGroupCount === 0 &&
+      runtime.zeroCollider.heroColliderCount === 0 &&
+      runtime.zeroCollider.legacy.triangles === runtime.legacyBaseline.legacy.triangles &&
+      runtime.tileHitDuringZeroColliderFault === false &&
+      runtime.zeroColliderFault.rollbackUnregisterCalls === 1 &&
+      runtime.zeroColliderFault.disposedGeometries >= runtime.normal.lod0.meshes + runtime.normal.lod1.meshes &&
+      runtime.zeroColliderFault.disposedMaterials >= runtime.normal.lod0.meshes + runtime.normal.lod1.meshes,
+    recoveryRemountDoesNotLeak:
+      runtime.recoveryLoad?.colliderCount === runtime.normalLoad?.colliderCount &&
+      runtime.tileHitDuringRecovery === true &&
+      runtime.recovery.ready === true &&
+      runtime.recovery.targetGroupCount === 1 &&
+      runtime.recovery.w47GroupCount === 6 &&
+      runtime.recovery.heroColliderCount === runtime.normal.heroColliderCount &&
+      runtime.recovery.legacy.triangles === 0 &&
+      runtime.idempotentReapply?.sync?.loaded?.length === 0 &&
+      runtime.idempotentReapply?.sync?.unloaded?.length === 0 &&
+      runtime.afterIdempotent.targetGroupCount === runtime.recovery.targetGroupCount &&
+      runtime.afterIdempotent.heroColliderCount === runtime.recovery.heroColliderCount &&
+      runtime.afterIdempotent.w47GroupCount === runtime.recovery.w47GroupCount,
+    noHardConsoleErrors: consoleErrors.length === 0,
+  }
+  const pass = Object.values(checks).every(Boolean)
+  report = {
+    generatedBy: 'scripts/qa/herocellcheck.mjs',
+    qaUrl,
+    ...runtime,
+    checks,
+    consoleErrors: [...new Set(consoleErrors)],
+    pass,
+  }
+} catch (error) {
+  report = {
+    generatedBy: 'scripts/qa/herocellcheck.mjs',
+    qaUrl,
+    target: W47_TARGET_BUILDING_ID,
+    failure: error instanceof Error ? error.message : String(error),
+    checks: { runtimeCompleted: false, noHardConsoleErrors: consoleErrors.length === 0 },
+    consoleErrors: [...new Set(consoleErrors)],
+    pass: false,
+  }
+} finally {
+  try {
+    await page?.close()
+  } catch {
+    // A crashed page is already gone; do not mask the QA result with cleanup.
+  }
+  try {
+    await browser?.close()
+  } catch {
+    // Same rule for Chromium.
+  }
 }
 
-await page.evaluate(() => window.__hud?.getState().setScreen('playing'))
-// Tiles stream in; a census taken too early measures an empty city.
-await new Promise((r) => setTimeout(r, 14000))
-
-const result = await page.evaluate(async () => {
-  const scene = window.__gameScene
-  const city = window.__cityWorld.city
-
-  /** Triangles per streamed building mesh, keyed by name. */
-  const census = () => {
-    const out = {}
-    scene.traverse((o) => {
-      if (!o.isMesh) return
-      if (!/^BLD_[A-Za-z]+_[+-]\d+_[+-]\d+(_\d+)?$/.test(o.name)) return
-      const g = o.geometry
-      out[o.name] = g.index ? g.index.count / 3 : (g.attributes.position?.count ?? 0) / 3
-    })
-    return out
-  }
-
-  /** Meshes carrying a given building id, and how many triangles are its own. */
-  const trianglesOf = (buildingId) => {
-    const out = {}
-    scene.traverse((o) => {
-      if (!o.isMesh) return
-      const g = o.geometry
-      const bid = g?.attributes?._bid || g?.attributes?._BID
-      if (!bid) return
-      const idx = g.index
-      const tris = idx ? idx.count / 3 : bid.count / 3
-      let mine = 0
-      for (let t = 0; t < tris; t++) {
-        const a = idx ? idx.getX(t * 3) : t * 3
-        const b = idx ? idx.getX(t * 3 + 1) : t * 3 + 1
-        const c = idx ? idx.getX(t * 3 + 2) : t * 3 + 2
-        if (
-          Math.round(bid.getX(a)) === buildingId &&
-          Math.round(bid.getX(b)) === buildingId &&
-          Math.round(bid.getX(c)) === buildingId
-        )
-          mine++
-      }
-      if (mine > 0) out[o.name] = mine
-    })
-    return out
-  }
-
-  // Pick a target from geometry that is loaded right now, preferring a big
-  // building so the triangle delta is unambiguous. Reading the scene rather
-  // than the manifest is the point: a building city.json lists is not
-  // necessarily a building currently streamed in.
-  const drawn = new Map()
-  scene.traverse((o) => {
-    if (!o.isMesh) return
-    const g = o.geometry
-    const bid = g?.attributes?._bid || g?.attributes?._BID
-    if (!bid) return
-    for (let i = 0; i < bid.count; i++) {
-      const id = Math.round(bid.getX(i))
-      drawn.set(id, (drawn.get(id) ?? 0) + 1)
-    }
-  })
-  if (drawn.size === 0) return { aborted: 'no streamed building geometry found' }
-
-  const target = [...drawn.entries()].sort((a, b) => b[1] - a[1])[0][0]
-  const info = city?.get?.(target) ?? null
-
-  // Coherence baselines, taken before anything is overridden.
-  //
-  // The brief asks for collision, traffic, navigation, address metadata and
-  // save state to "stay coherent". That is five separate claims and none of
-  // them is self-evident just because the suppression arithmetic is right, so
-  // each gets a number here and the same number after.
-  const coherenceBefore = {
-    // Address metadata comes from core.bin and text.json, which a hero cell
-    // never touches — but "never touches" is an argument, not a measurement.
-    name: city?.name?.(target) ?? null,
-    address: city?.address?.(target) ?? null,
-    // Navigation surfaces: the ground the player and the crowd walk on.
-    groundTriangles: (() => {
-      let n = 0
-      scene.traverse((o) => {
-        if (!o.isMesh) return
-        if (!/^(SIDEWALK_|ROAD_|PARK_)/i.test(o.name)) return
-        const g = o.geometry
-        n += g.index ? g.index.count / 3 : (g.attributes.position?.count ?? 0) / 3
-      })
-      return n
-    })(),
-    // Traffic: the lane graph the LION sim drives on.
-    lanes: window.__cityWorld?.traffic?.lanes?.length ?? null,
-    // Save state: the exact bytes the game would persist.
-    save: window.localStorage.getItem('shenron-city:save'),
-    // Collision at the lot itself, actually measured rather than assumed.
-    //
-    // The first version of this hardcoded null for the baseline, which made a
-    // null afterwards unreadable: no way to tell a regression from the normal
-    // state. Same mistake as every other probe on this branch — the control
-    // has to be a measurement, not a placeholder.
-    buildingTopAtLot:
-      window.__manhattanCollision?.buildingTopAt?.(
-        city?.x?.(target) ?? 0,
-        -(city?.y?.(target) ?? 0),
-      ) ?? null,
-    colliders: window.__manhattanCollision?.buildingColliderCount ?? null,
-  }
-
-  const before = census()
-  const targetBefore = trianglesOf(target)
-  const targetMeshes = Object.keys(targetBefore)
-  const targetTrianglesBefore = Object.values(targetBefore).reduce((s, n) => s + n, 0)
-
-  // --- a cell whose asset does not exist must change nothing ---
-  //
-  // The control for the ordering rule. If suppression ran before the load, a
-  // 404 would leave a permanent hole and the only symptom would be a missing
-  // building. Run first, on the same target, so a pass here is not an artefact
-  // of the target being unusual.
-  window.__heroCells.add({ buildingId: target, lod0: '/models/hero/does-not-exist.glb' })
-  await window.__heroCellsReapply()
-  const missingAssetCensus = census()
-  const survivedAMissingAsset =
-    Object.keys(before).every((n) => before[n] === missingAssetCensus[n]) &&
-    !window.__heroCells.isReady(target)
-  window.__heroCells.remove(target)
-  await window.__heroCellsReapply()
-
-  // --- apply, with a real authored building ---
-  //
-  // hq.glb is genuine authored geometry that already ships, so this measures
-  // the real path — fetch, parse, place, register collision, then suppress —
-  // rather than a stand-in that would skip most of it.
-  window.__heroCells.add({ buildingId: target, lod0: '/models/manhattan/hq.glb' })
-  const applyReport = await window.__heroCellsReapply()
-  const heroGroup = scene.getObjectByName(`HERO_${target}`)
-  let heroMeshes = 0
-  let heroTriangles = 0
-  heroGroup?.traverse((o) => {
-    if (!o.isMesh) return
-    heroMeshes++
-    const g = o.geometry
-    heroTriangles += g.index ? g.index.count / 3 : (g.attributes.position?.count ?? 0) / 3
-  })
-  const heroPosition = heroGroup
-    ? { x: +heroGroup.position.x.toFixed(1), y: +heroGroup.position.y.toFixed(1), z: +heroGroup.position.z.toFixed(1) }
-    : null
-  // Where the geometry actually ended up, which is not the same question as
-  // where the group was put: a GLB whose contents are modelled far from its
-  // own origin lands nowhere near its placement.
-  let heroBounds = null
-  if (heroGroup) {
-    heroGroup.updateMatrixWorld(true)
-    const box = new window.THREE.Box3().setFromObject(heroGroup)
-    if (Number.isFinite(box.min.x)) {
-      const c = box.getCenter(new window.THREE.Vector3())
-      const s = box.getSize(new window.THREE.Vector3())
-      heroBounds = {
-        center: { x: +c.x.toFixed(1), y: +c.y.toFixed(1), z: +c.z.toFixed(1) },
-        size: { x: +s.x.toFixed(1), y: +s.y.toFixed(1), z: +s.z.toFixed(1) },
-      }
-    }
-  }
-  // And does collision answer where the geometry actually is?
-  const topAtHeroCentre = heroBounds
-    ? window.__manhattanCollision?.buildingTopAt?.(heroBounds.center.x, heroBounds.center.z) ?? null
-    : null
-  const after = census()
-  const targetAfter = trianglesOf(target)
-
-  // The same five, after the swap.
-  const lotX = info?.x ?? 0
-  const lotZ = info ? -info.y : 0
-  const coherenceAfter = {
-    name: city?.name?.(target) ?? null,
-    address: city?.address?.(target) ?? null,
-    groundTriangles: (() => {
-      let n = 0
-      scene.traverse((o) => {
-        if (!o.isMesh) return
-        if (!/^(SIDEWALK_|ROAD_|PARK_)/i.test(o.name)) return
-        const g = o.geometry
-        n += g.index ? g.index.count / 3 : (g.attributes.position?.count ?? 0) / 3
-      })
-      return n
-    })(),
-    lanes: window.__cityWorld?.traffic?.lanes?.length ?? null,
-    save: window.localStorage.getItem('shenron-city:save'),
-    buildingTopAtLot: window.__manhattanCollision?.buildingTopAt?.(lotX, lotZ) ?? null,
-    colliders: window.__manhattanCollision?.buildingColliderCount ?? null,
-  }
-  const targetTrianglesAfter = Object.values(targetAfter).reduce((s, n) => s + n, 0)
-
-  // Confinement: every mesh that does NOT carry the target must be identical.
-  const untouched = []
-  const wronglyChanged = []
-  for (const name of Object.keys(before)) {
-    if (targetMeshes.includes(name)) continue
-    if (before[name] === after[name]) untouched.push(name)
-    else wronglyChanged.push({ name, before: before[name], after: after[name] })
-  }
-
-  // --- lift ---
-  window.__heroCells.remove(target)
-  await window.__heroCellsReapply()
-  const heroGone = !scene.getObjectByName(`HERO_${target}`)
-  const restored = census()
-  const restoredTarget = Object.values(trianglesOf(target)).reduce((s, n) => s + n, 0)
-
-  // Per mesh, not just the total: a total can match while triangles have moved.
-  const mismatched = Object.keys(before).filter((n) => before[n] !== restored[n])
-
-  return {
-    target,
-    survivedAMissingAsset,
-    coherenceBefore,
-    coherenceAfter,
-    lot: { x: +lotX.toFixed(1), z: +lotZ.toFixed(1) },
-    heroMeshes,
-    heroTriangles,
-    heroPosition,
-    heroBounds,
-    topAtHeroCentre,
-    heroGone,
-    building: info
-      ? { name: info.name, address: info.address, height: +info.height.toFixed(1), x: +info.x.toFixed(1), y: +info.y.toFixed(1) }
-      : null,
-    meshesCarryingTarget: targetMeshes,
-    targetTrianglesBefore,
-    targetTrianglesAfter,
-    targetTrianglesAfterLift: restoredTarget,
-    totalMeshes: Object.keys(before).length,
-    untouchedMeshes: untouched.length,
-    wronglyChanged,
-    mismatchedAfterLift: mismatched,
-    applyReport,
-  }
-})
-
-const r = result
-const checks = r.aborted
-  ? {}
-  : {
-      foundATarget: typeof r.target === 'number',
-      // A building split across more than one mesh is the case that broke the
-      // first design; if the target happens to sit in one, the check is weaker
-      // but not wrong — recorded either way.
-      targetHadGeometry: r.targetTrianglesBefore > 0,
-      suppressionRemovedIt: r.targetTrianglesAfter === 0,
-      confinedToItsOwnTile: r.wronglyChanged.length === 0,
-      liftRestoredEveryMesh: r.mismatchedAfterLift.length === 0,
-      liftRestoredTheBuilding: r.targetTrianglesAfterLift === r.targetTrianglesBefore,
-      // The ordering rule: a hero cell whose asset 404s must change nothing.
-      missingAssetChangedNothing: r.survivedAMissingAsset === true,
-      authoredBuildingArrived: r.heroMeshes > 0 && r.heroTriangles > 0,
-      authoredBuildingRemovedOnLift: r.heroGone === true,
-      // Coherence, one claim per line rather than one lumped assertion — a
-      // combined check would say "something moved" and not which thing.
-      addressMetadataUnchanged:
-        r.coherenceBefore?.name === r.coherenceAfter?.name &&
-        r.coherenceBefore?.address === r.coherenceAfter?.address,
-      navigationSurfacesUnchanged:
-        r.coherenceBefore?.groundTriangles === r.coherenceAfter?.groundTriangles,
-      trafficLanesUnchanged: r.coherenceBefore?.lanes === r.coherenceAfter?.lanes,
-      saveStateUnchanged: r.coherenceBefore?.save === r.coherenceAfter?.save,
-      // The authored building answers the collision query the generated one
-      // used to. Null here would mean the lot became a hole the player walks
-      // through — which is what makes this the one coherence check that could
-      // plausibly have failed.
-      collisionAnswersAtTheLot: r.topAtHeroCentre !== null,
-    }
-// Console errors are reported, loudly, but do not fail this gate.
-//
-// Deliberate, and the opposite of the usual instinct here. This check's subject
-// is whether a hero cell replaces one building and only that one; failing it
-// because the post-processing stack is complaining about SSAO would point a
-// reader at the wrong file entirely. The errors are printed and recorded so
-// they are impossible to miss — a smoke test is the right place to gate on
-// them, against the whole app rather than one feature.
-const pass = !r.aborted && Object.values(checks).every(Boolean)
-
-const report = {
-  generatedBy: 'scripts/qa/herocellcheck.mjs',
-  ...r,
-  checks,
-  consoleErrors: errors.slice(0, 5),
-  pass,
+if (report.pass) {
+  mkdirSync(dirname(args.out), { recursive: true })
+  writeFileSync(args.out, `${JSON.stringify(report, null, 2)}\n`)
 }
-mkdirSync(dirname(args.out), { recursive: true })
-writeFileSync(args.out, `${JSON.stringify(report, null, 2)}\n`)
 
-if (r.aborted) {
-  console.error(`herocellcheck: ABORTED — ${r.aborted}`)
+console.log(`herocellcheck: W47 building ${W47_TARGET_BUILDING_ID}`)
+if (report.failure) console.error(`  runtime failure: ${report.failure}`)
+if (report.normalLoad) {
+  console.log(
+    `  LOD: ${report.normal.lod0.triangles} near + ${report.normal.lod1.triangles} far triangles; ` +
+      `${report.normalLoad.lod1FromMetres} m switch (+/- ${report.lodSwitch.hysteresisBand} m)`,
+  )
+  console.log(
+    `  collider-before-suppress: ${report.normalLoad.colliderCount} accepted; ` +
+      `${report.legacyBaseline.legacy.triangles} legacy triangles -> ${report.normal.legacy.triangles}`,
+  )
+  console.log(
+    `  fault rollback: ${report.zeroColliderFault.disposedGeometries} geometry + ` +
+      `${report.zeroColliderFault.disposedMaterials} material dispose call(s), ` +
+      `${report.zeroColliderFault.rollbackUnregisterCalls} collider unregister`,
+  )
+}
+for (const [name, passed] of Object.entries(report.checks)) {
+  if (!passed) console.error(`  FAIL ${name}`)
+}
+for (const error of report.consoleErrors) console.error(`  browser error: ${error}`)
+if (report.pass) {
+  console.log(`  PASS - evidence regenerated at ${args.out}`)
 } else {
-  console.log(
-    `herocellcheck: building ${r.target}` +
-      (r.building?.name ? ` (${r.building.name})` : '') +
-      ` across ${r.meshesCarryingTarget.length} mesh(es) of ${r.totalMeshes}`,
-  )
-  console.log(
-    `  triangles: ${r.targetTrianglesBefore} -> ${r.targetTrianglesAfter} ` +
-      `-> ${r.targetTrianglesAfterLift} after lift`,
-  )
-  console.log(
-    `  confinement: ${r.untouchedMeshes} other mesh(es) unchanged, ` +
-      `${r.wronglyChanged.length} wrongly changed`,
-  )
-  console.log(
-    `  authored:    ${r.heroMeshes} mesh(es), ${r.heroTriangles} triangle(s) at ` +
-      `${r.heroPosition ? `${r.heroPosition.x}, ${r.heroPosition.y}, ${r.heroPosition.z}` : '(absent)'}`,
-  )
-  console.log(
-    `  bounds:      centre ${r.heroBounds ? `${r.heroBounds.center.x}, ${r.heroBounds.center.y}, ${r.heroBounds.center.z}` : '(none)'}` +
-      ` size ${r.heroBounds ? `${r.heroBounds.size.x} x ${r.heroBounds.size.y} x ${r.heroBounds.size.z}` : '-'}` +
-      `, collision top there ${r.topAtHeroCentre}`,
-  )
-  console.log(`  missing-asset control: ${r.survivedAMissingAsset ? 'city unchanged' : 'CITY CHANGED'}`)
-  console.log(
-    `  coherence:   address "${r.coherenceAfter?.address || '(none)'}", ` +
-      `ground ${r.coherenceAfter?.groundTriangles} tris, ` +
-      `${r.coherenceAfter?.lanes} lanes, ` +
-      `collision top at lot ${r.coherenceBefore?.buildingTopAtLot} -> ` +
-      `${r.coherenceAfter?.buildingTopAtLot} ` +
-      `(${r.coherenceBefore?.colliders} -> ${r.coherenceAfter?.colliders} colliders)`,
-  )
-  for (const [name, ok] of Object.entries(checks)) if (!ok) console.error(`  FAIL ${name}`)
+  console.error('  FAIL - existing evidence was left untouched')
 }
-if (errors.length) {
-  console.warn(`  ${errors.length} console error(s), not gated here:`)
-  for (const e of [...new Set(errors)].slice(0, 3)) console.warn(`    ${e.slice(0, 120)}`)
-}
-console.log(`  ${pass ? 'PASS' : 'FAIL'} — ${args.out}`)
 
-await page.close()
-await browser.close()
-process.exit(pass ? 0 : 1)
+process.exitCode = report.pass ? 0 : 1
