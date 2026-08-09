@@ -30,7 +30,13 @@ const { spawn } = require('node:child_process')
 const { launchChrome, openTab, navigate, evaluate, screenshot, key, sleep, waitFor,
   classifyErrorEvents, cpuMetricsDelta } = require('./lib/cdp.cjs')
 const { summarizeFrames, varianceAcrossPasses } = require('./lib/stat.cjs')
-const { LOCATIONS, ll2xy } = require('./lib/locations.cjs')
+const {
+  LOCATIONS,
+  ll2xy,
+  resolveLocation,
+  retirementReason,
+  runnableLocations,
+} = require('./lib/locations.cjs')
 const { decodePng, luminanceBands, frameDiff, sha256 } = require('./lib/png.cjs')
 
 const REPO = path.resolve(__dirname, '..', '..')
@@ -52,7 +58,12 @@ function parseArgs() {
     return i >= 0 ? a[i + 1] : def
   }
   const app = get('--app', 'shenron')
-  const location = get('--location', 'times-square')
+  // Defaulted to 'times-square', which is a Manhattan-app location — so the
+  // no-argument invocation always failed, with "location times-square belongs
+  // to app manhattan, not shenron". main() catches it cleanly, so this was
+  // never a hang; it was just a default that could not run. Now the hero
+  // corridor, which is both runnable and what this branch is about.
+  const location = get('--location', 'midtown-street')
   const scenario = get('--scenario', 'stand')
   return {
     app,
@@ -360,7 +371,7 @@ async function runPass({ page, app, url, location, scenario, seconds, quality, p
   let buckets = null
 
   if (app === 'shenron') {
-    const view = LOCATIONS[location].view || location
+    const view = resolveLocation(location)?.location.view || location
     await navigate(page, `${url}/?spawn=${view}&inspect=1&quality=${quality}`)
     await waitFor(page, 60000, async () => {
       const r = await evaluate(page, `document.querySelectorAll('canvas').length`)
@@ -443,7 +454,19 @@ async function main() {
   const args = parseArgs()
   trace("main start " + JSON.stringify({ app: args.app, location: args.location, scenario: args.scenario }))
   const { app, location, scenario } = args
-  if (!LOCATIONS[location]) throw new Error(`unknown location ${location}`)
+  const resolved = resolveLocation(location)
+  if (!resolved) {
+    throw new Error(
+      `unknown location ${location}; runnable: ${runnableLocations().join(', ')}`)
+  }
+  // Retired locations answer for themselves, by name, including through an
+  // alias — so `--location hq-lobby` reports what it resolved to rather than
+  // silently benchmarking a canyon under a lobby's name.
+  const retired = retirementReason(location)
+  if (retired) throw new Error(`${retired}; runnable: ${runnableLocations().join(', ')}`)
+  if (resolved.alias) {
+    console.log(`note: "${resolved.alias}" is an old name for "${resolved.name}"`)
+  }
   if (app === 'manhattan') {
     // The Manhattan reference app is gone; the game is the only runtime. Its
     // locations are still in the registry because they are real addresses and
@@ -454,8 +477,8 @@ async function main() {
     throw new Error(
       'the manhattan reference app was removed; benchmark the game with --app shenron')
   }
-  if (LOCATIONS[location].app !== app) {
-    throw new Error(`location ${location} belongs to app ${LOCATIONS[location].app}, not ${app}`)
+  if (resolved.location.app !== app) {
+    throw new Error(`location ${resolved.name} belongs to app ${resolved.location.app}, not ${app}`)
   }
   if (scenario === 'soak' && args.seconds === 10) args.seconds = 600
 
