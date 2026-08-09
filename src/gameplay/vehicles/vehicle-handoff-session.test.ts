@@ -205,6 +205,66 @@ describe('entering a city car promotes it exactly once', () => {
     }
   })
 
+  it('gives an abandoned car back to LION instead of keeping it forever', () => {
+    // The other half of the brief's requirement: on release the car "parks or
+    // returns safely to AI through a defined state transition". Without the
+    // demote wiring the return path still fires, but the car stays a full
+    // physics entity in the registry — so a long session quietly converts
+    // cheap instanced cars into expensive ones, one abandonment at a time.
+    stepVehicleSim(sim, openWorld(), INTERACT, 1 / 60, NOON)
+    const added = [...sim.registry.vehicles.keys()].filter((id) => id > 9)
+    const id = added[added.length - 1]
+    const entity = sim.registry.vehicles.get(id)!
+    expect(entity, 'nothing was promoted to abandon').toBeTruthy()
+
+    // The director only reclaims cars the player has actually driven, that are
+    // parked, and that are far away — so put it in exactly that state.
+    sim.registry.playerVehicleId = null
+    sim.transition = null
+    entity.owned = true
+    entity.state = 'PARKED'
+    entity.pose.pos = { x: 60, y: 0, z: 0 }
+    sim.ownedPersisted = true
+    sim.player.pos = { x: 4000, y: 0, z: 4000 }
+
+    const trafficBefore = cars.length
+    // 30 s at half-second steps: the director's returnDelay is 20 s.
+    for (let i = 0; i < 60; i++) stepVehicleSim(sim, openWorld(), NO_VEHICLE_INPUT, 0.5, NOON)
+
+    expect(sim.registry.vehicles.has(id), 'car never left the registry').toBe(false)
+    expect(cars.length).toBe(trafficBefore + 1)
+    // Still exactly one of it — a LION car now rather than an entity.
+    // demoteToTraffic carries the entity id across as the new car's seed, so
+    // the same query that proved "not two" after promotion proves "not none"
+    // after demotion. Zero here would mean the car had been deleted.
+    expect(countRepresentations(cars, sim.registry, id)).toBe(1)
+    expect(cars.some((c) => c.seed === id && c.alive)).toBe(true)
+  })
+
+  it('leaves a car with no lane nearby as a real parked car, not deleted', () => {
+    // demoteToTraffic returns null past its 12 m limit, and that case must not
+    // silently drop the car: abandoning one on a plaza should leave it there.
+    stepVehicleSim(sim, openWorld(), INTERACT, 1 / 60, NOON)
+    const added = [...sim.registry.vehicles.keys()].filter((id) => id > 9)
+    const id = added[added.length - 1]
+    const entity = sim.registry.vehicles.get(id)!
+
+    sim.registry.playerVehicleId = null
+    sim.transition = null
+    entity.owned = true
+    entity.state = 'PARKED'
+    // Far from the single east-running lane, so nearestLane finds nothing.
+    entity.pose.pos = { x: 60, y: 0, z: -900 }
+    sim.ownedPersisted = true
+    sim.player.pos = { x: 4000, y: 0, z: 4000 }
+
+    const trafficBefore = cars.length
+    for (let i = 0; i < 60; i++) stepVehicleSim(sim, openWorld(), NO_VEHICLE_INPUT, 0.5, NOON)
+
+    expect(sim.registry.vehicles.has(id), 'car was deleted instead of parked').toBe(true)
+    expect(cars.length).toBe(trafficBefore)
+  })
+
   it('promotes one car, not every car the player walked past', () => {
     cars.push(trafficCar({ s: 51, seed: 7002 }))
     cars.push(trafficCar({ s: 52, seed: 7003 }))
