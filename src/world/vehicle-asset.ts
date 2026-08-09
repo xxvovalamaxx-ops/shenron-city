@@ -72,15 +72,25 @@ export interface BindProblem {
 }
 
 function normalised(name: string): string {
-  // Exporters append `.001` to disambiguate; Blender collections nest. Neither
-  // should change what a node *is*.
-  return name.toLowerCase().replace(/\.\d+$/, '')
+  // Two layers of renaming to undo, not one.
+  //
+  // Blender appends `.001` to disambiguate duplicates. Then three.js's
+  // GLTFLoader *sanitizes* node names on the way in, because a dot is reserved
+  // in animation property paths — so `VEH_wheel_fl.001` reaches the runtime as
+  // `VEH_wheel_fl001`, with no dot to strip.
+  //
+  // Handling only the dotted form was a real bug, and an asymmetric one: the
+  // light slots match by prefix so they survived it, while the wheel slots
+  // compare the whole slot and `fl001` matched nothing. The LOD1 export bound
+  // its lights and lost all four wheels, which vehicleassetcheck caught and
+  // reading the code did not.
+  return name.toLowerCase().replace(/\.?\d+$/, '')
 }
 
 /** Which convention slot a node name declares, or null. */
 export function classifyVehicleNode(
   name: string,
-): { kind: 'body' | 'wheel' | 'head' | 'brake' | 'glass'; slot?: WheelSlot } | null {
+): { kind: 'body' | 'wheel' | 'head' | 'brake' | 'glass' | 'interior'; slot?: WheelSlot } | null {
   const n = normalised(name)
   if (!n.startsWith(VEHICLE_NODE_PREFIX.toLowerCase())) return null
   const rest = n.slice(VEHICLE_NODE_PREFIX.length)
@@ -92,6 +102,12 @@ export function classifyVehicleNode(
   if (rest.startsWith('light_brake')) return { kind: 'brake' }
   if (rest.startsWith('glass')) return { kind: 'glass' }
   if (rest.startsWith('body')) return { kind: 'body' }
+  // Cabin fittings. Not driven by the runtime, but part of the asset — the
+  // cockpit camera sits inside the car, so without them the driver's view is
+  // the inside of an empty shell. Classified so they are not reported as
+  // strays by a check whose job is to notice geometry nobody accounted for.
+  if (rest.startsWith('interior')) return { kind: 'interior' }
+  if (rest.startsWith('steering')) return { kind: 'interior' }
   return null
 }
 

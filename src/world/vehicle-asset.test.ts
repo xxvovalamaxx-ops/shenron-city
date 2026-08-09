@@ -62,6 +62,27 @@ describe('the node convention', () => {
     expect(classifyVehicleNode('VEH_light_brake.001')).toEqual({ kind: 'brake' })
   })
 
+  it('survives three.js stripping the dot out of that suffix', () => {
+    // GLTFLoader sanitizes node names because a dot is reserved in animation
+    // property paths, so `VEH_wheel_fl.001` arrives as `VEH_wheel_fl001`.
+    //
+    // Handling only the dotted form was a real bug and an asymmetric one: the
+    // light slots match by prefix so they survived, while the wheel slots
+    // compare the whole slot and `fl001` matched nothing. A LOD tier bound its
+    // lights and lost all four wheels.
+    expect(classifyVehicleNode('VEH_wheel_fl001')).toEqual({ kind: 'wheel', slot: 'fl' })
+    expect(classifyVehicleNode('VEH_wheel_rr003')).toEqual({ kind: 'wheel', slot: 'rr' })
+    expect(classifyVehicleNode('VEH_light_head002')).toEqual({ kind: 'head' })
+    expect(classifyVehicleNode('VEH_glass001')).toEqual({ kind: 'glass' })
+  })
+
+  it('knows the cabin fittings, so they are not reported as strays', () => {
+    // The cockpit camera sits inside the car; these are part of the asset even
+    // though the runtime does not drive them.
+    expect(classifyVehicleNode('VEH_interior')).toEqual({ kind: 'interior' })
+    expect(classifyVehicleNode('VEH_steering')).toEqual({ kind: 'interior' })
+  })
+
   it('is case-insensitive, because exporters disagree about case', () => {
     expect(classifyVehicleNode('veh_wheel_fr')).toEqual({ kind: 'wheel', slot: 'fr' })
   })

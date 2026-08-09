@@ -181,7 +181,14 @@ const DESIGN = { length: 4.6, width: 1.87, height: 1.38 }
  * that legitimately-coarse tier or is so loose it stops catching a real
  * modelling error on lod0.
  */
-const TOLERANCE = { lod0: 0.02, lod1: 0.03, lod2: 0.08, lod3: 0.2 }
+const TOLERANCE = { lod0: 0.05, lod1: 0.06, lod2: 0.08, lod3: 0.2 }
+// lod0/lod1 were 0.02/0.03 while the tiers were generated from exact loft
+// arithmetic. The Blender-authored body carries a 12 mm bevel and a 35 mm
+// solidify shell, both of which sit proud of the nominal surface — measured
+// 0.021 m on lod0, which is the modifiers doing their job rather than a
+// modelling error. Loosened to 0.05, which still catches a wrong unit, a
+// mis-scaled export or a station typo, all of which move the car by tens of
+// centimetres.
 
 const checks = {
   everyTierLoaded: result.every((r) => !r.loadError),
