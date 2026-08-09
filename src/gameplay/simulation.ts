@@ -17,10 +17,10 @@
  *     diagnostic. The correctness is real but accidental.
  *   - The step was clamped in six independent places, all spelling 1/20 by
  *     hand: `MAX_DT` in GameLoop, and a bare `Math.min(rawDt, 1 / 20)` in
- *     ManhattanCity, PlayerBody, CityLightingRig, DayCycleRig and SkyRig. Six
- *     copies that agree today are six copies that can disagree tomorrow,
- *     silently, with parts of the world running at different speeds. They now
- *     all read MAX_STEP_SECONDS from here.
+ *     ManhattanCity, PlayerBody, CityLightingRig, DayCycleRig and the
+ *     since-removed SkyRig. Six copies that agree today are six copies that
+ *     can disagree tomorrow, silently, with parts of the world running at
+ *     different speeds. They now all read MAX_STEP_SECONDS from here.
  *   - The vehicle registry and the LION traffic registry advance separately,
  *     so a city car cannot become the player's car without a second
  *     overlapping instance of it existing. That is the one with player-visible

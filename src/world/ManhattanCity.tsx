@@ -604,13 +604,22 @@ class CityPipeline {
 
 
 export function ManhattanCity({
-  mode = 'full',
+  mode = 'tiles',
   position = [0, 0, 0],
   scale = 1,
   quality = 'medium',
   onBaseRegistered,
   onTileRegistered,
 }: {
+  /**
+   * `tiles` is the game: streaming, traffic, crowd, weather, doors.
+   *
+   * `full` loads manhattan_world.glb as one 26 MB mesh with none of that —
+   * a degraded viewer kept as a fallback for a browser where streaming
+   * misbehaves. It was the DEFAULT until now, which meant any caller who
+   * omitted the prop silently got the path nothing exercises, along with the
+   * only code that reaches getBuildingNightMaterial.
+   */
   mode?: 'full' | 'tiles'
   position?: [number, number, number]
   scale?: number

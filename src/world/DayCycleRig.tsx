@@ -5,7 +5,7 @@
  * the ported Weather engine (world/ManhattanCity.tsx), which reads this same
  * clock every frame, so the sky and the sim cannot disagree. This component
  * only advances the clock and decides when rain comes and goes, exactly like
- * the old SkyRig did.
+ * the removed SkyRig did.
  *
  * The clock lives on `rt` rather than in React state: it changes every frame,
  * and putting it in state would re-render the tree sixty times a second.

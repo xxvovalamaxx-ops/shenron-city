@@ -2,7 +2,7 @@
  * Drives the Phase 3C city-night lighting from the existing day-cycle clock.
  *
  * One component owns the practicals/hour/wetness uniforms, exactly like
- * SkyRig owns the sun: the sky and the windows share the same clock and the
+ * DayCycleRig owns the sun: the sky and the windows share the same clock and the
  * same `practicals` curve, so they cannot disagree about whether it is night.
  *
  * The per-building data texture (kind, storefront flags, density) is baked by
