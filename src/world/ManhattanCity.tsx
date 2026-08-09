@@ -17,6 +17,8 @@ import {
   formatPlaceholders,
   type PlaceholderOptions,
 } from './placeholder-census'
+import { applyHeroCells, liftHeroCells } from './hero-cell-runtime'
+import { heroCells, type BuildingLookup } from './hero-cells'
 import { rt } from '../gameplay/runtime'
 import { simulation } from '../gameplay/simulation'
 import { City } from '../city/city.js'
@@ -271,6 +273,35 @@ class CityPipeline {
       console.info(formatPlaceholders(census))
       return census
     }
+    // Stage 1 — re-apply the hero-cell registry to tiles that are already
+    // loaded.
+    //
+    // Suppression normally happens once, as a tile arrives. This is the path
+    // for changing the registry while the city is up: a dev-menu toggle, and
+    // the acceptance harness, which has to add an override and then observe the
+    // triangles disappear from one tile and *not* from its neighbour.
+    //
+    // Lift before apply, always. Applying twice without lifting would suppress
+    // an already-suppressed index, and rememberIndex only records the first
+    // one — so the second removal would be the unrecoverable kind.
+    ;(
+      window as unknown as { __heroCellsReapply: () => unknown }
+    ).__heroCellsReapply = () => {
+      const out: Array<Record<string, unknown>> = []
+      for (const [file, root] of this.roots) {
+        const lifted = liftHeroCells(root)
+        const applied = cityWorld.city
+          ? applyHeroCells(root, heroCells, cityWorld.city as unknown as BuildingLookup)
+          : null
+        // Collision is rebuilt from the geometry, so it has to follow the
+        // index both ways — otherwise lifting a hero cell restores the walls
+        // on screen and leaves the player still walking through them.
+        manhattanCollision.unregisterTileBuildings(root)
+        manhattanCollision.registerTileBuildings(root)
+        out.push({ file, restored: lifted.restored, ...(applied ?? {}) })
+      }
+      return out
+    }
     ;(window as unknown as { THREE: typeof THREE }).THREE = THREE
   }
 
@@ -506,6 +537,34 @@ class CityPipeline {
       }
       this._registerGround(name, obj, file)
     })
+    // Stage 1 — hero cells, before collision.
+    //
+    // Order is load-bearing. registerTileBuildings builds the BVHs from the
+    // index buffer, so suppressing after it would leave the player walking
+    // into a building that is no longer drawn — a worse bug than a visible
+    // one, because nothing on screen explains it.
+    //
+    // Silent when the registry is empty, which is every tile until a hero cell
+    // is declared.
+    if (heroCells.size > 0 && cityWorld.city) {
+      const report = applyHeroCells(root, heroCells, cityWorld.city as unknown as BuildingLookup)
+      if (report.missed.length > 0) {
+        // An override that matched no geometry is the failure mode with no
+        // symptom: the authored building appears, the generated one stays
+        // standing inside it, and nothing reports a problem.
+        console.warn(
+          `[hero-cells] ${file}: ${report.missed.length} override(s) matched no geometry:`,
+          report.missed.join(', '),
+        )
+      }
+      if (report.changed > 0) {
+        console.info(
+          `[hero-cells] ${file}: suppressed ${report.removed} triangle(s) across ` +
+            `${report.changed} mesh(es) for building(s) ${report.hit.join(', ')}`,
+        )
+      }
+    }
+
     manhattanCollision.registerTileBuildings(root)
     this.roots.set(file, root)
     this.hooks.onTileRegistered?.(file, root)
