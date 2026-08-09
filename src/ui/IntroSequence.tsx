@@ -7,9 +7,10 @@
  * deliberately defers camera ownership and freezes input for that window.
  */
 import { useEffect, useRef, useState } from 'react'
-import { useFrame } from '@react-three/fiber'
+import { useThree } from '@react-three/fiber'
 import { Vector3 } from 'three'
 import { rt } from '../gameplay/runtime'
+import { useSimulationStage } from '../gameplay/useSimulationStage'
 import { lookAnglesFromDirection } from '../gameplay/look'
 import { introAudio } from '../audio/intro'
 
@@ -22,8 +23,17 @@ const forward = new Vector3()
 export function IntroCamera() {
   const start = useRef<Vector3 | null>(null)
   const handedOver = useRef(false)
+  const camera = useThree((s) => s.camera)
 
-  useFrame(({ camera }) => {
+  // Presentation, and only safe there.
+  //
+  // This used to be a bare useFrame at render priority 150, and that number
+  // was load-bearing: DragLook writes the camera at the default 0, so the dive
+  // only survives because it runs after. The presentation stage is dispatched
+  // from a priority-300 callback for exactly this reason — moving it onto the
+  // -100 gameplay call would have let DragLook overwrite the dive every frame,
+  // and the intro would have jittered or died with no error anywhere.
+  useSimulationStage('intro-camera', 'presentation', () => {
     if (rt.introSeconds >= INTRO_DURATION) {
       // Hand the camera over level, once.
       //

@@ -48,6 +48,31 @@ export const SIM_STAGES = ['input', 'clock', 'vehicles', 'city', 'presentation']
 
 export type SimStage = (typeof SIM_STAGES)[number]
 
+/**
+ * The stages that advance the world. Run by {@link Simulation.step}.
+ */
+export const GAMEPLAY_STAGES = ['input', 'clock', 'vehicles', 'city'] as const
+
+/**
+ * The stage that only reads. Run by {@link Simulation.present}, separately and
+ * later.
+ *
+ * Split out because the first version ran all five stages from one call inside
+ * GameLoop's `useFrame`, which sits at render priority -100 — so `presentation`
+ * ran *before* every callback at the default priority 0, the exact opposite of
+ * what the name promises. That is not a nitpick: IntroSequence is at priority
+ * 150 specifically so its camera dive survives DragLook writing the camera at
+ * 0, and moving it into a stage that runs at -100 would have let DragLook
+ * overwrite the intro camera every frame. The stage list would have caused a
+ * visible regression while looking like a tidy-up.
+ *
+ * So presentation is a second call, made from a high-priority callback after
+ * everything else has moved. Same frame, same dt, same pause decision — a
+ * presentation system reading a different delta from the gameplay it is
+ * presenting would be its own bug.
+ */
+export const PRESENTATION_STAGE = 'presentation' as const
+
 /** The largest step the simulation will take, in seconds. */
 export const MAX_STEP_SECONDS = 1 / 20
 
@@ -82,6 +107,8 @@ export class Simulation {
   private readonly byStage = new Map<SimStage, Registration[]>()
   private frameCount = 0
   private lastFailed: string[] = []
+  /** The frame `step` last ran, so `present` can reuse it exactly. */
+  private lastFrame: SimFrame | null = null
   /** Set by the input stage; every other stage reads it. */
   private pausedFlag = false
 
@@ -133,9 +160,10 @@ export class Simulation {
   }
 
   /**
-   * Run one frame.
+   * Run the gameplay stages of one frame.
    *
    * Returns the frame that was run, so a caller can log or assert on it.
+   * {@link present} runs the presentation stage against this same frame.
    */
   step(rawDt: number): SimFrame {
     this.frameCount++
@@ -154,7 +182,7 @@ export class Simulation {
       frame: this.frameCount,
     }
 
-    for (const stage of SIM_STAGES) {
+    for (const stage of GAMEPLAY_STAGES) {
       if (stage === 'clock') {
         // Re-read: the input stage may have just changed it.
         frame = { ...frame, paused: this.pausedFlag }
@@ -185,7 +213,34 @@ export class Simulation {
     }
 
     this.lastFailed = failed
-    return { ...frame, dt: frame.paused ? 0 : frame.dt }
+    const ran = { ...frame, dt: frame.paused ? 0 : frame.dt }
+    this.lastFrame = ran
+    return ran
+  }
+
+  /**
+   * Run the presentation stage against the frame {@link step} last ran.
+   *
+   * Takes no delta on purpose. The dt is whatever the gameplay stages used, so
+   * a camera rig cannot smooth against a different time step than the motion it
+   * is smoothing — which is the kind of mismatch that shows up as a camera that
+   * lags only when the frame rate dips.
+   *
+   * A no-op before the first `step`: presenting a frame that never simulated
+   * would hand every rig a delta and a pause state that describe nothing.
+   */
+  present(): SimFrame | null {
+    const frame = this.lastFrame
+    if (!frame) return null
+    for (const reg of this.byStage.get(PRESENTATION_STAGE) ?? []) {
+      try {
+        reg.step(frame)
+      } catch (err) {
+        this.lastFailed.push(reg.id)
+        console.error(`[simulation] "${reg.id}" (${PRESENTATION_STAGE}) threw:`, err)
+      }
+    }
+    return frame
   }
 
   stats(): SimulationStats {
@@ -200,6 +255,7 @@ export class Simulation {
   clear(): void {
     for (const list of this.byStage.values()) list.length = 0
     this.lastFailed = []
+    this.lastFrame = null
   }
 }
 

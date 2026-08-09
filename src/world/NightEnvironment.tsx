@@ -21,10 +21,11 @@
  * Exact source and attribution are recorded in docs/Assets/ASSET_MANIFEST.csv.
  */
 import { useEffect, useRef } from 'react'
-import { useFrame, useThree } from '@react-three/fiber'
+import { useThree } from '@react-three/fiber'
 import { HDRLoader } from 'three/examples/jsm/loaders/HDRLoader.js'
 import { PMREMGenerator } from 'three'
 import { rt } from '../gameplay/runtime'
+import { useSimulationStage } from '../gameplay/useSimulationStage'
 import { nightFactor } from './city-lighting'
 
 const HDR_PATH = '/hdr/modern_buildings_night_1k.hdr'
@@ -77,8 +78,9 @@ export function NightEnvironment() {
   }, [gl, scene])
 
   // Presentation only: reads the clock, writes one scalar, integrates nothing.
-  // Safe on a paused frame, which is why it does not check rt.paused.
-  useFrame(() => {
+  // Safe on a paused frame, which is why it does not check `paused` — the
+  // environment must stay lit behind the pause menu.
+  useSimulationStage('night-environment', 'presentation', () => {
     if (!ready.current) return
     scene.environmentIntensity = environmentIntensityFor(rt.clock.hour)
   })

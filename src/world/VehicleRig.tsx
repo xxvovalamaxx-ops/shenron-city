@@ -10,7 +10,7 @@
  * THREE objects and mutates them in useFrame.
  */
 import { useEffect, useRef } from 'react'
-import { useFrame } from '@react-three/fiber'
+import { useSimulationStage } from '../gameplay/useSimulationStage'
 import * as THREE from 'three'
 import { vehicleSim } from '../gameplay/vehicles/vehicle-session'
 import { vehicleSpec } from '../gameplay/vehicles/vehicle-specs'
@@ -163,7 +163,11 @@ export function VehicleRig() {
     [],
   )
 
-  useFrame(() => {
+  // Presentation: mirrors the vehicle registry into THREE objects. The
+  // `vehicles` stage has already integrated every pose this frame, so the
+  // transforms copied here are current rather than one frame stale — which is
+  // what an undeclared priority could not guarantee.
+  useSimulationStage('vehicle-rig', 'presentation', () => {
     const rigRoot = root.current
     if (!rigRoot) return
 

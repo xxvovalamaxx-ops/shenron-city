@@ -7,9 +7,9 @@
  * Not rendered in first person at all.
  */
 import { Suspense, useEffect, useRef, useState } from 'react'
-import { useFrame } from '@react-three/fiber'
 import type { Group } from 'three'
 import { rt } from '../gameplay/runtime'
+import { useSimulationStage } from '../gameplay/useSimulationStage'
 import { vehicleSim } from '../gameplay/vehicles/vehicle-session'
 import { useHud } from '../ui/hud-store'
 import { RealisticPlayer } from './RealisticPlayer'
@@ -49,14 +49,20 @@ export function PlayerAvatar() {
     }
   }, [animation, thirdPerson])
 
-  useFrame((_, delta) => {
-    if (rt.paused) return
+  // Presentation: this only follows what the player stage already decided —
+  // it reads rt.player.pos and writes the avatar's transform and clip. Runs
+  // after every gameplay stage, so the pose it copies is this frame's, not the
+  // previous one's.
+  useSimulationStage('player-avatar', 'presentation', ({ dt: frameDt, paused }) => {
+    if (paused) return
 
     // While the player is attached to a seat the avatar is not rendered; the
     // sim owns the pose and publishes it to rt.player.
     if (!vehicleSim.playerVisible) return
 
-    const dt = Math.max(1e-4, Math.min(delta, 0.05))
+    // Floor above zero: the smoothing below divides by dt, and a 0 would put
+    // an Infinity into a value that never recovers.
+    const dt = Math.max(1e-4, Math.min(frameDt, 0.05))
     const p = rt.player
 
     // Ground speed from actual displacement rather than intent: this is what

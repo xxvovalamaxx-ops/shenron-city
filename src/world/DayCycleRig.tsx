@@ -11,10 +11,9 @@
  * and putting it in state would re-render the tree sixty times a second.
  */
 import { useEffect, useRef } from 'react'
-import { useFrame } from '@react-three/fiber'
 import { rt } from '../gameplay/runtime'
 import { stepWeather } from './daycycle'
-import { MAX_STEP_SECONDS } from '../gameplay/simulation'
+import { useSimulationStage } from '../gameplay/useSimulationStage'
 
 /** Real seconds per in-game hour. A full day in eight minutes. */
 export const SECONDS_PER_HOUR = 20
@@ -31,9 +30,15 @@ export function DayCycle() {
     if (rt.clock.hour === 0) rt.clock.hour = 17
   }, [])
 
-  useFrame((_, rawDt) => {
-    if (rt.paused) return
-    const dt = Math.min(rawDt, MAX_STEP_SECONDS)
+  // The `clock` stage, by name: this *is* the time-of-day clock. Declared
+  // rather than left at the default render priority, where its place in the
+  // frame was decided by where <DayCycle/> happened to sit in App.tsx.
+  //
+  // dt arrives already clamped and already zeroed on a paused frame, so the
+  // local Math.min and the rt.paused guard are both gone — one clamp in one
+  // place was the point of MAX_STEP_SECONDS.
+  useSimulationStage('day-cycle', 'clock', ({ dt }) => {
+    if (dt === 0) return
 
     // Deterministic captures keep the clock pinned at the capture hour.
     if (!rt.captureFrozen) {

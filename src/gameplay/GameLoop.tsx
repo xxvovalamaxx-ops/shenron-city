@@ -462,11 +462,26 @@ export function GameLoop() {
       }
     }
     } finally {
-      // Stages after input/vehicles: the city pipeline, then presentation.
-      // Runs on paused and intro frames too — see the note at the top.
+      // The gameplay stages: clock, vehicles, city. Runs on paused and intro
+      // frames too — see the note at the top. Presentation is deliberately not
+      // here; it runs from the second callback below.
       simulation.step(rawDt)
     }
   }, -100)
+
+  // Presentation, last.
+  //
+  // Priority 300 puts it after every other callback in the app, including
+  // IntroSequence at 150 — so a camera rig registered in the `presentation`
+  // stage still wins the camera against anything writing it at the default 0.
+  // Running presentation from the -100 callback above would have inverted
+  // that and let DragLook overwrite the intro dive every frame.
+  //
+  // No delta argument: `present` reuses the frame `step` just ran, so a rig
+  // cannot smooth against a different time step than the motion it smooths.
+  useFrame(() => {
+    simulation.present()
+  }, 300)
 
   return null
 }

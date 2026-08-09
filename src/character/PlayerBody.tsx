@@ -23,11 +23,10 @@
  *   Feet:         0.00 m (ground)
  */
 import { useRef } from 'react'
-import { useFrame } from '@react-three/fiber'
 import { Group, Mesh } from 'three'
 import { rt } from '../gameplay/runtime'
 import { useHud } from '../ui/hud-store'
-import { MAX_STEP_SECONDS } from '../gameplay/simulation'
+import { useSimulationStage } from '../gameplay/useSimulationStage'
 
 const BODY_COLOR = '#3a4558'
 const SKIN_COLOR = '#d4a574'
@@ -79,9 +78,10 @@ export function PlayerBody() {
   const walkPhase = useRef(0)
   const prevPos = useRef({ x: 0, y: 0, z: 0 })
 
-  useFrame((_, rawDt) => {
-    if (rt.paused) return
-    const dt = Math.min(rawDt, MAX_STEP_SECONDS)
+  // Presentation: follows rt.player, which the player stage has already
+  // written this frame. dt arrives clamped and zeroed-on-pause.
+  useSimulationStage('player-body', 'presentation', ({ dt, paused }) => {
+    if (paused) return
     const group = groupRef.current
     if (!group) return
 

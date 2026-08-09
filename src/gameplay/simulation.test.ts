@@ -30,7 +30,23 @@ describe('Simulation — ordering', () => {
     sim.register('clock', 'clock', make('clock'))
 
     sim.step(1 / 60)
+    sim.present()
     expect(calls).toEqual(['input', 'clock', 'vehicles', 'city', 'present'])
+  })
+
+  it('does not run presentation from step — that is a separate, later call', () => {
+    // Presentation is split out because step() is called from GameLoop's
+    // useFrame at render priority -100, which is *before* every callback at
+    // the default 0. Running camera rigs there would let DragLook overwrite
+    // them, and would have broken the intro dive the moment IntroSequence
+    // moved onto a stage.
+    const { calls, make } = tracer()
+    sim.register('city', 'city', make('city'))
+    sim.register('present', 'presentation', make('present'))
+    sim.step(1 / 60)
+    expect(calls).toEqual(['city'])
+    sim.present()
+    expect(calls).toEqual(['city', 'present'])
   })
 
   it('preserves registration order within a stage', () => {
@@ -91,7 +107,36 @@ describe('Simulation — one delta', () => {
       raw = f.rawDt
     })
     sim.step(2)
+    sim.present()
     expect(raw).toBe(2)
+  })
+
+  it('presents the frame step just ran, not a fresh one', () => {
+    // present() takes no delta on purpose: a camera rig smoothing against a
+    // different time step than the motion it smooths shows up as a camera that
+    // lags only when the frame rate dips.
+    const seen: Array<{ dt: number; frame: number }> = []
+    sim.register('p', 'presentation', (f) => seen.push({ dt: f.dt, frame: f.frame }))
+    const ran = sim.step(1 / 30)
+    sim.present()
+    expect(seen).toHaveLength(1)
+    expect(seen[0].dt).toBeCloseTo(ran.dt, 10)
+    expect(seen[0].frame).toBe(ran.frame)
+  })
+
+  it('does nothing when presented before the first step', () => {
+    let calls = 0
+    sim.register('p', 'presentation', () => calls++)
+    expect(sim.present()).toBeNull()
+    expect(calls).toBe(0)
+  })
+
+  it('does not advance the frame counter', () => {
+    // present() is the second half of one frame, not a frame of its own.
+    sim.step(1 / 60)
+    sim.present()
+    sim.present()
+    expect(sim.stats().frame).toBe(1)
   })
 })
 
@@ -116,6 +161,7 @@ describe('Simulation — one pause', () => {
     sim.register('present', 'presentation', (f) => seen.push(['present', f.dt]))
 
     const frame = sim.step(1 / 60)
+    sim.present()
     expect(seen).toEqual([
       ['vehicles', 0],
       ['city', 0],
@@ -155,7 +201,9 @@ describe('Simulation — one pause', () => {
       presentCalls++
     })
     sim.step(1 / 60)
+    sim.present()
     sim.step(1 / 60)
+    sim.present()
     expect(cityCalls).toBe(2)
     expect(presentCalls).toBe(2)
     expect(cityDt).toBe(0)
@@ -244,9 +292,26 @@ describe('Simulation — a broken system does not take the frame down', () => {
     sim.register('present', 'presentation', () => ran.push('present'))
 
     sim.step(1 / 60)
+    sim.present()
     expect(ran).toEqual(['ok-before', 'ok-after', 'present'])
     expect(sim.stats().failed).toEqual(['boom'])
     expect(spy).toHaveBeenCalled()
+    spy.mockRestore()
+  })
+
+  it('names a presentation failure too, and keeps the other rigs running', () => {
+    const spy = vi.spyOn(console, 'error').mockImplementation(() => {})
+    const ran: string[] = []
+    sim.register('rig-a', 'presentation', () => ran.push('rig-a'))
+    sim.register('rig-boom', 'presentation', () => {
+      throw new Error('kaboom')
+    })
+    sim.register('rig-b', 'presentation', () => ran.push('rig-b'))
+
+    sim.step(1 / 60)
+    sim.present()
+    expect(ran).toEqual(['rig-a', 'rig-b'])
+    expect(sim.stats().failed).toEqual(['rig-boom'])
     spy.mockRestore()
   })
 

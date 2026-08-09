@@ -6,9 +6,10 @@
  * Positions are relative to the player and drift slowly with time.
  */
 import { useRef, useMemo } from 'react'
-import { useFrame } from '@react-three/fiber'
+import { useThree } from '@react-three/fiber'
 import * as THREE from 'three'
 import { rt } from '../gameplay/runtime'
+import { useSimulationStage } from '../gameplay/useSimulationStage'
 
 const PARTICLE_COUNT = 260
 const SPREAD = 60
@@ -39,6 +40,7 @@ function makeDustSprite(): THREE.CanvasTexture {
 
 export function AtmosphericDust() {
   const ref = useRef<THREE.Points>(null)
+  const camera = useThree((s) => s.camera)
   const sprite = useMemo(makeDustSprite, [])
 
   const [positions, seeds] = useMemo(() => {
@@ -53,8 +55,11 @@ export function AtmosphericDust() {
     return [pos, s] as const
   }, [])
 
-  useFrame(({ camera }) => {
-    if (rt.paused) return
+  // Presentation: pure decoration that follows the camera. It reads
+  // rt.clock.elapsed, so running it after the clock stage rather than at an
+  // undeclared priority means the drift matches the frame being drawn.
+  useSimulationStage('atmospheric-dust', 'presentation', ({ paused }) => {
+    if (paused) return
     // Deterministic captures: the dust cloud must sit still, or every frame
     // drifts a handful of pixels and repeated captures stop being identical.
     if (rt.captureFrozen) return

@@ -57,3 +57,17 @@ export const useHud = create<HudState>((set) => ({
 export function inputLocked(screen: Screen): boolean {
   return screen !== 'playing'
 }
+
+// Exposed for the QA harnesses, alongside __cityWorld / __rt / __simulation.
+//
+// Needed because every automated run starts at the title screen, where
+// inputLocked() is true and the whole world is paused — so a harness that does
+// not get past it measures a frozen game and reports whatever it likes about
+// systems that never ran. stagecheck hit exactly that: 251 frames, every stage
+// populated, and a day-cycle clock that had not moved a millisecond.
+//
+// This is the same store the game loop reads each frame, so setting a screen
+// through it is the real state change rather than a simulated one.
+if (typeof window !== 'undefined') {
+  ;(window as unknown as { __hud: typeof useHud }).__hud = useHud
+}

@@ -10,7 +10,6 @@
  * practicals stay at 0, so nothing renders half-lit.
  */
 import { useEffect, useMemo, useRef } from 'react'
-import { useFrame } from '@react-three/fiber'
 import * as THREE from 'three'
 import { rt } from '../gameplay/runtime'
 import { normaliseHour, skyAt } from './daycycle'
@@ -18,7 +17,7 @@ import { cityLightingUniforms } from './city-lighting-uniforms'
 import { DEFAULT_WORLD_SEED } from './city-lighting'
 import { cityNightModeFor, setCityNightMode } from './night-materials'
 import type { QualityPreset } from './palette'
-import { MAX_STEP_SECONDS } from '../gameplay/simulation'
+import { useSimulationStage } from '../gameplay/useSimulationStage'
 
 const DATA_BIN = '/models/manhattan/building-lighting.bin'
 const DATA_JSON = '/models/manhattan/building-lighting.json'
@@ -100,10 +99,14 @@ export function CityLightingRig({ quality }: { quality: QualityPreset }) {
     }
   }, [header])
 
-  useFrame((_, rawDt) => {
+  // `city`, not `presentation`: this writes shader uniforms the whole city
+  // reads, and flips the day/night program variant. Everything downstream —
+  // window emissives, wet-road response — must see one settled value for the
+  // frame, so it belongs with the world rather than with the rigs that only
+  // look at it. It runs after `clock`, which is where rt.clock.hour is written.
+  useSimulationStage('city-lighting', 'city', ({ dt, paused }) => {
     if (!enabled.current) return
-    if (!readyRef.current || rt.paused) return
-    const dt = Math.min(rawDt, MAX_STEP_SECONDS)
+    if (!readyRef.current || paused) return
     const hour = normaliseHour(rt.clock.hour)
     cityLightingUniforms.uCityHour.value = hour
 
