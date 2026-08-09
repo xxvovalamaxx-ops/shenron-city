@@ -168,6 +168,46 @@ const result = await page.evaluate(async () => {
   const target = [...drawn.entries()].sort((a, b) => b[1] - a[1])[0][0]
   const info = city?.get?.(target) ?? null
 
+  // Coherence baselines, taken before anything is overridden.
+  //
+  // The brief asks for collision, traffic, navigation, address metadata and
+  // save state to "stay coherent". That is five separate claims and none of
+  // them is self-evident just because the suppression arithmetic is right, so
+  // each gets a number here and the same number after.
+  const coherenceBefore = {
+    // Address metadata comes from core.bin and text.json, which a hero cell
+    // never touches — but "never touches" is an argument, not a measurement.
+    name: city?.name?.(target) ?? null,
+    address: city?.address?.(target) ?? null,
+    // Navigation surfaces: the ground the player and the crowd walk on.
+    groundTriangles: (() => {
+      let n = 0
+      scene.traverse((o) => {
+        if (!o.isMesh) return
+        if (!/^(SIDEWALK_|ROAD_|PARK_)/i.test(o.name)) return
+        const g = o.geometry
+        n += g.index ? g.index.count / 3 : (g.attributes.position?.count ?? 0) / 3
+      })
+      return n
+    })(),
+    // Traffic: the lane graph the LION sim drives on.
+    lanes: window.__cityWorld?.traffic?.lanes?.length ?? null,
+    // Save state: the exact bytes the game would persist.
+    save: window.localStorage.getItem('shenron-city:save'),
+    // Collision at the lot itself, actually measured rather than assumed.
+    //
+    // The first version of this hardcoded null for the baseline, which made a
+    // null afterwards unreadable: no way to tell a regression from the normal
+    // state. Same mistake as every other probe on this branch — the control
+    // has to be a measurement, not a placeholder.
+    buildingTopAtLot:
+      window.__manhattanCollision?.buildingTopAt?.(
+        city?.x?.(target) ?? 0,
+        -(city?.y?.(target) ?? 0),
+      ) ?? null,
+    colliders: window.__manhattanCollision?.buildingColliderCount ?? null,
+  }
+
   const before = census()
   const targetBefore = trianglesOf(target)
   const targetMeshes = Object.keys(targetBefore)
@@ -207,8 +247,50 @@ const result = await page.evaluate(async () => {
   const heroPosition = heroGroup
     ? { x: +heroGroup.position.x.toFixed(1), y: +heroGroup.position.y.toFixed(1), z: +heroGroup.position.z.toFixed(1) }
     : null
+  // Where the geometry actually ended up, which is not the same question as
+  // where the group was put: a GLB whose contents are modelled far from its
+  // own origin lands nowhere near its placement.
+  let heroBounds = null
+  if (heroGroup) {
+    heroGroup.updateMatrixWorld(true)
+    const box = new window.THREE.Box3().setFromObject(heroGroup)
+    if (Number.isFinite(box.min.x)) {
+      const c = box.getCenter(new window.THREE.Vector3())
+      const s = box.getSize(new window.THREE.Vector3())
+      heroBounds = {
+        center: { x: +c.x.toFixed(1), y: +c.y.toFixed(1), z: +c.z.toFixed(1) },
+        size: { x: +s.x.toFixed(1), y: +s.y.toFixed(1), z: +s.z.toFixed(1) },
+      }
+    }
+  }
+  // And does collision answer where the geometry actually is?
+  const topAtHeroCentre = heroBounds
+    ? window.__manhattanCollision?.buildingTopAt?.(heroBounds.center.x, heroBounds.center.z) ?? null
+    : null
   const after = census()
   const targetAfter = trianglesOf(target)
+
+  // The same five, after the swap.
+  const lotX = info?.x ?? 0
+  const lotZ = info ? -info.y : 0
+  const coherenceAfter = {
+    name: city?.name?.(target) ?? null,
+    address: city?.address?.(target) ?? null,
+    groundTriangles: (() => {
+      let n = 0
+      scene.traverse((o) => {
+        if (!o.isMesh) return
+        if (!/^(SIDEWALK_|ROAD_|PARK_)/i.test(o.name)) return
+        const g = o.geometry
+        n += g.index ? g.index.count / 3 : (g.attributes.position?.count ?? 0) / 3
+      })
+      return n
+    })(),
+    lanes: window.__cityWorld?.traffic?.lanes?.length ?? null,
+    save: window.localStorage.getItem('shenron-city:save'),
+    buildingTopAtLot: window.__manhattanCollision?.buildingTopAt?.(lotX, lotZ) ?? null,
+    colliders: window.__manhattanCollision?.buildingColliderCount ?? null,
+  }
   const targetTrianglesAfter = Object.values(targetAfter).reduce((s, n) => s + n, 0)
 
   // Confinement: every mesh that does NOT carry the target must be identical.
@@ -233,9 +315,14 @@ const result = await page.evaluate(async () => {
   return {
     target,
     survivedAMissingAsset,
+    coherenceBefore,
+    coherenceAfter,
+    lot: { x: +lotX.toFixed(1), z: +lotZ.toFixed(1) },
     heroMeshes,
     heroTriangles,
     heroPosition,
+    heroBounds,
+    topAtHeroCentre,
     heroGone,
     building: info
       ? { name: info.name, address: info.address, height: +info.height.toFixed(1), x: +info.x.toFixed(1), y: +info.y.toFixed(1) }
@@ -269,6 +356,20 @@ const checks = r.aborted
       missingAssetChangedNothing: r.survivedAMissingAsset === true,
       authoredBuildingArrived: r.heroMeshes > 0 && r.heroTriangles > 0,
       authoredBuildingRemovedOnLift: r.heroGone === true,
+      // Coherence, one claim per line rather than one lumped assertion — a
+      // combined check would say "something moved" and not which thing.
+      addressMetadataUnchanged:
+        r.coherenceBefore?.name === r.coherenceAfter?.name &&
+        r.coherenceBefore?.address === r.coherenceAfter?.address,
+      navigationSurfacesUnchanged:
+        r.coherenceBefore?.groundTriangles === r.coherenceAfter?.groundTriangles,
+      trafficLanesUnchanged: r.coherenceBefore?.lanes === r.coherenceAfter?.lanes,
+      saveStateUnchanged: r.coherenceBefore?.save === r.coherenceAfter?.save,
+      // The authored building answers the collision query the generated one
+      // used to. Null here would mean the lot became a hole the player walks
+      // through — which is what makes this the one coherence check that could
+      // plausibly have failed.
+      collisionAnswersAtTheLot: r.topAtHeroCentre !== null,
     }
 // Console errors are reported, loudly, but do not fail this gate.
 //
@@ -310,7 +411,20 @@ if (r.aborted) {
     `  authored:    ${r.heroMeshes} mesh(es), ${r.heroTriangles} triangle(s) at ` +
       `${r.heroPosition ? `${r.heroPosition.x}, ${r.heroPosition.y}, ${r.heroPosition.z}` : '(absent)'}`,
   )
+  console.log(
+    `  bounds:      centre ${r.heroBounds ? `${r.heroBounds.center.x}, ${r.heroBounds.center.y}, ${r.heroBounds.center.z}` : '(none)'}` +
+      ` size ${r.heroBounds ? `${r.heroBounds.size.x} x ${r.heroBounds.size.y} x ${r.heroBounds.size.z}` : '-'}` +
+      `, collision top there ${r.topAtHeroCentre}`,
+  )
   console.log(`  missing-asset control: ${r.survivedAMissingAsset ? 'city unchanged' : 'CITY CHANGED'}`)
+  console.log(
+    `  coherence:   address "${r.coherenceAfter?.address || '(none)'}", ` +
+      `ground ${r.coherenceAfter?.groundTriangles} tris, ` +
+      `${r.coherenceAfter?.lanes} lanes, ` +
+      `collision top at lot ${r.coherenceBefore?.buildingTopAtLot} -> ` +
+      `${r.coherenceAfter?.buildingTopAtLot} ` +
+      `(${r.coherenceBefore?.colliders} -> ${r.coherenceAfter?.colliders} colliders)`,
+  )
   for (const [name, ok] of Object.entries(checks)) if (!ok) console.error(`  FAIL ${name}`)
 }
 if (errors.length) {

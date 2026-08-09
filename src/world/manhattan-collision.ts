@@ -76,6 +76,18 @@ class ManhattanCollision {
     if (i >= 0) this.groundMeshes.splice(i, 1)
   }
 
+  /**
+   * How many building colliders are indexed.
+   *
+   * Exposed so a caller can tell "I registered these" from "these were
+   * accepted". registerTileBuildings silently skips any mesh not named BLD_*,
+   * which is correct and invisible: the hero-cell loader counted the meshes it
+   * traversed, reported a healthy number, and had registered nothing at all.
+   */
+  get buildingColliderCount(): number {
+    return this.buildingBvhs.length
+  }
+
   registerTileBuildings(root: THREE.Group): void {
     root.traverse((object) => {
       if (!(object instanceof THREE.Mesh)) return

@@ -19,10 +19,19 @@ import {
 } from './hero-cell-loader'
 import { HeroCellRegistry, type BuildingLookup } from './hero-cells'
 
+let colliderCount = 0
 vi.mock('./manhattan-collision', () => ({
   manhattanCollision: {
+    // Counts what it accepted, mirroring the real system closely enough that
+    // "registered nothing" is visible here rather than only in the browser.
+    registerInterior: vi.fn(() => {
+      colliderCount += 1
+    }),
     registerTileBuildings: vi.fn(),
     unregisterTileBuildings: vi.fn(),
+    get buildingColliderCount() {
+      return colliderCount
+    },
   },
 }))
 
@@ -53,6 +62,7 @@ describe('placing an authored building', () => {
   let parent: THREE.Group
   beforeEach(() => {
     parent = new THREE.Group()
+    colliderCount = 0
   })
 
   const placement = {

@@ -133,7 +133,16 @@ export async function loadHeroCell(
 
   // The authored building answers the same collision queries the generated one
   // did. Registered after placement for the same reason.
-  registerHeroCollision(group)
+  const colliders = registerHeroCollision(group, placement.buildingId)
+  if (colliders === 0) {
+    // Loud, because the symptom is invisible: the tower renders and the player
+    // walks through it.
+    onFailure?.({
+      buildingId: placement.buildingId,
+      url: spec.lod0,
+      reason: 'authored geometry registered no collider — the building will not be solid',
+    })
+  }
 
   return {
     buildingId: placement.buildingId,
@@ -155,17 +164,44 @@ export async function loadHeroCell(
  * Only LOD0. The far tier is a silhouette seen from hundreds of metres away and
  * the player cannot be standing in it; registering both would double the
  * colliders and let the coarse one win a sweep.
+ *
+ * Registered through `registerInterior`, not `registerTileBuildings`, and the
+ * distinction is the whole reason this works.
+ *
+ * `registerTileBuildings` records a mesh with no matrix, because streamed tiles
+ * sit at the origin with identity transforms — their local space *is* world
+ * space, so a world-space ray can be tested against the BVH directly. A hero
+ * cell is a placed object: its group sits at the lot, so its meshes' local
+ * space is offset by tens or hundreds of metres. Registering it the tile way
+ * indexed the geometry and then tested every ray in the wrong frame.
+ *
+ * Measured: 4 colliders accepted, and `buildingTopAt` still null at the tower's
+ * own centre — the player would have walked through a 244 m building that was
+ * visibly, solidly there. `registerInterior` is the path for placed geometry;
+ * it bakes `matrixWorld` and its inverse, and `syncInteriors` keeps them
+ * current if the object ever moves.
+ *
+ * The meshes are also renamed `BLD_HERO_<id>_<n>`. Not load-bearing for
+ * collision on this path, but it makes authored hero geometry identifiable to
+ * anything walking the scene, and the name cannot be mistaken for a tile:
+ * `parseTileFromMeshName` wants `BLD_<tier>_<±tx>_<±ty>`, and `31416` is not a
+ * signed tile coordinate.
+ *
+ * Returns the number of colliders the system actually accepted, read from the
+ * system itself — not the number of meshes traversed, which is what hid the
+ * first version of this bug.
  */
-export function registerHeroCollision(group: THREE.Group): number {
-  let registered = 0
+export function registerHeroCollision(group: THREE.Group, buildingId: number): number {
+  const before = manhattanCollision.buildingColliderCount
   const lod0 = group.children.find((c) => /_LOD0$/.test(c.name)) ?? group
+  let n = 0
   lod0.traverse((object) => {
     if (!(object instanceof THREE.Mesh)) return
+    object.name = `BLD_HERO_${buildingId}_${n++}`
     if (!object.geometry.boundsTree) object.geometry.computeBoundsTree()
-    registered++
   })
-  if (registered > 0) manhattanCollision.registerTileBuildings(group)
-  return registered
+  if (n > 0) manhattanCollision.registerInterior(lod0)
+  return manhattanCollision.buildingColliderCount - before
 }
 
 /**
