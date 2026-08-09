@@ -570,12 +570,22 @@ async function main() {
     app, location, scenario, passes: passes.length,
     seconds: args.seconds, quality: args.quality,
     dateUtc: new Date().toISOString(),
-    locations: LOCATIONS[location],
+    // The canonical entry and name, so a run launched under an old alias is
+    // filed under what it actually measured.
+    locationName: resolved.name,
+    locations: resolved.location,
     variance,
     notes: {
-      cameraAsserted: LOCATIONS[location].note,
-      manhattanProjection:
-        ll2xy(LOCATIONS[location].spec[0], LOCATIONS[location].spec[1]),
+      cameraAsserted: resolved.location.note,
+      // Manhattan-app locations carry a [lat, lon, alt, yaw, pitch, mode]
+      // spec; the game's carry a dev-view name and no spec at all. Reading
+      // spec[0] unconditionally threw on every Shenron location — the run
+      // sampled correctly, printed its pass line, and then died writing the
+      // summary. That is why this branch had no benchmark baseline to
+      // regenerate: no run had ever produced one.
+      ...(resolved.location.spec
+        ? { manhattanProjection: ll2xy(resolved.location.spec[0], resolved.location.spec[1]) }
+        : { devView: resolved.location.view }),
     },
   }
   const aggFile = path.join(args.out, `${tag}.json`)
