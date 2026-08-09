@@ -34,6 +34,8 @@ export interface PlayerLocomotionInput {
   speed: number
   /** False while airborne. */
   grounded: boolean
+  /** True while in fly mode. */
+  isFlying?: boolean
 }
 
 export interface PlayerAnimationSample {
@@ -48,7 +50,13 @@ export const ANIMATION_SPEED_PUBLISH_DELTA = 0.05
  * Airborne wins over everything: a player mid-jump running a walk cycle is the
  * kind of thing that reads as broken even when the feet happen to line up.
  */
-export function playerMotionFor({ speed, grounded }: PlayerLocomotionInput): PlayerMotion {
+export function playerMotionFor({ speed, grounded, isFlying }: PlayerLocomotionInput): PlayerMotion {
+  if (isFlying) {
+    if (!Number.isFinite(speed) || speed < IDLE_SPEED) return 'Idle_Loop'
+    if (speed < STROLL_SPEED) return 'Walk_Loop'
+    if (speed < (WALK_SPEED + SPRINT_SPEED) / 2) return 'Jog_Fwd_Loop'
+    return 'Sprint_Loop'
+  }
   if (!grounded) return 'Jump_Loop'
   if (!Number.isFinite(speed) || speed < IDLE_SPEED) return 'Idle_Loop'
   if (speed < STROLL_SPEED) return 'Walk_Loop'

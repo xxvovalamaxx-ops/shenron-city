@@ -116,10 +116,10 @@ export const QUALITY: Record<QualityPreset, QualitySettings> = {
   },
   high: {
     shadows: true,
-    shadowMapSize: 2048,
+    shadowMapSize: 4096,
     postprocessing: true,
     reflections: true,
-    maxDpr: 1.75,
+    maxDpr: 2,
     cityWindows: 2600,
     ambientPedestrians: 12,
     detailTrees: true,

@@ -1,0 +1,159 @@
+{
+  "generatedBy": "scripts/qa/vehicleassetcheck.mjs",
+  "design": {
+    "length": 4.6,
+    "width": 1.87,
+    "height": 1.38
+  },
+  "tiers": [
+    {
+      "tier": "lod0",
+      "url": "/models/vehicles/sportback_lod0.glb",
+      "triangles": 2816,
+      "meshes": 7,
+      "meshNames": [
+        "VEH_body",
+        "VEH_wheel_fl",
+        "VEH_wheel_fr",
+        "VEH_wheel_rl",
+        "VEH_wheel_rr",
+        "VEH_light_head",
+        "VEH_light_brake"
+      ],
+      "size": {
+        "x": 1.87,
+        "y": 1.38,
+        "z": 4.6
+      },
+      "wheels": [
+        "fl",
+        "fr",
+        "rl",
+        "rr"
+      ],
+      "steering": [
+        "fl",
+        "fr"
+      ],
+      "headMaterials": 1,
+      "brakeMaterials": 1,
+      "unmatched": [],
+      "problems": [],
+      "steerPivotAtHub": true
+    },
+    {
+      "tier": "lod1",
+      "url": "/models/vehicles/sportback_lod1.glb",
+      "triangles": 1528,
+      "meshes": 7,
+      "meshNames": [
+        "VEH_body",
+        "VEH_wheel_fl",
+        "VEH_wheel_fr",
+        "VEH_wheel_rl",
+        "VEH_wheel_rr",
+        "VEH_light_head",
+        "VEH_light_brake"
+      ],
+      "size": {
+        "x": 1.87,
+        "y": 1.371,
+        "z": 4.6
+      },
+      "wheels": [
+        "fl",
+        "fr",
+        "rl",
+        "rr"
+      ],
+      "steering": [
+        "fl",
+        "fr"
+      ],
+      "headMaterials": 1,
+      "brakeMaterials": 1,
+      "unmatched": [],
+      "problems": [],
+      "steerPivotAtHub": true
+    },
+    {
+      "tier": "lod2",
+      "url": "/models/vehicles/sportback_lod2.glb",
+      "triangles": 592,
+      "meshes": 5,
+      "meshNames": [
+        "VEH_body",
+        "VEH_wheel_fl",
+        "VEH_wheel_fr",
+        "VEH_wheel_rl",
+        "VEH_wheel_rr"
+      ],
+      "size": {
+        "x": 1.87,
+        "y": 1.357,
+        "z": 4.6
+      },
+      "wheels": [
+        "fl",
+        "fr",
+        "rl",
+        "rr"
+      ],
+      "steering": [
+        "fl",
+        "fr"
+      ],
+      "headMaterials": 0,
+      "brakeMaterials": 0,
+      "unmatched": [],
+      "problems": [
+        "no headlight material",
+        "no brake light material"
+      ],
+      "steerPivotAtHub": true
+    },
+    {
+      "tier": "lod3",
+      "url": "/models/vehicles/sportback_lod3.glb",
+      "triangles": 80,
+      "meshes": 1,
+      "meshNames": [
+        "VEH_body"
+      ],
+      "size": {
+        "x": 1.87,
+        "y": 1.229,
+        "z": 4.6
+      },
+      "wheels": [],
+      "steering": [],
+      "headMaterials": 0,
+      "brakeMaterials": 0,
+      "unmatched": [],
+      "problems": [
+        "missing wheel fl",
+        "missing wheel fr",
+        "missing wheel rl",
+        "missing wheel rr",
+        "no headlight material",
+        "no brake light material"
+      ],
+      "steerPivotAtHub": true
+    }
+  ],
+  "checks": {
+    "everyTierLoaded": true,
+    "everyTierHasGeometry": true,
+    "dimensionsMatchTheDesign": true,
+    "contractSatisfiedOnNearTiers": true,
+    "frontWheelsSteerOnNearTiers": true,
+    "steerPivotsOnTheHub": true,
+    "noStrayMeshes": true,
+    "trianglesDecreaseWithTier": true
+  },
+  "consoleErrors": [
+    "Please enable the NormalPass in the EffectComposer in order to use SSAO.",
+    "Please enable the NormalPass in the EffectComposer in order to use SSAO."
+  ],
+  "pass": true
+}

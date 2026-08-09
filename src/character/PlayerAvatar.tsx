@@ -90,6 +90,7 @@ export function PlayerAvatar() {
     const next = nextPlayerAnimationSample(publishedAnimation.current, {
       speed: speed.current,
       grounded: p.grounded,
+      isFlying: p.flying,
     })
     if (next !== publishedAnimation.current) {
       publishedAnimation.current = next

@@ -391,6 +391,25 @@ export default function App() {
     void cityAudio.start()
   }, [pointerLockEnabled, pointerLockBlocked, setScreen])
 
+  const resumeWorld = useCallback(() => {
+    const canLock = pointerLockEnabled && !pointerLockBlocked
+    if (canLock && document.hasFocus()) {
+      try {
+        const result = controls.current?.lock() as unknown
+        if (result instanceof Promise) {
+          result.catch(() => {})
+        }
+      } catch { /* ignore */ }
+    }
+    setScreen('playing')
+    void cityAudio.start()
+  }, [pointerLockEnabled, pointerLockBlocked, setScreen])
+
+  const exitToTitle = useCallback(() => {
+    setIntroActive(false)
+    setScreen('title')
+  }, [setScreen])
+
   return (
     <>
       <Canvas
@@ -426,13 +445,6 @@ export default function App() {
       </Canvas>
 
       {screen === 'playing' && <Hud />}
-      {screen === 'playing' && pointerLockBlocked && (
-        <div className="input-notice" role="status">
-          This page can’t capture the pointer — <strong>hold the left mouse
-          button and drag to look</strong>. Open it in its own browser window
-          for normal mouselook.
-        </div>
-      )}
       {introActive && screen === 'playing' && !vision && !visualInspection && (
         <IntroSequence
           onDone={() => {
@@ -444,7 +456,7 @@ export default function App() {
       {screen === 'loading' && <LoadingScreen progress={progress} />}
       {screen === 'title' && <TitleScreen onStart={enterWorld} />}
       {screen === 'paused' && (
-        <PauseMenu settings={settings} onChange={setSettings} onResume={enterWorld} />
+        <PauseMenu settings={settings} onChange={setSettings} onResume={resumeWorld} onExit={exitToTitle} />
       )}
     </>
   )

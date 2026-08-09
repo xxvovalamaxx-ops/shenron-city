@@ -1,0 +1,56 @@
+{
+  "generatedBy": "scripts/qa/stagecheck.mjs",
+  "rafTicks": 203,
+  "framesAdvanced": 203,
+  "systems": {
+    "input": [],
+    "clock": [
+      "day-cycle"
+    ],
+    "vehicles": [],
+    "city": [
+      "city-lighting",
+      "city-pipeline"
+    ],
+    "presentation": [
+      "night-environment",
+      "player-avatar",
+      "vehicle-rig",
+      "atmospheric-dust",
+      "intro-camera"
+    ]
+  },
+  "populatedStages": [
+    "clock",
+    "city",
+    "presentation"
+  ],
+  "failed": [],
+  "clock": {
+    "from": 17.000445000000017,
+    "to": 17.11123499999993,
+    "paused": false,
+    "captureFrozen": false,
+    "screen": "playing"
+  },
+  "camera": {
+    "roll": 0,
+    "order": "YXZ"
+  },
+  "checks": {
+    "framesAdvance": true,
+    "rafRuns": true,
+    "noFailures": true,
+    "clockAdvancesWhenRunning": true,
+    "presentationPopulated": true,
+    "cityPopulated": true,
+    "cameraLevel": true,
+    "noConsoleErrors": true
+  },
+  "reachedPlaying": {
+    "ok": true,
+    "screen": "playing"
+  },
+  "consoleErrors": [],
+  "pass": true
+}

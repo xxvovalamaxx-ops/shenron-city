@@ -1,6 +1,6 @@
 /**
- * Cinematic entry: the logo spins in, expands to swallow the screen, then
- * shrinks away GTA-style as the camera dives from the sky onto the player.
+ * Cinematic entry: plays the intro video, then dives the camera from the sky
+ * onto the player. Press Space to skip the video.
  *
  * The overlay is pure DOM/CSS. The camera flight is a small R3F component that
  * runs while `rt.introSeconds` is inside the intro window — the game loop
@@ -12,7 +12,6 @@ import { Vector3 } from 'three'
 import { rt } from '../gameplay/runtime'
 import { useSimulationStage } from '../gameplay/useSimulationStage'
 import { lookAnglesFromDirection } from '../gameplay/look'
-import { introAudio } from '../audio/intro'
 
 export const INTRO_DURATION = 4.6
 
@@ -90,39 +89,36 @@ export function IntroCamera() {
   return null
 }
 
-type Phase = 'spin' | 'expand' | 'shrink' | 'done'
-
-const PHASE_TIMING: Array<[Phase, number]> = [
-  ['spin', 1600],
-  ['expand', 1300],
-  ['shrink', 1700],
-]
-
 export function IntroSequence({ onDone }: { onDone(): void }) {
-  const [phase, setPhase] = useState<Phase>('spin')
   const [exited, setExited] = useState(false)
+  const videoRef = useRef<HTMLVideoElement>(null)
   const onDoneRef = useRef(onDone)
   onDoneRef.current = onDone
 
+  const skip = () => {
+    if (exited) return
+    setExited(true)
+    rt.introSeconds = Number.POSITIVE_INFINITY
+    onDoneRef.current()
+  }
+
   useEffect(() => {
-    introAudio.play()
     rt.introSeconds = 0
-    const timers = PHASE_TIMING.map(([nextPhase, delay], index) =>
-      setTimeout(
-        () => {
-          setPhase(nextPhase)
-          if (index === PHASE_TIMING.length - 1) {
-            setTimeout(() => {
-              setExited(true)
-              rt.introSeconds = Number.POSITIVE_INFINITY
-              onDoneRef.current()
-            }, 150)
-          }
-        },
-        PHASE_TIMING.slice(0, index + 1).reduce((sum, [, d]) => sum + d, 0) - delay,
-      ),
-    )
-    return () => timers.forEach(clearTimeout)
+    const video = videoRef.current
+    if (video) {
+      video.play().catch(() => {})
+    }
+    const onKey = (e: KeyboardEvent) => {
+      if (e.code === 'Space' || e.code === 'Enter' || e.code === 'Escape') {
+        e.preventDefault()
+        skip()
+      }
+    }
+    window.addEventListener('keydown', onKey)
+    return () => {
+      window.removeEventListener('keydown', onKey)
+      rt.introSeconds = Number.POSITIVE_INFINITY
+    }
   }, [])
 
   // Cleanup: if the component unmounts for any reason (e.g. the menu opens),
@@ -136,12 +132,15 @@ export function IntroSequence({ onDone }: { onDone(): void }) {
   if (exited) return null
 
   return (
-    <div className={`intro-overlay intro-phase-${phase}`} aria-hidden="true">
-      <div className="intro-wordmark">
-        <span className="intro-word-1">SHENZHEN</span>
-        <span className="intro-word-2">CITY</span>
-      </div>
-      <div className="intro-vignette" />
+    <div className="intro-video-overlay" onClick={skip}>
+      <video
+        ref={videoRef}
+        src="/intro.mp4"
+        className="intro-video"
+        onEnded={skip}
+        playsInline
+      />
+      <div className="intro-skip-hint">Press Space to skip</div>
     </div>
   )
 }

@@ -1,0 +1,112 @@
+{
+  "pass": 1,
+  "app": "shenron",
+  "location": "central-park-open",
+  "scenario": "stand",
+  "quality": "high",
+  "startedAtUtc": "2026-08-09T10:23:56.764Z",
+  "measuredMs": 10009.70000000298,
+  "stats": {
+    "frames": 1001,
+    "deadFrames": 0,
+    "frameMs": {
+      "avg": 9.999700299699555,
+      "median": 10,
+      "min": 4.599999997764826,
+      "max": 14.799999997019768,
+      "low1": 13.029999999701976,
+      "low01": 14.799999997019768,
+      "low1P99": 11.600000001490116,
+      "low01P999": 14.300000000745058
+    },
+    "fps": {
+      "avg": 100.00299709282741,
+      "median": 100,
+      "min": 67.56756758117345,
+      "max": 217.39130445345813,
+      "low1": 76.74597083828642,
+      "low01": 67.56756758117345,
+      "low1P99": 86.20689654065015,
+      "low01P999": 69.93006992642644
+    },
+    "lows": {
+      "method": "mean-of-slowest (primary); nearest-rank percentile (secondary)",
+      "supersedes": [
+        "fps.p1",
+        "fps.p01",
+        "frameMs.p1",
+        "frameMs.p01"
+      ]
+    }
+  },
+  "longTasks": [],
+  "heapUsedMB": [
+    {
+      "ts": 4.5,
+      "mb": 412.68838691711426
+    },
+    {
+      "ts": 5006.400000002235,
+      "mb": 405.6486072540283
+    },
+    {
+      "ts": 10009.60000000149,
+      "mb": 423.2207775115967
+    }
+  ],
+  "loadMs": 314,
+  "appStats": null,
+  "gpu": {
+    "renderer": "ANGLE (NVIDIA, NVIDIA GeForce RTX 5070 (0x00002F04) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+    "vendor": "Google Inc. (NVIDIA)"
+  },
+  "transition": null,
+  "buckets": null,
+  "integrity": {
+    "sha256": "105da55b5c115282c396ab6f3eed16679fea5af456dbabc0ea304a3ae1308ba8",
+    "luminanceBands4x4": [
+      [
+        129,
+        143,
+        161,
+        141
+      ],
+      [
+        163,
+        165,
+        165,
+        161
+      ],
+      [
+        53,
+        50,
+        54,
+        55
+      ],
+      [
+        26,
+        36,
+        33,
+        27
+      ]
+    ],
+    "pngBytes": 448694
+  },
+  "cpu": {
+    "taskMsPerSec": 1.01,
+    "scriptMsPerSec": 0.81,
+    "layoutMsPerSec": 0,
+    "recalcStyleMsPerSec": 0,
+    "layoutsPerSec": 1.6,
+    "recalcStylesPerSec": 4.1,
+    "nodesDelta": 52,
+    "heapDeltaMB": 101.84
+  },
+  "errors": {
+    "consoleErrors": 0,
+    "exceptions": 0,
+    "consoleWarnings": 2,
+    "networkFailures": 0,
+    "samples": []
+  }
+}

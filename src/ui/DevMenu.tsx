@@ -5,7 +5,7 @@
  * spawn store, so the game loop picks it up on the next frame. The menu itself
  * is plain DOM on top of the canvas and does not steal pointer lock on open.
  */
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { rt } from '../gameplay/runtime'
 import { useHud } from './hud-store'
 import {
@@ -62,17 +62,49 @@ export function DevMenu() {
   const [fly, setFly] = useState(rt.player.flying)
   const [speed, setSpeed] = useState(rt.devSpeed)
   const [hour, setHour] = useState(Math.round(rt.clock.hour * 10) / 10)
+  const [collapsed, setCollapsed] = useState(false)
+  const hideTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
+
+  // Auto-hide after 8 seconds of no interaction
+  useEffect(() => {
+    if (!open) return
+    const resetTimer = () => {
+      if (hideTimer.current) clearTimeout(hideTimer.current)
+      hideTimer.current = setTimeout(() => {
+        useHud.getState().toggleDevTools()
+      }, 8000)
+    }
+    resetTimer()
+    return () => {
+      if (hideTimer.current) clearTimeout(hideTimer.current)
+    }
+  }, [open])
 
   if (!open) return null
 
+  if (collapsed) {
+    return (
+      <div className="dev-menu dev-menu-collapsed" onClick={() => setCollapsed(false)}>
+        <span>DEV TOOLS — F2 / click to open</span>
+      </div>
+    )
+  }
+
   return (
-    <div className="dev-menu">
+    <div className="dev-menu" onMouseEnter={() => {
+      if (hideTimer.current) clearTimeout(hideTimer.current)
+    }} onMouseLeave={() => {
+      hideTimer.current = setTimeout(() => {
+        useHud.getState().toggleDevTools()
+      }, 4000)
+    }}>
       <div className="dev-menu-head">
         <b>DEV TOOLS</b>
         <span>
           {Math.round(rt.player.pos.x)} {Math.round(rt.player.pos.y)}{' '}
-          {Math.round(rt.player.pos.z)} · F2 close
+          {Math.round(rt.player.pos.z)}
         </span>
+        <button className="dev-menu-collapse" onClick={() => setCollapsed(true)}>−</button>
       </div>
 
       <div className="dev-menu-section">

@@ -20,10 +20,10 @@ export function buildSky(scene, renderer) {
   // Balanced against the flattened ground materials, not against the white
   // ones the first export produced. Sun at 2.1 plus hemi at 1.05 blew the
   // land plane to pure white and left every north-facing wall black.
-  const hemi = new THREE.HemisphereLight(0xbdd5f0, 0x4a453d, 1.5)
+  const hemi = new THREE.HemisphereLight(0xc4ddf5, 0x5a5040, 1.8)
   scene.add(hemi)
 
-  const sun = new THREE.DirectionalLight(0xfff2dc, 2.6)
+  const sun = new THREE.DirectionalLight(0xfff4e0, 2.8)
   // late afternoon from the south-west, which is what puts light down the
   // numbered streets in Manhattan
   sun.position.set(-9000, 7000, 5200)
@@ -32,12 +32,12 @@ export function buildSky(scene, renderer) {
   // A dim opposing light so the shadow side of a facade still reads. Real
   // street canyons bounce a lot of light; without this half of every building
   // is a black silhouette.
-  const fill = new THREE.DirectionalLight(0xa8c2de, 0.8)
+  const fill = new THREE.DirectionalLight(0xb8d2e8, 1.0)
   fill.position.set(6000, 3000, -6000)
   scene.add(fill)
 
   renderer.toneMapping = THREE.ACESFilmicToneMapping
-  renderer.toneMappingExposure = 1.05
+  renderer.toneMappingExposure = 1.1
 
   return { sun, hemi, fill }
 }

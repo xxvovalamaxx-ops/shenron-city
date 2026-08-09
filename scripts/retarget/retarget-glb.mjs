@@ -274,7 +274,7 @@ function main(argv) {
   // below the head and 0.225 m apart. Standing, arms down.
   const alignBone = arg('--align-bone', 'root_01')
   const alignAxis = arg('--align-axis', 'z')
-  const alignDegrees = Number(arg('--align-degrees', '-90'))
+  const alignDegrees = Number(arg('--align-degrees', '90'))
 
   const source = parseGlb(readFileSync(sourcePath))
   const target = parseGlb(readFileSync(targetPath))

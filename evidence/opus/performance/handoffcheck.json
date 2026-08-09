@@ -1,0 +1,38 @@
+{
+  "generatedBy": "scripts/qa/handoffcheck.mjs",
+  "preconditions": {
+    "poolInstalled": true,
+    "poolCars": 399,
+    "poolLanes": 25468,
+    "registryBefore": 9
+  },
+  "framesAdvanced": 401,
+  "paused": false,
+  "stoppedACar": false,
+  "promptSeen": "Press E to enter the car",
+  "promotedId": 10,
+  "carsBefore": 399,
+  "carsAfter": 399,
+  "registryAfter": 10,
+  "stillInTraffic": 0,
+  "inRegistry": true,
+  "observations": [
+    "registry gained 1 id(s): 10"
+  ],
+  "playerVehicleId": 10,
+  "checks": {
+    "poolInstalled": true,
+    "poolHasCars": true,
+    "poolHasLanes": true,
+    "loopRan": true,
+    "notPaused": true,
+    "promptOffered": true,
+    "promoted": true,
+    "arrivedInTheRegistry": true,
+    "noDuplicate": true,
+    "playerIsDriving": true,
+    "noConsoleErrors": true
+  },
+  "consoleErrors": [],
+  "pass": true
+}

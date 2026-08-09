@@ -344,8 +344,8 @@ export function getBuildingNightMaterial(options: NightMaterialOptions): THREE.M
   const material = new THREE.MeshStandardMaterial({
     vertexColors: true,
     color: 0xffffff,
-    roughness: 0.78,
-    metalness: 0.08,
+    roughness: 0.72,
+    metalness: 0.12,
     side: THREE.DoubleSide,
   })
   material.onBeforeCompile = (shader) => {
@@ -377,8 +377,8 @@ export function getRoadNightMaterial(options: NightMaterialOptions): THREE.MeshS
     // authored material; this override then made the same mistake one layer up.
     vertexColors: false,
     color: new THREE.Color().setRGB(0.028, 0.028, 0.031, THREE.LinearSRGBColorSpace),
-    roughness: 0.92,
-    metalness: 0.02,
+    roughness: 0.88,
+    metalness: 0.04,
   })
   material.onBeforeCompile = (shader) => {
     shader.vertexShader = `

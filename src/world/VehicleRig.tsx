@@ -16,6 +16,9 @@ import { vehicleSim } from '../gameplay/vehicles/vehicle-session'
 import { vehicleSpec } from '../gameplay/vehicles/vehicle-specs'
 import type { VehicleEntity } from '../gameplay/vehicles/vehicle-entities'
 import { disposeOwned, disposePedestrianResources, pedestrianResources } from './rig-resources'
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
+import { applyVehicleState } from './vehicle-asset'
+import { vehicleAssetPool, type VehicleInstance } from './vehicle-asset-pool'
 
 const KIND_COLOR: Record<string, string> = {
   sedan: '#c8c4b8',
@@ -31,6 +34,20 @@ const ACCENT: Record<string, string> = {
   ambulance: '#c0392b',
 }
 
+/**
+ * A loader for the vehicle asset, made once.
+ *
+ * Separate from ManhattanCity's shared loader on purpose: that one carries a
+ * Draco decoder for the compressed city tiles, and the vehicle GLBs are
+ * uncompressed. Reusing it would work and would tie this component's lifetime
+ * to the city pipeline's, which it does not otherwise depend on.
+ */
+let vehicleLoader: GLTFLoader | null = null
+function getVehicleGltfLoader(): GLTFLoader {
+  if (!vehicleLoader) vehicleLoader = new GLTFLoader()
+  return vehicleLoader
+}
+
 interface WheelRig {
   pivot: THREE.Group
   wheel: THREE.Mesh
@@ -38,6 +55,13 @@ interface WheelRig {
 
 interface VehicleRigEntry {
   group: THREE.Group
+  /**
+   * The authored sportback, when the asset has loaded.
+   *
+   * Null means this car is still wearing the procedural fallback — see the
+   * note at the rig creation site. The two are never both present.
+   */
+  authored: VehicleInstance | null
   wheels: WheelRig[]
   brakeLights: THREE.Mesh[]
   headlights: THREE.Mesh[]
@@ -131,6 +155,7 @@ function buildVehicleRig(entity: VehicleEntity): VehicleRigEntry {
 
   return {
     group,
+    authored: null,
     wheels,
     brakeLights,
     headlights,
@@ -141,17 +166,64 @@ function buildVehicleRig(entity: VehicleEntity): VehicleRigEntry {
   }
 }
 
+/**
+ * Dress a car in the authored sportback, or return null if it has not loaded.
+ *
+ * The returned entry keeps the primitive-rig fields so the two paths share one
+ * type, but they are never both live: `authored` is what the frame loop
+ * branches on, and an authored entry's wheel and light fields are empty.
+ */
+function buildAuthoredRig(entity: VehicleEntity): VehicleRigEntry | null {
+  const instance = vehicleAssetPool.acquire(entity.kind)
+  if (!instance) return null
+  return {
+    group: instance.group,
+    authored: instance,
+    wheels: [],
+    brakeLights: [],
+    headlights: [],
+    // Unused on this path; the bound materials are driven through
+    // applyVehicleState instead. Kept non-null so the type stays simple.
+    brakeMaterial: instance.bound.brakeMaterials[0] as THREE.MeshStandardMaterial,
+    headMaterial: instance.bound.headMaterials[0] as THREE.MeshStandardMaterial,
+    forward: new THREE.Vector3(),
+    right: new THREE.Vector3(),
+  }
+}
+
+/** Release an entry, by whichever route owns it. */
+function releaseEntry(entry: VehicleRigEntry): void {
+  if (entry.authored) {
+    // The pool owns the geometry and the shared materials; only the per-car
+    // clones are disposed. disposeOwned would take the shared buffers with it
+    // and blank every other car.
+    vehicleAssetPool.release(entry.authored)
+    return
+  }
+  disposeOwned(entry.group)
+  entry.group.removeFromParent()
+}
+
 export function VehicleRig() {
   const root = useRef<THREE.Group>(null)
   const entries = useRef(new Map<number, VehicleRigEntry>())
   const pedMeshes = useRef<THREE.Mesh[]>([])
 
+  // Fetch the authored asset once, on mount. Cars render with the procedural
+  // fallback until it lands and are upgraded in place.
+  useEffect(() => {
+    vehicleAssetPool.load(getVehicleGltfLoader()).then((scene) => {
+      if (!scene && vehicleAssetPool.error) {
+        // Loud: the visible symptom is a fleet of boxes, which reads as
+        // "the hero vehicle was never made" rather than "it failed to load".
+        console.error('[vehicles] authored asset unavailable —', vehicleAssetPool.error)
+      }
+    })
+  }, [])
+
   useEffect(
     () => () => {
-      for (const entry of entries.current.values()) {
-        disposeOwned(entry.group)
-        entry.group.removeFromParent()
-      }
+      for (const entry of entries.current.values()) releaseEntry(entry)
       entries.current.clear()
       // The pedestrian boxes share one geometry and one material, so the
       // meshes are only detached here. The shared pair is released once,
@@ -177,9 +249,25 @@ export function VehicleRig() {
       seen.add(entity.id)
       let entry = entries.current.get(entity.id)
       if (!entry) {
-        entry = buildVehicleRig(entity)
+        entry = buildAuthoredRig(entity) ?? buildVehicleRig(entity)
         rigRoot.add(entry.group)
         entries.current.set(entity.id, entry)
+      } else if (!entry.authored) {
+        // Upgrade a fallback car once the asset finishes loading.
+        //
+        // The fallback is deliberate, not a leftover: the GLB fetch is async
+        // and cars exist from the first frame, so the choice is procedural
+        // geometry for a second or an invisible fleet. It is also the honest
+        // failure mode — if the asset never arrives the boxes stay and
+        // placeholdercheck fails, which is exactly what should happen.
+        const upgraded = buildAuthoredRig(entity)
+        if (upgraded) {
+          disposeOwned(entry.group)
+          entry.group.removeFromParent()
+          rigRoot.add(upgraded.group)
+          entries.current.set(entity.id, upgraded)
+          entry = upgraded
+        }
       }
 
       entry.group.position.set(entity.pose.pos.x, entity.pose.pos.y, entity.pose.pos.z)
@@ -189,15 +277,26 @@ export function VehicleRig() {
       entry.right.set(-entry.forward.z, 0, entry.forward.x)
       const spin = entity.motion.wheelSpin
       const steer = entity.motion.steerAngle
-      for (const wheel of entry.wheels) {
-        wheel.wheel.rotation.x = spin
-      }
-      entry.wheels[0].pivot.rotation.y = steer
-      entry.wheels[1].pivot.rotation.y = steer
-
       const braking = entity.motion.braking || entity.state === 'PARKED'
-      entry.brakeMaterial.emissiveIntensity = braking ? 1.6 : 0
-      entry.headMaterial.emissiveIntensity = vehicleSim.headlightsOn ? 1.6 : 0
+
+      if (entry.authored) {
+        // One call, driving the contract vehicle-asset.ts binds. The rig no
+        // longer knows how many wheels there are or which materials light up.
+        applyVehicleState(entry.authored.bound, {
+          wheelSpin: spin,
+          steerAngle: steer,
+          braking,
+          headlights: vehicleSim.headlightsOn,
+        })
+      } else {
+        for (const wheel of entry.wheels) {
+          wheel.wheel.rotation.x = spin
+        }
+        entry.wheels[0].pivot.rotation.y = steer
+        entry.wheels[1].pivot.rotation.y = steer
+        entry.brakeMaterial.emissiveIntensity = braking ? 1.6 : 0
+        entry.headMaterial.emissiveIntensity = vehicleSim.headlightsOn ? 1.6 : 0
+      }
     }
     for (const id of [...entries.current.keys()]) {
       if (!seen.has(id)) {
@@ -205,8 +304,7 @@ export function VehicleRig() {
         // Despawning used to be removeFromParent() alone. A rig is roughly
         // eight geometries and six materials; every car that left the world
         // leaked all of them for the rest of the session.
-        disposeOwned(entry.group)
-        entry.group.removeFromParent()
+        releaseEntry(entry)
         entries.current.delete(id)
       }
     }
