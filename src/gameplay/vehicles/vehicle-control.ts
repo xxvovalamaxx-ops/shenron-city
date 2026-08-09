@@ -28,6 +28,7 @@ import {
   transitionVehicle,
   vehicleDoors,
   exitCandidates,
+  type VehicleEntity,
   type VehicleRegistry,
 } from './vehicle-entities'
 import {
@@ -35,6 +36,13 @@ import {
   type Pedestrian,
   type VehicleWorld,
 } from './vehicle-collision'
+import {
+  demoteToTraffic,
+  laneToWorld,
+  promoteTrafficCar,
+  type CityTrafficPool,
+  type TrafficCar,
+} from './vehicle-handoff'
 import {
   stepAiVehicle,
   updatePedestrians,
@@ -52,6 +60,15 @@ import {
 import { createDefaultLayout } from './vehicle-entities'
 
 export const ENTER_DURATION = 0.6
+
+/**
+ * Metres per second below which a city car counts as enterable.
+ *
+ * The registry branch gets this from `isStationary(motion, 0.2)`. LION cars
+ * carry only a scalar `v`, so the same threshold is spelled once here rather
+ * than passed a motion object they do not have.
+ */
+export const STATIONARY_TRAFFIC_SPEED = 0.2
 export const EXIT_DURATION = 0.45
 export const HORN_DURATION = 0.45
 export const VEHICLE_SUBSTEP = 1 / 120
@@ -86,6 +103,10 @@ export type SimEvent =
   | { type: 'collision-vehicle'; vehicleId: number }
   | { type: 'collision-pedestrian'; vehicleId: number; pedestrianId: number }
   | { type: 'return-to-ai'; vehicleId: number }
+  // The two halves of the handoff, emitted so a harness can assert the
+  // representation actually changed rather than infer it from a count.
+  | { type: 'promoted'; vehicleId: number }
+  | { type: 'demoted'; vehicleId: number }
   | { type: 'prompt'; label: string | null }
 
 export interface Transition {
@@ -112,8 +133,16 @@ export interface VehicleSimState {
   /** False while the avatar is attached to a seat or mid-transition. */
   playerVisible: boolean
   transition: Transition | null
-  /** Current enter prompt, recomputed every step. */
-  prompt: { vehicleId: number; label: string } | null
+  /**
+   * Current enter prompt, recomputed every step.
+   *
+   * `trafficCar` is set when the target is a LION car rather than a registry
+   * entity. It is not promoted here: walking past four hundred cars must not
+   * turn four hundred of them into physics entities. Promotion happens on the
+   * interact press, in one place, so the world never holds two of a car even
+   * for a frame.
+   */
+  prompt: { vehicleId: number; label: string; trafficCar?: TrafficCar } | null
   cameraMode: VehicleCameraMode
   camera: VehicleCameraState
   /** Seconds of horn remaining, for visuals/audio. */
@@ -124,6 +153,14 @@ export interface VehicleSimState {
   /** Lane provider in effect this session: the street graph once the city
    * pipeline loads it, otherwise null (the drawn loop). */
   provider: LaneProvider | null
+  /**
+   * The city's LION traffic, once the city pipeline installs it.
+   *
+   * Null in tests and before the world loads, and every path below treats null
+   * as "no city cars" rather than as an error — the drawn-loop arena has no
+   * LION side at all and must keep working.
+   */
+  cityTraffic: CityTrafficPool | null
   returnClocks: Map<number, number>
   pedestrians: Pedestrian[]
   simTime: number
@@ -142,6 +179,7 @@ export function createVehicleSim(
     registry,
     lane,
     provider,
+    cityTraffic: null,
     player: {
       pos: { x: 0, y: 0, z: 0 },
       forward: { x: 0, z: -1 },
@@ -372,7 +410,24 @@ export function stepVehicleSim(
   // ── Enter prompt + entry ────────────────────────────────────────────────
   updateEnterPrompt(sim, world)
   if (!playerVehicle && sim.prompt && input.interact) {
-    const target = sim.registry.vehicles.get(sim.prompt.vehicleId)
+    // A LION car becomes a real entity here and nowhere else. promoteTrafficCar
+    // splices it out of the traffic array in the same call that creates the
+    // entity, so there is no window — not even one frame — in which the world
+    // holds both an instanced car and a physical one at the same place.
+    let target: VehicleEntity | undefined
+    if (sim.prompt.trafficCar && sim.cityTraffic) {
+      const promoted = promoteTrafficCar(
+        sim.cityTraffic.cars,
+        sim.prompt.trafficCar,
+        sim.cityTraffic.lanes,
+        sim.registry,
+        sim.cityTraffic.roadY,
+      )
+      target = promoted?.entity
+      if (promoted) sim.events.push({ type: 'promoted', vehicleId: promoted.entity.id })
+    } else {
+      target = sim.registry.vehicles.get(sim.prompt.vehicleId)
+    }
     if (target) {
       const result = transitionVehicle(sim.registry, target.id, 'ENTERING')
       if (result.ok) {
@@ -401,6 +456,21 @@ export function stepVehicleSim(
     : []
   for (const id of returned) {
     sim.events.push({ type: 'return-to-ai', vehicleId: id })
+    // Close the loop: a car handed back to the AI goes back to LION, which is
+    // where it came from and what it costs almost nothing to be. Without this
+    // the registry only ever grows — every car the player enters and walks
+    // away from stays a full physics entity for the rest of the session, so a
+    // long session turns 399 cheap cars into hundreds of expensive ones.
+    //
+    // demoteToTraffic returns null when there is no lane within range, and
+    // that case is deliberately left alone: a car abandoned on a plaza should
+    // stay a real parked car there rather than be deleted or snapped onto a
+    // road it was never on.
+    const entity = sim.registry.vehicles.get(id)
+    if (entity && sim.cityTraffic) {
+      const car = demoteToTraffic(entity, sim.cityTraffic.cars, sim.cityTraffic.lanes, sim.registry)
+      if (car) sim.events.push({ type: 'demoted', vehicleId: id })
+    }
   }
 
   // ── Camera ──────────────────────────────────────────────────────────────
@@ -582,7 +652,7 @@ function updateEnterPrompt(sim: VehicleSimState, world: VehicleWorld): void {
     }
     return
   }
-  let best: { vehicleId: number; label: string } | null = null
+  let best: NonNullable<VehicleSimState['prompt']> | null = null
   let bestDist = ENTER_PROMPT_RADIUS
   for (const entity of sim.registry.vehicles.values()) {
     if (entity.state !== 'PARKED') {
@@ -602,6 +672,42 @@ function updateEnterPrompt(sim: VehicleSimState, world: VehicleWorld): void {
       best = {
         vehicleId: entity.id,
         label: `Press E to enter the ${spec.label}`,
+      }
+    }
+  }
+
+  // ── City traffic ────────────────────────────────────────────────────────
+  //
+  // The other 399. Without this loop the registry is the only thing the
+  // prompt can see, so every LION car is scenery the player walks through —
+  // which is what the world actually did until now (OPUS-015).
+  //
+  // Judged from the car's own centre rather than a door, because a lane-space
+  // car has no body yet: it is `{lane, s}` until the moment it is promoted, so
+  // there is nothing to compute a door offset from. The clearance check that
+  // matters is the one on the player's side, and standing next to a car is
+  // already proof they are somewhere legal.
+  const pool = sim.cityTraffic
+  if (pool) {
+    for (const car of pool.cars) {
+      if (!car.alive) continue
+      const lane = pool.lanes[car.lane]
+      if (!lane) continue
+      const placement = laneToWorld(lane, car.s, pool.roadY)
+      const dist = Math.hypot(
+        placement.pos.x - sim.player.pos.x,
+        placement.pos.z - sim.player.pos.z,
+      )
+      if (dist >= bestDist) continue
+      // A car doing 30 km/h is not something you open the door of. LION cars
+      // are never PARKED, so this is the stationary test the registry branch
+      // gets from `isStationary`.
+      if (car.v > STATIONARY_TRAFFIC_SPEED) continue
+      bestDist = dist
+      best = {
+        vehicleId: -1,
+        label: 'Press E to enter the car',
+        trafficCar: car,
       }
     }
   }

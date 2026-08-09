@@ -15,6 +15,7 @@ import {
   type VehicleSimState,
 } from './vehicle-control'
 import type { VehicleWorld } from './vehicle-collision'
+import type { CityTrafficPool } from './vehicle-handoff'
 import { setLaneTable, type LaneProvider } from './vehicle-lanes'
 import { vehicleSpec } from './vehicle-specs'
 
@@ -25,6 +26,16 @@ export {
 } from './vehicle-control'
 
 export const vehicleSim: VehicleSimState = createVehicleSim()
+
+// Exposed for the QA harnesses, alongside __cityWorld / __rt / __simulation /
+// __hud. The handoff between LION and the physics registry cannot be checked
+// from outside without seeing both sides at once: "the car left the traffic
+// array AND arrived in the registry AND exists exactly once" is one assertion
+// about two collections, and inferring it from what is drawn would measure the
+// renderer instead.
+if (typeof window !== 'undefined') {
+  ;(window as unknown as { __vehicleSim: VehicleSimState }).__vehicleSim = vehicleSim
+}
 
 /**
  * A braking obstacle for the LION city traffic sim, in its lane space:
@@ -59,6 +70,19 @@ export function installLaneProvider(
     entity.ai.distance = hit.distance
     entity.ai.targetSpeed = hit.lane.speedLimit * 0.8
   }
+}
+
+/**
+ * Hand the city's LION traffic to the sim, so its cars can be entered.
+ *
+ * Separate from `installLaneProvider` because the two arrive from different
+ * places and at different times: the provider is the routed lane graph the AI
+ * drives on, this is the pool of instanced cars circulating on it. Installing
+ * one without the other is a legitimate state — the sim runs fine with no city
+ * traffic at all, which is what every test and the drawn-loop arena do.
+ */
+export function installCityTraffic(sim: VehicleSimState, pool: CityTrafficPool): void {
+  sim.cityTraffic = pool
 }
 
 /**

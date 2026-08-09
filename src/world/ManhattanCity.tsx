@@ -35,8 +35,14 @@ import { Doors } from '../city/doors.js'
 import { buildSky } from '../city/sky.js'
 import { cityWorld } from '../city/registry.js'
 import { cityHud } from '../city/city-hud.js'
-import { installLaneProvider, trafficGhosts, vehicleSim } from '../gameplay/vehicles/vehicle-session'
+import {
+  installCityTraffic,
+  installLaneProvider,
+  trafficGhosts,
+  vehicleSim,
+} from '../gameplay/vehicles/vehicle-session'
 import { createGraphLaneProvider } from '../gameplay/vehicles/graph-lane-provider'
+import type { CityTrafficPool } from '../gameplay/vehicles/vehicle-handoff'
 import type { LaneProvider } from '../gameplay/vehicles/vehicle-lanes'
 
 // three-mesh-bvh extends BufferGeometry/Mesh only when asked; wire it up once.
@@ -292,6 +298,40 @@ class CityPipeline {
     // frame in update().
     this.graphProvider = createGraphLaneProvider(traffic.lanes, traffic.grid)
     installLaneProvider(vehicleSim, this.graphProvider)
+
+    // 0B.6 — and hand over the cars themselves, not just the lanes they drive
+    // on. Until this line the enter prompt could only see the handful of
+    // registry entities, so the ~400 circulating city cars were scenery the
+    // player walked through (OPUS-015).
+    //
+    // Getters, not values. `Traffic` replaces `this.vehicles` wholesale twice
+    // per its own bookkeeping — once rebuilding the in-scope set, once reaping
+    // dead cars — so a reference captured here is stale from the first rebuild
+    // onward. Promotion would then splice a car out of an abandoned array
+    // while the live one kept circulating: a duplicate, reported as a success.
+    // Measured with the captured form: 25,468 lanes and 0 cars against a fleet
+    // of 399. Also fixes the ordering problem for free — the fleet is empty at
+    // this point and fills in over the following seconds.
+    //
+    // LION lanes carry `pts`, `cum`, `len` and `speed` among other fields, so
+    // they satisfy HandoffLane structurally without a conversion pass.
+    //
+    // The casts are the seam between the typed and untyped halves of the
+    // codebase: traffic.js is plain JS, so its arrays type as
+    // Record<string, unknown>[]. The shape is asserted at runtime instead — by
+    // the enter-prompt tests and by scripts/qa/handoffcheck.mjs against the
+    // real fleet.
+    installCityTraffic(vehicleSim, {
+      get cars() {
+        return traffic.vehicles as unknown as CityTrafficPool['cars']
+      },
+      get lanes() {
+        return traffic.lanes as unknown as CityTrafficPool['lanes']
+      },
+      get roadY() {
+        return traffic.roadY as number
+      },
+    })
 
     await weather.load()
     if (this.disposed) return

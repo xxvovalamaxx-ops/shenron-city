@@ -100,14 +100,11 @@ export function GameLoop() {
           if (now - lastSpacePress.current < 350) {
             rt.player.flying = !rt.player.flying
             rt.player.velocityY = 0
-            useHud
-              .getState()
-              .set(
-                'promptLabel',
-                rt.player.flying
-                  ? '✈ FLY MODE — Space↑ Ctrl↓ Shift=Fast — Double-Space to land'
-                  : '🚶 WALK MODE — Double-Space to fly',
-              )
+            const label = rt.player.flying
+              ? '✈ FLY MODE — Space↑ Ctrl↓ Shift=Fast — Double-Space to land'
+              : '🚶 WALK MODE — Double-Space to fly'
+            useHud.getState().set('promptLabel', label)
+            transientPrompt.current = { label, until: performance.now() + 3000 }
           }
           lastSpacePress.current = now
         }
@@ -169,6 +166,17 @@ export function GameLoop() {
     // fed only while driving; the walk branch below copies the player's
     // feet into the sim so prompts track the walker.
     const k = keys.current
+    // Interact is fed in both branches; the driving controls are not.
+    //
+    // This was `: NO_VEHICLE_INPUT` for the walk branch, and NO_VEHICLE_INPUT
+    // has interact false. Interact is the one input whose whole job is to
+    // *change* whether the player is driving, so gating it on `driving` meant
+    // it could only ever be pressed by someone already in a car: the enter
+    // prompt rendered "Press E to enter", and E did nothing. Not specific to
+    // city traffic — no vehicle in the game could be entered. Found by
+    // scripts/qa/handoffcheck.mjs, which stood the player on a car, saw the
+    // prompt appear, pressed a real KeyE and got no promotion.
+    const interactEdge = k.interact && !lastInteract.current
     const simInput: PlayerVehicleInput = driving
       ? {
           throttle: k.forward ? 1 : 0,
@@ -176,9 +184,9 @@ export function GameLoop() {
           steer: (k.right ? 1 : 0) - (k.left ? 1 : 0),
           handbrake: k.sprint,
           horn: k.jump && !lastJump.current,
-          interact: k.interact && !lastInteract.current,
+          interact: interactEdge,
         }
-      : NO_VEHICLE_INPUT
+      : { ...NO_VEHICLE_INPUT, interact: interactEdge }
     lastJump.current = k.jump
     lastInteract.current = k.interact
     vehicleSim.cameraMode = rt.thirdPerson ? 'chase' : 'cockpit'

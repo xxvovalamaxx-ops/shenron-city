@@ -69,6 +69,35 @@ export interface WorldPlacement {
 }
 
 /**
+ * The LION side, handed to the vehicle sim.
+ *
+ * Injected rather than imported, for the same reason `LaneProvider` is: the
+ * vehicle core is renderer-free and test-hermetic, and `Traffic` is a THREE
+ * system that owns instanced meshes. A test can hand over two lanes and three
+ * cars; the game hands over 25,468 lanes and about four hundred.
+ *
+ * **`cars` must resolve to the array LION is using right now.** Not a copy,
+ * and not a reference captured once at install time. Both fail, and the second
+ * fails silently: `Traffic` replaces `this.vehicles` wholesale twice — once
+ * when it rebuilds the in-scope set (`this.vehicles = keep`) and once when it
+ * reaps dead cars (`this.vehicles = this.vehicles.filter(...)`). A captured
+ * reference is stale from the first rebuild onward, so `promoteTrafficCar`
+ * splices a car out of an array nobody reads while the live one keeps
+ * circulating — reintroducing the exact duplicate this module exists to
+ * prevent, with a promotion that reports success.
+ *
+ * The wiring in ManhattanCity therefore supplies getters. Measured before that
+ * fix: the pool reported 25,468 lanes and 0 cars against a fleet of 399.
+ */
+export interface CityTrafficPool {
+  /** The live traffic array — re-read on every access, never snapshotted. */
+  readonly cars: TrafficCar[]
+  readonly lanes: ReadonlyArray<HandoffLane>
+  /** Road surface height a promoted car is placed at. */
+  readonly roadY: number
+}
+
+/**
  * World placement of a point `s` metres along a lane.
  *
  * Mirrors Traffic._pointAt and Traffic._render together, so a promoted car
