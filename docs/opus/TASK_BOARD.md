@@ -71,9 +71,30 @@ not started, and no claim is made about it.
 
 ## Stage 1 — hero-cell architecture
 
-Not started. Building-ID override layer; suppression confined to the correct
-streaming cell; authored LOD0/LOD1 in the lot; removal restores the original;
-collision, traffic, navigation, address metadata and save state stay coherent.
+Half landed. The override layer and the suppression it depends on are done and
+verified against the running city; the loader that puts authored geometry in the
+lot is not written yet.
+
+DONE
+  Building-ID override layer — `src/world/hero-cells.ts`, 36 unit tests.
+  Suppression confined to the correct streaming cell — a tile is several meshes
+    (`BLD_<tier>_<tx>_<ty>_<part>`), a building spans more than one, and the
+    tile is parsed from the mesh name. Measured: 88 of 88 other meshes
+    untouched.
+  Removal restores the original — the pre-suppression index is kept on the
+    geometry's own userData. Measured: 626 triangles -> 0 -> 626.
+  Collision stays coherent — suppression runs before `registerTileBuildings`,
+    and `__heroCellsReapply` re-registers both ways.
+  Acceptance harness — `scripts/qa/herocellcheck.mjs`, target chosen by reading
+    loaded geometry rather than a manifest.
+
+NOT DONE
+  Authored LOD0/LOD1 actually loaded and placed in the lot. The registry
+    carries the URLs, distance and transform; nothing fetches them yet, so a
+    hero cell currently leaves a hole rather than a building.
+  Coherence not yet demonstrated for traffic, navigation, address metadata or
+    save state. Only collision has been checked. Claiming the rest without
+    measuring it is the thing this project keeps catching itself doing.
 
 ## Stage 2 — production assets
 
