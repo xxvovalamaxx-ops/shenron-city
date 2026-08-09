@@ -1,0 +1,89 @@
+{
+  "generatedBy": "scripts/qa/enginecheck.mjs",
+  "preconditions": {
+    "poolInstalled": true,
+    "poolCars": 399,
+    "registryCars": 9,
+    "audioState": "running",
+    "sampleRate": 48000
+  },
+  "stoppedACar": false,
+  "carPos": {
+    "x": 973.460875375738,
+    "z": -3103.4799656084897
+  },
+  "hadRegistryCarToWalkPast": true,
+  "walkPast": {
+    "n": 45,
+    "rms": 0.01086,
+    "level": 0.1607,
+    "placeGain": 0.06,
+    "pan": -0.835,
+    "hz": 182.3,
+    "cutoffHz": 1520,
+    "onAlways": true,
+    "onNever": false,
+    "sourceDistance": 50,
+    "expectedPlaceGain": 0.06
+  },
+  "onFoot": {
+    "n": 45,
+    "rms": 0.00868,
+    "level": 0.0018,
+    "placeGain": 0.9985,
+    "pan": -0.001,
+    "hz": 182,
+    "cutoffHz": 1518,
+    "onAlways": false,
+    "onNever": true,
+    "sourceDistance": 78.8,
+    "expectedPlaceGain": 0.019
+  },
+  "promptSeen": "Press E to enter the car",
+  "driving": {
+    "n": 91,
+    "rms": 0.02636,
+    "level": 0.188,
+    "placeGain": 1,
+    "pan": 0,
+    "hz": 112.2,
+    "cutoffHz": 1316,
+    "onAlways": true,
+    "onNever": false,
+    "sourceDistance": 66.4,
+    "expectedPlaceGain": 0.0452
+  },
+  "framesAdvanced": 317,
+  "paused": false,
+  "playerVehicleId": 10,
+  "speedMps": 8.680196211085226,
+  "audible": {
+    "onFoot": 0.0018,
+    "driving": 0.188
+  },
+  "placementControl": {
+    "ran": true,
+    "followsTheLaw": true
+  },
+  "checks": {
+    "poolInstalled": true,
+    "contextRunning": true,
+    "sampleRateSane": true,
+    "loopRan": true,
+    "notPaused": true,
+    "analyserReadsTheMix": true,
+    "silentOnFoot": true,
+    "noEngineLevelOnFoot": true,
+    "gotIntoACar": true,
+    "carActuallyMoved": true,
+    "engineOnWhileDriving": true,
+    "engineAudibleWhileDriving": true,
+    "ownEngineNotPlacedElsewhere": true,
+    "ownEngineCentred": true,
+    "mixLouderWhileDriving": true,
+    "placementControlTook": true,
+    "noConsoleErrors": true
+  },
+  "consoleErrors": [],
+  "pass": true
+}

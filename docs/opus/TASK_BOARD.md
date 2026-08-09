@@ -101,9 +101,36 @@ Verified end to end against real authored geometry (`/models/manhattan/hq.glb`,
 
 ## Stage 2 — production assets
 
-Not started. Hero vehicle (original unbranded sportback, 4 LODs, interior,
-animated doors/wheels/lights, audio); near-field character tier; four hero
-characters; thirteen hero environments authored in Blender.
+In progress. The hero vehicle is most of the way there; the character and
+environment tiers have not been started.
+
+Hero vehicle — original unbranded sportback, authored in Blender, no branded or
+ripped source anywhere in its history:
+
+- [x] Four LOD tiers on disk, `public/models/vehicles/sportback_lod{0..3}.glb`
+- [x] Runtime contract written before the art — `src/world/vehicle-asset.ts`
+      (`VEH_` prefix, wheel/steering/door slots, `applyVehicleState`)
+- [x] Pool with shared geometry and per-car materials — `vehicle-asset-pool.ts`
+- [x] Orientation and tier agreement gated — `scripts/qa/vehicleassetcheck.mjs`
+      · found the Blender car facing backwards, and LOD1 silently missing all
+        four wheels to `GLTFLoader`'s name sanitisation (`.001` → `001`)
+- [x] Door contract: hinge at the origin, swing derived from geometry
+- [x] Engine audio — speed- and throttle-driven note, six-ratio gearbox,
+      overrun, gated by `scripts/qa/enginecheck.mjs`
+      · the gate drives a real car: real KeyE, real KeyW, no `setEngine` of its
+        own. The probe that *did* call `setEngine` was overwritten by
+        GameLoop's on the next frame and read a perfect pitch curve off a
+        silent bus.
+      · measured, on foot vs driving at 9 m/s from the same spot:
+        engine level 0.0006 → 0.192, master RMS 0.0083 → 0.0268
+      · control-validated by reintroducing the bug: `level` stays 0.186 and
+        `placeGain` drops to 0 — an engine nobody can hear, which is why
+        `placeGain` is in `diagnostics()` and why `level` alone is not a gate
+- [ ] Door art in Blender (apertures + panels) — deferred, OPUS-021
+- [ ] Interior
+
+Not started: near-field character tier; four hero characters; thirteen hero
+environments authored in Blender.
 
 ## Stage 3 — route-level Manhattan quality
 
@@ -115,6 +142,14 @@ clutter — placed from Manhattan data, not scattered.
 
 Not started. Five presets; wetness, spray, glass and clearcoat; continuous
 spatial audio across every zone of the route.
+
+One piece of it landed early, because the engine bus could not be verified
+without it: the mix now follows the listener while driving. `GameLoop` skipped
+`cityAudio.update` entirely in a car, which froze the zone crossfade, the reverb
+send and both tone controls at whatever street the player set off from — drive
+from the boulevard to the park and the boulevard came with you. Footsteps were
+what the gate was really for and are now suppressed the way a jump suppresses
+them.
 
 ## Mission Control
 

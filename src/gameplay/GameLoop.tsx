@@ -24,6 +24,7 @@ import { vehicleSim, stepVehicleSession } from './vehicles/vehicle-session'
 import { manhattanVehicleWorld } from '../world/manhattan-vehicle-world'
 import { speedKmh } from './vehicles/vehicle-model'
 import { NO_VEHICLE_INPUT, type PlayerVehicleInput } from './vehicles/vehicle-control'
+import type { VehicleEntity } from './vehicles/vehicle-entities'
 
 const WALK_SPEED = 4.3
 const SPRINT_SPEED = 7.1
@@ -51,6 +52,11 @@ export function GameLoop() {
   const lastJump = useRef(false)
   const lastInteract = useRef(false)
   const transientPrompt = useRef<{ label: string; until: number } | null>(null)
+  // Reused so the per-frame listener pose costs no allocation. Its `pos` and
+  // `forward` are re-pointed at `rt.player`'s every frame rather than cached
+  // once: App.tsx reassigns `rt.player.pos` outright on load and on spawn, and
+  // a held reference would leave the mix listening at the old position.
+  const audioPose = useRef({ pos: rt.player.pos, forward: rt.player.forward, grounded: true })
 
   const vision = useMemo(
     () => visionCaptureSpec(typeof location === 'undefined' ? '' : location.search),
@@ -195,6 +201,57 @@ export function GameLoop() {
       !vision && !inspection
         ? stepVehicleSession(manhattanVehicleWorld, simInput, dt, rt.clock.hour)
         : []
+
+    // The engine note.
+    //
+    // Driven from the entity the player is in, or from the nearest AI car when
+    // they are on foot — a street with cars on it should not be silent. Null
+    // when there is neither, which ramps the bus down rather than leaving a
+    // tone running over an empty road.
+    //
+    // The player's own car is passed without a position: the note belongs where
+    // the listener already is, and panning it would swing the engine around
+    // their own head.
+    const playerCar = driving
+      ? vehicleSim.registry.vehicles.get(vehicleSim.registry.playerVehicleId!)
+      : null
+    if (playerCar) {
+      cityAudio.setEngine({
+        speedMps: Math.abs(playerCar.motion.speed),
+        throttle: k.forward ? 1 : 0,
+        braking: playerCar.motion.braking,
+        reversing: playerCar.motion.reversing,
+      })
+    } else {
+      let nearest: VehicleEntity | null = null
+      let nearestDistanceSquared = Infinity
+      for (const entity of vehicleSim.registry.vehicles.values()) {
+        if (Math.abs(entity.motion.speed) < 0.4) continue
+        const dx = entity.pose.pos.x - p.pos.x
+        const dz = entity.pose.pos.z - p.pos.z
+        const d2 = dx * dx + dz * dz
+        if (d2 < nearestDistanceSquared) {
+          nearest = entity
+          nearestDistanceSquared = d2
+        }
+      }
+      // Beyond earshot there is nothing to hear; keeping the bus alive for a
+      // car three streets away would just be a hum with no source.
+      if (nearest && nearestDistanceSquared < 60 * 60) {
+        const e = nearest
+        cityAudio.setEngine(
+          {
+            speedMps: Math.abs(e.motion.speed),
+            throttle: 0.35,
+            braking: e.motion.braking,
+            reversing: e.motion.reversing,
+          },
+          e.pose.pos,
+        )
+      } else {
+        cityAudio.setEngine(null)
+      }
+    }
 
     // Mirror the authoritative simulation pose back onto the runtime so the
     // save, the audio listener and the HUD all read one position.
@@ -358,8 +415,21 @@ export function GameLoop() {
       }
     }
 
-    // ── Footsteps ─────────────────────────────────────────────────────────
-    if (!driving) cityAudio.update(p, dt)
+    // ── The mix follows the listener ──────────────────────────────────────
+    // This was gated on `!driving`, which stopped the whole mix the moment the
+    // player got into a car: the zone beds, the reverb send and the tone
+    // controls all froze at whatever street they set off from, and the engine's
+    // own placement was never restored. Drive from the boulevard to the park
+    // and the boulevard came with you.
+    //
+    // Footsteps are what the gate was really for, and they are suppressed the
+    // way a jump suppresses them — a driver's feet are not on the ground. That
+    // also keeps `lastPos` current, so stepping out of a car no longer looks
+    // like one frame of sprinting to the step detector.
+    audioPose.current.pos = p.pos
+    audioPose.current.forward = p.forward
+    audioPose.current.grounded = p.grounded && !driving
+    cityAudio.update(audioPose.current, dt)
 
     // ── Camera ────────────────────────────────────────────────────────────
     if (!vision && !inspection) {

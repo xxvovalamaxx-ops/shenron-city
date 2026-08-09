@@ -20,6 +20,11 @@
  *
  *        cityAudio.update(rt.player, dt)
  *
+ *    Every frame, including while driving. Skipping it in a car freezes the
+ *    zone crossfade and the engine's own placement wherever the player set off
+ *    from; report the driver as `grounded: false` instead, which is the switch
+ *    that suppresses footsteps.
+ *
  * 3. On world events, with the source position so it attenuates and pans:
  *
  *        cityAudio.play('doorOpen', AUDIO_ANCHORS.entranceDoor)
