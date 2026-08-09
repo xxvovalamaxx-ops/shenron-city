@@ -71,30 +71,33 @@ not started, and no claim is made about it.
 
 ## Stage 1 — hero-cell architecture
 
-Half landed. The override layer and the suppression it depends on are done and
-verified against the running city; the loader that puts authored geometry in the
-lot is not written yet.
+Complete. A named building id can be replaced by authored geometry, and every
+claim in the brief is measured rather than argued.
 
-DONE
-  Building-ID override layer — `src/world/hero-cells.ts`, 36 unit tests.
+  Building-ID override layer — `src/world/hero-cells.ts`, 42 unit tests.
   Suppression confined to the correct streaming cell — a tile is several meshes
-    (`BLD_<tier>_<tx>_<ty>_<part>`), a building spans more than one, and the
+    (`BLD_<tier>_<tx>_<ty>_<part>`) and a building spans more than one, so the
     tile is parsed from the mesh name. Measured: 88 of 88 other meshes
     untouched.
+  Authored LOD0/LOD1 in the lot — `src/world/hero-cell-loader.ts`, 16 tests.
+    Load, place, register collision, and only then mark ready; suppression
+    skips anything not ready, so a 404 leaves the generated building standing
+    instead of leaving a hole. LOD switching runs on the presentation stage
+    with 10% hysteresis.
   Removal restores the original — the pre-suppression index is kept on the
     geometry's own userData. Measured: 626 triangles -> 0 -> 626.
-  Collision stays coherent — suppression runs before `registerTileBuildings`,
-    and `__heroCellsReapply` re-registers both ways.
+  Coherence, all five measured across a swap:
+    collision      buildingTopAt 230 m at the tower centre; the lot itself
+                   null -> 8.175 m; 96 -> 100 colliders
+    navigation     212,288 ground triangles, unchanged
+    traffic        25,468 LION lanes, unchanged
+    address        name and address resolve identically
+    save state     the persisted bytes are byte-for-byte identical
   Acceptance harness — `scripts/qa/herocellcheck.mjs`, target chosen by reading
-    loaded geometry rather than a manifest.
+    loaded geometry, with a missing-asset control that must change nothing.
 
-NOT DONE
-  Authored LOD0/LOD1 actually loaded and placed in the lot. The registry
-    carries the URLs, distance and transform; nothing fetches them yet, so a
-    hero cell currently leaves a hole rather than a building.
-  Coherence not yet demonstrated for traffic, navigation, address metadata or
-    save state. Only collision has been checked. Claiming the rest without
-    measuring it is the thing this project keeps catching itself doing.
+Verified end to end against real authored geometry (`/models/manhattan/hq.glb`,
+4 meshes, 4,682 triangles) standing in building 31416's lot.
 
 ## Stage 2 — production assets
 
