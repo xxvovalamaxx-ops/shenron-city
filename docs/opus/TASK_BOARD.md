@@ -59,8 +59,12 @@ not started, and no claim is made about it.
 - [x] **0E.1** Gate missing texture dependencies — `e83c49a38`
       · 442 models scanned, 0 unresolvable; exit 1 on a rebuilt pre-fix model
       · verified in the running game: 5 console errors → 0
-- [ ] **0E.2** Extend audit coverage to tiles, street tiles, LOD files, every
-      runtime URL referenced from source, and hero-cell assets
+- [x] **0E.2** Every runtime URL gated — `5cda60045`
+      · 496 URLs: 250 from source, 426 from generated manifests
+        (246 LOD + 119 building tiles + 61 street tiles)
+      · control-validated: hiding one street tile and one LOD file fails it
+      · 2 runtime-built URLs reported as unresolvable rather than implied
+      · found OPUS-010: manhattan-tiles.ts is generated and imported by nothing
 - [ ] **0E.3** Fail on raw placeholder primitives visible in a hero scene
 - [ ] **0F** Full CI green including `npm audit` and the browser smoke test.
       Locally green now: typecheck, lint, 335 tests, asset verify, build

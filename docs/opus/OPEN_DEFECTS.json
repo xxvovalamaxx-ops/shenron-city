@@ -67,6 +67,14 @@
       "detail": "CORRECTED 2026-08-09. The first version of this entry said \"the ground plane renders pure black at midday\" and blamed cityLightingUniforms.uCityHour defaulting to 21. Both wrong. Raycasting the black region names the mesh: WATER_ocean at y=0, 31-57 m from a camera at y=13.7. It is not a lighting bug and not a road bug \u2014 there is simply no island geometry at Times Square, so the sea plane beneath it is what you see. At the actual spawn point (1000, -3000) the same probe hits LAND_manhattan at y=11.99, colour #3f3e3c, exactly as it should. manhattan-collision.ts already documents the cause: \"The Phase 2 source data has a genuine hole in the midtown-west band (no buildings, props or subway kiosks west of 6th Avenue \u2014 the Times Square plaza included)\". The defect is that the hole is not hidden: the ocean should not be visible through missing land. Options are to extend the land mesh, to fill the hole in the Phase 2 source, or to stop rendering ocean inside the island footprint. UPDATE 2026-08-09: measured across all nine dev landmarks \u2014 Times Square and the Financial District return no ground; the other seven return 11.5 to 12.12. Teleport now searches outward (src/world/ground-search.ts, 8 tests) and warns rather than using a fallback height over the sea. Both holes are large: Times Square resolves 240 m away, the Financial District 315 m, both onto 11.5 rather than the island 12. That is a guard, not a fix \u2014 the hole is Phase 2 content work.",
       "evidence": "raycast naming WATER_ocean at Times Square vs LAND_manhattan at the spawn point",
       "state": "guarded (8edf0405f) \u2014 the underlying land data still has the hole"
+    },
+    {
+      "id": "OPUS-010",
+      "severity": "P3",
+      "title": "src/world/manhattan-tiles.ts is generated, authoritative-looking, and imported by nothing",
+      "detail": "196 generated lines listing 132 building tiles and 61 street tiles, with 'do not edit by hand / regenerate with npm run generate:manhattan-tiles' in its header. Nothing imports it. TileStreamer takes its list from city.json's meta.tiles and meta.street_tiles. The risk is not wasted bytes \u2014 it is that the file reads as the source of truth, so a future change made there would have no effect and no diagnostic. Flagged rather than deleted, unlike SkyRig: SkyRig was hand-written code with a named replacement, this is generated data whose generator (scripts/generate-manhattan-tiles.mjs, wired to an npm script) still exists, and deleting generated data could break a workflow not visible from here. The call is: delete both, or make the streamer read it.",
+      "evidence": "grep for importers returns nothing; streamer.js:35 reads meta.tiles / meta.street_tiles",
+      "state": "open \u2014 needs a decision, not a fix"
     }
   ],
   "closed": [
