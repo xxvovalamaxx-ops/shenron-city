@@ -126,8 +126,16 @@ export interface CityAudio {
   start(): Promise<void>
   /** Advance the mix. Call once a frame with `rt.player` and the frame delta. */
   update(player: PlayerPose, dt: number): void
-  /** Trigger a world event. `at` is a world position; omit for non-positional. */
-  play(event: AudioEvent, at?: Vec3): void
+  /**
+   * Trigger a world event. `at` is a world position; omit for non-positional.
+   *
+   * `delay` schedules the voice that many seconds ahead on the audio clock,
+   * which is how a two-part action gets its second half: entering a car is a
+   * door opening and then, half a second later, shutting. Scheduling it on the
+   * audio clock rather than with a timer keeps the gap exact regardless of what
+   * the frame rate is doing.
+   */
+  play(event: AudioEvent, at?: Vec3, delay?: number): void
   /**
    * Set the engine note, or silence it.
    *
@@ -413,22 +421,28 @@ export function createCityAudio(): CityAudio {
       }
     },
 
-    play(event, at) {
+    play(event, at, delay = 0) {
       if (!graph || !enabled) return
       const where = at ?? listener.pos
       switch (event) {
         case 'doorOpen':
-          triggerShot(ONE_SHOTS.doorOpen, where, 0, 1, 1)
+          triggerShot(ONE_SHOTS.doorOpen, where, delay, 1, 1)
           return
         case 'doorClose':
-          triggerShot(ONE_SHOTS.doorClose, where, 0, 1, 1)
+          triggerShot(ONE_SHOTS.doorClose, where, delay, 1, 1)
+          return
+        case 'carDoorOpen':
+          triggerShot(ONE_SHOTS.carDoorOpen, where, delay, 1, 1)
+          return
+        case 'carDoorClose':
+          triggerShot(ONE_SHOTS.carDoorClose, where, delay, 1, 1)
           return
         case 'elevatorArrive':
-          triggerShot(ONE_SHOTS.elevatorArrive, where, 0, 1, 1)
+          triggerShot(ONE_SHOTS.elevatorArrive, where, delay, 1, 1)
           return
         case 'footstep': {
           const voice = footstepVoice()
-          triggerShot(ONE_SHOTS.footstep, where, 0, voice.pitch, voice.gain)
+          triggerShot(ONE_SHOTS.footstep, where, delay, voice.pitch, voice.gain)
           return
         }
         case 'elevatorStart':
@@ -438,7 +452,7 @@ export function createCityAudio(): CityAudio {
           rampMotor(false, at)
           return
         case 'horn':
-          triggerShot(ONE_SHOTS.horn, where, 0, 1, 1)
+          triggerShot(ONE_SHOTS.horn, where, delay, 1, 1)
           return
       }
       // Exhaustiveness, and it is not decoration: `horn` was in `AudioEvent`,

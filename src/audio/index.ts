@@ -59,6 +59,7 @@ export { createCityAudio, cityAudio, type CityAudio } from './engine'
 
 export {
   AUDIO_ANCHORS,
+  CAR_DOOR_SEQUENCE_SECONDS,
   ZONE_IDS,
   blendRoom,
   dominantZone,

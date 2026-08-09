@@ -260,6 +260,9 @@ export const BED_VOICES: Record<ZoneId, readonly BedVoice[]> = {
 /** Headroom for the summed beds, leaving the one-shots room to land on top. */
 export const BED_BUS_LEVEL = 0.55
 
+/** How loud the engine sits against the beds and one-shots. */
+export const ENGINE_BUS_LEVEL = 0.42
+
 // ── Listener and positional sources ──────────────────────────────────────────
 
 export interface ListenerPose {
@@ -426,9 +429,109 @@ export function footstepVoice(random: () => number = Math.random): FootstepVoice
 // ── One-shots ────────────────────────────────────────────────────────────────
 
 /** What the integrator can trigger. */
+/**
+ * The engine note.
+ *
+ * Driving was silent: the mix has zone beds, footsteps, doors and a horn, and
+ * nothing continuous for the car. This is the pure half — frequency, gain and
+ * filter cutoff from the simulation's speed and throttle — so the behaviour is
+ * testable without an AudioContext, like everything else in this file.
+ *
+ * Synthesised rather than sampled, and the gearbox is the reason it can be.
+ * A tone whose pitch rises monotonically with speed sounds like a siren, not a
+ * car; what reads as an engine is the *sawtooth* — revs climbing through a
+ * gear, dropping at the shift, climbing again. Model that and a few detuned
+ * partials are enough. Skip it and no amount of filtering helps.
+ */
+
+/** Idle and redline, revolutions per minute. */
+export const ENGINE_IDLE_RPM = 800
+export const ENGINE_REDLINE_RPM = 6800
+
+/**
+ * Top speed in each gear, metres per second.
+ *
+ * Six close ratios: the first three short for the pull away from a light, the
+ * top three long for an avenue. 62 m/s is about 223 km/h, which is where this
+ * car runs out of gearing rather than a figure anyone should reach on Fifth.
+ */
+export const ENGINE_GEAR_TOP_MPS = [11, 19, 28, 38, 50, 62] as const
+
+export interface EngineState {
+  /** Metres per second, always positive — direction is `reversing`. */
+  speedMps: number
+  /** 0 to 1. */
+  throttle: number
+  braking: boolean
+  reversing: boolean
+}
+
+export interface EngineVoice {
+  /** 1-based; 1 while reversing, since reverse has one ratio. */
+  gear: number
+  rpm: number
+  /** Fundamental, Hz. */
+  hz: number
+  /** 0 to 1, before the bus level. */
+  gain: number
+  /** Lowpass cutoff, Hz. Opens with load, which is what "effort" sounds like. */
+  cutoffHz: number
+}
+
+/** Which gear a road speed belongs in. 1-based. */
+export function engineGear(speedMps: number, reversing = false): number {
+  if (reversing) return 1
+  const speed = Math.max(0, speedMps)
+  for (let i = 0; i < ENGINE_GEAR_TOP_MPS.length; i++) {
+    if (speed <= ENGINE_GEAR_TOP_MPS[i]) return i + 1
+  }
+  return ENGINE_GEAR_TOP_MPS.length
+}
+
+/**
+ * Frequency, gain and cutoff for the current driving state.
+ *
+ * Deliberately a pure function of the state rather than an integrator: the
+ * vehicle sim already owns speed, and an engine model with its own memory
+ * would drift out of step with the car the player can see.
+ */
+export function engineVoice(state: EngineState): EngineVoice {
+  const speed = Math.max(0, state.speedMps)
+  const throttle = Math.max(0, Math.min(1, state.throttle))
+  const gear = engineGear(speed, state.reversing)
+  const bottom = gear === 1 ? 0 : ENGINE_GEAR_TOP_MPS[gear - 2]
+  const top = ENGINE_GEAR_TOP_MPS[gear - 1]
+  const through = top === bottom ? 0 : Math.min(1, (speed - bottom) / (top - bottom))
+
+  // Revs climb across the gear, then drop back as the next one engages.
+  let rpm = ENGINE_IDLE_RPM + through * (ENGINE_REDLINE_RPM - ENGINE_IDLE_RPM)
+  // A blip on throttle at low speed, so standing on the accelerator against
+  // the brake is audible rather than silent.
+  if (speed < 1) rpm += throttle * 1800
+  rpm = Math.max(ENGINE_IDLE_RPM, Math.min(ENGINE_REDLINE_RPM, rpm))
+
+  // Two cylinder firings per revolution on a four-stroke four — the frequency
+  // that gives the note its character, not the crank speed itself.
+  const hz = (rpm / 60) * 2
+
+  // Louder under load and with revs; never silent, because a running engine at
+  // idle is still a sound.
+  const load = 0.35 + 0.65 * throttle
+  const revShare = (rpm - ENGINE_IDLE_RPM) / (ENGINE_REDLINE_RPM - ENGINE_IDLE_RPM)
+  const gain = Math.min(1, (0.18 + 0.62 * revShare) * load)
+
+  // Engine braking: closed throttle at speed is quieter and duller.
+  const overrun = throttle < 0.05 && speed > 2 ? 0.75 : 1
+  const cutoffHz = 320 + 2400 * revShare * (0.45 + 0.55 * throttle)
+
+  return { gear, rpm, hz, gain: gain * overrun, cutoffHz: cutoffHz * overrun }
+}
+
 export type AudioEvent =
   | 'doorOpen'
   | 'doorClose'
+  | 'carDoorOpen'
+  | 'carDoorClose'
   | 'elevatorStart'
   | 'elevatorStop'
   | 'elevatorArrive'
@@ -442,7 +545,15 @@ export type AudioEvent =
  * a sustained motor, so they ramp `MOTOR` instead. `elevatorSettle` is the
  * thunk the stop ramp leaves behind, and is not triggerable on its own.
  */
-export type ShotId = 'doorOpen' | 'doorClose' | 'elevatorArrive' | 'elevatorSettle' | 'footstep' | 'horn'
+export type ShotId =
+  | 'doorOpen'
+  | 'doorClose'
+  | 'carDoorOpen'
+  | 'carDoorClose'
+  | 'elevatorArrive'
+  | 'elevatorSettle'
+  | 'footstep'
+  | 'horn'
 
 export interface ShotPartial {
   hz: number
@@ -468,6 +579,16 @@ export interface OneShotSpec {
   partials: readonly ShotPartial[]
 }
 
+/**
+ * Gap between a car door opening and shutting when a player gets in or out.
+ *
+ * Here rather than at the call site so the voice and the timing can be checked
+ * against each other: the door has to have finished swinging — the check strap
+ * partial in `carDoorOpen` is the end of its travel — before it starts closing
+ * again, or the two overlap into one indistinct noise.
+ */
+export const CAR_DOOR_SEQUENCE_SECONDS = 0.5
+
 export const ONE_SHOTS: Record<ShotId, OneShotSpec> = {
   // Glass leaves parting: a rising rush that runs out of energy at the end of
   // travel, over the soft thump of the mechanism taking up slack.
@@ -487,6 +608,43 @@ export const ONE_SHOTS: Record<ShotId, OneShotSpec> = {
     noise: { filter: 'bandpass', fromHz: 1300, toHz: 200, q: 1.2, level: 0.5 },
     tone: { wave: 'sine', fromHz: 84, toHz: 52, level: 0.18 },
     partials: [{ hz: 150, level: 0.28, delay: 0.72, decay: 0.18 }],
+  },
+  // A car door is not a building door, and using `doorOpen` for one was the
+  // whole defect: the entrance voices above are sliding glass leaves, 0.9 s of
+  // rising rush, and getting into the hero car played a lobby.
+  //
+  // What a car door actually is: a latch letting go, a rubber seal peeling off
+  // the frame, and — at the end of travel — the check strap catching. Short and
+  // mechanical, nothing like glass.
+  carDoorOpen: {
+    level: 0.42,
+    attack: 0.006,
+    duration: 0.55,
+    noise: { filter: 'bandpass', fromHz: 1100, toHz: 320, q: 1.3, level: 0.4 },
+    tone: { wave: 'sine', fromHz: 128, toHz: 74, level: 0.13 },
+    partials: [
+      // The latch releasing, before anything moves.
+      { hz: 2300, level: 0.14, delay: 0, decay: 0.045 },
+      // The check strap taking the weight at full swing.
+      { hz: 320, level: 0.08, delay: 0.3, decay: 0.2 },
+    ],
+  },
+  // The thunk. Almost all of it is in the first 40 ms: an impact, not a fade,
+  // so the attack is ten times shorter than the glass door's. The low sweep is
+  // the cabin air being compressed by a sealing door, which is most of why a
+  // car door sounds expensive.
+  carDoorClose: {
+    level: 0.55,
+    attack: 0.003,
+    duration: 0.4,
+    noise: { filter: 'lowpass', fromHz: 900, toHz: 90, q: 0.9, level: 0.45 },
+    tone: { wave: 'sine', fromHz: 160, toHz: 58, level: 0.32 },
+    partials: [
+      // The body ringing under the impact.
+      { hz: 92, level: 0.22, delay: 0.012, decay: 0.2 },
+      // The latch catching, a beat after the panel lands.
+      { hz: 1750, level: 0.11, delay: 0.05, decay: 0.05 },
+    ],
   },
   // Two-note lift bell. Slightly inharmonic upper partials keep it from
   // sounding like a test tone.

@@ -15,7 +15,7 @@ import { boomDistance, smoothBoom } from './camera-boom'
 import { useKeys } from './input'
 import { EYE_HEIGHT } from './collision'
 import { useHud, inputLocked } from '../ui/hud-store'
-import { cityAudio } from '../audio'
+import { cityAudio, CAR_DOOR_SEQUENCE_SECONDS } from '../audio'
 import { debugInspectionView } from './dev-view'
 import { visionCaptureSpec } from './vision-capture'
 import { manhattanCollision } from '../world/manhattan-collision'
@@ -280,11 +280,14 @@ export function GameLoop() {
         case 'horn':
           cityAudio.play('horn', at)
           break
+        // Getting in and out are both a door opening and then shutting, so
+        // both fire the pair. `doorOpen`/`doorClose` are the lobby's sliding
+        // glass leaves — 0.9 s of rising rush — and using them here meant the
+        // hero car sounded like an office entrance.
         case 'enter':
-          cityAudio.play('doorClose', at)
-          break
         case 'exit':
-          cityAudio.play('doorOpen', at)
+          cityAudio.play('carDoorOpen', at)
+          cityAudio.play('carDoorClose', at, CAR_DOOR_SEQUENCE_SECONDS)
           break
         case 'exit-blocked':
           useHud.getState().set('promptLabel', 'No room to exit here')

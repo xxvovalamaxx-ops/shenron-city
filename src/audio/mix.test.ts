@@ -5,6 +5,7 @@ import {
   MAX_DISTANCE,
   MIN_STEP_INTERVAL,
   MOTOR,
+  CAR_DOOR_SEQUENCE_SECONDS,
   ONE_SHOTS,
   REFERENCE_DISTANCE,
   STRIDE_LENGTH,
@@ -22,6 +23,12 @@ import {
   zoneWeights,
   type FootstepState,
   type ZoneMix,
+  ENGINE_GEAR_TOP_MPS,
+  ENGINE_IDLE_RPM,
+  ENGINE_REDLINE_RPM,
+  engineGear,
+  engineVoice,
+  type EngineState,
 } from './mix'
 import type { Vec3 } from '../gameplay/collision'
 
@@ -317,6 +324,37 @@ describe('voice tables', () => {
     }
   })
 
+  // The defect these guard: the vehicle enter/exit events played `doorOpen`
+  // and `doorClose`, which are the lobby's sliding glass leaves. Everything was
+  // valid — a real spec, a real voice, a real trigger — and the hero car
+  // sounded like an office entrance. Nothing about "is this spec well formed"
+  // could have caught it, so these test what the sound *is*.
+  it('shuts a car door like an impact, not like a glass leaf', () => {
+    // Almost all of a car door's energy is in the first few milliseconds.
+    expect(ONE_SHOTS.carDoorClose.attack).toBeLessThan(ONE_SHOTS.doorClose.attack / 5)
+    expect(ONE_SHOTS.carDoorClose.duration).toBeLessThan(ONE_SHOTS.doorClose.duration / 2)
+  })
+
+  it('sweeps a car door down into the body rather than up into a rush', () => {
+    // The glass door opens upward — a rising rush. A car door closing is the
+    // opposite motion: bright latch and seal collapsing into a low thunk.
+    const glass = ONE_SHOTS.doorOpen.noise
+    const car = ONE_SHOTS.carDoorClose.noise
+    expect(glass?.fromHz).toBeLessThan(glass!.toHz)
+    expect(car?.fromHz).toBeGreaterThan(car!.toHz)
+    expect(car?.filter).toBe('lowpass')
+  })
+
+  it('finishes opening a car door before the same door starts shutting', () => {
+    // GameLoop fires the pair CAR_DOOR_SEQUENCE_SECONDS apart on enter and on
+    // exit. The check strap catching is the end of the door's travel; if it
+    // landed after the close had already started the two would smear into one
+    // indistinct noise rather than reading as two events.
+    for (const partial of ONE_SHOTS.carDoorOpen.partials) {
+      expect(partial.delay + partial.decay).toBeLessThanOrEqual(CAR_DOOR_SEQUENCE_SECONDS)
+    }
+  })
+
   it('spools the lift motor over a slower ramp than it stops it', () => {
     expect(MOTOR.runHz).toBeGreaterThan(MOTOR.idleHz)
     expect(MOTOR.noiseRunHz).toBeGreaterThan(MOTOR.noiseIdleHz)
@@ -332,5 +370,141 @@ describe('anchors', () => {
     expect(AUDIO_ANCHORS.entranceDoor.y).toBeGreaterThan(1)
     // The elevator-door helper still tracks a height argument.
     expect(AUDIO_ANCHORS.elevatorDoor(10).y - AUDIO_ANCHORS.elevatorDoor(0).y).toBe(10)
+  })
+})
+
+/**
+ * The engine note.
+ *
+ * The property that matters is not "pitch goes up with speed" — that is a
+ * siren. It is that revs climb through a gear and *drop* at the shift, which is
+ * what makes a synthesised tone read as a car.
+ */
+describe('the gearbox', () => {
+  const drive = (over: Partial<EngineState> = {}): EngineState => ({
+    speedMps: 0,
+    throttle: 0,
+    braking: false,
+    reversing: false,
+    ...over,
+  })
+
+  it('starts in first and works up through the ratios', () => {
+    expect(engineGear(0)).toBe(1)
+    expect(engineGear(10)).toBe(1)
+    expect(engineGear(12)).toBe(2)
+    expect(engineGear(30)).toBe(4)
+  })
+
+  it('holds top gear past the top of the ratios rather than inventing a seventh', () => {
+    expect(engineGear(200)).toBe(ENGINE_GEAR_TOP_MPS.length)
+  })
+
+  it('uses one ratio in reverse, because reverse has one', () => {
+    expect(engineGear(9, true)).toBe(1)
+    expect(engineGear(40, true)).toBe(1)
+  })
+
+  it('drops the revs on an upshift — the sawtooth that sounds like a car', () => {
+    // Just below and just above the first gear change.
+    const before = engineVoice(drive({ speedMps: 10.9, throttle: 1 }))
+    const after = engineVoice(drive({ speedMps: 11.1, throttle: 1 }))
+    expect(after.gear).toBe(before.gear + 1)
+    expect(after.rpm).toBeLessThan(before.rpm - 2000)
+  })
+
+  it('climbs within a gear', () => {
+    const low = engineVoice(drive({ speedMps: 12, throttle: 1 }))
+    const high = engineVoice(drive({ speedMps: 18, throttle: 1 }))
+    expect(high.gear).toBe(low.gear)
+    expect(high.rpm).toBeGreaterThan(low.rpm)
+  })
+
+  it('never runs below idle or past the redline', () => {
+    for (const speed of [0, 0.4, 11, 27.9, 62, 500]) {
+      for (const throttle of [0, 0.5, 1]) {
+        const v = engineVoice(drive({ speedMps: speed, throttle }))
+        expect(v.rpm).toBeGreaterThanOrEqual(ENGINE_IDLE_RPM)
+        expect(v.rpm).toBeLessThanOrEqual(ENGINE_REDLINE_RPM)
+      }
+    }
+  })
+})
+
+describe('the engine note itself', () => {
+  const drive = (over: Partial<EngineState> = {}): EngineState => ({
+    speedMps: 0,
+    throttle: 0,
+    braking: false,
+    reversing: false,
+    ...over,
+  })
+
+  it('idles audibly when the car is stopped', () => {
+    // A running engine at rest is still a sound; silence here reads as a
+    // stalled car.
+    const v = engineVoice(drive())
+    expect(v.rpm).toBe(ENGINE_IDLE_RPM)
+    expect(v.gain).toBeGreaterThan(0)
+  })
+
+  it('blips when the throttle is opened against the brake', () => {
+    const idle = engineVoice(drive({ throttle: 0 }))
+    const blip = engineVoice(drive({ throttle: 1, braking: true }))
+    expect(blip.rpm).toBeGreaterThan(idle.rpm + 1000)
+  })
+
+  it('ties frequency to revs, not to road speed', () => {
+    // Speed alone would rise smoothly through a shift; the note must not.
+    const before = engineVoice(drive({ speedMps: 10.9, throttle: 1 }))
+    const after = engineVoice(drive({ speedMps: 11.1, throttle: 1 }))
+    expect(after.hz).toBeLessThan(before.hz)
+    expect(before.hz).toBeCloseTo((before.rpm / 60) * 2, 6)
+  })
+
+  it('gets louder with throttle at the same speed', () => {
+    const coast = engineVoice(drive({ speedMps: 20, throttle: 0 }))
+    const pull = engineVoice(drive({ speedMps: 20, throttle: 1 }))
+    expect(pull.gain).toBeGreaterThan(coast.gain)
+  })
+
+  it('goes quieter and duller on the overrun', () => {
+    // Closed throttle at speed is engine braking, not silence.
+    const overrun = engineVoice(drive({ speedMps: 30, throttle: 0 }))
+    const light = engineVoice(drive({ speedMps: 30, throttle: 0.2 }))
+    expect(overrun.gain).toBeLessThan(light.gain)
+    expect(overrun.cutoffHz).toBeLessThan(light.cutoffHz)
+    expect(overrun.gain).toBeGreaterThan(0)
+  })
+
+  it('opens the filter as the revs rise, which is what effort sounds like', () => {
+    const low = engineVoice(drive({ speedMps: 3, throttle: 1 }))
+    const high = engineVoice(drive({ speedMps: 10.5, throttle: 1 }))
+    expect(high.cutoffHz).toBeGreaterThan(low.cutoffHz)
+  })
+
+  it('keeps gain within the bus range at every speed and throttle', () => {
+    for (const speed of [0, 5, 11, 25, 45, 62, 120]) {
+      for (const throttle of [0, 0.3, 1]) {
+        const v = engineVoice(drive({ speedMps: speed, throttle }))
+        expect(v.gain).toBeGreaterThan(0)
+        expect(v.gain).toBeLessThanOrEqual(1)
+        expect(Number.isFinite(v.hz)).toBe(true)
+      }
+    }
+  })
+
+  it('treats a negative speed as stationary rather than producing a negative note', () => {
+    const v = engineVoice(drive({ speedMps: -8, throttle: 0.5 }))
+    expect(v.rpm).toBeGreaterThanOrEqual(ENGINE_IDLE_RPM)
+    expect(v.hz).toBeGreaterThan(0)
+  })
+
+  it('revs in reverse without shifting up', () => {
+    const slow = engineVoice(drive({ speedMps: 3, throttle: 1, reversing: true }))
+    const fast = engineVoice(drive({ speedMps: 9, throttle: 1, reversing: true }))
+    expect(slow.gear).toBe(1)
+    expect(fast.gear).toBe(1)
+    expect(fast.rpm).toBeGreaterThan(slow.rpm)
   })
 })

@@ -135,6 +135,17 @@ ripped source anywhere in its history:
       event that gets added fails to compile rather than fails to sound.
       · measured: horn peak RMS 0.0268 vs 0.0098 idling (+173%); with the case
         removed again, 0.0101 vs 0.0074 — bed drift, no transient
+- [x] Car doors — the hero car was playing the lobby's sliding glass leaves.
+      `enter` and `exit` fired `doorClose`/`doorOpen`, which are 0.9 s of
+      rising rush over a mechanism taking up slack. Everything was valid: a
+      real spec, a real voice, a real trigger, wrong door. New `carDoorOpen`
+      and `carDoorClose` voices — latch release, seal peeling, check strap at
+      full travel; and for the close, an impact with the body ringing under it.
+      Both events now fire the pair, CAR_DOOR_SEQUENCE_SECONDS apart.
+      · measured envelopes, master RMS per frame over a 0.0072 bed:
+        carDoorClose  peak 0.0497  17 ms to peak,  67 ms to a quarter
+        doorClose     peak 0.0347  635 ms to peak (its latch)
+        — an impact against a mechanism, which is the whole difference
 - [ ] Door art in Blender (apertures + panels) — deferred, OPUS-021
 - [ ] Interior
 
