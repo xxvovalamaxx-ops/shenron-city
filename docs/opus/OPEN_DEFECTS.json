@@ -139,6 +139,22 @@
       "detail": "run.cjs built its aggregate with `manhattanProjection: ll2xy(LOCATIONS[location].spec[0], LOCATIONS[location].spec[1])`. Manhattan-app locations carry a [lat, lon, alt, yaw, pitch, mode] spec; the game's locations carry a dev-view name and no spec at all. So every Shenron run sampled correctly, printed a real pass line — measured \"avg 100.0 fps, 1% low 79.6, 0.1% low 73.5\" on the hero corridor — and then died with \"Cannot read properties of undefined (reading '0')\" while writing the summary, discarding the whole run. This is the direct reason 0A.3 had no baseline to regenerate: not that the baseline was stale, but that no run on this branch had ever produced one. The failure was invisible in the usual way — it came after the encouraging output, so a reader skimming the console saw a working benchmark. Fixed by writing manhattanProjection only when the location has a spec and recording devView otherwise, and by filing the run under the resolved canonical location name so a run launched under an old alias is not recorded as a different camera.",
       "evidence": "run.cjs:578 pre-fix; `node scripts/benchmarks/run.cjs --location midtown-street --passes 1 --seconds 5` -> pass line then TypeError; after the fix the same command writes evidence/performance/phase2o-a/shenron-midtown-street-stand-high.json",
       "state": "fixed"
+    },
+    {
+      "id": "OPUS-019",
+      "severity": "P2",
+      "title": "audit:production-scene crashed on a file 0C deleted, and its GLB half had been examining nothing anyway",
+      "detail": "Two faults in one CI gate. First, activeRenderFiles still listed src/world/SkyRig.tsx, which 0C deleted; readFileSync threw ENOENT and took the whole script — and therefore `npm run check` — down with it, after the useful output had already scrolled past. A stale entry in that list is now a finding rather than a crash, because the list is a claim about what the render path is: when it goes stale the audit stops auditing what it says it audits. Second, and worse, the script printed `Production scene audit passed: {\"bytes\":0,\"files\":0,\"materials\":0,\"meshes\":0,\"primitives\":0,\"triangles\":0}` on every run, because public/assets/production does not exist — the hand-authored production set was deliberately retired in favour of streamed city tiles. So the GLB checks and the manifest cross-check that iterates the same list both examined zero files and reported success. Nothing is failed for that, since the retirement was intentional and the streamed assets are gated by verify:assets and verify-runtime-urls, but the script now says plainly that it had no subject rather than printing a zeros blob that reads like a clean audit. Sixth instance on this branch of a check that measured nothing and reported success. Also worth stating: the source-level primitive check is a JSX-tag grep over a hand-written six-file list, so it never saw the 101 raw primitives on the hero route — VehicleRig builds them with `new THREE.BoxGeometry`, not `<boxGeometry/>`. placeholdercheck.mjs is the real gate for that; this one is a lint and now says so.",
+      "evidence": "npm run audit:production-scene -> ENOENT src/world/SkyRig.tsx; post-fix output names the missing production root and the 5 render files it did check",
+      "state": "fixed"
+    },
+    {
+      "id": "OPUS-020",
+      "severity": "P1",
+      "title": "typecheck is red in the other session's uncommitted IntroSequence edit — blocks 0F",
+      "detail": "src/ui/IntroSequence.tsx calls introAudio.play() at line 107 while the import of introAudio was dropped from the header during an in-flight edit that is switching the intro from audio to video (the docstring now reads \"plays the intro video\"). tsc reports TS2304 \"Cannot find name introAudio\". src/audio/intro.ts still exists and still exports introAudio, so this is an accidental dropped import rather than a deliberate removal — a one-line fix. NOT fixed here: it is another session's uncommitted work in a file they are actively editing, and re-adding an import they may be in the middle of removing would fight their direction. Recorded because it is the one thing standing between the tree and a green 0F: lint, tests, build, verify:assets, verify:production-manifest, audit:production-scene and verify:standalone all pass as of this entry.",
+      "evidence": "npx tsc --noEmit -> src/ui/IntroSequence.tsx(107,5): error TS2304",
+      "state": "open — owned by the other session (OPUS-007)"
     }
   ],
   "closed": [

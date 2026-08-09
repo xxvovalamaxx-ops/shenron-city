@@ -72,17 +72,36 @@ if (!existsSync(baseGlb)) {
 
 // These are the render-path components for the complete route. Primitives in
 // collision.ts and trigger/debug modules are deliberately outside this list.
+//
+// Scope, stated plainly: this greps JSX tags in a hand-written file list. That
+// catches `<boxGeometry/>` written declaratively in one of six files and
+// nothing else — in particular it does not see `new THREE.BoxGeometry(...)`,
+// which is how VehicleRig builds every car and rig-resources builds every
+// pedestrian. It reported clean the whole time the hero route carried 101 raw
+// primitives. scripts/qa/placeholdercheck.mjs is the check that actually
+// answers that question, by walking the loaded scene graph at runtime and
+// classifying geometry.type. This one is kept because it is free and runs in
+// CI without a GPU, but it is a lint, not the gate.
 const activeRenderFiles = [
   'src/world/ManhattanCity.tsx',
   'src/character/RealisticPlayer.tsx',
   'src/ui/DevSpawns.tsx',
-  'src/world/SkyRig.tsx',
   'src/world/NightEnvironment.tsx',
   'src/world/AtmosphericDust.tsx',
 ]
 const primitiveTag = /<(?:box|sphere|capsule|cylinder|cone|plane)Geometry\b/
 for (const rel of activeRenderFiles) {
-  const text = readFileSync(resolve(root, rel), 'utf8')
+  // A listed file that no longer exists is a finding, not a crash and not a
+  // silent skip. The list is a claim about what the render path is; when it
+  // goes stale the audit stops auditing what it says it audits. SkyRig.tsx sat
+  // here after 0C deleted it, and the whole script died on ENOENT — which took
+  // `npm run check` down with it, after the useful output.
+  const abs = resolve(root, rel)
+  if (!existsSync(abs)) {
+    findings.push(`${rel}: listed as an active render file but does not exist`)
+    continue
+  }
+  const text = readFileSync(abs, 'utf8')
   if (primitiveTag.test(text)) findings.push(`${rel}: visible raw primitive geometry remains`)
 }
 
@@ -98,4 +117,30 @@ if (findings.length > 0) {
   for (const finding of findings) console.error(`Scene audit violation: ${finding}`)
   process.exit(1)
 }
-console.log(`Production scene audit passed: ${JSON.stringify(totals)}`)
+
+// Say what was examined, not just that nothing was wrong.
+//
+// This printed `passed: {"bytes":0,"files":0,...}` for every run on this
+// branch, because public/assets/production does not exist — the hand-authored
+// production set was retired in favour of streamed city tiles. So the GLB half
+// of this audit, and the manifest cross-check that iterates the same list,
+// examined nothing and said "passed". A zeros blob at the end of a green line
+// reads like a successful audit; it is an audit with no subject.
+//
+// Nothing is failed for that here: the retirement was deliberate and the
+// streamed tiles are gated by verify:assets and verify-runtime-urls instead.
+// But a gate that cannot fail must not be able to look like one that passed.
+const glbAudited = totals.files > 0
+console.log(
+  glbAudited
+    ? `Production scene audit passed: ${JSON.stringify(totals)}`
+    : `Production scene audit: NO production GLBs examined — ${relative(root, productionRoot).replaceAll('\\', '/')} ` +
+        'does not exist (hand-authored production set retired; the city streams tiles instead). ' +
+        `Source-level checks ran over ${activeRenderFiles.length} render file(s).`,
+)
+if (!glbAudited) {
+  console.log(
+    '  Streamed runtime assets are covered by npm run verify:assets; visible placeholder\n' +
+      '  geometry is covered by scripts/qa/placeholdercheck.mjs, which walks the live scene.',
+  )
+}
