@@ -94,18 +94,29 @@ export function disposeOwned(root: THREE.Object3D): DisposalReport {
 
 // ── The pedestrian box, built once ───────────────────────────────────────────
 
-let pedGeometry: THREE.BoxGeometry | null = null
+let pedGeometry: THREE.BufferGeometry | null = null
 let pedMaterial: THREE.MeshStandardMaterial | null = null
+/** True once authored geometry has replaced the fallback box. */
+let pedAuthored = false
+
+/** Where the authored figure lives. Exported from Blender; see below. */
+export const PEDESTRIAN_LOD0 = '/models/characters/pedestrian_lod0.glb'
 
 /**
- * The one geometry and material every pedestrian box uses.
+ * The one geometry and material every pedestrian uses.
  *
  * Lazy rather than eager so importing this module in a test does not build
  * THREE objects nobody asked for, and shared rather than per-mesh because
- * there is precisely one kind of pedestrian box.
+ * every crosser is the same figure.
+ *
+ * Starts as a box and is replaced by {@link adoptAuthoredPedestrian} once the
+ * GLB arrives. The box is a real fallback, not a leftover: the fetch is async
+ * and crossers exist from the first frame, so the alternative is invisible
+ * pedestrians. It is also the honest failure mode — if the asset never loads,
+ * the box stays and placeholdercheck fails, which is what should happen.
  */
 export function pedestrianResources(): {
-  geometry: THREE.BoxGeometry
+  geometry: THREE.BufferGeometry
   material: THREE.MeshStandardMaterial
 } {
   if (!pedGeometry) {
@@ -117,6 +128,33 @@ export function pedestrianResources(): {
     )
   }
   return { geometry: pedGeometry, material: pedMaterial }
+}
+
+/** Whether pedestrians are wearing the authored figure yet. */
+export function pedestrianIsAuthored(): boolean {
+  return pedAuthored
+}
+
+/**
+ * Swap the shared pedestrian geometry for authored geometry.
+ *
+ * Returns the meshes that need re-pointing: every pedestrian already in the
+ * scene holds the old geometry by reference, so replacing the module-level
+ * variable alone would leave every existing crosser a box forever and only new
+ * ones would improve. The caller owns those meshes and does the re-point.
+ *
+ * The old buffer is disposed only after the caller has re-pointed, which is why
+ * this returns rather than disposing here.
+ */
+export function adoptAuthoredPedestrian(
+  geometry: THREE.BufferGeometry,
+  material?: THREE.MeshStandardMaterial,
+): { previous: THREE.BufferGeometry | null } {
+  const previous = pedAuthored ? null : pedGeometry
+  pedGeometry = markShared(geometry)
+  if (material) pedMaterial = markShared(material)
+  pedAuthored = true
+  return { previous }
 }
 
 /**
@@ -131,4 +169,5 @@ export function disposePedestrianResources(): void {
   pedMaterial?.dispose()
   pedGeometry = null
   pedMaterial = null
+  pedAuthored = false
 }

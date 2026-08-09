@@ -15,7 +15,13 @@ import * as THREE from 'three'
 import { vehicleSim } from '../gameplay/vehicles/vehicle-session'
 import { vehicleSpec } from '../gameplay/vehicles/vehicle-specs'
 import type { VehicleEntity } from '../gameplay/vehicles/vehicle-entities'
-import { disposeOwned, disposePedestrianResources, pedestrianResources } from './rig-resources'
+import {
+  adoptAuthoredPedestrian,
+  disposeOwned,
+  disposePedestrianResources,
+  pedestrianResources,
+  PEDESTRIAN_LOD0,
+} from './rig-resources'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
 import { applyVehicleState } from './vehicle-asset'
 import { vehicleAssetPool, type VehicleInstance } from './vehicle-asset-pool'
@@ -54,7 +60,7 @@ interface WheelRig {
 }
 
 interface VehicleRigEntry {
-  group: THREE.Group
+  group: THREE.Object3D
   /**
    * The authored sportback, when the asset has loaded.
    *
@@ -209,6 +215,56 @@ export function VehicleRig() {
   const entries = useRef(new Map<number, VehicleRigEntry>())
   const pedMeshes = useRef<THREE.Mesh[]>([])
 
+  // Fetch the authored pedestrian once, on mount.
+  //
+  // Crossers already in the scene hold the fallback geometry by reference, so
+  // swapping the module-level variable is not enough — each existing mesh is
+  // re-pointed here. Without that, only pedestrians spawned after the fetch
+  // would improve and the ones on screen would stay boxes indefinitely.
+  useEffect(() => {
+    let cancelled = false
+    getVehicleGltfLoader()
+      .loadAsync(PEDESTRIAN_LOD0)
+      .then(({ scene }) => {
+        if (cancelled) return
+        let geometry: THREE.BufferGeometry | null = null
+        let material: THREE.MeshStandardMaterial | undefined
+        scene.traverse((object) => {
+          if (geometry || !(object instanceof THREE.Mesh)) return
+          geometry = object.geometry
+          if (object.material instanceof THREE.MeshStandardMaterial) material = object.material
+        })
+        if (!geometry) {
+          console.error('[pedestrians] authored figure has no mesh —', PEDESTRIAN_LOD0)
+          return
+        }
+        // No lift. The figure is authored standing on the ground with its
+        // origin at the feet, and a crosser's mesh is placed at ped.pos with
+        // y = 0 — so it already lands on the pavement.
+        //
+        // The first version added +0.875 here, reasoning from the fallback
+        // box's centre origin. Measured, that left the figure floating 0.88 m
+        // above the ground. Worth recording that the box was the one that was
+        // wrong: centre-origin at y = 0 meant every crosser was half buried,
+        // which nobody noticed because a small dark box in a street reads as
+        // a shadow.
+        const { previous } = adoptAuthoredPedestrian(geometry, material)
+        const next = pedestrianResources()
+        for (const mesh of pedMeshes.current) {
+          mesh.geometry = next.geometry
+          mesh.material = next.material
+        }
+        // Disposed only after every mesh has been re-pointed off it.
+        previous?.dispose()
+      })
+      .catch((err: unknown) => {
+        console.error('[pedestrians] authored figure unavailable —', err)
+      })
+    return () => {
+      cancelled = true
+    }
+  }, [])
+
   // Fetch the authored asset once, on mount. Cars render with the procedural
   // fallback until it lands and are upgraded in place.
   useEffect(() => {
@@ -280,14 +336,17 @@ export function VehicleRig() {
       const braking = entity.motion.braking || entity.state === 'PARKED'
 
       if (entry.authored) {
-        // One call, driving the contract vehicle-asset.ts binds. The rig no
-        // longer knows how many wheels there are or which materials light up.
-        applyVehicleState(entry.authored.bound, {
-          wheelSpin: spin,
-          steerAngle: steer,
-          braking,
-          headlights: vehicleSim.headlightsOn,
-        })
+        // Keep the animated parts coherent across a distance transition. LOD2
+        // has wheels but no light lenses; LOD3 is a static silhouette, so the
+        // same call naturally becomes a no-op for the parts a tier omits.
+        for (const bound of entry.authored.bindings) {
+          applyVehicleState(bound, {
+            wheelSpin: spin,
+            steerAngle: steer,
+            braking,
+            headlights: vehicleSim.headlightsOn,
+          })
+        }
       } else {
         for (const wheel of entry.wheels) {
           wheel.wheel.rotation.x = spin
