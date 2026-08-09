@@ -11,6 +11,7 @@ import { manhattanCollision } from './manhattan-collision'
 import { getBuildingNightMaterial, getRoadNightMaterial, isCityNightMaterial } from './night-materials'
 import { QUALITY, type QualityPreset } from './palette'
 import { nightFactor } from './city-lighting'
+import { censusMaterials, formatCensus } from './material-census'
 import { rt } from '../gameplay/runtime'
 import { simulation } from '../gameplay/simulation'
 import { City } from '../city/city.js'
@@ -231,6 +232,17 @@ class CityPipeline {
     // visual-QA runner and the debugger read stats and geometry through it.
     ;(window as unknown as { __cityWorld: typeof cityWorld }).__cityWorld = cityWorld
     ;(window as unknown as { __manhattanCollision: typeof manhattanCollision }).__manhattanCollision = manhattanCollision
+    // 0C.2 — the runtime assertion the brief asks for. Reports which material
+    // system is bound to each streamed tier AND whether the geometry can feed
+    // it. The road bug (a material reading vertex colours that ROAD_* meshes
+    // do not carry, so every road shaded black with no error anywhere) is
+    // exactly what this catches, and it took two files read an hour apart to
+    // find by eye.
+    ;(window as unknown as { __materialCensus: () => unknown }).__materialCensus = () => {
+      const census = censusMaterials(scene as unknown as Parameters<typeof censusMaterials>[0])
+      console.info(formatCensus(census))
+      return census
+    }
     ;(window as unknown as { THREE: typeof THREE }).THREE = THREE
   }
 
