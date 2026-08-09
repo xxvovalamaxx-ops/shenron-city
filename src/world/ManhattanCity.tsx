@@ -12,6 +12,11 @@ import { getBuildingNightMaterial, getRoadNightMaterial, isCityNightMaterial } f
 import { QUALITY, type QualityPreset } from './palette'
 import { nightFactor } from './city-lighting'
 import { censusMaterials, formatCensus } from './material-census'
+import {
+  censusPlaceholders,
+  formatPlaceholders,
+  type PlaceholderOptions,
+} from './placeholder-census'
 import { rt } from '../gameplay/runtime'
 import { simulation } from '../gameplay/simulation'
 import { City } from '../city/city.js'
@@ -241,6 +246,23 @@ class CityPipeline {
     ;(window as unknown as { __materialCensus: () => unknown }).__materialCensus = () => {
       const census = censusMaterials(scene as unknown as Parameters<typeof censusMaterials>[0])
       console.info(formatCensus(census))
+      return census
+    }
+    // 0E.3 — the other half of the same question. The material census asks
+    // "is this shaded correctly"; this asks "is this real content at all".
+    // The brief bans box vehicles and box pedestrians on the hero route, and
+    // both are currently exactly that, so this reports a number rather than a
+    // pass — see OPUS-011.
+    ;(
+      window as unknown as { __placeholderCensus: (o?: PlaceholderOptions) => unknown }
+    ).__placeholderCensus = (options?: PlaceholderOptions) => {
+      // World matrices must be current or every distance is the local one.
+      scene.updateMatrixWorld(true)
+      const census = censusPlaceholders(
+        scene as unknown as Parameters<typeof censusPlaceholders>[0],
+        options,
+      )
+      console.info(formatPlaceholders(census))
       return census
     }
     ;(window as unknown as { THREE: typeof THREE }).THREE = THREE
