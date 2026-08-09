@@ -15,6 +15,8 @@ import {
   validateVehicleAsset,
   STEERING_SLOTS,
   WHEEL_SLOTS,
+  DOOR_SLOTS,
+  DOOR_OPEN_RADIANS,
 } from './vehicle-asset'
 
 function mesh(name: string, material?: THREE.Material): THREE.Mesh {
@@ -155,6 +157,124 @@ describe('binding an asset', () => {
     const root = completeCar()
     root.add(mesh('VEH_glass'))
     expect(bindVehicleAsset(root).glass).toHaveLength(1)
+  })
+})
+
+describe('doors swing outward, from the geometry rather than a lookup', () => {
+  /** A car with two front doors hinged at their front edges. */
+  function withDoors() {
+    const root = completeCar()
+    for (const [slot, x] of [
+      ['fl', 0.86],
+      ['fr', -0.86],
+    ] as const) {
+      const door = mesh(`VEH_door_${slot}`)
+      // Hinge at the front edge of the aperture; the panel extends backward.
+      door.position.set(x, 0.75, 0.42)
+      root.add(door)
+    }
+    return root
+  }
+
+  it('binds both front doors', () => {
+    const bound = bindVehicleAsset(withDoors())
+    expect(bound.doors.map((d) => d.slot)).toEqual(['fl', 'fr'])
+    expect(DOOR_SLOTS).toEqual(['fl', 'fr'])
+  })
+
+  it('gives the left door a negative swing and the right a positive one', () => {
+    // glTF +X is the car's left, and a front-hinged door swings its rear edge
+    // outward — so left opens negative about Y and right opens positive.
+    const bound = bindVehicleAsset(withDoors())
+    expect(bound.doors.find((d) => d.slot === 'fl')!.openSign).toBe(-1)
+    expect(bound.doors.find((d) => d.slot === 'fr')!.openSign).toBe(1)
+  })
+
+  it('reads the side off the hinge, so a mirrored asset still opens outward', () => {
+    // The direction is derived, not looked up by slot name. An asset whose
+    // doors are mirrored or named the other way round would otherwise fold
+    // them into the cabin.
+    const root = completeCar()
+    const swapped = mesh('VEH_door_fl')
+    swapped.position.set(-0.86, 0.75, 0.42) // named left, built on the right
+    root.add(swapped)
+    expect(bindVehicleAsset(root).doors[0].openSign).toBe(1)
+  })
+
+  it('actually swings the rear edge away from the car', () => {
+    // The property the sign exists for, stated as a measurement rather than
+    // as a claim about which way is positive.
+    const root = withDoors()
+    const bound = bindVehicleAsset(root)
+    const left = bound.doors.find((d) => d.slot === 'fl')!
+    // A point on the door's trailing edge, one metre behind the hinge.
+    const trailing = new THREE.Object3D()
+    trailing.position.set(0, 0, -1)
+    left.node.add(trailing)
+
+    root.updateMatrixWorld(true)
+    const shut = new THREE.Vector3()
+    trailing.getWorldPosition(shut)
+
+    applyVehicleState(bound, {
+      wheelSpin: 0, steerAngle: 0, braking: false, headlights: false, doorOpen: 1,
+    })
+    root.updateMatrixWorld(true)
+    const open = new THREE.Vector3()
+    trailing.getWorldPosition(open)
+
+    // Outward for a left-hand door is +X.
+    expect(open.x).toBeGreaterThan(shut.x + 0.5)
+  })
+
+  it('opens to the full angle and shuts flush', () => {
+    const bound = bindVehicleAsset(withDoors())
+    const left = bound.doors.find((d) => d.slot === 'fl')!
+    applyVehicleState(bound, {
+      wheelSpin: 0, steerAngle: 0, braking: false, headlights: false, doorOpen: 1,
+    })
+    expect(left.node.rotation.y).toBeCloseTo(-DOOR_OPEN_RADIANS, 6)
+    applyVehicleState(bound, {
+      wheelSpin: 0, steerAngle: 0, braking: false, headlights: false, doorOpen: 0,
+    })
+    expect(left.node.rotation.y).toBe(-0)
+  })
+
+  it('clamps, so a transition overshoot cannot fold a door through the sill', () => {
+    const bound = bindVehicleAsset(withDoors())
+    const left = bound.doors.find((d) => d.slot === 'fl')!
+    applyVehicleState(bound, {
+      wheelSpin: 0, steerAngle: 0, braking: false, headlights: false, doorOpen: 2.5,
+    })
+    expect(left.node.rotation.y).toBeCloseTo(-DOOR_OPEN_RADIANS, 6)
+    applyVehicleState(bound, {
+      wheelSpin: 0, steerAngle: 0, braking: false, headlights: false, doorOpen: -3,
+    })
+    expect(left.node.rotation.y).toBe(-0)
+  })
+
+  it('treats a missing doorOpen as shut, so an asset with doors is not born open', () => {
+    const bound = bindVehicleAsset(withDoors())
+    applyVehicleState(bound, {
+      wheelSpin: 0, steerAngle: 0, braking: false, headlights: false,
+    })
+    expect(bound.doors.every((d) => d.node.rotation.y === 0 || Object.is(d.node.rotation.y, -0)))
+      .toBe(true)
+  })
+
+  it('complains about a hinge on the centreline, which has no side to swing from', () => {
+    const root = completeCar()
+    const door = mesh('VEH_door_fl')
+    door.position.set(0, 0.75, 0.42)
+    root.add(door)
+    const problems = validateVehicleAsset(bindVehicleAsset(root)).map((p) => p.problem)
+    expect(problems.some((p) => /centreline/.test(p))).toBe(true)
+  })
+
+  it('is fine on a car with no doors at all — the far tiers have none', () => {
+    const bound = bindVehicleAsset(completeCar())
+    expect(bound.doors).toEqual([])
+    expect(validateVehicleAsset(bound)).toEqual([])
   })
 })
 

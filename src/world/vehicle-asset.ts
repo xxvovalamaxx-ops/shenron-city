@@ -45,6 +45,18 @@ export type WheelSlot = (typeof WHEEL_SLOTS)[number]
 /** Slots that steer. VehicleRig writes steer to indices 0 and 1. */
 export const STEERING_SLOTS: readonly WheelSlot[] = ['fl', 'fr']
 
+/** Doors the runtime opens. The front pair is what the player uses. */
+export const DOOR_SLOTS = ['fl', 'fr'] as const
+export type DoorSlot = (typeof DOOR_SLOTS)[number]
+
+/**
+ * How far a door opens, radians.
+ *
+ * 65 degrees is a conventional front-hinged swing — far enough to read as open
+ * at a glance, short enough not to clip a car parked alongside.
+ */
+export const DOOR_OPEN_RADIANS = 1.134
+
 export interface BoundWheel {
   slot: WheelSlot
   /** Rotates about Y for steering. Parent of the wheel. */
@@ -54,9 +66,30 @@ export interface BoundWheel {
   steers: boolean
 }
 
+export interface BoundDoor {
+  slot: DoorSlot
+  /** Rotated about Y to swing. Its origin is the hinge. */
+  node: THREE.Object3D
+  /**
+   * Which way this door swings, +1 or -1.
+   *
+   * Derived from the hinge's own X, not hardcoded per slot. glTF +X is the
+   * car's left (right = cross(forward, up) = (0,0,1) x (0,1,0) = (-1,0,0)), and
+   * a door hinged at the front swings its rear edge outward — so a left-hand
+   * door needs a negative Y rotation and a right-hand one positive.
+   *
+   * Reading it off the geometry means an asset whose doors are mirrored, or
+   * named the other way round, still opens outward instead of folding into the
+   * cabin. The wheels taught this: a mapping worked out by hand was wrong the
+   * first time, and measured positions were not.
+   */
+  openSign: 1 | -1
+}
+
 export interface BoundVehicle {
   root: THREE.Object3D
   wheels: BoundWheel[]
+  doors: BoundDoor[]
   /** Materials driven by the braking flag. */
   brakeMaterials: THREE.Material[]
   /** Materials driven by the headlight flag. */
@@ -90,13 +123,21 @@ function normalised(name: string): string {
 /** Which convention slot a node name declares, or null. */
 export function classifyVehicleNode(
   name: string,
-): { kind: 'body' | 'wheel' | 'head' | 'brake' | 'glass' | 'interior'; slot?: WheelSlot } | null {
+): {
+  kind: 'body' | 'wheel' | 'door' | 'head' | 'brake' | 'glass' | 'interior'
+  slot?: WheelSlot
+  doorSlot?: DoorSlot
+} | null {
   const n = normalised(name)
   if (!n.startsWith(VEHICLE_NODE_PREFIX.toLowerCase())) return null
   const rest = n.slice(VEHICLE_NODE_PREFIX.length)
   if (rest.startsWith('wheel_')) {
     const slot = rest.slice('wheel_'.length) as WheelSlot
     return WHEEL_SLOTS.includes(slot) ? { kind: 'wheel', slot } : null
+  }
+  if (rest.startsWith('door_')) {
+    const slot = rest.slice('door_'.length) as DoorSlot
+    return DOOR_SLOTS.includes(slot) ? { kind: 'door', doorSlot: slot } : null
   }
   if (rest.startsWith('light_head')) return { kind: 'head' }
   if (rest.startsWith('light_brake')) return { kind: 'brake' }
@@ -135,6 +176,7 @@ export function bindVehicleAsset(root: THREE.Object3D): BoundVehicle {
   const glass: THREE.Mesh[] = []
   const unmatched: string[] = []
   const found = new Map<WheelSlot, THREE.Object3D>()
+  const doorNodes = new Map<DoorSlot, THREE.Object3D>()
 
   // Collected first, mutated after: inserting pivots during a traverse would
   // reparent nodes the traverse is still walking.
@@ -149,6 +191,7 @@ export function bindVehicleAsset(root: THREE.Object3D): BoundVehicle {
       continue
     }
     if (hit.kind === 'wheel' && hit.slot) found.set(hit.slot, node)
+    else if (hit.kind === 'door' && hit.doorSlot) doorNodes.set(hit.doorSlot, node)
     else if (hit.kind === 'head') headMaterials.push(...materialsOf(node))
     else if (hit.kind === 'brake') brakeMaterials.push(...materialsOf(node))
     else if (hit.kind === 'glass' && node instanceof THREE.Mesh) glass.push(node)
@@ -179,7 +222,18 @@ export function bindVehicleAsset(root: THREE.Object3D): BoundVehicle {
     wheels.push({ slot, pivot, wheel, steers })
   }
 
-  return { root, wheels, brakeMaterials, headMaterials, glass, unmatched }
+  const doors: BoundDoor[] = []
+  for (const slot of DOOR_SLOTS) {
+    const node = doorNodes.get(slot)
+    if (!node) continue
+    // The hinge is the node's own origin, so its X says which side it is on.
+    // A hinge exactly on the centreline is meaningless for a door and would
+    // pick a swing direction by rounding; treat it as left, and let
+    // validateVehicleAsset report it.
+    doors.push({ slot, node, openSign: node.position.x >= 0 ? -1 : 1 })
+  }
+
+  return { root, wheels, doors, brakeMaterials, headMaterials, glass, unmatched }
 }
 
 /**
@@ -200,6 +254,13 @@ export function validateVehicleAsset(bound: BoundVehicle): BindProblem[] {
     const wheel = bound.wheels.find((w) => w.slot === slot)
     if (wheel && !wheel.steers) problems.push({ problem: `wheel ${slot} does not steer` })
   }
+  for (const door of bound.doors) {
+    if (Math.abs(door.node.position.x) < 0.05) {
+      problems.push({
+        problem: `door ${door.slot} hinge is on the centreline — it has no side to swing from`,
+      })
+    }
+  }
   if (bound.headMaterials.length === 0) problems.push({ problem: 'no headlight material' })
   if (bound.brakeMaterials.length === 0) problems.push({ problem: 'no brake light material' })
   let meshes = 0
@@ -213,11 +274,22 @@ export function validateVehicleAsset(bound: BoundVehicle): BindProblem[] {
 /** Drive one bound vehicle from the simulation's per-frame state. */
 export function applyVehicleState(
   bound: BoundVehicle,
-  state: { wheelSpin: number; steerAngle: number; braking: boolean; headlights: boolean },
+  state: {
+    wheelSpin: number
+    steerAngle: number
+    braking: boolean
+    headlights: boolean
+    /** 0 shut, 1 fully open. Clamped, so a transition overshoot cannot fold a door through the sill. */
+    doorOpen?: number
+  },
 ): void {
   for (const wheel of bound.wheels) {
     wheel.wheel.rotation.x = state.wheelSpin
     if (wheel.steers) wheel.pivot.rotation.y = state.steerAngle
+  }
+  const open = Math.max(0, Math.min(1, state.doorOpen ?? 0))
+  for (const door of bound.doors) {
+    door.node.rotation.y = door.openSign * DOOR_OPEN_RADIANS * open
   }
   for (const m of bound.brakeMaterials) {
     if ('emissiveIntensity' in m) {
