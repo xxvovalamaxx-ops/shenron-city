@@ -9,14 +9,18 @@
   },
   "stoppedACar": false,
   "carPos": {
-    "x": 1271.7218165289091,
-    "z": -2960.5351447452254
+    "x": 1066.451251386309,
+    "z": -2995.9380381305828
   },
   "hadRegistryCarToWalkPast": true,
   "walkPast": {
     "n": 45,
-    "rms": 0.01141,
-    "peakRms": 0.02048,
+    "audioWindow": {
+      "start": 10.6213,
+      "end": 11.072
+    },
+    "rms": 0.0105,
+    "peakRms": 0.01891,
     "level": 0.1607,
     "placeGain": 0.06,
     "pan": -0.835,
@@ -29,69 +33,100 @@
   },
   "onFoot": {
     "n": 45,
-    "rms": 0.00885,
-    "peakRms": 0.01122,
-    "level": 0.0033,
-    "placeGain": 0.9963,
-    "pan": -0.003,
-    "hz": 182.7,
-    "cutoffHz": 1523,
+    "audioWindow": {
+      "start": 11.472,
+      "end": 11.912
+    },
+    "rms": 0.00878,
+    "peakRms": 0.01049,
+    "level": 0.0019,
+    "placeGain": 0.996,
+    "pan": -0.001,
+    "hz": 55,
+    "cutoffHz": 542,
     "onAlways": false,
     "onNever": true,
-    "sourceDistance": 301.6,
+    "sourceDistance": 168.8,
     "expectedPlaceGain": 0
   },
   "promptSeen": "Press E to enter the car",
   "driving": {
     "n": 91,
-    "rms": 0.02648,
-    "peakRms": 0.04414,
-    "level": 0.1868,
+    "audioWindow": {
+      "start": 12.9413,
+      "end": 13.848
+    },
+    "rms": 0.025,
+    "peakRms": 0.03988,
+    "level": 0.1835,
     "placeGain": 1,
     "pan": 0,
-    "hz": 111.4,
-    "cutoffHz": 1314,
+    "hz": 108.8,
+    "cutoffHz": 1278,
     "onAlways": true,
     "onNever": false,
-    "sourceDistance": 309.3,
+    "sourceDistance": 170.2,
     "expectedPlaceGain": 0
   },
   "playerVehicleId": 10,
-  "speedMps": 8.767340841108494,
+  "speedMps": 8.416165995900727,
   "idling": {
     "n": 31,
-    "rms": 0.00866,
-    "peakRms": 0.00979,
+    "audioWindow": {
+      "start": 14.2213,
+      "end": 14.52
+    },
+    "rms": 0.00918,
+    "peakRms": 0.01084,
     "level": 0.0325,
     "placeGain": 1,
     "pan": 0,
-    "hz": 46,
-    "cutoffHz": 420,
+    "hz": 45.9,
+    "cutoffHz": 421,
     "onAlways": true,
     "onNever": false,
-    "sourceDistance": 310.7,
+    "sourceDistance": 168.7,
     "expectedPlaceGain": 0
   },
   "idleSpeedMps": 0.63,
+  "hornKeyDown": {
+    "frame": 1416,
+    "audioTime": 14.5307
+  },
+  "hornKeyUp": {
+    "frame": 1417,
+    "audioTime": 14.5413
+  },
   "horn": {
     "n": 44,
-    "rms": 0.01243,
-    "peakRms": 0.02675,
-    "level": 0.0298,
+    "audioWindow": {
+      "start": 14.552,
+      "end": 14.9787
+    },
+    "rms": 0.01287,
+    "peakRms": 0.02643,
+    "level": 0.0297,
     "placeGain": 1,
     "pan": 0,
-    "hz": 34,
-    "cutoffHz": 362,
+    "hz": 33.9,
+    "cutoffHz": 361,
     "onAlways": true,
     "onNever": false,
-    "sourceDistance": 313.2,
+    "sourceDistance": 166.7,
     "expectedPlaceGain": 0
   },
-  "framesAdvanced": 430,
+  "hornPlayCalls": [
+    {
+      "frame": 1416,
+      "audioTime": 14.5307,
+      "listenerDistance": 0.589
+    }
+  ],
+  "framesAdvanced": 436,
   "paused": false,
   "audible": {
-    "onFoot": 0.0033,
-    "driving": 0.1868
+    "onFoot": 0.0019,
+    "driving": 0.1835
   },
   "placementControl": {
     "ran": true,
@@ -114,6 +149,7 @@
     "ownEngineCentred": true,
     "mixLouderWhileDriving": true,
     "noteFallsOffThrottle": true,
+    "hornInputReachedAudio": true,
     "hornAudible": true,
     "placementControlTook": true,
     "noConsoleErrors": true
@@ -121,15 +157,82 @@
   "consoleErrors": [],
   "pass": true,
   "server": "http://127.0.0.1:9322",
+  "audioMix": {
+    "before": {
+      "path": "src/audio/mix.ts",
+      "sha256": "13393c48eb8ce6db3acb4f43d1b1009146ad2f9bd5cbf10a8da50aa2f1aeeee4",
+      "byteLength": 27171,
+      "horn": {
+        "level": "0.4",
+        "attack": "0.012",
+        "duration": "0.5",
+        "noise": "null",
+        "tone": {
+          "wave": "sawtooth",
+          "fromHz": "430",
+          "toHz": "430",
+          "level": "0.5"
+        },
+        "partials": [
+          {
+            "hz": "215",
+            "level": "0.28",
+            "delay": "0.26",
+            "decay": "0.22"
+          },
+          {
+            "hz": "860",
+            "level": "0.08",
+            "delay": "0",
+            "decay": "0.4"
+          }
+        ],
+        "source": "horn: {\n    level: 0.4,\n    attack: 0.012,\n    duration: 0.5,\n    noise: null,\n    tone: { wave: 'sawtooth', fromHz: 430, toHz: 430, level: 0.5 },\n    partials: [\n      { hz: 215, level: 0.28, delay: 0.26, decay: 0.22 },\n      { hz: 860, level: 0.08, delay: 0, decay: 0.4 },\n    ],\n  },"
+      }
+    },
+    "after": {
+      "path": "src/audio/mix.ts",
+      "sha256": "13393c48eb8ce6db3acb4f43d1b1009146ad2f9bd5cbf10a8da50aa2f1aeeee4",
+      "byteLength": 27171,
+      "horn": {
+        "level": "0.4",
+        "attack": "0.012",
+        "duration": "0.5",
+        "noise": "null",
+        "tone": {
+          "wave": "sawtooth",
+          "fromHz": "430",
+          "toHz": "430",
+          "level": "0.5"
+        },
+        "partials": [
+          {
+            "hz": "215",
+            "level": "0.28",
+            "delay": "0.26",
+            "decay": "0.22"
+          },
+          {
+            "hz": "860",
+            "level": "0.08",
+            "delay": "0",
+            "decay": "0.4"
+          }
+        ],
+        "source": "horn: {\n    level: 0.4,\n    attack: 0.012,\n    duration: 0.5,\n    noise: null,\n    tone: { wave: 'sawtooth', fromHz: 430, toHz: 430, level: 0.5 },\n    partials: [\n      { hz: 215, level: 0.28, delay: 0.26, decay: 0.22 },\n      { hz: 860, level: 0.08, delay: 0, decay: 0.4 },\n    ],\n  },"
+      }
+    },
+    "drifted": false
+  },
   "lifecycle": {
     "server": {
       "mode": "managed",
       "managed": true,
       "url": "http://127.0.0.1:9322",
       "port": 9322,
-      "pid": 9144,
+      "pid": 43184,
       "started": true,
-      "output": "\n  \u001b[32m\u001b[1mVITE\u001b[22m v8.1.5\u001b[39m  \u001b[2mready in \u001b[0m\u001b[1m137\u001b[22m\u001b[2m\u001b[0m ms\u001b[22m\n\n  \u001b[32m➜\u001b[39m  \u001b[1mLocal\u001b[22m:   \u001b[36mhttp://127.0.0.1:\u001b[1m9322\u001b[22m/\u001b[39m\n\u001b[2m1:45:38\u001b[22m \u001b[33m\u001b[1m[vite]\u001b[22m\u001b[39m \u001b[33m\u001b[2m(client)\u001b[22m\u001b[39m \u001b[2m[console.warn] \u001b[22mTHREE.Clock: This module has been deprecated. Please use THREE.Timer instead.\n\u001b[2m1:45:38\u001b[22m \u001b[33m\u001b[1m[vite]\u001b[22m\u001b[39m \u001b[33m\u001b[2m(client)\u001b[22m\u001b[39m \u001b[2m[console.warn] \u001b[22mTHREE.WebGLProgram: Program Info Log: (210,81-129): warning X4122: sum of 0.996094 and -2.98545e-017 cannot be represented accurately in double precision\n(209,37-61): warning X4122: sum of 1 and -1.49272e-017 cannot be represented accurately in double precision\n(210,82-106): warning X4122: sum of 1 and -1.49272e-017 cannot be represented accurately in double precision\n(209,37-61): warning X4122: sum of 1 and -1.66644e-018 cannot be represented accurately in double precision\n(210,82-106): warning X4122: sum of 1 and -1.66644e-018 cannot be represented accurately in double precision\n\n\n\u0000\n",
+      "output": "\n  \u001b[32m\u001b[1mVITE\u001b[22m v8.1.5\u001b[39m  \u001b[2mready in \u001b[0m\u001b[1m189\u001b[22m\u001b[2m\u001b[0m ms\u001b[22m\n\n  \u001b[32m➜\u001b[39m  \u001b[1mLocal\u001b[22m:   \u001b[36mhttp://127.0.0.1:\u001b[1m9322\u001b[22m/\u001b[39m\n\u001b[2m1:50:42\u001b[22m \u001b[33m\u001b[1m[vite]\u001b[22m\u001b[39m \u001b[33m\u001b[2m(client)\u001b[22m\u001b[39m \u001b[2m[console.warn] \u001b[22mTHREE.Clock: This module has been deprecated. Please use THREE.Timer instead.\n\u001b[2m1:50:42\u001b[22m \u001b[33m\u001b[1m[vite]\u001b[22m\u001b[39m \u001b[33m\u001b[2m(client)\u001b[22m\u001b[39m \u001b[2m[console.warn] \u001b[22mTHREE.WebGLProgram: Program Info Log: (210,81-129): warning X4122: sum of 0.996094 and -2.98545e-017 cannot be represented accurately in double precision\n(209,37-61): warning X4122: sum of 1 and -1.49272e-017 cannot be represented accurately in double precision\n(210,82-106): warning X4122: sum of 1 and -1.49272e-017 cannot be represented accurately in double precision\n(209,37-61): warning X4122: sum of 1 and -1.66644e-018 cannot be represented accurately in double precision\n(210,82-106): warning X4122: sum of 1 and -1.66644e-018 cannot be represented accurately in double precision\n\n\n\u0000\n",
       "verified": true,
       "portOpenBeforeStart": false,
       "portOpenAfterStart": true,
@@ -146,7 +249,7 @@
     },
     "browser": {
       "launched": true,
-      "pid": 47804,
+      "pid": 43296,
       "verified": true,
       "closeCompleted": true,
       "processExited": true,

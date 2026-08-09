@@ -61,7 +61,8 @@
  */
 /* global window, requestAnimationFrame, KeyboardEvent */
 import { spawn } from 'node:child_process'
-import { existsSync, mkdirSync, writeFileSync } from 'node:fs'
+import { createHash } from 'node:crypto'
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs'
 import { createConnection } from 'node:net'
 import { fileURLToPath } from 'node:url'
 import { dirname, join, resolve } from 'node:path'
@@ -72,6 +73,7 @@ const REPO_ROOT = resolve(HERE, '..', '..')
 const VITE = fileURLToPath(new URL('../../node_modules/vite/bin/vite.js', import.meta.url))
 const MANAGED_PORT = 9322
 const MANAGED_SERVER = `http://127.0.0.1:${MANAGED_PORT}`
+const AUDIO_MIX_PATH = join(REPO_ROOT, 'src', 'audio', 'mix.ts')
 const STARTUP_TIMEOUT_MS = 30_000
 const CLEANUP_TIMEOUT_MS = 5_000
 const EXIT = Object.freeze({ pass: 0, failed: 1, inconclusive: 2 })
@@ -126,6 +128,42 @@ function parseArgs(argv) {
     }
   }
   return args
+}
+
+function audioMixProvenance() {
+  const source = readFileSync(AUDIO_MIX_PATH, 'utf8')
+  const normalized = source.replace(/\r\n/g, '\n')
+  const start = normalized.indexOf('  horn: {')
+  const end = start === -1 ? -1 : normalized.indexOf('\n  },', start)
+  const hornSource = start === -1 || end === -1 ? null : normalized.slice(start, end + 5).trim()
+  const topLevel = (name) => {
+    const match = hornSource?.match(new RegExp(`^ {4}${name}: ([^,\\r\\n]+),$`, 'm'))
+    return match?.[1]?.trim() ?? null
+  }
+  const tone = hornSource?.match(
+    /^ {4}tone: \{ wave: '([^']+)', fromHz: ([^,]+), toHz: ([^,]+), level: ([^}]+) \},$/m,
+  )
+  const partials = hornSource
+    ? [...hornSource.matchAll(/^ {6}\{ hz: ([^,]+), level: ([^,]+), delay: ([^,]+), decay: ([^ }]+) \},?$/gm)].map(
+        ([, hz, level, delay, decay]) => ({ hz, level, delay, decay }),
+      )
+    : []
+  return {
+    path: 'src/audio/mix.ts',
+    sha256: createHash('sha256').update(source).digest('hex'),
+    byteLength: Buffer.byteLength(source),
+    horn: {
+      level: topLevel('level'),
+      attack: topLevel('attack'),
+      duration: topLevel('duration'),
+      noise: topLevel('noise'),
+      tone: tone
+        ? { wave: tone[1], fromHz: tone[2].trim(), toHz: tone[3].trim(), level: tone[4].trim() }
+        : null,
+      partials,
+      source: hornSource,
+    },
+  }
 }
 
 const sleep = (milliseconds) => new Promise((resolvePromise) => setTimeout(resolvePromise, milliseconds))
@@ -476,6 +514,7 @@ const result = await page.evaluate(
       const sample = () => {
         const d = audio.diagnostics()
         return {
+          audioTime: d.currentTime,
           rms: (d.leftRms + d.rightRms) / 2,
           level: d.engine.level,
           placeGain: d.engine.placeGain,
@@ -492,6 +531,13 @@ const result = await page.evaluate(
         const distance = distances.length === rows.length ? mean(distances) : null
         return {
           n: rows.length,
+          audioWindow:
+            rows.length > 0
+              ? {
+                  start: +rows[0].audioTime.toFixed(4),
+                  end: +rows.at(-1).audioTime.toFixed(4),
+                }
+              : null,
           rms: +mean(rows.map((r) => r.rms)).toFixed(5),
           // The horn is a 0.5 s one-shot, so its evidence is a transient the
           // mean would bury.
@@ -511,6 +557,26 @@ const result = await page.evaluate(
       const f0 = frames()
       const out = { preconditions, stoppedACar: stopped, carPos: place }
       const rows = []
+      const hornPlayCalls = []
+      const originalPlay = audio.play
+      // This is an observation wrapper, not a synthetic audio input: the test
+      // still presses Space and GameLoop still decides whether to play a horn.
+      // Without it, a flat analyser trace cannot distinguish a too-short
+      // sample window from an input event that never reached the mix.
+      audio.play = (event, at) => {
+        if (event === 'horn') {
+          const listener = rt.player.pos
+          const dx = (at?.x ?? listener.x) - listener.x
+          const dy = (at?.y ?? listener.y) - listener.y
+          const dz = (at?.z ?? listener.z) - listener.z
+          hornPlayCalls.push({
+            frame: frames(),
+            audioTime: +audio.diagnostics().currentTime.toFixed(4),
+            listenerDistance: +Math.hypot(dx, dy, dz).toFixed(3),
+          })
+        }
+        return originalPlay.call(audio, event, at)
+      }
       let phase = registryCar ? 'near-registry' : 'on-foot'
       let waited = 0
       let idleFrames = 0
@@ -671,8 +737,16 @@ const result = await page.evaluate(
             // A rising edge on the jump key is what the vehicle controls read
             // as a horn.
             if (waited === 1) {
+              out.hornKeyDown = {
+                frame: frames(),
+                audioTime: +audio.diagnostics().currentTime.toFixed(4),
+              }
               window.dispatchEvent(new KeyboardEvent('keydown', { code: 'Space', bubbles: true }))
             } else if (waited === 2) {
+              out.hornKeyUp = {
+                frame: frames(),
+                audioTime: +audio.diagnostics().currentTime.toFixed(4),
+              }
               window.dispatchEvent(new KeyboardEvent('keyup', { code: 'Space', bubbles: true }))
             } else if (waited > 2) {
               rows.push(sample())
@@ -680,6 +754,8 @@ const result = await page.evaluate(
             // 0.5 s of horn plus its tail, at whatever frame rate is on offer.
             if (waited > 45) {
               out.horn = summarise(rows.splice(0))
+              out.hornPlayCalls = hornPlayCalls
+              audio.play = originalPlay
               out.framesAdvanced = frames() - f0
               out.paused = rt.paused
               return done(out)
@@ -753,6 +829,7 @@ const checks = {
   // `horn` was in `AudioEvent`, had a voice in `ONE_SHOTS` and was fired by
   // GameLoop — and `play()` had no case for it, so it did nothing. A peak, not
   // a mean: it is a 0.5 s one-shot, and a mean over the window buries it.
+  hornInputReachedAudio: Array.isArray(result.hornPlayCalls) && result.hornPlayCalls.length === 1,
   hornAudible: (horn.peakRms ?? 0) > (idle.peakRms ?? 0) * 1.5,
 
   // ── The regression control ──────────────────────────────────────────────
@@ -900,12 +977,26 @@ function printReport(report, path) {
       `  horn:             peak rms ${horn.peakRms} vs ${idle.peakRms} idling ` +
         `(+${(((horn.peakRms ?? 0) / (idle.peakRms || 1)) * 100 - 100).toFixed(0)}%)`,
     )
+    console.log(
+      `  horn trace:       key ${report.hornKeyDown?.audioTime} -> ${report.hornKeyUp?.audioTime}, ` +
+        `play calls ${report.hornPlayCalls?.length ?? 0}, ` +
+        `samples ${horn.audioWindow?.start} -> ${horn.audioWindow?.end}`,
+    )
     for (const [name, ok] of Object.entries(report.checks)) {
       if (!ok) console.error(`  FAIL ${name}`)
     }
   }
   const server = report.lifecycle.server
   const browser = report.lifecycle.browser
+  const audioMix = report.audioMix
+  if (audioMix?.before) {
+    const horn = audioMix.before.horn
+    console.log(
+      `  audio mix:        ${audioMix.before.sha256} ${audioMix.drifted ? 'DRIFTED' : 'stable'}; ` +
+        `horn level ${horn.level}, attack ${horn.attack}s, duration ${horn.duration}s, ` +
+        `tone ${horn.tone?.wave ?? 'unknown'} @ ${horn.tone?.fromHz ?? '?'} Hz`,
+    )
+  }
   console.log(
     `  cleanup:          server ${server.mode}${server.managed ? ` :${server.port}` : ''} ` +
       `pid ${server.pid ?? 'n/a'} released=${server.managed ? server.verified : 'external'}; ` +
@@ -933,7 +1024,13 @@ async function main() {
   let serverProcess = null
   let measurement = null
   let runError = null
+  let audioMixBefore = null
+  let audioMixAfter = null
   try {
+    audioMixBefore = audioMixProvenance()
+    if (!audioMixBefore.horn.source) {
+      throw new Error('could not locate the horn constants in src/audio/mix.ts')
+    }
     if (lifecycle.server.managed) {
       args.server = MANAGED_SERVER
       lifecycle.server.url = args.server
@@ -945,6 +1042,14 @@ async function main() {
   } catch (error) {
     runError = errorDetails(error)
   } finally {
+    try {
+      audioMixAfter = audioMixProvenance()
+      if (!audioMixAfter.horn.source && !runError) {
+        runError = errorDetails(new Error('could not locate the horn constants after browser QA'))
+      }
+    } catch (error) {
+      if (!runError) runError = errorDetails(error)
+    }
     if (lifecycle.server.managed) {
       try {
         await stopManagedServer(serverProcess, lifecycle)
@@ -955,12 +1060,22 @@ async function main() {
     }
   }
 
+  const audioMix = {
+    before: audioMixBefore,
+    after: audioMixAfter,
+    drifted:
+      audioMixBefore !== null &&
+      audioMixAfter !== null &&
+      audioMixBefore.sha256 !== audioMixAfter.sha256,
+  }
+
   let report
   if (runError || !measurement || !cleanupVerified(lifecycle)) {
     report = {
       generatedBy: 'scripts/qa/enginecheck.mjs',
       server: args.server,
       consoleErrors: errors.slice(0, 5),
+      audioMix,
       lifecycle,
       runError,
       pass: false,
@@ -971,8 +1086,14 @@ async function main() {
       },
     }
   } else {
-    report = { ...measurement, server: args.server, lifecycle }
-    report.outcome = classifyMeasurement(report)
+    report = { ...measurement, server: args.server, audioMix, lifecycle }
+    report.outcome = audioMix.drifted
+      ? {
+          status: 'inconclusive',
+          exitCode: EXIT.inconclusive,
+          reason: 'src/audio/mix.ts changed while browser acceptance was running',
+        }
+      : classifyMeasurement(report)
   }
 
   try {

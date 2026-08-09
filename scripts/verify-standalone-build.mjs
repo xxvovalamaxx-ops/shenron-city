@@ -17,6 +17,19 @@ function filesUnder(directory) {
 const sourceFiles = filesUnder(join(root, 'src')).filter(
   (path) => /\.(ts|tsx)$/.test(path) && !path.endsWith('.test.ts'),
 )
+
+/**
+ * Phase 1 is a compiler/runtime acceptance fixture, loaded only through the
+ * `import.meta.env.DEV` lazy boundary in App.tsx. Its same-origin fixture
+ * fetches are allowed in development, but the production bundle is checked
+ * below for several Phase-1-only markers so this exception cannot leak into
+ * the standalone game unnoticed.
+ */
+const devOnlySource = new Set([
+  'src/world/Phase1City.tsx',
+  'src/world/phase1-gameplay.ts',
+  'src/world/phase1-release.ts',
+])
 /**
  * Never permitted anywhere. This is the "an NPC must never get unrestricted
  * access to the machine" rule, enforced rather than documented.
@@ -45,7 +58,7 @@ for (const path of sourceFiles) {
     if (pattern.test(text)) findings.push(`${rel}: ${label}`)
   }
   for (const [pattern, label] of networkPatterns) {
-    if (pattern.test(text)) findings.push(`${rel}: ${label}`)
+    if (pattern.test(text) && !devOnlySource.has(rel)) findings.push(`${rel}: ${label}`)
   }
 }
 
@@ -58,8 +71,16 @@ for (const path of sourceFiles) {
     const url = match[0]
     // Comments and docs cite localhost and the repo; neither is a request.
     if (/127\.0\.0\.1|localhost|schemas?\.|w3\.org|react\.dev|rolldown\.rs/.test(url)) continue
+    if (devOnlySource.has(rel) && url === 'http://phase1.invalid/') continue
     findings.push(`${rel}: external host ${url}`)
   }
+}
+
+const appSource = readFileSync(join(root, 'src', 'App.tsx'), 'utf8')
+if (
+  !/import\.meta\.env\.DEV[\s\S]{0,160}lazy\(\(\)\s*=>\s*import\('\.\/world\/Phase1City'\)\)/.test(appSource)
+) {
+  findings.push('src/App.tsx: Phase1City must remain behind the development-only lazy boundary')
 }
 
 const viteConfig = readFileSync(join(root, 'vite.config.ts'), 'utf8')
@@ -173,6 +194,37 @@ if (existsSync(lodManifestPath)) {
   }
 }
 
+// W47 hero URLs are constructed from the executable cluster manifest rather
+// than spelled out as twelve literals. Bind the dynamic mapping exactly as we
+// do for Manhattan's far-LOD manifest, so listed tiers count as referenced and
+// a forgotten export in the same public directory still fails below.
+const w47ClusterPath = join(root, 'src', 'world', 'w47-hero-cluster.json')
+const w47RuntimeManifestPath = join(root, 'src', 'world', 'hero-cell-manifest.ts')
+if (existsSync(w47ClusterPath)) {
+  const cluster = JSON.parse(readFileSync(w47ClusterPath, 'utf8'))
+  const runtimeManifest = readFileSync(w47RuntimeManifestPath, 'utf8')
+  if (
+    !runtimeManifest.includes('w47-hero-cluster.json') ||
+    !runtimeManifest.includes('building-${entry.buildingId}-lod0.glb') ||
+    !runtimeManifest.includes('building-${entry.buildingId}-lod1.glb')
+  ) {
+    findings.push('src/world/hero-cell-manifest.ts: W47 dynamic asset mapping is not intact')
+  }
+  if (!Array.isArray(cluster.buildings) || cluster.buildings.length === 0) {
+    findings.push('src/world/w47-hero-cluster.json: buildings must be a non-empty array')
+  } else {
+    for (const entry of cluster.buildings) {
+      if (!Number.isInteger(entry?.buildingId) || entry.buildingId <= 0) {
+        findings.push('src/world/w47-hero-cluster.json: invalid buildingId in dynamic asset mapping')
+        continue
+      }
+      for (const lod of ['lod0', 'lod1']) {
+        glbDependencies.add(`/models/manhattan/hero/w47/building-${entry.buildingId}-${lod}.glb`)
+      }
+    }
+  }
+}
+
 for (const path of publicFiles.filter((candidate) => assetExtensions.test(candidate))) {
   const webPath = `/${relative(publicRoot, path).replace(/\\/g, '/')}`
   if (!sourceText.includes(webPath) && !glbDependencies.has(webPath)) {
@@ -193,6 +245,10 @@ const forbiddenBuildMarkers = [
   [/\bBearer\s+[A-Za-z0-9._~-]{12,}\b/, 'bearer credential'],
   [/\bapi_key\b/i, 'api_key'],
   [/\b__rt\b/, '__rt'],
+  [/city=phase1/, 'Phase-1 development route'],
+  [/phase1\.invalid/, 'Phase-1 development URL'],
+  [/tests\/fixtures\/manhattan-phase1\/generated/, 'Phase-1 fixture path'],
+  [/3d-tiles-renderer/, 'Phase-1 development renderer'],
 ]
 for (const path of buildFiles) {
   const text = readFileSync(path, 'utf8')
