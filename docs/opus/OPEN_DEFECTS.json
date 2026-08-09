@@ -1,14 +1,14 @@
 {
   "schemaVersion": 1,
   "branch": "opus/hero-corridor-v1",
-  "updated": "2026-08-08",
+  "updated": "2026-08-09",
   "note": "Defects that are measured, not suspected. A row with no evidence field is an observation awaiting measurement and is marked severity 'unranked'.",
   "defects": [
     {
       "id": "OPUS-001",
       "severity": "P1",
       "title": "One-frame stall of 152 ms during the interactive walkthrough",
-      "detail": "The QA walkthrough sampled 45 FPS readings across 22 steps: 92 fps average, 6.55 fps minimum. A 6.55 fps sample is a ~152 ms frame. Not yet attributed \u2014 candidates are tile decode on the streaming thread, BVH construction on tile register, and the dev-tool spawn path. NOTE 2026-08-08: the walkthrough harness is not a benchmark. Headed Chrome plus a live ffmpeg encode plus ~26 resident MCP node processes produced avg 54 / min 0.08 fps on a build a headless fixed-camera probe measured at 100 avg / 86 1% low. Attribute this defect from the headless probe, not from walkthrough fps.",
+      "detail": "The QA walkthrough sampled 45 FPS readings across 22 steps: 92 fps average, 6.55 fps minimum. A 6.55 fps sample is a ~152 ms frame. Not yet attributed — candidates are tile decode on the streaming thread, BVH construction on tile register, and the dev-tool spawn path. NOTE 2026-08-08: the walkthrough harness is not a benchmark. Headed Chrome plus a live ffmpeg encode plus ~26 resident MCP node processes produced avg 54 / min 0.08 fps on a build a headless fixed-camera probe measured at 100 avg / 86 1% low. Attribute this defect from the headless probe, not from walkthrough fps.",
       "evidence": "evidence/visual/qa-walkthrough/qa-report.json",
       "state": "open"
     },
@@ -16,17 +16,17 @@
       "id": "OPUS-002",
       "severity": "P1",
       "title": "Simulation order is emergent, and two vehicle registries cannot merge",
-      "detail": "CORRECTED 2026-08-08. The first version of this entry claimed the city read a stale pause state because ManhattanCity ran before GameLoop. That is false: GameLoop carries R3F renderPriority -100 (on the callback closing line, which is why a grep of the opening line missed it), so it writes rt.paused and the runtime clock before any priority-0 subscriber reads them. Ordering is correct today. What is real: (a) the order is bare integers in separate files with nine of eleven callbacks at the default priority, so their relative order is JSX mount order \u2014 undeclared, untested, and changed by moving a line; (b) the frame delta is clamped in six independent places all spelling 1/20 by hand (GameLoop MAX_DT, ManhattanCity, PlayerBody, CityLightingRig, DayCycleRig, SkyRig); (c) sim.registry.vehicles (Map, Phase 3A) and Traffic.vehicles (array, LION) are separate, so a city car cannot become the player car without a second overlapping instance. (c) is the only one with player-visible consequences.",
+      "detail": "CORRECTED 2026-08-08. The first version of this entry claimed the city read a stale pause state because ManhattanCity ran before GameLoop. That is false: GameLoop carries R3F renderPriority -100 (on the callback closing line, which is why a grep of the opening line missed it), so it writes rt.paused and the runtime clock before any priority-0 subscriber reads them. Ordering is correct today. What is real: (a) the order is bare integers in separate files with nine of eleven callbacks at the default priority, so their relative order is JSX mount order — undeclared, untested, and changed by moving a line; (b) the frame delta is clamped in six independent places all spelling 1/20 by hand (GameLoop MAX_DT, ManhattanCity, PlayerBody, CityLightingRig, DayCycleRig, SkyRig); (c) sim.registry.vehicles (Map, Phase 3A) and Traffic.vehicles (array, LION) are separate, so a city car cannot become the player car without a second overlapping instance. (c) is the only one with player-visible consequences.",
       "evidence": "src/gameplay/simulation.ts; 19 tests; A/B in commit ee58bf966 (100.1 -> 100.0 avg fps, 86.5 -> 86.1 1% low, 3 passes headless)",
-      "state": "partially fixed \u2014 authority adopted by the city stage, one clamp now shared. The two registries (b) and the nine unmigrated useFrame callbacks remain."
+      "state": "partially fixed — authority adopted by the city stage, one clamp now shared. The two registries (b) and the nine unmigrated useFrame callbacks remain."
     },
     {
       "id": "OPUS-003",
       "severity": "P2",
       "title": "A night HDR lights the city at every hour; two material systems are dead",
-      "detail": "AUDITED 2026-08-08, docs/opus/LIGHTING_AUDIT.md. Nothing is fighting over background/fog \u2014 sky.js installs and weather.js drives, one subsystem. What is actually wrong: (a) NightEnvironment.tsx:23-58 sets scene.environment to a night HDR with dependency array [gl, scene], neither of which changes after mount, so a night map lights the city permanently regardless of the clock \u2014 the exact defect the brief names; (b) getBuildingNightMaterial has one call site, reachable only when ManhattanCity mode===\"full\", and the game mounts mode=\"tiles\", so it has never rendered a streamed building; (c) SkyRig.tsx is imported by nothing. Streamed BLD_* actually get FacadeMaterial via streamer.injected.",
+      "detail": "AUDITED 2026-08-08, docs/opus/LIGHTING_AUDIT.md. Nothing is fighting over background/fog — sky.js installs and weather.js drives, one subsystem. What is actually wrong: (a) NightEnvironment.tsx:23-58 sets scene.environment to a night HDR with dependency array [gl, scene], neither of which changes after mount, so a night map lights the city permanently regardless of the clock — the exact defect the brief names; (b) getBuildingNightMaterial has one call site, reachable only when ManhattanCity mode===\"full\", and the game mounts mode=\"tiles\", so it has never rendered a streamed building; (c) SkyRig.tsx is imported by nothing. Streamed BLD_* actually get FacadeMaterial via streamer.injected.",
       "evidence": "docs/opus/LIGHTING_AUDIT.md",
-      "state": "0C.1 FIXED (18b38e540) \u2014 environmentIntensity follows nightFactor; measured 0 at midday, 0.1 at dusk, 0.2 at night. ManhattanCity now shares the canonical curve instead of a private copy with 90-minute-different shoulders. 0C.2 runtime assertion and 0C.3 adopt-or-delete for getBuildingNightMaterial/SkyRig remain."
+      "state": "0C.1 FIXED (18b38e540) — environmentIntensity follows nightFactor; measured 0 at midday, 0.1 at dusk, 0.2 at night. ManhattanCity now shares the canonical curve instead of a private copy with 90-minute-different shoulders. 0C.2 runtime assertion and 0C.3 adopt-or-delete for getBuildingNightMaterial/SkyRig remain."
     },
     {
       "id": "OPUS-004",
@@ -48,33 +48,57 @@
       "id": "OPUS-006",
       "severity": "P1",
       "title": "Something outside this session checks out main mid-work",
-      "detail": "Observed twice on 2026-08-08, the second time DURING a turn: the working tree was switched from opus/hero-corridor-v1 to main while files were being edited. Symptom was 33 tests vanishing (simulation.test.ts 19, stat.test.mjs 14) because those files exist only on the branch. Reflog line: 'checkout: moving from opus/hero-corridor-v1 to main'. No work was lost \u2014 commits live on the branch and new untracked files survive a checkout \u2014 but a `git add -A` landing while main is checked out would commit to the wrong branch. Candidates: the second worktree at E:/temp projects/shenron-city-polish on branch polish/realism (locked), or one of the resident @gitkraken/gk MCP processes. Not attributed; not reproduced on demand.",
+      "detail": "Observed twice on 2026-08-08, the second time DURING a turn: the working tree was switched from opus/hero-corridor-v1 to main while files were being edited. Symptom was 33 tests vanishing (simulation.test.ts 19, stat.test.mjs 14) because those files exist only on the branch. Reflog line: 'checkout: moving from opus/hero-corridor-v1 to main'. No work was lost — commits live on the branch and new untracked files survive a checkout — but a `git add -A` landing while main is checked out would commit to the wrong branch. Candidates: the second worktree at E:/temp projects/shenron-city-polish on branch polish/realism (locked), or one of the resident @gitkraken/gk MCP processes. Not attributed; not reproduced on demand.",
       "evidence": "git reflog; test count 377 -> 344 with two files absent from the vitest file list",
-      "state": "open \u2014 mitigated by re-checking out the branch at the start of every turn"
+      "state": "open — mitigated by re-checking out the branch at the start of every turn"
     },
     {
       "id": "OPUS-007",
       "severity": "P1",
       "title": "A concurrent session left src/city/traffic.js with a parse error",
-      "detail": "Found at the start of the 21:10 turn. The working tree carried uncommitted edits I did not make across 7 tracked files (traffic.js, traffic.d.ts, vehicle-control.ts, vehicle-entities.ts, vehicle-lanes.ts, vehicle-replay.test.ts, vehicle-traffic.ts) plus 3 untracked new files (street-nav.js/.d.ts, graph-lane-provider.ts). It is the same consolidation this branch is doing, by a different route: a shared street-nav lane graph and 'ghosts' in Traffic for player-owned vehicles. src/city/traffic.js:109 does not parse, so the city pipeline cannot load and the game cannot boot. vehicle-replay.test.ts \u2014 their own Phase 3A determinism gate \u2014 also fails. Left completely untouched; snapshotted read-only to the session scratchpad (tracked.patch + the 3 new files). No git add -A while it is present. UPDATE 21:45 \u2014 traffic.js now parses and the game boots; they also adapted my vehicle-handoff differential test to import pointAt from their street-nav.js, and extended into ManhattanCity.tsx (installLaneProvider + trafficGhosts). Their design is a shared lane graph plus ghosts, which is complementary to the promotion module rather than a duplicate of it. 3 tests in their own new vehicle-session.test.ts still fail on ghost positions (~70 m out).",
+      "detail": "Found at the start of the 21:10 turn. The working tree carried uncommitted edits I did not make across 7 tracked files (traffic.js, traffic.d.ts, vehicle-control.ts, vehicle-entities.ts, vehicle-lanes.ts, vehicle-replay.test.ts, vehicle-traffic.ts) plus 3 untracked new files (street-nav.js/.d.ts, graph-lane-provider.ts). It is the same consolidation this branch is doing, by a different route: a shared street-nav lane graph and 'ghosts' in Traffic for player-owned vehicles. src/city/traffic.js:109 does not parse, so the city pipeline cannot load and the game cannot boot. vehicle-replay.test.ts — their own Phase 3A determinism gate — also fails. Left completely untouched; snapshotted read-only to the session scratchpad (tracked.patch + the 3 new files). No git add -A while it is present. UPDATE 21:45 — traffic.js now parses and the game boots; they also adapted my vehicle-handoff differential test to import pointAt from their street-nav.js, and extended into ManhattanCity.tsx (installLaneProvider + trafficGhosts). Their design is a shared lane graph plus ghosts, which is complementary to the promotion module rather than a duplicate of it. 3 tests in their own new vehicle-session.test.ts still fail on ghost positions (~70 m out).",
       "evidence": "vitest: 2 failed / 375 passed; PARSE_ERROR at src/city/traffic.js:109:12",
-      "state": "partially resolved \u2014 tree compiles and boots; ownership of the vehicle subsystem still undecided"
+      "state": "partially resolved — tree compiles and boots; ownership of the vehicle subsystem still undecided"
     },
     {
       "id": "OPUS-008",
       "severity": "P2",
       "title": "Times Square has no ground; the ocean shows through as a black void",
-      "detail": "CORRECTED 2026-08-09. The first version of this entry said \"the ground plane renders pure black at midday\" and blamed cityLightingUniforms.uCityHour defaulting to 21. Both wrong. Raycasting the black region names the mesh: WATER_ocean at y=0, 31-57 m from a camera at y=13.7. It is not a lighting bug and not a road bug \u2014 there is simply no island geometry at Times Square, so the sea plane beneath it is what you see. At the actual spawn point (1000, -3000) the same probe hits LAND_manhattan at y=11.99, colour #3f3e3c, exactly as it should. manhattan-collision.ts already documents the cause: \"The Phase 2 source data has a genuine hole in the midtown-west band (no buildings, props or subway kiosks west of 6th Avenue \u2014 the Times Square plaza included)\". The defect is that the hole is not hidden: the ocean should not be visible through missing land. Options are to extend the land mesh, to fill the hole in the Phase 2 source, or to stop rendering ocean inside the island footprint. UPDATE 2026-08-09: measured across all nine dev landmarks \u2014 Times Square and the Financial District return no ground; the other seven return 11.5 to 12.12. Teleport now searches outward (src/world/ground-search.ts, 8 tests) and warns rather than using a fallback height over the sea. Both holes are large: Times Square resolves 240 m away, the Financial District 315 m, both onto 11.5 rather than the island 12. That is a guard, not a fix \u2014 the hole is Phase 2 content work.",
+      "detail": "CORRECTED 2026-08-09. The first version of this entry said \"the ground plane renders pure black at midday\" and blamed cityLightingUniforms.uCityHour defaulting to 21. Both wrong. Raycasting the black region names the mesh: WATER_ocean at y=0, 31-57 m from a camera at y=13.7. It is not a lighting bug and not a road bug — there is simply no island geometry at Times Square, so the sea plane beneath it is what you see. At the actual spawn point (1000, -3000) the same probe hits LAND_manhattan at y=11.99, colour #3f3e3c, exactly as it should. manhattan-collision.ts already documents the cause: \"The Phase 2 source data has a genuine hole in the midtown-west band (no buildings, props or subway kiosks west of 6th Avenue — the Times Square plaza included)\". The defect is that the hole is not hidden: the ocean should not be visible through missing land. Options are to extend the land mesh, to fill the hole in the Phase 2 source, or to stop rendering ocean inside the island footprint. UPDATE 2026-08-09: measured across all nine dev landmarks — Times Square and the Financial District return no ground; the other seven return 11.5 to 12.12. Teleport now searches outward (src/world/ground-search.ts, 8 tests) and warns rather than using a fallback height over the sea. Both holes are large: Times Square resolves 240 m away, the Financial District 315 m, both onto 11.5 rather than the island 12. That is a guard, not a fix — the hole is Phase 2 content work.",
       "evidence": "raycast naming WATER_ocean at Times Square vs LAND_manhattan at the spawn point",
-      "state": "guarded (8edf0405f) \u2014 the underlying land data still has the hole"
+      "state": "guarded (8edf0405f) — the underlying land data still has the hole"
     },
     {
       "id": "OPUS-010",
       "severity": "P3",
       "title": "src/world/manhattan-tiles.ts is generated, authoritative-looking, and imported by nothing",
-      "detail": "196 generated lines listing 132 building tiles and 61 street tiles, with 'do not edit by hand / regenerate with npm run generate:manhattan-tiles' in its header. Nothing imports it. TileStreamer takes its list from city.json's meta.tiles and meta.street_tiles. The risk is not wasted bytes \u2014 it is that the file reads as the source of truth, so a future change made there would have no effect and no diagnostic. Flagged rather than deleted, unlike SkyRig: SkyRig was hand-written code with a named replacement, this is generated data whose generator (scripts/generate-manhattan-tiles.mjs, wired to an npm script) still exists, and deleting generated data could break a workflow not visible from here. The call is: delete both, or make the streamer read it.",
+      "detail": "196 generated lines listing 132 building tiles and 61 street tiles, with 'do not edit by hand / regenerate with npm run generate:manhattan-tiles' in its header. Nothing imports it. TileStreamer takes its list from city.json's meta.tiles and meta.street_tiles. The risk is not wasted bytes — it is that the file reads as the source of truth, so a future change made there would have no effect and no diagnostic. Flagged rather than deleted, unlike SkyRig: SkyRig was hand-written code with a named replacement, this is generated data whose generator (scripts/generate-manhattan-tiles.mjs, wired to an npm script) still exists, and deleting generated data could break a workflow not visible from here. The call is: delete both, or make the streamer read it.",
       "evidence": "grep for importers returns nothing; streamer.js:35 reads meta.tiles / meta.street_tiles",
-      "state": "open \u2014 needs a decision, not a fix"
+      "state": "open — needs a decision, not a fix"
+    },
+    {
+      "id": "OPUS-011",
+      "severity": "P1",
+      "title": "Every vehicle on the hero route is a raw box-and-cylinder placeholder",
+      "detail": "The brief bans this by name: 'no box vehicle or box pedestrian appears on the hero route'. VehicleRig builds each car from a BoxGeometry body, a BoxGeometry cabin, BoxGeometry headlights, a BoxGeometry accent strip and four CylinderGeometry wheels; rig-resources.ts builds each pedestrian from one 0.42 x 1.7 x 0.26 BoxGeometry. Measured on the loaded hero scene: 101 visible parametric primitives (65 BoxGeometry, 36 CylinderGeometry) across 11 vehicles under the vehicle-rig group, out of 324 visible meshes. Everything else in the scene is authored BufferGeometry. Gate added now (scripts/qa/placeholdercheck.mjs, budget 0) so the number has to go down; it currently fails, which is the honest state. Fixing it is Stage 2 asset work, not a Stage 0 fix.",
+      "evidence": "node scripts/qa/placeholdercheck.mjs -> 101 hits, exit 1, instrument validated 7/7 controls incl. 3 at 2 km; evidence/opus/assets/placeholdercheck.json",
+      "state": "open — gated, not fixed; belongs to Stage 2 production assets"
+    },
+    {
+      "id": "OPUS-012",
+      "severity": "P3",
+      "title": "A validated detector still gave a false pass, because the sample was wrong rather than the instrument",
+      "detail": "placeholdercheck first gated on a 150 m radius around the static vision-capture camera and reported 0 placeholders while the scene held 101 — the nearest was 151.1 m away, so it passed by 1.1 m. The instrument was genuinely validated at the time: 7/7 injected control boxes detected, authored geometry correctly ignored, hidden geometry correctly skipped. But every control box was placed at the camera, so the controls proved the detector fired and proved nothing about whether the sample reached where the content lived. Recorded because the standing lesson (validate the instrument before trusting a reading) was followed and was not sufficient: a control must also exercise the filter that decides what gets looked at. The check now defaults to the whole loaded scene, places 3 of 7 controls 2 km out, and asserts that a radius both keeps near controls and drops far ones.",
+      "evidence": "first run: 0 hits @ radius 150, PASS; scene inspection: 101 primitives under vehicle-rig, nearest 151.1 m",
+      "state": "closed by design change — kept as a recorded lesson"
+    },
+    {
+      "id": "OPUS-013",
+      "severity": "P0",
+      "title": "Uncommitted change to the retargeter has flattened the player again — OPUS-009 has regressed in the working tree",
+      "detail": "scripts/retarget/retarget-glb.mjs and public/models/characters/player/player-clips.glb are both modified in the shared working tree by the other session (OPUS-007). The retargeter defaults were changed from --align-bone root_01 --align-degrees -90 to --align-bone _rootJoint --align-degrees 90, and the clips GLB was regenerated with them (782,404 bytes committed -> 6,357,120 bytes in the tree). Measured with clip-pose.mjs on both files: committed clips put the head 1.001-1.692 m above the left foot across all seven clips with the hip 0.456-0.802 m up, i.e. a standing person; the working-tree clips put the head 0.018-0.313 m above the foot with the hip 0.075-0.208 m, i.e. collapsed into the ground. This is the exact symptom the owner reported from video (character broken and falling to the ground). Two specific reasons the new defaults cannot work: _rootJoint is the holder bone whose 21 animation channels were deliberately stripped across the 7 clips by strip-root-holder-channels.mjs, so aligning on it aligns a bone with no motion; and the comment immediately above the changed lines records the measurement that +90 about z puts the character 1.414 m BELOW the feet, upside down. NOT reverted and NOT staged: the change is uncommitted work in another session, and reverting another agent mid-edit is worse than reporting it. scripts/retarget/clips.test.mjs is failing loudly on it (28 of 39 assertions), which is the gate working as intended.",
+      "evidence": "node compare of git-lfs HEAD blob vs working tree via clip-pose.mjs; npx vitest run scripts/retarget/clips.test.mjs -> 28 failed",
+      "state": "open — owned by the other session; do not ship the working-tree GLB"
     }
   ],
   "closed": [
@@ -95,7 +119,7 @@
     {
       "id": "OPUS-009",
       "title": "The player's retargeted pose was contorted and static",
-      "detail": "bake-retarget.py copied absolute bone orientations between rigs with different rest poses (median 78.8 deg from rest across 88 bones), and produced only 2 keyframes per clip against 17-61 in the source \u2014 a fixed wrong pose, not an animation.",
+      "detail": "bake-retarget.py copied absolute bone orientations between rigs with different rest poses (median 78.8 deg from rest across 88 bones), and produced only 2 keyframes per clip against 17-61 in the source — a fixed wrong pose, not an animation.",
       "fix": "Replaced with scripts/retarget/retarget-glb.mjs, a rest-delta retargeter in Node with 17 unit tests on the arithmetic. Head 1.414 m above feet (was -0.290), span 0.253 (was 1.410), hands 0.55 m below the head and 0.199 m apart, idle animating. Pipeline no longer needs Blender.",
       "commit": "f72b427ab"
     }
