@@ -134,6 +134,37 @@ const result = await page.evaluate(async (tiers) => {
     const box = new THREE.Box3().setFromObject(scene)
     const size = box.getSize(new THREE.Vector3())
 
+    // Which way does the car face?
+    //
+    // The runtime's forward is +Z at heading 0 (VehicleRig:
+    // forward.set(sin(heading), 0, cos(heading))), so the nose belongs at +Z
+    // and the front wheels ahead of the rear ones. Nothing checked this until
+    // a Blender export came out reversed — Blender's +Y maps to glTF -Z, so a
+    // car authored nose-forward in Blender arrives nose-backward.
+    //
+    // Measured BEFORE bindVehicleAsset, which reparents the front wheels
+    // into steer pivots and zeroes their local position. Measuring after it
+    // reported a front-wheel Z of 0 on every tier — the instrument reading
+    // its own mutation rather than the asset.
+    //
+    // The dangerous part was not one wrong asset: the code-generated tiers had
+    // the nose at +Z and the Blender tiers at -Z, so the car would have spun
+    // 180 degrees the moment a LOD swapped.
+    const zOf = (pattern) => {
+      let sum = 0
+      let n = 0
+      scene.traverse((o) => {
+        if (!o.isMesh || !pattern.test(o.name)) return
+        const b = new THREE.Box3().setFromObject(o)
+        sum += b.getCenter(new THREE.Vector3()).z
+        n++
+      })
+      return n ? sum / n : null
+    }
+    const headZ = zOf(/light_head/i)
+    const frontWheelZ = zOf(/wheel_f[lr]/i)
+    const rearWheelZ = zOf(/wheel_r[lr]/i)
+
     const bound = bindVehicleAsset(scene)
     const problems = validateVehicleAsset(bound).map((p) => p.problem)
 
@@ -159,6 +190,9 @@ const result = await page.evaluate(async (tiers) => {
       unmatched: bound.unmatched,
       problems,
       steerPivotAtHub,
+      headZ: headZ === null ? null : +headZ.toFixed(3),
+      frontWheelZ: frontWheelZ === null ? null : +frontWheelZ.toFixed(3),
+      rearWheelZ: rearWheelZ === null ? null : +rearWheelZ.toFixed(3),
     })
     out.push(row)
   }
@@ -212,6 +246,11 @@ const checks = {
     .filter((r) => FULL_CONTRACT.has(r.tier))
     .every((r) => r.steerPivotAtHub === true),
   noStrayMeshes: result.every((r) => (r.unmatched?.length ?? 0) === 0),
+  // Every tier faces the same way, and that way is +Z.
+  headlightsFaceForward: result.every((r) => r.headZ === null || r.headZ > 0),
+  frontWheelsAheadOfRear: result.every(
+    (r) => r.frontWheelZ === null || r.rearWheelZ === null || r.frontWheelZ > r.rearWheelZ,
+  ),
   trianglesDecreaseWithTier: result
     .filter((r) => r.triangles)
     .every((r, i, a) => i === 0 || a[i - 1].triangles > r.triangles),
@@ -239,6 +278,7 @@ for (const r of result) {
       `${r.size.x} x ${r.size.y} x ${r.size.z} m  ` +
       `wheels [${r.wheels.join(',')}]  steer [${r.steering.join(',')}]  ` +
       `lights ${r.headMaterials}/${r.brakeMaterials}  ` +
+      `noseZ ${r.headZ ?? '-'}  wheelsF/R ${r.frontWheelZ ?? '-'}/${r.rearWheelZ ?? '-'}  ` +
       `dev ${Math.max(
         Math.abs(r.size.z - DESIGN.length),
         Math.abs(r.size.x - DESIGN.width),
