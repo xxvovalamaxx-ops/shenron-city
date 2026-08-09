@@ -1,0 +1,74 @@
+{
+  "app": "shenron",
+  "location": "financial-canyon",
+  "scenario": "stand",
+  "passes": 3,
+  "seconds": 10,
+  "quality": "high",
+  "dateUtc": "2026-08-09T10:23:35.930Z",
+  "locationName": "financial-canyon",
+  "locations": {
+    "app": "shenron",
+    "view": "financial",
+    "note": "Financial District canyon (dev-view)",
+    "aliases": [
+      "hq-lobby"
+    ]
+  },
+  "variance": {
+    "fpsAvg": {
+      "values": [
+        99.95102399825574,
+        99.94403134247055,
+        99.96401295535843
+      ],
+      "mean": 99.95302276536158,
+      "stdev": 0.010139650677304166,
+      "spreadPct": 0.019991004108781903
+    },
+    "fpsLow1": {
+      "values": [
+        78.67820613597766,
+        78.80220646039294,
+        78.9265982594377
+      ],
+      "mean": 78.8023369519361,
+      "stdev": 0.12419611314481045,
+      "spreadPct": 0.3152090827097396
+    },
+    "fpsLow01": {
+      "values": [
+        70.4225352149626,
+        68.02721088780164,
+        72.46376811202973
+      ],
+      "mean": 70.30450473826465,
+      "stdev": 2.220632431546192,
+      "spreadPct": 6.310487842485854
+    },
+    "frameAvgMs": {
+      "values": [
+        10.00489999999851,
+        10.005599999997765,
+        10.003599999997764
+      ],
+      "mean": 10.004699999998014,
+      "stdev": 0.001014889156583082,
+      "spreadPct": 0.01999060441593516
+    },
+    "heapUsedMB": {
+      "values": [
+        404.05456352233887,
+        385.4637975692749,
+        413.3080177307129
+      ],
+      "mean": 400.9421262741089,
+      "stdev": 14.180641675107108,
+      "spreadPct": 6.944698084032695
+    }
+  },
+  "notes": {
+    "cameraAsserted": "Financial District canyon (dev-view)",
+    "devView": "financial"
+  }
+}

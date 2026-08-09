@@ -1,0 +1,74 @@
+{
+  "app": "shenron",
+  "location": "midtown-street",
+  "scenario": "stand",
+  "passes": 3,
+  "seconds": 10,
+  "quality": "high",
+  "dateUtc": "2026-08-09T10:21:35.128Z",
+  "locationName": "midtown-street",
+  "locations": {
+    "app": "shenron",
+    "view": "midtown-street",
+    "note": "street-level walk (dev-view) — the hero corridor",
+    "aliases": [
+      "hero-corridor-exterior"
+    ]
+  },
+  "variance": {
+    "fpsAvg": {
+      "values": [
+        99.95701848208249,
+        99.94103478945189,
+        99.95801763260175
+      ],
+      "mean": 99.95202363471203,
+      "stdev": 0.00952972274275238,
+      "spreadPct": 0.01699099481159841
+    },
+    "fpsLow1": {
+      "values": [
+        79.61783439632133,
+        76.51109411126266,
+        76.16146230180487
+      ],
+      "mean": 77.4301302697963,
+      "stdev": 1.9026554100669923,
+      "spreadPct": 4.463859330306079
+    },
+    "fpsLow01": {
+      "values": [
+        68.96551724137932,
+        71.94244605087789,
+        65.35947712100022
+      ],
+      "mean": 68.7558134710858,
+      "stdev": 3.296490821523724,
+      "spreadPct": 9.574417925614439
+    },
+    "frameAvgMs": {
+      "values": [
+        10.00429999999702,
+        10.005900000002235,
+        10.004199999999255
+      ],
+      "mean": 10.004799999999504,
+      "stdev": 0.0009539392037209679,
+      "spreadPct": 0.016991843944710556
+    },
+    "heapUsedMB": {
+      "values": [
+        424.75061988830566,
+        401.26161193847656,
+        389.3420457839966
+      ],
+      "mean": 405.11809253692627,
+      "stdev": 18.016551056729785,
+      "spreadPct": 8.740309247255258
+    }
+  },
+  "notes": {
+    "cameraAsserted": "street-level walk (dev-view) — the hero corridor",
+    "devView": "midtown-street"
+  }
+}

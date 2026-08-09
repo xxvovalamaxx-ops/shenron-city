@@ -1,0 +1,74 @@
+{
+  "app": "shenron",
+  "location": "times-square-plaza",
+  "scenario": "stand",
+  "passes": 3,
+  "seconds": 10,
+  "quality": "high",
+  "dateUtc": "2026-08-09T10:22:36.093Z",
+  "locationName": "times-square-plaza",
+  "locations": {
+    "app": "shenron",
+    "view": "times-square",
+    "note": "Times Square plaza (dev-view)",
+    "aliases": [
+      "hq-plaza"
+    ]
+  },
+  "variance": {
+    "fpsAvg": {
+      "values": [
+        99.97400675822797,
+        99.99700008998985,
+        99.96201443450745
+      ],
+      "mean": 99.97767376090843,
+      "stdev": 0.017778757095960468,
+      "spreadPct": 0.034993468207780015
+    },
+    "fpsLow1": {
+      "values": [
+        78.3085356308406,
+        75.9878419422773,
+        76.51109411126266
+      ],
+      "mean": 76.93582389479353,
+      "stdev": 1.217251551980117,
+      "spreadPct": 3.016401945258617
+    },
+    "fpsLow01": {
+      "values": [
+        68.96551724137932,
+        71.94244603159684,
+        70.92198580810766
+      ],
+      "mean": 70.60998302702795,
+      "stdev": 1.5127906520922216,
+      "spreadPct": 4.216016861352346
+    },
+    "frameAvgMs": {
+      "values": [
+        10.00260000000149,
+        10.000300000000745,
+        10.003800000000744
+      ],
+      "mean": 10.002233333334326,
+      "stdev": 0.0017785762096701344,
+      "spreadPct": 0.03499218507865178
+    },
+    "heapUsedMB": {
+      "values": [
+        415.1575336456299,
+        377.55980110168457,
+        437.6776657104492
+      ],
+      "mean": 410.1316668192546,
+      "stdev": 30.372420290401358,
+      "spreadPct": 14.658186497766495
+    }
+  },
+  "notes": {
+    "cameraAsserted": "Times Square plaza (dev-view)",
+    "devView": "times-square"
+  }
+}

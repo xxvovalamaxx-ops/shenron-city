@@ -1,0 +1,74 @@
+{
+  "app": "shenron",
+  "location": "central-park-open",
+  "scenario": "stand",
+  "passes": 3,
+  "seconds": 10,
+  "quality": "high",
+  "dateUtc": "2026-08-09T10:24:37.425Z",
+  "locationName": "central-park-open",
+  "locations": {
+    "app": "shenron",
+    "view": "central-park",
+    "note": "Central Park open space (dev-view) — the low-density counterweight",
+    "aliases": [
+      "elevator-interior"
+    ]
+  },
+  "variance": {
+    "fpsAvg": {
+      "values": [
+        100.00299709282741,
+        99.95302207963002,
+        99.95601935146301
+      ],
+      "mean": 99.97067950797349,
+      "stdev": 0.0280279436938133,
+      "spreadPct": 0.049989670414724865
+    },
+    "fpsLow1": {
+      "values": [
+        76.74597083828642,
+        76.86395080619111,
+        74.68259895527473
+      ],
+      "mean": 76.09750686658408,
+      "stdev": 1.2267653061287076,
+      "spreadPct": 2.866522098734171
+    },
+    "fpsLow01": {
+      "values": [
+        67.56756758117345,
+        67.11409396644348,
+        57.142857142857146
+      ],
+      "mean": 63.94150623015802,
+      "stdev": 5.892166973109881,
+      "spreadPct": 16.303510900716766
+    },
+    "frameAvgMs": {
+      "values": [
+        9.999700299699555,
+        10.004699999999255,
+        10.004400000002235
+      ],
+      "mean": 10.00293343323368,
+      "stdev": 0.0028039907875518025,
+      "spreadPct": 0.04998234101098461
+    },
+    "heapUsedMB": {
+      "values": [
+        423.2207775115967,
+        703.7877702713013,
+        390.03497982025146
+      ],
+      "mean": 505.6811758677165,
+      "stdev": 172.3658648101258,
+      "spreadPct": 62.04557444968564
+    }
+  },
+  "notes": {
+    "cameraAsserted": "Central Park open space (dev-view) — the low-density counterweight",
+    "devView": "central-park"
+  }
+}

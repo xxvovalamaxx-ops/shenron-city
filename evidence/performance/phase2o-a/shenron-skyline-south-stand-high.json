@@ -1,0 +1,74 @@
+{
+  "app": "shenron",
+  "location": "skyline-south",
+  "scenario": "stand",
+  "passes": 3,
+  "seconds": 10,
+  "quality": "high",
+  "dateUtc": "2026-08-09T10:25:38.055Z",
+  "locationName": "skyline-south",
+  "locations": {
+    "app": "shenron",
+    "view": "skyline-south",
+    "note": "south skyline elevated (dev-view)",
+    "aliases": [
+      "floor45-arrival"
+    ]
+  },
+  "variance": {
+    "fpsAvg": {
+      "values": [
+        100.0039961637052,
+        99.98200323940945,
+        99.97300728803968
+      ],
+      "mean": 99.98633556371811,
+      "stdev": 0.0159422200207411,
+      "spreadPct": 0.030993110699377407
+    },
+    "fpsLow1": {
+      "values": [
+        79.93605115812059,
+        81.49959250005797,
+        78.12500000227374
+      ],
+      "mean": 79.85354788681742,
+      "stdev": 1.6888083739303292,
+      "spreadPct": 4.225976912844629
+    },
+    "fpsLow01": {
+      "values": [
+        70.4225352149626,
+        73.52941175664945,
+        69.93006992642644
+      ],
+      "mean": 71.2940056326795,
+      "stdev": 1.9515150318188783,
+      "spreadPct": 5.048589707201354
+    },
+    "frameAvgMs": {
+      "values": [
+        9.999600399598167,
+        10.001800000000745,
+        10.002699999999255
+      ],
+      "mean": 10.001366799866057,
+      "stdev": 0.0015945618298225785,
+      "spreadPct": 0.03099176805643415
+    },
+    "heapUsedMB": {
+      "values": [
+        403.91963481903076,
+        373.9348497390747,
+        383.90502548217773
+      ],
+      "mean": 387.25317001342773,
+      "stdev": 15.270212438744696,
+      "spreadPct": 7.742941156276746
+    }
+  },
+  "notes": {
+    "cameraAsserted": "south skyline elevated (dev-view)",
+    "devView": "skyline-south"
+  }
+}
