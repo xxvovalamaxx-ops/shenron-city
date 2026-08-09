@@ -6,7 +6,7 @@
     "y": 13.7,
     "z": -3000
   },
-  "meshesExamined": 324,
+  "meshesExamined": 288,
   "instrumentValidated": true,
   "controls": {
     "expectedBoxes": 7,
@@ -17,28 +17,19 @@
     "authoredCounted": 0,
     "hiddenCounted": 0
   },
-  "visiblePlaceholders": 101,
+  "visiblePlaceholders": 2,
   "allowListed": 0,
   "byType": {
-    "BoxGeometry": 65,
-    "CylinderGeometry": 36
+    "BoxGeometry": 2
   },
   "worstOffenders": [
     {
       "name": "(unnamed)",
-      "geometry": "CylinderGeometry",
+      "geometry": "BoxGeometry",
       "path": [
         "vehicle-rig"
       ],
-      "distance": 151.1
-    },
-    {
-      "name": "(unnamed)",
-      "geometry": "CylinderGeometry",
-      "path": [
-        "vehicle-rig"
-      ],
-      "distance": 151.5
+      "distance": 166.7
     },
     {
       "name": "(unnamed)",
@@ -46,145 +37,9 @@
       "path": [
         "vehicle-rig"
       ],
-      "distance": 151.5
-    },
-    {
-      "name": "(unnamed)",
-      "geometry": "BoxGeometry",
-      "path": [
-        "vehicle-rig"
-      ],
-      "distance": 152.1
-    },
-    {
-      "name": "(unnamed)",
-      "geometry": "BoxGeometry",
-      "path": [
-        "vehicle-rig"
-      ],
-      "distance": 152.1
-    },
-    {
-      "name": "(unnamed)",
-      "geometry": "BoxGeometry",
-      "path": [
-        "vehicle-rig"
-      ],
-      "distance": 152.2
-    },
-    {
-      "name": "(unnamed)",
-      "geometry": "BoxGeometry",
-      "path": [
-        "vehicle-rig"
-      ],
-      "distance": 152.3
-    },
-    {
-      "name": "(unnamed)",
-      "geometry": "BoxGeometry",
-      "path": [
-        "vehicle-rig"
-      ],
-      "distance": 152.4
-    },
-    {
-      "name": "(unnamed)",
-      "geometry": "CylinderGeometry",
-      "path": [
-        "vehicle-rig"
-      ],
-      "distance": 152.5
-    },
-    {
-      "name": "(unnamed)",
-      "geometry": "BoxGeometry",
-      "path": [
-        "vehicle-rig"
-      ],
-      "distance": 152.8
-    },
-    {
-      "name": "(unnamed)",
-      "geometry": "CylinderGeometry",
-      "path": [
-        "vehicle-rig"
-      ],
-      "distance": 152.8
-    },
-    {
-      "name": "(unnamed)",
-      "geometry": "CylinderGeometry",
-      "path": [
-        "vehicle-rig"
-      ],
-      "distance": 152.8
-    },
-    {
-      "name": "(unnamed)",
-      "geometry": "CylinderGeometry",
-      "path": [
-        "vehicle-rig"
-      ],
-      "distance": 152.9
-    },
-    {
-      "name": "(unnamed)",
-      "geometry": "CylinderGeometry",
-      "path": [
-        "vehicle-rig"
-      ],
-      "distance": 153
-    },
-    {
-      "name": "(unnamed)",
-      "geometry": "CylinderGeometry",
-      "path": [
-        "vehicle-rig"
-      ],
-      "distance": 153.1
-    },
-    {
-      "name": "(unnamed)",
-      "geometry": "BoxGeometry",
-      "path": [
-        "vehicle-rig"
-      ],
-      "distance": 153.1
-    },
-    {
-      "name": "(unnamed)",
-      "geometry": "CylinderGeometry",
-      "path": [
-        "vehicle-rig"
-      ],
-      "distance": 153.1
-    },
-    {
-      "name": "(unnamed)",
-      "geometry": "BoxGeometry",
-      "path": [
-        "vehicle-rig"
-      ],
-      "distance": 153.2
-    },
-    {
-      "name": "(unnamed)",
-      "geometry": "BoxGeometry",
-      "path": [
-        "vehicle-rig"
-      ],
-      "distance": 153.3
-    },
-    {
-      "name": "(unnamed)",
-      "geometry": "BoxGeometry",
-      "path": [
-        "vehicle-rig"
-      ],
-      "distance": 153.4
+      "distance": 166.7
     }
   ],
-  "consoleErrors": 0,
+  "consoleErrors": 2,
   "pass": false
 }
