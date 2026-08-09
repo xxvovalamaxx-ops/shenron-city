@@ -27,7 +27,7 @@ import { DragLook } from './gameplay/DragLook'
 import { rt, setRuntimePaused } from './gameplay/runtime'
 import { PlayerAvatar } from './character/PlayerAvatar'
 import { VehicleRig } from './world/VehicleRig'
-import { NightEnvironment } from './world/NightEnvironment'
+import { CityEnvironment } from './world/CityEnvironment'
 import { ManhattanCity } from './world/ManhattanCity'
 import { shouldUsePhase1City } from './world/phase1-mode'
 import { DayCycle } from './world/DayCycleRig'
@@ -119,7 +119,7 @@ function Scene({
     <>
       <color attach="background" args={[PALETTE.night]} />
 
-      <NightEnvironment />
+      <CityEnvironment />
 
       <RendererBridge maxDpr={quality.maxDpr} shadows={quality.shadows} />
       <DayCycle />

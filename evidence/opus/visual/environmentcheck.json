@@ -1,0 +1,171 @@
+{
+  "generatedBy": "scripts/qa/environmentcheck.mjs",
+  "samples": [
+    {
+      "label": "night",
+      "requestedHour": 2,
+      "hour": 2,
+      "hasEnvironment": true,
+      "environmentIsTexture": true,
+      "intensity": 0.2,
+      "mapsLoaded": [
+        "day",
+        "night",
+        "dawn",
+        "evening"
+      ],
+      "applied": {
+        "from": "night",
+        "to": "night",
+        "blend": 0,
+        "intensity": 0.2
+      },
+      "backgroundUntouched": true,
+      "screenshot": "E:\\temp projects\\shenron-city\\evidence\\opus\\visual\\environment\\2-night.png"
+    },
+    {
+      "label": "dawn",
+      "requestedHour": 6.5,
+      "hour": 6.5,
+      "hasEnvironment": true,
+      "environmentIsTexture": true,
+      "intensity": 0.4500499999999999,
+      "mapsLoaded": [
+        "day",
+        "night",
+        "dawn",
+        "evening"
+      ],
+      "applied": {
+        "from": "dawn",
+        "to": "day",
+        "blend": 0.00019999999999953388,
+        "intensity": 0.4500499999999999
+      },
+      "backgroundUntouched": true,
+      "screenshot": "E:\\temp projects\\shenron-city\\evidence\\opus\\visual\\environment\\6-5-dawn.png"
+    },
+    {
+      "label": "morning",
+      "requestedHour": 9,
+      "hour": 9,
+      "hasEnvironment": true,
+      "environmentIsTexture": true,
+      "intensity": 0.7,
+      "mapsLoaded": [
+        "day",
+        "night",
+        "dawn",
+        "evening"
+      ],
+      "applied": {
+        "from": "day",
+        "to": "day",
+        "blend": 0,
+        "intensity": 0.7
+      },
+      "backgroundUntouched": true,
+      "screenshot": "E:\\temp projects\\shenron-city\\evidence\\opus\\visual\\environment\\9-morning.png"
+    },
+    {
+      "label": "noon",
+      "requestedHour": 12,
+      "hour": 12,
+      "hasEnvironment": true,
+      "environmentIsTexture": true,
+      "intensity": 0.7,
+      "mapsLoaded": [
+        "day",
+        "night",
+        "dawn",
+        "evening"
+      ],
+      "applied": {
+        "from": "day",
+        "to": "day",
+        "blend": 0,
+        "intensity": 0.7
+      },
+      "backgroundUntouched": true,
+      "screenshot": "E:\\temp projects\\shenron-city\\evidence\\opus\\visual\\environment\\12-noon.png"
+    },
+    {
+      "label": "afternoon",
+      "requestedHour": 15,
+      "hour": 15,
+      "hasEnvironment": true,
+      "environmentIsTexture": true,
+      "intensity": 0.6999666666666665,
+      "mapsLoaded": [
+        "day",
+        "night",
+        "dawn",
+        "evening"
+      ],
+      "applied": {
+        "from": "day",
+        "to": "evening",
+        "blend": 0.00016666666666746247,
+        "intensity": 0.6999666666666665
+      },
+      "backgroundUntouched": true,
+      "screenshot": "E:\\temp projects\\shenron-city\\evidence\\opus\\visual\\environment\\15-afternoon.png"
+    },
+    {
+      "label": "evening",
+      "requestedHour": 18,
+      "hour": 18,
+      "hasEnvironment": true,
+      "environmentIsTexture": true,
+      "intensity": 0.4999499999999998,
+      "mapsLoaded": [
+        "day",
+        "night",
+        "dawn",
+        "evening"
+      ],
+      "applied": {
+        "from": "evening",
+        "to": "dawn",
+        "blend": 0.0002525000002222555,
+        "intensity": 0.4999494999999555
+      },
+      "backgroundUntouched": true,
+      "screenshot": "E:\\temp projects\\shenron-city\\evidence\\opus\\visual\\environment\\18-evening.png"
+    },
+    {
+      "label": "dusk",
+      "requestedHour": 20.5,
+      "hour": 20.5,
+      "hasEnvironment": true,
+      "environmentIsTexture": true,
+      "intensity": 0.26663333333333317,
+      "mapsLoaded": [
+        "day",
+        "night",
+        "dawn",
+        "evening"
+      ],
+      "applied": {
+        "from": "dawn",
+        "to": "night",
+        "blend": 0.3336599999999,
+        "intensity": 0.26663400000001
+      },
+      "backgroundUntouched": true,
+      "screenshot": "E:\\temp projects\\shenron-city\\evidence\\opus\\visual\\environment\\20-5-dusk.png"
+    }
+  ],
+  "checks": {
+    "sceneReachable": true,
+    "environmentAtEveryHour": true,
+    "litAtEveryHour": true,
+    "daytimeIsLit": true,
+    "nightStillDim": true,
+    "daytimeBrighterThanNight": true,
+    "backgroundNotReplaced": true,
+    "noConsoleErrors": true
+  },
+  "consoleErrors": [],
+  "pass": true
+}
