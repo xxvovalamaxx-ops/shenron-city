@@ -13,6 +13,15 @@ They may be redistributed only as part of this repository or its built game unde
 project owner's terms. They are not third-party branded vehicle reproductions and contain
 no ripped commercial-game content.
 
+## OpenStreetMap-derived Manhattan data
+
+The checked-in Manhattan building footprints and identifiers are derived from
+OpenStreetMap data, which is made available under the Open Database License
+1.0. Runtime credits and source manifests retain © OpenStreetMap contributors
+and link to https://www.openstreetmap.org/copyright. The W47 replacement meshes
+are original project-authored geometry built against those footprint records;
+the underlying data attribution and ODbL notice remain part of distribution.
+
 ## CC0 material and environment sources
 
 Poly Haven files recorded in `ASSET_MANIFEST.csv` are licensed CC0 1.0. The runtime uses
@@ -28,6 +37,13 @@ Quaternius CC0 files processed through Blender and credited in that ledger.
 Kenney character and city-kit files remain in repository history/runtime storage for
 compatibility, but Production Pass 02 removes the Kenney character and vehicle meshes from
 the visible hero route. Their CC0 terms remain recorded in `ASSET_MANIFEST.csv`.
+
+## CC BY player source
+
+The runtime player derives from “Eric Rigged 001 - Rigged 3D Business Man” by
+Renderpeople, published on Sketchfab under CC BY 4.0. The exact item URL,
+license link, modification notice, and creator identity are recorded in
+`ASSET_MANIFEST.json`, `ATTRIBUTION.md`, and the runtime GLB's `asset.extras`.
 
 ## Prohibited content
 

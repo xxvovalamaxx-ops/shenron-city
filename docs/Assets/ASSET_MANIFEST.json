@@ -26,19 +26,40 @@
       "id": "manhattan.base.v1",
       "runtimePath": "public/models/manhattan/manhattan_base.glb",
       "purpose": "island ground, land, landmarks, bridges",
-      "source": "Blender export (Shenzhen City Manhattan island)",
-      "creator": "Shenzhen City team",
-      "license": "CC0-1.0",
-      "redistribution": "allowed"
+      "source": "https://www.openstreetmap.org/copyright; Blender export of the Shenzhen City Manhattan island",
+      "creator": "OpenStreetMap contributors; Shenzhen City project",
+      "license": "ODbL-1.0 source data; project-authored rendering/export work",
+      "redistribution": "OpenStreetMap attribution and ODbL notice retained; authored rendering work redistributed with the project"
+    },
+    {
+      "id": "manhattan.hero.w47.v1",
+      "runtimePath": "public/models/manhattan/hero/w47/asset-report.json",
+      "purpose": "six persistent authored W47 building replacements with two deterministic LOD tiers",
+      "source": "https://www.openstreetmap.org/copyright; checked-in core.bin and Draco-compressed Manhattan building footprints",
+      "creator": "OpenStreetMap contributors; Shenzhen City project",
+      "license": "ODbL-1.0 source data; project-authored mesh geometry",
+      "redistribution": "OpenStreetMap attribution and ODbL notice retained; authored meshes redistributed with the project",
+      "modifications": "Source footprint polygons inverse-rotated into asset-local space, extruded into original facade/roof geometry, and validated to a 0.05 m containment tolerance"
     },
     {
       "id": "character.player.v1",
       "runtimePath": "public/models/characters/player/player.glb",
-      "purpose": "realistic CC3 player character (Eric, Sketchfab CC-BY)",
-      "source": "Sketchfab — Eric_Rigged_Business_Man.glb (CC-BY)",
-      "creator": "Sketchfab CC-BY creator (Eric rigged business man)",
+      "runtimeSha256": "4d16e22d76fde0f04d116245426158517e54688d490347958a046d5ffa0ba8d0",
+      "purpose": "realistic rigged player character (Eric, Sketchfab CC-BY)",
+      "source": "https://sketchfab.com/3d-models/eric-rigged-001-rigged-3d-business-man-a46bc9f67aaa415bb4f3241eef900e7f",
+      "sourcePath": "SourceAssets/PublicLibrary/Characters/Sketchfab/Eric_Rigged_Business_Man.glb",
+      "sourceSha256": "9c25f8db456e2a4b1ece0c78ace2a2a9889e1c6d3f1372616d364011aac27fb0",
+      "creator": "Renderpeople",
       "license": "CC-BY-4.0",
-      "redistribution": "attribution"
+      "redistribution": "Permitted with Renderpeople attribution and the CC BY 4.0 license link",
+      "modifications": "Blender re-export, metre normalization, locomotion retargeting, and upper-arm rest-pose correction; exact source metadata restored after export",
+      "embeddedProvenance": {
+        "author": "Renderpeople (https://sketchfab.com/renderpeople)",
+        "license": "CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)",
+        "source": "https://sketchfab.com/3d-models/eric-rigged-001-rigged-3d-business-man-a46bc9f67aaa415bb4f3241eef900e7f",
+        "title": "Eric Rigged 001 - Rigged 3D Business Man",
+        "modifications": "Blender re-export, metre normalization, locomotion retargeting, and upper-arm rest-pose correction by the Shenzhen City project."
+      }
     },
     {
       "id": "character.player.clips.v1",

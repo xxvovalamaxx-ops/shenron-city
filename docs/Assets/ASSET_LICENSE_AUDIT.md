@@ -13,14 +13,14 @@
 | ---------------------------- | ------- | ----------- |
 | CC0 1.0                      | 17498   | 465024896   |
 | CC BY 3.0                    | 4667    | 7697127     |
-| None                         | 2683    | 25269453904 |
+| None                         | 2682    | 25232226428 |
 | CC0 2.0                      | 217     | 4210146     |
 | Commercial EULA (purchase)   | 106     | 806394416   |
 | In-house                     | 19      | 15963704712 |
 | SIL OFL 1.1                  | 9       | 19377291    |
 | MIT (TripoSR) + in-house rig | 5       | 52086307    |
 | CC0                          | 5       | 14539980    |
-| CC BY 4.0                    | 3       | 18299981    |
+| CC BY 4.0                    | 4       | 55527457    |
 
 ## By publisher / source pack
 
@@ -37,7 +37,7 @@
 | Kenney (nature kit)             | 329     | 3034380     |
 | Kenney (City Roads)             | 217     | 4210146     |
 | Quaternius (Downtown City)      | 157     | 18194905    |
-| Unknown (Mixamo-style)          | 131     | 4905826714  |
+| Unknown (Mixamo-style)          | 130     | 4868599238  |
 | Renderpeople (commercial)       | 106     | 806394416   |
 | Sketchfab community             | 85      | 3355140023  |
 | ambientCG                       | 78      | 34572423    |
@@ -58,12 +58,13 @@
 | Unknown (Sketchfab-style rip)   | 3       | 65653548    |
 | In-house scripts                | 1       | 1289        |
 | In-house catalogs               | 1       | 438         |
+| Renderpeople (Sketchfab)        | 1       | 37227476    |
 | Unknown (Sketchfab community)   | 1       | 8732204     |
 
 ## Evidence completeness
 
-- Records with co-located license evidence: 22529
-- Records missing evidence (QUARANTINE + REJECTED): 2683
+- Records with co-located license evidence: 22530
+- Records missing evidence (QUARANTINE + REJECTED): 2682
 
 ## Key findings
 

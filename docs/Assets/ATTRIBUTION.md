@@ -13,10 +13,20 @@ attribution, but the project records creators for provenance.
   hero route.
 - Original Shenzhen City production assets: xxvovalamaxx-ops with OpenAI Codex production
   tooling.
+- Manhattan building footprints and identifiers: © OpenStreetMap contributors,
+  Open Database License 1.0: https://www.openstreetmap.org/copyright.
+  The W47 hero meshes are original project geometry derived from those checked-in
+  footprint records; the source attribution remains required.
 - “Komainu Statue” by Zgon, licensed under CC BY 4.0:
   https://sketchfab.com/3d-models/komainu-statue-a5d4791ae95d4a9d9becedab6d2c7fc2.
   The shrine scene uses both symmetric guardian meshes, applies the supplied
   moss material to both, and changes scale, rotation, and placement.
+- “Eric Rigged 001 - Rigged 3D Business Man” by Renderpeople, licensed under
+  CC BY 4.0:
+  https://sketchfab.com/3d-models/eric-rigged-001-rigged-3d-business-man-a46bc9f67aaa415bb4f3241eef900e7f.
+  The runtime player is re-exported in metres, uses retargeted locomotion, and
+  includes an upper-arm rest-pose correction. The source author, license,
+  title, URL, and modification notice are retained in the runtime GLB.
 
-Exact URLs, acquisition dates, modifications, and runtime locations are in
-`ASSET_MANIFEST.csv` and `ASSET_MANIFEST.json`.
+Exact source URLs, available acquisition dates, modifications, and runtime
+locations are recorded across `ASSET_MANIFEST.csv` and `ASSET_MANIFEST.json`.

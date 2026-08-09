@@ -46,6 +46,7 @@
 |---|---|---|---|
 | game-icons-full / game-icons-urban | UI | CC BY 3.0 | License.txt + Credits.txt |
 | Zgon Komainu Statue | Models/Environment | CC BY 4.0 | LICENSE.md + README.md |
+| Eric Rigged 001 | Characters | CC BY 4.0 | embedded Sketchfab metadata + ERIC_RIGGED_BUSINESS_MAN_LICENSE.md |
 
 ## Game-only (NOT publishable in source)
 

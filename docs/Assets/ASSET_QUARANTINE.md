@@ -1,7 +1,7 @@
 # Quarantined & Rejected Assets
 
 - **Snapshot:** 2026-08-05T19:20:52Z
-- **QUARANTINE records:** 2679 (24027.9 MB)
+- **QUARANTINE records:** 2678 (23992.4 MB)
 - **REJECTED records:** 4 (70.9 MB)
 
 > These assets must NOT be integrated, shipped, or published until verified. Non-destructive cataloging only — no files were moved or modified.
@@ -10,7 +10,7 @@
 
 | Reason                                                                                                                                                                                          | Records | Bytes      |
 | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------- | ---------- |
-| No license; Mixamo/Adobe EULA restricts redistribution (no EULA text in tree); "sf_" prefixed files of unknown origin                                                                           | 131     | 4905826714 |
+| No license; Mixamo/Adobe EULA restricts redistribution (no EULA text in tree); "sf_" prefixed files of unknown origin                                                                           | 130     | 4868599238 |
 | No license evidence                                                                                                                                                                             | 6       | 3194385107 |
 | 53 loose GLBs (3.16 GB), no license; brand flags (GE Dr6, Autocar McNeilus, DispOS, Brisbane, Seoul City, Goldfinger); 4 identical dup files incl. suspicious combo pack                        | 53      | 3167605491 |
 | No license evidence for remaining character files                                                                                                                                               | 162     | 2910025040 |

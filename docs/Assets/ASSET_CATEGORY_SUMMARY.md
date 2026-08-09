@@ -14,7 +14,7 @@
 | Category                 | Records | Bytes       | Primaries | Licenses | Archives | Dup Waste (B) | Classifications                                                 |
 | ------------------------ | ------- | ----------- | --------- | -------- | -------- | ------------- | --------------------------------------------------------------- |
 | _Showcases               | 6       | 15934570741 | 6         | 0        | 0        | 0             | APPROVED_LOCAL=6                                                |
-| Characters               | 399     | 8622246170  | 392       | 7        | 0        | 970683044     | QUARANTINE=293, APPROVED_GAME_ONLY=106                          |
+| Characters               | 399     | 8622246170  | 392       | 7        | 0        | 970683044     | QUARANTINE=292, ATTRIBUTION_REQUIRED=1, APPROVED_GAME_ONLY=106  |
 | Buildings                | 1433    | 3914728086  | 1422      | 11       | 0        | 187192602     | APPROVED_PUBLIC_SOURCE=1132, QUARANTINE=301                     |
 | buildings_showcase.blend | 1       | 3194368085  | 1         | 0        | 0        | 0             | QUARANTINE=1                                                    |
 | Vehicles                 | 849     | 2548391086  | 847       | 2        | 0        | 62094404      | QUARANTINE=771, APPROVED_PUBLIC_SOURCE=78                       |

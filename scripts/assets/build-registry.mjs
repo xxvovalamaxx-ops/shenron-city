@@ -15,7 +15,11 @@ const DEFAULT_OUT_DIR = path.resolve(path.dirname(fileURLToPath(import.meta.url)
 const [, , inputJsonl = DEFAULT_INPUT_JSONL, inputSummary = DEFAULT_INPUT_SUMMARY, outDir = DEFAULT_OUT_DIR] = process.argv;
 
 const SCHEMA_VERSION = '1.0.0';
-const SNAPSHOT_UTC = new Date().toISOString().replace(/\.\d{3}Z$/, 'Z');
+const snapshotOverride = process.env.SHENRON_ASSET_REGISTRY_SNAPSHOT_UTC;
+const SNAPSHOT_UTC = snapshotOverride ?? new Date().toISOString().replace(/\.\d{3}Z$/, 'Z');
+if (!/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z$/.test(SNAPSHOT_UTC)) {
+  throw new Error('SHENRON_ASSET_REGISTRY_SNAPSHOT_UTC must be an ISO-8601 UTC timestamp without milliseconds');
+}
 const VAULT_ROOT = 'E:\\temp projects\\shenron-city\\SourceAssets';
 
 const CLASS = {
@@ -54,6 +58,7 @@ const RULES = [
 
   // ---- ATTRIBUTION_REQUIRED ----
   rule(/Zgon[/\\]Komainu|Komainu_Statue/i, CLASS.ATTRIBUTION_REQUIRED, 'Zgon (Sketchfab)', 'Zgon', 'CC BY 4.0', 'LICENSE.md + README.md present; attribution required', 'LOW'),
+  rule(/Characters[/\\](?:Sketchfab[/\\]Eric_Rigged_Business_Man|Humans_Modern[/\\]sf_Eric_Rigged_Business_Man)\.glb$/i, CLASS.ATTRIBUTION_REQUIRED, 'Renderpeople (Sketchfab)', 'Renderpeople', 'CC BY 4.0', 'Exact Sketchfab URL/license embedded in source GLB and pinned in ERIC_RIGGED_BUSINESS_MAN_LICENSE.md', 'LOW'),
   rule(/game-icons/i, CLASS.ATTRIBUTION_REQUIRED, 'game-icons.net', 'game-icons.net / Lorc, Delapouite et al.', 'CC BY 3.0', 'License.txt + Credits.txt present; attribution required', 'LOW'),
 
   // ---- APPROVED_GAME_ONLY ----
@@ -556,6 +561,7 @@ license text must be included when fonts are redistributed. Bundled \`License.tx
 |---|---|---|---|
 | game-icons-full / game-icons-urban | UI | CC BY 3.0 | License.txt + Credits.txt |
 | Zgon Komainu Statue | Models/Environment | CC BY 4.0 | LICENSE.md + README.md |
+| Eric Rigged 001 | Characters | CC BY 4.0 | embedded Sketchfab metadata + ERIC_RIGGED_BUSINESS_MAN_LICENSE.md |
 
 ## Game-only (NOT publishable in source)
 
