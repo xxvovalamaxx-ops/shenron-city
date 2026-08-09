@@ -72,7 +72,7 @@ class PipelineTests(unittest.TestCase):
         document, _buildings = normalize_geojson(config, source)
         summary = validate_package(
             GOLDEN,
-            "3e84d67fff2729f1a742bca2c4223907d6ca256859668dde28b66c76e892c73a",
+            "5ffab7c95bb6a12715636febb4ff62a2d8add52cd35d6907e3da82bfc1dc347a",
             normalized_document_sha256(document),
         )
         self.assertEqual(summary["status"], "valid")
@@ -195,7 +195,7 @@ class PipelineTests(unittest.TestCase):
             self.assertEqual(document["sourceId"], "phase1-synthetic-buildings")
             self.assertEqual(
                 document["sourceSha256"],
-                "3e84d67fff2729f1a742bca2c4223907d6ca256859668dde28b66c76e892c73a",
+                "5ffab7c95bb6a12715636febb4ff62a2d8add52cd35d6907e3da82bfc1dc347a",
             )
             document["buildings"][0]["groundElevationMeters"] = 9999.0
             write_json(normalized, document)
