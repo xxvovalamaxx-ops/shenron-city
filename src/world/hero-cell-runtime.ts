@@ -74,6 +74,11 @@ export function applyHeroCells(
   const wantedByTile = new Map<string, Set<number>>()
   const tileOf = (tx: number, ty: number) => `${tx}|${ty}`
   for (const placement of registry.placements(city)) {
+    // Ready only. A cell whose authored geometry has not loaded must leave the
+    // generated building standing — suppressing first would turn a failed
+    // fetch into a permanent hole in Manhattan, with "a building is missing"
+    // as its only symptom.
+    if (!registry.isReady(placement.buildingId)) continue
     const key = tileOf(placement.tile.tx, placement.tile.ty)
     let set = wantedByTile.get(key)
     if (!set) {

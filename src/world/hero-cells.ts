@@ -162,13 +162,48 @@ export interface RegistryProblem {
  */
 export class HeroCellRegistry {
   private readonly byId = new Map<number, HeroCellSpec>()
+  /** Ids whose authored geometry is loaded and in the scene. */
+  private readonly ready = new Set<number>()
 
   add(spec: HeroCellSpec): void {
     this.byId.set(spec.buildingId, spec)
+    // Declaring an override does not make it ready. A spec is a request; the
+    // loader decides when it has been honoured.
+    this.ready.delete(spec.buildingId)
   }
 
   remove(buildingId: number): boolean {
+    this.ready.delete(buildingId)
     return this.byId.delete(buildingId)
+  }
+
+  /**
+   * Say that a cell's authored geometry is loaded and placed.
+   *
+   * The gate on suppression, and the reason it exists: a hero cell that hides
+   * the generated building before its replacement has arrived leaves a hole in
+   * Manhattan. If the asset 404s — a renamed export, a typo in the manifest —
+   * that hole is permanent and the only symptom is a missing building, which
+   * looks like a streaming bug and is an asset bug.
+   *
+   * So the order is: load, place, then suppress. Nothing is removed until
+   * something is standing in its place.
+   */
+  markReady(buildingId: number): void {
+    if (this.byId.has(buildingId)) this.ready.add(buildingId)
+  }
+
+  markNotReady(buildingId: number): void {
+    this.ready.delete(buildingId)
+  }
+
+  isReady(buildingId: number): boolean {
+    return this.ready.has(buildingId)
+  }
+
+  /** Overrides whose replacement is actually in the scene. */
+  readyIds(): number[] {
+    return [...this.ready]
   }
 
   get(buildingId: number): HeroCellSpec | undefined {
@@ -197,6 +232,9 @@ export class HeroCellRegistry {
   suppressedInTile(tx: number, ty: number, city: BuildingLookup, tileSize = TILE_SIZE_M): Set<number> {
     const out = new Set<number>()
     for (const id of this.byId.keys()) {
+      // Ready only — see markReady. A declared-but-unloaded cell must leave the
+      // generated building exactly where it is.
+      if (!this.ready.has(id)) continue
       if (!(id >= 0 && id < city.count)) continue
       const tile = tileIndexFor(city.x(id), city.y(id), tileSize)
       if (tile.tx === tx && tile.ty === ty) out.add(id)

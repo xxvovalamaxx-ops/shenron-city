@@ -18,9 +18,16 @@ import {
   type PlaceholderOptions,
 } from './placeholder-census'
 import { applyHeroCells, liftHeroCells } from './hero-cell-runtime'
+import {
+  syncHeroCells,
+  updateHeroLods,
+  unloadHeroCell,
+  type LoadedHeroCell,
+} from './hero-cell-loader'
 import { heroCells, type BuildingLookup } from './hero-cells'
 import { rt } from '../gameplay/runtime'
 import { simulation } from '../gameplay/simulation'
+import { useSimulationStage } from '../gameplay/useSimulationStage'
 import { City } from '../city/city.js'
 import { FacadeMaterial } from '../city/facade.js'
 import { TileStreamer } from '../city/streamer.js'
@@ -169,6 +176,13 @@ class CityPipeline {
   private readonly groundByTile = new Map<string, THREE.Mesh[]>()
   /** Placed room groups, so dispose can undo their collision registration. */
   private readonly interiorGroups: THREE.Group[] = []
+  /**
+   * Authored hero buildings currently in the scene, by building id.
+   *
+   * Public because the presentation stage picks their LOD tier and the QA
+   * harness counts them; the pipeline owns their lifetime either way.
+   */
+  readonly heroCellsLoaded = new Map<number, LoadedHeroCell>()
   private doorsBound = false
   private baseDone = false
   private hudTimer = 0
@@ -285,8 +299,22 @@ class CityPipeline {
     // an already-suppressed index, and rememberIndex only records the first
     // one — so the second removal would be the unrecoverable kind.
     ;(
-      window as unknown as { __heroCellsReapply: () => unknown }
-    ).__heroCellsReapply = () => {
+      window as unknown as { __heroCellsReapply: () => Promise<unknown> }
+    ).__heroCellsReapply = async () => {
+      // Load first, suppress second — the whole ordering rule of Stage 1.
+      // syncHeroCells marks a cell ready only once its authored geometry is in
+      // the scene, and suppression skips anything that is not ready, so a
+      // failed fetch leaves the generated building exactly where it was
+      // instead of leaving a hole.
+      const sync = cityWorld.city
+        ? await syncHeroCells(
+            heroCells,
+            cityWorld.city as unknown as BuildingLookup,
+            getGLTFLoader(),
+            this.groupRoot,
+            this.heroCellsLoaded,
+          )
+        : null
       const out: Array<Record<string, unknown>> = []
       for (const [file, root] of this.roots) {
         const lifted = liftHeroCells(root)
@@ -300,7 +328,7 @@ class CityPipeline {
         manhattanCollision.registerTileBuildings(root)
         out.push({ file, restored: lifted.restored, ...(applied ?? {}) })
       }
-      return out
+      return { sync, tiles: out, loaded: [...this.heroCellsLoaded.keys()] }
     }
     ;(window as unknown as { THREE: typeof THREE }).THREE = THREE
   }
@@ -420,14 +448,15 @@ class CityPipeline {
     sun.castShadow = q.shadows
     sun.shadow.mapSize.set(q.shadowMapSize, q.shadowMapSize)
     const sc = sun.shadow.camera
-    sc.near = 11000
-    sc.far = 13000
-    sc.left = -240
-    sc.right = 240
-    sc.top = 240
-    sc.bottom = -240
+    sc.near = 10000
+    sc.far = 14000
+    sc.left = -320
+    sc.right = 320
+    sc.top = 320
+    sc.bottom = -320
     sc.updateProjectionMatrix()
-    sun.shadow.bias = -0.0006
+    sun.shadow.bias = -0.0004
+    sun.shadow.normalBias = 0.02
     this.scene.add(sun.target)
   }
 
@@ -661,6 +690,17 @@ class CityPipeline {
     this.disposed = true
     cityWorld.ready = false
 
+    // Hero cells first. They own geometry, materials and BVHs that the tile
+    // disposal below knows nothing about — they were loaded separately, so
+    // they have to be released separately or they outlive the city.
+    for (const cell of this.heroCellsLoaded.values()) unloadHeroCell(cell)
+    this.heroCellsLoaded.clear()
+    // The registry survives a teardown (it is module-level, and a remount
+    // should restore the same hero buildings), but nothing is loaded any more
+    // — so nothing may claim to be ready, or the next city would suppress
+    // buildings whose replacements are gone.
+    for (const id of heroCells.readyIds()) heroCells.markNotReady(id)
+
     for (const streamer of [this.streamer, this.streets]) {
       for (const t of streamer.tiles.values()) {
         if (t.state !== 'ready' || !t.group) continue
@@ -835,6 +875,17 @@ export function ManhattanCity({
       pipelineRef.current?.update(frame.dt, camera)
     })
   }, [mode, camera])
+
+  // Hero-cell LOD, on the presentation stage.
+  //
+  // Presentation because it only reads: it picks a tier from where the camera
+  // ended up this frame. Running it in the `city` stage would choose a tier
+  // from the camera's previous position, which is a one-frame lag nobody would
+  // ever see and a wrong answer regardless.
+  useSimulationStage('hero-cell-lod', 'presentation', () => {
+    const cells = pipelineRef.current?.heroCellsLoaded
+    if (cells && cells.size > 0) updateHeroLods(cells.values(), camera.position)
+  })
 
   return <group ref={groupRef} position={position} scale={scale} name="manhattan-city" />
 }

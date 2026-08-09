@@ -105,7 +105,7 @@ await page.evaluate(() => window.__hud?.getState().setScreen('playing'))
 // Tiles stream in; a census taken too early measures an empty city.
 await new Promise((r) => setTimeout(r, 14000))
 
-const result = await page.evaluate(() => {
+const result = await page.evaluate(async () => {
   const scene = window.__gameScene
   const city = window.__cityWorld.city
 
@@ -173,9 +173,40 @@ const result = await page.evaluate(() => {
   const targetMeshes = Object.keys(targetBefore)
   const targetTrianglesBefore = Object.values(targetBefore).reduce((s, n) => s + n, 0)
 
-  // --- apply ---
-  window.__heroCells.add({ buildingId: target, lod0: '/models/hero/placeholder.glb' })
-  const applyReport = window.__heroCellsReapply()
+  // --- a cell whose asset does not exist must change nothing ---
+  //
+  // The control for the ordering rule. If suppression ran before the load, a
+  // 404 would leave a permanent hole and the only symptom would be a missing
+  // building. Run first, on the same target, so a pass here is not an artefact
+  // of the target being unusual.
+  window.__heroCells.add({ buildingId: target, lod0: '/models/hero/does-not-exist.glb' })
+  await window.__heroCellsReapply()
+  const missingAssetCensus = census()
+  const survivedAMissingAsset =
+    Object.keys(before).every((n) => before[n] === missingAssetCensus[n]) &&
+    !window.__heroCells.isReady(target)
+  window.__heroCells.remove(target)
+  await window.__heroCellsReapply()
+
+  // --- apply, with a real authored building ---
+  //
+  // hq.glb is genuine authored geometry that already ships, so this measures
+  // the real path — fetch, parse, place, register collision, then suppress —
+  // rather than a stand-in that would skip most of it.
+  window.__heroCells.add({ buildingId: target, lod0: '/models/manhattan/hq.glb' })
+  const applyReport = await window.__heroCellsReapply()
+  const heroGroup = scene.getObjectByName(`HERO_${target}`)
+  let heroMeshes = 0
+  let heroTriangles = 0
+  heroGroup?.traverse((o) => {
+    if (!o.isMesh) return
+    heroMeshes++
+    const g = o.geometry
+    heroTriangles += g.index ? g.index.count / 3 : (g.attributes.position?.count ?? 0) / 3
+  })
+  const heroPosition = heroGroup
+    ? { x: +heroGroup.position.x.toFixed(1), y: +heroGroup.position.y.toFixed(1), z: +heroGroup.position.z.toFixed(1) }
+    : null
   const after = census()
   const targetAfter = trianglesOf(target)
   const targetTrianglesAfter = Object.values(targetAfter).reduce((s, n) => s + n, 0)
@@ -191,7 +222,8 @@ const result = await page.evaluate(() => {
 
   // --- lift ---
   window.__heroCells.remove(target)
-  window.__heroCellsReapply()
+  await window.__heroCellsReapply()
+  const heroGone = !scene.getObjectByName(`HERO_${target}`)
   const restored = census()
   const restoredTarget = Object.values(trianglesOf(target)).reduce((s, n) => s + n, 0)
 
@@ -200,6 +232,11 @@ const result = await page.evaluate(() => {
 
   return {
     target,
+    survivedAMissingAsset,
+    heroMeshes,
+    heroTriangles,
+    heroPosition,
+    heroGone,
     building: info
       ? { name: info.name, address: info.address, height: +info.height.toFixed(1), x: +info.x.toFixed(1), y: +info.y.toFixed(1) }
       : null,
@@ -228,6 +265,10 @@ const checks = r.aborted
       confinedToItsOwnTile: r.wronglyChanged.length === 0,
       liftRestoredEveryMesh: r.mismatchedAfterLift.length === 0,
       liftRestoredTheBuilding: r.targetTrianglesAfterLift === r.targetTrianglesBefore,
+      // The ordering rule: a hero cell whose asset 404s must change nothing.
+      missingAssetChangedNothing: r.survivedAMissingAsset === true,
+      authoredBuildingArrived: r.heroMeshes > 0 && r.heroTriangles > 0,
+      authoredBuildingRemovedOnLift: r.heroGone === true,
     }
 // Console errors are reported, loudly, but do not fail this gate.
 //
@@ -265,6 +306,11 @@ if (r.aborted) {
     `  confinement: ${r.untouchedMeshes} other mesh(es) unchanged, ` +
       `${r.wronglyChanged.length} wrongly changed`,
   )
+  console.log(
+    `  authored:    ${r.heroMeshes} mesh(es), ${r.heroTriangles} triangle(s) at ` +
+      `${r.heroPosition ? `${r.heroPosition.x}, ${r.heroPosition.y}, ${r.heroPosition.z}` : '(absent)'}`,
+  )
+  console.log(`  missing-asset control: ${r.survivedAMissingAsset ? 'city unchanged' : 'CITY CHANGED'}`)
   for (const [name, ok] of Object.entries(checks)) if (!ok) console.error(`  FAIL ${name}`)
 }
 if (errors.length) {

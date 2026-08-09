@@ -119,6 +119,7 @@ describe('suppression is confined to the building own tile', () => {
   it('suppresses a building only in the tile that contains it', () => {
     const reg = new HeroCellRegistry()
     reg.add({ buildingId: 1, lod0: '/models/hero/a.glb' })
+    reg.markReady(1)
     expect([...reg.suppressedInTile(1, 0, world)]).toEqual([1])
     // The same override, asked about a tile it has nothing to do with.
     expect([...reg.suppressedInTile(0, 0, world)]).toEqual([])
@@ -129,6 +130,8 @@ describe('suppression is confined to the building own tile', () => {
     const reg = new HeroCellRegistry()
     reg.add({ buildingId: 0, lod0: 'a.glb' })
     reg.add({ buildingId: 2, lod0: 'b.glb' })
+    reg.markReady(0)
+    reg.markReady(2)
     expect([...reg.suppressedInTile(0, 0, world)]).toEqual([0])
     expect([...reg.suppressedInTile(0, 1, world)]).toEqual([2])
   })
@@ -136,8 +139,63 @@ describe('suppression is confined to the building own tile', () => {
   it('ignores an id the city does not have rather than asking for its position', () => {
     const reg = new HeroCellRegistry()
     reg.add({ buildingId: 9999, lod0: 'a.glb' })
+    reg.markReady(9999)
     expect(() => reg.suppressedInTile(0, 0, world)).not.toThrow()
     expect([...reg.suppressedInTile(0, 0, world)]).toEqual([])
+  })
+})
+
+describe('nothing is removed until something stands in its place', () => {
+  const world = city([{ x: 10, y: 10 }])
+
+  it('suppresses nothing for a declared but unloaded cell', () => {
+    // The failure this prevents is a permanent hole in Manhattan. If the
+    // authored asset 404s — a renamed export, a typo in a manifest — and
+    // suppression had already run, the only symptom is a missing building,
+    // which reads as a streaming bug and is an asset bug.
+    const reg = new HeroCellRegistry()
+    reg.add({ buildingId: 0, lod0: 'a.glb' })
+    expect(reg.isReady(0)).toBe(false)
+    expect([...reg.suppressedInTile(0, 0, world)]).toEqual([])
+  })
+
+  it('suppresses once the loader says the replacement is in the scene', () => {
+    const reg = new HeroCellRegistry()
+    reg.add({ buildingId: 0, lod0: 'a.glb' })
+    reg.markReady(0)
+    expect([...reg.suppressedInTile(0, 0, world)]).toEqual([0])
+  })
+
+  it('puts the generated building back when the replacement goes away', () => {
+    const reg = new HeroCellRegistry()
+    reg.add({ buildingId: 0, lod0: 'a.glb' })
+    reg.markReady(0)
+    reg.markNotReady(0)
+    expect([...reg.suppressedInTile(0, 0, world)]).toEqual([])
+  })
+
+  it('will not mark an id ready that was never declared', () => {
+    const reg = new HeroCellRegistry()
+    reg.markReady(7)
+    expect(reg.isReady(7)).toBe(false)
+    expect(reg.readyIds()).toEqual([])
+  })
+
+  it('re-adding a spec clears readiness, because the asset may have changed', () => {
+    const reg = new HeroCellRegistry()
+    reg.add({ buildingId: 0, lod0: 'a.glb' })
+    reg.markReady(0)
+    reg.add({ buildingId: 0, lod0: 'b.glb' })
+    expect(reg.isReady(0)).toBe(false)
+  })
+
+  it('forgets readiness when the override is removed', () => {
+    const reg = new HeroCellRegistry()
+    reg.add({ buildingId: 0, lod0: 'a.glb' })
+    reg.markReady(0)
+    reg.remove(0)
+    expect(reg.isReady(0)).toBe(false)
+    expect(reg.readyIds()).toEqual([])
   })
 })
 
