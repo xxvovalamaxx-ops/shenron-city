@@ -8,28 +8,25 @@
  */
 import { useEffect, useMemo, useRef } from 'react'
 import { useFrame, useThree } from '@react-three/fiber'
-import { PerspectiveCamera, Vector3 } from 'three'
+import { PerspectiveCamera } from 'three'
 import { advanceRuntimeTime, rt, setRuntimePaused } from './runtime'
-import { boomDistance, smoothBoom } from './camera-boom'
 import { useKeys } from './input'
-import { EYE_HEIGHT } from './collision'
 import { useHud, inputLocked } from '../ui/hud-store'
 import { cityAudio } from '../audio'
 import { debugInspectionView } from './dev-view'
 import { visionCaptureSpec } from './vision-capture'
-import { manhattanCollision } from '../world/manhattan-collision'
-import { cityWorld } from '../city/registry.js'
 import { vehicleSim, stepVehicleSession } from './vehicles/vehicle-session'
 import { manhattanVehicleWorld } from '../world/manhattan-vehicle-world'
 import { speedKmh } from './vehicles/vehicle-model'
 import { NO_VEHICLE_INPUT, type PlayerVehicleInput } from './vehicles/vehicle-control'
+import { OnFootController } from './player/walk-step'
+import { WalkCamera } from './player/walk-camera'
+import { look, setLook } from './player/look-state'
+import { playerMotion, resetPlayerMotion } from './player/player-motion'
+import { yawFromForward } from './player/orbit-camera'
+import { publishView } from './player/view-state'
+import { stepDt } from './player/sim-step'
 
-const WALK_SPEED = 4.3
-const SPRINT_SPEED = 7.1
-const JUMP_VELOCITY = 6.2
-const FLY_SPEED = 18
-const FLY_SPRINT_SPEED = 42
-const GRAVITY = -22
 const MAX_DT = 1 / 20
 const HUD_INTERVAL = 0.1
 
@@ -42,9 +39,11 @@ export function GameLoop() {
   const { camera } = useThree()
   const keys = useKeys()
   const hudTimer = useRef(0)
-  const boom = useRef(0)
-  const softFloorUntil = useRef(0)
-  const forwardVec = useRef(new Vector3())
+  // On-foot movement and the orbit camera live in ./player; GameLoop only
+  // decides when they run, so the driving branch and these never collide.
+  const onFoot = useRef(new OnFootController())
+  const walkCamera = useRef(new WalkCamera())
+  const wasDriving = useRef(false)
   const lastSpacePress = useRef(0)
   const lastJump = useRef(false)
   const lastInteract = useRef(false)
@@ -98,14 +97,11 @@ export function GameLoop() {
           if (now - lastSpacePress.current < 350) {
             rt.player.flying = !rt.player.flying
             rt.player.velocityY = 0
-            useHud
-              .getState()
-              .set(
-                'promptLabel',
-                rt.player.flying
-                  ? '✈ FLY MODE — Space↑ Ctrl↓ Shift=Fast — Double-Space to land'
-                  : '🚶 WALK MODE — Double-Space to fly',
-              )
+            const label = rt.player.flying
+              ? 'Fly mode. Space climbs, Ctrl descends, Shift is fast. Press Space twice to land.'
+              : 'Walking. Press Space twice to fly.'
+            useHud.getState().set('promptLabel', label)
+            transientPrompt.current = { label, until: now + 4000 }
           }
           lastSpacePress.current = now
         }
@@ -122,7 +118,7 @@ export function GameLoop() {
   }, [])
 
   useFrame((state, rawDt) => {
-    const dt = Math.min(rawDt, MAX_DT)
+    const dt = stepDt(rawDt, MAX_DT)
     const p = rt.player
     const hudNow = useHud.getState()
     const locked = inputLocked(hudNow.screen)
@@ -146,6 +142,14 @@ export function GameLoop() {
     }
 
     const driving = vehicleSim.registry.playerVehicleId !== null
+    if (wasDriving.current && !driving) {
+      // Out of the car: body and orbit camera pick up the car's heading
+      // instead of snapping back to wherever the mouse left them.
+      setLook(yawFromForward(p.forward.x, p.forward.z), -0.12)
+      resetPlayerMotion(p.forward.x, p.forward.z)
+      walkCamera.current.reset()
+    }
+    wasDriving.current = driving
 
     // ── Vehicle session ────────────────────────────────────────────────────
     // The vehicle world steps every frame — AI traffic circulates and
@@ -222,116 +226,7 @@ export function GameLoop() {
       vehicleSim.player.pos.x = p.pos.x
       vehicleSim.player.pos.y = p.pos.y
       vehicleSim.player.pos.z = p.pos.z
-
-      // ── Ground height under the player ──────────────────────────────────
-      const ground = manhattanCollision.groundHeightAt(p.pos.x, p.pos.z)
-      // The street tiles stream toward the camera; at spawn the surface may
-      // not have arrived yet. Hold the player on the data land level for a
-      // short grace after the base registers — long enough for the tiles to
-      // stream in, short enough that walking off the island into the harbor
-      // still falls instead of walking on an invisible floor.
-      const dataLand = (cityWorld.city?.meta?.land_level_m as number | undefined) ?? 12
-      let effectiveGround: number | null = ground
-      if (ground === null && p.pos.y > dataLand - 0.5) {
-        if (softFloorUntil.current === 0 && manhattanCollision.baseReady) {
-          softFloorUntil.current = performance.now() + 15000
-        }
-        if (performance.now() < softFloorUntil.current) effectiveGround = dataLand
-      } else if (ground !== null) {
-        softFloorUntil.current = 0
-      }
-
-      // ── Input → motion ──────────────────────────────────────────────────
-      let dx = 0
-      let dz = 0
-      const k = keys.current
-      const fwd = (k.forward ? 1 : 0) - (k.back ? 1 : 0)
-      const strafe = (k.right ? 1 : 0) - (k.left ? 1 : 0)
-
-      if (fwd !== 0 || strafe !== 0) {
-        camera.getWorldDirection(forwardVec.current)
-        const f = forwardVec.current
-        // Looking straight up or down leaves a near-zero horizontal
-        // projection; normalising that would turn float noise into a
-        // movement direction, so move nothing instead.
-        const flatLen = Math.hypot(f.x, f.z)
-        if (flatLen < 1e-4) {
-          dx = 0
-          dz = 0
-        } else {
-          f.y = 0
-          f.normalize()
-          const rx = -f.z
-          const rz = f.x
-          let mx = f.x * fwd + rx * strafe
-          let mz = f.z * fwd + rz * strafe
-          const len = Math.hypot(mx, mz) || 1
-          mx /= len
-          mz /= len
-
-          const speed =
-            (p.flying ? (k.sprint ? FLY_SPRINT_SPEED : FLY_SPEED) : k.sprint ? SPRINT_SPEED : WALK_SPEED) *
-            rt.devSpeed
-          dx = mx * speed * dt
-          dz = mz * speed * dt
-        }
-      }
-
-      if (p.flying) {
-        const flySpeed = (k.sprint ? FLY_SPRINT_SPEED : FLY_SPEED) * rt.devSpeed
-        let dy = 0
-        if (k.jump) dy += flySpeed * dt
-        if (k.crouch) dy -= flySpeed * dt
-        const moved = manhattanCollision.move(p.pos, dx, dz)
-        p.pos.x = moved.x
-        p.pos.z = moved.z
-        // Descending onto a tower lands on the roof rather than dropping
-        // through it into the building.
-        if (dy < 0) {
-          const roof = manhattanCollision.buildingTopAt(p.pos.x, p.pos.z)
-          if (roof !== null && p.pos.y + dy <= roof + 1) {
-            p.pos.y = roof + 1
-            dy = 0
-            p.grounded = true
-          }
-        }
-        p.pos.y += dy
-        p.velocityY = 0
-        p.grounded = p.grounded || (dy === 0 && p.pos.y <= (ground ?? 0) + 1)
-        if (ground !== null && p.pos.y < ground + 0.1) {
-          p.pos.y = ground + 0.1
-          p.grounded = true
-        }
-      } else {
-        if (k.jump && p.grounded) {
-          p.velocityY = JUMP_VELOCITY
-          p.grounded = false
-        }
-        // Horizontal move, sliding along building walls.
-        const moved = manhattanCollision.move(p.pos, dx, dz)
-        p.pos.x = moved.x
-        p.pos.z = moved.z
-
-        // Vertical integration against the island surface.
-        let vy = p.velocityY + GRAVITY * dt
-        let ny = p.pos.y + vy * dt
-        if (effectiveGround !== null) {
-          if (ny <= effectiveGround) {
-            ny = effectiveGround
-            vy = 0
-            p.grounded = true
-          } else {
-            p.grounded = false
-          }
-        } else if (ny < -200) {
-          // Fell off the island edge — pull back to the last surface.
-          ny = 12.4
-          vy = 0
-          p.grounded = true
-        }
-        p.pos.y = ny
-        p.velocityY = vy
-      }
+      onFoot.current.step(keys.current, dt, rt.clock.elapsed)
     }
 
     // ── Footsteps ─────────────────────────────────────────────────────────
@@ -345,25 +240,23 @@ export function GameLoop() {
         camera.position.set(vehicleSim.camera.pos.x, vehicleSim.camera.pos.y, vehicleSim.camera.pos.z)
         camera.lookAt(vehicleSim.camera.target.x, vehicleSim.camera.target.y, vehicleSim.camera.target.z)
       } else {
-        camera.position.set(p.pos.x, p.pos.y + EYE_HEIGHT, p.pos.z)
-        if (rt.thirdPerson) {
-          camera.getWorldDirection(forwardVec.current)
-          const eye = { x: p.pos.x, y: p.pos.y + EYE_HEIGHT, z: p.pos.z }
-          const wanted = boomDistance(eye, forwardVec.current, [])
-          boom.current = smoothBoom(boom.current, wanted, dt)
-          camera.position.addScaledVector(forwardVec.current, -boom.current)
-        } else if (boom.current !== 0) {
-          boom.current = 0
-        }
+        walkCamera.current.update(camera as PerspectiveCamera, dt, performance.now())
       }
     }
 
     if (!driving) {
-      p.forward.x = forwardVec.current.x
-      p.forward.z = forwardVec.current.z
-      const flen = Math.hypot(p.forward.x, p.forward.z) || 1
-      p.forward.x /= flen
-      p.forward.z /= flen
+      // Camera heading, flat: the audio listener, dev spawns and the save
+      // read this. The body's own facing is playerMotion.foot.bodyYaw.
+      p.forward.x = -Math.sin(look.yaw)
+      p.forward.z = -Math.cos(look.yaw)
+    }
+
+    {
+      const playerVehicle = driving
+        ? vehicleSim.registry.vehicles.get(vehicleSim.registry.playerVehicleId!)
+        : null
+      const speed = playerVehicle ? Math.abs(playerVehicle.motion.speed) : playerMotion.groundSpeed
+      publishView(camera, p.pos.x, p.pos.z, speed, driving)
     }
 
     // A transient prompt (e.g. "No room to exit") clears on its own.

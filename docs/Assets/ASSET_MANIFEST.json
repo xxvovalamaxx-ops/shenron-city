@@ -47,7 +47,8 @@
       "source": "Retargeted from Quaternius 65-joint CC0 clips",
       "creator": "Quaternius + Shenzhen City retarget pipeline",
       "license": "CC0-1.0",
-      "redistribution": "allowed"
+      "redistribution": "allowed",
+      "modifications": "Re-baked by scripts/retarget/bake-retarget.py as a per-frame rest-relative retarget onto Eric's skeleton; the first bake shipped seven identical static poses lying on their back"
     },
     {
       "id": "dev.sedan.v1",

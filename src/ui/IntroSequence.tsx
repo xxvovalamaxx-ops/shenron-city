@@ -10,25 +10,88 @@ import { useEffect, useRef, useState } from 'react'
 import { useFrame } from '@react-three/fiber'
 import { Vector3 } from 'three'
 import { rt } from '../gameplay/runtime'
+import { look, setLook } from '../gameplay/player/look-state'
+import { resetPlayerMotion } from '../gameplay/player/player-motion'
+import { STREET_SPAWNS, spawnFacingAt } from '../gameplay/player/spawn-points'
+import { debugSpawnOverride } from '../gameplay/dev-view'
+import {
+  ORBIT_DISTANCE,
+  ORBIT_PIVOT_HEIGHT,
+  ORBIT_SHOULDER,
+  orbitCameraPose,
+  yawFromForward,
+} from '../gameplay/player/orbit-camera'
 import { introAudio } from '../audio/intro'
 
 export const INTRO_DURATION = 4.6
 
-/** Camera dive. Runs only during the intro window. */
+/** The pitch the camera settles at behind the player: just under level. */
+const HANDOVER_PITCH = -0.1
+
+/** Smoothstep, for the look-target blend. */
+function smooth(t: number): number {
+  const x = Math.max(0, Math.min(1, t))
+  return x * x * (3 - 2 * x)
+}
+
+/**
+ * Aim the player and the orbit camera for the handover: along the spawn's
+ * avenue on a fresh start, otherwise along whatever heading the save
+ * restored. Called when the intro starts rather than from the camera's first
+ * frame, so it holds even when a slow machine renders no frame at all inside
+ * the intro window.
+ */
+function prepareIntroHandover(): void {
+  const p = rt.player.pos
+  const override =
+    import.meta.env.DEV && typeof location !== 'undefined'
+      ? debugSpawnOverride(location.search, true)
+      : null
+  const facing =
+    spawnFacingAt(p.x, p.z, override ? [override, ...STREET_SPAWNS] : STREET_SPAWNS) ?? rt.player.forward
+  rt.player.forward = { x: facing.x, z: facing.z }
+  setLook(yawFromForward(facing.x, facing.z), HANDOVER_PITCH)
+  resetPlayerMotion(facing.x, facing.z)
+}
+
+/**
+ * Camera dive. Runs only during the intro window.
+ *
+ * It lands exactly on the orbit camera's first pose — behind the player, over
+ * the right shoulder, level — with the mouse's yaw and pitch set to match, so
+ * the walk camera takes over without a cut. (It used to dive *into* the
+ * player's head looking straight down; the walk camera then pushed back along
+ * that view and the game opened on a top-down shot of a man lying in the road.)
+ */
 export function IntroCamera() {
   const start = useRef<Vector3 | null>(null)
+  const end = useRef<{ position: Vector3; target: Vector3 } | null>(null)
+  const head = useRef(new Vector3())
+  const aim = useRef(new Vector3())
 
   useFrame(({ camera }) => {
-    if (rt.introSeconds >= INTRO_DURATION) return
-    if (!start.current) {
-      const p = rt.player.pos
+    if (rt.introSeconds >= INTRO_DURATION) {
+      start.current = null
+      end.current = null
+      return
+    }
+    const p = rt.player.pos
+    if (!start.current || !end.current) {
       start.current = new Vector3(p.x + 240, p.y + 420, p.z + 260)
+      const pivot = { x: p.x, y: p.y + ORBIT_PIVOT_HEIGHT, z: p.z }
+      const pose = orbitCameraPose(pivot, look, ORBIT_DISTANCE, ORBIT_SHOULDER)
+      end.current = {
+        position: new Vector3(pose.position.x, pose.position.y, pose.position.z),
+        target: new Vector3(pose.target.x, pose.target.y, pose.target.z),
+      }
     }
     const progress = Math.min(1, rt.introSeconds / (INTRO_DURATION - 1.1))
     const ease = 1 - Math.pow(1 - progress, 3)
-    const target = new Vector3(rt.player.pos.x, rt.player.pos.y + 1.66, rt.player.pos.z)
-    camera.position.lerpVectors(start.current, target, ease)
-    camera.lookAt(target.x, target.y - 0.4, target.z)
+    camera.position.lerpVectors(start.current, end.current.position, ease)
+    // Watch the player on the way down, then settle onto the orbit's aim line.
+    head.current.set(p.x, p.y + 1.2, p.z)
+    aim.current.lerpVectors(head.current, end.current.target, smooth((progress - 0.55) / 0.45))
+    camera.lookAt(aim.current)
   })
 
   return null
@@ -50,6 +113,7 @@ export function IntroSequence({ onDone }: { onDone(): void }) {
 
   useEffect(() => {
     introAudio.play()
+    prepareIntroHandover()
     rt.introSeconds = 0
     const timers = PHASE_TIMING.map(([nextPhase, delay], index) =>
       setTimeout(
