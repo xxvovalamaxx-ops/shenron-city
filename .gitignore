@@ -95,3 +95,6 @@ staging/
 
 # Git worktrees for parallel asset/QA branches (own .git pointers, never committed)
 /ds/
+
+# Agent worktrees (local only)
+.claude/worktrees/
