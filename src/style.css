@@ -1744,3 +1744,49 @@ html.vision-capture .overlay {
     animation: none;
   }
 }
+
+/* ── Mission layer: objective subtitle + job clock ─────────────────────── */
+
+.mission-objective {
+  position: absolute;
+  left: 50%;
+  bottom: 112px;
+  transform: translateX(-50%);
+  max-width: min(640px, 50vw);
+  padding: 0 12px;
+  text-align: center;
+  font: 600 21px/1.35 var(--gta-hud);
+  color: #f4f7f2;
+  -webkit-text-stroke: 0.6px rgba(0, 0, 0, 0.7);
+  paint-order: stroke fill;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.85);
+  pointer-events: none;
+  animation: gta-fade-in 220ms ease-out both;
+}
+
+.mission-timer {
+  position: absolute;
+  top: 118px;
+  right: 30px;
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  padding: 4px 12px;
+  background: linear-gradient(90deg, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.55) 35%);
+  font: 700 13px/1 var(--gta-hud);
+  letter-spacing: 1.5px;
+  color: rgba(244, 247, 242, 0.8);
+  pointer-events: none;
+}
+
+.mission-timer b {
+  font: 400 28px/1 var(--gta-display);
+  font-stretch: condensed;
+  color: #f4f7f2;
+  -webkit-text-stroke: 1px rgba(0, 0, 0, 0.7);
+  paint-order: stroke fill;
+}
+
+.mission-timer.urgent b {
+  color: #ff5a4f;
+}

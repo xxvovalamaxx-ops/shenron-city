@@ -36,6 +36,8 @@ import { AtmosphericDust } from './world/AtmosphericDust'
 import { resolveManhattanSpawn } from './world/manhattan-collision'
 import { PALETTE, QUALITY } from './world/palette'
 import { Hud } from './ui/Hud'
+import { MissionHud } from './ui/MissionHud'
+import { GameDirector } from './gameplay/director/GameDirector'
 import { DevMenu } from './ui/DevMenu'
 import { DevSpawns } from './ui/DevSpawns'
 import { IntroCamera, IntroSequence } from './ui/IntroSequence'
@@ -119,6 +121,7 @@ function Scene({
       <IntroCamera />
 
       <GameLoop />
+      <GameDirector />
 
       {quality.postprocessing && (
         <Suspense fallback={null}>
@@ -430,6 +433,7 @@ export default function App() {
       </Canvas>
 
       {screen === 'playing' && <Hud />}
+      {screen === 'playing' && <MissionHud />}
       {screen === 'playing' && pointerLockBlocked && (
         <div className="input-notice" role="status">
           This page can’t capture the pointer — <strong>hold the left mouse

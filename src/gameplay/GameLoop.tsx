@@ -16,6 +16,7 @@ import { cityAudio } from '../audio'
 import { debugInspectionView } from './dev-view'
 import { visionCaptureSpec } from './vision-capture'
 import { vehicleSim, stepVehicleSession } from './vehicles/vehicle-session'
+import { reportVehicleEvents } from './director/director-state'
 import { manhattanVehicleWorld } from '../world/manhattan-vehicle-world'
 import { speedKmh } from './vehicles/vehicle-model'
 import { NO_VEHICLE_INPUT, type PlayerVehicleInput } from './vehicles/vehicle-control'
@@ -175,6 +176,8 @@ export function GameLoop() {
       !vision && !inspection
         ? stepVehicleSession(manhattanVehicleWorld, simInput, dt, rt.clock.hour)
         : []
+    // Crimes (hits, thefts) are the director's business, not the loop's.
+    reportVehicleEvents(events)
 
     // Mirror the authoritative simulation pose back onto the runtime so the
     // save, the audio listener and the HUD all read one position.
