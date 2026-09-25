@@ -98,6 +98,79 @@
       "runtimePath": "public/models/vehicles/vehicles.glb",
       "modifications": "Generated from code; fictional parody designs, no real makes, badges or text",
       "purpose": "traffic fleet, player and parked cars"
+    },
+    {
+      "id": "people.crowd.men.v1",
+      "name": "Crowd bodies (men)",
+      "purpose": "instanced pedestrian outfits + clips baked to a bone texture at load",
+      "source": "Quaternius \"Ultimate Modular Men\" + \"Ultimate Modular Women\", Individual Characters glTF (quaternius.com; fetched by scripts/blender/people/fetch_quaternius.py, SHA-256 pinned)",
+      "creator": "Quaternius",
+      "license": "CC0-1.0",
+      "redistribution": "allowed",
+      "runtimePath": "public/models/people/crowd_men.glb",
+      "modifications": "scripts/blender/people/build_crowd.py: outfits split into parts on one shared rig, materials replaced by a per-face paint-region code in COLOR_0, far-LOD proxies decimated, pistol removed, authored Phone idle + phone prop, 7 clips kept"
+    },
+    {
+      "id": "people.crowd.women.v1",
+      "name": "Crowd bodies (women)",
+      "purpose": "instanced pedestrian outfits + clips baked to a bone texture at load",
+      "source": "Quaternius \"Ultimate Modular Men\" + \"Ultimate Modular Women\", Individual Characters glTF (quaternius.com; fetched by scripts/blender/people/fetch_quaternius.py, SHA-256 pinned)",
+      "creator": "Quaternius",
+      "license": "CC0-1.0",
+      "redistribution": "allowed",
+      "runtimePath": "public/models/people/crowd_women.glb",
+      "modifications": "scripts/blender/people/build_crowd.py: as crowd_men.glb"
+    },
+    {
+      "id": "trees.leaf-atlas.v1",
+      "name": "Tree leaf-cluster atlas",
+      "purpose": "alpha-tested leaf cards for the procedural street and park trees",
+      "source": "Poly Haven island_tree_01, jacaranda_tree, fir_tree_01 leaf/twig maps (1k) + procedural leaf silhouettes",
+      "creator": "Poly Haven; composed by Shenron City (scripts/blender/trees/build_tree_textures.py)",
+      "license": "CC0-1.0",
+      "redistribution": "allowed",
+      "runtimePath": "public/textures/nature/trees/leaf-atlas.webp",
+      "modifications": "sprites cut out, colour-normalised, stamped into 8 twig/cluster cells, colour bled into transparent texels"
+    },
+    {
+      "id": "trees.bark-broadleaf.v1",
+      "name": "Broadleaf bark",
+      "source": "Poly Haven bark_brown_02 (1k diffuse)",
+      "creator": "Poly Haven",
+      "license": "CC0-1.0",
+      "redistribution": "allowed",
+      "runtimePath": "public/textures/nature/trees/bark-broadleaf.webp",
+      "modifications": "re-encoded WebP"
+    },
+    {
+      "id": "trees.bark-broadleaf-normal.v1",
+      "name": "Broadleaf bark normal",
+      "source": "Poly Haven bark_brown_02 (1k nor_gl)",
+      "creator": "Poly Haven",
+      "license": "CC0-1.0",
+      "redistribution": "allowed",
+      "runtimePath": "public/textures/nature/trees/bark-broadleaf-normal.webp",
+      "modifications": "re-encoded WebP"
+    },
+    {
+      "id": "trees.pine-bark.v1",
+      "name": "Pine bark",
+      "source": "Poly Haven pine_bark (1k diffuse)",
+      "creator": "Poly Haven",
+      "license": "CC0-1.0",
+      "redistribution": "allowed",
+      "runtimePath": "public/textures/nature/trees/pine-bark.webp",
+      "modifications": "re-encoded WebP"
+    },
+    {
+      "id": "trees.pine-bark-normal.v1",
+      "name": "Pine bark normal",
+      "source": "Poly Haven pine_bark (1k nor_gl)",
+      "creator": "Poly Haven",
+      "license": "CC0-1.0",
+      "redistribution": "allowed",
+      "runtimePath": "public/textures/nature/trees/pine-bark-normal.webp",
+      "modifications": "re-encoded WebP"
     }
   ]
 }
