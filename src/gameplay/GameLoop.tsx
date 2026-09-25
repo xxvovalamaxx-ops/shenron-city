@@ -27,6 +27,7 @@ import { playerMotion, resetPlayerMotion } from './player/player-motion'
 import { yawFromForward } from './player/orbit-camera'
 import { publishView } from './player/view-state'
 import { stepDt } from './player/sim-step'
+import { syncSessionIntoTraffic, syncTrafficIntoSession } from '../world/vehicles/vehicle-traffic-sync'
 
 const MAX_DT = 1 / 20
 const HUD_INTERVAL = 0.1
@@ -49,6 +50,11 @@ export function GameLoop() {
   const lastJump = useRef(false)
   const lastInteract = useRef(false)
   const transientPrompt = useRef<{ label: string; until: number } | null>(null)
+  // Driving: H is the horn (held), and the chase camera's speed FOV is added
+  // to whatever the player's own FOV was when they got in.
+  const hornKey = useRef(false)
+  const lastHorn = useRef(false)
+  const baseFov = useRef<number | null>(null)
 
   const vision = useMemo(
     () => visionCaptureSpec(typeof location === 'undefined' ? '' : location.search),
@@ -92,7 +98,7 @@ export function GameLoop() {
       }
       if (e.code === 'Space') {
         if (!inputLocked(useHud.getState().screen)) {
-          // Space is the horn while driving; the fly toggle is for feet.
+          // Space is the handbrake while driving; the fly toggle is for feet.
           if (vehicleSim.registry.playerVehicleId !== null) return
           const now = performance.now()
           if (now - lastSpacePress.current < 350) {
@@ -115,7 +121,21 @@ export function GameLoop() {
       }
     }
     window.addEventListener('keydown', onKey)
-    return () => window.removeEventListener('keydown', onKey)
+    const onHorn = (e: KeyboardEvent) => {
+      if (e.code === 'KeyH') hornKey.current = e.type === 'keydown'
+    }
+    const clearHorn = () => {
+      hornKey.current = false
+    }
+    window.addEventListener('keydown', onHorn)
+    window.addEventListener('keyup', onHorn)
+    window.addEventListener('blur', clearHorn)
+    return () => {
+      window.removeEventListener('keydown', onKey)
+      window.removeEventListener('keydown', onHorn)
+      window.removeEventListener('keyup', onHorn)
+      window.removeEventListener('blur', clearHorn)
+    }
   }, [])
 
   useFrame((state, rawDt) => {
@@ -158,24 +178,34 @@ export function GameLoop() {
     // fed only while driving; the walk branch below copies the player's
     // feet into the sim so prompts track the walker.
     const k = keys.current
+    // GTA layout: W/S drive and brake (S from a stop reverses, W+S burns
+    // out), Space or Shift is the handbrake, H the horn, C looks behind,
+    // E or F gets in and out.
     const simInput: PlayerVehicleInput = driving
       ? {
           throttle: k.forward ? 1 : 0,
           brake: k.back ? 1 : 0,
           steer: (k.right ? 1 : 0) - (k.left ? 1 : 0),
-          handbrake: k.sprint,
-          horn: k.jump && !lastJump.current,
+          handbrake: k.sprint || k.jump,
+          horn: hornKey.current && !lastHorn.current,
+          hornHeld: hornKey.current,
           interact: k.interact && !lastInteract.current,
+          lookBehind: k.crouch,
         }
-      : NO_VEHICLE_INPUT
+      : { ...NO_VEHICLE_INPUT, interact: k.interact && !lastInteract.current }
     lastJump.current = k.jump
+    lastHorn.current = hornKey.current
     lastInteract.current = k.interact
     vehicleSim.cameraMode = rt.thirdPerson ? 'chase' : 'cockpit'
 
+    if (!vision && !inspection) syncTrafficIntoSession(vehicleSim, p.pos)
     const events =
       !vision && !inspection
         ? stepVehicleSession(manhattanVehicleWorld, simInput, dt, rt.clock.hour)
         : []
+    if (!vision && !inspection) {
+      syncSessionIntoTraffic(vehicleSim, events, p.pos, vehicleSim.registry.playerVehicleId === null)
+    }
     // Crimes (hits, thefts) are the director's business, not the loop's.
     reportVehicleEvents(events)
 
@@ -242,7 +272,16 @@ export function GameLoop() {
         // with its own collision sweep; the pointer-lock camera stands down.
         camera.position.set(vehicleSim.camera.pos.x, vehicleSim.camera.pos.y, vehicleSim.camera.pos.z)
         camera.lookAt(vehicleSim.camera.target.x, vehicleSim.camera.target.y, vehicleSim.camera.target.z)
+        const persp = camera as unknown as PerspectiveCamera
+        if (baseFov.current === null) baseFov.current = persp.fov
+        const fov = baseFov.current + vehicleSim.camera.fov
+        if (Math.abs(persp.fov - fov) > 0.01) {
+          persp.fov = fov
+          persp.updateProjectionMatrix()
+        }
       } else {
+        // The walk camera damps its own FOV back from the driving value.
+        baseFov.current = null
         walkCamera.current.update(camera as PerspectiveCamera, dt, performance.now())
       }
     }

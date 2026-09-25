@@ -15,10 +15,6 @@ const PINS = {
   'public/models/manhattan/building-lighting.bin': null,
   'public/models/characters/player/player.glb': null,
   'public/models/characters/player/player-clips.glb': null,
-  'public/models/dev/sedan.glb': null,
-  'public/models/dev/taxi.glb': null,
-  'public/models/dev/police.glb': null,
-  'public/models/dev/ambulance.glb': null,
   'public/models/dev/ped.glb': null,
   'public/models/dev/tree.glb': null,
 }

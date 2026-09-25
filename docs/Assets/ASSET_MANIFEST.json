@@ -35,7 +35,7 @@
       "id": "character.player.v1",
       "runtimePath": "public/models/characters/player/player.glb",
       "purpose": "realistic CC3 player character (Eric, Sketchfab CC-BY)",
-      "source": "Sketchfab — Eric_Rigged_Business_Man.glb (CC-BY)",
+      "source": "Sketchfab \u2014 Eric_Rigged_Business_Man.glb (CC-BY)",
       "creator": "Sketchfab CC-BY creator (Eric rigged business man)",
       "license": "CC-BY-4.0",
       "redistribution": "attribution"
@@ -49,42 +49,6 @@
       "license": "CC0-1.0",
       "redistribution": "allowed",
       "modifications": "Re-baked by scripts/retarget/bake-retarget.py as a per-frame rest-relative retarget onto Eric's skeleton; the first bake shipped seven identical static poses lying on their back"
-    },
-    {
-      "id": "dev.sedan.v1",
-      "runtimePath": "public/models/dev/sedan.glb",
-      "purpose": "dev-tool spawn",
-      "source": "Kenney Car Kit (CC0)",
-      "creator": "Kenney",
-      "license": "CC0-1.0",
-      "redistribution": "allowed"
-    },
-    {
-      "id": "dev.taxi.v1",
-      "runtimePath": "public/models/dev/taxi.glb",
-      "purpose": "dev-tool spawn",
-      "source": "Kenney Car Kit (CC0)",
-      "creator": "Kenney",
-      "license": "CC0-1.0",
-      "redistribution": "allowed"
-    },
-    {
-      "id": "dev.police.v1",
-      "runtimePath": "public/models/dev/police.glb",
-      "purpose": "dev-tool spawn",
-      "source": "Kenney Car Kit (CC0)",
-      "creator": "Kenney",
-      "license": "CC0-1.0",
-      "redistribution": "allowed"
-    },
-    {
-      "id": "dev.ambulance.v1",
-      "runtimePath": "public/models/dev/ambulance.glb",
-      "purpose": "dev-tool spawn",
-      "source": "Kenney Car Kit (CC0)",
-      "creator": "Kenney",
-      "license": "CC0-1.0",
-      "redistribution": "allowed"
     },
     {
       "id": "dev.ped.v1",
@@ -123,6 +87,17 @@
       "redistribution": "Permitted without restriction (CC0)",
       "runtimePath": "public/textures/surfaces/surface_nrm_rough.png",
       "modifications": "OpenGL normal XY in R/G and roughness in B, box-downsampled to 512 px per layer and stacked into one 512x3584 PNG strip; built by scripts/blender/pack_surface_textures.py"
+    },
+    {
+      "id": "vehicles.shenron-family.v1",
+      "name": "Shenron vehicle family (sedan, taxi, police, SUV, van, coupe; LOD0-2)",
+      "source": "scripts/blender/vehicles/build_vehicles.py (procedural Blender 4.2 authoring)",
+      "creator": "Shenron City project (original work)",
+      "license": "Original work (project-owned)",
+      "redistribution": "allowed",
+      "runtimePath": "public/models/vehicles/vehicles.glb",
+      "modifications": "Generated from code; fictional parody designs, no real makes, badges or text",
+      "purpose": "traffic fleet, player and parked cars"
     }
   ]
 }
