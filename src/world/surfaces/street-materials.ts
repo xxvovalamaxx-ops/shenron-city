@@ -53,6 +53,7 @@ const VERTEX_BODY = /* glsl */ `
 const FRAG_PARS = /* glsl */ `
 uniform float uCityPractical;
 uniform float uCityWetness;
+uniform float uStreetEnvScale;
 uniform int uCityWorldSeed;
 uniform sampler2DArray uSurfAlbedo;
 uniform sampler2DArray uSurfData;
@@ -271,6 +272,7 @@ function build(kind: StreetKindValue, paint: 'white' | 'yellow' = 'white'): THRE
     }
     attachSurfaceUniforms(shader)
     shader.uniforms.uPaintColour = paintColour
+    shader.uniforms.uStreetEnvScale = streetEnvScale
     shader.vertexShader = VERTEX_PARS + shader.vertexShader.replace(
       '#include <begin_vertex>',
       `#include <begin_vertex>\n${VERTEX_BODY}`,
@@ -279,12 +281,13 @@ function build(kind: StreetKindValue, paint: 'white' | 'yellow' = 'white'): THRE
       .replace('#include <color_fragment>', `#include <color_fragment>\n${FRAG_BODY}`)
       .replace('#include <roughnessmap_fragment>', '#include <roughnessmap_fragment>\nroughnessFactor = sRough;')
       .replace('#include <metalnessmap_fragment>', '#include <metalnessmap_fragment>\nmetalnessFactor = sMetal;')
+      .replace('#include <lights_fragment_maps>', '#include <lights_fragment_maps>\nradiance *= uStreetEnvScale;')
       .replace(
         '#include <normal_fragment_maps>',
         '#include <normal_fragment_maps>\nnormal = normalize( ( viewMatrix * vec4( sNormalW, 0.0 ) ).xyz );',
       )
   }
-  material.customProgramCacheKey = () => `city-street-v2-${kind}`
+  material.customProgramCacheKey = () => `city-street-v3-${kind}`
   material.userData.cityShared = true
   material.userData.citySurface = kind
   return registerSurfaceMaterial(material)
@@ -327,3 +330,20 @@ export const STREET_LAYERS = {
   [StreetKind.WALK]: SurfaceLayer.SIDEWALK,
   [StreetKind.LOT]: SurfaceLayer.ASPHALT,
 } as const
+
+/**
+ * How strongly streets reflect the image-based environment. The night bake is
+ * an averaged, softly lit skyline; a near-mirror puddle at a grazing angle
+ * turned that into flat white slabs across a wet street. Real wet asphalt at
+ * night mirrors a dark sky and a few bright points, so the specular
+ * environment term is cut back as night falls and the lamps, signs and
+ * headlights carry the glossy look instead.
+ *
+ * (material.envMapIntensity cannot do this: three ignores it whenever the
+ * reflection comes from scene.environment.)
+ */
+const streetEnvScale = { value: 1 }
+
+export function setStreetEnvironmentScale(night: number): void {
+  streetEnvScale.value = 1 - 0.8 * Math.max(0, Math.min(1, night))
+}

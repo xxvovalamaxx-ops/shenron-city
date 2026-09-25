@@ -15,6 +15,8 @@ import * as THREE from 'three'
 import { rt } from '../gameplay/runtime'
 import { normaliseHour, skyAt } from './daycycle'
 import { cityLightingUniforms, syncCityOccupancy } from './city-lighting-uniforms'
+import { lightingUniforms } from './atmosphere/lighting-state'
+import { setStreetEnvironmentScale } from './surfaces/street-materials'
 import { DEFAULT_WORLD_SEED } from './city-lighting'
 import { cityNightModeFor, setCityNightMode } from './night-materials'
 import type { QualityPreset } from './palette'
@@ -118,6 +120,7 @@ export function CityLightingRig({ quality }: { quality: QualityPreset }) {
     else smooth.current += error * Math.min(1, dt * 0.5)
     cityLightingUniforms.uCityPractical.value = smooth.current
     cityLightingUniforms.uCityWetness.value = rt.clock.weather.wetness
+    setStreetEnvironmentScale(lightingUniforms.uAtmoNight.value)
 
     // Day and night are two cached program variants; flipping once per
     // dusk/dawn (with hysteresis) keeps the daylight shader at baseline cost.
