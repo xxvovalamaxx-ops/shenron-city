@@ -16,6 +16,7 @@
 import { useRef } from 'react'
 import { useFrame } from '@react-three/fiber'
 import { rt } from '../runtime'
+import { stepDt } from '../player/sim-step'
 import { vehicleSim } from '../vehicles/vehicle-session'
 import { speedKmh } from '../vehicles/vehicle-model'
 import { useHud, inputLocked } from '../../ui/hud-store'
@@ -23,15 +24,19 @@ import { streetDataNow } from '../../ui/radar/street-data'
 import { STREET_SPAWNS } from '../player/spawn-points'
 import { manhattanCollision } from '../../world/manhattan-collision'
 import { MissionMarkers, setMarkers, type WorldMarker } from '../../world/MissionMarkers'
+import { manhattanVehicleWorld } from '../../world/manhattan-vehicle-world'
 import { cityAudio } from '../../audio'
 import {
   canSee,
+  createWanted,
   isSearching,
   reportCrime,
   stepWanted,
   type Crime,
+  type Observer,
   type Vec2,
 } from '../wanted/wanted'
+import { clearDispatch, stepDispatch, unitObservers } from '../wanted/police-dispatch'
 import {
   atMissionStart,
   objectiveTarget,
@@ -49,6 +54,22 @@ const PICKUP_DRAW_RANGE = 900
 const RETRY_COOLDOWN = 6
 /** Sight checks cost a collision sweep each; four a second is plenty. */
 const SIGHT_INTERVAL = 0.25
+/** The same crime is not counted twice inside this window (scraping along a car). */
+const CRIME_REPEAT = 1.5
+/** Collisions slower than this (m/s closing speed) are nudges, not crimes. */
+const CRIME_IMPACT = 4
+/** What an arrest costs. */
+const BUST_FINE = 500
+
+/** Police cars in LION traffic, as observers: they see crimes too. */
+function trafficPolice(): Observer[] {
+  const out: Observer[] = []
+  for (const view of vehicleSim.traffic) {
+    if (view.kind !== 'police') continue
+    out.push({ pos: { x: view.x, z: view.z }, forward: { x: Math.sin(view.heading), z: Math.cos(view.heading) } })
+  }
+  return out
+}
 
 /**
  * Line of sight at chest height: sweep a thin body from the observer toward
@@ -79,6 +100,8 @@ export function GameDirector() {
     waypointKey: '',
     hudWanted: -1,
     hudFlashing: false,
+    lastPlayer: null as Vec2 | null,
+    crimeClock: new Map<Crime, number>(),
   })
 
   const commitMarkers = (list: WorldMarker[]) => {
@@ -142,7 +165,8 @@ export function GameDirector() {
       director.inbox.length = 0
       return
     }
-    const dt = Math.min(rawDt, 1 / 20)
+    // Same step as GameLoop (including the dev fixed step), so clocks agree.
+    const dt = stepDt(rawDt, 1 / 20)
     const player: Vec2 = { x: rt.player.pos.x, z: rt.player.pos.z }
 
     // ── The job board, once the street graph is here ─────────────────────
@@ -154,27 +178,95 @@ export function GameDirector() {
 
     // ── Police sight ─────────────────────────────────────────────────────
     const m = mem.current
-    const observers = policeObservers()
+    const observers = [...unitObservers(director.dispatch, vehicleSim), ...trafficPolice(), ...policeObservers()]
     m.sightClock -= dt
     if (m.sightClock <= 0) {
       m.sightClock = SIGHT_INTERVAL
       m.spotted = observers.some((o) => canSee(o, player, occluded))
     }
+    const playerVel = m.lastPlayer
+      ? { x: (player.x - m.lastPlayer.x) / dt, z: (player.z - m.lastPlayer.z) / dt }
+      : { x: 0, z: 0 }
+    m.lastPlayer = { ...player }
 
     // ── Crimes ───────────────────────────────────────────────────────────
+    const registry = vehicleSim.registry
+    const playerCar = registry.playerVehicleId
+    // A police car in this frame's vehicle contacts makes any hit a hit on the police.
+    let policeContact = false
+    for (const event of director.inbox) {
+      if (event.type !== 'collision-vehicle') continue
+      const v = registry.vehicles.get(event.vehicleId)
+      if (v && v.kind === 'police' && v.id !== playerCar) policeContact = true
+    }
+    for (const [crime, t] of m.crimeClock) m.crimeClock.set(crime, t - dt)
     for (const event of director.inbox) {
       let crime: Crime | null = null
-      if (event.type === 'collision-pedestrian') crime = 'hit-pedestrian'
-      else if (event.type === 'enter') {
-        const vehicle = vehicleSim.registry.vehicles.get(event.vehicleId)
-        if (vehicle && !vehicle.owned) crime = vehicle.kind === 'police' ? 'hit-police-vehicle' : 'vehicle-theft'
-      } else if (event.type === 'collision-vehicle') crime = 'hit-vehicle'
-      if (!crime) continue
+      switch (event.type) {
+        case 'collision-pedestrian':
+          if (event.vehicleId === playerCar) crime = 'hit-pedestrian'
+          break
+        case 'promote': {
+          // Pulled out of traffic: a carjack, or worse, a cruiser.
+          const v = registry.vehicles.get(event.vehicleId)
+          crime = v?.kind === 'police' ? 'hit-police-vehicle' : 'carjack'
+          break
+        }
+        case 'enter': {
+          const v = registry.vehicles.get(event.vehicleId)
+          if (v && v.kind === 'police' && !v.owned) crime = 'hit-police-vehicle'
+          break
+        }
+        case 'collision-traffic': {
+          if (event.vehicleId !== playerCar || (event.impact ?? 0) < CRIME_IMPACT) break
+          const view = vehicleSim.traffic.find((t) => t.id === event.trafficId)
+          crime = view?.kind === 'police' ? 'hit-police-vehicle' : 'hit-vehicle'
+          break
+        }
+        case 'collision-vehicle':
+          if (event.vehicleId === playerCar && (event.impact ?? 0) >= CRIME_IMPACT) {
+            crime = policeContact ? 'hit-police-vehicle' : 'hit-vehicle'
+          }
+          break
+        default:
+          break
+      }
+      if (!crime || (m.crimeClock.get(crime) ?? 0) > 0) continue
+      m.crimeClock.set(crime, CRIME_REPEAT)
       const witnessed = observers.some((o) => canSee(o, player, occluded))
       director.wanted = reportCrime(director.wanted, { crime, at: player, witnessedByPolice: witnessed })
     }
     director.inbox.length = 0
     director.wanted = stepWanted(director.wanted, { spotted: m.spotted, player, dt })
+
+    // ── Police on the road ───────────────────────────────────────────────
+    const onFoot = registry.playerVehicleId === null && vehicleSim.playerVisible
+    const dispatch = stepDispatch(director.dispatch, vehicleSim, manhattanVehicleWorld, streetDataNow(), {
+      stars: director.wanted.stars,
+      spotted: m.spotted,
+      player,
+      playerVel,
+      onFoot,
+      dt,
+    })
+    if (dispatch.busted) {
+      const fine = Math.min(hud.money, BUST_FINE)
+      hud.showBanner('BUSTED', fine > 0 ? `-$${fine}` : null, { kind: 'failed', durationMs: 4200 })
+      if (fine > 0) hud.addMoney(-fine)
+      director.wanted = createWanted()
+      clearDispatch(director.dispatch, vehicleSim)
+      if (director.active && director.active.state.status === 'active') {
+        director.active.state = { ...director.active.state, status: 'failed', failReason: 'Busted.' }
+        director.retryCooldown = RETRY_COOLDOWN
+      }
+      // Released a block from where it happened, like being let out of the precinct.
+      const release = STREET_SPAWNS[0]
+      if (release) {
+        rt.player.pos.x = release.x
+        rt.player.pos.z = release.z
+        m.lastPlayer = { x: release.x, z: release.z }
+      }
+    }
 
     const stars = director.wanted.stars
     const flashing = isSearching(director.wanted)

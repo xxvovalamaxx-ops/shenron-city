@@ -69,7 +69,8 @@ export interface VehicleEntity {
   id: number
   kind: string
   state: VehicleState
-  controller: 'none' | 'player' | 'ai'
+  /** 'pursuit': a police car driven by the dispatcher's per-step input. */
+  controller: 'none' | 'player' | 'ai' | 'pursuit'
   pose: VehiclePose
   motion: VehicleMotion
   /** The player's car. Persisted across sessions; parked cars may be

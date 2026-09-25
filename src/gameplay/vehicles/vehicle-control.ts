@@ -169,6 +169,11 @@ export interface VehicleSimState {
   /** Events produced by the last step, in order. */
   events: SimEvent[]
   returnClocks: Map<number, number>
+  /**
+   * Pedal/wheel input for police cars under pursuit control, written by the
+   * dispatcher before each frame and applied on every substep.
+   */
+  pursuitInputs: Map<number, VehicleInput>
   parkClocks: Map<number, number>
   pedestrians: Pedestrian[]
   /** Nearby ambient traffic, replaced by the game loop every frame. */
@@ -199,6 +204,7 @@ function baseSim(config: VehicleSimConfig, registry: VehicleRegistry, lane: Lane
     headlightsOn: true,
     events: [],
     returnClocks: new Map(),
+    pursuitInputs: new Map(),
     parkClocks: new Map(),
     pedestrians,
     traffic: [],
@@ -446,6 +452,9 @@ export function stepVehicleSim(
   // ── AI traffic (the boulevard arena) ────────────────────────────────────
   stepTraffic(sim, world, dt)
 
+  // ── Police cars in pursuit ───────────────────────────────────────────────
+  stepPursuers(sim, world, dt)
+
   // ── Knocked traffic cars keep sliding within the frame ──────────────────
   for (const view of sim.traffic) {
     if (view.hit) integrateKnockedView(view, dt)
@@ -647,6 +656,45 @@ function drivePlayerVehicle(
 }
 
 /**
+ * Police cars the dispatcher drives: the same arcade dynamics and world sweep
+ * as the player's car, fed from `sim.pursuitInputs` (the pursuit driver's
+ * output). A car with no input this step coasts.
+ */
+function stepPursuers(sim: VehicleSimState, world: VehicleWorld, dt: number): void {
+  for (const entity of sim.registry.vehicles.values()) {
+    if (entity.controller !== 'pursuit' || entity.state !== 'AI_CONTROLLED') continue
+    const spec = vehicleSpec(entity.kind)
+    const input = sim.pursuitInputs.get(entity.id) ?? COAST_INPUT
+    const groundY = world.groundHeightAt(entity.pose.pos.x, entity.pose.pos.z)
+    const before = { ...entity.pose.pos }
+    const stepped = stepVehicle(spec, entity.pose, entity.motion, input, dt, groundY)
+    entity.pose = stepped.pose
+    entity.motion = stepped.motion
+    if (entity.spin !== 0) {
+      entity.pose.heading += entity.spin * dt
+      entity.spin *= Math.exp(-6 * dt)
+      if (Math.abs(entity.spin) < 1e-3) entity.spin = 0
+    }
+    const dx = entity.pose.pos.x - before.x
+    const dz = entity.pose.pos.z - before.z
+    const moved = world.moveCircle(before, dx, dz, spec.halfWidth * 0.85)
+    const travelled = Math.hypot(moved.x - before.x, moved.z - before.z)
+    const intended = Math.hypot(dx, dz)
+    if (intended > 1e-4 && travelled < intended * 0.99) {
+      const keep = spec.collisionSpeedKeep
+      const ratio = Math.max(0, Math.min(1, travelled / intended))
+      entity.motion.speed *= keep + (1 - keep) * ratio
+      entity.motion.lateral = 0
+      entity.pose.pos.x = moved.x
+      entity.pose.pos.z = moved.z
+      if (groundY !== null) entity.pose.pos.y = groundY
+    }
+  }
+}
+
+const COAST_INPUT: VehicleInput = { throttle: 0, brake: 0.3, steer: 0, handbrake: false }
+
+/**
  * Parked cars that were shoved, and a jacked car still rolling while the
  * player climbs in, slide to rest against tyre scrub and the world.
  */
@@ -656,7 +704,7 @@ function stepLooseVehicles(sim: VehicleSimState, world: VehicleWorld, dt: number
       entity.state === 'PARKED' ||
       entity.state === 'ENTERING' ||
       entity.state === 'EXITING' ||
-      (entity.state === 'AI_CONTROLLED' && !entity.ai)
+      (entity.state === 'AI_CONTROLLED' && !entity.ai && entity.controller !== 'pursuit')
     if (!loose) continue
     const m = entity.motion
     if (m.speed === 0 && m.lateral === 0 && entity.spin === 0) continue

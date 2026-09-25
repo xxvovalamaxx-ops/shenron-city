@@ -282,7 +282,8 @@ export function VehicleRig() {
       entry.mats.headlight.emissiveIntensity = lit ? 7 : driven ? 0.35 : 0
       entry.mats.taillight.emissiveIntensity = (lit ? 1.4 : 0) + (braking ? 5.5 : 0)
       entry.mats.taxiSign.emissiveIntensity = driven ? (heads ? 2.2 : 0.4) : 0
-      const strobe = driven && entity.kind === 'police' && siren.current
+      // Dispatched cruisers run their lights; the player's toggles with L.
+      const strobe = (driven && entity.kind === 'police' && siren.current) || entity.controller === 'pursuit'
       entry.mats.lightbarRed.emissiveIntensity = strobe ? lightbarStrobe(vehicleShaderTime.value, 0) * 14 : 0
       entry.mats.lightbarBlue.emissiveIntensity = strobe ? lightbarStrobe(vehicleShaderTime.value, 0.5) * 14 : 0
 

@@ -4,7 +4,8 @@
  * mutated only by GameDirector's frame step, so React never re-renders at
  * frame rate. The HUD sees it through `useHud` mirrors.
  */
-import { createWanted, type Observer, type WantedState } from '../wanted/wanted'
+import { createWanted, setStars, type Observer, type WantedState } from '../wanted/wanted'
+import { createDispatch, type DispatchState } from '../wanted/police-dispatch'
 import type { MissionDef, MissionState } from '../missions/missions'
 import type { SimEvent } from '../vehicles/vehicle-control'
 
@@ -15,6 +16,8 @@ export interface ActiveMission {
 
 export interface DirectorState {
   wanted: WantedState
+  /** Police units on the road. */
+  dispatch: DispatchState
   catalog: MissionDef[]
   active: ActiveMission | null
   completed: Set<string>
@@ -32,6 +35,7 @@ export interface DirectorState {
 
 export const director: DirectorState = {
   wanted: createWanted(),
+  dispatch: createDispatch(),
   catalog: [],
   active: null,
   completed: new Set(),
@@ -68,4 +72,10 @@ export function policeObservers(): readonly Observer[] {
 // from the console or a capture script.
 if (import.meta.env.DEV) {
   ;(globalThis as unknown as { __director: DirectorState }).__director = director
+  ;(globalThis as unknown as { __forceWanted: typeof forceWanted }).__forceWanted = (stars, at) => forceWanted(stars, at)
+}
+
+/** Force the wanted level (dev tools, capture scripts). 0 clears it. */
+export function forceWanted(stars: number, at: { x: number; z: number }): void {
+  director.wanted = stars <= 0 ? createWanted() : setStars(director.wanted, stars, at)
 }
