@@ -33,6 +33,7 @@ import { DayCycle } from './world/DayCycleRig'
 import { CityLightingRig } from './world/CityLightingRig'
 import { ShadowBudget } from './world/ShadowBudget'
 import { AtmosphericDust } from './world/AtmosphericDust'
+import { AtmosphereRig } from './world/atmosphere/AtmosphereRig'
 import { resolveManhattanSpawn } from './world/manhattan-collision'
 import { PALETTE, QUALITY } from './world/palette'
 import { Hud } from './ui/Hud'
@@ -105,6 +106,7 @@ function Scene({
       <color attach="background" args={[PALETTE.night]} />
 
       <NightEnvironment />
+      <AtmosphereRig quality={settings.quality} />
 
       <RendererBridge maxDpr={quality.maxDpr} shadows={quality.shadows} />
       <DayCycle />
@@ -125,7 +127,7 @@ function Scene({
 
       {quality.postprocessing && (
         <Suspense fallback={null}>
-          <PostProcessing />
+          <PostProcessing quality={settings.quality} />
         </Suspense>
       )}
     </>

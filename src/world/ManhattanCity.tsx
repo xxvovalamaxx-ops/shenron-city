@@ -291,22 +291,14 @@ class CityPipeline {
     )
   }
 
-  /** Character shadows follow the player: the sun is re-anchored each frame. */
+  /**
+   * Shadows follow the camera: the weather re-anchors the key light each
+   * frame with a texel-snapped shadow camera (world/atmosphere/sun-shadow).
+   */
   private _rigSun(): void {
     const sun = this.sun
     if (!sun) return
-    const q = QUALITY[this.quality]
-    sun.castShadow = q.shadows
-    sun.shadow.mapSize.set(q.shadowMapSize, q.shadowMapSize)
-    const sc = sun.shadow.camera
-    sc.near = 11000
-    sc.far = 13000
-    sc.left = -240
-    sc.right = 240
-    sc.top = 240
-    sc.bottom = -240
-    sc.updateProjectionMatrix()
-    sun.shadow.bias = -0.0006
+    this.weather.configureShadows(this.quality)
     this.scene.add(sun.target)
   }
 
@@ -411,6 +403,13 @@ class CityPipeline {
         obj.material = getRoadNightMaterial({ quality: this.quality })
         obj.receiveShadow = true
       }
+      // Buildings shade the streets and each other; park trees shade paths.
+      // ShadowBudget reads the flag, so a quality change can switch it off.
+      if (obj.userData.building || name.startsWith('TREE_')) {
+        obj.userData.cityShadow = true
+        obj.castShadow = QUALITY[this.quality].shadows
+        obj.receiveShadow = true
+      }
       this._registerGround(name, obj, file)
     })
     manhattanCollision.registerTileBuildings(root)
@@ -447,7 +446,7 @@ class CityPipeline {
   // ---- weather + clock bridge ----------------------------------------
 
   private _syncWeather(camera: THREE.Camera): void {
-    const { weather, facade, sun } = this
+    const { weather, facade } = this
     const hour = rt.clock.hour
     if (Math.abs(weather.hour - hour) > 1e-4) weather.setTime(hour)
     const rain = rt.clock.weather.rain
@@ -461,13 +460,8 @@ class CityPipeline {
       this.lastNight = night
       facade.setNight(night)
     }
-
-    if (sun && sun.castShadow) {
-      const dir = sun.position.clone().normalize()
-      sun.position.copy(camera.position).addScaledVector(dir, 12000)
-      sun.target.position.copy(camera.position)
-      sun.target.updateMatrixWorld()
-    }
+    // The key light and its shadow camera are placed by weather.update().
+    void camera
   }
 
   // ---- HUD ------------------------------------------------------------

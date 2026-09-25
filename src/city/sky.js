@@ -1,4 +1,17 @@
-// sky.js — sky dome, sun and distance fog tuned for a 22 km world.
+// sky.js — the key light, the fallback ambient and the fog for a 22 km world.
+//
+// The visible sky is the procedural dome in world/atmosphere (sun, moon,
+// stars, clouds, city glow), and the ambient is image-based light baked from
+// it. What is created here is the plumbing the weather engine drives:
+//
+//   sun  — the one shadow-casting key light: the sun by day, the moon at night
+//   hemi — a low floor of ambient for the frames before the first IBL bake
+//   fill — kept for API compatibility, not added to the scene: the IBL does
+//          the bounce light it used to fake, and an extra directional light
+//          is a full light loop in every lit fragment for nothing
+//
+// Fog stays a THREE.Fog so every material compiles its fog chunk; the
+// atmosphere replaces the chunk's maths with height fog and a sun-tinted haze.
 //
 // The clip range matters more here than the lighting does. Phase 1 hit heavy
 // depth-buffer speckle across the ground plane at city scale; the cause was a
@@ -17,27 +30,21 @@ export function buildSky(scene, renderer) {
   // before the far plane so tiles that have not streamed in are not obvious
   scene.fog = new THREE.Fog(haze, 2600, 26000)
 
-  // Balanced against the flattened ground materials, not against the white
-  // ones the first export produced. Sun at 2.1 plus hemi at 1.05 blew the
-  // land plane to pure white and left every north-facing wall black.
-  const hemi = new THREE.HemisphereLight(0xbdd5f0, 0x4a453d, 1.5)
+  const hemi = new THREE.HemisphereLight(0xbdd5f0, 0x4a453d, 0.15)
   scene.add(hemi)
 
-  const sun = new THREE.DirectionalLight(0xfff2dc, 2.6)
+  const sun = new THREE.DirectionalLight(0xfff2dc, 3.0)
   // late afternoon from the south-west, which is what puts light down the
-  // numbered streets in Manhattan
+  // numbered streets in Manhattan; the weather re-aims it every frame
   sun.position.set(-9000, 7000, 5200)
+  sun.name = 'ATMOSPHERE_key'
   scene.add(sun)
 
-  // A dim opposing light so the shadow side of a facade still reads. Real
-  // street canyons bounce a lot of light; without this half of every building
-  // is a black silhouette.
-  const fill = new THREE.DirectionalLight(0xa8c2de, 0.8)
+  const fill = new THREE.DirectionalLight(0xa8c2de, 0)
   fill.position.set(6000, 3000, -6000)
-  scene.add(fill)
 
   renderer.toneMapping = THREE.ACESFilmicToneMapping
-  renderer.toneMappingExposure = 1.05
+  renderer.toneMappingExposure = 1.0
 
   return { sun, hemi, fill }
 }

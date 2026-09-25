@@ -8,6 +8,8 @@ export declare class Weather {
   groundY: number
   hour: number
   timeScale: number
+  /** Fair-weather cover set by setCover; rain raises `cover` above it. */
+  baseCover: number
   cover: number
   rain: number
   wind: { x: number; y: number }
@@ -22,6 +24,10 @@ export declare class Weather {
   setCover(c: number): void
   setRain(r: number): void
   apply(): void
+  /** Shadow resolution and reach for a quality preset; low casts none. */
+  configureShadows(quality: 'low' | 'medium' | 'high'): void
+  /** The last computed atmosphere (sun, sky, haze, exposure...). */
+  state: import('../world/atmosphere/model').AtmosphereState | null
   bindSurfaces(...streamers: Array<{
     tiles: Map<string, { state: string; group: import('three').Group | null; [k: string]: unknown }>
   } | null | undefined>): void
