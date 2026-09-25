@@ -14,6 +14,7 @@
 import * as THREE from 'three'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
 import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js'
+import { streetMaterialForMesh } from '../world/surfaces/street-materials'
 
 const TILE = 1400 // metres, matches building_index.json tile_size_m
 // A little past lod.js's L2 band, so a tile is only disposed once its
@@ -202,11 +203,19 @@ export class TileStreamer {
               o.material = this.injected
             } else if (isBuilding) {
               o.material = this.plainMaterial
+            } else {
+              // Asphalt, lane paint, sidewalk flags and kerbs, and the open
+              // ground: the shared street-surface materials (textured,
+              // world-space, wet-aware; see world/surfaces/). Water, parks,
+              // bridges and trees keep the material the exporter gave them.
+              // Overriding those with a vertex-colour material once turned
+              // the whole ground plane flat grey: they carry no COLOR_0.
+              const street = streetMaterialForMesh(o.name || '')
+              if (street) o.material = street
             }
-            // Water, land, roads, parks and bridges keep the material the
-            // exporter gave them. Overriding those with a vertex-colour
-            // material turned the whole ground plane into flat grey, because
-            // they carry no COLOR_0 -- their colour is in the material.
+            // Everything a sun shadow can land on receives it; the flag is
+            // free until a light actually casts.
+            o.receiveShadow = true
             o.userData.tile = t.file
             o.userData.building = isBuilding
             // a tile can finish loading while a far tier already covers it

@@ -103,6 +103,26 @@
       "creator": "Kenney",
       "license": "CC0-1.0",
       "redistribution": "allowed"
+    },
+    {
+      "id": "texture.city-surfaces.albedo-array.v1",
+      "name": "City surface texture array (albedo)",
+      "source": "Poly Haven CC0 textures (1k): brick_wall_001, yellow_brick, sandstone_blocks_08, concrete_wall_008, painted_metal_shutter, asphalt_02, concrete_pavement_02 - https://polyhaven.com/a/<id>",
+      "creator": "Poly Haven: Rob Tuytel, Dimitrios Savva, Dario Barresi, Charlotte Baglioni, Rico Cilliers",
+      "license": "CC0-1.0",
+      "redistribution": "Permitted without restriction (CC0)",
+      "runtimePath": "public/textures/surfaces/surface_albedo.jpg",
+      "modifications": "Seven 1k diffuse maps with their AO maps multiplied in (softened to 45-100%), stacked top to bottom into one 1024x7168 JPEG strip for a WebGL2 texture array; built by scripts/blender/pack_surface_textures.py"
+    },
+    {
+      "id": "texture.city-surfaces.normal-roughness-array.v1",
+      "name": "City surface texture array (normal + roughness)",
+      "source": "Poly Haven CC0 textures (1k): brick_wall_001, yellow_brick, sandstone_blocks_08, concrete_wall_008, painted_metal_shutter, asphalt_02, concrete_pavement_02 - https://polyhaven.com/a/<id>",
+      "creator": "Poly Haven: Rob Tuytel, Dimitrios Savva, Dario Barresi, Charlotte Baglioni, Rico Cilliers",
+      "license": "CC0-1.0",
+      "redistribution": "Permitted without restriction (CC0)",
+      "runtimePath": "public/textures/surfaces/surface_nrm_rough.png",
+      "modifications": "OpenGL normal XY in R/G and roughness in B, box-downsampled to 512 px per layer and stacked into one 512x3584 PNG strip; built by scripts/blender/pack_surface_textures.py"
     }
   ]
 }

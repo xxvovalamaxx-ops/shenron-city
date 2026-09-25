@@ -1,5 +1,5 @@
 /**
- * Shared uniforms for the Phase 3C city-night shaders.
+ * Shared uniforms for the city surface shaders (facades, far massing, roads).
  *
  * Every building/road material references THIS uniform object, so one write
  * per frame (from CityLightingRig) reaches every draw call without touching
@@ -8,7 +8,7 @@
  * lights and the sky from disagreeing about whether it is night.
  */
 import * as THREE from 'three'
-import { DEFAULT_WORLD_SEED } from './city-lighting'
+import { DEFAULT_WORLD_SEED, occupancyTable } from './city-lighting'
 
 export interface CityLightingUniforms {
   uCityPractical: THREE.IUniform<number>
@@ -24,6 +24,11 @@ export interface CityLightingUniforms {
   uCityGroundY: THREE.IUniform<number>
   /** Dev-only: 0 = off, 1 = flat glow, 2 = bid, 3 = texture, 4 = hash. */
   uCityDebugMode: THREE.IUniform<number>
+  /**
+   * occupancyTable(hour): per-kind occupancy the shaders threshold against,
+   * plus the ungated retail curve in slot 7. Written by syncCityOccupancy.
+   */
+  uCityOcc: THREE.IUniform<Float32Array>
 }
 
 export const cityLightingUniforms: CityLightingUniforms = {
@@ -37,6 +42,19 @@ export const cityLightingUniforms: CityLightingUniforms = {
   uCityPatternQuality: { value: 1 },
   uCityGroundY: { value: 12 },
   uCityDebugMode: { value: 0 },
+  uCityOcc: { value: occupancyTable(21) },
+}
+
+let occupancyHour = 21
+
+/**
+ * Recompute the occupancy table when the hour moves. Cheap (seven curve
+ * lookups) and skipped entirely while the clock is pinned.
+ */
+export function syncCityOccupancy(hour: number): void {
+  if (hour === occupancyHour) return
+  occupancyHour = hour
+  occupancyTable(hour, cityLightingUniforms.uCityOcc.value)
 }
 
 // Dev-only handle so captures can inspect the live lighting state. Stripped
