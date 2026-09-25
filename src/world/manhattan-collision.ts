@@ -16,6 +16,8 @@ import { MeshBVH } from 'three-mesh-bvh'
 import { PLAYER_RADIUS } from '../gameplay/collision'
 import type { Vec3 } from '../gameplay/collision'
 import { cityWorld } from '../city/registry.js'
+import { STREET_SPAWNS } from '../gameplay/player/spawn-points'
+import { debugSpawnOverride } from '../gameplay/dev-view'
 
 interface BvhEntry {
   mesh: THREE.Mesh
@@ -378,6 +380,23 @@ export const MANHATTAN_LANDMARKS: ReadonlyArray<{
 
 export function resolveManhattanSpawn(): Vec3 {
   const col = manhattanCollision
+  // Street spawns first: a Midtown sidewalk facing down an avenue (see
+  // gameplay/player/spawn-points.ts). A dev `?spawnAt=x,z[,deg]` goes ahead
+  // of them so spawn candidates can be probed without editing code. Each is
+  // taken only if it stands on the island surface (never water) and outside
+  // every building that has streamed in so far.
+  const override =
+    import.meta.env.DEV && typeof location !== 'undefined'
+      ? debugSpawnOverride(location.search, true)
+      : null
+  const street = override ? [override, ...STREET_SPAWNS] : STREET_SPAWNS
+  for (const spawn of street) {
+    const g = col.groundHeightAt(spawn.x, spawn.z)
+    if (g === null) continue
+    if (col.isInsideBuilding(spawn.x, g, spawn.z)) continue
+    return { x: spawn.x, y: g, z: spawn.z }
+  }
+
   const [px, pz] = MANHATTAN_SPAWN_CANDIDATES[0]
   const ground = col.groundHeightAt(px, pz)
   if (ground !== null) {
@@ -393,8 +412,9 @@ export function resolveManhattanSpawn(): Vec3 {
   }
   // No probed surface yet. The street tiles stream toward the camera, so at
   // the moment the base registers they may not have reached the spawn — the
-  // preferred point is a known intersection, so stand on the data height and
-  // let the game loop snap to the real surface the instant the tiles arrive.
+  // preferred point is a known street, so stand on the data height and let
+  // the game loop snap to the real surface the instant the tiles arrive.
+  const first = STREET_SPAWNS[0]
   const land = (cityWorld.city?.meta?.land_level_m as number | undefined) ?? 12
-  return { x: px, y: land + 0.4, z: pz }
+  return { x: first.x, y: land + 0.4, z: first.z }
 }

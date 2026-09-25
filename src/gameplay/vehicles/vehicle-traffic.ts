@@ -10,15 +10,12 @@
  * the world state — required for the replay test to reproduce collisions.
  */
 import type { Vec3 } from '../collision'
-import { stepVehicle } from './vehicle-model'
+import { applyVelocity, isStationary, stepVehicle } from './vehicle-model'
+import { contactImpulse } from './vehicle-impulse'
+import { entityBody } from './vehicle-world-link'
 import { vehicleSpec } from './vehicle-specs'
 import { BOULEVARD_LOOP, LANES, nearestLanePoint, pointAlongLane, wrapLaneDistance, type Lane } from './vehicle-lanes'
-import {
-  rectContact,
-  type Pedestrian,
-  type VehicleWorld,
-} from './vehicle-collision'
-import type { RectContact } from './vehicle-collision'
+import { type Pedestrian, type VehicleWorld } from './vehicle-collision'
 import {
   type VehicleEntity,
   type VehicleRegistry,
@@ -241,71 +238,54 @@ export function stepAiVehicle(
 }
 
 /**
- * Resolve overlaps between every moving vehicle and every other vehicle.
- * Parked vehicles are static obstacles (they never get pushed); two parked
- * vehicles never touch. Overlaps are separated by the full minimum-
- * translation depth — not a fixed nudge — so a car clipped from behind is
- * pushed cleanly out instead of grinding against the contact every frame.
- * Order is fixed by id so the outcome is a pure function of the state.
- * Returns the ids of vehicles that were in a hard hit this step.
+ * Resolve contacts between every pair of session vehicles as a momentum
+ * exchange (vehicle-impulse.ts). Parked cars are bodies too — heavier, with
+ * the handbrake on — so a hard hit shoves them and they slide to rest (see
+ * stepLooseVehicles). Two cars at rest never touch. Order is fixed by id so
+ * the outcome is a pure function of the state. Returns the vehicles in a
+ * real hit this step with the closing speed of their hardest contact.
  */
 export function resolveVehiclePairs(
   registry: VehicleRegistry,
-): number[] {
-  const entities = [...registry.vehicles.values()].sort((a, b) => a.id - b.id)
-  const hitIds = new Set<number>()
+): Array<{ id: number; impact: number }> {
+  // Map order is insertion order, and ids are handed out ascending.
+  const entities = [...registry.vehicles.values()]
+  const hits = new Map<number, number>()
   for (let i = 0; i < entities.length; i++) {
     const a = entities[i]
     if (a.state === 'DISABLED') continue
     for (let j = i + 1; j < entities.length; j++) {
       const b = entities[j]
       if (b.state === 'DISABLED') continue
-      const aStatic = a.state === 'PARKED'
-      const bStatic = b.state === 'PARKED'
-      if (aStatic && bStatic) continue
-      const aSpec = vehicleSpec(a.kind)
-      const bSpec = vehicleSpec(b.kind)
-      const contact = rectContact(a.pose, aSpec, b.pose, bSpec)
-      if (contact === null) continue
-
-      if (aStatic) {
-        b.motion.speed = b.motion.speed * bSpec.collisionSpeedKeep
-        b.motion.lateral = 0
-        separateFromStatic(b, contact)
-        hitIds.add(b.id)
-      } else if (bStatic) {
-        a.motion.speed = a.motion.speed * aSpec.collisionSpeedKeep
-        a.motion.lateral = 0
-        separateFromStatic(a, contact)
-        hitIds.add(a.id)
-      } else {
-        const aKeep = a.motion.speed * aSpec.collisionSpeedKeep
-        const bKeep = b.motion.speed * bSpec.collisionSpeedKeep
-        a.motion.speed = aKeep
-        b.motion.speed = bKeep
-        a.motion.lateral = 0
-        b.motion.lateral = 0
-        // Full-depth separation, half each side along the contact axis.
-        const half = contact.depth / 2
-        a.pose.pos.x -= contact.axis.x * half
-        a.pose.pos.z -= contact.axis.z * half
-        b.pose.pos.x += contact.axis.x * half
-        b.pose.pos.z += contact.axis.z * half
-        hitIds.add(a.id)
-        hitIds.add(b.id)
-      }
+      const aResting = isStationary(a.motion, 1e-6) && a.spin === 0
+      const bResting = isStationary(b.motion, 1e-6) && b.spin === 0
+      if (aResting && bResting) continue
+      // bounding circles first: most pairs are nowhere near each other
+      const reach = 6
+      const dx = a.pose.pos.x - b.pose.pos.x
+      const dz = a.pose.pos.z - b.pose.pos.z
+      if (dx * dx + dz * dz > reach * reach) continue
+      const bodyA = entityBody(a)
+      const bodyB = entityBody(b)
+      if (a.state === 'PARKED') bodyA.mass *= 1.6
+      if (b.state === 'PARKED') bodyB.mass *= 1.6
+      const hit = contactImpulse(bodyA, bodyB)
+      if (!hit) continue
+      a.pose.pos.x += hit.pushA.x
+      a.pose.pos.z += hit.pushA.z
+      b.pose.pos.x += hit.pushB.x
+      b.pose.pos.z += hit.pushB.z
+      if (hit.closingSpeed <= 0) continue
+      applyVelocity(a.pose.heading, a.motion, bodyA.vx + hit.dvA.x, bodyA.vz + hit.dvA.z)
+      applyVelocity(b.pose.heading, b.motion, bodyB.vx + hit.dvB.x, bodyB.vz + hit.dvB.z)
+      if (a.state !== 'PLAYER_CONTROLLED' && a.state !== 'AI_CONTROLLED') a.spin += hit.dwA
+      if (b.state !== 'PLAYER_CONTROLLED' && b.state !== 'AI_CONTROLLED') b.spin += hit.dwB
+      if (hit.closingSpeed < 0.05) continue
+      hits.set(a.id, Math.max(hits.get(a.id) ?? 0, hit.closingSpeed))
+      hits.set(b.id, Math.max(hits.get(b.id) ?? 0, hit.closingSpeed))
     }
   }
-  return [...hitIds]
-}
-
-/** Push a moving vehicle out of a static one by the full contact depth. */
-function separateFromStatic(
-  moving: VehicleEntity,
-  contact: RectContact,
-): void {
-  moving.pose.pos.x -= contact.axis.x * (contact.depth + 0.02)
-  moving.pose.pos.z -= contact.axis.z * (contact.depth + 0.02)
+  return [...hits.entries()].sort((x, y) => x[0] - y[0]).map(([id, impact]) => ({ id, impact }))
 }
 
 /**

@@ -1,44 +1,44 @@
-// vehicles.js — loads the procedural fleet and renders it as instanced meshes.
+// vehicles.js — the traffic fleet on the GPU.
 //
-// One InstancedMesh per body type, with per-instance colour. The paint mask
-// lives in COLOR_0's alpha (see scripts/phase2/52_vehicles.py):
+// The fleet draws the Shenron vehicle family (public/models/vehicles/
+// vehicles.glb, authored by scripts/blender/vehicles/build_vehicles.py): six
+// original, fictional kinds, each in three levels of detail, plus a wheel.
+// Every kind and LOD is one InstancedMesh sharing one material (see
+// createFleetMaterial in world/vehicles/vehicle-assets.ts): a per-vertex
+// `zone` is the paint mask and the lookup for every other material slot, and
+// per-instance attributes carry the paint colour and the lamp state (brake,
+// headlights, police strobe phase, taxi roof sign). A whole car is one draw
+// per kind and LOD; the near LOD adds four spinning wheels.
 //
-//     a = 1   body panel  -> tinted by the instance colour
-//     a = 0   glass, tyre, lamp, trim -> keeps its own rgb
-//
-// Without that mask, instance colour would turn the windscreen and the tyres
-// yellow along with the cab.
+// `paintMaterial()` is the older vertex-colour paint convention, still used
+// by the street furniture (props.js): body panels authored white with the
+// mask in COLOR_0 alpha are tinted by the instance colour.
 
 import * as THREE from 'three'
-import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
+import {
+  createFleetMaterial,
+  currentVehicleQuality,
+  loadVehicleAssets,
+} from '../world/vehicles/vehicle-assets'
+import { paintFor, vehicleSpec } from '../gameplay/vehicles/vehicle-specs'
 
 // NYC-plausible mix. Weights are shares of the moving fleet, not of
-// registrations: a third of Manhattan's midday traffic is for-hire.
-// The /models/manhattan/ mount is cached for an hour, and these asset files carry no
-// version in their URL the way the world tiles do. In dev that means a rebuilt
-// glb silently does not arrive -- which is exactly how P2-021 burned an hour
-// on a corrected export that "did nothing". Never cache them in dev.
-const bust = () => (import.meta.env && import.meta.env.DEV
-  ? `?v=${Date.now()}` : '')
-
+// registrations. Taxis are re-weighted by district at spawn time: a third of
+// Midtown's traffic is for-hire, far less of Inwood's.
 export const FLEET = [
-  { name: 'VEH_sedan', key: 'sedan', weight: 0.30, speedScale: 1.00 },
-  { name: 'VEH_sedan', key: 'taxi', weight: 0.22, speedScale: 1.05,
-    color: 0xf2b736, fixedColor: true },
-  { name: 'VEH_suv', key: 'suv', weight: 0.20, speedScale: 0.98 },
-  { name: 'VEH_van', key: 'van', weight: 0.13, speedScale: 0.92 },
-  { name: 'VEH_pickup', key: 'pickup', weight: 0.07, speedScale: 0.95 },
-  { name: 'VEH_box_truck', key: 'box_truck', weight: 0.05, speedScale: 0.82 },
-  { name: 'VEH_bus', key: 'bus', weight: 0.03, speedScale: 0.75 },
+  { key: 'sedan', weight: 0.34, speedScale: 1.0 },
+  { key: 'taxi', weight: 0.18, speedScale: 1.05 },
+  { key: 'suv', weight: 0.22, speedScale: 0.98 },
+  { key: 'van', weight: 0.12, speedScale: 0.9 },
+  { key: 'coupe', weight: 0.09, speedScale: 1.08 },
+  { key: 'police', weight: 0.05, speedScale: 1.0 },
 ]
 
-// Muted, road-realistic paint. Manhattan traffic is overwhelmingly white,
-// black, silver and grey; saturated colours are the exception.
-const PAINT = [
-  0xd8d8d6, 0xd8d8d6, 0xc9cacc, 0xb4b6b8, 0x8d9094,
-  0x2e3134, 0x24262a, 0x3a4048, 0x51565c,
-  0x6b2f2f, 0x25405e, 0x2c4a3a, 0x7a6a4a,
-]
+/** Cars within this distance draw the full model with spinning wheels. */
+export const LOD0_DISTANCE = 55
+/** Cars within this distance draw the mid LOD; beyond, the far LOD. */
+export const LOD1_DISTANCE = 170
+const LOD0_CAP = 26
 
 const PATCH_VERT = /* glsl */`
 varying vec4 vPaint;
@@ -56,7 +56,7 @@ varying vec4 vPaint;
 // vColor, and there is no vInstanceColor varying to read. So: vPaint holds
 // the raw COLOR_0 attribute (mask intact), vColor holds it multiplied by the
 // instance colour. Body panels are authored white, so vColor *is* the paint;
-// glass and tyres take their own rgb straight from vPaint.
+// everything else takes its own rgb straight from vPaint.
 const PATCH_FRAG_BODY = /* glsl */`
 {
   diffuseColor.rgb = mix(vPaint.rgb, vColor.rgb, vPaint.a);
@@ -64,9 +64,9 @@ const PATCH_FRAG_BODY = /* glsl */`
 }
 `
 
-// Exported because the street furniture is authored to the same convention:
-// a tree canopy and a hydrant barrel are painted white with the mask set, and
-// everything else keeps its authored colour.
+// The street furniture is authored to this convention: a tree canopy and a
+// hydrant barrel are painted white with the mask set, and everything else
+// keeps its authored colour.
 export function paintMaterial() {
   const m = new THREE.MeshLambertMaterial({
     vertexColors: true,
@@ -86,89 +86,155 @@ export function paintMaterial() {
   return m
 }
 
+const _color = new THREE.Color()
+
 export class VehicleFleet {
   constructor(scene) {
     this.scene = scene
-    this.material = paintMaterial()
-    this.types = []          // one entry per FLEET row, with its InstancedMesh
+    this.material = null
+    this.types = []          // one entry per FLEET row, with its meshes
     this.ready = false
+    this.quality = 'medium'
   }
 
-  async load(url = '/models/manhattan/vehicles.glb', capacity = 1200) {
-    const gltf = await new GLTFLoader().loadAsync(url + bust())
-    const byName = new Map()
-    gltf.scene.traverse((o) => { if (o.isMesh) byName.set(o.name, o) })
-
-    const dummy = new THREE.Object3D()
+  async load(capacity = 1200) {
+    const assets = await loadVehicleAssets()
+    this.quality = currentVehicleQuality()
+    this.material = createFleetMaterial(this.quality)
+    const shadows = this.quality !== 'low'
     for (const spec of FLEET) {
-      const src = byName.get(spec.name)
-      if (!src) {
-        console.warn('[fleet] missing', spec.name)
+      const asset = assets.kinds.get(spec.key)
+      if (!asset) {
+        console.warn('[fleet] missing', spec.key)
         continue
       }
-      const cap = Math.max(8, Math.round(capacity * spec.weight * 1.6))
-      const mesh = new THREE.InstancedMesh(src.geometry, this.material, cap)
-      mesh.instanceMatrix.setUsage(THREE.DynamicDrawUsage)
-      mesh.instanceColor = new THREE.InstancedBufferAttribute(
-        new Float32Array(cap * 3), 3)
-      mesh.count = 0
-      mesh.frustumCulled = false
-      mesh.name = `FLEET_${spec.key}`
-      // park every slot far below the world until it is used
-      dummy.position.set(0, -5000, 0)
-      dummy.updateMatrix()
-      for (let i = 0; i < cap; i++) mesh.setMatrixAt(i, dummy.matrix)
-
-      src.geometry.computeBoundingBox()
-      const bb = src.geometry.boundingBox
+      const sim = vehicleSpec(spec.key)
+      const cap = Math.max(16, Math.round(capacity * spec.weight * 2.2))
+      const lods = [
+        this._mesh(asset.fleet.lod0, LOD0_CAP, `FLEET_${spec.key}_lod0`, shadows),
+        this._mesh(asset.fleet.lod1, cap, `FLEET_${spec.key}_lod1`, shadows),
+        this._mesh(asset.fleet.lod2, cap, `FLEET_${spec.key}_lod2`, false),
+      ]
+      const wheel = this._mesh(asset.fleetWheel, LOD0_CAP * 4, `FLEET_${spec.key}_wheel`, shadows)
       this.types.push({
         ...spec,
-        mesh,
+        lods,
+        wheel,
+        wheels: asset.wheels,
+        wheelRadius: asset.wheelRadius,
         capacity: cap,
-        // The exporter maps Blender (x, y, z) -> glTF (x, z, -y). The bodies
-        // are authored pointing along Blender +x, so after export the length
-        // is the glTF x extent and the width is the z extent. Reading them
-        // the other way round gave every vehicle a 1.9 m "length", which
-        // collapsed the car-following gaps.
-        length: bb.max.x - bb.min.x,
-        width: bb.max.z - bb.min.z,
+        // footprint from the gameplay spec, which matches the model
+        length: sim.halfLength * 2,
+        width: sim.halfWidth * 2,
+        halfLength: sim.halfLength,
+        halfWidth: sim.halfWidth,
       })
-      this.scene.add(mesh)
     }
     this.ready = this.types.length > 0
     return this
   }
 
-  // Deterministic per-vehicle paint, so a car does not change colour when it
-  // is recycled into a different slot.
-  colorFor(type, seed) {
-    if (type.fixedColor) return new THREE.Color(type.color)
-    return new THREE.Color(PAINT[seed % PAINT.length])
+  _mesh(source, cap, name, castShadow) {
+    // Share the vertex data; each mesh owns its per-instance lamp attribute.
+    const g = new THREE.BufferGeometry()
+    for (const [key, attr] of Object.entries(source.attributes)) g.setAttribute(key, attr)
+    g.setIndex(source.index)
+    g.boundingSphere = source.boundingSphere
+    g.boundingBox = source.boundingBox
+    const light = new THREE.InstancedBufferAttribute(new Float32Array(cap * 4), 4)
+    light.setUsage(THREE.DynamicDrawUsage)
+    g.setAttribute('instLight', light)
+    const mesh = new THREE.InstancedMesh(g, this.material, cap)
+    mesh.instanceMatrix.setUsage(THREE.DynamicDrawUsage)
+    mesh.instanceColor = new THREE.InstancedBufferAttribute(new Float32Array(cap * 3), 3)
+    mesh.instanceColor.setUsage(THREE.DynamicDrawUsage)
+    mesh.count = 0
+    mesh.frustumCulled = false
+    mesh.castShadow = castShadow
+    mesh.receiveShadow = true
+    mesh.name = name
+    this.scene.add(mesh)
+    return mesh
   }
 
-  pick(rand) {
-    let r = rand
+  // Deterministic per-vehicle paint (sRGB hex), so a car does not change
+  // colour when it is recycled into a different slot.
+  paintFor(type, seed) {
+    return paintFor(type.key, seed | 0)
+  }
+
+  // Weighted pick. `taxiBias` 0..1 raises the taxi share (Midtown).
+  pick(rand, taxiBias = 0) {
+    let total = 0
+    for (const t of this.types) total += this._weight(t, taxiBias)
+    let r = rand * total
     for (const t of this.types) {
-      r -= t.weight
+      r -= this._weight(t, taxiBias)
       if (r <= 0) return t
     }
     return this.types[0]
   }
 
+  _weight(t, taxiBias) {
+    if (t.key !== 'taxi') return t.weight
+    return t.weight * (0.45 + taxiBias * 1.9)
+  }
+
   reset() {
-    for (const t of this.types) t.mesh.count = 0
+    for (const t of this.types) {
+      for (const m of t.lods) m.count = 0
+      t.wheel.count = 0
+    }
+  }
+
+  /**
+   * Write one car. `lod` 0..2; falls back to the next LOD when a pool is
+   * full. Returns the LOD actually used, or -1 when every pool is full.
+   */
+  put(type, lod, matrix, paintHex, brake, heads, strobe, sign) {
+    let l = lod
+    while (l < 3 && type.lods[l].count >= (l === 0 ? LOD0_CAP : type.capacity)) l++
+    if (l >= 3) return -1
+    const mesh = type.lods[l]
+    const i = mesh.count++
+    mesh.setMatrixAt(i, matrix)
+    mesh.setColorAt(i, _color.setHex(paintHex))
+    const light = mesh.geometry.getAttribute('instLight')
+    light.setXYZW(i, brake, heads, strobe, sign)
+    return l
+  }
+
+  putWheel(type, matrix) {
+    const mesh = type.wheel
+    if (mesh.count >= LOD0_CAP * 4) return
+    const i = mesh.count++
+    mesh.setMatrixAt(i, matrix)
+    mesh.setColorAt(i, _color.setHex(0xffffff))
   }
 
   flush() {
     for (const t of this.types) {
-      t.mesh.instanceMatrix.needsUpdate = true
-      if (t.mesh.instanceColor) t.mesh.instanceColor.needsUpdate = true
+      for (const m of [...t.lods, t.wheel]) {
+        if (m.count === 0) continue
+        m.instanceMatrix.needsUpdate = true
+        m.instanceMatrix.clearUpdateRanges()
+        m.instanceMatrix.addUpdateRange(0, m.count * 16)
+        if (m.instanceColor) {
+          m.instanceColor.needsUpdate = true
+          m.instanceColor.clearUpdateRanges()
+          m.instanceColor.addUpdateRange(0, m.count * 3)
+        }
+        const light = m.geometry.getAttribute('instLight')
+        light.needsUpdate = true
+        light.clearUpdateRanges()
+        light.addUpdateRange(0, m.count * 4)
+      }
     }
   }
 
   get stats() {
     let n = 0
-    for (const t of this.types) n += t.mesh.count
+    for (const t of this.types) for (const m of t.lods) n += m.count
     return { drawn: n, types: this.types.length }
   }
 }

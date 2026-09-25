@@ -72,3 +72,11 @@ public/models/** filter=lfs diff=lfs merge=lfs -text
 public/assets/** filter=lfs diff=lfs merge=lfs -text
 *.vrm filter=lfs diff=lfs merge=lfs -text
 *.abc filter=lfs diff=lfs merge=lfs -text
+# The repository's GitHub LFS upload budget is exhausted (2026-09-24), so
+# runtime models added or re-baked since then ship as ordinary git blobs.
+# Each is a few MB at most; existing LFS assets are unchanged. Move these back
+# under LFS (git lfs migrate import --include=...) once the budget is raised.
+public/models/characters/player/player-clips.glb -filter -diff -merge binary
+public/models/vehicles/** -filter -diff -merge binary
+public/models/people/** -filter -diff -merge binary
+public/models/trees/** -filter -diff -merge binary

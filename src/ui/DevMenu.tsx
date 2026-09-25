@@ -14,6 +14,7 @@ import {
 } from '../gameplay/dev-spawns'
 import { MANHATTAN_LANDMARKS, manhattanCollision, resolveManhattanSpawn } from '../world/manhattan-collision'
 import { cityAudio } from '../audio'
+import { director, forceWanted } from '../gameplay/director/director-state'
 
 function teleport(x: number, z: number): void {
   const ground = manhattanCollision.groundHeightAt(x, z) ?? 12.4
@@ -57,6 +58,20 @@ export function DevMenu() {
             teleport(p.x, p.z)
           }}>
             Respawn
+          </button>
+        </div>
+      </div>
+
+      <div className="dev-menu-section">
+        <div className="dev-menu-title">Police</div>
+        <div className="dev-menu-grid">
+          {[1, 2, 3, 4, 5].map((stars) => (
+            <button key={stars} className="small" onClick={() => forceWanted(stars, rt.player.pos)}>
+              {'★'.repeat(stars)}
+            </button>
+          ))}
+          <button className="small" onClick={() => forceWanted(0, rt.player.pos)}>
+            Clear ({director.wanted.stars}★)
           </button>
         </div>
       </div>

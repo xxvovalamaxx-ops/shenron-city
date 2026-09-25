@@ -35,7 +35,7 @@
       "id": "character.player.v1",
       "runtimePath": "public/models/characters/player/player.glb",
       "purpose": "realistic CC3 player character (Eric, Sketchfab CC-BY)",
-      "source": "Sketchfab — Eric_Rigged_Business_Man.glb (CC-BY)",
+      "source": "Sketchfab \u2014 Eric_Rigged_Business_Man.glb (CC-BY)",
       "creator": "Sketchfab CC-BY creator (Eric rigged business man)",
       "license": "CC-BY-4.0",
       "redistribution": "attribution"
@@ -47,43 +47,8 @@
       "source": "Retargeted from Quaternius 65-joint CC0 clips",
       "creator": "Quaternius + Shenzhen City retarget pipeline",
       "license": "CC0-1.0",
-      "redistribution": "allowed"
-    },
-    {
-      "id": "dev.sedan.v1",
-      "runtimePath": "public/models/dev/sedan.glb",
-      "purpose": "dev-tool spawn",
-      "source": "Kenney Car Kit (CC0)",
-      "creator": "Kenney",
-      "license": "CC0-1.0",
-      "redistribution": "allowed"
-    },
-    {
-      "id": "dev.taxi.v1",
-      "runtimePath": "public/models/dev/taxi.glb",
-      "purpose": "dev-tool spawn",
-      "source": "Kenney Car Kit (CC0)",
-      "creator": "Kenney",
-      "license": "CC0-1.0",
-      "redistribution": "allowed"
-    },
-    {
-      "id": "dev.police.v1",
-      "runtimePath": "public/models/dev/police.glb",
-      "purpose": "dev-tool spawn",
-      "source": "Kenney Car Kit (CC0)",
-      "creator": "Kenney",
-      "license": "CC0-1.0",
-      "redistribution": "allowed"
-    },
-    {
-      "id": "dev.ambulance.v1",
-      "runtimePath": "public/models/dev/ambulance.glb",
-      "purpose": "dev-tool spawn",
-      "source": "Kenney Car Kit (CC0)",
-      "creator": "Kenney",
-      "license": "CC0-1.0",
-      "redistribution": "allowed"
+      "redistribution": "allowed",
+      "modifications": "Re-baked by scripts/retarget/bake-retarget.py as a per-frame rest-relative retarget onto Eric's skeleton; the first bake shipped seven identical static poses lying on their back"
     },
     {
       "id": "dev.ped.v1",
@@ -102,6 +67,110 @@
       "creator": "Kenney",
       "license": "CC0-1.0",
       "redistribution": "allowed"
+    },
+    {
+      "id": "texture.city-surfaces.albedo-array.v1",
+      "name": "City surface texture array (albedo)",
+      "source": "Poly Haven CC0 textures (1k): brick_wall_001, yellow_brick, sandstone_blocks_08, concrete_wall_008, painted_metal_shutter, asphalt_02, concrete_pavement_02 - https://polyhaven.com/a/<id>",
+      "creator": "Poly Haven: Rob Tuytel, Dimitrios Savva, Dario Barresi, Charlotte Baglioni, Rico Cilliers",
+      "license": "CC0-1.0",
+      "redistribution": "Permitted without restriction (CC0)",
+      "runtimePath": "public/textures/surfaces/surface_albedo.jpg",
+      "modifications": "Seven 1k diffuse maps with their AO maps multiplied in (softened to 45-100%), stacked top to bottom into one 1024x7168 JPEG strip for a WebGL2 texture array; built by scripts/blender/pack_surface_textures.py"
+    },
+    {
+      "id": "texture.city-surfaces.normal-roughness-array.v1",
+      "name": "City surface texture array (normal + roughness)",
+      "source": "Poly Haven CC0 textures (1k): brick_wall_001, yellow_brick, sandstone_blocks_08, concrete_wall_008, painted_metal_shutter, asphalt_02, concrete_pavement_02 - https://polyhaven.com/a/<id>",
+      "creator": "Poly Haven: Rob Tuytel, Dimitrios Savva, Dario Barresi, Charlotte Baglioni, Rico Cilliers",
+      "license": "CC0-1.0",
+      "redistribution": "Permitted without restriction (CC0)",
+      "runtimePath": "public/textures/surfaces/surface_nrm_rough.png",
+      "modifications": "OpenGL normal XY in R/G and roughness in B, box-downsampled to 512 px per layer and stacked into one 512x3584 PNG strip; built by scripts/blender/pack_surface_textures.py"
+    },
+    {
+      "id": "vehicles.shenron-family.v1",
+      "name": "Shenron vehicle family (sedan, taxi, police, SUV, van, coupe; LOD0-2)",
+      "source": "scripts/blender/vehicles/build_vehicles.py (procedural Blender 4.2 authoring)",
+      "creator": "Shenron City project (original work)",
+      "license": "Original work (project-owned)",
+      "redistribution": "allowed",
+      "runtimePath": "public/models/vehicles/vehicles.glb",
+      "modifications": "Generated from code; fictional parody designs, no real makes, badges or text",
+      "purpose": "traffic fleet, player and parked cars"
+    },
+    {
+      "id": "people.crowd.men.v1",
+      "name": "Crowd bodies (men)",
+      "purpose": "instanced pedestrian outfits + clips baked to a bone texture at load",
+      "source": "Quaternius \"Ultimate Modular Men\" + \"Ultimate Modular Women\", Individual Characters glTF (quaternius.com; fetched by scripts/blender/people/fetch_quaternius.py, SHA-256 pinned)",
+      "creator": "Quaternius",
+      "license": "CC0-1.0",
+      "redistribution": "allowed",
+      "runtimePath": "public/models/people/crowd_men.glb",
+      "modifications": "scripts/blender/people/build_crowd.py: outfits split into parts on one shared rig, materials replaced by a per-face paint-region code in COLOR_0, far-LOD proxies decimated, pistol removed, authored Phone idle + phone prop, 7 clips kept"
+    },
+    {
+      "id": "people.crowd.women.v1",
+      "name": "Crowd bodies (women)",
+      "purpose": "instanced pedestrian outfits + clips baked to a bone texture at load",
+      "source": "Quaternius \"Ultimate Modular Men\" + \"Ultimate Modular Women\", Individual Characters glTF (quaternius.com; fetched by scripts/blender/people/fetch_quaternius.py, SHA-256 pinned)",
+      "creator": "Quaternius",
+      "license": "CC0-1.0",
+      "redistribution": "allowed",
+      "runtimePath": "public/models/people/crowd_women.glb",
+      "modifications": "scripts/blender/people/build_crowd.py: as crowd_men.glb"
+    },
+    {
+      "id": "trees.leaf-atlas.v1",
+      "name": "Tree leaf-cluster atlas",
+      "purpose": "alpha-tested leaf cards for the procedural street and park trees",
+      "source": "Poly Haven island_tree_01, jacaranda_tree, fir_tree_01 leaf/twig maps (1k) + procedural leaf silhouettes",
+      "creator": "Poly Haven; composed by Shenron City (scripts/blender/trees/build_tree_textures.py)",
+      "license": "CC0-1.0",
+      "redistribution": "allowed",
+      "runtimePath": "public/textures/nature/trees/leaf-atlas.webp",
+      "modifications": "sprites cut out, colour-normalised, stamped into 8 twig/cluster cells, colour bled into transparent texels"
+    },
+    {
+      "id": "trees.bark-broadleaf.v1",
+      "name": "Broadleaf bark",
+      "source": "Poly Haven bark_brown_02 (1k diffuse)",
+      "creator": "Poly Haven",
+      "license": "CC0-1.0",
+      "redistribution": "allowed",
+      "runtimePath": "public/textures/nature/trees/bark-broadleaf.webp",
+      "modifications": "re-encoded WebP"
+    },
+    {
+      "id": "trees.bark-broadleaf-normal.v1",
+      "name": "Broadleaf bark normal",
+      "source": "Poly Haven bark_brown_02 (1k nor_gl)",
+      "creator": "Poly Haven",
+      "license": "CC0-1.0",
+      "redistribution": "allowed",
+      "runtimePath": "public/textures/nature/trees/bark-broadleaf-normal.webp",
+      "modifications": "re-encoded WebP"
+    },
+    {
+      "id": "trees.pine-bark.v1",
+      "name": "Pine bark",
+      "source": "Poly Haven pine_bark (1k diffuse)",
+      "creator": "Poly Haven",
+      "license": "CC0-1.0",
+      "redistribution": "allowed",
+      "runtimePath": "public/textures/nature/trees/pine-bark.webp",
+      "modifications": "re-encoded WebP"
+    },
+    {
+      "id": "trees.pine-bark-normal.v1",
+      "name": "Pine bark normal",
+      "source": "Poly Haven pine_bark (1k nor_gl)",
+      "creator": "Poly Haven",
+      "license": "CC0-1.0",
+      "redistribution": "allowed",
+      "runtimePath": "public/textures/nature/trees/pine-bark-normal.webp",
+      "modifications": "re-encoded WebP"
     }
   ]
 }

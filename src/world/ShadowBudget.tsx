@@ -54,6 +54,14 @@ export function ShadowBudget({ enabled, mapSize }: { enabled: boolean; mapSize: 
         if (!mesh.isMesh && !(mesh as unknown as THREE.SkinnedMesh).isSkinnedMesh) return
 
         const data = mesh.userData as Record<string, unknown>
+        // Streamed building and park-tree tiles are flagged by the city
+        // pipeline when they load. The flag wins over the stash: a tile this
+        // pass happened to see a frame before the pipeline did must not be
+        // locked out of casting for good.
+        if (data.cityShadow === true) {
+          mesh.castShadow = enabled
+          return
+        }
         if (data[ORIGINAL] === undefined) data[ORIGINAL] = mesh.castShadow
         const original = data[ORIGINAL] === true
 

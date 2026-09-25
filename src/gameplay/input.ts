@@ -34,6 +34,7 @@ const MAP: Record<string, keyof Keys> = {
   ControlRight: 'crouch',
   KeyC: 'crouch',
   KeyE: 'interact',
+  KeyF: 'interact',
 }
 
 export function useKeys() {

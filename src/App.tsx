@@ -15,7 +15,7 @@ import {
   useState,
 } from 'react'
 import { Canvas, useFrame, useThree } from '@react-three/fiber'
-import { PointerLockControls, useProgress } from '@react-three/drei'
+import { useProgress } from '@react-three/drei'
 import * as THREE from 'three'
 
 import { useGame } from './adapter/store'
@@ -23,6 +23,7 @@ import { inputLocked, useHud } from './ui/hud-store'
 import { ResilientResizeObserver } from './lib/resize'
 import { GameLoop } from './gameplay/GameLoop'
 import { DragLook } from './gameplay/DragLook'
+import { PointerLook } from './gameplay/player/PointerLook'
 import { rt, setRuntimePaused } from './gameplay/runtime'
 import { PlayerAvatar } from './character/PlayerAvatar'
 import { VehicleRig } from './world/VehicleRig'
@@ -32,9 +33,12 @@ import { DayCycle } from './world/DayCycleRig'
 import { CityLightingRig } from './world/CityLightingRig'
 import { ShadowBudget } from './world/ShadowBudget'
 import { AtmosphericDust } from './world/AtmosphericDust'
+import { AtmosphereRig } from './world/atmosphere/AtmosphereRig'
 import { resolveManhattanSpawn } from './world/manhattan-collision'
 import { PALETTE, QUALITY } from './world/palette'
 import { Hud } from './ui/Hud'
+import { MissionHud } from './ui/MissionHud'
+import { GameDirector } from './gameplay/director/GameDirector'
 import { DevMenu } from './ui/DevMenu'
 import { DevSpawns } from './ui/DevSpawns'
 import { IntroCamera, IntroSequence } from './ui/IntroSequence'
@@ -102,6 +106,7 @@ function Scene({
       <color attach="background" args={[PALETTE.night]} />
 
       <NightEnvironment />
+      <AtmosphereRig quality={settings.quality} />
 
       <RendererBridge maxDpr={quality.maxDpr} shadows={quality.shadows} />
       <DayCycle />
@@ -118,10 +123,11 @@ function Scene({
       <IntroCamera />
 
       <GameLoop />
+      <GameDirector />
 
       {quality.postprocessing && (
         <Suspense fallback={null}>
-          <PostProcessing />
+          <PostProcessing quality={settings.quality} />
         </Suspense>
       )}
     </>
@@ -228,6 +234,9 @@ export default function App() {
   const [baseReady, setBaseReady] = useState(false)
   const [progress, setProgress] = useState(0)
   const [introActive, setIntroActive] = useState(false)
+  // The intro is the entrance, not the resume: enterWorld also resumes from
+  // the pause menu, and replaying the dive on every unpause froze the player.
+  const introPlayed = useRef(false)
   // Set once the browsing context refuses pointer lock; from then on the game
   // runs in drag-to-look rather than retrying a lock that cannot succeed.
   const [pointerLockBlocked, setPointerLockBlocked] = useState(false)
@@ -311,6 +320,9 @@ export default function App() {
     } else if (restored.repaired.length > 0) {
       console.warn(`[save] repaired: ${restored.repaired.join(', ')}`)
     }
+    // A fault means `data` is just defaultSave(); applying it would teleport a
+    // fresh game off the resolved street spawn onto the save module's fallback.
+    if (restored.fault) return
     if (!restored.data.forward.x && !restored.data.forward.z) return
     applySave(restored.data)
   }, [restored, baseReady, visualInspection, vision])
@@ -380,7 +392,10 @@ export default function App() {
       }
     }
     setScreen('playing')
-    setIntroActive(true)
+    if (!introPlayed.current) {
+      introPlayed.current = true
+      setIntroActive(true)
+    }
     void cityAudio.start()
   }, [pointerLockEnabled, pointerLockBlocked, setScreen])
 
@@ -403,9 +418,9 @@ export default function App() {
           <LoadGate baseReady={baseReady} onReady={markSceneReady} />
         </Suspense>
         {pointerLockEnabled && !pointerLockBlocked && (
-          <PointerLockControls
+          <PointerLook
             ref={controls as never}
-            pointerSpeed={settings.sensitivity}
+            sensitivity={settings.sensitivity}
             onUnlock={() => {
               if (useHud.getState().screen === 'playing') setScreen('paused')
             }}
@@ -415,10 +430,12 @@ export default function App() {
         <DragLook
           enabled={(!pointerLockEnabled || pointerLockBlocked) && screen === 'playing'}
           sensitivity={settings.sensitivity}
+          fov={settings.fov}
         />
       </Canvas>
 
       {screen === 'playing' && <Hud />}
+      {screen === 'playing' && <MissionHud />}
       {screen === 'playing' && pointerLockBlocked && (
         <div className="input-notice" role="status">
           This page can’t capture the pointer — <strong>hold the left mouse
