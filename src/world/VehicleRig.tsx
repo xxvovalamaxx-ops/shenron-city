@@ -47,6 +47,8 @@ import {
 import { SkidMarks, Sparks, TyreSmoke } from './vehicles/vehicle-fx'
 import { createSuspension, stepSuspension, type SuspensionState } from './vehicles/vehicle-suspension'
 import { vehicleAudio } from '../audio/vehicle-audio'
+import { trafficAudio } from '../audio/traffic-audio'
+import type { TrafficSoundSource } from '../audio/traffic-voices'
 import { manhattanCollision } from './manhattan-collision'
 
 interface WheelRig {
@@ -146,6 +148,7 @@ export function VehicleRig() {
   const fx = useRef<{ skid: SkidMarks; smoke: TyreSmoke; sparks: Sparks } | null>(null)
   const lights = useRef<{ spots: THREE.SpotLight[]; owner: number | null } | null>(null)
   const siren = useRef(false)
+  const trafficSources = useRef<TrafficSoundSource[]>([])
   const clock = useRef(0)
   const { gl, camera } = useThree()
 
@@ -183,6 +186,7 @@ export function VehicleRig() {
         lights.current = null
       }
       vehicleAudio.stop()
+      trafficAudio.stop()
     }
   }, [])
 
@@ -376,6 +380,33 @@ export function VehicleRig() {
       kind: hud.kind ?? 'sedan',
       siren: !!driven && driven.kind === 'police' && siren.current,
     }, dt)
+
+    // Everyone else's engines (and pursuing cruisers' sirens), nearest first.
+    const sources = trafficSources.current
+    sources.length = 0
+    for (const view of vehicleSim.traffic) {
+      sources.push({ key: `t${view.id}`, x: view.x, y: view.y, z: view.z, speed: view.speed, kind: view.kind, siren: false })
+    }
+    for (const entity of vehicleSim.registry.vehicles.values()) {
+      if (entity.id === playerId || entity.state === 'DISABLED') continue
+      const pursuit = entity.controller === 'pursuit'
+      if (!pursuit && entity.state !== 'AI_CONTROLLED') continue
+      sources.push({
+        key: `v${entity.id}`,
+        x: entity.pose.pos.x,
+        y: entity.pose.pos.y,
+        z: entity.pose.pos.z,
+        speed: entity.motion.speed,
+        kind: entity.kind,
+        siren: pursuit,
+      })
+    }
+    camera.getWorldDirection(_v)
+    const flen = Math.hypot(_v.x, _v.z) || 1
+    trafficAudio.update(sources, {
+      pos: { x: camera.position.x, y: camera.position.y, z: camera.position.z },
+      forward: { x: _v.x / flen, z: _v.z / flen },
+    })
   })
 
   return <group name="vehicle-rig" ref={root} />

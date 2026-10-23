@@ -104,7 +104,10 @@ function packPalette(materials) {
   materials.forEach((m, i) => {
     const p = PALETTE[m] || FALLBACK
     const put = (slot, hex) => {
-      const c = new THREE.Color(hex).convertSRGBToLinear()
+      // THREE.Color already converts an sRGB hex into the linear working
+      // space (ColorManagement is on); converting again squared every wall
+      // colour and left the city about five times too dark.
+      const c = new THREE.Color(hex)
       const o = (slot * n + i) * 4
       data[o] = c.r; data[o + 1] = c.g; data[o + 2] = c.b; data[o + 3] = 1
     }

@@ -27,6 +27,7 @@ import { PointerLook } from './gameplay/player/PointerLook'
 import { rt, setRuntimePaused } from './gameplay/runtime'
 import { PlayerAvatar } from './character/PlayerAvatar'
 import { VehicleRig } from './world/VehicleRig'
+import { PoliceHelicopter } from './world/PoliceHelicopter'
 import { NightEnvironment } from './world/NightEnvironment'
 import { ManhattanCity } from './world/ManhattanCity'
 import { DayCycle } from './world/DayCycleRig'
@@ -118,6 +119,7 @@ function Scene({
 
       <PlayerAvatar />
       <VehicleRig />
+      <PoliceHelicopter />
       <DevSpawns />
       <AtmosphericDust />
       <IntroCamera />

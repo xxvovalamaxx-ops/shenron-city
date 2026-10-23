@@ -37,6 +37,9 @@ import {
   type Vec2,
 } from '../wanted/wanted'
 import { clearDispatch, stepDispatch, unitObservers } from '../wanted/police-dispatch'
+import { clearFootPolice, createFootPolice, officerObservers, stepFootPolice, type CruiserView } from '../wanted/foot-police'
+import { clearHeli, heliSees, policeHeli, stepHeli } from '../wanted/helicopter'
+import { ejectDriver, removeDone, stepEjected, streetFigures } from '../../world/life/street-figures'
 import {
   atMissionStart,
   objectiveTarget,
@@ -60,6 +63,9 @@ const CRIME_REPEAT = 1.5
 const CRIME_IMPACT = 4
 /** What an arrest costs. */
 const BUST_FINE = 500
+
+const footPolice = createFootPolice()
+const figureGround = (x: number, z: number) => manhattanCollision.groundHeightAt(x, z)
 
 /** Police cars in LION traffic, as observers: they see crimes too. */
 function trafficPolice(): Observer[] {
@@ -178,11 +184,11 @@ export function GameDirector() {
 
     // ── Police sight ─────────────────────────────────────────────────────
     const m = mem.current
-    const observers = [...unitObservers(director.dispatch, vehicleSim), ...trafficPolice(), ...policeObservers()]
+    const observers = [...unitObservers(director.dispatch, vehicleSim), ...officerObservers(), ...trafficPolice(), ...policeObservers()]
     m.sightClock -= dt
     if (m.sightClock <= 0) {
       m.sightClock = SIGHT_INTERVAL
-      m.spotted = observers.some((o) => canSee(o, player, occluded))
+      m.spotted = heliSees(policeHeli, player) || observers.some((o) => canSee(o, player, occluded))
     }
     const playerVel = m.lastPlayer
       ? { x: (player.x - m.lastPlayer.x) / dt, z: (player.z - m.lastPlayer.z) / dt }
@@ -209,6 +215,7 @@ export function GameDirector() {
         case 'promote': {
           // Pulled out of traffic: a carjack, or worse, a cruiser.
           const v = registry.vehicles.get(event.vehicleId)
+          if (v) ejectDriver({ x: v.pose.pos.x, y: v.pose.pos.y || (figureGround(v.pose.pos.x, v.pose.pos.z) ?? 12.1), z: v.pose.pos.z, heading: v.pose.heading }, event.vehicleId * 13 + 5)
           crime = v?.kind === 'police' ? 'hit-police-vehicle' : 'carjack'
           break
         }
@@ -249,7 +256,31 @@ export function GameDirector() {
       onFoot,
       dt,
     })
-    if (dispatch.busted) {
+    const cruisers: CruiserView[] = []
+    for (const id of director.dispatch.units.keys()) {
+      const e = registry.vehicles.get(id)
+      if (e) cruisers.push({ id, x: e.pose.pos.x, y: e.pose.pos.y, z: e.pose.pos.z, heading: e.pose.heading, speed: e.motion.speed })
+    }
+    const foot = stepFootPolice(footPolice, {
+      stars: director.wanted.stars,
+      onFoot,
+      player,
+      cruisers,
+      dt,
+      move: (x, y, z, dx, dz) => manhattanCollision.move({ x, y, z }, dx, dz, 0.35),
+      ground: figureGround,
+    })
+    stepHeli(policeHeli, {
+      stars: director.wanted.stars,
+      player,
+      groundY: figureGround(player.x, player.z) ?? rt.player.pos.y,
+      dt,
+    })
+    for (const f of streetFigures.list) if (f.role === 'ejected-driver' && !f.done) stepEjected(f, dt, figureGround)
+    removeDone()
+    if (dispatch.busted || foot.busted) {
+      clearFootPolice(footPolice)
+      clearHeli(policeHeli)
       const fine = Math.min(hud.money, BUST_FINE)
       hud.showBanner('BUSTED', fine > 0 ? `-$${fine}` : null, { kind: 'failed', durationMs: 4200 })
       if (fine > 0) hud.addMoney(-fine)

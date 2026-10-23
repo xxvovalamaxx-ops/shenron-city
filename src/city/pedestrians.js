@@ -22,6 +22,7 @@ import {
   animRows, cycleRate, newAnimState, playClip, stepAnim,
 } from '../world/life/crowd-anim'
 import { rt } from '../gameplay/runtime'
+import { streetFigures } from '../world/life/street-figures'
 
 const SIM_RADIUS = 240       // people are small; there is no point simulating
 const DESPAWN = 300          // a crowd you cannot resolve
@@ -46,6 +47,32 @@ const THREAT_RANGE = 16
 function hash1(n) {
   const x = Math.sin(n * 91.7) * 43758.5453
   return x - Math.floor(x)
+}
+
+// Navy uniform on the suit body: jacket and trousers match, light-blue shirt.
+const OFFICER_TOP = 0x1f2a44
+const OFFICER_SHIRT = 0xc9d6e6
+const OFFICER_SHOES = 0x1c1c1e
+const OFFICER_VARIANT = Math.max(0, CROWD_VARIANTS.findIndex((v) => v.key === 'm_suit'))
+
+function figureLook(f) {
+  const look = crowdLook(f.seed * 7919 + 13)
+  if (f.role === 'officer') {
+    return {
+      gender: CROWD_VARIANTS[OFFICER_VARIANT].gender,
+      variant: OFFICER_VARIANT,
+      scale: 0.95 + rand01(f.seed, 9) * 0.06,
+      pal0: [packRGB(look.skin), packRGB(look.hair), packRGB(OFFICER_TOP), packRGB(OFFICER_TOP)],
+      pal1: [packRGB(OFFICER_SHOES), packRGB(OFFICER_SHIRT)],
+    }
+  }
+  return {
+    gender: CROWD_VARIANTS[look.variant].gender,
+    variant: look.variant,
+    scale: look.scale,
+    pal0: [packRGB(look.skin), packRGB(look.hair), packRGB(look.top), packRGB(look.bottom)],
+    pal1: [packRGB(look.shoes), packRGB(look.accent)],
+  }
 }
 
 export class Crowd {
@@ -319,6 +346,7 @@ export class Crowd {
     if (!this.enabled || !this.ready) return
     dt = Math.min(dt, 0.1)
     this.clock = (this.clock || 0) + dt
+    this._figDt = dt
 
     if (import.meta.env?.DEV && typeof location !== 'undefined') {
       const q = new URLSearchParams(location.search)
@@ -524,6 +552,49 @@ export class Crowd {
     return Math.min(a, b) * 0.1
   }
 
+  // Scripted people outside the pavement sim (a jacked car's driver, police
+  // on foot): world/life/street-figures. Drawn with the same bodies; each
+  // keeps its own clip state here, keyed by figure id.
+  _renderFigures(r, inst, rows) {
+    const figs = streetFigures.list
+    if (!this._figAnim) this._figAnim = new Map()
+    const anims = this._figAnim
+    const dt = this._figDt || 0
+    const live = new Set()
+    for (const f of figs) {
+      if (f.done) continue
+      live.add(f.id)
+      let st = anims.get(f.id)
+      if (!st) {
+        st = { look: figureLook(f), anim: newAnimState(f.clip, rand01(f.seed, 3)) }
+        anims.set(f.id, st)
+      }
+      if (st.anim.clip !== f.clip) playClip(st.anim, f.clip, rand01(f.seed, 4))
+      const layout = r.layout(st.look.gender)
+      if (!layout) continue
+      const loco = f.clip === 'Walk' || f.clip === 'Run'
+      const rate = loco
+        ? cycleRate(Math.max(0.5, f.speed), r.cycleMetres(st.look.gender, f.clip), st.look.scale)
+        : 1 / Math.max(0.3, layout.clips[f.clip]?.duration ?? 2)
+      stepAnim(st.anim, dt, rate)
+      animRows(st.anim, layout.clips, rows)
+      inst.x = f.x
+      inst.y = f.y
+      inst.z = f.z
+      inst.yaw = f.yaw
+      inst.scale = st.look.scale
+      inst.variant = st.look.variant
+      inst.rowA = rows.a
+      inst.rowB = rows.b
+      inst.w = rows.w
+      inst.prop = false
+      inst.pal0 = st.look.pal0
+      inst.pal1 = st.look.pal1
+      r.add(inst)
+    }
+    for (const id of anims.keys()) if (!live.has(id)) anims.delete(id)
+  }
+
   _render(camera) {
     const r = this.renderer
     r.begin(camera)
@@ -575,6 +646,7 @@ export class Crowd {
       r.add(inst)
     }
     this._xzCount = n
+    this._renderFigures(r, inst, rows)
     r.end()
   }
 
