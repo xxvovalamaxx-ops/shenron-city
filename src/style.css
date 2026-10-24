@@ -1790,3 +1790,29 @@ html.vision-capture .overlay {
 .mission-timer.urgent b {
   color: #ff5a4f;
 }
+
+/* Photo mode key guide: one quiet strip along the bottom. */
+.photo-hint {
+  position: fixed;
+  z-index: 20;
+  width: max-content;
+  left: 50%;
+  bottom: 24px;
+  transform: translateX(-50%);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 6px 16px;
+  max-width: calc(100vw - 32px);
+  padding: 8px 16px;
+  border-radius: 6px;
+  background: rgba(0, 0, 0, 0.55);
+  color: #fff;
+  font: 600 13px/1.4 var(--gta-hud, system-ui, sans-serif);
+  pointer-events: none;
+  user-select: none;
+}
+.photo-hint b {
+  letter-spacing: 0.12em;
+  color: #f2c94c;
+}

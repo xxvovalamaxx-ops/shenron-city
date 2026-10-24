@@ -54,6 +54,10 @@ export interface HudState {
   thirdPerson: boolean
   /** Dev tools overlay. */
   devToolsOpen: boolean
+  /** Photo mode: world frozen, HUD hidden, free camera. */
+  photoMode: boolean
+  /** Hide photo mode's key guide for a clean shot. */
+  photoHintHidden: boolean
 
   /** 0..100. */
   health: number
@@ -101,6 +105,8 @@ export const useHud = create<HudState>((set) => ({
   showPerf: false,
   thirdPerson: true,
   devToolsOpen: false,
+  photoMode: false,
+  photoHintHidden: false,
 
   health: 100,
   armor: 0,
