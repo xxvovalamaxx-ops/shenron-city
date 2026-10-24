@@ -14,6 +14,9 @@
 import * as THREE from 'three'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
 import { paintMaterial } from './vehicles.js'
+import { cityWorld } from './registry.js'
+import { TreeField } from '../world/life/tree-field'
+import { streetScale, streetSpecies, treeHash } from '../world/life/tree-lod'
 
 // The /models/manhattan/ mount is cached for an hour, and these asset files carry no
 // version in their URL the way the world tiles do. In dev that means a rebuilt
@@ -27,10 +30,11 @@ const RADIUS = 420          // metres; beyond this a bin is under a pixel
 const REBUILD_AT = 35       // rebuild the instance buffers after this much
 const CELL = 200            // must match 48_build_walk.py
 
-// prop type -> mesh in props.glb. Trees pick a mesh by their variant byte,
-// which came from the genus in the forestry data.
+// prop type -> mesh in props.glb. Trees (type 0) are not drawn from
+// props.glb any more: world/life/tree-field.ts grows real ones, picking a
+// species from the variant byte (the genus in the forestry data).
+const TREE = 0
 const MESH_FOR = {
-  0: ['PROP_tree_broad', 'PROP_tree_column', 'PROP_tree_conifer'],
   1: ['PROP_streetlight'],
   2: ['PROP_signal'],
   3: ['PROP_hydrant'],
@@ -40,11 +44,9 @@ const MESH_FOR = {
   7: ['PROP_newsbox'],
 }
 
-// Only the meshes authored with the paint mask set read these. Everything else
-// keeps its own colour whatever we write here.
-const CANOPY = [
-  0x2f4a24, 0x35512a, 0x2a4420, 0x3b5730, 0x304a28, 0x40603a, 0x2d4526,
-]
+// Stride of one packed tree for TreeField: x, y, z, scale, yaw, tint,
+// species, spare.
+const TREE_REC = 8
 // Manhattan hydrants are mostly a dull aluminium; a minority are painted.
 const HYDRANT = [
   0x9aa0a2, 0x9aa0a2, 0x9aa0a2, 0x8e9698, 0xa8471f, 0x93999b,
@@ -54,7 +56,6 @@ const HYDRANT = [
 // are radii in metres, not counts, so a dense block does not starve a sparse
 // one.
 const FAR = {
-  PROP_tree_broad: 420, PROP_tree_column: 420, PROP_tree_conifer: 420,
   PROP_streetlight: 360, PROP_signal: 300, PROP_shelter: 300,
   PROP_hydrant: 150, PROP_bin: 160, PROP_bollard: 140, PROP_newsbox: 140,
 }
@@ -69,8 +70,10 @@ export class StaticProps {
     this.count = 0
     this.meta = null
     this.last = new THREE.Vector3(1e9, 1e9, 1e9)
-    this.stats = { total: 0, drawn: 0, types: 0 }
+    this.stats = { total: 0, drawn: 0, types: 0, trees: 0 }
     this.enabled = true
+    this.trees = new TreeField(scene)
+    this._treeClock = 0
   }
 
   async load(metaUrl = '/models/manhattan/props/props.json', binUrl = '/models/manhattan/props/props.bin',
@@ -87,7 +90,10 @@ export class StaticProps {
 
     const gltf = await new GLTFLoader().loadAsync(glbUrl + bust())
     const src = new Map()
-    gltf.scene.traverse((o) => { if (o.isMesh) src.set(o.name, o) })
+    gltf.scene.traverse((o) => {
+      // the blob trees in props.glb are superseded by TreeField
+      if (o.isMesh && !o.name.startsWith('PROP_tree_')) src.set(o.name, o)
+    })
 
     // Capacity per mesh from what is actually in the file within one radius.
     // Guessing high wastes tens of megabytes on 54,000 trees; guessing low
@@ -108,6 +114,11 @@ export class StaticProps {
     }
     this.stats.total = this.count
     this.stats.types = this.meshes.size
+
+    // Street trees and the park forest.
+    await this.trees.load()
+    this.trees.setSource('street', this._streetTrees())
+    this.trees.attachStreamer(cityWorld.streamer)
     // The records DataView is live from the bin fetch, but between that and
     // the GLB meshes existing there is a window where update() runs, caches
     // the camera position and draws nothing — leaving the throttle to skip
@@ -137,6 +148,36 @@ export class StaticProps {
     return out
   }
 
+  // Every type-0 record packed for TreeField. The species comes from the
+  // forestry variant byte, the size from the scale byte, and a per-tree hash
+  // turns the canopy tint so a block of planes is not a row of clones.
+  _streetTrees() {
+    let n = 0
+    for (let i = 0; i < this.count; i++) {
+      if (this.records.getUint8(i * REC + 8) === TREE) n++
+    }
+    const out = new Float32Array(n * TREE_REC)
+    let k = 0
+    for (let i = 0; i < this.count; i++) {
+      const o = i * REC
+      if (this.records.getUint8(o + 8) !== TREE) continue
+      const x = this.records.getFloat32(o, true)
+      const y = this.records.getFloat32(o + 4, true)
+      const variant = this.records.getUint8(o + 11)
+      const h = treeHash(i * 7 + 3)
+      out[k] = x
+      out[k + 1] = this.groundY
+      out[k + 2] = -y
+      out[k + 3] = streetScale(this.records.getUint8(o + 10))
+      out[k + 4] = (this.records.getUint8(o + 9) / 255) * Math.PI * 2
+      out[k + 5] = (h % 2000) / 1000 - 1
+      out[k + 6] = this.trees.speciesIndex(streetSpecies(variant, i))
+      k += TREE_REC
+    }
+    this.stats.trees = n
+    return out
+  }
+
   _meshName(type, variant) {
     const list = MESH_FOR[type]
     if (!list) return null
@@ -145,6 +186,10 @@ export class StaticProps {
 
   update(camera, force = false) {
     if (!this.enabled || !this.records) return this.stats
+    const now = performance.now() / 1000
+    const dt = this._treeClock ? Math.min(0.1, now - this._treeClock) : 0
+    this._treeClock = now
+    this.trees.update(camera, dt)
     if (!force && camera.position.distanceTo(this.last) < REBUILD_AT) {
       return this.stats
     }
@@ -190,9 +235,7 @@ export class StaticProps {
           const ix = mesh.count++
           mesh.setMatrixAt(ix, dummy.matrix)
 
-          if (type === 0) {
-            col.setHex(CANOPY[(i * 7 + variant) % CANOPY.length])
-          } else if (type === 3) {
+          if (type === 3) {
             col.setHex(HYDRANT[i % HYDRANT.length])
           } else {
             col.setRGB(1, 1, 1)
@@ -214,6 +257,10 @@ export class StaticProps {
 
   pickables() {
     return [...this.meshes.values()]
+  }
+
+  dispose() {
+    this.trees.dispose()
   }
 
   // How much of each type was dropped for want of capacity, so a starved

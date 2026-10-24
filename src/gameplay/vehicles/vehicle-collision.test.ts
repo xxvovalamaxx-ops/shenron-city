@@ -111,7 +111,7 @@ describe('vehicle vs pedestrian', () => {
     expect(result.hits).toBe(1)
     expect(result.speed).toBeCloseTo(15 * 0.6, 9)
     // Pushed to the car's right side, off the travel line.
-    expect(result.pedestrians[0].pos.x).toBeCloseTo(-1.9, 6)
+    expect(result.pedestrians[0].pos.x).toBeCloseTo(-(SEDAN.halfWidth + 0.95), 6)
     expect(result.pedestrians[0].pos.z).toBeCloseTo(2, 6)
     expect(result.pedestrians[0].displaced).toBe(true)
 

@@ -1,9 +1,13 @@
 // weather.js — time of day, cloud cover and rain.
 //
-// Everything here is generated: the sun is computed from a clock, the sky and
-// fog colours are interpolated from a small keyframe table, and the clouds are
-// the low-poly meshes 58_weather.py authored in Blender. No purchased HDRI, no
-// sky photograph — see docs/phase2/LICENSING.md, rules 2 and 3.
+// Everything here is generated: the sun and moon follow a solar arc for the
+// clock, and the sky, haze, key light, image-based ambient and exposure all
+// come from one pure model (world/atmosphere/model.ts). This engine owns the
+// state (hour, cover, rain) and applies it: the key light and its shadow
+// map, the fallback fog and hemisphere light, the exposure, and the shared
+// uniforms the sky dome, the fog chunk and the surface shaders read. The
+// cloud deck is drawn by the sky dome shader; the rain is the low-poly
+// streaks and splashes 58_weather.py authored in Blender.
 //
 // The three things that actually sell weather in a city, in order:
 //   1. where the sun is, because it decides which side of every avenue is lit
@@ -12,6 +16,11 @@
 
 import * as THREE from 'three'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
+import { atmosphereAt } from '../world/atmosphere/model'
+import { atmosphere, publishAtmosphere } from '../world/atmosphere/lighting-state'
+import {
+  LIGHT_DISTANCE, placeShadowCamera, shadowPresetFor,
+} from '../world/atmosphere/sun-shadow'
 
 // The /models/manhattan/ mount is cached for an hour, and these asset files carry no
 // version in their URL the way the world tiles do. In dev that means a rebuilt
@@ -20,52 +29,14 @@ import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
 const bust = () => (import.meta.env && import.meta.env.DEV
   ? `?v=${Date.now()}` : '')
 
-const CLOUD_MESHES = ['CLOUD_puff_a', 'CLOUD_puff_b', 'CLOUD_puff_c']
-const CLOUD_BASE_Y = 900        // metres above sea level
-const CLOUD_SPREAD = 14000      // radius of the cloud field
-const MAX_CLOUDS = 220
+// The cloud deck drifts faster than street-level wind: it is 2 km up.
+const CLOUD_WIND_SCALE = 4
 
 const RAIN_BOX = 46             // half-extent of the rain volume, metres
 const RAIN_TOP = 34
 const MAX_DROPS = 3000
 const MAX_SPLASH = 260
 const FALL_SPEED = 22           // m/s, near enough terminal velocity
-
-// Sun colour and sky by hour. Manhattan's grid runs 29 degrees off true north,
-// which is why the light comes down the numbered streets twice a year and why
-// azimuth matters as much as elevation here.
-const KEYS = [
-  // hour, elevation, azimuth, sunColour, sunI, skyTop, haze, hemiI, exposure
-  [0.0, -18, 20, 0x1b2740, 0.05, 0x070b16, 0x11182a, 0.30, 0.85],
-  [5.0, -6, 62, 0x40364a, 0.20, 0x1a2440, 0x2c3550, 0.55, 0.95],
-  [6.5, 6, 72, 0xff9c5c, 1.30, 0x4d6288, 0xc09a86, 0.95, 1.05],
-  [9.0, 34, 108, 0xffe0b8, 2.40, 0x7ba4d4, 0xb4cbe2, 1.35, 1.05],
-  [13.0, 62, 180, 0xfff6e8, 2.90, 0x8fb6dd, 0xb9cfe4, 1.55, 1.05],
-  [17.0, 30, 250, 0xfff2dc, 2.60, 0x86aed8, 0xbccbdc, 1.45, 1.05],
-  [19.0, 5, 282, 0xff8a4a, 1.15, 0x5a6f9a, 0xcf9a78, 0.95, 1.08],
-  [20.5, -8, 292, 0x3a3550, 0.18, 0x222c4c, 0x39405c, 0.55, 0.98],
-  [24.0, -18, 20, 0x1b2740, 0.05, 0x070b16, 0x11182a, 0.30, 0.85],
-]
-
-function lerpHex(a, b, t) {
-  const ca = new THREE.Color(a)
-  return ca.lerp(new THREE.Color(b), t)
-}
-
-function sampleKeys(hour) {
-  let i = 0
-  while (i < KEYS.length - 2 && KEYS[i + 1][0] <= hour) i++
-  const a = KEYS[i]
-  const b = KEYS[i + 1]
-  const t = Math.max(0, Math.min(1, (hour - a[0]) / (b[0] - a[0])))
-  const n = (k) => a[k] + (b[k] - a[k]) * t
-  return {
-    elevation: n(1), azimuth: n(2),
-    sunColor: lerpHex(a[3], b[3], t), sunI: n(4),
-    skyTop: lerpHex(a[5], b[5], t), haze: lerpHex(a[6], b[6], t),
-    hemiI: n(7), exposure: n(8),
-  }
-}
 
 export class Weather {
   constructor(scene, renderer, lights, city) {
@@ -76,53 +47,47 @@ export class Weather {
 
     this.hour = 17.0              // late afternoon, matching the old fixed sun
     this.timeScale = 0            // hours per second; 0 = frozen
-    this.cover = 0.35             // 0..1 cloud cover
+    this.baseCover = 0.4          // fair-weather cloud; rain adds to it
+    this.cover = this.baseCover   // 0..1 effective cloud cover
     this.rain = 0.0               // 0..1 rain intensity
     this.wind = new THREE.Vector2(3.2, -1.1)   // m/s in local metres
 
+    // The cloud deck is drawn by the sky dome; kept for the API and the HUD.
     this.clouds = []
     this.drops = null
     this.splashes = null
     this.dropState = null
     this.splashState = null
+    this.rainMaterial = null
     this.clock = 0
     this.ready = false
+    this.shadowPreset = null
+    this.state = null
+    this.skyColor = new THREE.Color()
+    this._keyDir = new THREE.Vector3(0, 1, 0)
+    this._appliedWetRain = -1
     this.stats = { hour: 17, clouds: 0, drops: 0, wet: 0 }
   }
 
   async load(url = '/models/manhattan/weather.glb') {
+    // The sky is procedural, so the light is right even if the rain meshes
+    // never arrive.
+    this.ready = true
+    this.apply()
     const gltf = await new GLTFLoader().loadAsync(url + bust())
       .catch(() => null)
     if (!gltf) { console.warn('[weather] no weather.glb'); return this }
     const src = new Map()
     gltf.scene.traverse((o) => { if (o.isMesh) src.set(o.name, o) })
 
-    // Clouds are lit only by ambient: a directional light on a 300 m lump of
-    // low-poly geometry gives it a hard terminator, which reads as a rock.
-    const cloudMat = new THREE.MeshBasicMaterial({
-      vertexColors: true, color: 0xffffff, fog: false,
-      transparent: true, opacity: 0.92, depthWrite: false,
-    })
-    for (const name of CLOUD_MESHES) {
-      const m = src.get(name)
-      if (!m) continue
-      const im = new THREE.InstancedMesh(m.geometry, cloudMat,
-        Math.ceil(MAX_CLOUDS / CLOUD_MESHES.length))
-      im.instanceColor = new THREE.InstancedBufferAttribute(
-        new Float32Array(im.count * 3).fill(1), 3)
-      im.frustumCulled = false
-      im.renderOrder = -10
-      im.name = `WEATHER_${name}`
-      im.count = 0
-      this.clouds.push(im)
-      this.scene.add(im)
-    }
-
+    // Rain is tinted by the light every time the sky changes: a white streak
+    // at 45 % opacity is a snowstorm at midnight.
     const rainMat = new THREE.MeshBasicMaterial({
       vertexColors: true, color: 0xffffff, transparent: true,
       opacity: 0.45, depthWrite: false, fog: false,
       side: THREE.DoubleSide,
     })
+    this.rainMaterial = rainMat
     const streak = src.get('RAIN_streak')
     if (streak) {
       this.drops = new THREE.InstancedMesh(streak.geometry, rainMat, MAX_DROPS)
@@ -152,85 +117,115 @@ export class Weather {
     }
     this.umbrellaGeometry = src.get('PROP_umbrella')?.geometry || null
 
-    this._seedClouds()
-    this.ready = true
     this.apply()
     return this
   }
 
-  _seedClouds() {
-    // Deterministic layout, so the sky does not rearrange on every reload.
-    this.cloudField = []
-    for (let i = 0; i < MAX_CLOUDS; i++) {
-      const a = (i * 2.399963) % (Math.PI * 2)      // golden angle
-      const r = CLOUD_SPREAD * Math.sqrt((i + 0.5) / MAX_CLOUDS)
-      this.cloudField.push({
-        x: Math.cos(a) * r,
-        z: Math.sin(a) * r,
-        y: CLOUD_BASE_Y + ((i * 137) % 420),
-        s: 0.7 + ((i * 61) % 100) / 100 * 1.8,
-        rot: ((i * 97) % 628) / 100,
-        mesh: i % this.clouds.length,
-        // each cloud has its own threshold, so raising cover fills the sky in
-        // a stable order instead of popping every cloud at once
-        gate: (i + 0.5) / MAX_CLOUDS,
-      })
-    }
-  }
-
   setTime(hour) { this.hour = ((hour % 24) + 24) % 24; this.apply() }
-  setCover(c) { this.cover = Math.max(0, Math.min(1, c)); this.apply() }
+  setCover(c) {
+    this.baseCover = Math.max(0, Math.min(1, c))
+    this._resolveCover()
+    this.apply()
+  }
   setRain(r) {
     this.rain = Math.max(0, Math.min(1, r))
-    // rain implies cloud; a downpour under a clear sky is a bug, not weather
-    if (this.rain > 0) this.cover = Math.max(this.cover, 0.55 + this.rain * 0.4)
+    this._resolveCover()
     this.apply()
+  }
+
+  // Rain implies cloud — a downpour under a clear sky is a bug, not weather —
+  // but the sky clears again when the rain stops.
+  _resolveCover() {
+    const rainCover = this.rain > 0 ? 0.55 + this.rain * 0.4 : 0
+    this.cover = Math.max(this.baseCover, rainCover)
+  }
+
+  /** Shadow resolution and reach for a quality preset; low casts none. */
+  configureShadows(quality) {
+    const sun = this.lights?.sun
+    if (!sun) return
+    const preset = shadowPresetFor(quality)
+    this.shadowPreset = preset
+    sun.castShadow = !!preset
+    if (!preset) return
+    sun.shadow.mapSize.set(preset.mapSize, preset.mapSize)
+    if (sun.shadow.map) {
+      sun.shadow.map.dispose()
+      sun.shadow.map = null
+    }
+    // Depth bias stays tiny (the frustum is 3 km deep); normal offset does
+    // the acne work in world units, sized to about one texel.
+    sun.shadow.bias = -0.00004
+    sun.shadow.normalBias = (2 * preset.halfExtent / preset.mapSize) * 1.1
+    sun.shadow.radius = quality === 'high' ? 3 : 2
   }
 
   // Everything that only changes when the sky changes, not per frame.
   apply() {
     if (!this.lights) return
-    const k = sampleKeys(this.hour)
+    const st = atmosphereAt({ hour: this.hour, cover: this.cover, rain: this.rain })
+    this.state = st
+    publishAtmosphere(st, this.groundY + 0.4)
     const { sun, hemi, fill } = this.lights
 
-    // A directional light below the horizon lights the undersides of every
-    // cornice and parapet in the city, which reads as the ground glowing.
-    // Night keeps the direction and floors the elevation; the table's own
-    // intensity is what makes it night.
-    const el = THREE.MathUtils.degToRad(Math.max(3, k.elevation))
-    const az = THREE.MathUtils.degToRad(k.azimuth)
-    const d = 12000
-    // azimuth 0 = north (-z in world, since world z = -y_m), 90 = east
-    sun.position.set(
-      Math.sin(az) * Math.cos(el) * d,
-      Math.sin(el) * d,
-      -Math.cos(az) * Math.cos(el) * d,
-    )
-
-    // Cloud cover flattens and cools the light rather than just dimming it.
-    const overcast = this.cover * (0.55 + this.rain * 0.45)
-    sun.color.copy(k.sunColor).lerp(new THREE.Color(0xc8d4e2), overcast * 0.8)
-    sun.intensity = k.sunI * (1 - overcast * 0.78)
-    hemi.intensity = k.hemiI * (1 - overcast * 0.25)
-    fill.intensity = 0.8 * (1 - overcast * 0.35) + overcast * 0.5
-
-    const sky = k.skyTop.clone().lerp(new THREE.Color(0x6f7783), overcast)
-    const haze = k.haze.clone().lerp(new THREE.Color(0x707880), overcast)
-    this.scene.background = sky
-    if (this.scene.fog) {
-      this.scene.fog.color.copy(haze)
-      // rain closes the view down hard; this is most of what makes it read
-      const near = 2600 * (1 - this.rain * 0.72)
-      const far = 26000 * (1 - this.rain * 0.80) * (1 - overcast * 0.25)
-      this.scene.fog.near = Math.max(120, near)
-      this.scene.fog.far = Math.max(900, far)
+    // The key light is the sun by day and the moon by night. Its direction
+    // is placed each frame around the camera (update); keep a far fallback
+    // position so it is right before the first frame too.
+    this._keyDir.set(st.keyDir.x, st.keyDir.y, st.keyDir.z)
+    // Never light the city from below the pavement.
+    if (this._keyDir.y < 0.05) {
+      this._keyDir.y = 0.05
+      this._keyDir.normalize()
     }
-    this.renderer.toneMappingExposure = k.exposure * (1 - overcast * 0.12)
+    if (!sun.castShadow) {
+      sun.target.position.set(0, 0, 0)
+      sun.position.copy(this._keyDir).multiplyScalar(LIGHT_DISTANCE)
+      sun.target.updateMatrixWorld()
+    }
+    sun.color.setRGB(st.keyColor.r, st.keyColor.g, st.keyColor.b)
+    sun.intensity = st.keyIntensity
+    // A softer, bluer shadow under cloud; a crisp one at golden hour.
+    sun.shadow.intensity = 0.92 - st.cover * 0.35
 
-    this.skyColor = sky
+    // Image-based light does the ambient work; the hemisphere is only a
+    // floor for anything that renders before the first environment bake.
+    hemi.color.setRGB(st.hemiSky.r, st.hemiSky.g, st.hemiSky.b)
+    hemi.groundColor.setRGB(st.hemiGround.r, st.hemiGround.g, st.hemiGround.b)
+    hemi.intensity = st.hemiIntensity
+    fill.intensity = st.fillIntensity
+
+    this.skyColor.setRGB(st.horizon.r, st.horizon.g, st.horizon.b)
+    if (this.scene.background && this.scene.background.isColor) {
+      this.scene.background.copy(this.skyColor)
+    } else {
+      this.scene.background = this.skyColor.clone()
+    }
+    if (this.scene.fog) {
+      // The patched fog chunk computes its own haze; this is the stock-fog
+      // fallback for shaders that do not carry the atmosphere uniforms.
+      this.scene.fog.color.setRGB(st.hazeAway.r, st.hazeAway.g, st.hazeAway.b)
+      this.scene.fog.near = Math.max(120, 2600 * (1 - this.rain * 0.72))
+      this.scene.fog.far = Math.max(900, st.fogFar)
+    }
+    this.renderer.toneMappingExposure = st.exposure
+
+    if (this.rainMaterial) {
+      const ambient = Math.max(0.05, st.horizon.g * 0.9 + st.practicals * 0.12)
+      this.rainMaterial.color.setRGB(
+        Math.min(1, ambient * 1.05 + st.practicals * 0.08),
+        Math.min(1, ambient),
+        Math.min(1, ambient * 1.08),
+      )
+      this.rainMaterial.opacity = 0.3 + (1 - st.night) * 0.12
+    }
+
     this.stats.hour = +this.hour.toFixed(2)
     this.stats.wet = +(this.rain).toFixed(2)
-    this._applyWetness()
+    this.stats.clouds = Math.round(this.cover * 100)
+    if (Math.abs(this.rain - this._appliedWetRain) > 1e-3) {
+      this._appliedWetRain = this.rain
+      this._applyWetness()
+    }
   }
 
   // Give the streamers to the weather so a wet road can actually look wet.
@@ -274,7 +269,10 @@ export class Weather {
       this.hour = (this.hour + this.timeScale * dt) % 24
       this.apply()
     }
-    this._updateClouds(dt, camera)
+    // The deck drifts with the wind; a frozen capture has dt = 0.
+    atmosphere.cloudOffset.x -= this.wind.x * CLOUD_WIND_SCALE * dt
+    atmosphere.cloudOffset.y -= -this.wind.y * CLOUD_WIND_SCALE * dt
+    this._placeKeyLight(camera)
     this._updateRain(dt, camera)
     // Tiles stream in after the weather is set, and a tile that arrives during
     // a downpour would otherwise show a dry road until the weather changed.
@@ -287,44 +285,12 @@ export class Weather {
     return this.stats
   }
 
-  _updateClouds(dt, camera) {
-    if (!this.clouds.length) return
-    const dummy = new THREE.Object3D()
-    const col = new THREE.Color()
-    for (const im of this.clouds) im.count = 0
-    const drift = this.clock * 0.6
-    // lit from the sun side, grey underneath, greyer the heavier the cover
-    const lit = new THREE.Color(0xffffff).lerp(
-      this.lights.sun.color, 0.35).multiplyScalar(1 - this.cover * 0.30)
-    const dull = new THREE.Color(0x8b93a0).multiplyScalar(
-      1 - this.cover * 0.25)
-
-    for (const c of this.cloudField) {
-      if (c.gate > this.cover) continue
-      const im = this.clouds[c.mesh]
-      if (!im || im.count >= im.instanceMatrix.count) continue
-      // The field is anchored to the world, not the camera, so clouds do not
-      // slide with the viewer -- but it wraps, so flying north never runs out.
-      const x = ((c.x + this.wind.x * drift - camera.position.x +
-        CLOUD_SPREAD) % (CLOUD_SPREAD * 2)) - CLOUD_SPREAD + camera.position.x
-      const z = ((c.z - this.wind.y * drift - camera.position.z +
-        CLOUD_SPREAD) % (CLOUD_SPREAD * 2)) - CLOUD_SPREAD + camera.position.z
-      dummy.position.set(x, c.y, z)
-      dummy.rotation.set(0, c.rot, 0)
-      dummy.scale.setScalar(c.s)
-      dummy.updateMatrix()
-      const i = im.count++
-      im.setMatrixAt(i, dummy.matrix)
-      col.copy(lit).lerp(dull, Math.min(1, c.gate / Math.max(0.05, this.cover)))
-      im.setColorAt(i, col)
-    }
-    let n = 0
-    for (const im of this.clouds) {
-      im.instanceMatrix.needsUpdate = true
-      if (im.instanceColor) im.instanceColor.needsUpdate = true
-      n += im.count
-    }
-    this.stats.clouds = n
+  // The shadow map follows the camera, texel-snapped so it does not swim.
+  _placeKeyLight(camera) {
+    const sun = this.lights?.sun
+    if (!sun || !sun.castShadow || !this.shadowPreset) return
+    placeShadowCamera(sun, camera, this._keyDir, this.groundY + 0.4,
+      this.shadowPreset)
   }
 
   _updateRain(dt, camera) {

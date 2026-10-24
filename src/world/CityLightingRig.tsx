@@ -14,10 +14,13 @@ import { useFrame } from '@react-three/fiber'
 import * as THREE from 'three'
 import { rt } from '../gameplay/runtime'
 import { normaliseHour, skyAt } from './daycycle'
-import { cityLightingUniforms } from './city-lighting-uniforms'
+import { cityLightingUniforms, syncCityOccupancy } from './city-lighting-uniforms'
+import { lightingUniforms } from './atmosphere/lighting-state'
+import { setStreetEnvironmentScale } from './surfaces/street-materials'
 import { DEFAULT_WORLD_SEED } from './city-lighting'
 import { cityNightModeFor, setCityNightMode } from './night-materials'
 import type { QualityPreset } from './palette'
+import { setSurfaceQuality } from './surfaces/surface-quality'
 
 const DATA_BIN = '/models/manhattan/building-lighting.bin'
 const DATA_JSON = '/models/manhattan/building-lighting.json'
@@ -105,16 +108,19 @@ export function CityLightingRig({ quality }: { quality: QualityPreset }) {
     const dt = Math.min(rawDt, 1 / 20)
     const hour = normaliseHour(rt.clock.hour)
     cityLightingUniforms.uCityHour.value = hour
+    syncCityOccupancy(hour)
 
     // Practicals is already a smooth day-cycle curve; a gentle lerp on top
     // guarantees no flicker even if an hour jumps (captures, debug tools).
     // Once converged, snap exactly so deterministic captures are bit-identical.
     const target = skyAt(hour, rt.clock.weather).practicals
     const error = target - smooth.current
-    if (Math.abs(error) < 1e-4) smooth.current = target
+    // A pinned capture clock snaps at once: its first frames are the shot.
+    if (rt.captureFrozen || Math.abs(error) < 1e-4) smooth.current = target
     else smooth.current += error * Math.min(1, dt * 0.5)
     cityLightingUniforms.uCityPractical.value = smooth.current
     cityLightingUniforms.uCityWetness.value = rt.clock.weather.wetness
+    setStreetEnvironmentScale(lightingUniforms.uAtmoNight.value)
 
     // Day and night are two cached program variants; flipping once per
     // dusk/dawn (with hysteresis) keeps the daylight shader at baseline cost.
@@ -127,6 +133,7 @@ export function CityLightingRig({ quality }: { quality: QualityPreset }) {
 
   useEffect(() => {
     cityLightingUniforms.uCityPatternQuality.value = quality === 'low' ? 0 : 1
+    setSurfaceQuality(quality)
   }, [quality])
 
   return null

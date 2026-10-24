@@ -25,8 +25,12 @@
 import type { Vec3 } from '../collision'
 
 export interface VehicleSpec {
-  /** Display name, e.g. 'sedan'. */
+  /** Display name shown in prompts and the HUD, e.g. 'Oriel Sedan'. */
   label: string
+  /** Which authored model family draws this kind (see vehicle-assets.ts). */
+  model: string
+  /** Kerb mass, kg. Only collision impulses read it. */
+  mass: number
   /** Bounding box half-extents, used for collision and camera framing. */
   halfLength: number
   halfWidth: number
@@ -86,6 +90,8 @@ export interface VehicleMotion {
   braking: boolean
   /** True while the vehicle is moving backwards. */
   reversing: boolean
+  /** Throttle and brake held together at a crawl: the rear tyres spin in place. */
+  burnout?: boolean
 }
 
 export interface VehiclePose {
@@ -198,6 +204,35 @@ export function stepVehicle(
   let l = l0
   let s = s0
 
+  // ── Burnout ──────────────────────────────────────────────────────────────
+  // Throttle and brake together at a crawl: the brakes hold the car while
+  // the driven wheels spin, and steering pivots it slowly round its nose.
+  if (input.throttle > 0 && input.brake > 0 && Math.abs(v0) < BURNOUT_SPEED) {
+    v = v0 * Math.exp(-6 * dt)
+    const steerTarget = input.steer * spec.maxSteer
+    const steerDelta = spec.steerRate * dt
+    if (s < steerTarget) s = Math.min(steerTarget, s + steerDelta)
+    else if (s > steerTarget) s = Math.max(steerTarget, s - steerDelta)
+    const heading = pose.heading + input.steer * BURNOUT_PIVOT_RATE * input.throttle * dt
+    const f = vehicleForward(heading)
+    const next = { ...pose.pos }
+    next.x += f.x * v * dt
+    next.z += f.z * v * dt
+    if (groundY !== null) next.y = groundY
+    return {
+      pose: { pos: next, heading },
+      motion: {
+        speed: v,
+        lateral: l * Math.exp(-spec.grip * dt),
+        steerAngle: s,
+        wheelSpin: w0 + BURNOUT_WHEEL_RATE * input.throttle * dt,
+        braking: true,
+        reversing: false,
+        burnout: true,
+      },
+    }
+  }
+
   // ── Direction switching ──────────────────────────────────────────────────
   // Throttle pushed while reversing brakes the car out of reverse, then
   // drives forward once it crosses zero. The brake pedal is symmetric: it
@@ -269,6 +304,64 @@ export function stepVehicle(
         v < -0.05 ||
         (input.throttle > 0 && v < -0.05),
       reversing: v < -0.1,
+      burnout: false,
+    },
+  }
+}
+
+/** Below this speed, throttle plus brake is a burnout, m/s. */
+export const BURNOUT_SPEED = 2.5
+/** Wheel speed during a burnout, rad/s at full throttle. */
+export const BURNOUT_WHEEL_RATE = 55
+/** How fast steering pivots a burning-out car, rad/s at full lock. */
+export const BURNOUT_PIVOT_RATE = 0.7
+
+/** World-plane velocity of a vehicle from its signed speed and slide. */
+export function motionVelocity(heading: number, motion: Pick<VehicleMotion, 'speed' | 'lateral'>): { x: number; z: number } {
+  const f = vehicleForward(heading)
+  const r = vehicleRight(heading)
+  return {
+    x: f.x * motion.speed + r.x * motion.lateral,
+    z: f.z * motion.speed + r.z * motion.lateral,
+  }
+}
+
+/** Write a world-plane velocity back as signed speed + slide. */
+export function applyVelocity(heading: number, motion: VehicleMotion, vx: number, vz: number): void {
+  const f = vehicleForward(heading)
+  const r = vehicleRight(heading)
+  motion.speed = vx * f.x + vz * f.z
+  motion.lateral = vx * r.x + vz * r.z
+}
+
+/**
+ * A vehicle with nobody at the wheel sliding to rest: a parked car that was
+ * shoved, or a car being jacked. Speed and slide bleed off at a tyre-scrub
+ * rate; heading never changes (nobody is steering).
+ */
+export function stepLooseVehicle(
+  spec: VehicleSpec,
+  pose: VehiclePose,
+  motion: VehicleMotion,
+  dt: number,
+  groundY: number | null,
+  scrub = 7.5,
+): { pose: VehiclePose; motion: VehicleMotion } {
+  const decay = (v: number) => (v > 0 ? Math.max(0, v - scrub * dt) : Math.min(0, v + scrub * dt))
+  const speed = decay(motion.speed)
+  const lateral = decay(motion.lateral)
+  const vel = motionVelocity(pose.heading, { speed, lateral })
+  const pos = { ...pose.pos, x: pose.pos.x + vel.x * dt, z: pose.pos.z + vel.z * dt }
+  if (groundY !== null) pos.y = groundY
+  return {
+    pose: { pos, heading: pose.heading },
+    motion: {
+      ...motion,
+      speed,
+      lateral,
+      wheelSpin: motion.wheelSpin + (speed / spec.wheelRadius) * dt,
+      braking: true,
+      reversing: false,
     },
   }
 }

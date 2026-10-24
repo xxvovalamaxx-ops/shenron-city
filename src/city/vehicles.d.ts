@@ -1,26 +1,29 @@
-import type { Material } from 'three'
+import type { Material, Matrix4 } from 'three'
 
 export declare const FLEET: ReadonlyArray<{
-  name: string
   key: string
   weight: number
   speedScale: number
-  color?: number
-  fixedColor?: boolean
 }>
+
+export declare const LOD0_DISTANCE: number
+export declare const LOD1_DISTANCE: number
 
 export declare function paintMaterial(): Material
 
 export declare class VehicleFleet {
   constructor(scene: unknown)
   scene: unknown
-  material: Material
+  material: Material | null
   types: Array<Record<string, unknown>>
   ready: boolean
-  load(url?: string, capacity?: number): Promise<VehicleFleet>
-  colorFor(type: Record<string, unknown>, seed: number): unknown
-  pick(rand: number): Record<string, unknown> | undefined
+  quality: string
+  load(capacity?: number): Promise<VehicleFleet>
+  paintFor(type: Record<string, unknown>, seed: number): number
+  pick(rand: number, taxiBias?: number): Record<string, unknown> | undefined
   reset(): void
+  put(type: Record<string, unknown>, lod: number, matrix: Matrix4, paintHex: number, brake: number, heads: number, strobe: number, sign: number): number
+  putWheel(type: Record<string, unknown>, matrix: Matrix4): void
   flush(): void
   readonly stats: { drawn: number; types: number }
 }

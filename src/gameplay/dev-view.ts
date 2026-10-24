@@ -79,3 +79,22 @@ export function debugSpawnPosition(search: string, isDev: boolean): Vec3 | null 
 export function isDevInspection(search: string, isDev: boolean): boolean {
   return isDev && new URLSearchParams(search).get('inspect') === '1'
 }
+
+/**
+ * Dev-only spawn override: `?spawnAt=x,z[,headingDeg]` starts a fresh game at
+ * that point. The heading is a compass bearing (0 = north, 90 = east), which
+ * is what reading a map gives you. Used to probe spawn candidates.
+ */
+export function debugSpawnOverride(
+  search: string,
+  isDev: boolean,
+): { x: number; z: number; facing: { x: number; z: number } } | null {
+  if (!isDev) return null
+  const raw = new URLSearchParams(search).get('spawnAt')
+  if (!raw) return null
+  const [x, z, deg] = raw.split(',').map((part) => Number(part))
+  if (!Number.isFinite(x) || !Number.isFinite(z)) return null
+  const bearing = Number.isFinite(deg) ? (deg * Math.PI) / 180 : 0
+  // North is -z in world space.
+  return { x, z, facing: { x: Math.sin(bearing), z: -Math.cos(bearing) } }
+}

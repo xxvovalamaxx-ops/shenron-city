@@ -126,8 +126,11 @@ export class AabbVehicleWorld implements VehicleWorld {
 
 // ── Vehicle vs vehicle (oriented rectangles) ─────────────────────────────────
 
+/** The footprint a contact test needs; a full spec satisfies it. */
+export type Footprint = Pick<VehicleSpec, 'halfLength' | 'halfWidth'>
+
 /** Axis-aligned half-extents of a vehicle's footprint at a pose. */
-export function vehicleHalfExtents(spec: VehicleSpec): { x: number; z: number } {
+export function vehicleHalfExtents(spec: Footprint): { x: number; z: number } {
   return { x: spec.halfLength, z: spec.halfWidth }
 }
 
@@ -160,9 +163,9 @@ export interface RectContact {
  */
 export function rectContact(
   aPose: VehiclePose,
-  aSpec: VehicleSpec,
+  aSpec: Footprint,
   bPose: VehiclePose,
-  bSpec: VehicleSpec,
+  bSpec: Footprint,
 ): RectContact | null {
   const axes = [
     vehicleForward(aPose.heading),

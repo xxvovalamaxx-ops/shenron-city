@@ -69,13 +69,21 @@ export interface VehicleEntity {
   id: number
   kind: string
   state: VehicleState
-  controller: 'none' | 'player' | 'ai'
+  /** 'pursuit': a police car driven by the dispatcher's per-step input. */
+  controller: 'none' | 'player' | 'ai' | 'pursuit'
   pose: VehiclePose
   motion: VehicleMotion
   /** The player's car. Persisted across sessions; parked cars may be
-   * returned to the AI by the traffic director once abandoned. */
+   * returned to the AI by the traffic director once abandoned. Exactly the
+   * last car the player took is owned. */
   owned: boolean
   ai: AiState | null
+  /** Body colour (sRGB hex); null takes the kind's default livery. */
+  paint: number | null
+  /** Where the car came from: the layout, the LION traffic, or a dev spawn. */
+  origin: 'layout' | 'traffic' | 'spawn'
+  /** Heading rate left over from a collision, rad/s (visual spin-out). */
+  spin: number
 }
 
 export interface VehicleRegistry {
@@ -123,6 +131,9 @@ export function spawnVehicle(
     motion,
     owned: false,
     ai: null,
+    paint: null,
+    origin: 'layout',
+    spin: 0,
   }
   registry.nextId += 1
   registry.vehicles.set(entity.id, entity)
@@ -155,8 +166,18 @@ export function transitionVehicle(
     vehicle.controller = 'player'
     vehicle.ai = null
     registry.playerVehicleId = id
+    // One owned car: taking another hands the old one to the parking rules.
+    if (!vehicle.owned) {
+      for (const other of registry.vehicles.values()) other.owned = false
+    }
     vehicle.owned = true
-    vehicle.motion = parkedMotion()
+    // A car jacked out of moving traffic keeps rolling while the player
+    // climbs in (the session brakes it to rest); everything else is at rest.
+    if (to === 'ENTERING') {
+      vehicle.motion = from === 'AI_CONTROLLED' ? { ...vehicle.motion, braking: true } : parkedMotion()
+    } else {
+      vehicle.motion = { ...vehicle.motion }
+    }
   }
   if (to === 'PARKED' || to === 'EXITING') {
     vehicle.controller = 'none'

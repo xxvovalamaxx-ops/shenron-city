@@ -1,139 +1,279 @@
-import bpy
+"""Retarget the Quaternius 65-joint locomotion clips onto the player (Eric).
+
+Run headless from the repo root:
+
+    python3 scripts/retarget/bake-retarget.py
+
+(Blender 4.2 as a Python module; `bpy` must be importable.)
+
+Writes public/models/characters/player/player-clips.glb: Eric's skeleton, no
+meshes, seven clips — Idle_Loop, Walk_Loop, Jog_Fwd_Loop, Sprint_Loop,
+Jump_Start, Jump_Loop, Jump_Land.
+
+Why this is not a Copy Rotation bake any more
+---------------------------------------------
+The first version put world-space COPY_ROTATION constraints on Eric's bones and
+baked them. That shipped two faults, both measured on the old GLB:
+
+  1. It deleted the source actions *before* baking ("so the baked clips own the
+     names"), so the hero rig had no animation while the bake ran. Every one of
+     the seven clips came out as the same constant pose — two keyframes per
+     track, identical across clips. The player never animated.
+  2. World-space Copy Rotation copies the *absolute* orientation of each source
+     bone. The two rigs do not share bone axes (Eric's hip rests at
+     (-0.5, -0.5, 0.5, 0.5); the hero's pelvis does not), and it also copied
+     the hero root's -90° X onto Eric's `_rootJoint`, so the pose lay flat on
+     its back in the street.
+
+This version retargets explicitly, per frame, in world space:
+
+    target_world = source_world · source_rest_world⁻¹ · align · target_rest_world
+
+— the source bone's rotation *away from its rest pose* is applied to the
+target's rest pose, after `align` swings the target's rest bone direction onto
+the source's (the hero rests in a T-pose, Eric in an A-pose; without it the
+arms would hang 45° off). The world pose is then converted back into Blender's
+per-bone basis through the rest matrices, keyed, and exported through NLA
+tracks. Pelvis translation is carried over, scaled by leg length, with any
+horizontal drift removed so every loop stays in place.
+"""
 import json
 import os
-import mathutils
 
-BASE = "E:/temp projects/shenron-city"
-HERO_URL = "E:/temp projects/shenron-city/scripts/retarget/quaternius-hero.glb"
-ERIC_URL = "E:/temp projects/shenron-city/SourceAssets/PublicLibrary/Characters/Sketchfab/Eric_Rigged_Business_Man.glb"
-MAPPING = json.load(open(f"{BASE}/scripts/retarget/mapping.json", "r", encoding="utf-8"))
-OUT_URL = f"{BASE}/public/models/characters/player/player-clips.glb"
-TARGET_CLIPS = ["Idle_Loop", "Walk_Loop", "Jog_Fwd_Loop", "Sprint_Loop", "Jump_Start", "Jump_Loop", "Jump_Land"]
+import bpy
+from mathutils import Matrix, Quaternion, Vector
+
+HERE = os.path.dirname(os.path.abspath(__file__))
+REPO = os.path.abspath(os.path.join(HERE, "..", ".."))
+HERO_URL = os.path.join(HERE, "quaternius-hero.glb")
+ERIC_URL = os.path.join(REPO, "public", "models", "characters", "player", "player.glb")
+OUT_URL = os.environ.get(
+    "RETARGET_OUT",
+    os.path.join(REPO, "public", "models", "characters", "player", "player-clips.glb"),
+)
+MAPPING = json.load(open(os.path.join(HERE, "mapping.json"), "r", encoding="utf-8"))
+TARGET_CLIPS = [
+    "Idle_Loop",
+    "Walk_Loop",
+    "Jog_Fwd_Loop",
+    "Sprint_Loop",
+    "Jump_Start",
+    "Jump_Loop",
+    "Jump_Land",
+]
+# The root carries no animation worth copying and its rest axes differ; the
+# pelvis owns the body's position instead.
+SKIP_SOURCE = {"root"}
+# When a bone has several mapped children, which one defines its direction.
+PREFERRED_CHILD = {
+    "pelvis": "spine_01",
+    "spine_03": "neck_01",
+    "hand_l": "middle_01_l",
+    "hand_r": "middle_01_r",
+}
 
 # ── 1. Import both rigs ────────────────────────────────────────────────
 bpy.ops.wm.read_factory_settings(use_empty=True)
 bpy.ops.import_scene.gltf(filepath=HERO_URL)
+hero_objects = set(bpy.data.objects)
 bpy.ops.import_scene.gltf(filepath=ERIC_URL)
 
-hero_arm = None
-eric_arm = None
-for o in bpy.data.objects:
-    if o.type == "ARMATURE":
-        if o.name.lower().startswith("armature") or "hero" in o.name.lower():
-            hero_arm = o
-        else:
-            eric_arm = o
-if hero_arm is None:
-    hero_arm = [o for o in bpy.data.objects if o.type == "ARMATURE"][0]
-if eric_arm is None:
-    eric_arm = [o for o in bpy.data.objects if o.type == "ARMATURE"][-1]
+armatures = [o for o in bpy.data.objects if o.type == "ARMATURE"]
+hero_arm = next(o for o in armatures if o in hero_objects)
+eric_arm = next(o for o in armatures if o not in hero_objects)
 print("HERO:", hero_arm.name, "ERIC:", eric_arm.name, flush=True)
 
-# Eric meshes are in cm scale; scale armature+meshes to metres so exported
-# bones sit at metre positions (rotations are unaffected by scale anyway).
-bpy.ops.object.select_all(action="DESELECT")
-for o in list(bpy.data.objects):
-    o.select_set(o.name in (eric_arm.name,) or (o.parent == eric_arm))
-bpy.context.view_layer.objects.active = eric_arm
-bpy.ops.object.parent_set(type="OBJECT", keep_transform=False)
-bpy.ops.object.mode_set(mode="OBJECT")
-for o in list(bpy.data.objects):
-    if o.parent == eric_arm or o.name == eric_arm.name:
-        o.select_set(True)
-bpy.context.view_layer.objects.active = eric_arm
-bpy.ops.object.transform_apply(scale=True)
-eric_arm.scale = (0.01, 0.01, 0.01)
-bpy.context.view_layer.update()
+mapping = {s: t for s, t in MAPPING.items() if s not in SKIP_SOURCE}
+mapping = {
+    s: t
+    for s, t in mapping.items()
+    if hero_arm.data.bones.get(s) is not None and eric_arm.data.bones.get(t) is not None
+}
+target_to_source = {t: s for s, t in mapping.items()}
 
-# ── 2. World-space CopyRotation constraints, baked ─────────────────────
-for src, tgt in MAPPING.items():
-    sb = hero_arm.pose.bones.get(src)
-    tb = eric_arm.pose.bones.get(tgt)
-    if sb is None or tb is None:
-        print("MISSING", src, "->", tgt, flush=True)
+
+def world_rot(arm, matrix):
+    return (arm.matrix_world @ matrix).to_3x3().normalized().to_quaternion()
+
+
+def world_head(arm, bone):
+    return arm.matrix_world @ bone.head_local
+
+
+def rest_direction(arm, bone_name, mapped_names, preferred=None):
+    """Rest direction from a bone to its defining mapped child, world space."""
+    bone = arm.data.bones[bone_name]
+    kids = [c for c in bone.children if c.name in mapped_names]
+    if preferred:
+        pick = [c for c in kids if c.name == preferred]
+        kids = pick or kids
+    if not kids:
+        return None
+    d = world_head(arm, kids[0]) - world_head(arm, bone)
+    return d.normalized() if d.length > 1e-9 else None
+
+
+# ── 2. Rest-pose alignment per mapped bone ─────────────────────────────
+source_names = set(mapping.keys())
+target_names = set(mapping.values())
+align = {}
+
+
+def order(arm):
+    out = []
+
+    def visit(b):
+        out.append(b)
+        for c in b.children:
+            visit(c)
+
+    for b in arm.data.bones:
+        if b.parent is None:
+            visit(b)
+    return out
+
+
+eric_order = order(eric_arm)
+for bone in eric_order:
+    t = bone.name
+    s = target_to_source.get(t)
+    if s is None:
         continue
-    c = tb.constraints.new("COPY_ROTATION")
-    c.target = hero_arm
-    c.subtarget = src
-    c.target_space = "WORLD"
-    c.owner_space = "WORLD"
-    c.mix_mode = "REPLACE"
+    preferred_src = PREFERRED_CHILD.get(s)
+    preferred_tgt = mapping.get(preferred_src) if preferred_src else None
+    ds = rest_direction(hero_arm, s, source_names, preferred_src)
+    dt = rest_direction(eric_arm, t, target_names, preferred_tgt)
+    if ds is not None and dt is not None:
+        align[t] = dt.rotation_difference(ds)
+    else:
+        # End bones (head, feet tips, finger tips) inherit the parent's swing.
+        parent = bone.parent
+        while parent is not None and parent.name not in align:
+            parent = parent.parent
+        align[t] = align[parent.name] if parent is not None else Quaternion()
 
-# ── 2b. Record source clip ranges, then delete source actions so the
-#        baked clips own the names. ─────────────────────────────────────
+src_rest = {s: world_rot(hero_arm, hero_arm.data.bones[s].matrix_local) for s in mapping}
+tgt_rest = {t: world_rot(eric_arm, eric_arm.data.bones[t].matrix_local) for t in target_names}
+
+pelvis_src = "pelvis"
+pelvis_tgt = mapping.get(pelvis_src)
+src_pelvis_rest = world_head(hero_arm, hero_arm.data.bones[pelvis_src])
+tgt_pelvis_rest = world_head(eric_arm, eric_arm.data.bones[pelvis_tgt])
+# Scale translation by hip height, measured from the lowest foot.
+src_floor = min(world_head(hero_arm, b).z for b in hero_arm.data.bones)
+tgt_floor = min(world_head(eric_arm, b).z for b in eric_arm.data.bones)
+translation_scale = (tgt_pelvis_rest.z - tgt_floor) / max(1e-6, src_pelvis_rest.z - src_floor)
+print("translation scale", translation_scale, flush=True)
+
+eric_world_inv = eric_arm.matrix_world.inverted()
+eric_world_rot_inv = eric_arm.matrix_world.to_3x3().normalized().to_quaternion().inverted()
+
+# ── 3. Bake each clip ──────────────────────────────────────────────────
 source_actions = {}
-for a in bpy.data.actions:
-    if a.frame_range and (a.frame_range[1] - a.frame_range[0]) > 1:
-        source_actions[a.name] = (int(a.frame_range[0]), int(a.frame_range[1]))
-for a in list(bpy.data.actions):
-    bpy.data.actions.remove(a)
+for action in bpy.data.actions:
+    for name in TARGET_CLIPS:
+        if action.name == f"{name}_{hero_arm.name}" or action.name == name:
+            source_actions[name] = action
 
-for name in TARGET_CLIPS:
-    if name not in source_actions:
-        print("CLIP NOT FOUND", name, list(source_actions.keys()), flush=True)
-        continue
-    f0, f1 = source_actions[name]
-    # Remove any existing action on Eric, then bake into a fresh one.
-    eric_arm.animation_data_clear()
+scene = bpy.context.scene
+if hero_arm.animation_data is None:
+    hero_arm.animation_data_create()
+if eric_arm.animation_data is None:
     eric_arm.animation_data_create()
-    bpy.context.scene.frame_start = f0
-    bpy.context.scene.frame_end = f1
-    bpy.context.scene.frame_set(f0)
-    bpy.ops.nla.bake(
-        frame_start=f0,
-        frame_end=f1,
-        step=1,
-        only_selected=False,
-        visual_keying=True,
-        clear_constraints=True,
-        clear_parents=False,
-        use_current_action=True,
-        bake_types={"POSE"},
-    )
-    baked = eric_arm.animation_data.action
-    if baked is not None:
-        baked.name = name
-        print("BAKED", name, int(baked.frame_range[1] - baked.frame_range[0]), flush=True)
+for pb in eric_arm.pose.bones:
+    pb.rotation_mode = "QUATERNION"
 
-# ── 4. Remove meshes so the clips GLB is tiny; export armature ─────────
+baked_names = []
+for name in TARGET_CLIPS:
+    src_action = source_actions.get(name)
+    if src_action is None:
+        print("CLIP NOT FOUND", name, flush=True)
+        continue
+    f0, f1 = int(src_action.frame_range[0]), int(src_action.frame_range[1])
+    hero_arm.animation_data.action = src_action
+
+    # Pass 1: pelvis offsets, for drift removal.
+    offsets = []
+    for f in range(f0, f1 + 1):
+        scene.frame_set(f)
+        head = hero_arm.matrix_world @ hero_arm.pose.bones[pelvis_src].head
+        offsets.append((head - src_pelvis_rest) * translation_scale)
+    span = max(1, f1 - f0)
+    drift = offsets[-1] - offsets[0]
+    drift.z = 0.0  # vertical motion (a crouch, a landing) is the point
+
+    baked = bpy.data.actions.new(name)
+    eric_arm.animation_data.action = baked
+    previous = {}
+
+    for i, f in enumerate(range(f0, f1 + 1)):
+        scene.frame_set(f)
+        pose_arm = {}
+        for bone in eric_order:
+            t = bone.name
+            parent = bone.parent
+            s = target_to_source.get(t)
+            if parent is not None:
+                inherited = pose_arm[parent.name] @ parent.matrix_local.inverted() @ bone.matrix_local
+            else:
+                inherited = bone.matrix_local.copy()
+            if s is None:
+                pose_arm[t] = inherited
+                continue
+            src_pb = hero_arm.pose.bones[s]
+            rs = world_rot(hero_arm, src_pb.matrix)
+            rt_world = rs @ src_rest[s].inverted() @ align[t] @ tgt_rest[t]
+            rt_arm = eric_world_rot_inv @ rt_world
+            if t == pelvis_tgt:
+                offset = offsets[i] - drift * (i / span)
+                pos_world = tgt_pelvis_rest + offset
+                pos_arm = eric_world_inv @ pos_world
+            else:
+                pos_arm = inherited.translation
+            pose_arm[t] = Matrix.LocRotScale(pos_arm, rt_arm, Vector((1.0, 1.0, 1.0)))
+
+        for bone in eric_order:
+            t = bone.name
+            if t not in target_to_source:
+                continue
+            parent = bone.parent
+            if parent is not None:
+                basis = (
+                    bone.matrix_local.inverted()
+                    @ parent.matrix_local
+                    @ pose_arm[parent.name].inverted()
+                    @ pose_arm[t]
+                )
+            else:
+                basis = bone.matrix_local.inverted() @ pose_arm[t]
+            q = basis.to_quaternion()
+            prev = previous.get(t)
+            if prev is not None and prev.dot(q) < 0:
+                q.negate()
+            previous[t] = q
+            pb = eric_arm.pose.bones[t]
+            pb.rotation_quaternion = q
+            pb.keyframe_insert("rotation_quaternion", frame=f)
+            if t == pelvis_tgt:
+                pb.location = basis.translation
+                pb.keyframe_insert("location", frame=f)
+
+    baked.use_fake_user = True
+    baked_names.append(name)
+    print("BAKED", name, f1 - f0 + 1, "frames", flush=True)
+
+# ── 4. Export Eric's skeleton with one NLA track per clip ──────────────
 for o in list(bpy.data.objects):
     if o.type == "MESH":
         bpy.data.objects.remove(o, do_unlink=True)
-
-# And remove the source rig. Leaving it in exported its own 22 unretargeted
-# clips alongside the 7 baked ones — same names, different skeleton, 1.1 MB
-# instead of 0.2 MB, and a runtime that could pick the wrong one by name.
 bpy.data.objects.remove(hero_arm, do_unlink=True)
+for a in list(bpy.data.actions):
+    if a.name not in baked_names:
+        bpy.data.actions.remove(a)
 
-# Do NOT clear animation_data here.
-#
-# export_animation_mode="ACTIONS" works by assigning each action to the object
-# in turn and sampling it, so it needs animation_data to assign *to*. Clearing
-# it first left the exporter with nothing to attach and it wrote a GLB with the
-# skeleton and zero animations — which is exactly what shipped: the runtime's
-# clip map came up empty, no action ever played, and the player stood in the
-# street in his bind pose. Keep the action block alive and keep a fake user on
-# each baked clip so none of them is garbage-collected before export.
-for a in bpy.data.actions:
-    a.use_fake_user = False
-baked_names = []
-for name in TARGET_CLIPS:
-    if name in bpy.data.actions:
-        bpy.data.actions[name].use_fake_user = True
-        baked_names.append(name)
-print("TO EXPORT:", baked_names, flush=True)
 if not baked_names:
     raise SystemExit("no baked actions to export — refusing to write a T-pose GLB")
 
-# One NLA track per clip, and export by track.
-#
-# "ACTIONS" mode looked like the obvious choice and is not: since Blender's
-# slotted-action rework the exporter only emits the action actually assigned to
-# the armature, so a run that baked all seven clips shipped exactly one
-# (Idle_Loop, 267 channels — measured). NLA tracks are explicit: one track in,
-# one glTF animation out, named after the track.
-if eric_arm.animation_data is None:
-    eric_arm.animation_data_create()
 eric_arm.animation_data.action = None
 for track in list(eric_arm.animation_data.nla_tracks):
     eric_arm.animation_data.nla_tracks.remove(track)
@@ -141,8 +281,7 @@ for name in baked_names:
     action = bpy.data.actions[name]
     track = eric_arm.animation_data.nla_tracks.new()
     track.name = name
-    start = int(action.frame_range[0])
-    strip = track.strips.new(name, start, action)
+    strip = track.strips.new(name, int(action.frame_range[0]), action)
     strip.name = name
 
 os.makedirs(os.path.dirname(OUT_URL), exist_ok=True)
@@ -156,7 +295,4 @@ bpy.ops.export_scene.gltf(
     export_apply=False,
     export_yup=True,
 )
-print("EXPORTED", OUT_URL, flush=True)
-for a in bpy.data.actions:
-    print("ACTION:", a.name, flush=True)
-print("DONE", flush=True)
+print("EXPORTED", OUT_URL, baked_names, flush=True)

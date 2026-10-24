@@ -12,6 +12,7 @@ export default tseslint.config(
       'SourceAssets/**',
       'coverage/**',
       '.playwright-cli/**',
+      '.claude/**',
       'Made assets/**',
       'ds/**',
       // Ported, tested city-life engine from the Phase 2 reference app. Plain

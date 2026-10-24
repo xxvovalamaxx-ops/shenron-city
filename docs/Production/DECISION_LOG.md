@@ -74,3 +74,23 @@
 **Decision**: Light the island procedurally in the facade/road fragment shaders from the real per-building OSM data (`_bid` + baked building-lighting texture), driven entirely by the existing day-cycle clock.
 **Rationale**: 56,476 buildings make per-window geometry or texture atlases impractical; the GLBs already carry `_bid`, and the manifest carries real classes (office/residential/hotel/retail/industrial). A pure hash model (world seed, building id, floor, column) with smooth occupancy curves gives determinism (same seed → identical city), five distinct night personalities, floor-aware distribution, and no flicker by construction — nothing reads a clock or random source except the shared day-cycle clock.
 **Trade-off**: Two cached shader program variants (day/night) are needed to keep the daytime cost at baseline; window shading is LOD-approximate (fwidth-smoothed) rather than geometric, which is what keeps it alias-free at distance. Evidence: `docs/Production/evidence/phase3c/PHASE3C_EVIDENCE.md`.
+
+## 2026-09-25: GTA-level pass (parallel workstreams)
+**Decision**: Rebuild the look and the loop in five parallel workstreams, merged as squash commits: atmosphere and IBL, PBR facades and streets, vehicles and carjacking, camera/HUD/radar, crowds and trees. A renderer-free director adds the wanted level, police dispatch and missions on top.
+**Rationale**: At street level the city read as flat low-poly boxes. The target (GTA VI) is light, material detail and density, so each of those got its own owner and file set.
+**Trade-off**: Several systems (sun shadows from whole building tiles, clearcoat traffic, crowd and tree setup at load) were costed by reasoning, not measured on a GPU. A real-hardware performance pass is the next gate.
+
+## 2026-09-25: One facade material path
+**Decision**: One `MeshStandardMaterial` facade (onBeforeCompile) serves day and night, on a texture array of CC0 wall layers, with GLSL window lighting ported line for line from `city-lighting.ts` and tested against it.
+**Rationale**: The visible tiles used a Lambert facade that went flat white at night. The deterministic night-window model only ran in an unused mode, and it misread its data texture.
+**Trade-off**: The facade shader is large. Low quality drops parallax, interior mapping and normal maps.
+
+## 2026-09-25: New runtime models outside LFS
+**Decision**: Paths written by this pass (re-baked player clips, vehicles, people) are exempt from the LFS filter in `.gitattributes` and ship as plain git blobs.
+**Rationale**: GitHub rejects LFS uploads for this repository ("exceeded its LFS budget"). Downloads still work. The new files total about 11 MB.
+**Trade-off**: Once the budget is raised, move them back with `git lfs migrate import --include=...`.
+
+## 2026-09-25: Police as session vehicles
+**Decision**: Police cruisers are ordinary session vehicles under a `pursuit` controller. The deterministic dispatcher feeds them per-step input from the pure pursuit driver, routing them with A* over the LION graph.
+**Rationale**: They reuse the tested arcade dynamics, collisions, knock-back and carjacking, so a cruiser can be rammed or stolen like any other car.
+**Trade-off**: There are no officers on foot and no helicopters yet. An arrest (BUSTED) happens only on foot.

@@ -34,18 +34,40 @@ Open <http://127.0.0.1:9122>.
 
 | Input | Action |
 |---|---|
-| `W A S D` | Move |
-| Mouse | Look |
-| `Shift` | Sprint |
-| `Space` | Jump |
+| `W A S D` | Move (camera-relative) / drive |
+| Mouse | Orbit camera (right mouse: aim / tighter shoulder view) |
+| `Shift` | Sprint / handbrake |
+| `Space` | Jump / handbrake while driving |
 | `Space` (double) | Fly / land |
+| `E` or `F` | Take any car (parked, or slow traffic) / get out |
+| `H` | Horn |
+| `C` | Look behind while driving |
+| `L` | Police lightbar (in a cruiser) |
 | `V` | First / third person |
-| `F2` | Dev tools |
+| `Esc` | Pause: city map (click to set a GPS waypoint) and settings |
+| `F2` | Dev tools (teleport, spawns, wanted level, time, rain) |
 | `F3` | Performance overlay |
-| `Esc` | Release pointer / pause |
 
 Click **ENTER MANHATTAN** to capture the mouse. The cinematic intro flies you
-into the city, then hands control to the player.
+down to a 5th Avenue sidewalk, then hands control to the player.
+
+## Gameplay
+
+- **Steal and drive.** Walk up to a parked car or any slow car in traffic and
+  take it. Six original, fictional cars (Oriel Sedan, Oriel Cab, Oriel
+  Pursuit, Brannock XT, Haulden Courier, Sabrecat GT) with engine and gearbox
+  audio, body roll, skid marks, tyre smoke and crash knock-back.
+- **Wanted level.** Carjacks, hitting people and ramming cars or cruisers add
+  heat; 1-5 stars. Police cruisers spawn on the street graph and chase you
+  (leading, ramming, reversing out of walls). Break line of sight, leave the
+  search area and stay hidden to lose them. Get caught on foot: **BUSTED**.
+- **Jobs.** Yellow coronas near the spawn start missions laid out on the real
+  streets: *Wheels* (deliver a stolen car to a chop shop), *Midtown Sprint*
+  (checkpoint race), *Heat* (get two stars, then lose them) and *Night Fare*
+  (taxi pick-up and drop-off). Objective text, a job clock, a GPS route on the
+  radar and cash on MISSION PASSED.
+- **HUD.** GTA-style radar with the real LION streets, health/armor, money,
+  wanted stars, clock, district and street, vehicle name and speed.
 
 ## The world
 

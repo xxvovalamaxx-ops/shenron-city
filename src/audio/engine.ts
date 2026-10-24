@@ -112,6 +112,12 @@ export interface CityAudio {
   }
   /** Tear the whole thing down. The instance is unusable afterwards. */
   dispose(): void
+  /**
+   * The live context and the master bus (volume and limiter apply), for
+   * sibling synth modules such as the vehicle audio. Null until `start()`
+   * has built the graph.
+   */
+  output(): { ctx: AudioContext; destination: AudioNode } | null
 }
 
 export function createCityAudio(): CityAudio {
@@ -370,6 +376,10 @@ export function createCityAudio(): CityAudio {
         rightRms: Math.sqrt(rightPower / right.length),
         stereoDifference: Math.sqrt(differencePower / left.length),
       }
+    },
+
+    output() {
+      return graph ? { ctx: graph.ctx, destination: graph.master } : null
     },
 
     dispose() {

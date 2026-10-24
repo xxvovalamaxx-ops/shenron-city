@@ -18,6 +18,7 @@
 import * as THREE from 'three'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
 import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js'
+import { getFarMassingMaterial } from '../world/surfaces/far-massing'
 
 export const FULL_R = 900
 export const L2_R = 2600
@@ -41,9 +42,10 @@ export class LodLayer {
     this.loader = new GLTFLoader()
     this.loader.setDRACOLoader(draco)
 
-    this.material = new THREE.MeshLambertMaterial({
-      vertexColors: true, color: 0xffffff,
-    })
+    // Shared with every far tile: vertex colour plus the night glow the near
+    // facade collapses to, so the swap at FULL_R does not switch the lights
+    // off (world/surfaces/far-massing.ts).
+    this.material = getFarMassingMaterial()
   }
 
   async load(url = '/models/manhattan/lod/lod_manifest.json') {
