@@ -126,7 +126,7 @@ export function PhotoModeHint() {
   const hidden = useHud((s) => s.photoHintHidden)
   if (hidden) return null
   return (
-    <div className="overlay photo-hint" role="status">
+    <div className="photo-hint" role="status">
       <b>PHOTO MODE</b>
       <span><kbd className="gta-key">WASD</kbd> move</span>
       <span><kbd className="gta-key">Mouse</kbd> look</span>

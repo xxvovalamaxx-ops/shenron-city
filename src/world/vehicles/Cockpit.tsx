@@ -95,19 +95,19 @@ vec4 drops( vec2 p, float s, float since, float fill, float seed ) {
   float b = h21( cell * 1.7 + seed + 3.1 );
   float c = h21( cell * 2.3 + seed + 7.7 );
   // appears once enough time has passed since the last wipe
-  float present = step( a * fill, since ) * step( b, 0.35 + 0.6 * uRain );
+  float present = step( a * fill, since ) * step( b, 0.12 + 0.33 * uRain );
   vec2 o = ( vec2( b, c ) - 0.5 ) * 0.5;
-  float rad = mix( 0.12, 0.34, c );
+  float rad = mix( 0.07, 0.2, c * c );
   vec2 dv = f - o;
   dv.y *= mix( 1.0, 0.6, clamp( uSpeed / 30.0, 0.0, 1.0 ) );
   float d = length( dv ) / rad;
   float body = 1.0 - smoothstep( 0.8, 1.0, d );
   float rim = smoothstep( 0.45, 0.95, d ) * body;
   // a lens: dark rim, a bright fleck where the sky catches it
-  float fleck = 1.0 - smoothstep( 0.0, 0.35, length( dv - vec2( -0.08, 0.1 ) * rad ) / rad );
+  float fleck = 1.0 - smoothstep( 0.0, 0.22, length( dv - vec2( -0.25, 0.3 ) * rad ) / rad );
   vec3 col = mix( vec3( 0.55, 0.6, 0.66 ), vec3( 0.04, 0.05, 0.06 ), rim );
-  col += fleck * mix( vec3( 0.8 ), vec3( 1.0, 0.85, 0.6 ), uPractical );
-  float alpha = present * body * ( 0.28 + 0.4 * rim + 0.3 * fleck );
+  col += fleck * mix( vec3( 0.7 ), vec3( 1.0, 0.85, 0.6 ), uPractical );
+  float alpha = present * body * ( 0.1 + 0.35 * rim + 0.35 * fleck );
   return vec4( col, alpha );
 }
 
@@ -120,8 +120,8 @@ void main() {
 
   vec4 acc = vec4( 0.0 );
   if ( rain > 0.01 ) {
-    vec4 d1 = drops( p, 0.034, since, fill, 1.0 );
-    vec4 d2 = drops( p, 0.019, since, fill * 0.7, 9.0 );
+    vec4 d1 = drops( p, 0.05, since, fill, 1.0 );
+    vec4 d2 = drops( p, 0.026, since, fill * 0.7, 9.0 );
     acc = d1.a > d2.a ? d1 : d2;
     // a thin film of water where the blades have not reached
     float film = since > 500.0 ? 0.07 * rain : 0.0;
@@ -367,7 +367,7 @@ function buildRig(kind: string): Rig {
   hood.rotation.z = Math.PI / 2
   hood.rotation.y = Math.PI / 2
   hood.scale.set(1, 1, 0.45)
-  hood.position.set(eye.x, baseY - 0.02, sz + 0.66)
+  hood.position.set(eye.x, baseY + 0.1, sz + 0.7)
   root.add(hood)
 
   // Instrument cluster and nav screen: canvas faces.
@@ -378,9 +378,10 @@ function buildRig(kind: string): Rig {
   const clusterTex = keep(new THREE.CanvasTexture(cc))
   clusterTex.colorSpace = THREE.SRGBColorSpace
   const clusterMat = keep(new THREE.MeshStandardMaterial({ map: clusterTex, emissiveMap: clusterTex, emissive: 0xffffff, emissiveIntensity: 0.6, roughness: 0.3 }))
-  const cluster = new THREE.Mesh(keep(new THREE.PlaneGeometry(0.33, 0.124)), clusterMat)
-  cluster.position.set(eye.x, baseY - 0.1, sz + 0.68)
-  cluster.rotation.set(-0.35, Math.PI, 0)
+  const cluster = new THREE.Mesh(keep(new THREE.PlaneGeometry(0.36, 0.135)), clusterMat)
+  cluster.position.set(eye.x, baseY + 0.035, sz + 0.66)
+  // face the driver's eye; a fixed tilt left it edge-on from the seat
+  cluster.lookAt(eye)
   root.add(cluster)
 
   const nc = document.createElement('canvas')
@@ -391,8 +392,8 @@ function buildRig(kind: string): Rig {
   navTex.colorSpace = THREE.SRGBColorSpace
   const navMat = keep(new THREE.MeshStandardMaterial({ map: navTex, emissiveMap: navTex, emissive: 0xffffff, emissiveIntensity: 0.7, roughness: 0.25 }))
   const nav = new THREE.Mesh(keep(new THREE.PlaneGeometry(0.25, 0.15)), navMat)
-  nav.position.set(eye.x - 0.42, baseY - 0.1, sz + 0.62)
-  nav.rotation.set(-0.25, Math.PI + 0.18, 0)
+  nav.position.set(eye.x - 0.44, baseY + 0.02, sz + 0.74)
+  nav.lookAt(eye)
   root.add(nav)
   const bezel = new THREE.Mesh(keep(new THREE.BoxGeometry(0.27, 0.17, 0.015)), pillar)
   bezel.position.copy(nav.position).add(new THREE.Vector3(0, 0, 0.009))
@@ -401,7 +402,7 @@ function buildRig(kind: string): Rig {
 
   // Steering wheel: rim, hub and three spokes, tilted toward the driver.
   const wheelTilt = new THREE.Group()
-  wheelTilt.position.set(eye.x, eye.y - 0.36, sz + 0.44)
+  wheelTilt.position.set(eye.x, eye.y - 0.4, sz + 0.42)
   wheelTilt.rotation.x = 0.42
   root.add(wheelTilt)
   const wheel = new THREE.Group()
@@ -423,7 +424,7 @@ function buildRig(kind: string): Rig {
   }
   const column = new THREE.Mesh(keep(new THREE.CylinderGeometry(0.035, 0.045, 0.3, 12)), leather)
   column.rotation.x = Math.PI / 2 + 0.42
-  column.position.set(eye.x, eye.y - 0.42, sz + 0.58)
+  column.position.set(eye.x, eye.y - 0.46, sz + 0.56)
   root.add(column)
 
   // A-pillars along the screen's sides, headliner above, door tops beside.
@@ -431,24 +432,25 @@ function buildRig(kind: string): Rig {
     const a = new THREE.Vector3(side * wB, baseY, baseZ)
     const b = new THREE.Vector3(side * wT, topY, topZ)
     const len = a.distanceTo(b)
-    const p = new THREE.Mesh(keep(new THREE.BoxGeometry(0.09, len, 0.07)), pillar)
+    const p = new THREE.Mesh(keep(new THREE.BoxGeometry(0.055, len, 0.05)), pillar)
     p.position.copy(a).add(b).multiplyScalar(0.5)
     p.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), b.clone().sub(a).normalize())
     root.add(p)
     const door = new THREE.Mesh(keep(new THREE.BoxGeometry(0.1, 0.06, 1.6)), trim)
     door.position.set(side * (hw - 0.03), baseY - 0.05, sz)
     root.add(door)
-    const mirror = new THREE.Mesh(keep(new THREE.BoxGeometry(0.03, 0.09, 0.15)), pillar)
-    mirror.position.set(side * (hw + 0.06), baseY + 0.02, baseZ - 0.1)
-    root.add(mirror)
   }
   const liner = new THREE.Mesh(keep(new THREE.PlaneGeometry(hw * 2, 1.4)), head)
   liner.rotation.x = Math.PI / 2
   liner.position.set(0, roofY, topZ - 0.68)
   root.add(liner)
-  const rearMirror = new THREE.Mesh(keep(new THREE.BoxGeometry(0.24, 0.065, 0.02)), pillar)
-  rearMirror.position.set(0, topY - 0.07, topZ + 0.05)
+  const rearMirror = new THREE.Mesh(keep(new THREE.BoxGeometry(0.2, 0.055, 0.02)), pillar)
+  rearMirror.position.set(0, topY - 0.03, topZ + 0.16)
   root.add(rearMirror)
+  const glassFace = new THREE.Mesh(keep(new THREE.PlaneGeometry(0.185, 0.042)), metal)
+  glassFace.position.set(0, topY - 0.03, topZ + 0.149)
+  glassFace.rotation.y = Math.PI
+  root.add(glassFace)
 
   // The windscreen itself: rain and wipers in a transparent layer.
   const screen = keep(

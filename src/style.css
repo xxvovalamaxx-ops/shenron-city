@@ -1794,6 +1794,8 @@ html.vision-capture .overlay {
 /* Photo mode key guide: one quiet strip along the bottom. */
 .photo-hint {
   position: fixed;
+  z-index: 20;
+  width: max-content;
   left: 50%;
   bottom: 24px;
   transform: translateX(-50%);
