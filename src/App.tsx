@@ -28,6 +28,8 @@ import { rt, setRuntimePaused } from './gameplay/runtime'
 import { PlayerAvatar } from './character/PlayerAvatar'
 import { VehicleRig } from './world/VehicleRig'
 import { PoliceHelicopter } from './world/PoliceHelicopter'
+import { PhotoModeHint, PhotoModeRig } from './gameplay/PhotoModeRig'
+import { Cockpit } from './world/vehicles/Cockpit'
 import { NightEnvironment } from './world/NightEnvironment'
 import { ManhattanCity } from './world/ManhattanCity'
 import { DayCycle } from './world/DayCycleRig'
@@ -120,6 +122,8 @@ function Scene({
       <PlayerAvatar />
       <VehicleRig />
       <PoliceHelicopter />
+      <PhotoModeRig />
+      <Cockpit />
       <DevSpawns />
       <AtmosphericDust />
       <IntroCamera />
@@ -212,6 +216,7 @@ export default function App() {
     typeof location === 'undefined' ||
     new URLSearchParams(location.search).get('no-pointer-lock') !== '1'
   const screen = useHud((s) => s.screen)
+  const photoMode = useHud((s) => s.photoMode)
   const setScreen = useHud((s) => s.setScreen)
   const start = useGame((s) => s.start)
   const dispose = useGame((s) => s.dispose)
@@ -289,6 +294,11 @@ export default function App() {
   useEffect(() => {
     const pauseOnEscape = (event: KeyboardEvent) => {
       if (event.code !== 'Escape' || useHud.getState().screen !== 'playing') return
+      // Escape leaves photo mode first, back to the game, not the pause menu.
+      if (useHud.getState().photoMode) {
+        useHud.getState().set('photoMode', false)
+        return
+      }
       controls.current?.unlock()
       setScreen('paused')
     }
@@ -436,8 +446,9 @@ export default function App() {
         />
       </Canvas>
 
-      {screen === 'playing' && <Hud />}
-      {screen === 'playing' && <MissionHud />}
+      {screen === 'playing' && !photoMode && <Hud />}
+      {screen === 'playing' && !photoMode && <MissionHud />}
+      {screen === 'playing' && photoMode && <PhotoModeHint />}
       {screen === 'playing' && pointerLockBlocked && (
         <div className="input-notice" role="status">
           This page can’t capture the pointer — <strong>hold the left mouse
@@ -452,7 +463,7 @@ export default function App() {
           }}
         />
       )}
-      {screen === 'playing' && <DevMenu />}
+      {screen === 'playing' && !photoMode && <DevMenu />}
       {screen === 'loading' && <LoadingScreen progress={progress} />}
       {screen === 'title' && <TitleScreen onStart={enterWorld} />}
       {screen === 'paused' && (
