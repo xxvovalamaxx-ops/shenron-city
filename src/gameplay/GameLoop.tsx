@@ -142,7 +142,8 @@ export function GameLoop() {
     const dt = stepDt(rawDt, MAX_DT)
     const p = rt.player
     const hudNow = useHud.getState()
-    const locked = inputLocked(hudNow.screen)
+    // Photo mode freezes the world like a pause; PhotoModeRig owns the camera.
+    const locked = inputLocked(hudNow.screen) || hudNow.photoMode
     rt.thirdPerson = hudNow.thirdPerson
 
     Object.assign(rt.keys, keys.current)
